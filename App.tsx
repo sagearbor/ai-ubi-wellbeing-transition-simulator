@@ -4,6 +4,7 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 import { Globe, TrendingUp, Users, Sparkles, Share2, ChevronDown, BrainCircuit, Filter, FlaskConical, Hash, Link as LinkIcon, Database, Zap, MousePointer2, PlayCircle, RefreshCcw, Menu, X, HelpCircle, BookOpen, Lightbulb, ArrowRight, ArrowLeft, Info, FileText, Check, Sun, Moon, Cloud, Copy, AlertTriangle, Settings } from 'lucide-react';
 import WorldMap from './components/WorldMap';
 import SimulationControls from './components/SimulationControls';
+import MotionChart from './components/MotionChart';
 import { SimulationState, ModelParameters, HistoryPoint, CountryStats } from './types';
 import { PRESET_MODELS, INITIAL_COUNTRIES } from './constants';
 import { getRedTeamAnalysis, getSimulationSummary } from './services/geminiService';
@@ -148,9 +149,24 @@ const App: React.FC = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [speed, setSpeed] = useState(1);
   const [activeTab, setActiveTab] = useState<'map' | 'charts' | 'analysis' | 'overview' | 'equations' | 'guide'>('map');
-  const [viewMode, setViewMode] = useState<'adoption' | 'wellbeing'>('adoption');
+  const [viewMode, setViewMode] = useState<'adoption' | 'wellbeing'>('wellbeing'); // Default to wellbeing
   const [eqMode, setEqMode] = useState<'simple' | 'complex'>('simple');
-  const [selectedCountries, setSelectedCountries] = useState<string[]>(['Global']);
+  
+  // Initialize default selected countries
+  const [selectedCountries, setSelectedCountries] = useState<string[]>(() => {
+    const defaults = ['Global', 'USA', 'CHN', 'IND'];
+    // Add 2 random others
+    const candidates = INITIAL_COUNTRIES.filter(c => !defaults.includes(c.id));
+    for (let i = 0; i < 2; i++) {
+        if (candidates.length > 0) {
+            const idx = Math.floor(Math.random() * candidates.length);
+            defaults.push(candidates[idx].id);
+            candidates.splice(idx, 1);
+        }
+    }
+    return defaults;
+  });
+
   const [analysis, setAnalysis] = useState<string | null>(null);
   const [summary, setSummary] = useState<string | null>(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
@@ -162,10 +178,11 @@ const App: React.FC = () => {
   const [showShareModal, setShowShareModal] = useState(false);
   const [shareUrl, setShareUrl] = useState<string | null>(null);
   
-  // Theme State
+  // Theme State - Defaulting to 'dark' and using a new key to reset user preferences
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {
     if (typeof window !== 'undefined') {
-        return localStorage.getItem('theme') as 'dark' | 'light' || 'dark';
+        const saved = localStorage.getItem('sim_theme_v1');
+        return (saved as 'dark' | 'light') || 'dark';
     }
     return 'dark';
   });
@@ -176,12 +193,9 @@ const App: React.FC = () => {
   // Apply Theme
   useEffect(() => {
     const root = window.document.documentElement;
-    if (theme === 'dark') {
-        root.classList.add('dark');
-    } else {
-        root.classList.remove('dark');
-    }
-    localStorage.setItem('theme', theme);
+    root.classList.remove('light', 'dark');
+    root.classList.add(theme);
+    localStorage.setItem('sim_theme_v1', theme);
   }, [theme]);
 
   // Auto-switch tabs during tour
@@ -386,6 +400,10 @@ const App: React.FC = () => {
   };
 
   const triggerSummarize = async () => {
+    if (history.length === 0) {
+      alert("Please run the simulation (press Play) to generate data before creating a summary.");
+      return;
+    }
     if (summary && !isSummarizing) return;
     setIsSummarizing(true);
     const res = await getSimulationSummary(model, history);
@@ -394,6 +412,10 @@ const App: React.FC = () => {
   };
 
   const triggerRedTeam = async () => {
+    if (history.length === 0) {
+      alert("Please run the simulation (press Play) to generate data before running a Red Team audit.");
+      return;
+    }
     if (analysis && !isAnalyzing) return;
     setIsAnalyzing(true);
     const res = await getRedTeamAnalysis(model, history);
@@ -612,7 +634,7 @@ const App: React.FC = () => {
           </div>
           <div>
             <h1 className="text-base lg:text-lg font-bold leading-none text-slate-900 dark:text-white">Transition Engine</h1>
-            <p className="text-[8px] lg:text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-widest mt-1 font-mono">Abundance Cycle v13.0</p>
+            <p className="text-[8px] lg:text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-widest mt-1 font-mono">Abundance Cycle v0.14</p>
           </div>
         </div>
 
@@ -750,18 +772,21 @@ const App: React.FC = () => {
                 {/* How To Start Hint Overlay */}
                 {showStartHint && !isPlaying && (
                     <div className="absolute top-4 right-4 z-20 w-48 bg-blue-600/95 text-white p-4 rounded-xl shadow-2xl backdrop-blur-sm animate-in fade-in slide-in-from-top-4 duration-700">
-                        <div className="flex items-start gap-3">
-                            <Lightbulb className="shrink-0 mt-0.5" size={18} />
-                            <div>
-                                <h3 className="font-bold text-xs uppercase tracking-widest mb-1">Start Here</h3>
-                                <p className="text-[10px] leading-relaxed opacity-90 mb-3">Press <span className="font-bold text-white bg-white/20 px-1 rounded">PLAY</span> below to begin the simulation. Observe how the gradient UBI stabilizes global wellbeing.</p>
-                                <button 
-                                    onClick={() => setTourStep(0)}
-                                    className="w-full py-1.5 bg-white text-blue-600 rounded-lg text-[10px] font-bold uppercase hover:bg-blue-50 transition-colors"
-                                >
-                                    Take a Tour
-                                </button>
+                        <div className="flex justify-between items-start mb-2">
+                            <div className="flex items-center gap-2">
+                                <Lightbulb size={16} className="text-blue-100" />
+                                <h3 className="font-bold text-xs uppercase tracking-widest">Start Here</h3>
                             </div>
+                            <button onClick={() => setShowStartHint(false)} className="text-blue-200 hover:text-white"><X size={14}/></button>
+                        </div>
+                        <div>
+                            <p className="text-[10px] leading-relaxed opacity-90 mb-3">Press <span className="font-bold text-white bg-white/20 px-1 rounded">PLAY</span> below to begin the simulation. Observe how the gradient UBI stabilizes global wellbeing.</p>
+                            <button 
+                                onClick={() => setTourStep(0)}
+                                className="w-full py-1.5 bg-white text-blue-600 rounded-lg text-[10px] font-bold uppercase hover:bg-blue-50 transition-colors"
+                            >
+                                Take a Tour
+                            </button>
                         </div>
                     </div>
                 )}
@@ -781,22 +806,10 @@ const App: React.FC = () => {
 
           {activeTab === 'charts' && (
             <div className="flex flex-col gap-6 lg:gap-8 h-full overflow-y-auto scrollbar-hide pb-32 relative">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                <div className="flex flex-wrap gap-1 max-h-40 overflow-y-auto p-3 bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 flex-1 w-full sm:w-auto shadow-sm">
-                   <div className="text-[9px] font-bold text-slate-500 dark:text-slate-400 w-full mb-2 flex items-center gap-1 uppercase tracking-widest"><Filter size={10}/> Observation Target List</div>
-                   {['Global', ...INITIAL_COUNTRIES.map(c => c.id)].map(id => (
-                     <button 
-                       key={id}
-                       onClick={() => setSelectedCountries(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id])}
-                       className={`px-3 py-1 rounded text-[10px] font-bold uppercase border transition-all ${selectedCountries.includes(id) ? 'bg-blue-600 border-blue-500 text-white shadow-lg' : 'bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400'}`}
-                     >{id}</button>
-                   ))}
-                </div>
-
-                <div className="flex gap-2 w-full sm:w-auto" id="ai-tools">
+              <div className="flex gap-2 w-full justify-end" id="ai-tools">
                     <button 
                     onClick={() => { setActiveTab('analysis'); triggerSummarize(); }}
-                    className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold uppercase tracking-widest shadow-xl transition-all active:scale-95"
+                    className="flex items-center justify-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold uppercase tracking-widest shadow-xl transition-all active:scale-95"
                     >
                         <Sparkles size={16} />
                         <span>Summarize</span>
@@ -804,48 +817,61 @@ const App: React.FC = () => {
 
                     <button 
                         onClick={() => { setActiveTab('analysis'); triggerRedTeam(); }}
-                        className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-4 py-3 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold uppercase tracking-widest shadow-xl transition-all active:scale-95"
+                        className="flex items-center justify-center gap-2 px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold uppercase tracking-widest shadow-xl transition-all active:scale-95"
                     >
                         <BrainCircuit size={16} />
                         <span>Red Team</span>
                     </button>
-                </div>
               </div>
               
-              <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 lg:p-8 rounded-2xl lg:rounded-[2rem] h-[350px] lg:h-[500px] shrink-0 shadow-sm">
-                <ResponsiveContainer width="100%" height="100%">
-                  <AreaChart data={chartData} margin={{ left: 10 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke={theme === 'light' ? '#e2e8f0' : '#1e293b'} vertical={false} />
-                    <XAxis dataKey="date" stroke={theme === 'light' ? '#64748b' : '#94a3b8'} fontSize={10} minTickGap={30} />
-                    <YAxis stroke={theme === 'light' ? '#64748b' : '#94a3b8'} fontSize={10} domain={[0, 100]}>
-                        <Label value="Score 0-100" angle={-90} position="insideLeft" style={{ textAnchor: 'middle', fill: theme === 'light' ? '#64748b' : '#94a3b8', fontSize: 10, fontWeight: 'bold' }} />
-                    </YAxis>
-                    <Tooltip contentStyle={{ backgroundColor: theme === 'light' ? '#fff' : '#0f172a', border: '1px solid #334155', borderRadius: '16px', color: theme === 'light' ? '#000' : '#fff' }} />
-                    <Legend />
-                    {selectedCountries.map((id, idx) => {
-                        const hue = (idx * 137) % 360;
-                        return (
-                          <React.Fragment key={id}>
-                            <Area type="monotone" dataKey={`Wellbeing_${id}`} stroke={`hsl(${hue}, 70%, 60%)`} fill={`hsl(${hue}, 70%, 60%)`} fillOpacity={0.05} strokeWidth={3} name={`${id} Wellbeing`} />
-                            <Area type="monotone" dataKey={`Adoption_${id}`} stroke={`hsl(${hue}, 40%, 40%)`} fill="none" strokeWidth={1} strokeDasharray="6 3" name={`${id} AI %`} />
-                          </React.Fragment>
-                        );
-                    })}
-                  </AreaChart>
-                </ResponsiveContainer>
-              </div>
-              <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 lg:p-8 rounded-2xl lg:rounded-[2rem] h-[250px] lg:h-[300px] shrink-0 shadow-sm">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={chartData} margin={{ left: 10 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke={theme === 'light' ? '#e2e8f0' : '#1e293b'} vertical={false} />
-                    <XAxis dataKey="date" stroke={theme === 'light' ? '#64748b' : '#94a3b8'} fontSize={10} minTickGap={30} />
-                    <YAxis stroke={theme === 'light' ? '#64748b' : '#94a3b8'} fontSize={10}>
-                         <Label value="Funds $B" angle={-90} position="insideLeft" style={{ textAnchor: 'middle', fill: theme === 'light' ? '#64748b' : '#94a3b8', fontSize: 10, fontWeight: 'bold' }} />
-                    </YAxis>
-                    <Tooltip contentStyle={{ backgroundColor: theme === 'light' ? '#fff' : '#0f172a', border: '1px solid #334155', borderRadius: '16px', color: theme === 'light' ? '#000' : '#fff' }} />
-                    <Line type="monotone" dataKey="fund" stroke="#f59e0b" strokeWidth={4} dot={false} name="Distributed Surplus Pool ($B)" />
-                  </LineChart>
-                </ResponsiveContainer>
+              {/* Charts Container with Conditional Overlay */}
+              <div className="relative flex flex-col gap-6 lg:gap-8">
+                  {history.length === 0 && (
+                      <div className="absolute inset-0 z-20 flex items-center justify-center backdrop-blur-sm bg-white/30 dark:bg-slate-900/30 rounded-[2rem]">
+                          <div className="bg-white/90 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 p-8 rounded-2xl shadow-2xl max-w-sm text-center animate-in fade-in zoom-in duration-300">
+                              <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full flex items-center justify-center mx-auto mb-4">
+                                  <TrendingUp size={32} />
+                              </div>
+                              <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">Waiting for Data</h3>
+                              <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">Results will be graphed in real-time as soon as the simulation starts. Press <span className="font-bold text-slate-900 dark:text-white bg-slate-200 dark:bg-slate-700 px-1.5 py-0.5 rounded text-xs mx-1">PLAY</span> to begin.</p>
+                          </div>
+                      </div>
+                  )}
+
+                  <div className="h-[400px] shrink-0">
+                    <MotionChart 
+                        history={history.slice(0, state.month + 1)} // Slice for motion
+                        maxMonth={Math.max(...history.map(h => h.month), 10)}
+                        selectedCountries={selectedCountries} 
+                        allCountries={['Global', ...INITIAL_COUNTRIES.map(c => c.id)].map(id => ({ id, name: id }))}
+                        onToggleCountry={(id) => setSelectedCountries(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id])}
+                        theme={theme}
+                    />
+                  </div>
+
+                  <div className="h-[300px] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-sm relative overflow-hidden">
+                     <h3 className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+                        <Database size={14} /> Global Fund Accumulation ($B)
+                     </h3>
+                     <ResponsiveContainer width="100%" height="100%">
+                        <AreaChart data={chartData.slice(0, state.month + 1)} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                            <defs>
+                                <linearGradient id="colorFund" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.8}/>
+                                    <stop offset="95%" stopColor="#f59e0b" stopOpacity={0}/>
+                                </linearGradient>
+                            </defs>
+                            <XAxis dataKey="date" tick={{fontSize: 10, fill: theme === 'light' ? '#64748b' : '#94a3b8'}} axisLine={false} tickLine={false} />
+                            <YAxis tick={{fontSize: 10, fill: theme === 'light' ? '#64748b' : '#94a3b8'}} axisLine={false} tickLine={false} />
+                            <CartesianGrid strokeDasharray="3 3" stroke={theme === 'light' ? '#e2e8f0' : '#1e293b'} vertical={false} />
+                            <Tooltip 
+                                contentStyle={{ backgroundColor: theme === 'light' ? '#fff' : '#0f172a', border: '1px solid #334155', borderRadius: '12px', fontSize: '12px' }}
+                                itemStyle={{ color: theme === 'light' ? '#000' : '#fff' }}
+                            />
+                            <Area type="monotone" dataKey="fund" stroke="#f59e0b" fillOpacity={1} fill="url(#colorFund)" strokeWidth={2} name="Total Fund ($B)" isAnimationActive={false} />
+                        </AreaChart>
+                     </ResponsiveContainer>
+                  </div>
               </div>
             </div>
           )}
@@ -985,266 +1011,6 @@ const App: React.FC = () => {
                                 </li>
                             </ul>
                         </div>
-                    </div>
-                </div>
-            </div>
-          )}
-
-          {activeTab === 'overview' && (
-            <div className={`max-w-6xl mx-auto py-6 lg:py-12 space-y-8 animate-in fade-in duration-1000 h-full flex flex-col`}>
-                <div className="shrink-0 text-center mb-4">
-                    <h2 className="text-2xl lg:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">The Abundance Loop</h2>
-                    <p className="text-slate-500 dark:text-slate-400 text-sm lg:text-lg font-medium">Mathematical visualization of synchronized productivity capture.</p>
-                </div>
-                
-                {/* Desktop: 2 Columns. Mobile: Stacked */}
-                <div className="flex-1 grid lg:grid-cols-5 gap-8 lg:gap-12 min-h-0">
-                    
-                    {/* Left: Animation (Takes 3/5 width on desktop) */}
-                    <div className="lg:col-span-3 flex items-center justify-center min-h-0">
-                        <div className="relative w-full aspect-[4/3] bg-white dark:bg-slate-900 rounded-3xl lg:rounded-[3rem] border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden">
-                            <div className="absolute top-4 right-4 z-20">
-                              <button 
-                                onClick={() => setOverviewStep(0)}
-                                className="p-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white rounded-xl transition-all shadow-xl flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest border border-slate-200 dark:border-slate-700 active:scale-95"
-                              >
-                                <RefreshCcw size={14} /> Restart
-                              </button>
-                            </div>
-
-                            <svg viewBox="0 0 800 600" className="absolute inset-0 w-full h-full pointer-events-none">
-                                <defs>
-                                  <filter id="glow"><feGaussianBlur stdDeviation="6" result="blur"/><feComposite in="SourceGraphic" in2="blur" operator="over"/></filter>
-                                </defs>
-                                
-                                {/* Guideline Triangle */}
-                                <path 
-                                  d={`M ${overviewCycleData.vA.x} ${overviewCycleData.vA.y} L ${overviewCycleData.vB.x} ${overviewCycleData.vB.y} L ${overviewCycleData.vC.x} ${overviewCycleData.vC.y} Z`} 
-                                  fill="none" stroke={theme === 'light' ? '#cbd5e1' : '#334155'} strokeWidth="2" strokeDasharray="5 5" opacity={0.3} 
-                                />
-
-                                {/* Animated Tendrils */}
-                                {overviewCycleData.showTendril1 && (
-                                    <>
-                                        <path 
-                                            d={getSnakePath(overviewCycleData.vA, overviewCycleData.vB, overviewCycleData.isSnapped1)} 
-                                            fill="none" stroke="#3b82f6" strokeWidth="4" strokeLinecap="round"
-                                            strokeDasharray="1000" strokeDashoffset={1000 * (1 - overviewCycleData.prog1)}
-                                            opacity={0.8}
-                                        />
-                                        <text x={overviewCycleData.midAB.x} y={overviewCycleData.midAB.y} fill="#3b82f6" fontSize="24" fontWeight="bold" textAnchor="middle" alignmentBaseline="middle" opacity={overviewCycleData.prog1 > 0.5 ? 1 : 0} className="transition-opacity duration-300">$</text>
-                                    </>
-                                )}
-                                {overviewCycleData.showTendril2 && (
-                                    <>
-                                        <path 
-                                            d={getSnakePath(overviewCycleData.vB, overviewCycleData.vC, overviewCycleData.isSnapped2)} 
-                                            fill="none" stroke="#f59e0b" strokeWidth="4" strokeLinecap="round"
-                                            strokeDasharray="1000" strokeDashoffset={1000 * (1 - overviewCycleData.prog2)}
-                                            opacity={0.8}
-                                        />
-                                        <text x={overviewCycleData.midBC.x} y={overviewCycleData.midBC.y} fill="#f59e0b" fontSize="24" fontWeight="bold" textAnchor="middle" alignmentBaseline="middle" opacity={overviewCycleData.prog2 > 0.5 ? 1 : 0} className="transition-opacity duration-300">$</text>
-                                    </>
-                                )}
-                                {overviewCycleData.showTendril3 && (
-                                    <>
-                                        <path 
-                                            d={getSnakePath(overviewCycleData.vC, overviewCycleData.vA, overviewCycleData.isSnapped3)} 
-                                            fill="none" stroke="#10b981" strokeWidth="5" strokeLinecap="round"
-                                            strokeDasharray="1000" strokeDashoffset={1000 * (1 - overviewCycleData.prog3)}
-                                            opacity={0.8}
-                                        />
-                                        <text x={overviewCycleData.midCA.x} y={overviewCycleData.midCA.y} fill="#10b981" fontSize="24" fontWeight="bold" textAnchor="middle" alignmentBaseline="middle" opacity={overviewCycleData.prog3 > 0.5 ? 1 : 0} className="transition-opacity duration-300">$</text>
-                                    </>
-                                )}
-
-                                {/* Particle Flow (Only during expansion) */}
-                                {overviewCycleData.isExpanding && (
-                                  <>
-                                    <circle r="6" fill="#3b82f6" filter="url(#glow)">
-                                        <animateMotion dur={`${6 / overviewCycleData.particleSpeed}s`} repeatCount="indefinite" path={`M ${overviewCycleData.vA.x} ${overviewCycleData.vA.y} L ${overviewCycleData.vB.x} ${overviewCycleData.vB.y}`} />
-                                    </circle>
-                                    <circle r="6" fill="#f59e0b" filter="url(#glow)">
-                                        <animateMotion dur={`${6 / overviewCycleData.particleSpeed}s`} repeatCount="indefinite" path={`M ${overviewCycleData.vB.x} ${overviewCycleData.vB.y} L ${overviewCycleData.vC.x} ${overviewCycleData.vC.y}`} />
-                                    </circle>
-                                    <circle r="6" fill="#10b981" filter="url(#glow)">
-                                        <animateMotion dur={`${3 / overviewCycleData.particleSpeed}s`} repeatCount="indefinite" path={`M ${overviewCycleData.vC.x} ${overviewCycleData.vC.y} L ${overviewCycleData.vA.x} ${overviewCycleData.vA.y}`} />
-                                    </circle>
-                                  </>
-                                )}
-                            </svg>
-
-                            {/* Node A */}
-                            {overviewCycleData.showNodeA && (
-                            <div 
-                              className="absolute flex flex-col items-center justify-center transition-all duration-75 pointer-events-none"
-                              style={{ 
-                                left: `${(overviewCycleData.vA.x / 800) * 100}%`,
-                                top: `${(overviewCycleData.vA.y / 600) * 100}%`,
-                                transform: `translate(-50%, -50%) scale(${overviewCycleData.scale})`
-                              }}
-                            >
-                                <div className="mb-2 text-center">
-                                    <h4 className="font-bold text-[8px] sm:text-[9px] md:text-[10px] uppercase tracking-[0.3em] text-blue-500 dark:text-blue-400">Corporations</h4>
-                                </div>
-                                <div className="relative w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40">
-                                  <ResponsiveContainer width="100%" height="100%">
-                                    <PieChart>
-                                      <Pie data={overviewCycleData.corpWedges} dataKey="value" stroke="none" paddingAngle={2} isAnimationActive={false}>
-                                        {overviewCycleData.corpWedges.map((e, i) => <Cell key={i} fill={e.color} />)}
-                                      </Pie>
-                                    </PieChart>
-                                  </ResponsiveContainer>
-                                  <div className="absolute inset-0 flex items-center justify-center">
-                                    <div className="bg-white dark:bg-slate-950 rounded-full w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 border border-blue-500/20 flex items-center justify-center shadow-inner">
-                                      <TrendingUp className="text-blue-500" size={24} />
-                                    </div>
-                                  </div>
-                                </div>
-                            </div>
-                            )}
-
-                            {/* Node B */}
-                            {overviewCycleData.showNodeB && (
-                              <div 
-                                className="absolute flex flex-col items-center justify-center transition-all duration-75 pointer-events-none animate-in fade-in zoom-in duration-300"
-                                style={{ 
-                                  left: `${(overviewCycleData.vB.x / 800) * 100}%`,
-                                  top: `${(overviewCycleData.vB.y / 600) * 100}%`,
-                                  transform: `translate(-50%, -50%) scale(${overviewCycleData.scale})`
-                                }}
-                              >
-                                  <div className="relative w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40">
-                                     <ResponsiveContainer width="100%" height="100%">
-                                        <PieChart>
-                                          <Pie data={overviewCycleData.ledgerWedges} dataKey="value" stroke="none" paddingAngle={2} isAnimationActive={false}>
-                                            {overviewCycleData.ledgerWedges.map((e, i) => <Cell key={i} fill={e.color} />)}
-                                          </Pie>
-                                        </PieChart>
-                                      </ResponsiveContainer>
-                                      <div className="absolute inset-0 flex items-center justify-center">
-                                        <div className="bg-white dark:bg-slate-950 rounded-full w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 border border-amber-500/20 flex items-center justify-center shadow-inner">
-                                          <Database className="text-amber-500" size={24} />
-                                        </div>
-                                      </div>
-                                  </div>
-                                  <div className="mt-2 text-center">
-                                      <h4 className="font-bold text-[8px] sm:text-[9px] md:text-[10px] uppercase tracking-[0.3em] text-amber-500 dark:text-amber-400">Ledger</h4>
-                                  </div>
-                              </div>
-                            )}
-
-                            {/* Node C */}
-                            {overviewCycleData.showNodeC && (
-                            <div 
-                              className="absolute flex flex-col items-center justify-center transition-all duration-75 pointer-events-none"
-                              style={{ 
-                                left: `${(overviewCycleData.vC.x / 800) * 100}%`,
-                                top: `${(overviewCycleData.vC.y / 600) * 100}%`,
-                                transform: `translate(-50%, -50%) scale(${overviewCycleData.scale})`
-                              }}
-                            >
-                                <div className="relative w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40">
-                                  <ResponsiveContainer width="100%" height="100%">
-                                    <PieChart>
-                                      <Pie data={overviewCycleData.humanWedges} dataKey="value" stroke="none" paddingAngle={2} isAnimationActive={false}>
-                                        {overviewCycleData.humanWedges.map((e, i) => <Cell key={i} fill={e.color} />)}
-                                      </Pie>
-                                    </PieChart>
-                                  </ResponsiveContainer>
-                                  <div className="absolute inset-0 flex items-center justify-center">
-                                    <div className="bg-white dark:bg-slate-950 rounded-full w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 border border-emerald-500/20 flex items-center justify-center shadow-inner">
-                                      <Users className="text-emerald-500" size={24} />
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className="mt-2 text-center">
-                                    <h4 className="font-bold text-[8px] sm:text-[9px] md:text-[10px] uppercase tracking-[0.3em] text-emerald-500 dark:text-emerald-400">Human Capital</h4>
-                                </div>
-                            </div>
-                            )}
-                        </div>
-                    </div>
-
-                    {/* Right: Explainer Cards (Takes 2/5 width on desktop, stacked vertically) */}
-                    <div className="lg:col-span-2 flex flex-col gap-4 justify-center">
-                        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl flex flex-col gap-2 shadow-sm">
-                            <div className="flex items-center gap-3 text-blue-600 dark:text-blue-400 font-bold uppercase text-xs tracking-widest"><Zap size={18}/> Corporate Adoption</div>
-                            <p className="text-slate-600 dark:text-slate-300 leading-relaxed text-xs">Firms join via <strong>Surplus Participation Agreements</strong>. Early movers bypass subsistence deflation by ensuring market purchasing power remains stable.</p>
-                        </div>
-                        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl flex flex-col gap-2 shadow-sm">
-                            <div className="flex items-center gap-3 text-amber-600 dark:text-amber-400 font-bold uppercase text-xs tracking-widest"><LinkIcon size={18}/> Immutable Distribution</div>
-                            <p className="text-slate-600 dark:text-slate-300 leading-relaxed text-xs">The <strong>Dividend Ledger</strong> uses zero-knowledge verification to move productivity gains directly from the machine layer to human citizens.</p>
-                        </div>
-                        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl flex flex-col gap-2 shadow-sm">
-                            <div className="flex items-center gap-3 text-emerald-600 dark:text-emerald-400 font-bold uppercase text-xs tracking-widest"><Users size={18}/> Resilience Feedback</div>
-                            <p className="text-slate-600 dark:text-slate-300 leading-relaxed text-xs">When survival is decoupled from labor, <strong>Human Capital</strong> pivots to higher-order creativity, creating the stable environment for AI.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-          )}
-
-          {activeTab === 'equations' && (
-            <div className="max-w-4xl mx-auto py-6 lg:py-12 space-y-8 lg:space-y-12">
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-4 border-b border-slate-200 dark:border-slate-800 pb-8">
-                    <div><h2 className="text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white">Model Equations</h2><p className="text-slate-500 font-medium tracking-wide text-sm">The mathematical foundations of non-linear abundance.</p></div>
-                    <div className="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-xl border border-slate-200 dark:border-slate-700">
-                        <button onClick={() => setEqMode('simple')} className={`px-4 py-2 text-[10px] font-bold uppercase rounded-lg transition-all ${eqMode === 'simple' ? 'bg-blue-600 text-white shadow-lg' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'}`}>Simplified</button>
-                        <button onClick={() => setEqMode('complex')} className={`px-4 py-2 text-[10px] font-bold uppercase rounded-lg transition-all ${eqMode === 'complex' ? 'bg-blue-600 text-white shadow-lg' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'}`}>Academic</button>
-                    </div>
-                </div>
-                
-                <div className="grid gap-6 lg:gap-10">
-                    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 lg:p-10 rounded-3xl lg:rounded-[3rem] group hover:border-blue-500/40 transition-all duration-700 shadow-sm">
-                        <h4 className="text-slate-500 mb-6 lg:mb-8 text-[10px] uppercase font-bold tracking-[0.4em] flex items-center gap-2"><Hash size={12}/> Productivity Surplus Flow</h4>
-                        {eqMode === 'simple' ? (
-                            <div className="text-lg lg:text-2xl text-blue-600 dark:text-blue-400 font-light leading-relaxed">Surplus = (Automation ^ 1.6) × Network Effect × Regional GDP</div>
-                        ) : (
-                          <MathEq>
-                            <span className="text-slate-900 dark:text-white">S(t) = </span>
-                            <div className="flex flex-col items-center text-slate-900 dark:text-white">
-                              <span>A(t)<sup>1.6</sup></span>
-                            </div>
-                            <span className="mx-1 text-slate-900 dark:text-white">·</span>
-                            <span className="text-slate-900 dark:text-white">P<sub>c</sub></span>
-                            <span className="mx-1 text-slate-900 dark:text-white">·</span>
-                            <span className="text-slate-900 dark:text-white">G<sub>base</sub></span>
-                            <span className="mx-1 text-slate-900 dark:text-white">·</span>
-                            <span className="text-slate-900 dark:text-white">(1 + ω · A)</span>
-                          </MathEq>
-                        )}
-                        <p className="mt-6 text-xs text-slate-500 italic border-l-2 border-slate-200 dark:border-slate-800 pl-4">Defines the non-linear growth of value as AI adoption reaches critical mass.</p>
-                    </div>
-
-                    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 lg:p-10 rounded-3xl lg:rounded-[3rem] group hover:border-emerald-500/40 transition-all duration-700 shadow-sm">
-                        <h4 className="text-slate-500 mb-6 lg:mb-8 text-[10px] uppercase font-bold tracking-[0.4em] flex items-center gap-2"><Hash size={12}/> Marginal Utility of Dividend</h4>
-                        {eqMode === 'simple' ? (
-                            <div className="text-lg lg:text-2xl text-emerald-600 dark:text-emerald-400 font-light leading-relaxed">Boost = Adjusted Dividend ÷ (Local Wealth Floor + Constant)</div>
-                        ) : (
-                          <MathEq>
-                            <span className="text-slate-900 dark:text-white">ΔU = </span>
-                            <Frac n={<span className="text-slate-900 dark:text-white">D<sub>adj</sub></span>} d={<span className="text-slate-900 dark:text-white">G<sub>cap</sub> + κ</span>} />
-                            <span className="mx-1 text-slate-900 dark:text-white">·</span>
-                            <span className="text-slate-900 dark:text-white">Scale</span>
-                          </MathEq>
-                        )}
-                        <p className="mt-6 text-xs text-slate-500 italic border-l-2 border-slate-200 dark:border-slate-800 pl-4">Explains why the dividend is transformational for lower-GDP nations and supportive for high-GDP ones.</p>
-                    </div>
-
-                    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 lg:p-10 rounded-3xl lg:rounded-[3rem] group hover:border-amber-500/40 transition-all duration-700 shadow-sm">
-                        <h4 className="text-slate-500 mb-6 lg:mb-8 text-[10px] uppercase font-bold tracking-[0.4em] flex items-center gap-2"><Hash size={12}/> GDP Gradient Adjustment</h4>
-                        {eqMode === 'simple' ? (
-                            <div className="text-lg lg:text-2xl text-amber-600 dark:text-amber-400 font-light leading-relaxed">Adjusted Dividend = Base Payout × (1 + GDP Scaling Factor)</div>
-                        ) : (
-                          <MathEq>
-                            <span className="text-slate-900 dark:text-white">D<sub>adj</sub> = </span>
-                            <span className="text-slate-900 dark:text-white">D<sub>base</sub></span>
-                            <span className="mx-1 text-slate-900 dark:text-white">·</span>
-                            <span className="text-slate-900 dark:text-white">(1 + λ · log(G<sub>cap</sub>))</span>
-                          </MathEq>
-                        )}
-                        <p className="mt-6 text-xs text-slate-500 italic border-l-2 border-slate-200 dark:border-slate-800 pl-4">Corrects for cost-of-living disparities to prevent "Two-Speed World" collapse scenarios.</p>
                     </div>
                 </div>
             </div>

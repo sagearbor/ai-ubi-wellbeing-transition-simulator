@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import * as topojson from 'topojson-client';
 import { CountryStats } from '../types';
+import { ZoomIn, ZoomOut, Maximize } from 'lucide-react';
 
 interface WorldMapProps {
   countryData: Record<string, CountryStats>;
@@ -10,21 +11,59 @@ interface WorldMapProps {
   viewMode: 'adoption' | 'wellbeing';
 }
 
-// Exhaustive mapping for world-atlas 110m (standard ISO numeric IDs)
+// Exhaustive mapping for world-atlas 110m (standard ISO numeric IDs to ISO alpha-3)
 const ID_MAP: Record<string, string> = {
-  '840': 'USA', '124': 'CAN', '484': 'MEX', '156': 'CHN', '356': 'IND',
-  '392': 'JPN', '410': 'KOR', '826': 'GBR', '250': 'FRA', '276': 'DEU',
-  '380': 'ITA', '724': 'ESP', '578': 'NOR', '756': 'CHE', '616': 'POL',
-  '804': 'UKR', '704': 'VNM', '360': 'IDN', '586': 'PAK', '050': 'BGD',
-  '608': 'PHL', '792': 'TUR', '643': 'RUS', '682': 'SAU', '364': 'IRN',
-  '376': 'ISR', '275': 'PSE', '566': 'NGA', '710': 'ZAF', '818': 'EGY',
-  '231': 'ETH', '404': 'KEN', '180': 'COD', '076': 'BRA', '032': 'ARG',
-  '170': 'COL', '036': 'AUS', '554': 'NZL', '398': 'KAZ', '764': 'THA',
-  '458': 'MYS', '368': 'IRQ', '004': 'AFG', '152': 'CHL'
+  // North America
+  '840': 'USA', '124': 'CAN', '484': 'MEX',
+
+  // Central America & Caribbean
+  '320': 'GTM', '192': 'CUB', '332': 'HTI', '214': 'DOM', '340': 'HND',
+  '558': 'NIC', '222': 'SLV', '188': 'CRI', '591': 'PAN', '388': 'JAM',
+  '084': 'BLZ', '044': 'BHS', '780': 'TTO', '630': 'PRI', // PRI is Puerto Rico (often mapped)
+
+  // South America
+  '076': 'BRA', '032': 'ARG', '170': 'COL', '152': 'CHL', '604': 'PER',
+  '862': 'VEN', '218': 'ECU', '068': 'BOL', '600': 'PRY', '858': 'URY',
+  '328': 'GUY', '740': 'SUR',
+  
+  // Europe
+  '643': 'RUS', '826': 'GBR', '250': 'FRA', '276': 'DEU', '380': 'ITA',
+  '724': 'ESP', '528': 'NLD', '752': 'SWE', '056': 'BEL', '040': 'AUT',
+  '616': 'POL', '578': 'NOR', '756': 'CHE', '372': 'IRL', '208': 'DNK',
+  '246': 'FIN', '620': 'PRT', '300': 'GRC', '203': 'CZE', '348': 'HUN',
+  '642': 'ROU', '804': 'UKR', '112': 'BLR', '688': 'SRB', '703': 'SVK',
+  '191': 'HRV', '070': 'BIH', '498': 'MDA', '100': 'BGR', '008': 'ALB',
+  '807': 'MKD', '705': 'SVN', '440': 'LTU', '428': 'LVA', '233': 'EST',
+  '352': 'ISL', '499': 'MNE', '442': 'LUX', '196': 'CYP', '470': 'MLT',
+  
+  // East & SE Asia
+  '156': 'CHN', '392': 'JPN', '410': 'KOR', '158': 'TWN', '496': 'MNG', 
+  '408': 'PRK', '704': 'VNM', '360': 'IDN', '608': 'PHL', '764': 'THA', 
+  '458': 'MYS', '702': 'SGP', '104': 'MMR', '116': 'KHM', '418': 'LAO', 
+  '096': 'BRN', '626': 'TLS',
+  
+  // South & Central Asia
+  '356': 'IND', '586': 'PAK', '050': 'BGD', '144': 'LKA', '524': 'NPL', 
+  '064': 'BTN', '398': 'KAZ', '860': 'UZB', '795': 'TKM', '417': 'KGZ', 
+  '762': 'TJK', '462': 'MDV',
+  
+  // Middle East / West Asia
+  '792': 'TUR', '682': 'SAU', '364': 'IRN', '368': 'IRQ', '004': 'AFG',
+  '784': 'ARE', '376': 'ISR', '400': 'JOR', '422': 'LBN', '760': 'SYR', 
+  '887': 'YEM', '512': 'OMN', '634': 'QAT', '414': 'KWT', '048': 'BHR',
+  '031': 'AZE', '268': 'GEO', '051': 'ARM', '275': 'PSE',
+  
+  // Africa
+  '566': 'NGA', '710': 'ZAF', '818': 'EGY', '231': 'ETH', '404': 'KEN',
+  '180': 'COD', '504': 'MAR', '012': 'DZA', '024': 'AGO',
+
+  // Oceania
+  '036': 'AUS', '554': 'NZL', '598': 'PNG'
 };
 
 const WorldMap: React.FC<WorldMapProps> = ({ countryData, onCountryClick, viewMode }) => {
   const svgRef = useRef<SVGSVGElement>(null);
+  const gRef = useRef<SVGGElement>(null);
   const [geography, setGeography] = useState<any>(null);
   const [hoveredStats, setHoveredStats] = useState<CountryStats | null>(null);
 
@@ -37,27 +76,59 @@ const WorldMap: React.FC<WorldMapProps> = ({ countryData, onCountryClick, viewMo
       .catch(err => console.error("Map Load Error:", err));
   }, []);
 
+  // Zoom Handling
   useEffect(() => {
-    if (!svgRef.current || !geography) return;
+    if (!svgRef.current || !gRef.current) return;
+    
+    const svg = d3.select(svgRef.current);
+    const g = d3.select(gRef.current);
+
+    const zoom = d3.zoom()
+      .scaleExtent([1, 8])
+      .translateExtent([[0, 0], [800, 450]])
+      .on('zoom', (event) => {
+        g.attr('transform', event.transform);
+      });
+
+    svg.call(zoom as any);
+  }, [geography]); // Re-attach if geography loads, though strictly only needs mounting
+
+  // Programmatic Zoom controls
+  const handleZoom = (factor: number) => {
+    if (!svgRef.current) return;
+    const svg = d3.select(svgRef.current);
+    const zoom = d3.zoom().scaleExtent([1, 8]).translateExtent([[0, 0], [800, 450]]);
+    
+    if (factor === 0) {
+       // Reset
+       svg.transition().duration(750).call((zoom.transform as any), d3.zoomIdentity);
+    } else {
+       svg.transition().duration(300).call((zoom.scaleBy as any), factor);
+    }
+  };
+
+  useEffect(() => {
+    if (!gRef.current || !geography) return;
 
     const width = 800;
     const height = 450;
-    const svg = d3.select(svgRef.current);
+    const g = d3.select(gRef.current);
     
-    if (svg.selectAll('path.country').empty()) {
+    // Draw countries if not already drawn
+    if (g.selectAll('path.country').empty()) {
       const projection = d3.geoMercator()
         .scale(120)
         .translate([width / 2, height / 1.5]);
 
       const path = d3.geoPath().projection(projection);
 
-      svg.selectAll('path.country')
+      g.selectAll('path.country')
         .data(geography)
         .join('path')
         .attr('class', 'country')
         .attr('d', path as any)
         .attr('stroke', '#0f172a')
-        .attr('stroke-width', 0.5)
+        .attr('stroke-width', 0.1) // Fine stroke for zoom
         .style('cursor', 'pointer')
         .on('contextmenu', (event, d: any) => {
           event.preventDefault();
@@ -69,19 +140,20 @@ const WorldMap: React.FC<WorldMapProps> = ({ countryData, onCountryClick, viewMo
           onCountryClick(isoCode, 5);
         })
         .on('mouseover', function(event, d: any) {
-          d3.select(this).attr('stroke', '#38bdf8').attr('stroke-width', 1).raise();
+          d3.select(this).attr('stroke', '#38bdf8').attr('stroke-width', 0.5).raise();
           const isoCode = ID_MAP[d.id];
           if (isoCode && countryData[isoCode]) {
             setHoveredStats(countryData[isoCode]);
           }
         })
         .on('mouseout', function() {
-          d3.select(this).attr('stroke', '#0f172a').attr('stroke-width', 0.5);
+          d3.select(this).attr('stroke', '#0f172a').attr('stroke-width', 0.1);
           setHoveredStats(null);
         });
     }
 
-    svg.selectAll('path.country')
+    // Update Colors based on simulation state
+    g.selectAll('path.country')
       .transition()
       .duration(200)
       .attr('fill', (d: any) => {
@@ -97,6 +169,15 @@ const WorldMap: React.FC<WorldMapProps> = ({ countryData, onCountryClick, viewMo
 
   return (
     <div className="relative w-full h-full min-h-[400px] bg-slate-900 rounded-2xl overflow-hidden shadow-2xl border border-slate-800 group">
+      {/* Zoom Controls */}
+      <div className="absolute top-4 right-4 flex flex-col gap-2 z-10 pointer-events-auto">
+         <div className="bg-slate-800/90 p-1.5 rounded-xl border border-slate-700 backdrop-blur shadow-xl flex flex-col gap-1">
+            <button onClick={() => handleZoom(1.3)} className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors"><ZoomIn size={16} /></button>
+            <button onClick={() => handleZoom(0.7)} className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors"><ZoomOut size={16} /></button>
+            <button onClick={() => handleZoom(0)} className="p-2 text-slate-400 hover:text-white hover:bg-slate-700 rounded-lg transition-colors"><Maximize size={16} /></button>
+         </div>
+      </div>
+
       {/* Controls Legend */}
       <div className="absolute top-4 left-4 flex flex-col gap-2 z-10 pointer-events-none transition-opacity group-hover:opacity-100 opacity-60">
         <div className="bg-slate-800/90 p-3 rounded-xl border border-slate-700 backdrop-blur shadow-xl">
@@ -104,6 +185,7 @@ const WorldMap: React.FC<WorldMapProps> = ({ countryData, onCountryClick, viewMo
           <div className="flex flex-col gap-1 text-[9px] font-mono">
             <div className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-sky-400" /> LEFT-CLICK: + AI GROWTH</div>
             <div className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-rose-400" /> RIGHT-CLICK: - AI GROWTH</div>
+            <div className="flex items-center gap-2 text-slate-400 mt-1"><Maximize size={8} /> SCROLL/PINCH TO ZOOM</div>
           </div>
         </div>
       </div>
@@ -134,7 +216,9 @@ const WorldMap: React.FC<WorldMapProps> = ({ countryData, onCountryClick, viewMo
         </div>
       )}
 
-      <svg ref={svgRef} viewBox="0 0 800 450" className="w-full h-full" />
+      <svg ref={svgRef} viewBox="0 0 800 450" className="w-full h-full cursor-grab active:cursor-grabbing">
+         <g ref={gRef}></g>
+      </svg>
     </div>
   );
 };
