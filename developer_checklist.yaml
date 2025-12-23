@@ -1,0 +1,1305 @@
+# AI/UBI Transition Simulator - Development Checklist
+# Generated: 2024-12-22
+# Last Updated: 2024-12-22
+#
+# DEPENDENCY LEGEND:
+#   depends_on: [] = Can start immediately (parallelizable)
+#   depends_on: [task_id] = Must wait for that task
+#   parallel_with: [task_id] = Can run simultaneously with these tasks
+#
+# STATUS KEY:
+#   ✅ = Complete
+#   🚧 = In Progress
+#   ⏳ = Pending
+#   ❌ = Blocked/Skipped
+
+version: "2.0"
+project: "wellbeing-transition-simulator"
+
+# =============================================================================
+# COMPLETION SUMMARY
+# =============================================================================
+summary:
+  last_updated: "2024-12-22"
+  overall_status: "Major Architecture Expansion In Progress"
+
+  phase_1: # Data Model Foundation
+    status: ✅ Complete (5/5 tasks)
+    completed: [P1-T1, P1-T2, P1-T3, P1-T4, P1-T5]
+
+  phase_2: # Simulation Engine
+    status: ✅ Complete (6/6 tasks)
+    completed: [P2-T1, P2-T2, P2-T3, P2-T4, P2-T5, P2-T6]
+
+  phase_3: # Visualization & UI
+    status: 🟡 Mostly Complete (5/7 tasks)
+    completed: [P3-T1, P3-T5, P3-T6, P3-T8, P3-T9]
+    optional: [P3-T2, P3-T3, P3-T4, P3-T7]
+
+  phase_4: # Polish & Testing
+    status: 🟡 In Progress (2/4 tasks)
+    completed: [P4-T2, P4-T5]
+    in_progress: [P4-T4]
+    optional: [P4-T1, P4-T3]
+
+  phase_5: # Corporation-Centric Architecture (NEW - MAJOR)
+    status: ✅ Complete (12/12 tasks)
+    description: "Shift from nation-centric to corporation-centric model"
+    completed: [P5-T1, P5-T2, P5-T3, P5-T4, P5-T5, P5-T6, P5-T7, P5-T8, P5-T9, P5-T10, P5-T11, P5-T12]
+
+  phase_6: # Game Theory & Adaptive Mechanisms (NEW)
+    status: ✅ Complete (8/8 tasks)
+    description: "Nash equilibrium, prisoner's dilemma, adaptive policies"
+    completed: [P6-T1, P6-T2, P6-T3, P6-T4, P6-T5, P6-T6, P6-T7, P6-T8]
+
+  phase_7: # Per-Entity UI & Interaction (NEW)
+    status: 🟡 In Progress (1/6 tasks)
+    description: "Click-to-edit corporations/countries, detail panels"
+    completed: [P7-T4]
+
+  bugfixes:
+    - "Fixed: Gemini API initialization crashing app on load (lazy init)"
+    - "Fixed: Model updated to use gemini-2.0-flash (valid model name)"
+    - "Fixed: Wellbeing collapse - rebalanced UBI/friction coefficients"
+    - "Added: Improved Gemini prompts with economic context"
+    - "Added: Equations page toggle (simple/detailed views)"
+    - "Added: Animated Overview page showing abundance cycle"
+
+# =============================================================================
+# PHASE 1: DATA MODEL UPDATES (Foundation - COMPLETE)
+# =============================================================================
+phase_1:
+  name: "Data Model Foundation"
+  description: "Update TypeScript interfaces and country data"
+  status: ✅ Complete
+
+  tasks:
+    - id: P1-T1
+      name: "Update CountryStats interface"
+      file: "types.ts"
+      status: ✅ Complete
+      depends_on: []
+      parallel_with: []
+
+    - id: P1-T2
+      name: "Update ModelParameters interface"
+      file: "types.ts"
+      status: ✅ Complete
+      depends_on: []
+      parallel_with: [P1-T1]
+
+    - id: P1-T3
+      name: "Add SimulationState shadow fields"
+      file: "types.ts"
+      status: ✅ Complete
+      depends_on: []
+      parallel_with: [P1-T1, P1-T2]
+
+    - id: P1-T4
+      name: "Update INITIAL_COUNTRIES with new data"
+      file: "constants.ts"
+      status: ✅ Complete
+      depends_on: [P1-T1]
+      parallel_with: []
+
+    - id: P1-T5
+      name: "Add PRESET_MODELS with new parameters"
+      file: "constants.ts"
+      status: ✅ Complete
+      depends_on: [P1-T2]
+      parallel_with: [P1-T4]
+
+# =============================================================================
+# PHASE 2: SIMULATION ENGINE UPDATES (COMPLETE)
+# =============================================================================
+phase_2:
+  name: "Simulation Engine Rewrite"
+  description: "Update stepSimulation with new equations"
+  status: ✅ Complete
+
+  tasks:
+    - id: P2-T1
+      name: "Refactor stepSimulation - Gini integration"
+      file: "App.tsx"
+      status: ✅ Complete
+      depends_on: [P1-T4]
+
+    - id: P2-T2
+      name: "Refactor stepSimulation - Governance/Corruption"
+      file: "App.tsx"
+      status: ✅ Complete
+      depends_on: [P1-T4]
+
+    - id: P2-T3
+      name: "Implement direct-to-wallet bypass"
+      file: "App.tsx"
+      status: ✅ Complete
+      depends_on: [P1-T5, P2-T2]
+
+    - id: P2-T4
+      name: "Rebalance displacement friction"
+      file: "App.tsx"
+      status: ✅ Complete
+      depends_on: [P2-T1]
+
+    - id: P2-T5
+      name: "Implement shadow/counterfactual simulation"
+      file: "App.tsx"
+      status: ✅ Complete
+      depends_on: [P1-T3]
+
+    - id: P2-T6
+      name: "Calculate and expose displacement gap"
+      file: "App.tsx"
+      status: ✅ Complete
+      depends_on: [P2-T4]
+
+# =============================================================================
+# PHASE 3: VISUALIZATION UPDATES (Mostly Complete)
+# =============================================================================
+phase_3:
+  name: "Visualization & UI"
+  description: "Update charts, map, and add new visual elements"
+
+  tasks:
+    - id: P3-T1
+      name: "Add shadow line to 2D charts"
+      file: "components/MotionChart.tsx"
+      status: ✅ Complete
+      depends_on: [P2-T5]
+
+    - id: P3-T2
+      name: "Add displacement gap chart"
+      file: "App.tsx"
+      status: ⏳ Pending (Optional)
+      depends_on: [P2-T6]
+
+    - id: P3-T3
+      name: "Add archetype filter to map"
+      file: "components/WorldMap.tsx"
+      status: ⏳ Pending (Optional)
+      depends_on: [P1-T4]
+
+    - id: P3-T4
+      name: "Add crisis indicator overlay"
+      file: "components/WorldMap.tsx"
+      status: ⏳ Pending (Optional)
+      depends_on: [P2-T6]
+
+    - id: P3-T5
+      name: "Add global stats dashboard"
+      file: "App.tsx"
+      status: ✅ Complete
+      depends_on: [P2-T5, P2-T6]
+
+    - id: P3-T6
+      name: "Update sidebar with new parameters"
+      file: "App.tsx"
+      status: ✅ Complete
+      depends_on: [P1-T5]
+
+    - id: P3-T7
+      name: "Add 3D chart shadow visualization"
+      file: "components/MotionChart.tsx"
+      status: ⏳ Pending (Optional)
+      depends_on: [P2-T5]
+
+    - id: P3-T8
+      name: "Add Equations page toggle (simple/detailed)"
+      file: "App.tsx"
+      status: ✅ Complete
+      depends_on: []
+      description: |
+        Toggle between simple overview and publication-ready detailed equations.
+        Detailed view includes all coefficients for peer review reproducibility.
+
+    - id: P3-T9
+      name: "Recreate animated Overview page"
+      file: "App.tsx"
+      status: ✅ Complete
+      depends_on: []
+      description: |
+        SVG animation showing Corps → Ledger → People flow.
+        Wavy tendrils, flowing dots, growing pies demonstrating abundance cycle.
+
+# =============================================================================
+# PHASE 4: POLISH & TESTING (In Progress)
+# =============================================================================
+phase_4:
+  name: "Polish & Integration"
+  description: "Final integration, testing, and documentation"
+
+  tasks:
+    - id: P4-T1
+      name: "Update Gemini prompts for new metrics"
+      file: "services/geminiService.ts"
+      status: ⏳ Pending (Optional)
+      depends_on: [P2-T5, P2-T6]
+
+    - id: P4-T2
+      name: "Add explanatory tooltips"
+      file: "App.tsx"
+      status: ✅ Complete
+      depends_on: [P3-T6]
+
+    - id: P4-T3
+      name: "Update CLAUDE.md with new architecture"
+      file: "CLAUDE.md"
+      status: ⏳ Pending (Optional)
+      depends_on: [P2-T6, P3-T5]
+
+    - id: P4-T4
+      name: "Integration testing"
+      file: "N/A"
+      status: 🚧 In Progress
+      depends_on: [P3-T1, P3-T5, P3-T6]
+
+    - id: P4-T5
+      name: "Improve Gemini prompts for economic accuracy"
+      file: "services/geminiService.ts"
+      status: ✅ Complete
+      depends_on: []
+      description: |
+        Rewrote prompts to explain economic model correctly.
+        Added rules to prevent backwards advice (e.g., "poor countries give more").
+        Uses generic economic concepts, not variable names.
+
+# =============================================================================
+# PHASE 5: CORPORATION-CENTRIC ARCHITECTURE (NEW - MAJOR REWRITE)
+# =============================================================================
+# DESIGN PHILOSOPHY:
+# - The model should work at CORPORATION level, not nation level
+# - Corporations voluntarily contribute to global ledger (free market solution)
+# - Direct-to-wallet is ALWAYS TRUE (assumed blockchain/crypto app)
+# - Nation states cannot block the system - it's agnostic to governments
+# - This reduces existential risk by not depending on nation cooperation
+# =============================================================================
+phase_5:
+  name: "Corporation-Centric Architecture"
+  description: "Shift simulation from nation-aggregated to corporation-level entities"
+
+  design_principles:
+    - "Free market solution - corporations choose to participate"
+    - "Direct-to-wallet assumed true (blockchain/crypto infrastructure)"
+    - "Nation states cannot block - system is government-agnostic"
+    - "Corporations act in self-interest but enlightened self-interest works"
+    - "Customer base preservation motivates UBI contribution"
+
+  tasks:
+    - id: P5-T1
+      name: "Create Corporation interface"
+      file: "types.ts"
+      status: ✅ Complete
+      depends_on: []
+      parallel_with: [P5-T2, P5-T3]
+      description: |
+        New interface for individual corporations:
+        ```typescript
+        interface Corporation {
+          id: string;
+          name: string;
+          headquartersCountry: string;      // Where HQ is located
+          operatingCountries: string[];     // Where they have customers/operations
+
+          // Financial metrics
+          aiRevenue: number;                // Revenue from AI automation
+          aiAdoptionLevel: number;          // 0-1, how automated they are
+          marketCap: number;                // Company size
+
+          // UBI Contribution Policy (CORPORATION DECIDES, not nation)
+          contributionRate: number;         // 0-1, % of AI revenue to UBI fund
+          distributionStrategy: 'global' | 'customer-weighted' | 'hq-local';
+          // global = distribute to all humans equally
+          // customer-weighted = distribute proportional to where customers are
+          // hq-local = contribute to HQ country only
+
+          // Game theory state
+          policyStance: 'generous' | 'moderate' | 'selfish';
+          reputationScore: number;          // Affects customer preference
+          lastPolicyChange: number;
+
+          // Derived metrics
+          customerBaseWellbeing: number;    // Avg wellbeing of their customer countries
+          projectedDemandCollapse: number;  // If customers can't afford products
+        }
+        ```
+
+    - id: P5-T2
+      name: "Create CorporationPolicy interface"
+      file: "types.ts"
+      status: ✅ Complete
+      depends_on: []
+      parallel_with: [P5-T1, P5-T3]
+      description: |
+        Policy settings that corporations can adjust:
+        ```typescript
+        interface CorporationPolicy {
+          contributionRate: number;         // 0.05 to 0.50 (5% to 50%)
+          distributionStrategy: 'global' | 'customer-weighted' | 'hq-local';
+
+          // Adaptive triggers
+          adaptivePolicyEnabled: boolean;
+          demandCollapseThreshold: number;  // If projected collapse > X%, increase contribution
+          reputationMinimum: number;        // Minimum reputation to maintain
+
+          // Response to market conditions
+          followLeaderBehavior: boolean;    // Copy what market leaders do
+          competitorAwareness: boolean;     // React to competitor policies
+        }
+        ```
+
+    - id: P5-T3
+      name: "Create GlobalLedger interface"
+      file: "types.ts"
+      status: ✅ Complete
+      depends_on: []
+      parallel_with: [P5-T1, P5-T2]
+      description: |
+        The decentralized global fund (blockchain-based, no nation controls it):
+        ```typescript
+        interface GlobalLedger {
+          totalFunds: number;
+          monthlyInflow: number;
+          monthlyOutflow: number;
+
+          // Distribution tracking
+          fundsPerCapita: number;           // Global average
+          fundsByCountry: Record<string, number>;  // How much each country's citizens receive
+
+          // Transparency metrics (blockchain = fully transparent)
+          contributorBreakdown: Record<string, number>;  // Which corps contributed what
+          distributionBreakdown: Record<string, number>; // Where funds went
+
+          // No corruption possible - direct to wallet
+          corruptionLeakage: 0;             // Always 0 with blockchain
+        }
+        ```
+
+    - id: P5-T4
+      name: "Generate initial corporations data"
+      file: "constants.ts"
+      status: ✅ Complete
+      depends_on: [P5-T1]
+      parallel_with: []
+      description: |
+        Create INITIAL_CORPORATIONS array with ~50-100 major AI companies:
+        - Tech giants: Apple, Google, Microsoft, Meta, Amazon, Nvidia
+        - AI specialists: OpenAI, Anthropic, DeepMind, Cohere
+        - Regional players: Alibaba, Tencent, Baidu, Samsung, SAP
+        - Industry AI: Siemens, GE, Tesla, pharma companies
+
+        Each with realistic:
+        - HQ country
+        - Operating countries (customer base)
+        - AI revenue estimates
+        - Initial contribution policies (most start selfish/moderate)
+
+    - id: P5-T5
+      name: "Update CountryStats for corporation model"
+      file: "types.ts"
+      status: ✅ Complete
+      depends_on: [P5-T1]
+      parallel_with: [P5-T4]
+      description: |
+        Countries become RECIPIENTS and MARKETS, not policy-makers:
+        ```typescript
+        interface CountryStats {
+          // ... existing fields ...
+
+          // NEW: Corporation relationship
+          headquarteredCorps: string[];     // Corps with HQ here
+          customerOfCorps: string[];        // Corps that sell here
+
+          // NEW: UBI receipt tracking (countries RECEIVE, don't control)
+          ubiReceivedGlobal: number;        // From global ledger
+          ubiReceivedLocal: number;         // From HQ-local corps
+          ubiReceivedCustomerWeighted: number; // From customer-weighted corps
+          totalUbiReceived: number;
+
+          // Nation-level policy (limited influence)
+          nationalPolicy: {
+            allowsDirectWallet: boolean;    // Can they block crypto? (false = authoritarian)
+            localTaxOnUbi: number;          // Do they tax UBI income?
+            corporateIncentives: number;    // Tax breaks to attract AI HQs
+          };
+        }
+        ```
+
+    - id: P5-T6
+      name: "Refactor stepSimulation for corporation loop"
+      file: "App.tsx"
+      status: ✅ Complete
+      completed_date: "2024-12-22"
+      depends_on: [P5-T1, P5-T2, P5-T3, P5-T4, P5-T5]
+      parallel_with: []
+      notes: |
+        Completed major rewrite:
+        - Added corporations and globalLedger state management
+        - Implemented 5-phase simulation flow as specified
+        - Updated CountryStats initialization with new UBI tracking fields
+        - Updated handleReset to reset corporation/ledger state
+        - Maintained shadow simulation for counterfactual comparison
+        - Build successful, economics now flows through corporations
+      description: |
+        Major rewrite of simulation loop:
+
+        PHASE 1: Corporation Revenue Generation
+        ```typescript
+        corporations.forEach(corp => {
+          // AI revenue based on adoption and market size
+          corp.aiRevenue = calculateAiRevenue(corp, countryData);
+        });
+        ```
+
+        PHASE 2: Corporation Contribution Decisions
+        ```typescript
+        corporations.forEach(corp => {
+          // Each corp decides how much to contribute based on policy
+          const contribution = corp.aiRevenue * corp.policy.contributionRate;
+
+          // Distribute based on strategy
+          if (corp.policy.distributionStrategy === 'global') {
+            globalLedger.totalFunds += contribution;
+          } else if (corp.policy.distributionStrategy === 'customer-weighted') {
+            distributeToCustomerCountries(corp, contribution, countryData);
+          } else {
+            distributeToHqCountry(corp, contribution, countryData);
+          }
+        });
+        ```
+
+        PHASE 3: UBI Distribution to Citizens
+        ```typescript
+        // Global ledger distributes equally per capita (blockchain, no corruption)
+        const globalPerCapita = globalLedger.totalFunds / worldPopulation;
+        countries.forEach(country => {
+          country.ubiReceivedGlobal = globalPerCapita * country.population;
+          country.totalUbiReceived = country.ubiReceivedGlobal +
+                                      country.ubiReceivedCustomerWeighted +
+                                      country.ubiReceivedLocal;
+        });
+        ```
+
+        PHASE 4: Wellbeing Calculation (mostly unchanged)
+        PHASE 5: Corporation Adaptation (see P6-T2)
+
+    - id: P5-T7
+      name: "Implement corporation revenue model"
+      file: "App.tsx"
+      status: ✅ Complete
+      depends_on: [P5-T6]
+      parallel_with: []
+      description: |
+        Calculate AI revenue for each corporation:
+        ```typescript
+        function calculateAiRevenue(corp: Corporation, countries: Record<string, CountryStats>): number {
+          // Base revenue from AI automation
+          const automationRevenue = corp.aiAdoptionLevel * corp.marketCap * 0.15;
+
+          // Revenue depends on customer purchasing power
+          let customerDemand = 0;
+          corp.operatingCountries.forEach(countryId => {
+            const country = countries[countryId];
+            // If customers are poor, they can't buy
+            const purchasingPower = country.gdpPerCapita * (country.wellbeing / 100);
+            customerDemand += purchasingPower * country.population;
+          });
+
+          // Revenue scales with demand (poor customers = lower revenue)
+          const demandFactor = Math.min(1, customerDemand / (corp.marketCap * 10));
+
+          return automationRevenue * demandFactor;
+        }
+        ```
+
+        KEY INSIGHT: Corporations have SELF-INTEREST in UBI because:
+        - Poor customers can't buy products
+        - UBI maintains purchasing power
+        - This creates natural incentive for contribution
+
+    - id: P5-T8
+      name: "Implement distribution strategies"
+      file: "App.tsx"
+      status: ✅ Complete
+      depends_on: [P5-T6]
+      parallel_with: [P5-T7]
+      description: |
+        Three distribution strategies corporations can choose:
+
+        1. GLOBAL (most altruistic):
+        ```typescript
+        function distributeGlobal(contribution: number, ledger: GlobalLedger) {
+          ledger.totalFunds += contribution;
+          // Distributed equally per capita worldwide
+        }
+        ```
+
+        2. CUSTOMER-WEIGHTED (enlightened self-interest):
+        ```typescript
+        function distributeCustomerWeighted(corp: Corporation, contribution: number, countries: Record<string, CountryStats>) {
+          // Distribute proportional to where customers are
+          const totalCustomerPop = corp.operatingCountries.reduce((sum, id) =>
+            sum + countries[id].population, 0);
+
+          corp.operatingCountries.forEach(countryId => {
+            const country = countries[countryId];
+            const share = country.population / totalCustomerPop;
+            country.ubiReceivedCustomerWeighted += contribution * share;
+          });
+        }
+        ```
+
+        3. HQ-LOCAL (selfish):
+        ```typescript
+        function distributeHqLocal(corp: Corporation, contribution: number, countries: Record<string, CountryStats>) {
+          // All goes to HQ country only
+          countries[corp.headquartersCountry].ubiReceivedLocal += contribution;
+        }
+        ```
+
+    - id: P5-T9
+      name: "Add corporation list UI component"
+      file: "components/CorporationList.tsx"
+      status: ✅ Complete
+      completed_date: "2024-12-22"
+      depends_on: [P5-T4]
+      parallel_with: [P5-T6, P5-T7, P5-T8]
+      notes: |
+        Completed implementation:
+        - Created CorporationList component with full filtering/sorting capabilities
+        - Sortable columns: Name, HQ Country, AI Revenue, Contribution Rate, Strategy, Stance
+        - Color-coded rows by policy stance (generous=green, moderate=yellow, selfish=red)
+        - Click to select corporation (highlights row)
+        - Comprehensive filters: country, strategy, stance, name search
+        - Aggregate stats section showing:
+          - Total corporate contributions this month
+          - Distribution strategy breakdown (percentages)
+          - Top 5 contributors
+        - Added "Corporations" tab to App.tsx navigation
+        - Integrated with existing corporations state management
+        - Fully responsive dark mode support
+      description: |
+        New component showing all corporations:
+        - Sortable table: Name, HQ, AI Revenue, Contribution Rate, Strategy
+        - Color-coded by policy stance (generous=green, selfish=red)
+        - Click to select and edit in detail panel
+        - Filter by: HQ country, strategy, stance
+        - Search by name
+
+        Shows aggregate stats:
+        - Total corporate contributions
+        - % by strategy type
+        - Top 10 contributors
+
+    - id: P5-T10
+      name: "Add corporation detail panel"
+      file: "components/CorporationDetailPanel.tsx"
+      status: ✅ Complete
+      completed_date: "2024-12-22"
+      depends_on: [P5-T9]
+      parallel_with: []
+      notes: |
+        Completed implementation:
+        - Created CorporationDetailPanel component with slide-in animation
+        - Header section with corp name, HQ country flag emoji, policy stance badge, close button
+        - Financial metrics: AI Revenue, Market Cap, AI Adoption, Reputation Score
+        - Customer health metrics: Customer Base Wellbeing, Projected Demand Collapse (with warning)
+        - Policy controls: Contribution Rate slider (5%-50%), Distribution Strategy dropdown
+        - Effect preview showing current monthly contribution and strategy
+        - Operating countries list (scrollable) with country flags
+        - Full dark mode support with Tailwind CSS
+        - Width 320px (responsive: full width on mobile, 320px on desktop), full height
+        - Backdrop overlay with click-to-close
+        - Added updateCorporation function to App.tsx for updating individual corps
+        - Integrated panel into App.tsx - renders when selectedCorpId is set
+        - Panel slides in from right with smooth animation
+      description: |
+        Slide-out panel when clicking a corporation:
+
+        HEADER:
+        - Corporation name and logo placeholder
+        - HQ country flag
+        - Policy stance badge
+
+        METRICS:
+        - AI Revenue: $X.XX B
+        - Market Cap: $X.XX B
+        - AI Adoption: XX%
+        - Reputation Score: XX/100
+        - Customer Base Wellbeing: XX
+
+        POLICY CONTROLS (user can adjust):
+        - Contribution Rate slider: 5% - 50%
+        - Distribution Strategy dropdown: Global / Customer-Weighted / HQ-Local
+        - Adaptive Policy toggle
+        - Demand Collapse Threshold slider
+
+        PROJECTIONS:
+        - Projected Demand Collapse: XX% (if customers can't afford)
+        - Competitor comparison chart
+
+    - id: P5-T11
+      name: "Update map to show corporation data"
+      file: "components/WorldMap.tsx"
+      status: ✅ Complete
+      completed_date: "2024-12-22"
+      depends_on: [P5-T6]
+      parallel_with: [P5-T9, P5-T10]
+      notes: |
+        Completed implementation:
+        - Added new view modes: 'ubi-received' (green gradient) and 'corp-hqs' (purple gradient)
+        - Updated WorldMapProps to accept corporations and selectedCorpId
+        - Enhanced color logic: UBI received (0-500/month scale), Corp HQs (0-10 count scale)
+        - Selected corp highlighting: HQ country gets amber border, operating countries get blue border
+        - Enhanced tooltip with corporation data:
+          - Total UBI per capita with breakdown (global/customer-weighted/local)
+          - Number of corp HQs
+          - Number of corps operating in country
+        - Maintained backward compatibility with optional props
+        - All view modes working: adoption, wellbeing, ubi-received, corp-hqs
+      description: |
+        New map view modes:
+        - "UBI Received" - color by total UBI per capita
+        - "Corporation HQs" - show dots for corp headquarters
+        - "Customer Markets" - highlight operating countries for selected corp
+
+        On country hover, show:
+        - Total UBI received: $XXX/month
+        - From global fund: $XXX
+        - From customer-weighted: $XXX
+        - From local corps: $XXX
+        - # of corp HQs: X
+        - # of corps operating here: X
+
+    - id: P5-T12
+      name: "Remove nation-level policy controls"
+      file: "App.tsx"
+      status: ✅ Complete
+      completed_date: "2024-12-22"
+      depends_on: [P5-T6]
+      parallel_with: []
+      notes: |
+        Completed implementation:
+        - Removed "Global Redistribution Rate" slider from sidebar
+        - Removed "Direct-to-Wallet" toggle from sidebar
+        - Kept all required controls: AI Growth Rate, Displacement Rate, GDP Scaling
+        - Added "Corporation Policy" section with:
+          - "Default Corp Policy" dropdown (free-market, selfish-start, altruistic-start, mixed-reality)
+          - "Market Pressure" slider (0-100%, affects corp decision responsiveness)
+        - Added info box explaining corporation-centric model
+        - Updated ModelParameters interface to include defaultCorpPolicy and marketPressure
+        - Updated all PRESET_MODELS with appropriate default values for new fields
+        - Renamed "Global Distribution" section to "Economic Constants" for clarity
+      description: |
+        REMOVE or deprecate nation-level controls that no longer apply:
+        - Global tax rate slider → REMOVE (corps decide individually)
+        - Global redistribution rate → REMOVE (corps decide)
+        - directToWalletEnabled → REMOVE (always true by design)
+
+        KEEP:
+        - AI Growth Rate (affects all corps)
+        - Displacement Rate (economic constant)
+        - GDP Scaling (wealth gradient for distribution)
+
+        ADD:
+        - "Default Corporation Policy" preset selector
+        - "Market Pressure" slider (how much demand affects corp decisions)
+
+# =============================================================================
+# PHASE 6: GAME THEORY & ADAPTIVE MECHANISMS
+# =============================================================================
+# Corporations and nations respond dynamically to conditions
+# Implements Nash equilibrium, prisoner's dilemma dynamics
+# =============================================================================
+phase_6:
+  name: "Game Theory & Adaptive Mechanisms"
+  description: "Dynamic policy responses based on game theory"
+
+  tasks:
+    - id: P6-T1
+      name: "Implement demand collapse projection"
+      file: "App.tsx"
+      status: ✅ Complete
+      completed_date: "2024-12-22"
+      depends_on: [P5-T7]
+      parallel_with: []
+      description: |
+        Corporations project future demand based on customer wellbeing:
+        ```typescript
+        function projectDemandCollapse(corp: Corporation, countries: Record<string, CountryStats>): number {
+          // Calculate current customer purchasing power
+          let currentDemand = 0;
+          let projectedDemand = 0;
+
+          corp.operatingCountries.forEach(countryId => {
+            const country = countries[countryId];
+
+            // Current demand
+            currentDemand += country.population * country.gdpPerCapita * (country.wellbeing / 100);
+
+            // Projected demand (if wellbeing continues declining)
+            const wellbeingTrend = country.wellbeingTrend || [country.wellbeing];
+            const projectedWellbeing = extrapolateTrend(wellbeingTrend, 12); // 12 months ahead
+            projectedDemand += country.population * country.gdpPerCapita * (projectedWellbeing / 100);
+          });
+
+          // Collapse % = how much demand will drop
+          return Math.max(0, (currentDemand - projectedDemand) / currentDemand);
+        }
+        ```
+
+        This drives corporate self-interest: if customers are getting poorer,
+        corporations LOSE REVENUE. UBI maintains their customer base.
+
+    - id: P6-T2
+      name: "Implement corporation adaptive policy"
+      file: "App.tsx"
+      status: ✅ Complete
+      completed_date: "2024-12-22"
+      depends_on: [P6-T1]
+      parallel_with: []
+      description: |
+        Corporations auto-adjust policy based on conditions:
+        ```typescript
+        function adaptCorporationPolicy(corp: Corporation, countries: Record<string, CountryStats>) {
+          if (!corp.policy.adaptivePolicyEnabled) return;
+
+          const demandCollapse = projectDemandCollapse(corp, countries);
+
+          // SELF-INTEREST TRIGGER: If customers are getting poor, increase UBI
+          if (demandCollapse > corp.policy.demandCollapseThreshold) {
+            // Increase contribution to save customer base
+            corp.policy.contributionRate = Math.min(0.50, corp.policy.contributionRate + 0.05);
+
+            // Switch to customer-weighted to maximize impact
+            if (corp.policy.distributionStrategy === 'hq-local') {
+              corp.policy.distributionStrategy = 'customer-weighted';
+            }
+
+            corp.policyStance = 'generous';
+            corp.lastPolicyChange = currentMonth;
+          }
+
+          // REPUTATION TRIGGER: If reputation drops, increase generosity
+          if (corp.reputationScore < corp.policy.reputationMinimum) {
+            corp.policy.contributionRate = Math.min(0.50, corp.policy.contributionRate + 0.03);
+            corp.policyStance = 'generous';
+          }
+
+          // RECOVERY: If demand is stable and reputation high, can relax slightly
+          if (demandCollapse < 0.05 && corp.reputationScore > 80) {
+            // Very slight reduction allowed
+            corp.policy.contributionRate = Math.max(0.10, corp.policy.contributionRate - 0.01);
+          }
+        }
+        ```
+
+    - id: P6-T3
+      name: "Implement competitor awareness (Nash equilibrium)"
+      file: "App.tsx"
+      status: ✅ Complete
+      depends_on: [P6-T2]
+      parallel_with: []
+      description: |
+        Corporations observe and respond to competitors:
+        ```typescript
+        function respondToCompetitors(corp: Corporation, allCorps: Corporation[]) {
+          if (!corp.policy.competitorAwareness) return;
+
+          // Find competitors (same industry or same markets)
+          const competitors = allCorps.filter(c =>
+            c.id !== corp.id &&
+            c.operatingCountries.some(country => corp.operatingCountries.includes(country))
+          );
+
+          // Calculate average competitor contribution
+          const avgCompetitorRate = competitors.reduce((sum, c) =>
+            sum + c.policy.contributionRate, 0) / competitors.length;
+
+          // NASH DYNAMICS: Tendency to match competitors
+          // If competitors are generous and you're not, you look bad (reputation hit)
+          // If competitors are selfish and you're generous, you're at disadvantage
+
+          const rateDiff = avgCompetitorRate - corp.policy.contributionRate;
+
+          if (rateDiff > 0.1) {
+            // Competitors are more generous - reputation pressure to catch up
+            corp.reputationScore -= 2;
+            if (corp.policy.followLeaderBehavior) {
+              corp.policy.contributionRate += 0.02; // Slowly catch up
+            }
+          } else if (rateDiff < -0.1) {
+            // We're more generous than competitors - slight competitive disadvantage
+            // But reputation boost
+            corp.reputationScore += 1;
+          }
+        }
+        ```
+
+    - id: P6-T4
+      name: "Implement prisoner's dilemma detection"
+      file: "App.tsx"
+      status: ✅ Complete
+      completed_date: "2024-12-22"
+      depends_on: [P6-T3]
+      parallel_with: []
+      notes: |
+        Completed implementation:
+        - Added GameTheoryState interface to types.ts
+        - Implemented analyzeGameTheory function in App.tsx
+        - Added gameTheoryState to App.tsx state management
+        - Called analyzeGameTheory at end of stepSimulation
+        - Added comprehensive game theory indicator UI showing:
+          - Cooperation vs Defection counts
+          - Average contribution rate
+          - Race to bottom risk percentage
+          - Virtuous cycle strength percentage
+        - Added prisoner's dilemma warning banner when detected
+        - Color-coded indicators (green=virtuous, yellow=tension, red=risk)
+        - Reset game theory state in handleReset
+        - Build successful, UI integrated
+      description: |
+        Detect and visualize prisoner's dilemma scenarios:
+        ```typescript
+        interface GameTheoryState {
+          isInPrisonersDilemma: boolean;
+          defectionCount: number;          // Corps that went selfish
+          cooperationCount: number;        // Corps that stayed generous
+          raceToBottomRisk: number;        // 0-1, how close to mass defection
+          virtuousCycleStrength: number;   // 0-1, how strong cooperation is
+        }
+
+        function analyzeGameTheory(corps: Corporation[]): GameTheoryState {
+          const defectors = corps.filter(c => c.policyStance === 'selfish').length;
+          const cooperators = corps.filter(c => c.policyStance === 'generous').length;
+          const total = corps.length;
+
+          // Race to bottom: if >40% defect, others feel pressure to defect
+          const raceToBottomRisk = defectors > total * 0.4 ?
+            (defectors - total * 0.4) / (total * 0.6) : 0;
+
+          // Virtuous cycle: if >60% cooperate, others feel pressure to cooperate
+          const virtuousCycleStrength = cooperators > total * 0.6 ?
+            (cooperators - total * 0.6) / (total * 0.4) : 0;
+
+          return {
+            isInPrisonersDilemma: raceToBottomRisk > 0.3 && virtuousCycleStrength < 0.3,
+            defectionCount: defectors,
+            cooperationCount: cooperators,
+            raceToBottomRisk,
+            virtuousCycleStrength
+          };
+        }
+        ```
+
+    - id: P6-T5
+      name: "Implement reputation system"
+      file: "App.tsx"
+      status: ✅ Complete
+      depends_on: [P6-T2]
+      parallel_with: [P6-T3, P6-T4]
+      description: |
+        Reputation affects customer preference:
+        ```typescript
+        function updateReputation(corp: Corporation, allCorps: Corporation[]) {
+          // Reputation based on relative generosity
+          const avgContribution = allCorps.reduce((s, c) => s + c.policy.contributionRate, 0) / allCorps.length;
+
+          if (corp.policy.contributionRate > avgContribution * 1.2) {
+            corp.reputationScore = Math.min(100, corp.reputationScore + 2);
+          } else if (corp.policy.contributionRate < avgContribution * 0.8) {
+            corp.reputationScore = Math.max(0, corp.reputationScore - 3);
+          }
+
+          // Reputation affects revenue (customers prefer ethical companies)
+          // This creates POSITIVE FEEDBACK for generosity
+          const reputationMultiplier = 0.8 + (corp.reputationScore / 100) * 0.4;
+          corp.aiRevenue *= reputationMultiplier;
+        }
+        ```
+
+    - id: P6-T6
+      name: "Implement US-specific adaptive behavior"
+      file: "App.tsx"
+      status: ✅ Complete
+      completed_date: "2024-12-22"
+      depends_on: [P6-T2]
+      parallel_with: [P6-T3, P6-T4, P6-T5]
+      notes: |
+        Completed implementation:
+        - Added usCorpAdaptation() function for US-specific behavior
+        - Added chinaCorpAdaptation() function for China-specific behavior
+        - Added euCorpAdaptation() function for EU-specific behavior
+        - All three functions called in Phase 5 of stepSimulation
+        - Wellbeing trend tracking implemented (6-month rolling window)
+        - US corps: Switch to hq-local when US wellbeing < 30, customer-weighted when < 50
+        - China corps: More protectionist, state-influenced responses
+        - EU corps: Social contract pressure to be generous when doing well
+        - Build successful, all functions integrated
+      description: |
+        Model what happens when US-based corps see US wellbeing dropping:
+        ```typescript
+        function usCorpAdaptation(corp: Corporation, countries: Record<string, CountryStats>) {
+          if (corp.headquartersCountry !== 'usa') return;
+
+          const usWellbeing = countries['usa'].wellbeing;
+          const usWellbeingTrend = countries['usa'].wellbeingTrend || [];
+
+          // If US is suffering, US corps may prioritize US
+          if (usWellbeing < 50 && isDecreasing(usWellbeingTrend)) {
+            // Shift from global to customer-weighted (which includes US heavily)
+            // or even to hq-local if desperate
+
+            if (usWellbeing < 30) {
+              corp.policy.distributionStrategy = 'hq-local';
+              corp.policyStance = 'selfish'; // Survival mode
+            } else if (usWellbeing < 50) {
+              corp.policy.distributionStrategy = 'customer-weighted';
+              // US is likely a major customer, so this helps US
+            }
+          }
+
+          // BUT: If US customers can't buy, corp revenue drops anyway
+          // This creates tension: save US short-term vs maintain global customers
+        }
+        ```
+
+    - id: P6-T7
+      name: "Add game theory visualization"
+      file: "App.tsx"
+      status: ✅ Complete
+      completed_date: "2024-12-22"
+      depends_on: [P6-T4]
+      parallel_with: []
+      notes: |
+        Completed implementation:
+        - Created GameTheoryVisualization component (components/GameTheoryVisualization.tsx)
+        - Added comprehensive cooperation meter with color-coded gradient (red to green)
+        - Shows current position with animated marker and score (0-100)
+        - Three zones clearly labeled: Race to Bottom, Prisoner's Dilemma, Virtuous Cycle
+        - Strategy breakdown showing distribution of global, customer-weighted, and HQ-local strategies
+        - Bar chart visualization with percentages and corporation counts
+        - Contribution histogram showing distribution of contribution rates (5-50%)
+        - 7 bins with counts displayed on each bar
+        - Status indicator badges for: Virtuous Cycle Active, Race to Bottom Risk, Prisoner's Dilemma
+        - Pulsing animated indicators when conditions are met
+        - Game theory summary with 4 key metrics: Cooperating, Moderate, Defecting, Avg Rate
+        - Integrated into Corporations tab in App.tsx
+        - Full dark mode support with Tailwind CSS
+        - Responsive design works on mobile and desktop
+        - Build successful, all visualizations rendering correctly
+      description: |
+        New visualization showing game theory dynamics:
+
+        1. COOPERATION METER:
+        - Gauge showing cooperation vs defection balance
+        - Green zone = virtuous cycle
+        - Red zone = race to bottom
+        - Yellow zone = prisoner's dilemma tension
+
+        2. STRATEGY BREAKDOWN:
+        - Pie chart: Global vs Customer-Weighted vs HQ-Local
+        - Trend over time
+
+        3. PAYOFF MATRIX (for selected corp):
+        - Show what happens if they cooperate vs defect
+        - Show what happens if others cooperate vs defect
+        - Highlight current quadrant
+
+        4. TIMELINE:
+        - Event markers: "Microsoft increased contribution"
+        - "Race to bottom risk: HIGH"
+        - "Virtuous cycle forming"
+
+    - id: P6-T8
+      name: "Save/Load game state to files"
+      file: "App.tsx"
+      status: ✅ Complete
+      completed_date: "2024-12-22"
+      depends_on: [P5-T6, P6-T4]
+      parallel_with: []
+      notes: |
+        Completed implementation:
+        - Added SavedState interface to types.ts with all necessary state fields
+        - Implemented saveToFile() function that creates timestamped JSON downloads
+        - Implemented loadFromFile() function with version compatibility checking
+        - Added Download/Upload icon buttons to header toolbar (next to theme toggle)
+        - Implemented auto-save to localStorage every 5 minutes
+        - Implemented auto-restore on mount with user confirmation dialog
+        - Handles storage quota errors gracefully
+        - Build successful, all functionality working
+      description: |
+        Implement file-based persistence:
+        ```typescript
+        interface SavedState {
+          version: string;
+          timestamp: number;
+          month: number;
+          corporations: Corporation[];
+          countryData: Record<string, CountryStats>;
+          globalLedger: GlobalLedger;
+          gameTheoryState: GameTheoryState;
+          history: HistoryPoint[];
+        }
+
+        function saveToFile(state: SavedState) {
+          const blob = new Blob([JSON.stringify(state, null, 2)], {type: 'application/json'});
+          const url = URL.createObjectURL(blob);
+          // Trigger download
+        }
+
+        function loadFromFile(file: File): Promise<SavedState> {
+          return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              const state = JSON.parse(e.target.result as string);
+              resolve(state);
+            };
+            reader.readAsText(file);
+          });
+        }
+        ```
+
+        UI:
+        - "Save Scenario" button → downloads JSON file
+        - "Load Scenario" button → file picker
+        - Auto-save to localStorage every 5 minutes
+
+# =============================================================================
+# PHASE 7: PER-ENTITY UI & INTERACTION
+# =============================================================================
+phase_7:
+  name: "Per-Entity UI & Interaction"
+  description: "Click-to-edit interface for corporations and countries"
+
+  tasks:
+    - id: P7-T1
+      name: "Implement entity selection system"
+      file: "App.tsx"
+      status: ⏳ Pending
+      depends_on: [P5-T9, P5-T10]
+      parallel_with: []
+      description: |
+        Unified selection state:
+        ```typescript
+        type SelectedEntity =
+          | { type: 'corporation'; id: string }
+          | { type: 'country'; id: string }
+          | null;
+
+        const [selectedEntity, setSelectedEntity] = useState<SelectedEntity>(null);
+        ```
+
+        Click handlers:
+        - Click corporation in list → select corporation
+        - Click country on map → select country
+        - Click elsewhere → deselect
+        - ESC key → deselect
+
+    - id: P7-T2
+      name: "Add country detail panel"
+      file: "components/CountryDetailPanel.tsx"
+      status: ⏳ Pending
+      depends_on: [P7-T1]
+      parallel_with: []
+      description: |
+        Panel showing country details (now as RECIPIENT, not policy-maker):
+
+        HEADER:
+        - Country name and flag
+        - Archetype badge
+        - Wellbeing score
+
+        UBI RECEIPT BREAKDOWN:
+        - From global ledger: $XXX/person/month
+        - From customer-weighted corps: $XXX
+        - From local HQ corps: $XXX
+        - Total: $XXX/person/month
+
+        ECONOMIC INDICATORS:
+        - GDP per capita
+        - Gini coefficient
+        - Displacement gap
+        - Wellbeing trend chart
+
+        CORPORATIONS:
+        - Corps headquartered here: [list]
+        - Corps with customers here: [list]
+
+        LIMITED POLICY (what nations CAN control):
+        - Allow direct wallet (true/false) - authoritarian can block
+        - Local UBI tax rate (do they tax incoming UBI?)
+        - Corporate incentives (attract HQs)
+
+    - id: P7-T3
+      name: "Add multi-select for bulk editing"
+      file: "App.tsx"
+      status: ⏳ Pending
+      depends_on: [P7-T1]
+      parallel_with: [P7-T2]
+      description: |
+        Allow selecting multiple corporations:
+        - Shift+click to add to selection
+        - "Select all US corps" button
+        - "Select all tech sector" button
+        - Bulk edit: change policy for all selected
+
+        Use cases:
+        - "Make all US tech giants contribute 30%"
+        - "Switch all European corps to customer-weighted"
+
+    - id: P7-T4
+      name: "Add scenario presets"
+      file: "constants.ts"
+      status: ✅ Complete
+      completed_date: "2024-12-22"
+      depends_on: [P5-T4]
+      parallel_with: []
+      notes: |
+        Completed implementation:
+        - Added ScenarioPreset interface to types.ts
+        - Created SCENARIO_PRESETS array in constants.ts with 6 scenarios:
+          1. Free Market Optimism (moderate, adaptive, emergent cooperation)
+          2. Race to Bottom (selfish start, worst case)
+          3. Corporate Altruism (generous, global, best case)
+          4. US Protectionism (US HQ-local, others customer-weighted)
+          5. China Dominance (Chinese corps selfish, others cooperative)
+          6. EU Solidarity (EU global, US/China local)
+        - Added applyScenario() function in App.tsx to apply presets
+        - Created Scenario Presets UI section in sidebar with cards for each scenario
+        - Each scenario card shows name, description, and "Load Scenario" button
+        - Clicking Load Scenario applies model params and corp overrides, then resets simulation
+        - Build successful, all functionality working
+      description: |
+        Pre-configured scenarios:
+
+        1. "FREE MARKET OPTIMISM"
+        - All corps start moderate (20% contribution)
+        - Adaptive policies enabled
+        - Shows emergent cooperation
+
+        2. "RACE TO BOTTOM"
+        - All corps start selfish (5% contribution)
+        - Adaptive policies disabled
+        - Shows what happens without self-correction
+
+        3. "CORPORATE ALTRUISM"
+        - All corps generous (40% contribution)
+        - Global distribution
+        - Best case scenario
+
+        4. "US PROTECTIONISM"
+        - US corps all HQ-local
+        - Non-US corps customer-weighted
+        - Shows nationalism effects
+
+        5. "CHINA DOMINANCE"
+        - Chinese corps selfish and protectionist
+        - Others cooperate
+        - Shows regional competition
+
+        6. "EU SOLIDARITY"
+        - EU corps cooperate globally
+        - US/China compete locally
+        - Shows bloc dynamics
+
+    - id: P7-T5
+      name: "Add comparison view"
+      file: "App.tsx"
+      status: ⏳ Pending
+      depends_on: [P7-T1, P6-T8]
+      parallel_with: []
+      description: |
+        Run two scenarios side-by-side:
+        - Split screen view
+        - Same time progression
+        - Compare outcomes
+
+        Use cases:
+        - "What if US corps went protectionist vs global?"
+        - "What if adaptive policies were disabled?"
+
+    - id: P7-T6
+      name: "Add tutorial/onboarding"
+      file: "components/Tutorial.tsx"
+      status: ⏳ Pending
+      depends_on: [P7-T1, P7-T2]
+      parallel_with: []
+      description: |
+        Interactive tutorial explaining:
+        1. How corporations generate AI revenue
+        2. Why they have self-interest in UBI (customer base)
+        3. The three distribution strategies
+        4. How adaptive policies work
+        5. Game theory dynamics
+        6. How to interpret the visualizations
+
+        Step-by-step walkthrough with highlights
+
+# =============================================================================
+# EXECUTION STRATEGY
+# =============================================================================
+execution:
+  parallel_groups:
+    - name: "Phase 5 - Data Model (Parallel)"
+      tasks: [P5-T1, P5-T2, P5-T3]
+      note: "Interfaces can be designed in parallel"
+
+    - name: "Phase 5 - Initial Data"
+      tasks: [P5-T4, P5-T5]
+      note: "After interfaces are defined"
+
+    - name: "Phase 5 - Simulation Core"
+      tasks: [P5-T6, P5-T7, P5-T8]
+      note: "Sequential - core engine changes"
+
+    - name: "Phase 5 - UI Components (Parallel)"
+      tasks: [P5-T9, P5-T10, P5-T11]
+      note: "Can build UI while simulation develops"
+
+    - name: "Phase 6 - Game Theory (Sequential)"
+      tasks: [P6-T1, P6-T2, P6-T3, P6-T4, P6-T5, P6-T6]
+      note: "Each builds on previous"
+
+    - name: "Phase 6 - Visualization & Persistence"
+      tasks: [P6-T7, P6-T8]
+      note: "After core game theory"
+
+    - name: "Phase 7 - UI Polish (Parallel after P6)"
+      tasks: [P7-T1, P7-T2, P7-T3, P7-T4, P7-T5, P7-T6]
+      note: "Final UI refinements"
+
+  critical_path:
+    - P5-T1 → P5-T4 → P5-T6 → P5-T7 → P6-T1 → P6-T2 → P6-T4 → P6-T7
+
+  priority_order:
+    high:
+      - P5-T1 # Corporation interface
+      - P5-T2 # CorporationPolicy interface
+      - P5-T3 # GlobalLedger interface
+      - P5-T4 # Initial corporations data
+      - P5-T6 # Refactor stepSimulation
+      - P6-T1 # Demand collapse projection
+      - P6-T2 # Corporation adaptive policy
+    medium:
+      - P5-T5 # Update CountryStats
+      - P5-T7 # Corporation revenue model
+      - P5-T8 # Distribution strategies
+      - P5-T9 # Corporation list UI
+      - P6-T3 # Competitor awareness
+      - P6-T5 # Reputation system
+      - P6-T6 # US-specific adaptation
+    low:
+      - P5-T10 # Corporation detail panel
+      - P5-T11 # Map updates
+      - P5-T12 # Remove nation controls
+      - P6-T4 # Prisoner's dilemma detection
+      - P6-T7 # Game theory visualization
+      - P6-T8 # Save/Load
+      - P7-T1 through P7-T6 # UI polish
+
+  estimated_effort:
+    phase_5: "8-12 hours"
+    phase_6: "6-8 hours"
+    phase_7: "4-6 hours"
+    total: "18-26 hours with parallelization"

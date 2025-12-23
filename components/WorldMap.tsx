@@ -2,13 +2,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import * as topojson from 'topojson-client';
-import { CountryStats } from '../types';
+import { CountryStats, Corporation } from '../types';
 import { ZoomIn, ZoomOut, Maximize } from 'lucide-react';
 
 interface WorldMapProps {
   countryData: Record<string, CountryStats>;
   onCountryClick: (id: string, delta: number) => void;
-  viewMode: 'adoption' | 'wellbeing';
+  viewMode: 'adoption' | 'wellbeing' | 'ubi-received' | 'corp-hqs';
+  corporations?: Corporation[];
+  selectedCorpId?: string | null;
 }
 
 // Exhaustive mapping for world-atlas 110m (standard ISO numeric IDs to ISO alpha-3)
@@ -61,7 +63,7 @@ const ID_MAP: Record<string, string> = {
   '036': 'AUS', '554': 'NZL', '598': 'PNG'
 };
 
-const WorldMap: React.FC<WorldMapProps> = ({ countryData, onCountryClick, viewMode }) => {
+const WorldMap: React.FC<WorldMapProps> = ({ countryData, onCountryClick, viewMode, corporations = [], selectedCorpId = null }) => {
   const svgRef = useRef<SVGSVGElement>(null);
   const gRef = useRef<SVGGElement>(null);
   const [geography, setGeography] = useState<any>(null);
@@ -160,12 +162,63 @@ const WorldMap: React.FC<WorldMapProps> = ({ countryData, onCountryClick, viewMo
         const isoCode = ID_MAP[d.id];
         const stats = countryData[isoCode];
         if (!stats) return '#1e293b'; // Fallback for unmapped IDs
-        return viewMode === 'adoption' 
-            ? d3.interpolateBlues(stats.aiAdoption) 
-            : d3.interpolateRdYlGn(stats.wellbeing / 100);
+
+        // Calculate color based on view mode
+        if (viewMode === 'adoption') {
+          return d3.interpolateBlues(stats.aiAdoption);
+        } else if (viewMode === 'wellbeing') {
+          return d3.interpolateRdYlGn(stats.wellbeing / 100);
+        } else if (viewMode === 'ubi-received') {
+          // Color by UBI per capita (normalize to reasonable range 0-500/month)
+          const ubiPerCapita = stats.totalUbiReceived / stats.population;
+          const normalized = Math.min(1, ubiPerCapita / 500);
+          return d3.interpolateGreens(normalized);
+        } else if (viewMode === 'corp-hqs') {
+          // Color by number of HQ corps (0-10 range)
+          const hqCount = stats.headquarteredCorps?.length || 0;
+          const normalized = Math.min(1, hqCount / 10);
+          return d3.interpolatePurples(normalized);
+        }
+        return '#1e293b';
+      })
+      .attr('stroke', (d: any) => {
+        const isoCode = ID_MAP[d.id];
+
+        // Special border for selected corporation HQ
+        if (selectedCorpId) {
+          const selectedCorp = corporations.find(c => c.id === selectedCorpId);
+          if (selectedCorp) {
+            // HQ country gets special border
+            if (selectedCorp.headquartersCountry === isoCode) {
+              return '#f59e0b'; // Amber border for HQ
+            }
+            // Operating countries get different border
+            if (selectedCorp.operatingCountries.includes(isoCode)) {
+              return '#3b82f6'; // Blue border for operating countries
+            }
+          }
+        }
+        return '#0f172a';
+      })
+      .attr('stroke-width', (d: any) => {
+        const isoCode = ID_MAP[d.id];
+
+        // Thicker border for selected corporation countries
+        if (selectedCorpId) {
+          const selectedCorp = corporations.find(c => c.id === selectedCorpId);
+          if (selectedCorp) {
+            if (selectedCorp.headquartersCountry === isoCode) {
+              return 1.5; // Thick border for HQ
+            }
+            if (selectedCorp.operatingCountries.includes(isoCode)) {
+              return 0.8; // Medium border for operating countries
+            }
+          }
+        }
+        return 0.1;
       });
 
-  }, [geography, countryData, onCountryClick, viewMode]);
+  }, [geography, countryData, onCountryClick, viewMode, corporations, selectedCorpId]);
 
   return (
     <div className="relative w-full h-full min-h-[400px] bg-slate-900 rounded-2xl overflow-hidden shadow-2xl border border-slate-800 group">
@@ -193,7 +246,7 @@ const WorldMap: React.FC<WorldMapProps> = ({ countryData, onCountryClick, viewMo
       {/* Hover Stats Card */}
       {hoveredStats && (
         <div className="absolute bottom-4 left-4 z-20 pointer-events-none animate-in fade-in slide-in-from-bottom-2 duration-200">
-             <div className="bg-slate-900/95 border border-slate-600 p-4 rounded-xl shadow-2xl backdrop-blur-md min-w-[180px]">
+             <div className="bg-slate-900/95 border border-slate-600 p-4 rounded-xl shadow-2xl backdrop-blur-md min-w-[220px]">
                 <h3 className="text-sm font-bold text-white mb-2 border-b border-slate-700 pb-1">{hoveredStats.name}</h3>
                 <div className="space-y-1.5">
                     <div className="flex justify-between items-center text-xs">
@@ -203,13 +256,40 @@ const WorldMap: React.FC<WorldMapProps> = ({ countryData, onCountryClick, viewMo
                     <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
                         <div className="h-full bg-blue-500" style={{ width: `${hoveredStats.aiAdoption * 100}%` }}></div>
                     </div>
-                    
+
                     <div className="flex justify-between items-center text-xs mt-2">
                         <span className="text-slate-400">Wellbeing</span>
                         <span className={`font-mono font-bold ${hoveredStats.wellbeing > 50 ? 'text-emerald-400' : 'text-rose-400'}`}>{hoveredStats.wellbeing.toFixed(0)}</span>
                     </div>
                      <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
                         <div className="h-full bg-gradient-to-r from-rose-500 via-yellow-500 to-emerald-500" style={{ width: `${hoveredStats.wellbeing}%` }}></div>
+                    </div>
+
+                    {/* Corporation-related stats */}
+                    <div className="border-t border-slate-700 mt-2 pt-2">
+                        <div className="flex justify-between items-center text-xs">
+                            <span className="text-slate-400">UBI/month</span>
+                            <span className="font-mono text-green-400 font-bold">
+                                ${(hoveredStats.totalUbiReceived / hoveredStats.population).toFixed(0)}/person
+                            </span>
+                        </div>
+                        {hoveredStats.totalUbiReceived > 0 && (
+                            <div className="text-[9px] text-slate-500 mt-0.5 space-y-0.5">
+                                <div>Global: ${(hoveredStats.ubiReceivedGlobal / hoveredStats.population).toFixed(0)}</div>
+                                <div>Customer-weighted: ${(hoveredStats.ubiReceivedCustomerWeighted / hoveredStats.population).toFixed(0)}</div>
+                                <div>Local: ${(hoveredStats.ubiReceivedLocal / hoveredStats.population).toFixed(0)}</div>
+                            </div>
+                        )}
+                    </div>
+
+                    <div className="flex justify-between items-center text-xs mt-1">
+                        <span className="text-slate-400">Corp HQs</span>
+                        <span className="font-mono text-purple-400 font-bold">{hoveredStats.headquarteredCorps?.length || 0}</span>
+                    </div>
+
+                    <div className="flex justify-between items-center text-xs">
+                        <span className="text-slate-400">Corps operating</span>
+                        <span className="font-mono text-cyan-400 font-bold">{hoveredStats.customerOfCorps?.length || 0}</span>
                     </div>
                 </div>
              </div>
