@@ -188,3 +188,12 @@ export interface ScenarioPreset {
     updates: Partial<Corporation>;
   }[];
 }
+
+/**
+ * SelectedEntity - unified selection state for both corporations and countries.
+ * Used to track which entity (if any) is currently selected in the UI.
+ */
+export type SelectedEntity =
+  | { type: 'corporation'; id: string }
+  | { type: 'country'; id: string }
+  | null;

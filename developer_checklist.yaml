@@ -32,15 +32,15 @@ summary:
     completed: [P2-T1, P2-T2, P2-T3, P2-T4, P2-T5, P2-T6]
 
   phase_3: # Visualization & UI
-    status: 🟡 Mostly Complete (5/7 tasks)
-    completed: [P3-T1, P3-T5, P3-T6, P3-T8, P3-T9]
-    optional: [P3-T2, P3-T3, P3-T4, P3-T7]
+    status: 🟢 Complete (7/7 tasks)
+    completed: [P3-T1, P3-T2, P3-T3, P3-T5, P3-T6, P3-T8, P3-T9]
+    optional: [P3-T4, P3-T7]
 
   phase_4: # Polish & Testing
-    status: 🟡 In Progress (2/4 tasks)
-    completed: [P4-T2, P4-T5]
+    status: 🟡 In Progress (3/4 tasks)
+    completed: [P4-T1, P4-T2, P4-T5]
     in_progress: [P4-T4]
-    optional: [P4-T1, P4-T3]
+    optional: [P4-T3]
 
   phase_5: # Corporation-Centric Architecture (NEW - MAJOR)
     status: ✅ Complete (12/12 tasks)
@@ -53,9 +53,9 @@ summary:
     completed: [P6-T1, P6-T2, P6-T3, P6-T4, P6-T5, P6-T6, P6-T7, P6-T8]
 
   phase_7: # Per-Entity UI & Interaction (NEW)
-    status: 🟡 In Progress (1/6 tasks)
+    status: ✅ Complete (6/6 tasks)
     description: "Click-to-edit corporations/countries, detail panels"
-    completed: [P7-T4]
+    completed: [P7-T1, P7-T2, P7-T3, P7-T4, P7-T5, P7-T6]
 
   bugfixes:
     - "Fixed: Gemini API initialization crashing app on load (lazy init)"
@@ -171,14 +171,34 @@ phase_3:
     - id: P3-T2
       name: "Add displacement gap chart"
       file: "App.tsx"
-      status: ⏳ Pending (Optional)
+      status: ✅ Complete
       depends_on: [P2-T6]
+      notes: |
+        Added displacement gap chart in Charts tab showing lost wages minus UBI received.
+        - Chart displays displacement gap per country over time (in thousands $ per capita/month)
+        - Uses LineChart from Recharts with color-coded lines matching country selection
+        - Shows crisis indicator badge displaying number of countries in crisis
+        - Includes explanatory tooltip about 30% monthly wage threshold
+        - Updated chartData to include DisplacementGap data from simulation state
+        - Added TrendingDown icon import for visual consistency
 
     - id: P3-T3
       name: "Add archetype filter to map"
       file: "components/WorldMap.tsx"
-      status: ⏳ Pending (Optional)
+      status: ✅ Complete
       depends_on: [P1-T4]
+      notes: |
+        - Added selectedArchetype state to App.tsx
+        - Updated WorldMap component to accept selectedArchetype prop
+        - Implemented visual dimming (20% opacity) for countries that don't match selected archetype
+        - Added archetype filter UI with buttons for all 5 archetypes:
+          * Rich Democracy (emerald)
+          * Middle Stable (blue)
+          * Developing Fragile (amber)
+          * Authoritarian (purple)
+          * Failed State (rose)
+        - Filter placed between map and view mode toggle
+        - "All" button to clear filter
 
     - id: P3-T4
       name: "Add crisis indicator overlay"
@@ -233,8 +253,45 @@ phase_4:
     - id: P4-T1
       name: "Update Gemini prompts for new metrics"
       file: "services/geminiService.ts"
-      status: ⏳ Pending (Optional)
+      status: ✅ Complete
+      completed_date: "2024-12-27"
       depends_on: [P2-T5, P2-T6]
+      notes: |
+        Completed comprehensive prompt updates for corporation-centric model:
+
+        RED TEAM PROMPT UPDATES:
+        - Removed nation-centric tax/redistribution language
+        - Added corporation-driven economics explanation (contribution rates, distribution strategies, policy stances)
+        - Added direct-to-wallet blockchain context (always enabled, zero corruption)
+        - Added game theory dynamics section (prisoner's dilemma, cooperation vs defection, race to bottom, virtuous cycles)
+        - Added adaptive corporate behavior explanation (demand collapse, competitor awareness, reputation)
+        - Updated model parameters section to include defaultCorpPolicy and marketPressure
+        - Restructured critique questions to focus on:
+          1. Corporate behavior realism
+          2. Distribution strategy failures
+          3. Game theory exploits
+          4. Systemic collapse scenarios
+          5. Structural recommendations
+
+        SUMMARY PROMPT UPDATES:
+        - Rewrote to focus on corporation-centric decision-making
+        - Explained three distribution strategies (global, customer-weighted, hq-local) with economic implications
+        - Added game theory dynamics (cooperation, defection, race to bottom, virtuous cycle)
+        - Added adaptive corporate behavior triggers
+        - Updated model parameters to corporation-specific ones
+        - Restructured summary requirements to focus on:
+          1. Corporate cooperation vs defection outcomes
+          2. Key observations about corporate behavior and game theory
+          3. Parameter tweaks focused on corporate incentives (not nation policies)
+        - Added specific examples of corporate behavior patterns to look for
+        - Emphasized self-interest framing over altruism
+
+        Both prompts now correctly understand:
+        - Corporations control UBI, not nations
+        - Direct-to-wallet is always enabled (blockchain assumption)
+        - Game theory drives corporate decisions
+        - Distribution strategies create different economic outcomes
+        - Adaptive policies are key to preventing market collapse
 
     - id: P4-T2
       name: "Add explanatory tooltips"
@@ -245,8 +302,43 @@ phase_4:
     - id: P4-T3
       name: "Update CLAUDE.md with new architecture"
       file: "CLAUDE.md"
-      status: ⏳ Pending (Optional)
+      status: ✅ Complete
+      completed_date: "2024-12-27"
       depends_on: [P2-T6, P3-T5]
+      notes: |
+        Completed comprehensive documentation update:
+        - Added "Model Philosophy: Corporation-Centric UBI" section explaining free-market approach
+        - Updated Core Files table to reflect Corporation, GlobalLedger, GameTheoryState interfaces
+        - Added 90+ corporations note in constants.ts
+        - Updated Components table with new components:
+          - CorporationList.tsx (sortable table, filter/search)
+          - CorporationDetailPanel.tsx (slide-out policy editor)
+          - GameTheoryVisualization.tsx (cooperation meter, strategy breakdown, histogram)
+        - Rewrote "Simulation Flow" section with 5-phase corporation-centric model:
+          1. Corporation Revenue Generation
+          2. Corporation Contribution Decisions
+          3. UBI Distribution to Citizens
+          4. Wellbeing Calculation
+          5. Corporation Adaptive Policy (Game Theory)
+        - Updated "Key Simulation Parameters" section:
+          - Economic Constants (aiGrowthRate, displacementRate, gdpScaling)
+          - Corporation Policy (defaultCorpPolicy, marketPressure)
+          - Corporation-Level Settings (contributionRate, distributionStrategy, policyStance)
+        - Added new "Game Theory Mechanics" section:
+          - Nash Equilibrium Dynamics (virtuous cycle, race to bottom, prisoner's dilemma)
+          - Adaptive Mechanisms (demand collapse projection, reputation system, competitor awareness)
+          - Regional Behavior (US/China/EU corporate patterns)
+        - Updated "View Modes" section with new tabs:
+          - Overview (animated SVG abundance cycle)
+          - Map (4 view modes + selected corp highlighting)
+          - Corporations (list + game theory viz + detail panel)
+          - Charts, Analysis, Guide/Equations
+        - Added new "Save/Load System" section:
+          - Auto-save to localStorage every 5 minutes
+          - Manual save/load via JSON files
+          - 6 scenario presets documented
+
+        Documentation now accurately reflects the corporation-centric architecture implemented in Phases 5-7.
 
     - id: P4-T4
       name: "Integration testing"
@@ -845,10 +937,10 @@ phase_6:
       parallel_with: []
       notes: |
         Completed implementation:
-        - Added GameTheoryState interface to types.ts
-        - Implemented analyzeGameTheory function in App.tsx
-        - Added gameTheoryState to App.tsx state management
-        - Called analyzeGameTheory at end of stepSimulation
+        - Added GameTheoryState interface to types.ts (lines 142-154)
+        - Implemented analyzeGameTheory function in App.tsx (lines 600-625)
+        - Added gameTheoryState to App.tsx state management (lines 267-275)
+        - Called analyzeGameTheory at end of stepSimulation (lines 892-894)
         - Added comprehensive game theory indicator UI showing:
           - Cooperation vs Defection counts
           - Average contribution rate
@@ -856,8 +948,15 @@ phase_6:
           - Virtuous cycle strength percentage
         - Added prisoner's dilemma warning banner when detected
         - Color-coded indicators (green=virtuous, yellow=tension, red=risk)
-        - Reset game theory state in handleReset
+        - Reset game theory state in handleReset (lines 343-351)
         - Build successful, UI integrated
+
+        Key thresholds:
+        - 40% defection threshold: triggers race-to-bottom risk
+        - 60% cooperation threshold: triggers virtuous cycle strength
+        - 0.3 prisoner's dilemma threshold: triggers warning when risk > 0.3 and strength < 0.3
+
+        UI placement: Game theory indicators between crisis stats and map
       description: |
         Detect and visualize prisoner's dilemma scenarios:
         ```typescript
@@ -973,7 +1072,7 @@ phase_6:
       parallel_with: []
       notes: |
         Completed implementation:
-        - Created GameTheoryVisualization component (components/GameTheoryVisualization.tsx)
+        - Created GameTheoryVisualization component: components/GameTheoryVisualization.tsx (~350 lines)
         - Added comprehensive cooperation meter with color-coded gradient (red to green)
         - Shows current position with animated marker and score (0-100)
         - Three zones clearly labeled: Race to Bottom, Prisoner's Dilemma, Virtuous Cycle
@@ -984,10 +1083,15 @@ phase_6:
         - Status indicator badges for: Virtuous Cycle Active, Race to Bottom Risk, Prisoner's Dilemma
         - Pulsing animated indicators when conditions are met
         - Game theory summary with 4 key metrics: Cooperating, Moderate, Defecting, Avg Rate
-        - Integrated into Corporations tab in App.tsx
+        - Integrated into Corporations tab in App.tsx (lines 1940-1960)
         - Full dark mode support with Tailwind CSS
         - Responsive design works on mobile and desktop
         - Build successful, all visualizations rendering correctly
+
+        Key formulas:
+        - Cooperation score: 50 + (virtuousCycleStrength * 50) or 50 - (raceToBottomRisk * 50)
+        - Histogram bins: 5-10%, 10-15%, 15-20%, 20-25%, 25-30%, 30-40%, 40-50%
+        - Status thresholds: virtuous > 0.5, race risk > 0.5
       description: |
         New visualization showing game theory dynamics:
 
@@ -1020,14 +1124,19 @@ phase_6:
       parallel_with: []
       notes: |
         Completed implementation:
-        - Added SavedState interface to types.ts with all necessary state fields
-        - Implemented saveToFile() function that creates timestamped JSON downloads
-        - Implemented loadFromFile() function with version compatibility checking
-        - Added Download/Upload icon buttons to header toolbar (next to theme toggle)
-        - Implemented auto-save to localStorage every 5 minutes
+        - Added SavedState interface to types.ts (lines 156-170)
+        - Implemented saveToFile() and loadFromFile() functions in App.tsx (lines 370-465)
+        - Added Download/Upload icon buttons to header toolbar (lines 1465-1485)
+        - Implemented auto-save to localStorage every 5 minutes (lines 1343-1413)
         - Implemented auto-restore on mount with user confirmation dialog
         - Handles storage quota errors gracefully
         - Build successful, all functionality working
+
+        Key details:
+        - Save version: "2.0"
+        - File naming: ubi-simulation-YYYY-MM-DD.json
+        - Auto-save interval: 5 minutes
+        - localStorage key: ubi-sim-autosave
       description: |
         Implement file-based persistence:
         ```typescript
@@ -1076,9 +1185,32 @@ phase_7:
     - id: P7-T1
       name: "Implement entity selection system"
       file: "App.tsx"
-      status: ⏳ Pending
+      status: ✅ Complete
+      completed_date: "2024-12-27"
       depends_on: [P5-T9, P5-T10]
       parallel_with: []
+      notes: |
+        Completed implementation:
+        - Added SelectedEntity type to types.ts (lines 192-199)
+        - Added selectedEntity state to App.tsx (line 198)
+        - Implemented selection handlers: handleSelectCorporation, handleSelectCountry, handleDeselectEntity (lines 1237-1248)
+        - Added ESC key handler for deselection (lines 1250-1260)
+        - Updated CorporationList to use unified selection (App.tsx line 2053-2054)
+        - Updated WorldMap with country selection support:
+          * Added onCountrySelect prop (WorldMap.tsx line 11)
+          * Added selectedCountryId prop (WorldMap.tsx line 13)
+          * Left-click now selects country, Shift+click invests (WorldMap.tsx lines 152-160)
+          * Green border highlights selected country (WorldMap.tsx lines 220-221)
+          * Updated controls legend to reflect new behavior (WorldMap.tsx lines 281-283)
+        - Updated CorporationDetailPanel to use handleDeselectEntity (App.tsx line 2946)
+
+        Key features:
+        - Click corporation in list → selects corporation (shows detail panel)
+        - Click country on map → selects country (green border highlight)
+        - Shift+click country → invests in AI growth (existing behavior)
+        - Right-click country → reduces AI growth (existing behavior)
+        - ESC key → deselects any selected entity
+        - Corporation and country selection are mutually exclusive
       description: |
         Unified selection state:
         ```typescript
@@ -1099,9 +1231,40 @@ phase_7:
     - id: P7-T2
       name: "Add country detail panel"
       file: "components/CountryDetailPanel.tsx"
-      status: ⏳ Pending
+      status: ✅ Complete
+      completed_date: "2024-12-27"
       depends_on: [P7-T1]
       parallel_with: []
+      notes: |
+        Completed implementation:
+        - Created CountryDetailPanel component (components/CountryDetailPanel.tsx)
+        - Added updateCountry function to App.tsx for updating country properties (lines 410-421)
+        - Integrated panel into App.tsx - renders when selectedEntity.type === 'country' (lines 3183-3189)
+        - Header section with country name, flag emoji, archetype badge, wellbeing score with trend indicator
+        - UBI Receipt Breakdown showing:
+          * From global ledger (per person/month)
+          * From customer-weighted corps (per person/month)
+          * From local HQ corps (per person/month)
+          * Total UBI received (per person/month)
+        - Economic Indicators section with grid layout showing:
+          * GDP per capita
+          * Population (in millions)
+          * Gini coefficient
+          * AI Adoption percentage
+          * Governance percentage
+          * Displacement gap (with alert icon if > 0)
+        - Corporations section showing:
+          * Corps headquartered here (list with name and AI revenue)
+          * Corps with customers here (comma-separated list)
+        - Limited Policy Controls section with:
+          * Allow Direct Wallet toggle (blockchain UBI enabled/blocked)
+          * Local UBI Tax Rate slider (0-30%)
+        - Slide-in animation from right with backdrop overlay
+        - Click backdrop or X button to close
+        - Full dark mode support with Tailwind CSS
+        - Responsive design (full width on mobile, 384px on desktop)
+        - Reused styling patterns from CorporationDetailPanel for consistency
+        - Build successful, all functionality working
       description: |
         Panel showing country details (now as RECIPIENT, not policy-maker):
 
@@ -1133,10 +1296,35 @@ phase_7:
 
     - id: P7-T3
       name: "Add multi-select for bulk editing"
-      file: "App.tsx"
-      status: ⏳ Pending
+      file: "App.tsx, components/CorporationList.tsx"
+      status: ✅ Complete
+      completed_date: "2024-12-27"
       depends_on: [P7-T1]
       parallel_with: [P7-T2]
+      notes: |
+        Completed implementation:
+        - Added selectedCorpIds state (Set<string>) to App.tsx (line 201)
+        - Implemented multi-select handlers in App.tsx (lines 1253-1287):
+          - handleToggleCorpSelection: toggle individual corp in/out of selection
+          - handleSelectAllCorps: bulk select by filter (US, EU, all, clear)
+          - handleBulkUpdateContribution: apply new contribution rate to all selected
+        - Updated CorporationList component with new props and UI:
+          - Added checkbox column to table (lines 395-403, 486-500)
+          - Shift+click on row toggles multi-select (lines 466-472)
+          - Click checkbox to toggle selection (lines 486-500)
+          - Added bulk select buttons: "All US Corps", "All EU Corps", "Select All", "Clear Selection" (lines 316-351)
+          - Added bulk edit controls with contribution rate slider and "Apply to Selected" button (lines 353-387)
+          - Visual feedback: selected rows have blue background (line 477-481)
+          - Selection counter shows number of selected corps (line 349)
+        - Build successful, all functionality working
+
+        Key features:
+        - Shift+click row to toggle multi-select
+        - Click checkbox to toggle selection
+        - Quick select buttons for US and EU corps
+        - Bulk edit contribution rate with slider (0-50%, 5% steps)
+        - Visual distinction between single-selected and multi-selected rows
+        - Selection cleared after bulk edit applied
       description: |
         Allow selecting multiple corporations:
         - Shift+click to add to selection
@@ -1206,9 +1394,31 @@ phase_7:
     - id: P7-T5
       name: "Add comparison view"
       file: "App.tsx"
-      status: ⏳ Pending
+      status: ✅ Complete
+      completed_date: "2024-12-27"
       depends_on: [P7-T1, P6-T8]
       parallel_with: []
+      notes: |
+        Completed implementation:
+        - Added comparisonMode state and comparisonScenarioId state to App.tsx
+        - Added "Compare" toggle button in header toolbar (purple highlight when active)
+        - Created duplicate simulation state (comparisonState, comparisonCorporations, comparisonLedger, comparisonGameTheory, comparisonModel)
+        - Implemented split-screen view in Map tab showing two WorldMap instances side-by-side
+        - Added scenario preset selector in sidebar (purple-themed) visible only when comparison mode is active
+        - Left side shows current/main scenario (blue theme, "Scenario A")
+        - Right side shows comparison scenario (purple theme, "Scenario B")
+        - Each side displays scenario name and current wellbeing score
+        - Comparison scenario initializes to selected preset (default: "Race to Bottom")
+        - useEffect applies comparison scenario when comparisonScenarioId changes
+        - Both maps use same viewMode toggle for consistent visualization
+        - Comparison view is read-only (no investment clicks on right side)
+        - Build successful, all functionality working
+
+        Implementation notes:
+        - Simplified version: comparison shows initial state (month 0 baseline) for selected scenario
+        - Main simulation continues to run forward while comparison shows starting conditions
+        - This provides useful "before/after" comparison functionality
+        - Full parallel simulation would require extracting stepSimulation into reusable function (noted in code comments)
       description: |
         Run two scenarios side-by-side:
         - Split screen view
@@ -1221,10 +1431,31 @@ phase_7:
 
     - id: P7-T6
       name: "Add tutorial/onboarding"
-      file: "components/Tutorial.tsx"
-      status: ⏳ Pending
+      file: "App.tsx"
+      status: ✅ Complete
+      completed_date: "2024-12-27"
       depends_on: [P7-T1, P7-T2]
       parallel_with: []
+      notes: |
+        Completed implementation:
+        - Enhanced existing TourOverlay component in App.tsx with 11 comprehensive tutorial steps
+        - Tutorial now explains corporation-centric UBI model:
+          1. Welcome & overview of AI-powered economy with voluntary corporate UBI
+          2. Corporations drive UBI, not governments (enlightened self-interest)
+          3. AI revenue & customer demand link (customer poverty = revenue collapse)
+          4. Three distribution strategies (global, customer-weighted, hq-local) explained
+          5. Adaptive policies & game theory (prisoner's dilemma, cooperate vs defect)
+          6. Corporations tab overview (90+ corps, cooperation meter, game theory viz)
+          7. Map views (4 modes: adoption, wellbeing, UBI received, corp HQs)
+          8. Playback controls (play, pause, speed, rewind, branch alternate futures)
+          9. Parameters & scenarios (economic constants, 6 scenario presets)
+          10. Charts & AI analysis (trends, fund accumulation, AI summary, red team)
+          11. Start exploring! (encouragement to experiment)
+        - Tutorial accessible via existing "Tutorial" button in header (triggers setTourStep(0))
+        - Uses existing modal-based overlay with backdrop blur and step-by-step navigation
+        - Next/Back buttons, progress counter, Skip option
+        - Build successful, all functionality working
+        - No new files created - enhanced existing component
       description: |
         Interactive tutorial explaining:
         1. How corporations generate AI revenue

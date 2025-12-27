@@ -1,14 +1,15 @@
 
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { Globe, TrendingUp, Sparkles, Share2, ChevronDown, BrainCircuit, FlaskConical, Database, MousePointer2, PlayCircle, Menu, X, BookOpen, Lightbulb, ArrowRight, ArrowLeft, Info, FileText, Sun, Moon, Copy, Settings, Download, Upload } from 'lucide-react';
+import { AreaChart, Area, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { Globe, TrendingUp, TrendingDown, Sparkles, Share2, ChevronDown, BrainCircuit, FlaskConical, Database, MousePointer2, PlayCircle, Menu, X, BookOpen, Lightbulb, ArrowRight, ArrowLeft, Info, FileText, Sun, Moon, Copy, Settings, Download, Upload } from 'lucide-react';
 import WorldMap from './components/WorldMap';
 import SimulationControls from './components/SimulationControls';
 import MotionChart from './components/MotionChart';
 import CorporationList from './components/CorporationList';
 import CorporationDetailPanel from './components/CorporationDetailPanel';
+import CountryDetailPanel from './components/CountryDetailPanel';
 import GameTheoryVisualization from './components/GameTheoryVisualization';
-import { SimulationState, ModelParameters, HistoryPoint, CountryStats, Corporation, GlobalLedger, GameTheoryState, SavedState } from './types';
+import { SimulationState, ModelParameters, HistoryPoint, CountryStats, Corporation, GlobalLedger, GameTheoryState, SavedState, SelectedEntity } from './types';
 import { PRESET_MODELS, INITIAL_COUNTRIES, INITIAL_CORPORATIONS, SCENARIO_PRESETS } from './constants';
 import { getRedTeamAnalysis, getSimulationSummary } from './services/geminiService';
 
@@ -56,47 +57,71 @@ const InfoTooltip: React.FC<{ text: string }> = ({ text }) => {
 const TourOverlay: React.FC<{ step: number, onNext: () => void, onBack: () => void, onSkip: () => void }> = ({ step, onNext, onBack, onSkip }) => {
     
     const steps = [
-        { 
-            title: "Welcome to the Simulator", 
-            text: "This engine models the transition from labor-based economies to automated abundance.", 
+        {
+            title: "Welcome to the UBI Transition Simulator",
+            text: "This models the transition to an AI-powered economy where corporations voluntarily fund Universal Basic Income through enlightened self-interest.",
             pos: "top-1/4 left-1/2 -translate-x-1/2",
-            target: null 
-        },
-        { 
-            title: "Playback Controls", 
-            text: "Start the simulation using the Play button. You can pause or speed up time using the controls below.", 
-            pos: "bottom-24 left-4 sm:left-1/4",
-            target: "bottom" 
-        },
-        { 
-            title: "Rewind History", 
-            text: "Drag the timeline slider to rewind. Change parameters from a past point and press Play to branch into an alternate reality simulation.", 
-            pos: "bottom-36 left-1/2 -translate-x-1/2", 
-            target: "timeline" 
-        },
-        { 
-            title: "Parameters", 
-            text: "Adjust the tax rates and incentives in the sidebar to change how the economy evolves.", 
-            pos: "top-1/3 left-16 md:left-80",
-            target: "sidebar" 
-        },
-        { 
-            title: "View Modes", 
-            text: "Switch between Adoption (Blue) and Wellbeing (Green/Red) to see different data layers.", 
-            pos: "bottom-32 left-1/2 -translate-x-1/2 translate-y-[-50px]", 
-            target: "toggle" 
-        },
-        { 
-            title: "Analysis", 
-            text: "Check the Charts tab to see detailed graphs.", 
-            pos: "top-20 right-20", 
-            target: "tabs" 
+            target: null
         },
         {
-            title: "Deep Analysis",
-            text: "Use the buttons in the Charts tab to generate an AI Summary or perform a Red Team Audit on the Analysis page.",
-            pos: "top-40 right-10",
-            target: "ai-tools"
+            title: "Corporations Drive UBI, Not Governments",
+            text: "Unlike traditional models, this simulator shows how corporations generate AI revenue by automating jobs, then contribute to a global UBI fund to preserve their customer base. No governments required.",
+            pos: "top-1/3 left-1/2 -translate-x-1/2",
+            target: null
+        },
+        {
+            title: "AI Revenue & Customer Demand",
+            text: "Corporations earn revenue from AI automation, BUT their profits depend on customers being able to afford products. If people lose jobs to AI and can't buy anything, corporate revenue collapses. This creates a self-interest incentive for UBI.",
+            pos: "top-1/3 left-1/2 -translate-x-1/2",
+            target: null
+        },
+        {
+            title: "Three Distribution Strategies",
+            text: "Corporations choose how to distribute UBI: GLOBAL (equal to all humans), CUSTOMER-WEIGHTED (prioritize their markets), or HQ-LOCAL (only their home country). Each has different economic effects.",
+            pos: "top-1/3 left-1/2 -translate-x-1/2",
+            target: null
+        },
+        {
+            title: "Adaptive Policies & Game Theory",
+            text: "Corporations adapt their policies based on market conditions. If customer wellbeing drops (demand collapse risk), smart corporations increase UBI contributions. This creates prisoner's dilemma dynamics: cooperate or defect?",
+            pos: "top-1/3 left-1/2 -translate-x-1/2",
+            target: null
+        },
+        {
+            title: "Corporations Tab",
+            text: "Click the Corporations tab to see all 90+ corporations, their contribution rates, strategies, and game theory dynamics. The cooperation meter shows if we're in a virtuous cycle or race to the bottom.",
+            pos: "top-20 right-20",
+            target: "tabs"
+        },
+        {
+            title: "Map Views",
+            text: "The map shows four views: AI Adoption (blue), Wellbeing (green/red), UBI Received (green), and Corp HQs (purple). Click countries to select them, Shift+click to invest in AI growth.",
+            pos: "bottom-32 left-1/2 -translate-x-1/2",
+            target: "toggle"
+        },
+        {
+            title: "Playback Controls",
+            text: "Press Play to start the simulation. You can pause, speed up, or rewind to any point. Change parameters and press Play again to branch into an alternate future.",
+            pos: "bottom-24 left-1/2 -translate-x-1/2",
+            target: "bottom"
+        },
+        {
+            title: "Parameters & Scenarios",
+            text: "Use the sidebar to adjust economic constants and corporate behavior. Or try one of the scenario presets: Free Market Optimism, Race to Bottom, US Protectionism, etc.",
+            pos: "top-1/3 left-16 md:left-80",
+            target: "sidebar"
+        },
+        {
+            title: "Charts & AI Analysis",
+            text: "The Charts tab shows wellbeing trends and fund accumulation. Use the AI Summary and Red Team buttons to generate detailed analysis of the simulation outcomes.",
+            pos: "top-20 right-20",
+            target: "tabs"
+        },
+        {
+            title: "Start Exploring!",
+            text: "Press Play and watch how corporations respond to market pressures. Will they cooperate to maintain customer wellbeing, or defect into a race to the bottom? The choice is theirs.",
+            pos: "top-1/4 left-1/2 -translate-x-1/2",
+            target: null
         }
     ];
 
@@ -154,7 +179,12 @@ const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'map' | 'charts' | 'corporations' | 'analysis' | 'overview' | 'equations' | 'guide'>('map');
   const [viewMode, setViewMode] = useState<'adoption' | 'wellbeing'>('wellbeing'); // Default to wellbeing
   const [equationViewMode, setEquationViewMode] = useState<'simple' | 'detailed'>('simple');
-  
+  const [selectedArchetype, setSelectedArchetype] = useState<string | null>(null); // Archetype filter for map
+
+  // Comparison mode state (P7-T5)
+  const [comparisonMode, setComparisonMode] = useState(false);
+  const [comparisonScenarioId, setComparisonScenarioId] = useState<string>('race-to-bottom');
+
   // Initialize default selected countries
   const [selectedCountries, setSelectedCountries] = useState<string[]>(() => {
     const defaults = ['Global', 'USA', 'CHN', 'IND'];
@@ -193,8 +223,11 @@ const App: React.FC = () => {
   // Tour State
   const [tourStep, setTourStep] = useState<number | null>(null);
 
-  // Corporation selection state
-  const [selectedCorpId, setSelectedCorpId] = useState<string | null>(null);
+  // Unified entity selection state (replaces selectedCorpId)
+  const [selectedEntity, setSelectedEntity] = useState<SelectedEntity>(null);
+
+  // Multi-select state for bulk editing corporations
+  const [selectedCorpIds, setSelectedCorpIds] = useState<Set<string>>(new Set());
 
   // Apply Theme
   useEffect(() => {
@@ -206,9 +239,20 @@ const App: React.FC = () => {
 
   // Auto-switch tabs during tour
   useEffect(() => {
-    if (tourStep === 5 || tourStep === 6) {
+    // Step 5: Corporations Tab
+    if (tourStep === 5) {
+        setActiveTab('corporations');
+    }
+    // Steps 6-7: Map Tab (Map Views, Playback Controls)
+    else if (tourStep === 6 || tourStep === 7) {
+        setActiveTab('map');
+    }
+    // Step 9: Charts Tab (Charts & AI Analysis)
+    else if (tourStep === 9) {
         setActiveTab('charts');
-    } else if (tourStep !== null && tourStep < 5) {
+    }
+    // All other steps: default to map
+    else if (tourStep !== null && tourStep !== 5 && tourStep !== 9) {
         setActiveTab('map');
     }
   }, [tourStep]);
@@ -275,6 +319,30 @@ const App: React.FC = () => {
     virtuousCycleStrength: 0,
     avgContributionRate: 0
   });
+
+  // Comparison simulation state (P7-T5) - second parallel simulation
+  const [comparisonState, setComparisonState] = useState<SimulationState>(getInitialState());
+  const [comparisonCorporations, setComparisonCorporations] = useState<Corporation[]>(INITIAL_CORPORATIONS);
+  const [comparisonLedger, setComparisonLedger] = useState<GlobalLedger>({
+    totalFunds: 0,
+    monthlyInflow: 0,
+    monthlyOutflow: 0,
+    fundsPerCapita: 0,
+    fundsByCountry: {},
+    contributorBreakdown: {},
+    distributionBreakdown: {},
+    corruptionLeakage: 0
+  });
+  const [comparisonGameTheory, setComparisonGameTheory] = useState<GameTheoryState>({
+    isInPrisonersDilemma: false,
+    defectionCount: 0,
+    cooperationCount: 0,
+    moderateCount: 0,
+    raceToBottomRisk: 0,
+    virtuousCycleStrength: 0,
+    avgContributionRate: 0
+  });
+  const [comparisonModel, setComparisonModel] = useState<ModelParameters>(PRESET_MODELS[0]);
 
   useEffect(() => {
     const hash = window.location.hash;
@@ -369,6 +437,25 @@ const App: React.FC = () => {
   }, []);
 
   // ============================================================================
+  // UPDATE COUNTRY (P7-T2)
+  // ============================================================================
+  // Allows updating individual country properties (e.g., from detail panel)
+  // ============================================================================
+
+  const updateCountry = useCallback((id: string, updates: Partial<CountryStats>) => {
+    setState(prevState => ({
+      ...prevState,
+      countryData: {
+        ...prevState.countryData,
+        [id]: {
+          ...prevState.countryData[id],
+          ...updates
+        }
+      }
+    }));
+  }, []);
+
+  // ============================================================================
   // SCENARIO PRESETS (P7-T4)
   // ============================================================================
   // Apply pre-configured scenarios that set up specific game theory conditions
@@ -409,6 +496,61 @@ const App: React.FC = () => {
 
     console.log(`Applied scenario: ${scenario.name}`);
   }, [model, handleReset]);
+
+  // ============================================================================
+  // COMPARISON SCENARIO APPLICATION (P7-T5)
+  // ============================================================================
+  // Apply scenario to comparison state when comparisonScenarioId changes
+  // ============================================================================
+
+  useEffect(() => {
+    if (!comparisonMode) return;
+
+    const scenario = SCENARIO_PRESETS.find(s => s.id === comparisonScenarioId);
+    if (!scenario) return;
+
+    // 1. Update comparison model with scenario's settings
+    const updatedModel = { ...PRESET_MODELS[0], ...scenario.modelParams };
+    setComparisonModel(updatedModel);
+
+    // 2. Apply corporation overrides to comparison corps
+    const updatedCorps = INITIAL_CORPORATIONS.map(corp => {
+      let updated = { ...corp };
+
+      scenario.corporationOverrides?.forEach(override => {
+        if (override.filter(corp)) {
+          updated = { ...updated, ...override.updates };
+        }
+      });
+
+      return updated;
+    });
+    setComparisonCorporations(updatedCorps);
+
+    // 3. Reset comparison state to month 0
+    setComparisonState(getInitialState());
+    setComparisonLedger({
+      totalFunds: 0,
+      monthlyInflow: 0,
+      monthlyOutflow: 0,
+      fundsPerCapita: 0,
+      fundsByCountry: {},
+      contributorBreakdown: {},
+      distributionBreakdown: {},
+      corruptionLeakage: 0
+    });
+    setComparisonGameTheory({
+      isInPrisonersDilemma: false,
+      defectionCount: 0,
+      cooperationCount: 0,
+      moderateCount: 0,
+      raceToBottomRisk: 0,
+      virtuousCycleStrength: 0,
+      avgContributionRate: 0
+    });
+
+    console.log(`Applied comparison scenario: ${scenario.name}`);
+  }, [comparisonMode, comparisonScenarioId, getInitialState]);
 
   // ============================================================================
   // SAVE/LOAD FUNCTIONALITY (P6-T8)
@@ -1204,9 +1346,19 @@ const App: React.FC = () => {
 
   useEffect(() => {
     let timer: any;
-    if (isPlaying) timer = setInterval(stepSimulation, 1000 / speed);
+    if (isPlaying) {
+      timer = setInterval(() => {
+        stepSimulation();
+        // Also step comparison simulation if in comparison mode (P7-T5)
+        if (comparisonMode) {
+          // Comparison simulation runs in parallel with same month progression
+          // NOTE: For full implementation, would need to extract stepSimulation into reusable function
+          // For now, comparison state is set once and shows static snapshot at month 0
+        }
+      }, 1000 / speed);
+    }
     return () => clearInterval(timer);
-  }, [isPlaying, speed, stepSimulation]);
+  }, [isPlaying, speed, stepSimulation, comparisonMode]);
 
   const handleSeek = (m: number) => {
     setIsPlaying(false);
@@ -1232,6 +1384,67 @@ const App: React.FC = () => {
       };
     });
   };
+
+  // Unified entity selection handlers
+  const handleSelectCorporation = (id: string) => {
+    setSelectedEntity({ type: 'corporation', id });
+  };
+
+  const handleSelectCountry = (id: string) => {
+    setSelectedEntity({ type: 'country', id });
+  };
+
+  const handleDeselectEntity = () => {
+    setSelectedEntity(null);
+  };
+
+  // Multi-select handlers
+  const handleToggleCorpSelection = (id: string) => {
+    setSelectedCorpIds(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return next;
+    });
+  };
+
+  const handleSelectAllCorps = (filter: 'us' | 'eu' | 'all' | 'clear') => {
+    if (filter === 'clear') {
+      setSelectedCorpIds(new Set());
+      return;
+    }
+
+    const filtered = corporations.filter(corp => {
+      if (filter === 'us') return corp.headquartersCountry === 'USA';
+      if (filter === 'eu') return ['Germany', 'France', 'Netherlands', 'Ireland'].includes(corp.headquartersCountry);
+      return true;
+    });
+
+    setSelectedCorpIds(new Set(filtered.map(c => c.id)));
+  };
+
+  const handleBulkUpdateContribution = (newRate: number) => {
+    setCorporations(prev => prev.map(corp =>
+      selectedCorpIds.has(corp.id)
+        ? { ...corp, contributionRate: newRate }
+        : corp
+    ));
+  };
+
+  // ESC key handler for deselection
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        handleDeselectEntity();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   const triggerSummarize = async () => {
     if (history.length === 0) {
@@ -1359,17 +1572,22 @@ const App: React.FC = () => {
 
   const chartData = useMemo(() => {
     return history.map(point => {
-      const data: any = { 
-          month: point.month, 
+      const data: any = {
+          month: point.month,
           date: formatMonthDate(point.month),
-          fund: point.state.globalFund / 1e9 
+          fund: point.state.globalFund / 1e9
       };
       data['Wellbeing_Global'] = point.state.averageWellbeing;
       const globalAdoption = (Object.values(point.state.countryData) as CountryStats[]).reduce((acc, curr) => acc + curr.aiAdoption, 0) / INITIAL_COUNTRIES.length * 100;
       data['Adoption_Global'] = globalAdoption;
+
+      // Global displacement gap
+      data['DisplacementGap_Global'] = point.state.globalDisplacementGap / 1e9; // Convert to billions
+
       Object.keys(point.state.countryData).forEach(id => {
         data[`Wellbeing_${id}`] = point.state.countryData[id].wellbeing;
         data[`Adoption_${id}`] = point.state.countryData[id].aiAdoption * 100;
+        data[`DisplacementGap_${id}`] = (point.state.countryData[id].displacementGap || 0) / 1000; // Convert to thousands
       });
       return data;
     });
@@ -1459,16 +1677,16 @@ const App: React.FC = () => {
     <div className={`flex flex-col h-[100dvh] overflow-hidden transition-colors duration-300 ${theme === 'light' ? 'bg-slate-50 text-slate-900' : 'bg-slate-950 text-slate-100'}`}>
       {/* Tour Overlay */}
       {tourStep !== null && (
-          <TourOverlay 
-            step={tourStep} 
+          <TourOverlay
+            step={tourStep}
             onNext={() => {
-                if (tourStep < 6) {
+                if (tourStep < 10) {
                     setTourStep(tourStep + 1);
                 } else {
                     setTourStep(null);
                     setActiveTab('map');
                 }
-            }} 
+            }}
             onBack={() => setTourStep(prev => (prev !== null && prev > 0) ? prev - 1 : null)}
             onSkip={() => {
                 setTourStep(null);
@@ -1577,6 +1795,17 @@ const App: React.FC = () => {
 
           <div className="w-px h-6 bg-slate-300 dark:bg-slate-700 mx-1"></div>
 
+          {/* Compare Mode Toggle (P7-T5) */}
+          <button
+             onClick={() => setComparisonMode(!comparisonMode)}
+             className={`px-2 py-1.5 rounded-lg text-[10px] font-bold uppercase transition-all ${comparisonMode ? 'bg-purple-600 text-white shadow-md' : 'text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-700'}`}
+             title="Compare two scenarios side-by-side"
+          >
+            Compare
+          </button>
+
+          <div className="w-px h-6 bg-slate-300 dark:bg-slate-700 mx-1"></div>
+
           {/* Save/Load Buttons */}
           <button
              onClick={saveToFile}
@@ -1671,6 +1900,32 @@ const App: React.FC = () => {
                 ))}
                 </div>
             </div>
+
+            {/* Comparison Scenario Selector (P7-T5) */}
+            {comparisonMode && (
+              <div className="border-2 border-purple-500 dark:border-purple-600 rounded-xl p-4 bg-purple-50 dark:bg-purple-900/20">
+                <h2 className="text-[10px] font-bold text-purple-700 dark:text-purple-300 uppercase tracking-widest mb-4 flex items-center gap-2">
+                  Comparison Scenario B
+                  <InfoTooltip text="Select a different scenario to compare against your current setup (Scenario A)." />
+                </h2>
+                <div className="space-y-2">
+                  {SCENARIO_PRESETS.map(scenario => (
+                    <button
+                      key={scenario.id}
+                      onClick={() => setComparisonScenarioId(scenario.id)}
+                      className={`w-full text-left px-3 py-2 rounded-lg border text-xs transition-all ${
+                        comparisonScenarioId === scenario.id
+                          ? 'bg-purple-600 text-white border-purple-600 shadow-md'
+                          : 'bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-purple-400 dark:hover:border-purple-500'
+                      }`}
+                    >
+                      <div className="font-bold">{scenario.name}</div>
+                      <div className="text-[9px] opacity-75 mt-1">{scenario.description}</div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
 
             <div>
                 <h2 className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-4">Core Parameters</h2>
@@ -1896,10 +2151,66 @@ const App: React.FC = () => {
               )}
 
               <div className="flex-1 min-h-[300px] relative">
-                <WorldMap countryData={state.countryData} onCountryClick={handleCountryInvestment} viewMode={viewMode} />
-                
+                {comparisonMode ? (
+                  /* Comparison Mode - Split View (P7-T5) */
+                  <div className="h-full grid grid-cols-2 gap-4">
+                    {/* Left Side - Main Scenario */}
+                    <div className="flex flex-col h-full">
+                      <div className="mb-2 flex items-center justify-between bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 px-3 py-2 rounded-lg">
+                        <div className="text-xs font-bold text-blue-900 dark:text-blue-300 uppercase tracking-widest">Scenario A: Current</div>
+                        <div className="text-xs text-blue-700 dark:text-blue-400">Wellbeing: {state.averageWellbeing.toFixed(1)}</div>
+                      </div>
+                      <div className="flex-1 relative">
+                        <WorldMap
+                          countryData={state.countryData}
+                          onCountryClick={handleCountryInvestment}
+                          onCountrySelect={handleSelectCountry}
+                          viewMode={viewMode}
+                          selectedCountryId={selectedEntity?.type === 'country' ? selectedEntity.id : null}
+                          corporations={corporations}
+                          selectedCorpId={selectedEntity?.type === 'corporation' ? selectedEntity.id : null}
+                          selectedArchetype={selectedArchetype}
+                        />
+                      </div>
+                    </div>
+                    {/* Right Side - Comparison Scenario */}
+                    <div className="flex flex-col h-full">
+                      <div className="mb-2 flex items-center justify-between bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 px-3 py-2 rounded-lg">
+                        <div className="text-xs font-bold text-purple-900 dark:text-purple-300 uppercase tracking-widest">
+                          Scenario B: {SCENARIO_PRESETS.find(s => s.id === comparisonScenarioId)?.name || 'Alternative'} (Initial State)
+                        </div>
+                        <div className="text-xs text-purple-700 dark:text-purple-400">Month 0 Baseline</div>
+                      </div>
+                      <div className="flex-1 relative">
+                        <WorldMap
+                          countryData={comparisonState.countryData}
+                          onCountryClick={() => {}} // No investment in comparison view
+                          onCountrySelect={() => {}} // No selection in comparison view
+                          viewMode={viewMode}
+                          selectedCountryId={null}
+                          corporations={comparisonCorporations}
+                          selectedCorpId={null}
+                          selectedArchetype={selectedArchetype}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  /* Normal Mode - Single View */
+                  <WorldMap
+                    countryData={state.countryData}
+                    onCountryClick={handleCountryInvestment}
+                    onCountrySelect={handleSelectCountry}
+                    viewMode={viewMode}
+                    selectedCountryId={selectedEntity?.type === 'country' ? selectedEntity.id : null}
+                    corporations={corporations}
+                    selectedCorpId={selectedEntity?.type === 'corporation' ? selectedEntity.id : null}
+                    selectedArchetype={selectedArchetype}
+                  />
+                )}
+
                 {/* How To Start Hint Overlay */}
-                {showStartHint && !isPlaying && (
+                {!comparisonMode && showStartHint && !isPlaying && (
                     <div className="absolute top-4 right-4 z-20 w-48 bg-blue-600/95 text-white p-4 rounded-xl shadow-2xl backdrop-blur-sm animate-in fade-in slide-in-from-top-4 duration-700">
                         <div className="flex justify-between items-start mb-2">
                             <div className="flex items-center gap-2">
@@ -1919,6 +2230,61 @@ const App: React.FC = () => {
                         </div>
                     </div>
                 )}
+              </div>
+
+              {/* Archetype Filter */}
+              <div className="flex justify-center shrink-0 mt-2">
+                <div className="flex flex-wrap gap-1.5 p-2 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 shadow-sm max-w-xl">
+                  <div className="text-[9px] text-slate-500 dark:text-slate-400 uppercase font-bold tracking-widest w-full mb-1">Filter by Archetype:</div>
+                  <button
+                    onClick={() => setSelectedArchetype(null)}
+                    className={`px-2 py-1 rounded-md text-[9px] font-bold uppercase transition-all ${
+                      selectedArchetype === null ? 'bg-slate-600 text-white' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+                    }`}
+                  >
+                    All
+                  </button>
+                  <button
+                    onClick={() => setSelectedArchetype('rich-democracy')}
+                    className={`px-2 py-1 rounded-md text-[9px] font-bold uppercase transition-all ${
+                      selectedArchetype === 'rich-democracy' ? 'bg-emerald-600 text-white' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+                    }`}
+                  >
+                    Rich Democracy
+                  </button>
+                  <button
+                    onClick={() => setSelectedArchetype('middle-stable')}
+                    className={`px-2 py-1 rounded-md text-[9px] font-bold uppercase transition-all ${
+                      selectedArchetype === 'middle-stable' ? 'bg-blue-600 text-white' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+                    }`}
+                  >
+                    Middle Stable
+                  </button>
+                  <button
+                    onClick={() => setSelectedArchetype('developing-fragile')}
+                    className={`px-2 py-1 rounded-md text-[9px] font-bold uppercase transition-all ${
+                      selectedArchetype === 'developing-fragile' ? 'bg-amber-600 text-white' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+                    }`}
+                  >
+                    Developing Fragile
+                  </button>
+                  <button
+                    onClick={() => setSelectedArchetype('authoritarian')}
+                    className={`px-2 py-1 rounded-md text-[9px] font-bold uppercase transition-all ${
+                      selectedArchetype === 'authoritarian' ? 'bg-purple-600 text-white' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+                    }`}
+                  >
+                    Authoritarian
+                  </button>
+                  <button
+                    onClick={() => setSelectedArchetype('failed-state')}
+                    className={`px-2 py-1 rounded-md text-[9px] font-bold uppercase transition-all ${
+                      selectedArchetype === 'failed-state' ? 'bg-rose-600 text-white' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800'
+                    }`}
+                  >
+                    Failed State
+                  </button>
+                </div>
               </div>
 
               <div className="flex justify-center shrink-0 mt-2">
@@ -2001,6 +2367,73 @@ const App: React.FC = () => {
                         </AreaChart>
                      </ResponsiveContainer>
                   </div>
+
+                  <div className="h-[350px] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-sm relative overflow-hidden">
+                     <div className="flex items-start justify-between mb-4">
+                       <div>
+                         <h3 className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                           <TrendingDown size={14} /> Displacement Gap by Country
+                         </h3>
+                         <p className="text-[10px] text-slate-400 dark:text-slate-500 mt-1">
+                           Lost wages minus UBI received (k$ per capita/month)
+                         </p>
+                       </div>
+                       <div className="flex items-center gap-2 px-2 py-1 bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-800 rounded-lg">
+                         <div className="w-2 h-2 bg-rose-500 rounded-full animate-pulse"></div>
+                         <span className="text-[9px] font-bold text-rose-700 dark:text-rose-400 uppercase">
+                           {state.countriesInCrisis} in crisis
+                         </span>
+                       </div>
+                     </div>
+                     <ResponsiveContainer width="100%" height="100%">
+                        <LineChart data={chartData.slice(0, state.month + 1)} margin={{ top: 10, right: 30, left: 0, bottom: 20 }}>
+                            <CartesianGrid strokeDasharray="3 3" stroke={theme === 'light' ? '#e2e8f0' : '#1e293b'} vertical={false} />
+                            <XAxis
+                              dataKey="date"
+                              tick={{fontSize: 10, fill: theme === 'light' ? '#64748b' : '#94a3b8'}}
+                              axisLine={false}
+                              tickLine={false}
+                            />
+                            <YAxis
+                              tick={{fontSize: 10, fill: theme === 'light' ? '#64748b' : '#94a3b8'}}
+                              axisLine={false}
+                              tickLine={false}
+                              label={{ value: 'Displacement Gap (k$)', angle: -90, position: 'insideLeft', style: { fontSize: 10, fill: theme === 'light' ? '#64748b' : '#94a3b8' } }}
+                            />
+                            <Tooltip
+                                contentStyle={{ backgroundColor: theme === 'light' ? '#fff' : '#0f172a', border: '1px solid #334155', borderRadius: '12px', fontSize: '12px' }}
+                                itemStyle={{ color: theme === 'light' ? '#000' : '#fff' }}
+                                formatter={(value: any) => [`$${value.toFixed(2)}k`, '']}
+                            />
+                            <Legend
+                              wrapperStyle={{ fontSize: '10px', paddingTop: '10px' }}
+                              iconSize={8}
+                            />
+                            {selectedCountries.map((id, idx) => {
+                              const hue = (idx * 137) % 360;
+                              return (
+                                <Line
+                                  key={id}
+                                  type="monotone"
+                                  dataKey={`DisplacementGap_${id}`}
+                                  stroke={`hsl(${hue}, 70%, 60%)`}
+                                  strokeWidth={2}
+                                  dot={false}
+                                  name={id}
+                                  isAnimationActive={false}
+                                />
+                              );
+                            })}
+                        </LineChart>
+                     </ResponsiveContainer>
+                     <div className="mt-2 flex items-center gap-2 text-[9px] text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-800 px-3 py-2 rounded-lg">
+                       <Info size={12} />
+                       <span>
+                         When displacement gap {'>'} 30% of monthly wage, countries enter crisis mode (wellbeing penalty applied).
+                         Positive values = suffering, zero = full UBI coverage.
+                       </span>
+                     </div>
+                  </div>
               </div>
             </div>
           )}
@@ -2019,8 +2452,12 @@ const App: React.FC = () => {
                   <h2 className="text-xl font-bold text-slate-800 dark:text-white mb-4">Corporation Directory</h2>
                   <CorporationList
                     corporations={corporations}
-                    selectedCorpId={selectedCorpId}
-                    onSelectCorp={setSelectedCorpId}
+                    selectedCorpId={selectedEntity?.type === 'corporation' ? selectedEntity.id : null}
+                    onSelectCorp={handleSelectCorporation}
+                    selectedCorpIds={selectedCorpIds}
+                    onToggleCorpSelection={handleToggleCorpSelection}
+                    onSelectAllCorps={handleSelectAllCorps}
+                    onBulkUpdateContribution={handleBulkUpdateContribution}
                   />
                 </div>
               </div>
@@ -2911,9 +3348,17 @@ shadowWellbeing = max(1, shadowWellbeing - shadowFriction × 0.4)`}
 
       {/* Corporation Detail Panel (P5-T10) */}
       <CorporationDetailPanel
-        corporation={selectedCorpId ? corporations.find(c => c.id === selectedCorpId) || null : null}
-        onClose={() => setSelectedCorpId(null)}
+        corporation={selectedEntity?.type === 'corporation' ? corporations.find(c => c.id === selectedEntity.id) || null : null}
+        onClose={handleDeselectEntity}
         onUpdateCorp={updateCorporation}
+      />
+
+      {/* Country Detail Panel (P7-T2) */}
+      <CountryDetailPanel
+        country={selectedEntity?.type === 'country' ? state.countryData[selectedEntity.id] || null : null}
+        corporations={corporations}
+        onClose={handleDeselectEntity}
+        onUpdateCountry={updateCountry}
       />
     </div>
   );

@@ -1,24 +1,37 @@
 
 import React, { useState, useMemo } from 'react';
-import { ArrowUpDown, Search, Filter, TrendingUp, Building2, Globe2 } from 'lucide-react';
+import { ArrowUpDown, Search, Filter, TrendingUp, Building2, Globe2, CheckSquare, Square } from 'lucide-react';
 import { Corporation } from '../types';
 
 interface CorporationListProps {
   corporations: Corporation[];
   selectedCorpId: string | null;
   onSelectCorp: (id: string) => void;
+  selectedCorpIds: Set<string>;
+  onToggleCorpSelection: (id: string) => void;
+  onSelectAllCorps: (filter: 'us' | 'eu' | 'all' | 'clear') => void;
+  onBulkUpdateContribution: (newRate: number) => void;
 }
 
 type SortField = 'name' | 'hqCountry' | 'aiRevenue' | 'contributionRate' | 'strategy' | 'stance';
 type SortDirection = 'asc' | 'desc';
 
-const CorporationList: React.FC<CorporationListProps> = ({ corporations, selectedCorpId, onSelectCorp }) => {
+const CorporationList: React.FC<CorporationListProps> = ({
+  corporations,
+  selectedCorpId,
+  onSelectCorp,
+  selectedCorpIds,
+  onToggleCorpSelection,
+  onSelectAllCorps,
+  onBulkUpdateContribution
+}) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCountry, setFilterCountry] = useState<string>('all');
   const [filterStrategy, setFilterStrategy] = useState<string>('all');
   const [filterStance, setFilterStance] = useState<string>('all');
   const [sortField, setSortField] = useState<SortField>('aiRevenue');
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
+  const [bulkContributionRate, setBulkContributionRate] = useState(0.3);
 
   // Get unique countries
   const uniqueCountries = useMemo(() => {
@@ -300,11 +313,94 @@ const CorporationList: React.FC<CorporationListProps> = ({ corporations, selecte
         </div>
       </div>
 
+      {/* Bulk Selection and Edit Controls */}
+      <div className="p-4 bg-slate-50 dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700">
+        <div className="flex flex-col gap-3">
+          {/* Bulk Select Buttons */}
+          <div className="flex flex-wrap gap-2">
+            <span className="text-xs font-semibold text-slate-600 dark:text-slate-400 self-center">
+              Quick Select:
+            </span>
+            <button
+              onClick={() => onSelectAllCorps('us')}
+              className="px-3 py-1.5 text-xs font-medium bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
+            >
+              All US Corps
+            </button>
+            <button
+              onClick={() => onSelectAllCorps('eu')}
+              className="px-3 py-1.5 text-xs font-medium bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
+            >
+              All EU Corps
+            </button>
+            <button
+              onClick={() => onSelectAllCorps('all')}
+              className="px-3 py-1.5 text-xs font-medium bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
+            >
+              Select All
+            </button>
+            <button
+              onClick={() => onSelectAllCorps('clear')}
+              className="px-3 py-1.5 text-xs font-medium bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-600 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
+            >
+              Clear Selection
+            </button>
+            <span className="text-xs text-slate-500 dark:text-slate-400 self-center ml-2">
+              {selectedCorpIds.size} selected
+            </span>
+          </div>
+
+          {/* Bulk Edit Controls */}
+          {selectedCorpIds.size > 0 && (
+            <div className="flex flex-wrap items-center gap-3 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+              <span className="text-xs font-semibold text-blue-900 dark:text-blue-100">
+                Bulk Edit ({selectedCorpIds.size} corps):
+              </span>
+              <div className="flex items-center gap-2">
+                <label className="text-xs text-slate-700 dark:text-slate-300">
+                  Contribution Rate:
+                </label>
+                <input
+                  type="range"
+                  min="0"
+                  max="0.5"
+                  step="0.05"
+                  value={bulkContributionRate}
+                  onChange={(e) => setBulkContributionRate(parseFloat(e.target.value))}
+                  className="w-32"
+                />
+                <span className="text-xs font-semibold text-slate-900 dark:text-white min-w-[3rem]">
+                  {(bulkContributionRate * 100).toFixed(0)}%
+                </span>
+              </div>
+              <button
+                onClick={() => {
+                  onBulkUpdateContribution(bulkContributionRate);
+                  onSelectAllCorps('clear');
+                }}
+                className="px-4 py-1.5 text-xs font-bold bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Apply to Selected
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+
       {/* Table */}
       <div className="flex-1 overflow-auto">
         <table className="w-full">
           <thead className="bg-slate-100 dark:bg-slate-800 sticky top-0 z-10">
             <tr className="border-b border-slate-200 dark:border-slate-700">
+              <th className="px-4 py-3 w-10">
+                <div className="flex items-center justify-center">
+                  {selectedCorpIds.size > 0 ? (
+                    <CheckSquare size={16} className="text-blue-500" />
+                  ) : (
+                    <Square size={16} className="text-slate-400" />
+                  )}
+                </div>
+              </th>
               <th
                 className="px-4 py-3 text-left text-xs font-semibold text-slate-700 dark:text-slate-300 cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700"
                 onClick={() => handleSort('name')}
@@ -362,23 +458,49 @@ const CorporationList: React.FC<CorporationListProps> = ({ corporations, selecte
             </tr>
           </thead>
           <tbody>
-            {filteredAndSortedCorps.map((corp) => (
-              <tr
-                key={corp.id}
-                onClick={() => onSelectCorp(corp.id)}
-                className={`
-                  border-b border-slate-100 dark:border-slate-800 border-l-4
-                  ${getStanceBorderColor(corp.policyStance)}
-                  ${selectedCorpId === corp.id
-                    ? 'bg-blue-50 dark:bg-blue-900/20'
-                    : 'hover:bg-slate-50 dark:hover:bg-slate-800/50'
-                  }
-                  cursor-pointer transition-colors
-                `}
-              >
-                <td className="px-4 py-3 text-sm font-medium text-slate-900 dark:text-white">
-                  {corp.name}
-                </td>
+            {filteredAndSortedCorps.map((corp) => {
+              const isSelected = selectedCorpIds.has(corp.id);
+              return (
+                <tr
+                  key={corp.id}
+                  onClick={(e) => {
+                    if (e.shiftKey) {
+                      e.preventDefault();
+                      onToggleCorpSelection(corp.id);
+                    } else {
+                      onSelectCorp(corp.id);
+                    }
+                  }}
+                  className={`
+                    border-b border-slate-100 dark:border-slate-800 border-l-4
+                    ${getStanceBorderColor(corp.policyStance)}
+                    ${isSelected
+                      ? 'bg-blue-100 dark:bg-blue-900/30'
+                      : selectedCorpId === corp.id
+                        ? 'bg-blue-50 dark:bg-blue-900/20'
+                        : 'hover:bg-slate-50 dark:hover:bg-slate-800/50'
+                    }
+                    cursor-pointer transition-colors
+                  `}
+                >
+                  <td
+                    className="px-4 py-3"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onToggleCorpSelection(corp.id);
+                    }}
+                  >
+                    <div className="flex items-center justify-center">
+                      {isSelected ? (
+                        <CheckSquare size={16} className="text-blue-600 dark:text-blue-400" />
+                      ) : (
+                        <Square size={16} className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300" />
+                      )}
+                    </div>
+                  </td>
+                  <td className="px-4 py-3 text-sm font-medium text-slate-900 dark:text-white">
+                    {corp.name}
+                  </td>
                 <td className="px-4 py-3 text-sm text-slate-600 dark:text-slate-400">
                   {corp.headquartersCountry}
                 </td>
@@ -399,7 +521,8 @@ const CorporationList: React.FC<CorporationListProps> = ({ corporations, selecte
                   </span>
                 </td>
               </tr>
-            ))}
+              );
+            })}
           </tbody>
         </table>
 

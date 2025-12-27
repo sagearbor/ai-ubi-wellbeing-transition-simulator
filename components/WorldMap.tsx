@@ -8,9 +8,12 @@ import { ZoomIn, ZoomOut, Maximize } from 'lucide-react';
 interface WorldMapProps {
   countryData: Record<string, CountryStats>;
   onCountryClick: (id: string, delta: number) => void;
+  onCountrySelect?: (id: string) => void;
   viewMode: 'adoption' | 'wellbeing' | 'ubi-received' | 'corp-hqs';
+  selectedCountryId?: string | null;
   corporations?: Corporation[];
   selectedCorpId?: string | null;
+  selectedArchetype?: string | null;
 }
 
 // Exhaustive mapping for world-atlas 110m (standard ISO numeric IDs to ISO alpha-3)
@@ -63,7 +66,16 @@ const ID_MAP: Record<string, string> = {
   '036': 'AUS', '554': 'NZL', '598': 'PNG'
 };
 
-const WorldMap: React.FC<WorldMapProps> = ({ countryData, onCountryClick, viewMode, corporations = [], selectedCorpId = null }) => {
+const WorldMap: React.FC<WorldMapProps> = ({
+  countryData,
+  onCountryClick,
+  onCountrySelect,
+  viewMode,
+  selectedCountryId = null,
+  corporations = [],
+  selectedCorpId = null,
+  selectedArchetype = null
+}) => {
   const svgRef = useRef<SVGSVGElement>(null);
   const gRef = useRef<SVGGElement>(null);
   const [geography, setGeography] = useState<any>(null);
@@ -139,7 +151,12 @@ const WorldMap: React.FC<WorldMapProps> = ({ countryData, onCountryClick, viewMo
         })
         .on('click', (event, d: any) => {
           const isoCode = ID_MAP[d.id] || d.id;
-          onCountryClick(isoCode, 5);
+          // If Shift key is held, do investment; otherwise, select the country
+          if (event.shiftKey) {
+            onCountryClick(isoCode, 5);
+          } else {
+            onCountrySelect?.(isoCode);
+          }
         })
         .on('mouseover', function(event, d: any) {
           d3.select(this).attr('stroke', '#38bdf8').attr('stroke-width', 0.5).raise();
@@ -163,28 +180,48 @@ const WorldMap: React.FC<WorldMapProps> = ({ countryData, onCountryClick, viewMo
         const stats = countryData[isoCode];
         if (!stats) return '#1e293b'; // Fallback for unmapped IDs
 
+        // Dim countries that don't match the selected archetype
+        const isFiltered = selectedArchetype && stats.archetype !== selectedArchetype;
+        const dimFactor = isFiltered ? 0.2 : 1.0; // Dim to 20% opacity if filtered out
+
+        let baseColor: string;
         // Calculate color based on view mode
         if (viewMode === 'adoption') {
-          return d3.interpolateBlues(stats.aiAdoption);
+          baseColor = d3.interpolateBlues(stats.aiAdoption);
         } else if (viewMode === 'wellbeing') {
-          return d3.interpolateRdYlGn(stats.wellbeing / 100);
+          baseColor = d3.interpolateRdYlGn(stats.wellbeing / 100);
         } else if (viewMode === 'ubi-received') {
           // Color by UBI per capita (normalize to reasonable range 0-500/month)
           const ubiPerCapita = stats.totalUbiReceived / stats.population;
           const normalized = Math.min(1, ubiPerCapita / 500);
-          return d3.interpolateGreens(normalized);
+          baseColor = d3.interpolateGreens(normalized);
         } else if (viewMode === 'corp-hqs') {
           // Color by number of HQ corps (0-10 range)
           const hqCount = stats.headquarteredCorps?.length || 0;
           const normalized = Math.min(1, hqCount / 10);
-          return d3.interpolatePurples(normalized);
+          baseColor = d3.interpolatePurples(normalized);
+        } else {
+          baseColor = '#1e293b';
         }
-        return '#1e293b';
+
+        // Apply dimming if filtered
+        if (isFiltered) {
+          const rgb = d3.color(baseColor);
+          if (rgb) {
+            return d3.rgb(rgb.r * dimFactor, rgb.g * dimFactor, rgb.b * dimFactor).toString();
+          }
+        }
+        return baseColor;
       })
       .attr('stroke', (d: any) => {
         const isoCode = ID_MAP[d.id];
 
-        // Special border for selected corporation HQ
+        // Highest priority: selected country
+        if (selectedCountryId === isoCode) {
+          return '#10b981'; // Green border for selected country
+        }
+
+        // Second priority: selected corporation HQ
         if (selectedCorpId) {
           const selectedCorp = corporations.find(c => c.id === selectedCorpId);
           if (selectedCorp) {
@@ -203,7 +240,12 @@ const WorldMap: React.FC<WorldMapProps> = ({ countryData, onCountryClick, viewMo
       .attr('stroke-width', (d: any) => {
         const isoCode = ID_MAP[d.id];
 
-        // Thicker border for selected corporation countries
+        // Highest priority: selected country
+        if (selectedCountryId === isoCode) {
+          return 2.0; // Extra thick border for selected country
+        }
+
+        // Second priority: selected corporation countries
         if (selectedCorpId) {
           const selectedCorp = corporations.find(c => c.id === selectedCorpId);
           if (selectedCorp) {
@@ -218,7 +260,7 @@ const WorldMap: React.FC<WorldMapProps> = ({ countryData, onCountryClick, viewMo
         return 0.1;
       });
 
-  }, [geography, countryData, onCountryClick, viewMode, corporations, selectedCorpId]);
+  }, [geography, countryData, onCountryClick, onCountrySelect, viewMode, selectedCountryId, corporations, selectedCorpId, selectedArchetype]);
 
   return (
     <div className="relative w-full h-full min-h-[400px] bg-slate-900 rounded-2xl overflow-hidden shadow-2xl border border-slate-800 group">
@@ -236,7 +278,8 @@ const WorldMap: React.FC<WorldMapProps> = ({ countryData, onCountryClick, viewMo
         <div className="bg-slate-800/90 p-3 rounded-xl border border-slate-700 backdrop-blur shadow-xl">
           <div className="text-[10px] font-bold text-slate-500 uppercase mb-2 tracking-widest">Controls</div>
           <div className="flex flex-col gap-1 text-[9px] font-mono">
-            <div className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-sky-400" /> LEFT-CLICK: + AI GROWTH</div>
+            <div className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-emerald-400" /> LEFT-CLICK: SELECT</div>
+            <div className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-sky-400" /> SHIFT+CLICK: + AI GROWTH</div>
             <div className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-rose-400" /> RIGHT-CLICK: - AI GROWTH</div>
             <div className="flex items-center gap-2 text-slate-400 mt-1"><Maximize size={8} /> SCROLL/PINCH TO ZOOM</div>
           </div>
