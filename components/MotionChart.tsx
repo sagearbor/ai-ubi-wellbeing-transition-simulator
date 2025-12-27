@@ -277,28 +277,41 @@ const ThreeDChart: React.FC<{
   );
 };
 
-const MotionChart: React.FC<MotionChartProps> = ({ 
-    history, maxMonth, selectedCountries, allCountries, onToggleCountry, theme 
+const MotionChart: React.FC<MotionChartProps> = ({
+    history, maxMonth, selectedCountries, allCountries, onToggleCountry, theme
 }) => {
   const [is3D, setIs3D] = useState(false);
   const [fontSize, setFontSize] = useState(16);
+  const [showShadow, setShowShadow] = useState(true);
 
-  // Transform data for charts
+  // Transform data for charts including shadow data
   const chartData = useMemo(() => {
     return history.map(point => {
-      const data: any = { 
-          month: point.month, 
+      const data: any = {
+          month: point.month,
       };
-      
-      // Global
+
+      // Global - Main simulation
       data['Wellbeing_Global'] = point.state.averageWellbeing;
       const globalAdoption = (Object.values(point.state.countryData) as CountryStats[]).reduce((acc, curr) => acc + curr.aiAdoption, 0) / Object.keys(point.state.countryData).length * 100;
       data['Adoption_Global'] = globalAdoption;
 
-      // Countries
+      // Shadow Global - No intervention baseline
+      if (point.state.shadowCountryData) {
+        const shadowWellbeings = Object.values(point.state.shadowCountryData) as CountryStats[];
+        const shadowAvg = shadowWellbeings.reduce((acc, curr) => acc + curr.wellbeing, 0) / shadowWellbeings.length;
+        data['Shadow_Global'] = shadowAvg;
+      }
+
+      // Countries - Main + Shadow
       Object.keys(point.state.countryData).forEach(id => {
         data[`Wellbeing_${id}`] = point.state.countryData[id].wellbeing;
         data[`Adoption_${id}`] = point.state.countryData[id].aiAdoption * 100;
+
+        // Shadow per country
+        if (point.state.shadowCountryData && point.state.shadowCountryData[id]) {
+          data[`Shadow_${id}`] = point.state.shadowCountryData[id].wellbeing;
+        }
       });
       return data;
     });
@@ -321,7 +334,7 @@ const MotionChart: React.FC<MotionChartProps> = ({
              {is3D && (
                  <>
                     <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 px-1 rounded-lg border border-slate-200 dark:border-slate-700">
-                        <button 
+                        <button
                             onClick={() => setFontSize(s => Math.max(8, s - 2))}
                             className="p-1 hover:bg-slate-200 dark:hover:bg-slate-700 rounded text-slate-500"
                             title="Decrease Text Size"
@@ -329,7 +342,7 @@ const MotionChart: React.FC<MotionChartProps> = ({
                             <Minus size={12} />
                         </button>
                         <Type size={12} className="text-slate-500" />
-                        <button 
+                        <button
                             onClick={() => setFontSize(s => Math.min(24, s + 2))}
                             className="p-1 hover:bg-slate-200 dark:hover:bg-slate-700 rounded text-slate-500"
                             title="Increase Text Size"
@@ -344,7 +357,15 @@ const MotionChart: React.FC<MotionChartProps> = ({
                     </div>
                  </>
              )}
-            <button 
+            <button
+                onClick={() => setShowShadow(!showShadow)}
+                className={`px-3 py-2 rounded-xl text-xs font-bold uppercase tracking-widest flex items-center gap-2 transition-all shadow-sm ${showShadow ? 'bg-slate-600 text-white' : 'bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-700'}`}
+                title="Toggle No-Intervention Baseline"
+            >
+                <span className="w-3 h-0.5 bg-current border-dashed" style={{ borderStyle: 'dashed', borderWidth: '1px' }} />
+                Baseline
+            </button>
+            <button
                 onClick={() => setIs3D(!is3D)}
                 className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest flex items-center gap-2 transition-all shadow-sm ${is3D ? 'bg-blue-600 text-white shadow-blue-500/30' : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700'}`}
             >
@@ -381,18 +402,36 @@ const MotionChart: React.FC<MotionChartProps> = ({
                         labelFormatter={(v) => formatDate(v as number)}
                         contentStyle={{ backgroundColor: theme === 'light' ? '#fff' : '#0f172a', border: '1px solid #334155', borderRadius: '12px', fontSize: '12px', color: theme === 'light' ? '#000' : '#fff' }} 
                     />
+                    {/* Shadow Lines (No Intervention Baseline) */}
+                    {showShadow && selectedCountries.map((id, idx) => {
+                        return (
+                            <Line
+                                key={`shadow-${id}`}
+                                type="monotone"
+                                dataKey={`Shadow_${id}`}
+                                stroke="#6b7280"
+                                strokeWidth={2}
+                                strokeDasharray="5 5"
+                                strokeOpacity={0.6}
+                                dot={false}
+                                name={`${id} (No UBI)`}
+                                isAnimationActive={false}
+                            />
+                        );
+                    })}
+                    {/* Main Simulation Lines */}
                     {selectedCountries.map((id, idx) => {
                         const hue = (idx * 137) % 360;
                         return (
-                            <Line 
-                                key={id} 
-                                type="monotone" 
-                                dataKey={`Wellbeing_${id}`} 
-                                stroke={`hsl(${hue}, 70%, 60%)`} 
-                                strokeWidth={3} 
-                                dot={false} 
-                                name={id} 
-                                isAnimationActive={false} // Crucial for smooth "motion" playback
+                            <Line
+                                key={id}
+                                type="monotone"
+                                dataKey={`Wellbeing_${id}`}
+                                stroke={`hsl(${hue}, 70%, 60%)`}
+                                strokeWidth={3}
+                                dot={false}
+                                name={id}
+                                isAnimationActive={false}
                             />
                         );
                     })}
