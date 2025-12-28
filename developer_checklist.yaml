@@ -1,5 +1,5 @@
 # AI/UBI Transition Simulator - Development Checklist
-# Last Updated: 2024-12-27
+# Last Updated: 2024-12-28
 #
 # ARCHIVED PHASES: Phases 1-7 are complete and archived.
 # See: docs/archived/phases_1-7_completed.yaml
@@ -17,8 +17,8 @@ project: "wellbeing-transition-simulator"
 # COMPLETION SUMMARY
 # =============================================================================
 summary:
-  last_updated: "2024-12-27"
-  overall_status: "✅ ALL PHASES COMPLETE - Ready for new features"
+  last_updated: "2024-12-28"
+  overall_status: "🚧 Phase 8-9 Planned - Dynamic Models & Leaderboard"
 
   archived_phases:
     phases: [1, 2, 3, 4, 5, 6, 7]
@@ -33,41 +33,310 @@ summary:
       Phase 6: Game Theory & Adaptive Mechanisms (8 tasks)
       Phase 7: Per-Entity UI & Interaction (6 tasks)
 
-  # Add new phases here as needed
-  # Example:
-  # phase_8:
-  #   status: ⏳ Pending
-  #   description: "New feature set"
-  #   tasks: []
+  phase_8:
+    status: ⏳ Pending (0/12 tasks)
+    description: "Dynamic Model Configuration - user-uploadable economic models"
+
+  phase_9:
+    status: ⏳ Pending (0/12 tasks)
+    description: "Model Sharing & Leaderboard - community features"
 
 # =============================================================================
-# ACTIVE DEVELOPMENT
+# PHASE 8: DYNAMIC MODEL CONFIGURATION
 # =============================================================================
-# No active phases - all work complete!
-#
-# To add new work:
-# 1. Create a new phase section below (e.g., phase_8)
-# 2. Add tasks with id, name, file, status, depends_on
-# 3. Update the summary section above
-#
-# Example new phase:
-#
-# phase_8:
-#   name: "Your New Feature"
-#   description: "What this phase accomplishes"
-#   status: ⏳ Pending
-#
-#   tasks:
-#     - id: P8-T1
-#       name: "First task"
-#       file: "somefile.tsx"
-#       status: ⏳ Pending
-#       depends_on: []
-#       description: |
-#         What this task does...
+# Enable user-uploadable model files with custom equations
+# JSON/YAML configuration with JSON Schema validation
+# Hybrid approach: Preset models (easy) + Custom equations (advanced)
+# =============================================================================
+
+phase_8:
+  name: "Dynamic Model Configuration"
+  description: "User-uploadable economic models with custom equations using math.js library"
+  status: ⏳ Pending
+
+  design_principles:
+    - "Safe equation parsing with math.js (never use eval())"
+    - "JSON Schema validation for model files"
+    - "Whitelist allowed functions (sin, cos, exp, log, min, max, etc.)"
+    - "Timeout protection for runaway calculations"
+    - "Backward compatible with existing PRESET_MODELS"
+    - "Hybrid: preset models for beginners, custom equations for advanced"
+
+  security_requirements:
+    - "Never use eval() or Function() for equation execution"
+    - "Whitelist math functions only"
+    - "Validate variable names against allowed list"
+    - "100ms timeout for equation evaluation"
+    - "Max 500 chars, max 10 operations per equation"
+
+  tasks:
+    - id: P8-T1
+      name: "Install and configure math.js library"
+      file: "package.json, services/mathParser.ts"
+      status: ⏳ Pending
+      depends_on: []
+      description: |
+        npm install mathjs
+        Create sandboxed parser with limited scope and timeout wrapper
+
+    - id: P8-T2
+      name: "Define ModelConfig JSON Schema"
+      file: "schemas/modelConfig.schema.json"
+      status: ⏳ Pending
+      depends_on: [P8-T1]
+      description: |
+        JSON Schema for model files: name, version, author, parameters, equations
+        Support for: aiAdoptionGrowth, surplusGeneration, wellbeingDelta, etc.
+
+    - id: P8-T3
+      name: "Create equation parser service"
+      file: "services/equationParser.ts"
+      status: ⏳ Pending
+      depends_on: [P8-T1, P8-T2]
+      description: |
+        parseEquation(), validateEquation(), compileEquation()
+        Available vars: adoption, wellbeing, gdp, population, gini, etc.
+
+    - id: P8-T4
+      name: "Create ModelConfig TypeScript interface"
+      file: "types.ts"
+      status: ⏳ Pending
+      depends_on: [P8-T2]
+      description: |
+        Interfaces: ModelConfig, ParameterConfig, EquationSet, ModelMetadata
+
+    - id: P8-T5
+      name: "Create model validation service"
+      file: "services/modelValidator.ts"
+      status: ⏳ Pending
+      depends_on: [P8-T2, P8-T3, P8-T4]
+      description: |
+        validateModelConfig() using ajv for JSON Schema
+        Validate equations parse, variables valid, calculate complexity
+
+    - id: P8-T6
+      name: "Integrate custom equations into stepSimulation"
+      file: "App.tsx"
+      status: ⏳ Pending
+      depends_on: [P8-T3, P8-T4, P8-T5]
+      description: |
+        Add activeModelConfig state
+        Use custom equations when available, fallback to hardcoded
+        Compile equations once on model load for performance
+
+    - id: P8-T7
+      name: "Create model upload UI component"
+      file: "components/ModelUpload.tsx"
+      status: ⏳ Pending
+      depends_on: [P8-T5, P8-T6]
+      description: |
+        Drag-and-drop JSON/YAML upload
+        Real-time validation, preview, Apply/Reset buttons
+
+    - id: P8-T8
+      name: "Create model editor UI"
+      file: "components/ModelEditor.tsx"
+      status: ⏳ Pending
+      depends_on: [P8-T4, P8-T7]
+      description: |
+        Equation editor with syntax highlighting
+        Variable autocomplete, test button, export JSON
+
+    - id: P8-T9
+      name: "Add default equations as fallback"
+      file: "constants.ts"
+      status: ⏳ Pending
+      depends_on: [P8-T4]
+      description: |
+        DEFAULT_EQUATIONS constant extracted from current stepSimulation
+        Ensure 100% backward compatibility
+
+    - id: P8-T10
+      name: "Add Models tab to UI"
+      file: "App.tsx"
+      status: ⏳ Pending
+      depends_on: [P8-T7, P8-T8]
+      description: |
+        New "Models" tab with upload, editor, model list
+
+    - id: P8-T11
+      name: "Add YAML support"
+      file: "services/modelParser.ts"
+      status: ⏳ Pending
+      depends_on: [P8-T5]
+      description: |
+        npm install js-yaml
+        Auto-detect file type, convert YAML to JSON
+
+    - id: P8-T12
+      name: "Create example model files"
+      file: "examples/models/"
+      status: ⏳ Pending
+      depends_on: [P8-T9]
+      description: |
+        default-model.json, aggressive-growth.json, social-stability.json
+        README.md explaining format
 
 # =============================================================================
-# KNOWN ISSUES / FUTURE IMPROVEMENTS
+# PHASE 9: MODEL SHARING & LEADERBOARD
+# =============================================================================
+# Backend storage, run tracking, quality scoring, community features
+# Challenge: Prevent gaming while ranking "best" models
+# =============================================================================
+
+phase_9:
+  name: "Model Sharing & Leaderboard"
+  description: "Backend storage, run tracking, and community leaderboard"
+  status: ⏳ Pending
+
+  design_principles:
+    - "Multi-metric scoring (not just wellbeing)"
+    - "Equation complexity penalty (simpler = better)"
+    - "Sensitivity analysis (robust models rank higher)"
+    - "Peer voting with fraud detection"
+    - "Expert curation for featured models"
+
+  anti_gaming_measures:
+    - "Complexity penalty: Score -= log(complexity) * 5"
+    - "Sensitivity: Run 100x with ±10% param variance, std dev < 15"
+    - "Engagement: Min runs required to rank"
+    - "Peer review: Flag system for unrealistic models"
+    - "Expert curation: Top 10 manually verified"
+
+  scoring_formula: |
+    Score = (avgWellbeing × 0.40) + (stability × 0.25) +
+            (engagement × 0.15) + (peerRating × 0.10) + (simplicity × 0.10)
+
+  tasks:
+    - id: P9-T1
+      name: "Design backend API specification"
+      file: "docs/api-spec.md"
+      status: ⏳ Pending
+      depends_on: [P8-T4]
+      description: |
+        REST API: POST/GET models, POST runs, POST votes, POST flags, GET leaderboard
+
+    - id: P9-T2
+      name: "Create backend storage service interface"
+      file: "services/modelStorage.ts"
+      status: ⏳ Pending
+      depends_on: [P9-T1]
+      description: |
+        Abstract interface: saveModel, getModel, listModels, recordRun, etc.
+        Initial: localStorage. Future: Firebase/Supabase
+
+    - id: P9-T3
+      name: "Create run metadata tracking"
+      file: "types.ts"
+      status: ⏳ Pending
+      depends_on: [P8-T4]
+      description: |
+        Interfaces: RunRecord, ModelStats
+        Track: duration, finalWellbeing, gameTheoryOutcome, etc.
+
+    - id: P9-T4
+      name: "Implement model quality scoring"
+      file: "services/modelScoring.ts"
+      status: ⏳ Pending
+      depends_on: [P9-T3]
+      description: |
+        calculateComplexity(), runSensitivityAnalysis(), calculateFinalScore()
+
+    - id: P9-T5
+      name: "Create localStorage implementation"
+      file: "services/localModelStorage.ts"
+      status: ⏳ Pending
+      depends_on: [P9-T2]
+      description: |
+        Implement storage with localStorage
+        Max 50 models, 100 runs. Export/import JSON
+
+    - id: P9-T6
+      name: "Create leaderboard UI component"
+      file: "components/Leaderboard.tsx"
+      status: ⏳ Pending
+      depends_on: [P9-T4, P9-T5]
+      description: |
+        Sortable table: Rank, Name, Score, Runs, Author
+        Filter by category, Apply Model button
+
+    - id: P9-T7
+      name: "Create voting/flagging UI"
+      file: "components/ModelFeedback.tsx"
+      status: ⏳ Pending
+      depends_on: [P9-T5]
+      description: |
+        5-star rating, Flag as Unrealistic button
+        Reasons: unrealistic equations, gaming, broken
+
+    - id: P9-T8
+      name: "Add run tracking to simulation"
+      file: "App.tsx"
+      status: ⏳ Pending
+      depends_on: [P9-T3, P9-T5]
+      description: |
+        Auto-record runs at month 60
+        Update model stats, show notification
+
+    - id: P9-T9
+      name: "Add share model functionality"
+      file: "App.tsx, components/ModelEditor.tsx"
+      status: ⏳ Pending
+      depends_on: [P9-T5]
+      description: |
+        Share button, shareable URL with base64 model
+        Save to community library option
+
+    - id: P9-T10
+      name: "Create model detail modal"
+      file: "components/ModelDetail.tsx"
+      status: ⏳ Pending
+      depends_on: [P9-T6, P9-T7]
+      description: |
+        Equation preview, run history chart, sensitivity viz
+        Download JSON, Apply Model buttons
+
+    - id: P9-T11
+      name: "Add sensitivity analysis visualization"
+      file: "components/SensitivityChart.tsx"
+      status: ⏳ Pending
+      depends_on: [P9-T4]
+      description: |
+        Box plot of outcome distribution
+        Parameter sensitivity heatmap
+
+    - id: P9-T12
+      name: "Create expert curation workflow"
+      file: "services/modelCuration.ts"
+      status: ⏳ Pending
+      depends_on: [P9-T4, P9-T5]
+      description: |
+        isVerified, isFeatured flags
+        Curation queue, review process docs
+
+# =============================================================================
+# IMPLEMENTATION NOTES
+# =============================================================================
+implementation:
+  phase_8:
+    npm_packages: ["mathjs", "ajv", "js-yaml"]
+    estimated_effort: "3-4 weeks"
+    critical_path: "P8-T1 → P8-T3 → P8-T6"
+
+  phase_9:
+    npm_packages: ["uuid"]
+    future_backend: ["firebase", "supabase"]
+    estimated_effort: "4-5 weeks"
+    critical_path: "P9-T2 → P9-T5 → P9-T8"
+
+  testing:
+    - "Unit tests for equation parser edge cases"
+    - "Integration tests for model validation"
+    - "E2E tests for upload/apply workflow"
+    - "Security tests for malicious equation injection"
+
+# =============================================================================
+# BACKLOG
 # =============================================================================
 backlog:
   optional:
