@@ -10,7 +10,7 @@
 #   ⏳ = Pending
 #   ❌ = Blocked/Skipped
 
-version: "3.0"
+version: "3.1"
 project: "wellbeing-transition-simulator"
 
 # =============================================================================
@@ -18,7 +18,7 @@ project: "wellbeing-transition-simulator"
 # =============================================================================
 summary:
   last_updated: "2024-12-28"
-  overall_status: "🚧 Phase 8-9 Planned - Dynamic Models & Leaderboard"
+  overall_status: "🚧 Phase 8-9 Planned - Dynamic Models & Anchor Test Validation"
 
   archived_phases:
     phases: [1, 2, 3, 4, 5, 6, 7]
@@ -34,40 +34,211 @@ summary:
       Phase 7: Per-Entity UI & Interaction (6 tasks)
 
   phase_8:
-    status: ⏳ Pending (0/12 tasks)
-    description: "Dynamic Model Configuration - user-uploadable economic models"
+    status: ⏳ Pending (0/14 tasks)
+    description: "Dynamic Model Configuration with Anchor Test Validation"
 
   phase_9:
-    status: ⏳ Pending (0/12 tasks)
-    description: "Model Sharing & Leaderboard - community features"
+    status: ⏳ Pending (0/10 tasks)
+    description: "Model Sharing & Leaderboard with Automated Validation"
 
 # =============================================================================
-# PHASE 8: DYNAMIC MODEL CONFIGURATION
+# PHASE 8: DYNAMIC MODEL CONFIGURATION + ANCHOR TEST VALIDATION
 # =============================================================================
 # Enable user-uploadable model files with custom equations
-# JSON/YAML configuration with JSON Schema validation
-# Hybrid approach: Preset models (easy) + Custom equations (advanced)
+# Validate models using anchor test cases (causal invariants)
+# No manual curation required - fully automated validation
 # =============================================================================
 
 phase_8:
   name: "Dynamic Model Configuration"
-  description: "User-uploadable economic models with custom equations using math.js library"
+  description: "User-uploadable economic models with anchor test validation"
   status: ⏳ Pending
 
   design_principles:
     - "Safe equation parsing with math.js (never use eval())"
     - "JSON Schema validation for model files"
-    - "Whitelist allowed functions (sin, cos, exp, log, min, max, etc.)"
-    - "Timeout protection for runaway calculations"
+    - "Anchor test validation (causal invariants, not arbitrary scoring)"
+    - "Fully automated - no manual curation required"
     - "Backward compatible with existing PRESET_MODELS"
     - "Hybrid: preset models for beginners, custom equations for advanced"
 
   security_requirements:
     - "Never use eval() or Function() for equation execution"
-    - "Whitelist math functions only"
+    - "Whitelist math functions only (sin, cos, exp, log, min, max, pow, sqrt, abs)"
     - "Validate variable names against allowed list"
     - "100ms timeout for equation evaluation"
     - "Max 500 chars, max 10 operations per equation"
+    - "Complexity cap: max 200 lines equivalent, no external API calls"
+
+  # ---------------------------------------------------------------------------
+  # ANCHOR TEST VALIDATION SYSTEM
+  # ---------------------------------------------------------------------------
+  # Instead of arbitrary scoring formulas, we use anchor test cases that
+  # verify causal invariants - things that MUST be true in any valid model.
+  # These test DIRECTIONAL causality, not specific magnitudes.
+  # ---------------------------------------------------------------------------
+
+  anchor_test_philosophy: |
+    Why anchor tests instead of multi-metric scoring?
+
+    1. TRANSPARENCY: Users see exactly which behaviors their model violates
+    2. NO ARBITRARY WEIGHTS: No "wellbeing × 0.40 + stability × 0.25" formulas
+    3. TESTS CAUSALITY: "If X happens, Y must follow" - not ideology
+    4. HARDER TO GAME: Can't optimize for a score when testing logic
+    5. ALLOWS CREATIVITY: Novel models pass if they respect causal truths
+
+    Key insight: Test DIRECTIONAL assertions ("wellbeing must decline")
+    not MAGNITUDE assertions ("wellbeing must be > 70"). This avoids
+    being prescriptive while catching broken/gamed models.
+
+  anchor_tests:
+    - id: AT-1
+      name: "Displacement Without UBI (Dystopia Test)"
+      category: causal
+      description: |
+        If AI displaces 50%+ of jobs with zero UBI, wellbeing MUST decline.
+        This is a logical truth: humans need income to survive.
+      scenario:
+        displacementRate: 0.85
+        allCorpsContributionRate: 0
+        allCorpsPolicyStance: "selfish"
+      simulationMonths: 36
+      assertion: |
+        wellbeingDelta < -5
+        # Must decline significantly (directional, not magnitude)
+      rationale: "Automation without redistribution concentrates wealth and displaces workers"
+
+    - id: AT-2
+      name: "Generous UBI Prevents Collapse"
+      category: causal
+      description: |
+        With 40%+ contribution rates globally distributed, wellbeing should NOT collapse.
+        UBI exists specifically to prevent demand collapse.
+      scenario:
+        displacementRate: 0.80
+        allCorpsContributionRate: 0.40
+        distributionStrategy: "global"
+        allCorpsPolicyStance: "generous"
+      simulationMonths: 60
+      assertion: |
+        finalWellbeing >= initialWellbeing * 0.8
+        # Wellbeing maintained within 20% of starting point
+      rationale: "Redistribution prevents demand collapse spiral"
+
+    - id: AT-3
+      name: "Prisoner's Dilemma Dynamics"
+      category: equilibrium
+      description: |
+        When ALL corporations are selfish, the system should detect
+        race-to-bottom risk. This tests that game theory mechanics work.
+
+        NOTE: This does NOT assert "generous wins" - individual defectors
+        CAN benefit short-term. But collective defection should trigger
+        demand collapse detection.
+      scenario:
+        allCorpsPolicyStance: "selfish"
+        allCorpsContributionRate: 0.05
+      simulationMonths: 48
+      assertion: |
+        gameTheoryState.raceToBottomRisk > 0.6 at some point
+        # System correctly detects prisoner's dilemma dynamics
+      rationale: |
+        The test verifies the MECHANISM works, not that "good guys win."
+        A selfish country/corp CAN win individually while triggering
+        collective harm - this is realistic and allowed.
+
+    - id: AT-4
+      name: "Demand Collapse Triggers Adaptation"
+      category: causal
+      description: |
+        When customer wellbeing drops significantly, adaptive corporations
+        should respond by increasing contribution rates (self-interest).
+      scenario:
+        initialContributionRate: 0.10
+        allCorpsPolicyStance: "moderate"
+        marketPressure: 0.8
+      simulationMonths: 48
+      assertion: |
+        IF wellbeingDropped > 10 THEN avgContributionRate > initialRate
+        # Adaptation mechanism fires when needed
+      rationale: "Corporations act in enlightened self-interest to preserve customer base"
+
+    - id: AT-5
+      name: "Global Distribution Helps Poor Countries"
+      category: equilibrium
+      description: |
+        Compare global vs HQ-local distribution strategies.
+        Global distribution should benefit poor countries MORE than HQ-local.
+      scenario:
+        # Run two simulations: global vs hq-local
+        compareStrategies: ["global", "hq-local"]
+      simulationMonths: 60
+      assertion: |
+        poorCountriesWellbeing(global) > poorCountriesWellbeing(hqLocal)
+        # Where poorCountries = [HTI, AFG, YEM, ETH, COD, etc.]
+      rationale: "Flat global UBI redistributes from rich to poor nations"
+
+    - id: AT-6
+      name: "Money Conservation (Accounting Sanity)"
+      category: consistency
+      description: |
+        Total fund inflows must equal outflows (minus corruption leakage).
+        This is a basic accounting identity that must always hold.
+      scenario:
+        anyValidConfiguration: true
+      simulationMonths: 12
+      assertion: |
+        abs(totalInflow - totalOutflow - corruptionLeakage) / totalInflow < 0.01
+        # Within 1% tolerance for floating point
+      rationale: "Conservation of money - can't create or destroy funds"
+
+  validation_tiers:
+    tier_1_sanity:
+      description: "Must pass ALL - reject immediately if failed"
+      tests:
+        - "Bounds respected (adoption <= 100%, wellbeing >= 0)"
+        - "Money conservation (AT-6)"
+        - "Causality (effects don't precede causes)"
+        - "No infinite loops or NaN outputs"
+      action_on_fail: "REJECT - model is broken"
+
+    tier_2_anchors:
+      description: "Must pass 4/6 to be eligible for leaderboard"
+      tests: ["AT-1", "AT-2", "AT-3", "AT-4", "AT-5", "AT-6"]
+      action_on_fail: |
+        If score < 4/6: Require explanation from user
+        Display: "Your model deviates from expected behavior in X/6 scenarios"
+        Allow submission with justification for heterodox models
+
+    tier_3_ranking:
+      description: "Among valid models, rank by complexity (Occam's razor)"
+      scoring: |
+        Models that pass tier 1 + tier 2 are ranked by:
+        1. Complexity penalty (fewer parameters = better)
+        2. Equation simplicity (shorter equations = better)
+        Display metrics (wellbeing, fund size) for INFO only, not scoring
+
+  # ---------------------------------------------------------------------------
+  # ANTI-GAMING MEASURES
+  # ---------------------------------------------------------------------------
+  anti_gaming:
+    randomized_parameters: |
+      Don't always use exact scenario values (e.g., aiAdoption=0.8)
+      Use: 0.75 + rand(0.1) to prevent hardcoded responses
+
+    interpolation_tests: |
+      If model passes UBI=0 and UBI=1, also test UBI=0.37 (unexpected value)
+      Catch models that hardcode responses to known test values
+
+    consistency_checks: |
+      Generate 100 random scenarios
+      Flag models with suspiciously inconsistent behavior
+      (e.g., wellbeing jumps from 30 to 90 with tiny parameter change)
+
+    complexity_cap: |
+      Max 200 lines of equation logic
+      No eval(), no external API calls
+      Prevents obfuscation and hidden logic
 
   tasks:
     - id: P8-T1
@@ -77,7 +248,10 @@ phase_8:
       depends_on: []
       description: |
         npm install mathjs
-        Create sandboxed parser with limited scope and timeout wrapper
+        Create sandboxed parser with:
+        - Limited scope (whitelist functions only)
+        - Timeout wrapper (100ms max)
+        - No access to global scope or eval
 
     - id: P8-T2
       name: "Define ModelConfig JSON Schema"
@@ -85,8 +259,11 @@ phase_8:
       status: ⏳ Pending
       depends_on: [P8-T1]
       description: |
-        JSON Schema for model files: name, version, author, parameters, equations
-        Support for: aiAdoptionGrowth, surplusGeneration, wellbeingDelta, etc.
+        JSON Schema for model files:
+        - name, version, author, description
+        - parameters: array of {name, min, max, default, description}
+        - equations: {aiAdoptionGrowth, surplusGeneration, wellbeingDelta, ...}
+        - metadata: {overridesStandardCausality: boolean, justification?: string}
 
     - id: P8-T3
       name: "Create equation parser service"
@@ -94,8 +271,10 @@ phase_8:
       status: ⏳ Pending
       depends_on: [P8-T1, P8-T2]
       description: |
-        parseEquation(), validateEquation(), compileEquation()
-        Available vars: adoption, wellbeing, gdp, population, gini, etc.
+        Functions: parseEquation(), validateEquation(), compileEquation()
+        Available variables: adoption, wellbeing, gdp, population, gini,
+          contributionRate, displacementRate, fundSize, month, etc.
+        Returns compiled function for fast repeated evaluation
 
     - id: P8-T4
       name: "Create ModelConfig TypeScript interface"
@@ -103,7 +282,12 @@ phase_8:
       status: ⏳ Pending
       depends_on: [P8-T2]
       description: |
-        Interfaces: ModelConfig, ParameterConfig, EquationSet, ModelMetadata
+        Interfaces:
+        - ModelConfig: full model specification
+        - ParameterConfig: {name, min, max, default, description}
+        - EquationSet: {aiAdoptionGrowth, surplusGeneration, wellbeingDelta, ...}
+        - ModelMetadata: {author, version, overridesStandardCausality, justification}
+        - ValidationResult: {pass, score, failures, warnings}
 
     - id: P8-T5
       name: "Create model validation service"
@@ -111,38 +295,80 @@ phase_8:
       status: ⏳ Pending
       depends_on: [P8-T2, P8-T3, P8-T4]
       description: |
-        validateModelConfig() using ajv for JSON Schema
-        Validate equations parse, variables valid, calculate complexity
+        validateModelConfig(): JSON Schema validation with ajv
+        validateEquations(): All equations parse and use valid variables
+        calculateComplexity(): Count parameters, equation length, operations
 
     - id: P8-T6
+      name: "Extract pure simulation function"
+      file: "simulation/pure.ts"
+      status: ⏳ Pending
+      depends_on: [P8-T4]
+      description: |
+        Extract stepSimulation logic from App.tsx into pure function
+        stepSimulationPure(state, model, corps) => newState
+        No React state, no side effects - needed for anchor test runner
+
+    - id: P8-T7
+      name: "Implement anchor test definitions"
+      file: "validation/anchorTests.ts"
+      status: ⏳ Pending
+      depends_on: [P8-T4, P8-T6]
+      description: |
+        Define 6 anchor tests as TypeScript objects:
+        interface AnchorTest {
+          id: string;
+          name: string;
+          category: 'causal' | 'equilibrium' | 'consistency';
+          setup: (model, corps) => {model, corps};
+          simulationMonths: number;
+          assert: (initial, final, history) => {pass, reason};
+        }
+        Include randomization for anti-gaming
+
+    - id: P8-T8
+      name: "Implement anchor test runner"
+      file: "validation/testRunner.ts"
+      status: ⏳ Pending
+      depends_on: [P8-T6, P8-T7]
+      description: |
+        runAnchorTests(customModel, customCorps, tests) => ValidationResult[]
+        Run in Web Worker to avoid blocking UI
+        Return pass/fail with specific reasons for each test
+
+    - id: P8-T9
       name: "Integrate custom equations into stepSimulation"
       file: "App.tsx"
       status: ⏳ Pending
-      depends_on: [P8-T3, P8-T4, P8-T5]
+      depends_on: [P8-T3, P8-T5, P8-T6]
       description: |
         Add activeModelConfig state
         Use custom equations when available, fallback to hardcoded
         Compile equations once on model load for performance
 
-    - id: P8-T7
+    - id: P8-T10
       name: "Create model upload UI component"
       file: "components/ModelUpload.tsx"
       status: ⏳ Pending
-      depends_on: [P8-T5, P8-T6]
+      depends_on: [P8-T5, P8-T8, P8-T9]
       description: |
         Drag-and-drop JSON/YAML upload
-        Real-time validation, preview, Apply/Reset buttons
+        Real-time validation with anchor test results
+        Show: "Passed 5/6 anchor tests" with details
+        Apply/Reset buttons
 
-    - id: P8-T8
+    - id: P8-T11
       name: "Create model editor UI"
       file: "components/ModelEditor.tsx"
       status: ⏳ Pending
-      depends_on: [P8-T4, P8-T7]
+      depends_on: [P8-T4, P8-T10]
       description: |
         Equation editor with syntax highlighting
-        Variable autocomplete, test button, export JSON
+        Variable autocomplete (adoption, wellbeing, gdp, etc.)
+        "Test Equation" button for immediate feedback
+        Export to JSON, run anchor tests
 
-    - id: P8-T9
+    - id: P8-T12
       name: "Add default equations as fallback"
       file: "constants.ts"
       status: ⏳ Pending
@@ -150,169 +376,211 @@ phase_8:
       description: |
         DEFAULT_EQUATIONS constant extracted from current stepSimulation
         Ensure 100% backward compatibility
+        Serves as reference implementation for users
 
-    - id: P8-T10
+    - id: P8-T13
       name: "Add Models tab to UI"
       file: "App.tsx"
       status: ⏳ Pending
-      depends_on: [P8-T7, P8-T8]
+      depends_on: [P8-T10, P8-T11]
       description: |
-        New "Models" tab with upload, editor, model list
+        New "Models" tab with:
+        - Upload section (drag-drop or file picker)
+        - Equation editor section
+        - Validation results display
+        - Active model indicator
 
-    - id: P8-T11
-      name: "Add YAML support"
-      file: "services/modelParser.ts"
+    - id: P8-T14
+      name: "Add YAML support and example models"
+      file: "services/modelParser.ts, examples/models/"
       status: ⏳ Pending
-      depends_on: [P8-T5]
+      depends_on: [P8-T5, P8-T12]
       description: |
         npm install js-yaml
         Auto-detect file type, convert YAML to JSON
-
-    - id: P8-T12
-      name: "Create example model files"
-      file: "examples/models/"
-      status: ⏳ Pending
-      depends_on: [P8-T9]
-      description: |
-        default-model.json, aggressive-growth.json, social-stability.json
-        README.md explaining format
+        Create example models:
+        - default-model.json (current behavior)
+        - aggressive-growth.json (high adoption incentive)
+        - social-stability.json (high UBI, low displacement)
+        - README.md explaining format and anchor tests
 
 # =============================================================================
 # PHASE 9: MODEL SHARING & LEADERBOARD
 # =============================================================================
-# Backend storage, run tracking, quality scoring, community features
-# Challenge: Prevent gaming while ranking "best" models
+# Automated leaderboard using anchor test validation
+# No manual curation - models that pass anchors are eligible
+# Ranking by complexity (Occam's razor) among valid models
 # =============================================================================
 
 phase_9:
   name: "Model Sharing & Leaderboard"
-  description: "Backend storage, run tracking, and community leaderboard"
+  description: "Community model sharing with automated anchor test validation"
   status: ⏳ Pending
 
   design_principles:
-    - "Multi-metric scoring (not just wellbeing)"
-    - "Equation complexity penalty (simpler = better)"
-    - "Sensitivity analysis (robust models rank higher)"
-    - "Peer voting with fraud detection"
-    - "Expert curation for featured models"
+    - "Fully automated - no manual curation required"
+    - "Anchor tests as gatekeeping (must pass 4/6 to rank)"
+    - "Complexity penalty for ranking (simpler = better)"
+    - "Display metrics for info only, not scoring"
+    - "Peer feedback for community engagement (not scoring)"
+    - "Transparent validation - users see exactly why models pass/fail"
 
-  anti_gaming_measures:
-    - "Complexity penalty: Score -= log(complexity) * 5"
-    - "Sensitivity: Run 100x with ±10% param variance, std dev < 15"
-    - "Engagement: Min runs required to rank"
-    - "Peer review: Flag system for unrealistic models"
-    - "Expert curation: Top 10 manually verified"
+  leaderboard_philosophy: |
+    How we avoid "thumb on the scales":
 
-  scoring_formula: |
-    Score = (avgWellbeing × 0.40) + (stability × 0.25) +
-            (engagement × 0.15) + (peerRating × 0.10) + (simplicity × 0.10)
+    1. ANCHOR TESTS are the only gate - pass 4/6 to be eligible
+    2. RANKING is by complexity only (Occam's razor)
+       - Fewer parameters = higher rank
+       - Shorter equations = higher rank
+    3. DISPLAY METRICS (wellbeing, fund growth) shown for info
+       - Users can sort by these, but they don't affect rank
+    4. NO WEIGHTED FORMULAS - no "wellbeing × 0.40 + stability × 0.25"
+
+    This means a simple model that passes anchors ranks higher than
+    a complex model with "better" outcomes. Simplicity is rewarded.
+
+  leaderboard_entry:
+    required_fields:
+      - modelId: "UUID"
+      - authorName: "string"
+      - modelName: "string"
+      - uploadDate: "ISO timestamp"
+      - anchorTestsPassed: "number (0-6)"
+      - complexityScore: "number (lower = better)"
+
+    display_fields:
+      - avgWellbeingAt60Months: "number (for info)"
+      - fundEfficiencyRatio: "number (for info)"
+      - giniReduction: "number (for info)"
+      - totalRuns: "number"
+      - communityRating: "1-5 stars (for info)"
+
+    ranking_formula: |
+      # Only models with anchorTestsPassed >= 4 are ranked
+      rank = 1000 - complexityScore
+      # Ties broken by upload date (earlier = higher)
 
   tasks:
     - id: P9-T1
-      name: "Design backend API specification"
-      file: "docs/api-spec.md"
+      name: "Design storage schema and API"
+      file: "docs/api-spec.md, types.ts"
       status: ⏳ Pending
-      depends_on: [P8-T4]
+      depends_on: [P8-T4, P8-T7]
       description: |
-        REST API: POST/GET models, POST runs, POST votes, POST flags, GET leaderboard
+        Interfaces: StoredModel, RunRecord, LeaderboardEntry
+        API spec: POST/GET models, POST runs, GET leaderboard
+        Include anchor test results in stored model
 
     - id: P9-T2
-      name: "Create backend storage service interface"
+      name: "Create storage service interface"
       file: "services/modelStorage.ts"
       status: ⏳ Pending
       depends_on: [P9-T1]
       description: |
-        Abstract interface: saveModel, getModel, listModels, recordRun, etc.
-        Initial: localStorage. Future: Firebase/Supabase
+        Abstract interface:
+        - saveModel(model, anchorResults) => modelId
+        - getModel(id) => StoredModel
+        - listModels(filter, sort) => StoredModel[]
+        - recordRun(modelId, runData) => void
+        - getLeaderboard(limit) => LeaderboardEntry[]
 
     - id: P9-T3
-      name: "Create run metadata tracking"
-      file: "types.ts"
-      status: ⏳ Pending
-      depends_on: [P8-T4]
-      description: |
-        Interfaces: RunRecord, ModelStats
-        Track: duration, finalWellbeing, gameTheoryOutcome, etc.
-
-    - id: P9-T4
-      name: "Implement model quality scoring"
-      file: "services/modelScoring.ts"
-      status: ⏳ Pending
-      depends_on: [P9-T3]
-      description: |
-        calculateComplexity(), runSensitivityAnalysis(), calculateFinalScore()
-
-    - id: P9-T5
-      name: "Create localStorage implementation"
+      name: "Implement localStorage backend"
       file: "services/localModelStorage.ts"
       status: ⏳ Pending
       depends_on: [P9-T2]
       description: |
-        Implement storage with localStorage
-        Max 50 models, 100 runs. Export/import JSON
+        localStorage implementation of storage interface
+        Limits: Max 50 models, 100 runs per model
+        Export/import as JSON for backup
+        Future: swap to Firebase/Supabase
 
-    - id: P9-T6
-      name: "Create leaderboard UI component"
+    - id: P9-T4
+      name: "Implement complexity scoring"
+      file: "services/complexityScorer.ts"
+      status: ⏳ Pending
+      depends_on: [P8-T4]
+      description: |
+        calculateComplexity(model) => number
+        Factors:
+        - Parameter count (each param = +10)
+        - Total equation length (each 100 chars = +5)
+        - Operation count (each op = +1)
+        - Nested functions (each level = +3)
+        Lower score = simpler = better
+
+    - id: P9-T5
+      name: "Create leaderboard UI"
       file: "components/Leaderboard.tsx"
       status: ⏳ Pending
-      depends_on: [P9-T4, P9-T5]
+      depends_on: [P9-T3, P9-T4]
       description: |
-        Sortable table: Rank, Name, Score, Runs, Author
-        Filter by category, Apply Model button
+        Sortable table columns:
+        - Rank (by complexity among valid models)
+        - Model Name
+        - Author
+        - Anchors Passed (X/6)
+        - Complexity Score
+        - Avg Wellbeing (display only)
+        - Runs
+        Filter: "Show only models passing 6/6 anchors"
+        Action: "Apply Model" button
 
-    - id: P9-T7
-      name: "Create voting/flagging UI"
-      file: "components/ModelFeedback.tsx"
-      status: ⏳ Pending
-      depends_on: [P9-T5]
-      description: |
-        5-star rating, Flag as Unrealistic button
-        Reasons: unrealistic equations, gaming, broken
-
-    - id: P9-T8
-      name: "Add run tracking to simulation"
-      file: "App.tsx"
-      status: ⏳ Pending
-      depends_on: [P9-T3, P9-T5]
-      description: |
-        Auto-record runs at month 60
-        Update model stats, show notification
-
-    - id: P9-T9
-      name: "Add share model functionality"
-      file: "App.tsx, components/ModelEditor.tsx"
-      status: ⏳ Pending
-      depends_on: [P9-T5]
-      description: |
-        Share button, shareable URL with base64 model
-        Save to community library option
-
-    - id: P9-T10
+    - id: P9-T6
       name: "Create model detail modal"
       file: "components/ModelDetail.tsx"
       status: ⏳ Pending
-      depends_on: [P9-T6, P9-T7]
+      depends_on: [P9-T5]
       description: |
-        Equation preview, run history chart, sensitivity viz
+        Anchor test results with pass/fail reasons
+        Equation preview (read-only)
+        Run history chart
+        Community rating (display)
         Download JSON, Apply Model buttons
 
-    - id: P9-T11
-      name: "Add sensitivity analysis visualization"
-      file: "components/SensitivityChart.tsx"
+    - id: P9-T7
+      name: "Add run tracking to simulation"
+      file: "App.tsx"
       status: ⏳ Pending
-      depends_on: [P9-T4]
+      depends_on: [P9-T3]
       description: |
-        Box plot of outcome distribution
-        Parameter sensitivity heatmap
+        Auto-record runs when simulation reaches month 60
+        Track: finalWellbeing, fundSize, gameTheoryOutcome
+        Update model's run count and average metrics
+        Show "Run recorded" notification
 
-    - id: P9-T12
-      name: "Create expert curation workflow"
-      file: "services/modelCuration.ts"
+    - id: P9-T8
+      name: "Add share functionality"
+      file: "components/ModelEditor.tsx"
       status: ⏳ Pending
-      depends_on: [P9-T4, P9-T5]
+      depends_on: [P9-T3]
       description: |
-        isVerified, isFeatured flags
-        Curation queue, review process docs
+        "Share to Leaderboard" button
+        Requires anchor test pass (4/6 minimum)
+        Generate shareable URL with base64 model
+        Option to keep model private (local only)
+
+    - id: P9-T9
+      name: "Add community rating UI"
+      file: "components/ModelRating.tsx"
+      status: ⏳ Pending
+      depends_on: [P9-T5]
+      description: |
+        5-star rating (informational, not for ranking)
+        Optional comment field
+        "Flag as broken" button (for truly broken models)
+        Flagged models reviewed = excluded if confirmed broken
+
+    - id: P9-T10
+      name: "Add Leaderboard tab to main UI"
+      file: "App.tsx"
+      status: ⏳ Pending
+      depends_on: [P9-T5, P9-T6]
+      description: |
+        New "Leaderboard" tab
+        Shows community models ranked by complexity
+        Filter by anchor score, author, date
+        Quick-apply models to current simulation
 
 # =============================================================================
 # IMPLEMENTATION NOTES
@@ -320,20 +588,33 @@ phase_9:
 implementation:
   phase_8:
     npm_packages: ["mathjs", "ajv", "js-yaml"]
-    estimated_effort: "3-4 weeks"
-    critical_path: "P8-T1 → P8-T3 → P8-T6"
+    critical_path: "P8-T1 → P8-T3 → P8-T6 → P8-T7 → P8-T8"
+    key_files:
+      - "services/mathParser.ts (equation parsing)"
+      - "validation/anchorTests.ts (test definitions)"
+      - "validation/testRunner.ts (test execution)"
+      - "simulation/pure.ts (extracted pure simulation)"
 
   phase_9:
     npm_packages: ["uuid"]
     future_backend: ["firebase", "supabase"]
-    estimated_effort: "4-5 weeks"
-    critical_path: "P9-T2 → P9-T5 → P9-T8"
+    critical_path: "P9-T1 → P9-T3 → P9-T5 → P9-T7"
+    key_files:
+      - "services/modelStorage.ts (storage interface)"
+      - "services/complexityScorer.ts (ranking logic)"
+      - "components/Leaderboard.tsx (main UI)"
 
   testing:
     - "Unit tests for equation parser edge cases"
-    - "Integration tests for model validation"
-    - "E2E tests for upload/apply workflow"
+    - "Unit tests for each anchor test definition"
+    - "Integration tests for model validation pipeline"
+    - "E2E tests for upload → validate → apply workflow"
     - "Security tests for malicious equation injection"
+    - "Anti-gaming tests (randomized parameters, interpolation)"
+
+  estimated_effort:
+    phase_8: "2-3 weeks (anchor tests add ~1 week to original estimate)"
+    phase_9: "2-3 weeks (simpler without manual curation)"
 
 # =============================================================================
 # BACKLOG
@@ -359,3 +640,5 @@ backlog:
     - "Add mobile-responsive improvements"
     - "Add accessibility improvements (a11y)"
     - "Add internationalization (i18n)"
+    - "Add sensitivity analysis visualization (box plots of param variance)"
+    - "Add 'heterodox model' badge for models that declare overridesStandardCausality"
