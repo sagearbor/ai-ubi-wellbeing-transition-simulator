@@ -1,0 +1,44 @@
+id: aggressive-growth
+name: Aggressive Growth Model
+description: >
+  Optimized for rapid AI adoption with higher displacement tolerance.
+  Bets on fast transition to abundance with stronger UBI effects.
+
+parameters:
+  - name: aiGrowthRate
+    min: 0.05
+    max: 0.25
+    default: 0.15
+    description: Accelerated AI adoption rate
+    unit: per month
+
+  - name: displacementRate
+    min: 0.60
+    max: 0.95
+    default: 0.85
+    description: Higher displacement for faster transition
+    unit: "%"
+
+  - name: ubiBoostCoeff
+    min: 0.15
+    max: 0.50
+    default: 0.30
+    description: Stronger UBI effect
+
+equations:
+  aiAdoptionGrowth: "aiGrowthRate * 1.5 * (1 + gdpPerCapita / 80000) * (1 - adoption)"
+  surplusGeneration: "aiRevenue * contributionRate * 1.1"
+  wellbeingDelta: "ubiBoost * 0.30 - displacementFriction * 0.08"
+  displacementFriction: "sin(adoption * 3.14159) * 30 * pow(1 - governance, 1.2)"
+  ubiUtility: "(ubi / utilityScale) * 150"
+
+metadata:
+  author: Example
+  version: "1.0.0"
+  createdAt: "2024-12-28T00:00:00Z"
+  description: Prioritizes speed of transition over stability
+  overridesStandardCausality: false
+  tags:
+    - aggressive
+    - optimistic
+    - fast-transition
