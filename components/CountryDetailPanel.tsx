@@ -144,6 +144,14 @@ const CountryDetailPanel: React.FC<CountryDetailPanelProps> = ({
     });
   };
 
+  // Handle AI adoption change
+  const handleAiAdoptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newAdoption = parseFloat(e.target.value) / 100; // Convert from percentage
+    onUpdateCountry(country.id, {
+      aiAdoption: newAdoption
+    });
+  };
+
   // Format large numbers
   const formatNumber = (value: number) => {
     if (value >= 1e9) return `$${(value / 1e9).toFixed(2)}B`;
@@ -285,13 +293,6 @@ const CountryDetailPanel: React.FC<CountryDetailPanelProps> = ({
               </div>
 
               <div>
-                <div className="text-xs text-slate-500 dark:text-slate-400 mb-1">AI Adoption</div>
-                <div className="text-lg font-bold text-slate-900 dark:text-white">
-                  {formatPercent(country.aiAdoption)}
-                </div>
-              </div>
-
-              <div>
                 <div className="text-xs text-slate-500 dark:text-slate-400 mb-1">Governance</div>
                 <div className="text-lg font-bold text-slate-900 dark:text-white">
                   {formatPercent(country.governance)}
@@ -302,7 +303,12 @@ const CountryDetailPanel: React.FC<CountryDetailPanelProps> = ({
                 <div className="text-xs text-slate-500 dark:text-slate-400 mb-1 flex items-center gap-1">
                   Displacement gap
                   {(country.displacementGap || 0) > 0 && (
-                    <AlertCircle size={12} className="text-orange-500" />
+                    <div className="relative group">
+                      <AlertCircle size={12} className="text-orange-500 cursor-help" />
+                      <div className="absolute left-0 bottom-full mb-1 hidden group-hover:block w-48 p-2 bg-slate-800 dark:bg-slate-700 text-white text-xs rounded shadow-lg z-50">
+                        Gap between AI adoption and UBI coverage. High values indicate worker displacement without adequate support.
+                      </div>
+                    </div>
                   )}
                 </div>
                 <div className={`text-lg font-bold ${(country.displacementGap || 0) > 0 ? 'text-orange-600 dark:text-orange-400' : 'text-green-600 dark:text-green-400'}`}>
@@ -362,12 +368,48 @@ const CountryDetailPanel: React.FC<CountryDetailPanelProps> = ({
             </div>
           </div>
 
+          {/* NATION-LEVEL CONTROLS */}
+          <div className="bg-gradient-to-br from-purple-50 to-blue-50 dark:from-slate-800 dark:to-slate-900 rounded-lg p-4 space-y-4 border border-purple-200 dark:border-slate-700">
+            <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wide flex items-center gap-2">
+              <Globe2 size={16} />
+              Nation-Level Controls
+            </h3>
+
+            {/* AI Adoption Slider */}
+            <div>
+              <div className="flex items-center justify-between mb-2">
+                <label className="text-xs font-medium text-slate-700 dark:text-slate-300">
+                  AI Adoption Level
+                </label>
+                <span className="text-sm font-bold text-purple-600 dark:text-purple-400">
+                  {formatPercent(country.aiAdoption)}
+                </span>
+              </div>
+              <input
+                type="range"
+                min="0"
+                max="100"
+                step="1"
+                value={country.aiAdoption * 100}
+                onChange={handleAiAdoptionChange}
+                className="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer slider"
+              />
+              <div className="flex justify-between text-xs text-slate-500 dark:text-slate-400 mt-1">
+                <span>0%</span>
+                <span>100%</span>
+              </div>
+              <div className="text-xs text-slate-500 dark:text-slate-400 mt-2">
+                Direct intervention: set how much AI is deployed in this country
+              </div>
+            </div>
+          </div>
+
           {/* LIMITED POLICY CONTROLS */}
           {country.nationalPolicy && (
             <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-slate-800 dark:to-slate-900 rounded-lg p-4 space-y-4 border border-blue-200 dark:border-slate-700">
               <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wide flex items-center gap-2">
                 <ShieldCheck size={16} />
-                Limited Policy (What Nations Can Control)
+                Policy Controls
               </h3>
 
               {/* Direct Wallet Toggle */}

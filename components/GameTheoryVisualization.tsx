@@ -35,9 +35,13 @@ const GameTheoryVisualization: React.FC<GameTheoryVisualizationProps> = ({
     { min: 0.40, max: 0.50, label: '40-50%' },
   ];
 
-  const histogram = bins.map(bin => ({
+  const histogram = bins.map((bin, idx) => ({
     ...bin,
-    count: corporations.filter(c => c.contributionRate >= bin.min && c.contributionRate < bin.max).length,
+    // Use <= for the last bin to include the max value (e.g., 0.50), < for others
+    count: corporations.filter(c =>
+      c.contributionRate >= bin.min &&
+      (idx === bins.length - 1 ? c.contributionRate <= bin.max : c.contributionRate < bin.max)
+    ).length,
   }));
 
   const maxCount = Math.max(...histogram.map(h => h.count), 1);
