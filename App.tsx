@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { AreaChart, Area, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { AreaChart, Area, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ScatterChart, Scatter, ZAxis, ReferenceLine } from 'recharts';
 import { Globe, TrendingUp, TrendingDown, Sparkles, Share2, ChevronDown, BrainCircuit, FlaskConical, Database, MousePointer2, PlayCircle, Menu, X, BookOpen, Lightbulb, ArrowRight, ArrowLeft, Info, FileText, Sun, Moon, Copy, Settings, Download, Upload, Trophy } from 'lucide-react';
 import WorldMap from './components/WorldMap';
 import SimulationControls from './components/SimulationControls';
@@ -9,6 +9,7 @@ import CorporationList from './components/CorporationList';
 import CorporationDetailPanel from './components/CorporationDetailPanel';
 import CountryDetailPanel from './components/CountryDetailPanel';
 import GameTheoryVisualization from './components/GameTheoryVisualization';
+import { WellbeingScatterPlot } from './components/WellbeingScatterPlot';
 import { ModelUpload } from './components/ModelUpload';
 import { ModelEditor } from './components/ModelEditor';
 import { Leaderboard } from './components/Leaderboard';
@@ -2567,6 +2568,12 @@ const App: React.FC = () => {
                        </span>
                      </div>
                   </div>
+
+                  {/* AI Adoption vs Wellbeing Scatter Plot */}
+                  <WellbeingScatterPlot
+                    countryData={state.countryData}
+                    month={state.month}
+                  />
               </div>
             </div>
           )}
