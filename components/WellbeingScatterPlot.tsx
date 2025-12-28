@@ -283,6 +283,7 @@ export const WellbeingScatterPlot: React.FC<WellbeingScatterPlotProps> = ({
                 data={data}
                 fill={archetypeColors[archetype] || '#6b7280'}
                 fillOpacity={0.7}
+                isAnimationActive={false}
               />
             ))}
 

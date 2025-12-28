@@ -2571,6 +2571,7 @@ const App: React.FC = () => {
 
                   {/* AI Adoption vs Wellbeing Scatter Plot */}
                   <WellbeingScatterPlot
+                    key={`scatter-${state.month}`}
                     countryData={state.countryData}
                     month={state.month}
                   />
