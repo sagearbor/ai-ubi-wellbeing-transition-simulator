@@ -1,5 +1,5 @@
 
-import { ModelParameters, CountryStats, Corporation, ScenarioPreset } from './types';
+import { ModelParameters, CountryStats, Corporation, ScenarioPreset, EquationSet, ModelConfig } from './types';
 
 // Helper to determine archetype based on GDP and governance
 type Archetype = 'rich-democracy' | 'middle-stable' | 'developing-fragile' | 'authoritarian' | 'failed-state';
@@ -1557,3 +1557,74 @@ export const SCENARIO_PRESETS: ScenarioPreset[] = [
     ]
   }
 ];
+
+/**
+ * DEFAULT_EQUATIONS - Reference implementation extracted from stepSimulation
+ * These equations encode the standard causal model for the simulator.
+ * User-uploaded models can override these, but must pass anchor tests.
+ */
+export const DEFAULT_EQUATIONS: EquationSet = {
+  // AI adoption growth formula
+  // Variables: aiGrowthRate, gdpPerCapita, aiAdoptionLevel, adoption (country)
+  aiAdoptionGrowth: 'aiGrowthRate * (1 + gdpPerCapita / 100000) * aiAdoptionLevel * 0.1 * (1 - adoption)',
+
+  // Corporation surplus generation
+  // Variables: aiRevenue, contributionRate
+  surplusGeneration: 'aiRevenue * contributionRate',
+
+  // Wellbeing change formula
+  // Variables: ubiBoost, displacementFriction
+  // Coefficients: UBI boost = 0.20, Displacement friction = 0.12
+  wellbeingDelta: 'ubiBoost * 0.20 - displacementFriction * 0.12',
+
+  // Displacement friction formula
+  // Variables: adoption, governance, gini
+  // Uses sin() for peak friction at mid-transition
+  displacementFriction: 'sin(adoption * 3.14159) * 40 * pow(1 - governance, 1.5) * (1 + gini * 0.5)',
+
+  // UBI utility conversion
+  // Variables: ubi, utilityScale (gdpPerCapita/40 + 150)
+  ubiUtility: '(ubi / utilityScale) * 120',
+
+  // Gini dampening effect
+  // Variables: gini
+  giniDamping: '1.5 - gini',
+
+  // Demand collapse projection
+  // Variables: customerBaseWellbeing
+  demandCollapse: 'customerBaseWellbeing < 40 ? min(0.8, (50 - customerBaseWellbeing) / 100) : 0',
+
+  // Reputation change (simplified)
+  // Variables: policyStance (encoded as number), contributionRate, avgContributionRate
+  reputationChange: 'contributionRate > avgContributionRate ? 2 : (contributionRate < avgContributionRate * 0.5 ? -3 : 0)'
+};
+
+/**
+ * DEFAULT_MODEL_CONFIG - The standard model as a ModelConfig object
+ * This serves as a reference for users creating custom models
+ */
+export const DEFAULT_MODEL_CONFIG: ModelConfig = {
+  id: 'standard-v1',
+  name: 'Standard Economic Model',
+  description: 'The default causal model implementing corporation-driven UBI with game theory dynamics. Balances displacement friction against UBI utility with governance-modulated effects.',
+
+  parameters: [
+    { name: 'aiGrowthRate', min: 0.01, max: 0.20, default: 0.08, description: 'Base AI adoption growth rate', unit: 'per month' },
+    { name: 'displacementRate', min: 0.50, max: 0.95, default: 0.75, description: 'Labor income displaced at 100% AI adoption', unit: '%' },
+    { name: 'gdpScaling', min: 0, max: 1, default: 0.4, description: 'How much GDP affects UBI utility (0=flat, 1=proportional)', unit: '' },
+    { name: 'marketPressure', min: 0, max: 1, default: 0.5, description: 'How strongly demand affects corp decisions', unit: '' },
+    { name: 'ubiBoostCoeff', min: 0.05, max: 0.40, default: 0.20, description: 'UBI boost coefficient for wellbeing', unit: '' },
+    { name: 'frictionCoeff', min: 0.05, max: 0.30, default: 0.12, description: 'Displacement friction coefficient', unit: '' }
+  ],
+
+  equations: DEFAULT_EQUATIONS,
+
+  metadata: {
+    author: 'System',
+    version: '1.0.0',
+    createdAt: '2024-01-01T00:00:00Z',
+    description: 'Built-in reference implementation based on corporation-centric UBI model',
+    overridesStandardCausality: false,
+    tags: ['reference', 'standard', 'balanced']
+  }
+};
