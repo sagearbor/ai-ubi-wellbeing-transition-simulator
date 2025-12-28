@@ -1,0 +1,359 @@
+# AI/UBI Transition Simulator - Archived Completed Phases
+# Archived: 2024-12-27
+# These phases are complete and preserved for reference.
+#
+# For active development, see: /developer_checklist.yaml
+
+version: "2.0"
+project: "wellbeing-transition-simulator"
+archived_date: "2024-12-27"
+
+# =============================================================================
+# COMPLETION SUMMARY (at time of archive)
+# =============================================================================
+summary:
+  phases_archived: [1, 2, 3, 4, 5, 6, 7]
+  total_tasks_completed: 49
+
+  phase_1: # Data Model Foundation
+    status: "Complete (5/5 tasks)"
+    completed: [P1-T1, P1-T2, P1-T3, P1-T4, P1-T5]
+
+  phase_2: # Simulation Engine
+    status: "Complete (6/6 tasks)"
+    completed: [P2-T1, P2-T2, P2-T3, P2-T4, P2-T5, P2-T6]
+
+  phase_3: # Visualization & UI
+    status: "Complete (7/7 tasks)"
+    completed: [P3-T1, P3-T2, P3-T3, P3-T5, P3-T6, P3-T8, P3-T9]
+    optional_skipped: [P3-T4, P3-T7]
+
+  phase_4: # Polish & Testing
+    status: "Complete (5/5 tasks)"
+    completed: [P4-T1, P4-T2, P4-T3, P4-T4, P4-T5]
+
+  phase_5: # Corporation-Centric Architecture
+    status: "Complete (12/12 tasks)"
+    description: "Shift from nation-centric to corporation-centric model"
+    completed: [P5-T1, P5-T2, P5-T3, P5-T4, P5-T5, P5-T6, P5-T7, P5-T8, P5-T9, P5-T10, P5-T11, P5-T12]
+
+  phase_6: # Game Theory & Adaptive Mechanisms
+    status: "Complete (8/8 tasks)"
+    description: "Nash equilibrium, prisoner's dilemma, adaptive policies"
+    completed: [P6-T1, P6-T2, P6-T3, P6-T4, P6-T5, P6-T6, P6-T7, P6-T8]
+
+  phase_7: # Per-Entity UI & Interaction
+    status: "Complete (6/6 tasks)"
+    description: "Click-to-edit corporations/countries, detail panels"
+    completed: [P7-T1, P7-T2, P7-T3, P7-T4, P7-T5, P7-T6]
+
+# =============================================================================
+# PHASE 1: DATA MODEL UPDATES (Foundation)
+# =============================================================================
+phase_1:
+  name: "Data Model Foundation"
+  description: "Update TypeScript interfaces and country data"
+
+  tasks:
+    - id: P1-T1
+      name: "Update CountryStats interface"
+      file: "types.ts"
+
+    - id: P1-T2
+      name: "Update ModelParameters interface"
+      file: "types.ts"
+
+    - id: P1-T3
+      name: "Add SimulationState shadow fields"
+      file: "types.ts"
+
+    - id: P1-T4
+      name: "Update INITIAL_COUNTRIES with new data"
+      file: "constants.ts"
+
+    - id: P1-T5
+      name: "Add PRESET_MODELS with new parameters"
+      file: "constants.ts"
+
+# =============================================================================
+# PHASE 2: SIMULATION ENGINE UPDATES
+# =============================================================================
+phase_2:
+  name: "Simulation Engine Rewrite"
+  description: "Update stepSimulation with new equations"
+
+  tasks:
+    - id: P2-T1
+      name: "Refactor stepSimulation - Gini integration"
+      file: "App.tsx"
+
+    - id: P2-T2
+      name: "Refactor stepSimulation - Governance/Corruption"
+      file: "App.tsx"
+
+    - id: P2-T3
+      name: "Implement direct-to-wallet bypass"
+      file: "App.tsx"
+
+    - id: P2-T4
+      name: "Rebalance displacement friction"
+      file: "App.tsx"
+
+    - id: P2-T5
+      name: "Implement shadow/counterfactual simulation"
+      file: "App.tsx"
+
+    - id: P2-T6
+      name: "Calculate and expose displacement gap"
+      file: "App.tsx"
+
+# =============================================================================
+# PHASE 3: VISUALIZATION UPDATES
+# =============================================================================
+phase_3:
+  name: "Visualization & UI"
+  description: "Update charts, map, and add new visual elements"
+
+  tasks:
+    - id: P3-T1
+      name: "Add shadow line to 2D charts"
+      file: "components/MotionChart.tsx"
+
+    - id: P3-T2
+      name: "Add displacement gap chart"
+      file: "App.tsx"
+      notes: "LineChart showing lost wages minus UBI received per country"
+
+    - id: P3-T3
+      name: "Add archetype filter to map"
+      file: "components/WorldMap.tsx"
+      notes: "6 archetype filter buttons with country dimming"
+
+    - id: P3-T5
+      name: "Add global stats dashboard"
+      file: "App.tsx"
+
+    - id: P3-T6
+      name: "Update sidebar with new parameters"
+      file: "App.tsx"
+
+    - id: P3-T8
+      name: "Add Equations page toggle (simple/detailed)"
+      file: "App.tsx"
+
+    - id: P3-T9
+      name: "Recreate animated Overview page"
+      file: "App.tsx"
+
+# =============================================================================
+# PHASE 4: POLISH & TESTING
+# =============================================================================
+phase_4:
+  name: "Polish & Integration"
+  description: "Final integration, testing, and documentation"
+
+  tasks:
+    - id: P4-T1
+      name: "Update Gemini prompts for new metrics"
+      file: "services/geminiService.ts"
+      completed_date: "2024-12-27"
+      notes: "Updated for corporation-centric model and game theory"
+
+    - id: P4-T2
+      name: "Add explanatory tooltips"
+      file: "App.tsx"
+
+    - id: P4-T3
+      name: "Update CLAUDE.md with new architecture"
+      file: "CLAUDE.md"
+      completed_date: "2024-12-27"
+      notes: "Full rewrite with corporation-centric model documentation"
+
+    - id: P4-T4
+      name: "Integration testing"
+      completed_date: "2024-12-27"
+      notes: "Manual testing confirmed all features working"
+
+    - id: P4-T5
+      name: "Improve Gemini prompts for economic accuracy"
+      file: "services/geminiService.ts"
+
+# =============================================================================
+# PHASE 5: CORPORATION-CENTRIC ARCHITECTURE
+# =============================================================================
+phase_5:
+  name: "Corporation-Centric Architecture"
+  description: "Shift simulation from nation-aggregated to corporation-level entities"
+
+  design_principles:
+    - "Free market solution - corporations choose to participate"
+    - "Direct-to-wallet assumed true (blockchain/crypto infrastructure)"
+    - "Nation states cannot block - system is government-agnostic"
+    - "Corporations act in self-interest but enlightened self-interest works"
+    - "Customer base preservation motivates UBI contribution"
+
+  tasks:
+    - id: P5-T1
+      name: "Create Corporation interface"
+      file: "types.ts"
+
+    - id: P5-T2
+      name: "Create CorporationPolicy interface"
+      file: "types.ts"
+
+    - id: P5-T3
+      name: "Create GlobalLedger interface"
+      file: "types.ts"
+
+    - id: P5-T4
+      name: "Generate initial corporations data"
+      file: "constants.ts"
+      notes: "90+ major AI companies with realistic data"
+
+    - id: P5-T5
+      name: "Update CountryStats for corporation model"
+      file: "types.ts"
+
+    - id: P5-T6
+      name: "Refactor stepSimulation for corporation loop"
+      file: "App.tsx"
+      completed_date: "2024-12-22"
+      notes: "5-phase simulation flow"
+
+    - id: P5-T7
+      name: "Implement corporation revenue model"
+      file: "App.tsx"
+
+    - id: P5-T8
+      name: "Implement distribution strategies"
+      file: "App.tsx"
+      notes: "global, customer-weighted, hq-local"
+
+    - id: P5-T9
+      name: "Add corporation list UI component"
+      file: "components/CorporationList.tsx"
+      completed_date: "2024-12-22"
+
+    - id: P5-T10
+      name: "Add corporation detail panel"
+      file: "components/CorporationDetailPanel.tsx"
+      completed_date: "2024-12-22"
+
+    - id: P5-T11
+      name: "Update map to show corporation data"
+      file: "components/WorldMap.tsx"
+      completed_date: "2024-12-22"
+
+    - id: P5-T12
+      name: "Remove nation-level policy controls"
+      file: "App.tsx"
+      completed_date: "2024-12-22"
+
+# =============================================================================
+# PHASE 6: GAME THEORY & ADAPTIVE MECHANISMS
+# =============================================================================
+phase_6:
+  name: "Game Theory & Adaptive Mechanisms"
+  description: "Dynamic policy responses based on game theory"
+
+  tasks:
+    - id: P6-T1
+      name: "Implement demand collapse projection"
+      file: "App.tsx"
+      completed_date: "2024-12-22"
+
+    - id: P6-T2
+      name: "Implement corporation adaptive policy"
+      file: "App.tsx"
+      completed_date: "2024-12-22"
+
+    - id: P6-T3
+      name: "Implement competitor awareness (Nash equilibrium)"
+      file: "App.tsx"
+
+    - id: P6-T4
+      name: "Implement prisoner's dilemma detection"
+      file: "App.tsx"
+      completed_date: "2024-12-22"
+      notes: |
+        Key thresholds:
+        - 40% defection threshold: triggers race-to-bottom risk
+        - 60% cooperation threshold: triggers virtuous cycle strength
+        - 0.3 prisoner's dilemma threshold
+
+    - id: P6-T5
+      name: "Implement reputation system"
+      file: "App.tsx"
+
+    - id: P6-T6
+      name: "Implement US-specific adaptive behavior"
+      file: "App.tsx"
+      completed_date: "2024-12-22"
+      notes: "Also added China and EU corp adaptation"
+
+    - id: P6-T7
+      name: "Add game theory visualization"
+      file: "components/GameTheoryVisualization.tsx"
+      completed_date: "2024-12-22"
+      notes: "Cooperation meter, strategy breakdown, contribution histogram"
+
+    - id: P6-T8
+      name: "Save/Load game state to files"
+      file: "App.tsx"
+      completed_date: "2024-12-22"
+      notes: "Auto-save every 5 minutes, manual JSON save/load"
+
+# =============================================================================
+# PHASE 7: PER-ENTITY UI & INTERACTION
+# =============================================================================
+phase_7:
+  name: "Per-Entity UI & Interaction"
+  description: "Click-to-edit interface for corporations and countries"
+
+  tasks:
+    - id: P7-T1
+      name: "Implement entity selection system"
+      file: "App.tsx"
+      completed_date: "2024-12-27"
+      notes: "Unified selection for corps/countries, ESC to deselect"
+
+    - id: P7-T2
+      name: "Add country detail panel"
+      file: "components/CountryDetailPanel.tsx"
+      completed_date: "2024-12-27"
+      notes: "UBI breakdown, economic indicators, limited policy controls"
+
+    - id: P7-T3
+      name: "Add multi-select for bulk editing"
+      file: "App.tsx, components/CorporationList.tsx"
+      completed_date: "2024-12-27"
+      notes: "Shift+click, bulk select buttons, contribution rate slider"
+
+    - id: P7-T4
+      name: "Add scenario presets"
+      file: "constants.ts"
+      completed_date: "2024-12-22"
+      notes: "6 presets: Free Market, Race to Bottom, Altruism, US Protectionism, China Dominance, EU Solidarity"
+
+    - id: P7-T5
+      name: "Add comparison view"
+      file: "App.tsx"
+      completed_date: "2024-12-27"
+      notes: "Split-screen maps, scenario selector"
+
+    - id: P7-T6
+      name: "Add tutorial/onboarding"
+      file: "App.tsx"
+      completed_date: "2024-12-27"
+      notes: "11-step modal tutorial covering all key concepts"
+
+# =============================================================================
+# BUGFIXES APPLIED DURING DEVELOPMENT
+# =============================================================================
+bugfixes:
+  - "Fixed: Gemini API initialization crashing app on load (lazy init)"
+  - "Fixed: Model updated to use gemini-2.0-flash (valid model name)"
+  - "Fixed: Wellbeing collapse - rebalanced UBI/friction coefficients"
+  - "Added: Improved Gemini prompts with economic context"
+  - "Added: Equations page toggle (simple/detailed views)"
+  - "Added: Animated Overview page showing abundance cycle"
