@@ -151,7 +151,7 @@ const TourOverlay: React.FC<{ step: number, onNext: () => void, onBack: () => vo
                         >
                             <ArrowLeft size={12}/>
                         </button>
-                        <button onClick={onNext} className="bg-white text-blue-600 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase hover:scale-105 transition-transform flex items-center gap-1">
+                        <button onClick={onNext} className="bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase hover:scale-105 transition-transform flex items-center gap-1">
                             {step === steps.length - 1 ? 'Finish' : 'Next'} <ArrowRight size={12}/>
                         </button>
                     </div>
@@ -183,7 +183,7 @@ const App: React.FC = () => {
 
   // Comparison mode state (P7-T5)
   const [comparisonMode, setComparisonMode] = useState(false);
-  const [comparisonScenarioId, setComparisonScenarioId] = useState<string>('race-to-bottom');
+  const [comparisonScenarioId, setComparisonScenarioId] = useState<string>('free-market-optimism');
 
   // Initialize default selected countries
   const [selectedCountries, setSelectedCountries] = useState<string[]>(() => {
@@ -1766,7 +1766,11 @@ const App: React.FC = () => {
           {(['map', 'charts', 'corporations'] as const).map(tab => (
             <button
               key={tab}
-              onClick={() => { setActiveTab(tab); setAboutDropdownOpen(false); }}
+              onClick={() => {
+                setActiveTab(tab);
+                setAboutDropdownOpen(false);
+                if (tab !== 'map') setSelectedEntity(null); // Close detail panel when leaving Map tab
+              }}
               className={`px-3 py-1 lg:px-4 lg:py-1.5 rounded-md lg:rounded-lg text-[10px] lg:text-xs font-bold uppercase transition-all ${activeTab === tab ? 'bg-blue-600 text-white shadow-md' : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'}`}
             >
               {tab}
@@ -1781,14 +1785,14 @@ const App: React.FC = () => {
                 More <ChevronDown size={12} className={aboutDropdownOpen ? 'rotate-180' : ''} />
             </button>
             {aboutDropdownOpen && (
-                <div 
+                <div
                   onMouseLeave={() => setAboutDropdownOpen(false)}
                   className="absolute right-0 top-full mt-2 w-48 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-2xl overflow-hidden z-[110]"
                 >
-                    <button onClick={() => { setActiveTab('guide'); setAboutDropdownOpen(false); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors border-b border-slate-100 dark:border-slate-700 flex items-center gap-2"><BookOpen size={14} /> About & Guide</button>
-                    <button onClick={() => { setActiveTab('overview'); setAboutDropdownOpen(false); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors border-b border-slate-100 dark:border-slate-700 flex items-center gap-2"><Globe size={14} /> Overview</button>
-                    <button onClick={() => { setActiveTab('equations'); setAboutDropdownOpen(false); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors border-b border-slate-100 dark:border-slate-700 flex items-center gap-2"><FlaskConical size={14} /> Model Equations</button>
-                    <button onClick={() => { setActiveTab('analysis'); setAboutDropdownOpen(false); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors flex items-center gap-2"><BrainCircuit size={14} /> Analysis Hub</button>
+                    <button onClick={() => { setActiveTab('guide'); setAboutDropdownOpen(false); setSelectedEntity(null); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors border-b border-slate-100 dark:border-slate-700 flex items-center gap-2"><BookOpen size={14} /> About & Guide</button>
+                    <button onClick={() => { setActiveTab('overview'); setAboutDropdownOpen(false); setSelectedEntity(null); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors border-b border-slate-100 dark:border-slate-700 flex items-center gap-2"><Globe size={14} /> Overview</button>
+                    <button onClick={() => { setActiveTab('equations'); setAboutDropdownOpen(false); setSelectedEntity(null); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors border-b border-slate-100 dark:border-slate-700 flex items-center gap-2"><FlaskConical size={14} /> Model Equations</button>
+                    <button onClick={() => { setActiveTab('analysis'); setAboutDropdownOpen(false); setSelectedEntity(null); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors flex items-center gap-2"><BrainCircuit size={14} /> Analysis Hub</button>
                 </div>
             )}
           </div>
@@ -2196,10 +2200,16 @@ const App: React.FC = () => {
                               Comparison: {SCENARIO_PRESETS.find(s => s.id === comparisonScenarioId)?.name || 'Alternative'}
                             </div>
                           </div>
-                          <div className="text-xs font-bold text-purple-100 bg-purple-700/50 px-2 py-1 rounded-md">Month 0</div>
+                          <div className="text-xs font-bold text-purple-100 bg-purple-700/50 px-2 py-1 rounded-md">Month 0 (Starting Conditions)</div>
                         </div>
-                        <div className="text-xs text-purple-50">
-                          <span className="italic">Initial state for comparison - shows starting conditions</span>
+                        <div className="text-xs text-purple-50 bg-purple-800/30 rounded-lg px-3 py-2 border border-purple-400/30">
+                          <div className="flex items-start gap-2">
+                            <Info size={14} className="shrink-0 mt-0.5" />
+                            <div>
+                              <div className="font-bold mb-1">Baseline Comparison View</div>
+                              <div className="opacity-90">This shows how the selected scenario would START (Month 0), not a live simulation. Compare these initial conditions against your running simulation on the left.</div>
+                            </div>
+                          </div>
                         </div>
                       </div>
                       <div className="flex-1 relative">
@@ -2242,9 +2252,9 @@ const App: React.FC = () => {
                         </div>
                         <div>
                             <p className="text-[10px] leading-relaxed opacity-90 mb-3">Press <span className="font-bold text-white bg-white/20 px-1 rounded">PLAY</span> below to begin the simulation. Observe how the gradient UBI stabilizes global wellbeing.</p>
-                            <button 
+                            <button
                                 onClick={() => setTourStep(0)}
-                                className="w-full py-1.5 bg-white text-blue-600 rounded-lg text-[10px] font-bold uppercase hover:bg-blue-50 transition-colors"
+                                className="w-full py-1.5 bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 rounded-lg text-[10px] font-bold uppercase hover:bg-blue-50 dark:hover:bg-slate-700 transition-colors"
                             >
                                 Take a Tour
                             </button>

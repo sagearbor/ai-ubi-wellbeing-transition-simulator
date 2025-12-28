@@ -25,6 +25,7 @@ const GameTheoryVisualization: React.FC<GameTheoryVisualizationProps> = ({
   };
 
   // Calculate contribution histogram bins
+  // Each bin is inclusive of max (e.g., 5-10% includes 10%)
   const bins = [
     { min: 0.05, max: 0.10, label: '5-10%' },
     { min: 0.10, max: 0.15, label: '10-15%' },
@@ -37,11 +38,15 @@ const GameTheoryVisualization: React.FC<GameTheoryVisualizationProps> = ({
 
   const histogram = bins.map((bin, idx) => ({
     ...bin,
-    // Use <= for the last bin to include the max value (e.g., 0.50), < for others
-    count: corporations.filter(c =>
-      c.contributionRate >= bin.min &&
-      (idx === bins.length - 1 ? c.contributionRate <= bin.max : c.contributionRate < bin.max)
-    ).length,
+    // For first bin: min <= rate <= max (include both boundaries)
+    // For other bins: min < rate <= max (exclude left boundary to prevent double-counting)
+    count: corporations.filter(c => {
+      if (idx === 0) {
+        return c.contributionRate >= bin.min && c.contributionRate <= bin.max;
+      } else {
+        return c.contributionRate > bin.min && c.contributionRate <= bin.max;
+      }
+    }).length,
   }));
 
   const maxCount = Math.max(...histogram.map(h => h.count), 1);
@@ -248,7 +253,7 @@ const GameTheoryVisualization: React.FC<GameTheoryVisualizationProps> = ({
               const height = (bin.count / maxCount) * 100;
               return (
                 <div key={idx} className="flex-1 flex flex-col items-center gap-1">
-                  <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-t-lg overflow-hidden relative" style={{ height: '100%' }}>
+                  <div className="w-full h-48 bg-slate-100 dark:bg-slate-800 rounded-t-lg overflow-hidden relative">
                     <div
                       className="w-full bg-gradient-to-t from-indigo-600 to-indigo-400 absolute bottom-0 transition-all duration-500 rounded-t-lg flex items-start justify-center pt-1"
                       style={{ height: `${height}%` }}
