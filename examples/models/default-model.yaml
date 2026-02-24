@@ -1,0 +1,51 @@
+id: default-v1
+name: Default Economic Model
+description: >
+  The standard corporation-driven UBI model with balanced parameters.
+  Uses established coefficients for wellbeing calculation.
+
+parameters:
+  - name: aiGrowthRate
+    min: 0.01
+    max: 0.20
+    default: 0.08
+    description: Base AI adoption growth rate
+    unit: per month
+
+  - name: displacementRate
+    min: 0.50
+    max: 0.95
+    default: 0.75
+    description: Labor income displaced at 100% AI adoption
+    unit: "%"
+
+  - name: ubiBoostCoeff
+    min: 0.05
+    max: 0.40
+    default: 0.20
+    description: How much UBI improves wellbeing
+
+  - name: frictionCoeff
+    min: 0.05
+    max: 0.30
+    default: 0.12
+    description: Displacement friction coefficient
+
+equations:
+  aiAdoptionGrowth: "aiGrowthRate * (1 + gdpPerCapita / 100000) * aiAdoptionLevel * 0.1 * (1 - adoption)"
+  surplusGeneration: "aiRevenue * contributionRate"
+  wellbeingDelta: "ubiBoost * 0.20 - displacementFriction * 0.12"
+  displacementFriction: "sin(adoption * 3.14159) * 40 * pow(1 - governance, 1.5) * (1 + gini * 0.5)"
+  ubiUtility: "(ubi / utilityScale) * 120"
+  giniDamping: "1.5 - gini"
+
+metadata:
+  author: System
+  version: "1.0.0"
+  createdAt: "2024-01-01T00:00:00Z"
+  description: Reference implementation of the economic model
+  overridesStandardCausality: false
+  tags:
+    - reference
+    - standard
+    - balanced

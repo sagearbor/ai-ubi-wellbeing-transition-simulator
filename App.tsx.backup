@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { AreaChart, Area, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ScatterChart, Scatter, ZAxis, ReferenceLine } from 'recharts';
-import { Globe, TrendingUp, TrendingDown, Sparkles, Share2, ChevronDown, BrainCircuit, FlaskConical, Database, MousePointer2, PlayCircle, Menu, X, BookOpen, Lightbulb, ArrowRight, ArrowLeft, Info, FileText, Sun, Moon, Copy, Settings, Download, Upload, Trophy } from 'lucide-react';
+import { AreaChart, Area, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { Globe, TrendingUp, TrendingDown, Sparkles, Share2, ChevronDown, BrainCircuit, FlaskConical, Database, MousePointer2, PlayCircle, Menu, X, BookOpen, Lightbulb, ArrowRight, ArrowLeft, Info, FileText, Sun, Moon, Copy, Settings, Download, Upload } from 'lucide-react';
 import WorldMap from './components/WorldMap';
 import SimulationControls from './components/SimulationControls';
 import MotionChart from './components/MotionChart';
@@ -9,16 +9,9 @@ import CorporationList from './components/CorporationList';
 import CorporationDetailPanel from './components/CorporationDetailPanel';
 import CountryDetailPanel from './components/CountryDetailPanel';
 import GameTheoryVisualization from './components/GameTheoryVisualization';
-import { WellbeingScatterPlot } from './components/WellbeingScatterPlot';
-import { ModelUpload } from './components/ModelUpload';
-import { ModelEditor } from './components/ModelEditor';
-import { Leaderboard } from './components/Leaderboard';
-import { ModelDetail } from './components/ModelDetail';
-import { ModelRating } from './components/ModelRating';
-import { SimulationState, ModelParameters, HistoryPoint, CountryStats, Corporation, GlobalLedger, GameTheoryState, SavedState, SelectedEntity, ModelConfig, StoredModel } from './types';
-import { PRESET_MODELS, INITIAL_COUNTRIES, INITIAL_CORPORATIONS, SCENARIO_PRESETS, DEFAULT_MODEL_CONFIG } from './constants';
+import { SimulationState, ModelParameters, HistoryPoint, CountryStats, Corporation, GlobalLedger, GameTheoryState, SavedState, SelectedEntity } from './types';
+import { PRESET_MODELS, INITIAL_COUNTRIES, INITIAL_CORPORATIONS, SCENARIO_PRESETS } from './constants';
 import { getRedTeamAnalysis, getSimulationSummary } from './services/geminiService';
-import { rateModel, getLeaderboard, recordRun } from './src/services/modelStorage';
 
 // Helper for math rendering
 const MathEq: React.FC<{ children: React.ReactNode }> = ({ children }) => (
@@ -64,71 +57,47 @@ const InfoTooltip: React.FC<{ text: string }> = ({ text }) => {
 const TourOverlay: React.FC<{ step: number, onNext: () => void, onBack: () => void, onSkip: () => void }> = ({ step, onNext, onBack, onSkip }) => {
     
     const steps = [
-        {
-            title: "Welcome to the UBI Transition Simulator",
-            text: "This models the transition to an AI-powered economy where corporations voluntarily fund Universal Basic Income through enlightened self-interest.",
+        { 
+            title: "Welcome to the Simulator", 
+            text: "This engine models the transition from labor-based economies to automated abundance.", 
             pos: "top-1/4 left-1/2 -translate-x-1/2",
-            target: null
+            target: null 
         },
-        {
-            title: "Corporations Drive UBI, Not Governments",
-            text: "Unlike traditional models, this simulator shows how corporations generate AI revenue by automating jobs, then contribute to a global UBI fund to preserve their customer base. No governments required.",
-            pos: "top-1/3 left-1/2 -translate-x-1/2",
-            target: null
+        { 
+            title: "Playback Controls", 
+            text: "Start the simulation using the Play button. You can pause or speed up time using the controls below.", 
+            pos: "bottom-24 left-4 sm:left-1/4",
+            target: "bottom" 
         },
-        {
-            title: "AI Revenue & Customer Demand",
-            text: "Corporations earn revenue from AI automation, BUT their profits depend on customers being able to afford products. If people lose jobs to AI and can't buy anything, corporate revenue collapses. This creates a self-interest incentive for UBI.",
-            pos: "top-1/3 left-1/2 -translate-x-1/2",
-            target: null
+        { 
+            title: "Rewind History", 
+            text: "Drag the timeline slider to rewind. Change parameters from a past point and press Play to branch into an alternate reality simulation.", 
+            pos: "bottom-36 left-1/2 -translate-x-1/2", 
+            target: "timeline" 
         },
-        {
-            title: "Three Distribution Strategies",
-            text: "Corporations choose how to distribute UBI: GLOBAL (equal to all humans), CUSTOMER-WEIGHTED (prioritize their markets), or HQ-LOCAL (only their home country). Each has different economic effects.",
-            pos: "top-1/3 left-1/2 -translate-x-1/2",
-            target: null
-        },
-        {
-            title: "Adaptive Policies & Game Theory",
-            text: "Corporations adapt their policies based on market conditions. If customer wellbeing drops (demand collapse risk), smart corporations increase UBI contributions. This creates prisoner's dilemma dynamics: cooperate or defect?",
-            pos: "top-1/3 left-1/2 -translate-x-1/2",
-            target: null
-        },
-        {
-            title: "Corporations Tab",
-            text: "Click the Corporations tab to see all 90+ corporations, their contribution rates, strategies, and game theory dynamics. The cooperation meter shows if we're in a virtuous cycle or race to the bottom.",
-            pos: "top-20 right-20",
-            target: "tabs"
-        },
-        {
-            title: "Map Views",
-            text: "The map shows four views: AI Adoption (blue), Wellbeing (green/red), UBI Received (green), and Corp HQs (purple). Click countries to select them, Shift+click to invest in AI growth.",
-            pos: "bottom-32 left-1/2 -translate-x-1/2",
-            target: "toggle"
-        },
-        {
-            title: "Playback Controls",
-            text: "Press Play to start the simulation. You can pause, speed up, or rewind to any point. Change parameters and press Play again to branch into an alternate future.",
-            pos: "bottom-24 left-1/2 -translate-x-1/2",
-            target: "bottom"
-        },
-        {
-            title: "Parameters & Scenarios",
-            text: "Use the sidebar to adjust economic constants and corporate behavior. Or try one of the scenario presets: Free Market Optimism, Race to Bottom, US Protectionism, etc.",
+        { 
+            title: "Parameters", 
+            text: "Adjust the tax rates and incentives in the sidebar to change how the economy evolves.", 
             pos: "top-1/3 left-16 md:left-80",
-            target: "sidebar"
+            target: "sidebar" 
+        },
+        { 
+            title: "View Modes", 
+            text: "Switch between Adoption (Blue) and Wellbeing (Green/Red) to see different data layers.", 
+            pos: "bottom-32 left-1/2 -translate-x-1/2 translate-y-[-50px]", 
+            target: "toggle" 
+        },
+        { 
+            title: "Analysis", 
+            text: "Check the Charts tab to see detailed graphs.", 
+            pos: "top-20 right-20", 
+            target: "tabs" 
         },
         {
-            title: "Charts & AI Analysis",
-            text: "The Charts tab shows wellbeing trends and fund accumulation. Use the AI Summary and Red Team buttons to generate detailed analysis of the simulation outcomes.",
-            pos: "top-20 right-20",
-            target: "tabs"
-        },
-        {
-            title: "Start Exploring!",
-            text: "Press Play and watch how corporations respond to market pressures. Will they cooperate to maintain customer wellbeing, or defect into a race to the bottom? The choice is theirs.",
-            pos: "top-1/4 left-1/2 -translate-x-1/2",
-            target: null
+            title: "Deep Analysis",
+            text: "Use the buttons in the Charts tab to generate an AI Summary or perform a Red Team Audit on the Analysis page.",
+            pos: "top-40 right-10",
+            target: "ai-tools"
         }
     ];
 
@@ -158,7 +127,7 @@ const TourOverlay: React.FC<{ step: number, onNext: () => void, onBack: () => vo
                         >
                             <ArrowLeft size={12}/>
                         </button>
-                        <button onClick={onNext} className="bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase hover:scale-105 transition-transform flex items-center gap-1">
+                        <button onClick={onNext} className="bg-white text-blue-600 px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase hover:scale-105 transition-transform flex items-center gap-1">
                             {step === steps.length - 1 ? 'Finish' : 'Next'} <ArrowRight size={12}/>
                         </button>
                     </div>
@@ -183,17 +152,14 @@ const App: React.FC = () => {
   const [history, setHistory] = useState<HistoryPoint[]>([]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [speed, setSpeed] = useState(1);
-  const [activeTab, setActiveTab] = useState<'map' | 'charts' | 'corporations' | 'analysis' | 'overview' | 'equations' | 'guide' | 'models' | 'leaderboard'>('map');
+  const [activeTab, setActiveTab] = useState<'map' | 'charts' | 'corporations' | 'analysis' | 'overview' | 'equations' | 'guide'>('map');
   const [viewMode, setViewMode] = useState<'adoption' | 'wellbeing'>('wellbeing'); // Default to wellbeing
   const [equationViewMode, setEquationViewMode] = useState<'simple' | 'detailed'>('simple');
   const [selectedArchetype, setSelectedArchetype] = useState<string | null>(null); // Archetype filter for map
 
   // Comparison mode state (P7-T5)
   const [comparisonMode, setComparisonMode] = useState(false);
-  const [comparisonScenarioId, setComparisonScenarioId] = useState<string>('free-market-optimism');
-
-  // Models tab mode state (P8-T13)
-  const [modelMode, setModelMode] = useState<'upload' | 'edit'>('upload');
+  const [comparisonScenarioId, setComparisonScenarioId] = useState<string>('race-to-bottom');
 
   // Initialize default selected countries
   const [selectedCountries, setSelectedCountries] = useState<string[]>(() => {
@@ -235,7 +201,6 @@ const App: React.FC = () => {
 
   // Unified entity selection state (replaces selectedCorpId)
   const [selectedEntity, setSelectedEntity] = useState<SelectedEntity>(null);
-  const [viewingModel, setViewingModel] = useState<StoredModel | null>(null);
 
   // Multi-select state for bulk editing corporations
   const [selectedCorpIds, setSelectedCorpIds] = useState<Set<string>>(new Set());
@@ -250,20 +215,9 @@ const App: React.FC = () => {
 
   // Auto-switch tabs during tour
   useEffect(() => {
-    // Step 5: Corporations Tab
-    if (tourStep === 5) {
-        setActiveTab('corporations');
-    }
-    // Steps 6-7: Map Tab (Map Views, Playback Controls)
-    else if (tourStep === 6 || tourStep === 7) {
-        setActiveTab('map');
-    }
-    // Step 9: Charts Tab (Charts & AI Analysis)
-    else if (tourStep === 9) {
+    if (tourStep === 5 || tourStep === 6) {
         setActiveTab('charts');
-    }
-    // All other steps: default to map
-    else if (tourStep !== null && tourStep !== 5 && tourStep !== 9) {
+    } else if (tourStep !== null && tourStep < 5) {
         setActiveTab('map');
     }
   }, [tourStep]);
@@ -330,12 +284,6 @@ const App: React.FC = () => {
     virtuousCycleStrength: 0,
     avgContributionRate: 0
   });
-
-  // Active custom model configuration (null = use default hardcoded logic) (P8-T9)
-  const [activeModelConfig, setActiveModelConfig] = useState<ModelConfig | null>(null);
-
-  // Track if simulation run was recorded (P9-T7)
-  const [runRecorded, setRunRecorded] = useState(false);
 
   // Comparison simulation state (P7-T5) - second parallel simulation
   const [comparisonState, setComparisonState] = useState<SimulationState>(getInitialState());
@@ -436,32 +384,8 @@ const App: React.FC = () => {
       virtuousCycleStrength: 0,
       avgContributionRate: 0
     });
-    // Reset run recording flag (P9-T7)
-    setRunRecorded(false);
     window.history.pushState("", document.title, window.location.pathname + window.location.search);
   }, [getInitialState]);
-
-  // ============================================================================
-  // MODEL CONFIGURATION MANAGEMENT (P8-T9)
-  // ============================================================================
-  // Functions to apply, clear, and check custom model configurations
-  // ============================================================================
-
-  // Apply a custom model configuration
-  const applyModelConfig = useCallback((config: ModelConfig) => {
-    setActiveModelConfig(config);
-    // Reset simulation when applying new model
-    handleReset();
-  }, [handleReset]);
-
-  // Clear custom model and revert to default
-  const clearModelConfig = useCallback(() => {
-    setActiveModelConfig(null);
-    handleReset();
-  }, [handleReset]);
-
-  // Check if using custom model
-  const isUsingCustomModel = activeModelConfig !== null;
 
   // ============================================================================
   // UPDATE CORPORATION (P5-T10)
@@ -537,61 +461,6 @@ const App: React.FC = () => {
 
     console.log(`Applied scenario: ${scenario.name}`);
   }, [model, handleReset]);
-
-  // ============================================================================
-  // COMPARISON SCENARIO APPLICATION (P7-T5)
-  // ============================================================================
-  // Apply scenario to comparison state when comparisonScenarioId changes
-  // ============================================================================
-
-  useEffect(() => {
-    if (!comparisonMode) return;
-
-    const scenario = SCENARIO_PRESETS.find(s => s.id === comparisonScenarioId);
-    if (!scenario) return;
-
-    // 1. Update comparison model with scenario's settings
-    const updatedModel = { ...PRESET_MODELS[0], ...scenario.modelParams };
-    setComparisonModel(updatedModel);
-
-    // 2. Apply corporation overrides to comparison corps
-    const updatedCorps = INITIAL_CORPORATIONS.map(corp => {
-      let updated = { ...corp };
-
-      scenario.corporationOverrides?.forEach(override => {
-        if (override.filter(corp)) {
-          updated = { ...updated, ...override.updates };
-        }
-      });
-
-      return updated;
-    });
-    setComparisonCorporations(updatedCorps);
-
-    // 3. Reset comparison state to month 0
-    setComparisonState(getInitialState());
-    setComparisonLedger({
-      totalFunds: 0,
-      monthlyInflow: 0,
-      monthlyOutflow: 0,
-      fundsPerCapita: 0,
-      fundsByCountry: {},
-      contributorBreakdown: {},
-      distributionBreakdown: {},
-      corruptionLeakage: 0
-    });
-    setComparisonGameTheory({
-      isInPrisonersDilemma: false,
-      defectionCount: 0,
-      cooperationCount: 0,
-      moderateCount: 0,
-      raceToBottomRisk: 0,
-      virtuousCycleStrength: 0,
-      avgContributionRate: 0
-    });
-
-    console.log(`Applied comparison scenario: ${scenario.name}`);
-  }, [comparisonMode, comparisonScenarioId, getInitialState]);
 
   // ============================================================================
   // SAVE/LOAD FUNCTIONALITY (P6-T8)
@@ -1387,19 +1256,9 @@ const App: React.FC = () => {
 
   useEffect(() => {
     let timer: any;
-    if (isPlaying) {
-      timer = setInterval(() => {
-        stepSimulation();
-        // Also step comparison simulation if in comparison mode (P7-T5)
-        if (comparisonMode) {
-          // Comparison simulation runs in parallel with same month progression
-          // NOTE: For full implementation, would need to extract stepSimulation into reusable function
-          // For now, comparison state is set once and shows static snapshot at month 0
-        }
-      }, 1000 / speed);
-    }
+    if (isPlaying) timer = setInterval(stepSimulation, 1000 / speed);
     return () => clearInterval(timer);
-  }, [isPlaying, speed, stepSimulation, comparisonMode]);
+  }, [isPlaying, speed, stepSimulation]);
 
   const handleSeek = (m: number) => {
     setIsPlaying(false);
@@ -1652,7 +1511,7 @@ const App: React.FC = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       try {
-        const autoSave: SavedState & { activeModelConfig?: ModelConfig | null } = {
+        const autoSave: SavedState = {
           version: "2.0",
           timestamp: Date.now(),
           month: state.month,
@@ -1661,8 +1520,7 @@ const App: React.FC = () => {
           globalLedger,
           gameTheoryState,
           model,
-          history,
-          activeModelConfig  // P8-T9: Include custom model config
+          history
         };
         localStorage.setItem('ubi-sim-autosave', JSON.stringify(autoSave));
         console.log(`Auto-saved at ${new Date().toLocaleTimeString()}`);
@@ -1676,7 +1534,7 @@ const App: React.FC = () => {
     }, 5 * 60 * 1000); // 5 minutes
 
     return () => clearInterval(interval);
-  }, [state, corporations, globalLedger, gameTheoryState, model, history, activeModelConfig]);
+  }, [state, corporations, globalLedger, gameTheoryState, model, history]);
 
   // Load autosave on mount if available
   useEffect(() => {
@@ -1688,7 +1546,7 @@ const App: React.FC = () => {
           'An auto-saved simulation was found. Would you like to restore it?'
         );
         if (shouldLoad) {
-          const saved = JSON.parse(autoSave) as SavedState & { activeModelConfig?: ModelConfig | null };
+          const saved = JSON.parse(autoSave) as SavedState;
           setState(prev => ({
             ...prev,
             month: saved.month,
@@ -1706,10 +1564,6 @@ const App: React.FC = () => {
           setGameTheoryState(saved.gameTheoryState);
           setModel(saved.model);
           setHistory(saved.history || []);
-          // P8-T9: Restore custom model config if present
-          if (saved.activeModelConfig !== undefined) {
-            setActiveModelConfig(saved.activeModelConfig);
-          }
           console.log('Auto-save restored successfully');
         }
       }
@@ -1719,63 +1573,20 @@ const App: React.FC = () => {
     }
   }, []); // Only run on mount
 
-  // Record simulation run when reaching month 60 (P9-T7)
-  useEffect(() => {
-    // Only record if we have a custom model and reached month 60
-    if (state.month === 60 && activeModelConfig && !runRecorded) {
-      try {
-        // Find the stored model ID (if it was saved to storage)
-        const storedModels = listModels();
-        const matchingModel = storedModels.find(
-          m => m.modelConfig.name === activeModelConfig.name &&
-               m.modelConfig.metadata.version === activeModelConfig.metadata.version
-        );
-
-        if (matchingModel) {
-          // Determine game theory outcome
-          let gameTheoryOutcome: 'virtuous-cycle' | 'prisoners-dilemma' | 'race-to-bottom' | 'mixed' = 'mixed';
-          if (gameTheoryState.virtuousCycleStrength > 0.6) {
-            gameTheoryOutcome = 'virtuous-cycle';
-          } else if (gameTheoryState.raceToBottomRisk > 0.6) {
-            gameTheoryOutcome = 'race-to-bottom';
-          } else if (gameTheoryState.isInPrisonersDilemma) {
-            gameTheoryOutcome = 'prisoners-dilemma';
-          }
-
-          recordRun(matchingModel.id, {
-            finalMonth: state.month,
-            finalWellbeing: state.averageWellbeing,
-            finalFundSize: globalLedger.totalFunds,
-            countriesInCrisis: state.countriesInCrisis,
-            gameTheoryOutcome,
-            avgContributionRate: gameTheoryState.avgContributionRate,
-            modelName: activeModelConfig.name,
-            modelVersion: activeModelConfig.metadata.version
-          });
-
-          setRunRecorded(true);
-          console.log('Run recorded for model:', activeModelConfig.name);
-        }
-      } catch (error) {
-        console.error('Failed to record run:', error);
-      }
-    }
-  }, [state.month, activeModelConfig, runRecorded, state.averageWellbeing, globalLedger.totalFunds, state.countriesInCrisis, gameTheoryState]);
-
   return (
     <div className={`flex flex-col h-[100dvh] overflow-hidden transition-colors duration-300 ${theme === 'light' ? 'bg-slate-50 text-slate-900' : 'bg-slate-950 text-slate-100'}`}>
       {/* Tour Overlay */}
       {tourStep !== null && (
-          <TourOverlay
-            step={tourStep}
+          <TourOverlay 
+            step={tourStep} 
             onNext={() => {
-                if (tourStep < 10) {
+                if (tourStep < 6) {
                     setTourStep(tourStep + 1);
                 } else {
                     setTourStep(null);
                     setActiveTab('map');
                 }
-            }}
+            }} 
             onBack={() => setTourStep(prev => (prev !== null && prev > 0) ? prev - 1 : null)}
             onSkip={() => {
                 setTourStep(null);
@@ -1855,11 +1666,7 @@ const App: React.FC = () => {
           {(['map', 'charts', 'corporations'] as const).map(tab => (
             <button
               key={tab}
-              onClick={() => {
-                setActiveTab(tab);
-                setAboutDropdownOpen(false);
-                if (tab !== 'map') setSelectedEntity(null); // Close detail panel when leaving Map tab
-              }}
+              onClick={() => { setActiveTab(tab); setAboutDropdownOpen(false); }}
               className={`px-3 py-1 lg:px-4 lg:py-1.5 rounded-md lg:rounded-lg text-[10px] lg:text-xs font-bold uppercase transition-all ${activeTab === tab ? 'bg-blue-600 text-white shadow-md' : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'}`}
             >
               {tab}
@@ -1869,21 +1676,19 @@ const App: React.FC = () => {
             <button 
               onMouseEnter={() => setAboutDropdownOpen(true)}
               onClick={() => setAboutDropdownOpen(!aboutDropdownOpen)}
-              className={`px-3 py-1 lg:px-4 lg:py-1.5 rounded-md lg:rounded-lg text-[10px] lg:text-xs font-bold uppercase flex items-center gap-1 transition-all ${(activeTab === 'overview' || activeTab === 'equations' || activeTab === 'analysis' || activeTab === 'guide' || activeTab === 'models' || activeTab === 'leaderboard') ? 'bg-slate-800 text-white dark:bg-slate-700 dark:text-white' : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'}`}
+              className={`px-3 py-1 lg:px-4 lg:py-1.5 rounded-md lg:rounded-lg text-[10px] lg:text-xs font-bold uppercase flex items-center gap-1 transition-all ${(activeTab === 'overview' || activeTab === 'equations' || activeTab === 'analysis' || activeTab === 'guide') ? 'bg-slate-800 text-white dark:bg-slate-700 dark:text-white' : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'}`}
             >
                 More <ChevronDown size={12} className={aboutDropdownOpen ? 'rotate-180' : ''} />
             </button>
             {aboutDropdownOpen && (
-                <div
+                <div 
                   onMouseLeave={() => setAboutDropdownOpen(false)}
                   className="absolute right-0 top-full mt-2 w-48 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-2xl overflow-hidden z-[110]"
                 >
-                    <button onClick={() => { setActiveTab('guide'); setAboutDropdownOpen(false); setSelectedEntity(null); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors border-b border-slate-100 dark:border-slate-700 flex items-center gap-2"><BookOpen size={14} /> About & Guide</button>
-                    <button onClick={() => { setActiveTab('overview'); setAboutDropdownOpen(false); setSelectedEntity(null); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors border-b border-slate-100 dark:border-slate-700 flex items-center gap-2"><Globe size={14} /> Overview</button>
-                    <button onClick={() => { setActiveTab('equations'); setAboutDropdownOpen(false); setSelectedEntity(null); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors border-b border-slate-100 dark:border-slate-700 flex items-center gap-2"><FlaskConical size={14} /> Model Equations</button>
-                    <button onClick={() => { setActiveTab('analysis'); setAboutDropdownOpen(false); setSelectedEntity(null); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors border-b border-slate-100 dark:border-slate-700 flex items-center gap-2"><BrainCircuit size={14} /> Analysis Hub</button>
-                    <button onClick={() => { setActiveTab('models'); setAboutDropdownOpen(false); setSelectedEntity(null); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors border-b border-slate-100 dark:border-slate-700 flex items-center gap-2"><Settings size={14} /> Models</button>
-                    <button onClick={() => { setActiveTab('leaderboard'); setAboutDropdownOpen(false); setSelectedEntity(null); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors flex items-center gap-2"><Trophy size={14} /> Leaderboard</button>
+                    <button onClick={() => { setActiveTab('guide'); setAboutDropdownOpen(false); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors border-b border-slate-100 dark:border-slate-700 flex items-center gap-2"><BookOpen size={14} /> About & Guide</button>
+                    <button onClick={() => { setActiveTab('overview'); setAboutDropdownOpen(false); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors border-b border-slate-100 dark:border-slate-700 flex items-center gap-2"><Globe size={14} /> Overview</button>
+                    <button onClick={() => { setActiveTab('equations'); setAboutDropdownOpen(false); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors border-b border-slate-100 dark:border-slate-700 flex items-center gap-2"><FlaskConical size={14} /> Model Equations</button>
+                    <button onClick={() => { setActiveTab('analysis'); setAboutDropdownOpen(false); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors flex items-center gap-2"><BrainCircuit size={14} /> Analysis Hub</button>
                 </div>
             )}
           </div>
@@ -1892,14 +1697,11 @@ const App: React.FC = () => {
 
           {/* Compare Mode Toggle (P7-T5) */}
           <button
-             onClick={() => {
-               setComparisonMode(!comparisonMode);
-               if (!comparisonMode) setActiveTab('map'); // Switch to map tab when enabling comparison
-             }}
+             onClick={() => setComparisonMode(!comparisonMode)}
              className={`px-2 py-1.5 rounded-lg text-[10px] font-bold uppercase transition-all ${comparisonMode ? 'bg-purple-600 text-white shadow-md' : 'text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-700'}`}
-             title="Compare two scenarios side-by-side on Map tab"
+             title="Compare two scenarios side-by-side"
           >
-            Compare{comparisonMode ? '' : ' Maps'}
+            Compare
           </button>
 
           <div className="w-px h-6 bg-slate-300 dark:bg-slate-700 mx-1"></div>
@@ -1930,8 +1732,7 @@ const App: React.FC = () => {
 
           <button
              onClick={() => setTheme(prev => prev === 'dark' ? 'light' : 'dark')}
-             className={`p-1.5 rounded-lg transition-colors ${theme === 'dark' ? 'bg-slate-700 text-yellow-400 hover:bg-slate-600' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'}`}
-             title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+             className="p-1.5 rounded-lg text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
           >
             {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
           </button>
@@ -1999,32 +1800,6 @@ const App: React.FC = () => {
                 ))}
                 </div>
             </div>
-
-            {/* Comparison Scenario Selector (P7-T5) */}
-            {comparisonMode && (
-              <div className="border-2 border-purple-500 dark:border-purple-600 rounded-xl p-4 bg-purple-50 dark:bg-purple-900/20">
-                <h2 className="text-[10px] font-bold text-purple-700 dark:text-purple-300 uppercase tracking-widest mb-4 flex items-center gap-2">
-                  Comparison Scenario B
-                  <InfoTooltip text="Select a different scenario to compare against your current setup (Scenario A)." />
-                </h2>
-                <div className="space-y-2">
-                  {SCENARIO_PRESETS.map(scenario => (
-                    <button
-                      key={scenario.id}
-                      onClick={() => setComparisonScenarioId(scenario.id)}
-                      className={`w-full text-left px-3 py-2 rounded-lg border text-xs transition-all ${
-                        comparisonScenarioId === scenario.id
-                          ? 'bg-purple-600 text-white border-purple-600 shadow-md'
-                          : 'bg-white dark:bg-slate-800 border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:border-purple-400 dark:hover:border-purple-500'
-                      }`}
-                    >
-                      <div className="font-bold">{scenario.name}</div>
-                      <div className="text-[9px] opacity-75 mt-1">{scenario.description}</div>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
 
             <div>
                 <h2 className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-4">Core Parameters</h2>
@@ -2250,89 +2025,19 @@ const App: React.FC = () => {
               )}
 
               <div className="flex-1 min-h-[300px] relative">
-                {comparisonMode ? (
-                  /* Comparison Mode - Split View (P7-T5) */
-                  <div className="h-full grid grid-cols-2 gap-4">
-                    {/* Left Side - Main Scenario */}
-                    <div className="flex flex-col h-full">
-                      <div className="mb-3 flex flex-col gap-2 bg-gradient-to-r from-blue-500 to-blue-600 dark:from-blue-600 dark:to-blue-700 border-2 border-blue-400 dark:border-blue-500 px-4 py-3 rounded-xl shadow-lg">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
-                            <div className="text-sm font-black text-white uppercase tracking-wider">Your Current Simulation</div>
-                          </div>
-                          <div className="text-xs font-bold text-blue-100 bg-blue-700/50 px-2 py-1 rounded-md">Month {state.month}</div>
-                        </div>
-                        <div className="text-xs text-blue-50 flex items-center gap-4">
-                          <span>Avg Wellbeing: <span className="font-bold text-white">{state.averageWellbeing.toFixed(1)}</span></span>
-                          <span>Adoption: <span className="font-bold text-white">{(state.averageAdoption * 100).toFixed(1)}%</span></span>
-                        </div>
-                      </div>
-                      <div className="flex-1 relative">
-                        <WorldMap
-                          countryData={state.countryData}
-                          onCountryClick={handleCountryInvestment}
-                          onCountrySelect={handleSelectCountry}
-                          viewMode={viewMode}
-                          selectedCountryId={selectedEntity?.type === 'country' ? selectedEntity.id : null}
-                          corporations={corporations}
-                          selectedCorpId={selectedEntity?.type === 'corporation' ? selectedEntity.id : null}
-                          selectedArchetype={selectedArchetype}
-                        />
-                      </div>
-                    </div>
-                    {/* Right Side - Comparison Scenario */}
-                    <div className="flex flex-col h-full">
-                      <div className="mb-3 flex flex-col gap-2 bg-gradient-to-r from-purple-500 to-purple-600 dark:from-purple-600 dark:to-purple-700 border-2 border-purple-400 dark:border-purple-500 px-4 py-3 rounded-xl shadow-lg">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <div className="w-2 h-2 bg-white rounded-full"></div>
-                            <div className="text-sm font-black text-white uppercase tracking-wider">
-                              Comparison: {SCENARIO_PRESETS.find(s => s.id === comparisonScenarioId)?.name || 'Alternative'}
-                            </div>
-                          </div>
-                          <div className="text-xs font-bold text-purple-100 bg-purple-700/50 px-2 py-1 rounded-md">Month 0 (Starting Conditions)</div>
-                        </div>
-                        <div className="text-xs text-purple-50 bg-purple-800/30 rounded-lg px-3 py-2 border border-purple-400/30">
-                          <div className="flex items-start gap-2">
-                            <Info size={14} className="shrink-0 mt-0.5" />
-                            <div>
-                              <div className="font-bold mb-1">Baseline Comparison View</div>
-                              <div className="opacity-90">This shows how the selected scenario would START (Month 0), not a live simulation. Compare these initial conditions against your running simulation on the left.</div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex-1 relative">
-                        <WorldMap
-                          countryData={comparisonState.countryData}
-                          onCountryClick={() => {}} // No investment in comparison view
-                          onCountrySelect={() => {}} // No selection in comparison view
-                          viewMode={viewMode}
-                          selectedCountryId={null}
-                          corporations={comparisonCorporations}
-                          selectedCorpId={null}
-                          selectedArchetype={selectedArchetype}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                ) : (
-                  /* Normal Mode - Single View */
-                  <WorldMap
-                    countryData={state.countryData}
-                    onCountryClick={handleCountryInvestment}
-                    onCountrySelect={handleSelectCountry}
-                    viewMode={viewMode}
-                    selectedCountryId={selectedEntity?.type === 'country' ? selectedEntity.id : null}
-                    corporations={corporations}
-                    selectedCorpId={selectedEntity?.type === 'corporation' ? selectedEntity.id : null}
-                    selectedArchetype={selectedArchetype}
-                  />
-                )}
-
+                <WorldMap
+                  countryData={state.countryData}
+                  onCountryClick={handleCountryInvestment}
+                  onCountrySelect={handleSelectCountry}
+                  viewMode={viewMode}
+                  selectedCountryId={selectedEntity?.type === 'country' ? selectedEntity.id : null}
+                  corporations={corporations}
+                  selectedCorpId={selectedEntity?.type === 'corporation' ? selectedEntity.id : null}
+                  selectedArchetype={selectedArchetype}
+                />
+                
                 {/* How To Start Hint Overlay */}
-                {!comparisonMode && showStartHint && !isPlaying && (
+                {showStartHint && !isPlaying && (
                     <div className="absolute top-4 right-4 z-20 w-48 bg-blue-600/95 text-white p-4 rounded-xl shadow-2xl backdrop-blur-sm animate-in fade-in slide-in-from-top-4 duration-700">
                         <div className="flex justify-between items-start mb-2">
                             <div className="flex items-center gap-2">
@@ -2343,9 +2048,9 @@ const App: React.FC = () => {
                         </div>
                         <div>
                             <p className="text-[10px] leading-relaxed opacity-90 mb-3">Press <span className="font-bold text-white bg-white/20 px-1 rounded">PLAY</span> below to begin the simulation. Observe how the gradient UBI stabilizes global wellbeing.</p>
-                            <button
+                            <button 
                                 onClick={() => setTourStep(0)}
-                                className="w-full py-1.5 bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 rounded-lg text-[10px] font-bold uppercase hover:bg-blue-50 dark:hover:bg-slate-700 transition-colors"
+                                className="w-full py-1.5 bg-white text-blue-600 rounded-lg text-[10px] font-bold uppercase hover:bg-blue-50 transition-colors"
                             >
                                 Take a Tour
                             </button>
@@ -2423,20 +2128,8 @@ const App: React.FC = () => {
 
           {activeTab === 'charts' && (
             <div className="flex flex-col gap-6 lg:gap-8 h-full overflow-y-auto scrollbar-hide pb-32 relative">
-              {/* Comparison Mode Info Banner */}
-              {comparisonMode && (
-                <div className="bg-purple-50 dark:bg-purple-900/20 border-2 border-purple-300 dark:border-purple-700 rounded-xl p-4 flex items-start gap-3">
-                  <Info size={20} className="text-purple-600 dark:text-purple-400 shrink-0 mt-0.5" />
-                  <div>
-                    <h3 className="text-sm font-bold text-purple-900 dark:text-purple-200 mb-1">Comparison Mode Active</h3>
-                    <p className="text-xs text-purple-700 dark:text-purple-300">
-                      Chart comparison is not yet implemented. Switch to the <button onClick={() => setActiveTab('map')} className="font-bold underline hover:text-purple-900 dark:hover:text-purple-100">Map tab</button> to see side-by-side scenario comparison.
-                    </p>
-                  </div>
-                </div>
-              )}
               <div className="flex gap-2 w-full justify-end" id="ai-tools">
-                    <button
+                    <button 
                     onClick={() => { setActiveTab('analysis'); triggerSummarize(); }}
                     className="flex items-center justify-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold uppercase tracking-widest shadow-xl transition-all active:scale-95"
                     >
@@ -2568,13 +2261,6 @@ const App: React.FC = () => {
                        </span>
                      </div>
                   </div>
-
-                  {/* AI Adoption vs Wellbeing Scatter Plot */}
-                  <WellbeingScatterPlot
-                    key={`scatter-${state.month}`}
-                    countryData={state.countryData}
-                    month={state.month}
-                  />
               </div>
             </div>
           )}
@@ -2582,18 +2268,6 @@ const App: React.FC = () => {
           {activeTab === 'corporations' && (
             <div className="h-full overflow-y-auto">
               <div className="max-w-7xl mx-auto p-6 space-y-6">
-                {/* Comparison Mode Info Banner */}
-                {comparisonMode && (
-                  <div className="bg-purple-50 dark:bg-purple-900/20 border-2 border-purple-300 dark:border-purple-700 rounded-xl p-4 flex items-start gap-3">
-                    <Info size={20} className="text-purple-600 dark:text-purple-400 shrink-0 mt-0.5" />
-                    <div>
-                      <h3 className="text-sm font-bold text-purple-900 dark:text-purple-200 mb-1">Comparison Mode Active</h3>
-                      <p className="text-xs text-purple-700 dark:text-purple-300">
-                        Corporation comparison is not yet implemented. Switch to the <button onClick={() => setActiveTab('map')} className="font-bold underline hover:text-purple-900 dark:hover:text-purple-100">Map tab</button> to see side-by-side scenario comparison.
-                      </p>
-                    </div>
-                  </div>
-                )}
                 {/* Game Theory Visualization Section */}
                 <GameTheoryVisualization
                   gameTheoryState={gameTheoryState}
@@ -2686,93 +2360,6 @@ const App: React.FC = () => {
                     )}
                 </div>
              </div>
-          )}
-
-          {activeTab === 'models' && (
-            <div className="p-6">
-              <div className="max-w-4xl mx-auto">
-                {/* Active model indicator */}
-                <div className="mb-6 p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg shadow-sm">
-                  <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">Active Model</h2>
-                  {activeModelConfig ? (
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <span className="text-blue-600 dark:text-blue-400 font-medium">{activeModelConfig.name}</span>
-                        <span className="text-slate-500 dark:text-slate-500 ml-2">v{activeModelConfig.metadata.version}</span>
-                        <span className="text-slate-600 dark:text-slate-600 ml-2">by {activeModelConfig.metadata.author}</span>
-                      </div>
-                      <button
-                        onClick={clearModelConfig}
-                        className="px-3 py-1 bg-red-600 hover:bg-red-700 text-white text-sm rounded font-medium transition-colors"
-                      >
-                        Clear & Use Default
-                      </button>
-                    </div>
-                  ) : (
-                    <span className="text-slate-600 dark:text-slate-400">Using default model (hardcoded equations)</span>
-                  )}
-                </div>
-
-                {/* Mode toggle */}
-                <div className="flex gap-4 mb-6">
-                  <button
-                    onClick={() => setModelMode('upload')}
-                    className={`px-4 py-2 rounded font-medium transition-all ${
-                      modelMode === 'upload'
-                        ? 'bg-blue-600 text-white shadow-md'
-                        : 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-600'
-                    }`}
-                  >
-                    Upload Model
-                  </button>
-                  <button
-                    onClick={() => setModelMode('edit')}
-                    className={`px-4 py-2 rounded font-medium transition-all ${
-                      modelMode === 'edit'
-                        ? 'bg-blue-600 text-white shadow-md'
-                        : 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-600'
-                    }`}
-                  >
-                    Create/Edit Model
-                  </button>
-                </div>
-
-                {/* Content based on mode */}
-                {modelMode === 'upload' && (
-                  <ModelUpload
-                    onApply={applyModelConfig}
-                    onCancel={() => {}}
-                    currentModel={activeModelConfig}
-                  />
-                )}
-
-                {modelMode === 'edit' && (
-                  <ModelEditor
-                    initialConfig={activeModelConfig}
-                    onSave={applyModelConfig}
-                    onCancel={() => setModelMode('upload')}
-                    onRunTests={(config) => {
-                      // For now just apply the model
-                      applyModelConfig(config);
-                    }}
-                  />
-                )}
-              </div>
-            </div>
-          )}
-
-          {activeTab === 'leaderboard' && (
-            <div className="p-6">
-              <Leaderboard
-                onApplyModel={(model) => {
-                  applyModelConfig(model.modelConfig);
-                  setActiveTab('map');
-                }}
-                onViewDetails={(model) => {
-                  setViewingModel(model);
-                }}
-              />
-            </div>
           )}
 
           {activeTab === 'overview' && (
@@ -3045,50 +2632,50 @@ const App: React.FC = () => {
                 <div className="space-y-6">
                   <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl">
                     <h3 className="font-bold text-slate-900 dark:text-white mb-3">Gini Dampening</h3>
-                    <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-sm font-mono text-slate-900 dark:text-slate-100">
+                    <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-sm font-mono">
                       effectiveUBI = totalUBI × (1.5 - gini)
                     </code>
-                    <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">High inequality reduces UBI effectiveness (0.2 gini = 1.3x, 0.6 gini = 0.9x)</p>
+                    <p className="text-xs text-slate-500 mt-2">High inequality reduces UBI effectiveness (0.2 gini = 1.3x, 0.6 gini = 0.9x)</p>
                   </div>
 
                   <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl">
                     <h3 className="font-bold text-slate-900 dark:text-white mb-3">Corruption Leakage</h3>
-                    <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-sm font-mono text-slate-900 dark:text-slate-100">
+                    <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-sm font-mono">
                       localLeakage = localContribution × (1 - governance)
                     </code>
-                    <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">Low governance = more tax dollars lost to corruption</p>
+                    <p className="text-xs text-slate-500 mt-2">Low governance = more tax dollars lost to corruption</p>
                   </div>
 
                   <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl">
                     <h3 className="font-bold text-slate-900 dark:text-white mb-3">Direct-to-Wallet Bypass</h3>
-                    <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-sm font-mono text-slate-900 dark:text-slate-100">
+                    <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-sm font-mono">
                       globalUBI = directToWallet ? globalDividend : globalDividend × governance
                     </code>
-                    <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">Blockchain payments bypass local corruption entirely</p>
+                    <p className="text-xs text-slate-500 mt-2">Blockchain payments bypass local corruption entirely</p>
                   </div>
 
                   <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl">
                     <h3 className="font-bold text-slate-900 dark:text-white mb-3">Displacement Gap</h3>
-                    <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-sm font-mono text-slate-900 dark:text-slate-100">
+                    <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-sm font-mono">
                       gap = max(0, (monthlyWage × aiAdoption × displacementRate) - totalUBI)
                     </code>
-                    <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">When lost wages exceed UBI payments, citizens suffer</p>
+                    <p className="text-xs text-slate-500 mt-2">When lost wages exceed UBI payments, citizens suffer</p>
                   </div>
 
                   <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl">
                     <h3 className="font-bold text-slate-900 dark:text-white mb-3">Displacement Friction</h3>
-                    <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-sm font-mono text-slate-900 dark:text-slate-100">
+                    <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-sm font-mono">
                       friction = sin(aiAdoption × π) × 40 × (1 - governance)^1.5 × (1 + gini × 0.5)
                     </code>
-                    <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">Mid-transition anxiety peaks at 50% adoption. Power function (1.5) means low-governance countries suffer exponentially more pain. Well-governed democracies buffer transition anxiety through institutions.</p>
+                    <p className="text-xs text-slate-500 mt-2">Mid-transition anxiety peaks at 50% adoption. Power function (1.5) means low-governance countries suffer exponentially more pain. Well-governed democracies buffer transition anxiety through institutions.</p>
                   </div>
 
                   <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl">
                     <h3 className="font-bold text-slate-900 dark:text-white mb-3">Wellbeing Delta</h3>
-                    <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-sm font-mono text-slate-900 dark:text-slate-100">
+                    <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-sm font-mono">
                       Δwellbeing = (ubiBoost × 0.20) - (displacementFriction × 0.12)
                     </code>
-                    <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">UBI boost coefficient (0.20) now exceeds friction coefficient (0.12), reflecting that in well-governed economies with functional institutions, UBI should outpace displacement anxiety.</p>
+                    <p className="text-xs text-slate-500 mt-2">UBI boost coefficient (0.20) now exceeds friction coefficient (0.12), reflecting that in well-governed economies with functional institutions, UBI should outpace displacement anxiety.</p>
                   </div>
                 </div>
               ) : (
@@ -3111,43 +2698,43 @@ const App: React.FC = () => {
 
                     <div>
                       <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">1.1 Sigmoid Incentive Modifier</h4>
-                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono text-slate-900 dark:text-slate-100">
+                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono">
                         sigmoidIncentive = 1 / (1 + exp(k × (adoption - mid)))
                       </code>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">where k = 10, mid = 0.70</p>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">Incentive effectiveness decreases as adoption approaches saturation.</p>
+                      <p className="text-xs text-slate-500 mt-2">where k = 10, mid = 0.70</p>
+                      <p className="text-xs text-slate-500 mt-1">Incentive effectiveness decreases as adoption approaches saturation.</p>
                     </div>
 
                     <div>
                       <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">1.2 Effective Adoption Incentive</h4>
-                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono text-slate-900 dark:text-slate-100">
+                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono">
                         effectiveIncentive = adoptionIncentive × sigmoidIncentive
                       </code>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">where adoptionIncentive = model parameter</p>
+                      <p className="text-xs text-slate-500 mt-2">where adoptionIncentive = model parameter</p>
                     </div>
 
                     <div>
                       <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">1.3 Governance Adoption Modifier</h4>
-                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono whitespace-pre text-slate-900 dark:text-slate-100">
+                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono whitespace-pre">
 {`govModifier = {
   1.2 - (adoption × 0.4)     if governance < 0.5  (autocracy)
   0.9 + (governance × 0.3)   if governance ≥ 0.5  (democracy)
 }`}
                       </code>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">Autocracies: fast initial adoption, slow later. Democracies: steady sustained growth.</p>
+                      <p className="text-xs text-slate-500 mt-2">Autocracies: fast initial adoption, slow later. Democracies: steady sustained growth.</p>
                     </div>
 
                     <div>
                       <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">1.4 Regional Economic Modifier</h4>
-                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono text-slate-900 dark:text-slate-100">
+                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono">
                         regionalModifier = 1 + (gdpPerCapita / 100000)
                       </code>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">Wealthier countries adopt AI faster due to infrastructure and capital availability.</p>
+                      <p className="text-xs text-slate-500 mt-2">Wealthier countries adopt AI faster due to infrastructure and capital availability.</p>
                     </div>
 
                     <div>
                       <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">1.5 Company Join Probability (Discrete Event)</h4>
-                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono whitespace-pre text-slate-900 dark:text-slate-100">
+                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono whitespace-pre">
 {`P(join) = aiGrowthRate × regionalModifier × govModifier
          × (1 + effectiveIncentive) × (1 - adoption)
 
@@ -3157,11 +2744,11 @@ If random() < P(join): add 1-4 companies to companiesJoined`}
 
                     <div>
                       <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">1.6 Continuous Adoption Growth</h4>
-                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono whitespace-pre text-slate-900 dark:text-slate-100">
+                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono whitespace-pre">
 {`growth = aiGrowthRate × regionalModifier × (1 + companiesJoined × 0.02)
 adoption(t+1) = min(0.999, adoption(t) + growth × (1 - adoption(t)))`}
                       </code>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">Logistic growth capped at 99.9% to prevent division by zero.</p>
+                      <p className="text-xs text-slate-500 mt-2">Logistic growth capped at 99.9% to prevent division by zero.</p>
                     </div>
                   </div>
 
@@ -3171,37 +2758,37 @@ adoption(t+1) = min(0.999, adoption(t) + growth × (1 - adoption(t)))`}
 
                     <div>
                       <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">2.1 Base Surplus Production</h4>
-                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono text-slate-900 dark:text-slate-100">
+                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono">
                         baseSurplus = adoption^1.6 × population × (gdpPerCapita / 40)
                       </code>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">Power function (1.6) reflects increasing returns to scale in automation.</p>
+                      <p className="text-xs text-slate-500 mt-2">Power function (1.6) reflects increasing returns to scale in automation.</p>
                     </div>
 
                     <div>
                       <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">2.2 Network Effect Multiplier</h4>
-                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono text-slate-900 dark:text-slate-100">
+                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono">
                         networkEffect = 1 + (adoption × 0.4)
                       </code>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">AI systems become more productive as adoption increases (data network effects).</p>
+                      <p className="text-xs text-slate-500 mt-2">AI systems become more productive as adoption increases (data network effects).</p>
                     </div>
 
                     <div>
                       <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">2.3 Total Surplus</h4>
-                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono text-slate-900 dark:text-slate-100">
+                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono">
                         totalSurplus = baseSurplus × networkEffect
                       </code>
                     </div>
 
                     <div>
                       <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">2.4 Raw Fund Contribution (Pre-Corruption)</h4>
-                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono text-slate-900 dark:text-slate-100">
+                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono">
                         rawContribution = totalSurplus × corporateTaxRate
                       </code>
                     </div>
 
                     <div>
                       <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">2.5 Corruption Leakage (Local Tax Only)</h4>
-                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono whitespace-pre text-slate-900 dark:text-slate-100">
+                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono whitespace-pre">
 {`globalPortion = globalRedistributionRate
 localPortion = 1 - globalRedistributionRate
 
@@ -3210,15 +2797,15 @@ localContribution = rawContribution × localPortion
 localLeakage = localContribution × (1 - governance)
 effectiveContribution = globalContribution + (localContribution - localLeakage)`}
                       </code>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">Global taxes paid directly to fund (no leakage). Local taxes subject to governance quality.</p>
+                      <p className="text-xs text-slate-500 mt-2">Global taxes paid directly to fund (no leakage). Local taxes subject to governance quality.</p>
                     </div>
 
                     <div>
                       <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">2.6 Global Fund Accumulation</h4>
-                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono text-slate-900 dark:text-slate-100">
+                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono">
                         globalFund(t+1) = globalFund(t) + Σ(effectiveContribution)
                       </code>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">Sum across all countries</p>
+                      <p className="text-xs text-slate-500 mt-2">Sum across all countries</p>
                     </div>
                   </div>
 
@@ -3228,7 +2815,7 @@ effectiveContribution = globalContribution + (localContribution - localLeakage)`
 
                     <div>
                       <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">3.1 Fund Pool Split</h4>
-                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono whitespace-pre text-slate-900 dark:text-slate-100">
+                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono whitespace-pre">
 {`globalPool = globalFund × globalRedistributionRate
 localPool = globalFund × (1 - globalRedistributionRate)`}
                       </code>
@@ -3236,68 +2823,68 @@ localPool = globalFund × (1 - globalRedistributionRate)`}
 
                     <div>
                       <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">3.2 Global Dividend (Equal Per Capita)</h4>
-                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono text-slate-900 dark:text-slate-100">
+                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono">
                         globalDividendPerCapita = globalPool / (worldPopulation × 10)
                       </code>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">Division by 10 converts annual to monthly equivalent</p>
+                      <p className="text-xs text-slate-500 mt-2">Division by 10 converts annual to monthly equivalent</p>
                     </div>
 
                     <div>
                       <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">3.3 Local Dividend (Population-Weighted)</h4>
-                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono whitespace-pre text-slate-900 dark:text-slate-100">
+                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono whitespace-pre">
 {`countryLocalPool = localPool × (population / worldPopulation)
 localDividendRaw = countryLocalPool / (population × 10)
 localDividend = localDividendRaw × governance`}
                       </code>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">Local delivery subject to governance quality (corruption in distribution)</p>
+                      <p className="text-xs text-slate-500 mt-2">Local delivery subject to governance quality (corruption in distribution)</p>
                     </div>
 
                     <div>
                       <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">3.4 Direct-to-Wallet Bypass</h4>
-                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono whitespace-pre text-slate-900 dark:text-slate-100">
+                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono whitespace-pre">
 {`globalDividend = {
   globalDividendPerCapita                if directToWallet = true
   globalDividendPerCapita × governance   if directToWallet = false
 }`}
                       </code>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">Blockchain/digital identity bypasses corrupt governments entirely</p>
+                      <p className="text-xs text-slate-500 mt-2">Blockchain/digital identity bypasses corrupt governments entirely</p>
                     </div>
 
                     <div>
                       <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">3.5 Total UBI Received</h4>
-                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono text-slate-900 dark:text-slate-100">
+                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono">
                         totalUBI = localDividend + globalDividend
                       </code>
                     </div>
 
                     <div>
                       <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">3.6 Gini Dampening (Inequality Effect)</h4>
-                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono whitespace-pre text-slate-900 dark:text-slate-100">
+                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono whitespace-pre">
 {`giniDamper = 1.5 - gini
 effectiveUBI = totalUBI × giniDamper`}
                       </code>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">High inequality (gini = 0.6) → 0.9× effectiveness. Low inequality (gini = 0.2) → 1.3× effectiveness.</p>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">Rationale: In unequal societies, wealthy save UBI; poor face higher prices.</p>
+                      <p className="text-xs text-slate-500 mt-2">High inequality (gini = 0.6) → 0.9× effectiveness. Low inequality (gini = 0.2) → 1.3× effectiveness.</p>
+                      <p className="text-xs text-slate-500 mt-1">Rationale: In unequal societies, wealthy save UBI; poor face higher prices.</p>
                     </div>
 
                     <div>
                       <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">3.7 GDP-Weighted Utility Scaling</h4>
-                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono whitespace-pre text-slate-900 dark:text-slate-100">
+                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono whitespace-pre">
 {`logGDP = log₁₀(gdpPerCapita + 1000)
 scalingOffset = logGDP - 4
 wealthGradient = 1 + (gdpScaling × 0.5 × scalingOffset)
 scaledUBI = effectiveUBI × max(0.5, wealthGradient)`}
                       </code>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">Logarithmic scaling: $100 means more to poor than rich (diminishing marginal utility).</p>
+                      <p className="text-xs text-slate-500 mt-2">Logarithmic scaling: $100 means more to poor than rich (diminishing marginal utility).</p>
                     </div>
 
                     <div>
                       <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">3.8 UBI Utility Boost (Wellbeing Impact)</h4>
-                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono whitespace-pre text-slate-900 dark:text-slate-100">
+                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono whitespace-pre">
 {`utilityScale = gdpPerCapita / 40 + 150
 ubiBoost = (scaledUBI / utilityScale) × 120`}
                       </code>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">Converts dollars into wellbeing points (0-100 scale)</p>
+                      <p className="text-xs text-slate-500 mt-2">Converts dollars into wellbeing points (0-100 scale)</p>
                     </div>
                   </div>
 
@@ -3307,44 +2894,44 @@ ubiBoost = (scaledUBI / utilityScale) × 120`}
 
                     <div>
                       <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">4.1 Monthly Wage (Baseline)</h4>
-                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono text-slate-900 dark:text-slate-100">
+                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono">
                         monthlyWage = gdpPerCapita / 12
                       </code>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">Assumes GDP per capita represents average annual income</p>
+                      <p className="text-xs text-slate-500 mt-2">Assumes GDP per capita represents average annual income</p>
                     </div>
 
                     <div>
                       <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">4.2 Lost Wages from Displacement</h4>
-                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono text-slate-900 dark:text-slate-100">
+                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono">
                         lostWages = monthlyWage × adoption × displacementRate
                       </code>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">At 100% AI adoption, displacementRate fraction of labor income is lost</p>
+                      <p className="text-xs text-slate-500 mt-2">At 100% AI adoption, displacementRate fraction of labor income is lost</p>
                     </div>
 
                     <div>
                       <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">4.3 Displacement Gap</h4>
-                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono text-slate-900 dark:text-slate-100">
+                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono">
                         displacementGap = max(0, lostWages - totalUBI)
                       </code>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">Positive gap indicates UBI is insufficient to replace lost income</p>
+                      <p className="text-xs text-slate-500 mt-2">Positive gap indicates UBI is insufficient to replace lost income</p>
                     </div>
 
                     <div>
                       <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">4.4 Base Friction (Governance Buffering)</h4>
-                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono text-slate-900 dark:text-slate-100">
+                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono">
                         baseFriction = 40 × (1 - governance)^1.5 × (1 + gini × 0.5)
                       </code>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">Power function (1.5) means low-governance countries feel exponentially more pain</p>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">Well-governed democracies buffer transitions via institutions, retraining, safety nets</p>
+                      <p className="text-xs text-slate-500 mt-2">Power function (1.5) means low-governance countries feel exponentially more pain</p>
+                      <p className="text-xs text-slate-500 mt-1">Well-governed democracies buffer transitions via institutions, retraining, safety nets</p>
                     </div>
 
                     <div>
                       <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">4.5 Displacement Friction (Transition Anxiety)</h4>
-                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono text-slate-900 dark:text-slate-100">
+                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono">
                         displacementFriction = sin(adoption × π) × baseFriction
                       </code>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">Sine function peaks at 50% adoption (mid-transition chaos)</p>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">At 0% and 100% adoption, friction is minimal (stability)</p>
+                      <p className="text-xs text-slate-500 mt-2">Sine function peaks at 50% adoption (mid-transition chaos)</p>
+                      <p className="text-xs text-slate-500 mt-1">At 0% and 100% adoption, friction is minimal (stability)</p>
                     </div>
                   </div>
 
@@ -3354,27 +2941,27 @@ ubiBoost = (scaledUBI / utilityScale) × 120`}
 
                     <div>
                       <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">5.1 Base Wellbeing Update</h4>
-                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono text-slate-900 dark:text-slate-100">
+                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono">
                         wellbeingBase = wellbeing(t) + (ubiBoost × 0.20) - (displacementFriction × 0.12)
                       </code>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">Coefficients: α = 0.20 (UBI boost), β = 0.12 (friction)</p>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">Rebalanced: UBI now outpaces friction in well-governed economies</p>
+                      <p className="text-xs text-slate-500 mt-2">Coefficients: α = 0.20 (UBI boost), β = 0.12 (friction)</p>
+                      <p className="text-xs text-slate-500 mt-1">Rebalanced: UBI now outpaces friction in well-governed economies</p>
                     </div>
 
                     <div>
                       <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">5.2 Crisis Detection and Penalty</h4>
-                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono whitespace-pre text-slate-900 dark:text-slate-100">
+                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono whitespace-pre">
 {`if displacementGap > monthlyWage × 0.3:
   crisisPenalty = min(5, (displacementGap / monthlyWage) × 10)
   wellbeingBase -= crisisPenalty
   countriesInCrisis += 1`}
                       </code>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">Penalty capped at 5 points: societies adapt via informal economies, family networks</p>
+                      <p className="text-xs text-slate-500 mt-2">Penalty capped at 5 points: societies adapt via informal economies, family networks</p>
                     </div>
 
                     <div>
                       <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">5.3 Subsistence Floor Bonuses</h4>
-                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono whitespace-pre text-slate-900 dark:text-slate-100">
+                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono whitespace-pre">
 {`subsistenceFloor = gdpPerCapita / 25
 
 if adoption > 0.60 and totalUBI < subsistenceFloor:
@@ -3382,78 +2969,78 @@ if adoption > 0.60 and totalUBI < subsistenceFloor:
 else if totalUBI > subsistenceFloor × 2.5:
   wellbeingBase += 2.0`}
                       </code>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">Penalty: High automation without subsistence UBI = severe hardship</p>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-1">Bonus: UBI &gt; 2.5× subsistence = thriving (nutrition, education, healthcare access)</p>
+                      <p className="text-xs text-slate-500 mt-2">Penalty: High automation without subsistence UBI = severe hardship</p>
+                      <p className="text-xs text-slate-500 mt-1">Bonus: UBI &gt; 2.5× subsistence = thriving (nutrition, education, healthcare access)</p>
                     </div>
 
                     <div>
                       <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">5.4 Final Wellbeing (Bounded)</h4>
-                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono text-slate-900 dark:text-slate-100">
+                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono">
                         wellbeing(t+1) = max(1, min(100, wellbeingBase))
                       </code>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">Wellbeing bounded to [1, 100] scale</p>
+                      <p className="text-xs text-slate-500 mt-2">Wellbeing bounded to [1, 100] scale</p>
                     </div>
                   </div>
 
                   {/* Section 6: Shadow Simulation (Counterfactual) */}
                   <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl space-y-4">
                     <h3 className="font-bold text-slate-900 dark:text-white text-lg border-b border-slate-200 dark:border-slate-700 pb-2">6. Shadow Simulation (No-Intervention Baseline)</h3>
-                    <p className="text-xs text-slate-600 dark:text-slate-400 italic">
+                    <p className="text-xs text-slate-500 italic">
                       Counterfactual scenario showing what happens WITHOUT UBI intervention. Validates model by demonstrating intervention effectiveness.
                     </p>
 
                     <div>
                       <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">6.1 Shadow Adoption Growth (Slower)</h4>
-                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono whitespace-pre text-slate-900 dark:text-slate-100">
+                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono whitespace-pre">
 {`shadowGrowth = aiGrowthRate × 0.5 × regionalModifier × (1 - shadowAdoption(t))
 shadowAdoption(t+1) = min(0.999, shadowAdoption(t) + shadowGrowth)`}
                       </code>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">50% speed: No incentives to automate (no UBI system exists)</p>
+                      <p className="text-xs text-slate-500 mt-2">50% speed: No incentives to automate (no UBI system exists)</p>
                     </div>
 
                     <div>
                       <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">6.2 Shadow Wage (Collapsing Income)</h4>
-                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono text-slate-900 dark:text-slate-100">
+                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono">
                         shadowWage = monthlyWage × (1 - shadowAdoption × 0.9)
                       </code>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">90% displacement with NO UBI buffer (vs. displacementRate with intervention)</p>
+                      <p className="text-xs text-slate-500 mt-2">90% displacement with NO UBI buffer (vs. displacementRate with intervention)</p>
                     </div>
 
                     <div>
                       <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">6.3 Shadow Subsistence (Stress Adjustment)</h4>
-                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono whitespace-pre text-slate-900 dark:text-slate-100">
+                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono whitespace-pre">
 {`shadowSubsistence = gdpPerCapita / 25
 subsistenceAdjusted = shadowSubsistence × (shadowWage < 800 ? 1.7 : 1)`}
                       </code>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">Survival costs increase under economic stress (prices rise, hoarding, black markets)</p>
+                      <p className="text-xs text-slate-500 mt-2">Survival costs increase under economic stress (prices rise, hoarding, black markets)</p>
                     </div>
 
                     <div>
                       <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">6.4 Shadow Wellbeing (Michaelis-Menten Curve)</h4>
-                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono whitespace-pre text-slate-900 dark:text-slate-100">
+                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono whitespace-pre">
 {`r = shadowWage / (shadowWage + subsistenceAdjusted)
 shadowWellbeing = max(1, min(100, r × 100))`}
                       </code>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">Basic survival economics: wellbeing approaches zero as income approaches zero</p>
+                      <p className="text-xs text-slate-500 mt-2">Basic survival economics: wellbeing approaches zero as income approaches zero</p>
                     </div>
 
                     <div>
                       <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">6.5 Shadow Friction (Amplified)</h4>
-                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono whitespace-pre text-slate-900 dark:text-slate-100">
+                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono whitespace-pre">
 {`shadowFriction = sin(shadowAdoption × π) × baseFriction × 2.0
 shadowWellbeing = max(1, shadowWellbeing - shadowFriction × 0.4)`}
                       </code>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">Doubled friction: No safety net = worse social cohesion breakdown</p>
+                      <p className="text-xs text-slate-500 mt-2">Doubled friction: No safety net = worse social cohesion breakdown</p>
                     </div>
 
                     <div>
                       <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">6.6 Instability Penalty (High Adoption without UBI)</h4>
-                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono whitespace-pre text-slate-900 dark:text-slate-100">
+                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono whitespace-pre">
 {`if shadowAdoption > 0.5:
   instabilityPenalty = (shadowAdoption - 0.5)² × 20
   shadowWellbeing = max(1, shadowWellbeing - instabilityPenalty)`}
                       </code>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">Mass unemployment without safety net leads to riots, political breakdown, instability</p>
+                      <p className="text-xs text-slate-500 mt-2">Mass unemployment without safety net leads to riots, political breakdown, instability</p>
                     </div>
                   </div>
 
@@ -3463,33 +3050,33 @@ shadowWellbeing = max(1, shadowWellbeing - shadowFriction × 0.4)`}
 
                     <div>
                       <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">7.1 Average Global Wellbeing</h4>
-                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono text-slate-900 dark:text-slate-100">
+                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono">
                         averageWellbeing = Σ(wellbeing) / numberOfCountries
                       </code>
                     </div>
 
                     <div>
                       <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">7.2 Global Displacement Gap</h4>
-                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono text-slate-900 dark:text-slate-100">
+                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono">
                         globalDisplacementGap = Σ(displacementGap × population)
                       </code>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">Total aggregate lost wages minus UBI across all countries</p>
+                      <p className="text-xs text-slate-500 mt-2">Total aggregate lost wages minus UBI across all countries</p>
                     </div>
 
                     <div>
                       <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">7.3 Total Corruption Leakage (Monthly)</h4>
-                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono text-slate-900 dark:text-slate-100">
+                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono">
                         corruptionLeakage = Σ(localLeakage)
                       </code>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">Tax dollars lost to corrupt governments each month</p>
+                      <p className="text-xs text-slate-500 mt-2">Tax dollars lost to corrupt governments each month</p>
                     </div>
 
                     <div>
                       <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">7.4 Countries in Crisis Count</h4>
-                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono text-slate-900 dark:text-slate-100">
+                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono">
                         countriesInCrisis = count(displacementGap &gt; monthlyWage × 0.3)
                       </code>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">Number of countries where UBI insufficient to cover job losses</p>
+                      <p className="text-xs text-slate-500 mt-2">Number of countries where UBI insufficient to cover job losses</p>
                     </div>
                   </div>
 
@@ -3600,22 +3187,6 @@ shadowWellbeing = max(1, shadowWellbeing - shadowFriction × 0.4)`}
         onClose={handleDeselectEntity}
         onUpdateCountry={updateCountry}
       />
-
-      {/* Model Detail Modal (P9-T10) */}
-      {viewingModel && (
-        <ModelDetail
-          model={viewingModel}
-          onClose={() => setViewingModel(null)}
-          onApply={(model) => {
-            applyModelConfig(model.modelConfig);
-            setViewingModel(null);
-            setActiveTab('map');
-          }}
-          onRate={(modelId, rating) => {
-            rateModel(modelId, rating);
-          }}
-        />
-      )}
     </div>
   );
 };
