@@ -2,18 +2,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import * as topojson from 'topojson-client';
-import { CountryStats, Corporation } from '../types';
+import { CountryStats } from '../types';
 import { ZoomIn, ZoomOut, Maximize } from 'lucide-react';
 
 interface WorldMapProps {
   countryData: Record<string, CountryStats>;
   onCountryClick: (id: string, delta: number) => void;
-  onCountrySelect?: (id: string) => void;
-  viewMode: 'adoption' | 'wellbeing' | 'ubi-received' | 'corp-hqs';
-  selectedCountryId?: string | null;
-  corporations?: Corporation[];
-  selectedCorpId?: string | null;
-  selectedArchetype?: string | null;
+  viewMode: 'adoption' | 'wellbeing';
 }
 
 // Exhaustive mapping for world-atlas 110m (standard ISO numeric IDs to ISO alpha-3)
@@ -66,16 +61,7 @@ const ID_MAP: Record<string, string> = {
   '036': 'AUS', '554': 'NZL', '598': 'PNG'
 };
 
-const WorldMap: React.FC<WorldMapProps> = ({
-  countryData,
-  onCountryClick,
-  onCountrySelect,
-  viewMode,
-  selectedCountryId = null,
-  corporations = [],
-  selectedCorpId = null,
-  selectedArchetype = null
-}) => {
+const WorldMap: React.FC<WorldMapProps> = ({ countryData, onCountryClick, viewMode }) => {
   const svgRef = useRef<SVGSVGElement>(null);
   const gRef = useRef<SVGGElement>(null);
   const [geography, setGeography] = useState<any>(null);
@@ -151,12 +137,7 @@ const WorldMap: React.FC<WorldMapProps> = ({
         })
         .on('click', (event, d: any) => {
           const isoCode = ID_MAP[d.id] || d.id;
-          // If Shift key is held, do investment; otherwise, select the country
-          if (event.shiftKey) {
-            onCountryClick(isoCode, 5);
-          } else {
-            onCountrySelect?.(isoCode);
-          }
+          onCountryClick(isoCode, 5);
         })
         .on('mouseover', function(event, d: any) {
           d3.select(this).attr('stroke', '#38bdf8').attr('stroke-width', 0.5).raise();
@@ -179,88 +160,12 @@ const WorldMap: React.FC<WorldMapProps> = ({
         const isoCode = ID_MAP[d.id];
         const stats = countryData[isoCode];
         if (!stats) return '#1e293b'; // Fallback for unmapped IDs
-
-        // Dim countries that don't match the selected archetype
-        const isFiltered = selectedArchetype && stats.archetype !== selectedArchetype;
-        const dimFactor = isFiltered ? 0.2 : 1.0; // Dim to 20% opacity if filtered out
-
-        let baseColor: string;
-        // Calculate color based on view mode
-        if (viewMode === 'adoption') {
-          baseColor = d3.interpolateBlues(stats.aiAdoption);
-        } else if (viewMode === 'wellbeing') {
-          baseColor = d3.interpolateRdYlGn(stats.wellbeing / 100);
-        } else if (viewMode === 'ubi-received') {
-          // Color by UBI per capita (normalize to reasonable range 0-500/month)
-          const ubiPerCapita = stats.totalUbiReceived / stats.population;
-          const normalized = Math.min(1, ubiPerCapita / 500);
-          baseColor = d3.interpolateGreens(normalized);
-        } else if (viewMode === 'corp-hqs') {
-          // Color by number of HQ corps (0-10 range)
-          const hqCount = stats.headquarteredCorps?.length || 0;
-          const normalized = Math.min(1, hqCount / 10);
-          baseColor = d3.interpolatePurples(normalized);
-        } else {
-          baseColor = '#1e293b';
-        }
-
-        // Apply dimming if filtered
-        if (isFiltered) {
-          const rgb = d3.color(baseColor);
-          if (rgb) {
-            return d3.rgb(rgb.r * dimFactor, rgb.g * dimFactor, rgb.b * dimFactor).toString();
-          }
-        }
-        return baseColor;
-      })
-      .attr('stroke', (d: any) => {
-        const isoCode = ID_MAP[d.id];
-
-        // Highest priority: selected country
-        if (selectedCountryId === isoCode) {
-          return '#10b981'; // Green border for selected country
-        }
-
-        // Second priority: selected corporation HQ
-        if (selectedCorpId) {
-          const selectedCorp = corporations.find(c => c.id === selectedCorpId);
-          if (selectedCorp) {
-            // HQ country gets special border
-            if (selectedCorp.headquartersCountry === isoCode) {
-              return '#f59e0b'; // Amber border for HQ
-            }
-            // Operating countries get different border
-            if (selectedCorp.operatingCountries.includes(isoCode)) {
-              return '#3b82f6'; // Blue border for operating countries
-            }
-          }
-        }
-        return '#0f172a';
-      })
-      .attr('stroke-width', (d: any) => {
-        const isoCode = ID_MAP[d.id];
-
-        // Highest priority: selected country
-        if (selectedCountryId === isoCode) {
-          return 2.0; // Extra thick border for selected country
-        }
-
-        // Second priority: selected corporation countries
-        if (selectedCorpId) {
-          const selectedCorp = corporations.find(c => c.id === selectedCorpId);
-          if (selectedCorp) {
-            if (selectedCorp.headquartersCountry === isoCode) {
-              return 1.5; // Thick border for HQ
-            }
-            if (selectedCorp.operatingCountries.includes(isoCode)) {
-              return 0.8; // Medium border for operating countries
-            }
-          }
-        }
-        return 0.1;
+        return viewMode === 'adoption' 
+            ? d3.interpolateBlues(stats.aiAdoption) 
+            : d3.interpolateRdYlGn(stats.wellbeing / 100);
       });
 
-  }, [geography, countryData, onCountryClick, onCountrySelect, viewMode, selectedCountryId, corporations, selectedCorpId, selectedArchetype]);
+  }, [geography, countryData, onCountryClick, viewMode]);
 
   return (
     <div className="relative w-full h-full min-h-[400px] bg-slate-900 rounded-2xl overflow-hidden shadow-2xl border border-slate-800 group">
@@ -278,8 +183,7 @@ const WorldMap: React.FC<WorldMapProps> = ({
         <div className="bg-slate-800/90 p-3 rounded-xl border border-slate-700 backdrop-blur shadow-xl">
           <div className="text-[10px] font-bold text-slate-500 uppercase mb-2 tracking-widest">Controls</div>
           <div className="flex flex-col gap-1 text-[9px] font-mono">
-            <div className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-emerald-400" /> LEFT-CLICK: SELECT</div>
-            <div className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-sky-400" /> SHIFT+CLICK: + AI GROWTH</div>
+            <div className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-sky-400" /> LEFT-CLICK: + AI GROWTH</div>
             <div className="flex items-center gap-2"><div className="w-2 h-2 rounded-full bg-rose-400" /> RIGHT-CLICK: - AI GROWTH</div>
             <div className="flex items-center gap-2 text-slate-400 mt-1"><Maximize size={8} /> SCROLL/PINCH TO ZOOM</div>
           </div>
@@ -289,7 +193,7 @@ const WorldMap: React.FC<WorldMapProps> = ({
       {/* Hover Stats Card */}
       {hoveredStats && (
         <div className="absolute bottom-4 left-4 z-20 pointer-events-none animate-in fade-in slide-in-from-bottom-2 duration-200">
-             <div className="bg-slate-900/95 border border-slate-600 p-4 rounded-xl shadow-2xl backdrop-blur-md min-w-[220px]">
+             <div className="bg-slate-900/95 border border-slate-600 p-4 rounded-xl shadow-2xl backdrop-blur-md min-w-[180px]">
                 <h3 className="text-sm font-bold text-white mb-2 border-b border-slate-700 pb-1">{hoveredStats.name}</h3>
                 <div className="space-y-1.5">
                     <div className="flex justify-between items-center text-xs">
@@ -299,40 +203,13 @@ const WorldMap: React.FC<WorldMapProps> = ({
                     <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
                         <div className="h-full bg-blue-500" style={{ width: `${hoveredStats.aiAdoption * 100}%` }}></div>
                     </div>
-
+                    
                     <div className="flex justify-between items-center text-xs mt-2">
                         <span className="text-slate-400">Wellbeing</span>
                         <span className={`font-mono font-bold ${hoveredStats.wellbeing > 50 ? 'text-emerald-400' : 'text-rose-400'}`}>{hoveredStats.wellbeing.toFixed(0)}</span>
                     </div>
                      <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
                         <div className="h-full bg-gradient-to-r from-rose-500 via-yellow-500 to-emerald-500" style={{ width: `${hoveredStats.wellbeing}%` }}></div>
-                    </div>
-
-                    {/* Corporation-related stats */}
-                    <div className="border-t border-slate-700 mt-2 pt-2">
-                        <div className="flex justify-between items-center text-xs">
-                            <span className="text-slate-400">UBI/month</span>
-                            <span className="font-mono text-green-400 font-bold">
-                                ${(hoveredStats.totalUbiReceived / hoveredStats.population).toFixed(0)}/person
-                            </span>
-                        </div>
-                        {hoveredStats.totalUbiReceived > 0 && (
-                            <div className="text-[9px] text-slate-500 mt-0.5 space-y-0.5">
-                                <div>Global: ${(hoveredStats.ubiReceivedGlobal / hoveredStats.population).toFixed(0)}</div>
-                                <div>Customer-weighted: ${(hoveredStats.ubiReceivedCustomerWeighted / hoveredStats.population).toFixed(0)}</div>
-                                <div>Local: ${(hoveredStats.ubiReceivedLocal / hoveredStats.population).toFixed(0)}</div>
-                            </div>
-                        )}
-                    </div>
-
-                    <div className="flex justify-between items-center text-xs mt-1">
-                        <span className="text-slate-400">Corp HQs</span>
-                        <span className="font-mono text-purple-400 font-bold">{hoveredStats.headquarteredCorps?.length || 0}</span>
-                    </div>
-
-                    <div className="flex justify-between items-center text-xs">
-                        <span className="text-slate-400">Corps operating</span>
-                        <span className="font-mono text-cyan-400 font-bold">{hoveredStats.customerOfCorps?.length || 0}</span>
                     </div>
                 </div>
              </div>
