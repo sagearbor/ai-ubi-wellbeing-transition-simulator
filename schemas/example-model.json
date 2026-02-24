@@ -1,0 +1,46 @@
+{
+  "id": "aggressive-growth",
+  "name": "Aggressive Growth Model",
+  "description": "A model optimized for rapid AI adoption with higher displacement tolerance, betting on fast transition to abundance.",
+  "parameters": [
+    {
+      "name": "aiGrowthRate",
+      "min": 0.05,
+      "max": 0.25,
+      "default": 0.15,
+      "description": "Accelerated AI adoption rate",
+      "unit": "per month"
+    },
+    {
+      "name": "displacementRate",
+      "min": 0.60,
+      "max": 0.95,
+      "default": 0.85,
+      "description": "Higher displacement accepted for faster transition",
+      "unit": "%"
+    },
+    {
+      "name": "ubiBoostCoeff",
+      "min": 0.10,
+      "max": 0.40,
+      "default": 0.25,
+      "description": "Stronger UBI effect",
+      "unit": ""
+    }
+  ],
+  "equations": {
+    "aiAdoptionGrowth": "aiGrowthRate * 1.5 * (1 + gdpPerCapita / 80000) * (1 - adoption)",
+    "surplusGeneration": "aiRevenue * contributionRate * 1.1",
+    "wellbeingDelta": "ubiBoost * 0.25 - displacementFriction * 0.10",
+    "displacementFriction": "sin(adoption * 3.14159) * 35 * pow(1 - governance, 1.3)",
+    "ubiUtility": "(ubi / utilityScale) * 140"
+  },
+  "metadata": {
+    "author": "Example Author",
+    "version": "1.0.0",
+    "createdAt": "2024-12-28T00:00:00Z",
+    "description": "Prioritizes speed of transition over short-term stability",
+    "overridesStandardCausality": false,
+    "tags": ["aggressive", "optimistic", "fast-transition"]
+  }
+}

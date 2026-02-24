@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { AreaChart, Area, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { Globe, TrendingUp, TrendingDown, Sparkles, Share2, ChevronDown, BrainCircuit, FlaskConical, Database, MousePointer2, PlayCircle, Menu, X, BookOpen, Lightbulb, ArrowRight, ArrowLeft, Info, FileText, Sun, Moon, Copy, Settings, Download, Upload } from 'lucide-react';
+import { AreaChart, Area, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ScatterChart, Scatter, ZAxis, ReferenceLine } from 'recharts';
+import { Globe, TrendingUp, TrendingDown, Sparkles, Share2, ChevronDown, BrainCircuit, FlaskConical, Database, MousePointer2, PlayCircle, Menu, X, BookOpen, Lightbulb, ArrowRight, ArrowLeft, Info, FileText, Sun, Moon, Copy, Settings, Download, Upload, Trophy } from 'lucide-react';
 import WorldMap from './components/WorldMap';
 import SimulationControls from './components/SimulationControls';
 import MotionChart from './components/MotionChart';
@@ -9,9 +9,16 @@ import CorporationList from './components/CorporationList';
 import CorporationDetailPanel from './components/CorporationDetailPanel';
 import CountryDetailPanel from './components/CountryDetailPanel';
 import GameTheoryVisualization from './components/GameTheoryVisualization';
-import { SimulationState, ModelParameters, HistoryPoint, CountryStats, Corporation, GlobalLedger, GameTheoryState, SavedState, SelectedEntity } from './types';
-import { PRESET_MODELS, INITIAL_COUNTRIES, INITIAL_CORPORATIONS, SCENARIO_PRESETS } from './constants';
+import { WellbeingScatterPlot } from './components/WellbeingScatterPlot';
+import { ModelUpload } from './components/ModelUpload';
+import { ModelEditor } from './components/ModelEditor';
+import { Leaderboard } from './components/Leaderboard';
+import { ModelDetail } from './components/ModelDetail';
+import { ModelRating } from './components/ModelRating';
+import { SimulationState, ModelParameters, HistoryPoint, CountryStats, Corporation, GlobalLedger, GameTheoryState, SavedState, SelectedEntity, ModelConfig, StoredModel } from './types';
+import { PRESET_MODELS, INITIAL_COUNTRIES, INITIAL_CORPORATIONS, SCENARIO_PRESETS, DEFAULT_MODEL_CONFIG } from './constants';
 import { getRedTeamAnalysis, getSimulationSummary } from './services/geminiService';
+import { rateModel, getLeaderboard, recordRun } from './src/services/modelStorage';
 
 // Helper for math rendering
 const MathEq: React.FC<{ children: React.ReactNode }> = ({ children }) => (
@@ -176,7 +183,7 @@ const App: React.FC = () => {
   const [history, setHistory] = useState<HistoryPoint[]>([]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [speed, setSpeed] = useState(1);
-  const [activeTab, setActiveTab] = useState<'map' | 'charts' | 'corporations' | 'analysis' | 'overview' | 'equations' | 'guide'>('map');
+  const [activeTab, setActiveTab] = useState<'map' | 'charts' | 'corporations' | 'analysis' | 'overview' | 'equations' | 'guide' | 'models' | 'leaderboard'>('map');
   const [viewMode, setViewMode] = useState<'adoption' | 'wellbeing'>('wellbeing'); // Default to wellbeing
   const [equationViewMode, setEquationViewMode] = useState<'simple' | 'detailed'>('simple');
   const [selectedArchetype, setSelectedArchetype] = useState<string | null>(null); // Archetype filter for map
@@ -184,6 +191,9 @@ const App: React.FC = () => {
   // Comparison mode state (P7-T5)
   const [comparisonMode, setComparisonMode] = useState(false);
   const [comparisonScenarioId, setComparisonScenarioId] = useState<string>('free-market-optimism');
+
+  // Models tab mode state (P8-T13)
+  const [modelMode, setModelMode] = useState<'upload' | 'edit'>('upload');
 
   // Initialize default selected countries
   const [selectedCountries, setSelectedCountries] = useState<string[]>(() => {
@@ -225,6 +235,7 @@ const App: React.FC = () => {
 
   // Unified entity selection state (replaces selectedCorpId)
   const [selectedEntity, setSelectedEntity] = useState<SelectedEntity>(null);
+  const [viewingModel, setViewingModel] = useState<StoredModel | null>(null);
 
   // Multi-select state for bulk editing corporations
   const [selectedCorpIds, setSelectedCorpIds] = useState<Set<string>>(new Set());
@@ -319,6 +330,12 @@ const App: React.FC = () => {
     virtuousCycleStrength: 0,
     avgContributionRate: 0
   });
+
+  // Active custom model configuration (null = use default hardcoded logic) (P8-T9)
+  const [activeModelConfig, setActiveModelConfig] = useState<ModelConfig | null>(null);
+
+  // Track if simulation run was recorded (P9-T7)
+  const [runRecorded, setRunRecorded] = useState(false);
 
   // Comparison simulation state (P7-T5) - second parallel simulation
   const [comparisonState, setComparisonState] = useState<SimulationState>(getInitialState());
@@ -419,8 +436,32 @@ const App: React.FC = () => {
       virtuousCycleStrength: 0,
       avgContributionRate: 0
     });
+    // Reset run recording flag (P9-T7)
+    setRunRecorded(false);
     window.history.pushState("", document.title, window.location.pathname + window.location.search);
   }, [getInitialState]);
+
+  // ============================================================================
+  // MODEL CONFIGURATION MANAGEMENT (P8-T9)
+  // ============================================================================
+  // Functions to apply, clear, and check custom model configurations
+  // ============================================================================
+
+  // Apply a custom model configuration
+  const applyModelConfig = useCallback((config: ModelConfig) => {
+    setActiveModelConfig(config);
+    // Reset simulation when applying new model
+    handleReset();
+  }, [handleReset]);
+
+  // Clear custom model and revert to default
+  const clearModelConfig = useCallback(() => {
+    setActiveModelConfig(null);
+    handleReset();
+  }, [handleReset]);
+
+  // Check if using custom model
+  const isUsingCustomModel = activeModelConfig !== null;
 
   // ============================================================================
   // UPDATE CORPORATION (P5-T10)
@@ -1611,7 +1652,7 @@ const App: React.FC = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       try {
-        const autoSave: SavedState = {
+        const autoSave: SavedState & { activeModelConfig?: ModelConfig | null } = {
           version: "2.0",
           timestamp: Date.now(),
           month: state.month,
@@ -1620,7 +1661,8 @@ const App: React.FC = () => {
           globalLedger,
           gameTheoryState,
           model,
-          history
+          history,
+          activeModelConfig  // P8-T9: Include custom model config
         };
         localStorage.setItem('ubi-sim-autosave', JSON.stringify(autoSave));
         console.log(`Auto-saved at ${new Date().toLocaleTimeString()}`);
@@ -1634,7 +1676,7 @@ const App: React.FC = () => {
     }, 5 * 60 * 1000); // 5 minutes
 
     return () => clearInterval(interval);
-  }, [state, corporations, globalLedger, gameTheoryState, model, history]);
+  }, [state, corporations, globalLedger, gameTheoryState, model, history, activeModelConfig]);
 
   // Load autosave on mount if available
   useEffect(() => {
@@ -1646,7 +1688,7 @@ const App: React.FC = () => {
           'An auto-saved simulation was found. Would you like to restore it?'
         );
         if (shouldLoad) {
-          const saved = JSON.parse(autoSave) as SavedState;
+          const saved = JSON.parse(autoSave) as SavedState & { activeModelConfig?: ModelConfig | null };
           setState(prev => ({
             ...prev,
             month: saved.month,
@@ -1664,6 +1706,10 @@ const App: React.FC = () => {
           setGameTheoryState(saved.gameTheoryState);
           setModel(saved.model);
           setHistory(saved.history || []);
+          // P8-T9: Restore custom model config if present
+          if (saved.activeModelConfig !== undefined) {
+            setActiveModelConfig(saved.activeModelConfig);
+          }
           console.log('Auto-save restored successfully');
         }
       }
@@ -1672,6 +1718,49 @@ const App: React.FC = () => {
       localStorage.removeItem('ubi-sim-autosave');
     }
   }, []); // Only run on mount
+
+  // Record simulation run when reaching month 60 (P9-T7)
+  useEffect(() => {
+    // Only record if we have a custom model and reached month 60
+    if (state.month === 60 && activeModelConfig && !runRecorded) {
+      try {
+        // Find the stored model ID (if it was saved to storage)
+        const storedModels = listModels();
+        const matchingModel = storedModels.find(
+          m => m.modelConfig.name === activeModelConfig.name &&
+               m.modelConfig.metadata.version === activeModelConfig.metadata.version
+        );
+
+        if (matchingModel) {
+          // Determine game theory outcome
+          let gameTheoryOutcome: 'virtuous-cycle' | 'prisoners-dilemma' | 'race-to-bottom' | 'mixed' = 'mixed';
+          if (gameTheoryState.virtuousCycleStrength > 0.6) {
+            gameTheoryOutcome = 'virtuous-cycle';
+          } else if (gameTheoryState.raceToBottomRisk > 0.6) {
+            gameTheoryOutcome = 'race-to-bottom';
+          } else if (gameTheoryState.isInPrisonersDilemma) {
+            gameTheoryOutcome = 'prisoners-dilemma';
+          }
+
+          recordRun(matchingModel.id, {
+            finalMonth: state.month,
+            finalWellbeing: state.averageWellbeing,
+            finalFundSize: globalLedger.totalFunds,
+            countriesInCrisis: state.countriesInCrisis,
+            gameTheoryOutcome,
+            avgContributionRate: gameTheoryState.avgContributionRate,
+            modelName: activeModelConfig.name,
+            modelVersion: activeModelConfig.metadata.version
+          });
+
+          setRunRecorded(true);
+          console.log('Run recorded for model:', activeModelConfig.name);
+        }
+      } catch (error) {
+        console.error('Failed to record run:', error);
+      }
+    }
+  }, [state.month, activeModelConfig, runRecorded, state.averageWellbeing, globalLedger.totalFunds, state.countriesInCrisis, gameTheoryState]);
 
   return (
     <div className={`flex flex-col h-[100dvh] overflow-hidden transition-colors duration-300 ${theme === 'light' ? 'bg-slate-50 text-slate-900' : 'bg-slate-950 text-slate-100'}`}>
@@ -1780,7 +1869,7 @@ const App: React.FC = () => {
             <button 
               onMouseEnter={() => setAboutDropdownOpen(true)}
               onClick={() => setAboutDropdownOpen(!aboutDropdownOpen)}
-              className={`px-3 py-1 lg:px-4 lg:py-1.5 rounded-md lg:rounded-lg text-[10px] lg:text-xs font-bold uppercase flex items-center gap-1 transition-all ${(activeTab === 'overview' || activeTab === 'equations' || activeTab === 'analysis' || activeTab === 'guide') ? 'bg-slate-800 text-white dark:bg-slate-700 dark:text-white' : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'}`}
+              className={`px-3 py-1 lg:px-4 lg:py-1.5 rounded-md lg:rounded-lg text-[10px] lg:text-xs font-bold uppercase flex items-center gap-1 transition-all ${(activeTab === 'overview' || activeTab === 'equations' || activeTab === 'analysis' || activeTab === 'guide' || activeTab === 'models' || activeTab === 'leaderboard') ? 'bg-slate-800 text-white dark:bg-slate-700 dark:text-white' : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'}`}
             >
                 More <ChevronDown size={12} className={aboutDropdownOpen ? 'rotate-180' : ''} />
             </button>
@@ -1792,7 +1881,9 @@ const App: React.FC = () => {
                     <button onClick={() => { setActiveTab('guide'); setAboutDropdownOpen(false); setSelectedEntity(null); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors border-b border-slate-100 dark:border-slate-700 flex items-center gap-2"><BookOpen size={14} /> About & Guide</button>
                     <button onClick={() => { setActiveTab('overview'); setAboutDropdownOpen(false); setSelectedEntity(null); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors border-b border-slate-100 dark:border-slate-700 flex items-center gap-2"><Globe size={14} /> Overview</button>
                     <button onClick={() => { setActiveTab('equations'); setAboutDropdownOpen(false); setSelectedEntity(null); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors border-b border-slate-100 dark:border-slate-700 flex items-center gap-2"><FlaskConical size={14} /> Model Equations</button>
-                    <button onClick={() => { setActiveTab('analysis'); setAboutDropdownOpen(false); setSelectedEntity(null); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors flex items-center gap-2"><BrainCircuit size={14} /> Analysis Hub</button>
+                    <button onClick={() => { setActiveTab('analysis'); setAboutDropdownOpen(false); setSelectedEntity(null); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors border-b border-slate-100 dark:border-slate-700 flex items-center gap-2"><BrainCircuit size={14} /> Analysis Hub</button>
+                    <button onClick={() => { setActiveTab('models'); setAboutDropdownOpen(false); setSelectedEntity(null); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors border-b border-slate-100 dark:border-slate-700 flex items-center gap-2"><Settings size={14} /> Models</button>
+                    <button onClick={() => { setActiveTab('leaderboard'); setAboutDropdownOpen(false); setSelectedEntity(null); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors flex items-center gap-2"><Trophy size={14} /> Leaderboard</button>
                 </div>
             )}
           </div>
@@ -2477,6 +2568,13 @@ const App: React.FC = () => {
                        </span>
                      </div>
                   </div>
+
+                  {/* AI Adoption vs Wellbeing Scatter Plot */}
+                  <WellbeingScatterPlot
+                    key={`scatter-${state.month}`}
+                    countryData={state.countryData}
+                    month={state.month}
+                  />
               </div>
             </div>
           )}
@@ -2588,6 +2686,93 @@ const App: React.FC = () => {
                     )}
                 </div>
              </div>
+          )}
+
+          {activeTab === 'models' && (
+            <div className="p-6">
+              <div className="max-w-4xl mx-auto">
+                {/* Active model indicator */}
+                <div className="mb-6 p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg shadow-sm">
+                  <h2 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">Active Model</h2>
+                  {activeModelConfig ? (
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <span className="text-blue-600 dark:text-blue-400 font-medium">{activeModelConfig.name}</span>
+                        <span className="text-slate-500 dark:text-slate-500 ml-2">v{activeModelConfig.metadata.version}</span>
+                        <span className="text-slate-600 dark:text-slate-600 ml-2">by {activeModelConfig.metadata.author}</span>
+                      </div>
+                      <button
+                        onClick={clearModelConfig}
+                        className="px-3 py-1 bg-red-600 hover:bg-red-700 text-white text-sm rounded font-medium transition-colors"
+                      >
+                        Clear & Use Default
+                      </button>
+                    </div>
+                  ) : (
+                    <span className="text-slate-600 dark:text-slate-400">Using default model (hardcoded equations)</span>
+                  )}
+                </div>
+
+                {/* Mode toggle */}
+                <div className="flex gap-4 mb-6">
+                  <button
+                    onClick={() => setModelMode('upload')}
+                    className={`px-4 py-2 rounded font-medium transition-all ${
+                      modelMode === 'upload'
+                        ? 'bg-blue-600 text-white shadow-md'
+                        : 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-600'
+                    }`}
+                  >
+                    Upload Model
+                  </button>
+                  <button
+                    onClick={() => setModelMode('edit')}
+                    className={`px-4 py-2 rounded font-medium transition-all ${
+                      modelMode === 'edit'
+                        ? 'bg-blue-600 text-white shadow-md'
+                        : 'bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-600'
+                    }`}
+                  >
+                    Create/Edit Model
+                  </button>
+                </div>
+
+                {/* Content based on mode */}
+                {modelMode === 'upload' && (
+                  <ModelUpload
+                    onApply={applyModelConfig}
+                    onCancel={() => {}}
+                    currentModel={activeModelConfig}
+                  />
+                )}
+
+                {modelMode === 'edit' && (
+                  <ModelEditor
+                    initialConfig={activeModelConfig}
+                    onSave={applyModelConfig}
+                    onCancel={() => setModelMode('upload')}
+                    onRunTests={(config) => {
+                      // For now just apply the model
+                      applyModelConfig(config);
+                    }}
+                  />
+                )}
+              </div>
+            </div>
+          )}
+
+          {activeTab === 'leaderboard' && (
+            <div className="p-6">
+              <Leaderboard
+                onApplyModel={(model) => {
+                  applyModelConfig(model.modelConfig);
+                  setActiveTab('map');
+                }}
+                onViewDetails={(model) => {
+                  setViewingModel(model);
+                }}
+              />
+            </div>
           )}
 
           {activeTab === 'overview' && (
@@ -3415,6 +3600,22 @@ shadowWellbeing = max(1, shadowWellbeing - shadowFriction × 0.4)`}
         onClose={handleDeselectEntity}
         onUpdateCountry={updateCountry}
       />
+
+      {/* Model Detail Modal (P9-T10) */}
+      {viewingModel && (
+        <ModelDetail
+          model={viewingModel}
+          onClose={() => setViewingModel(null)}
+          onApply={(model) => {
+            applyModelConfig(model.modelConfig);
+            setViewingModel(null);
+            setActiveTab('map');
+          }}
+          onRate={(modelId, rating) => {
+            rateModel(modelId, rating);
+          }}
+        />
+      )}
     </div>
   );
 };

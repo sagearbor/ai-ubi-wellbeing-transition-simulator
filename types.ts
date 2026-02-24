@@ -197,3 +197,249 @@ export type SelectedEntity =
   | { type: 'corporation'; id: string }
   | { type: 'country'; id: string }
   | null;
+
+/**
+ * ModelConfig - User-uploadable economic model configuration
+ * Defines custom equations and parameters for simulation
+ */
+
+/** Individual parameter definition for a custom model */
+export interface ParameterConfig {
+  name: string;
+  min: number;
+  max: number;
+  default: number;
+  description: string;
+  unit?: string; // e.g., '%', 'USD', 'months'
+}
+
+/** Set of equations that define the economic model */
+export interface EquationSet {
+  // Core simulation equations
+  aiAdoptionGrowth: string;      // How AI adoption spreads (e.g., "aiGrowthRate * (1 + gdpPerCapita/100000) * (1 - adoption)")
+  surplusGeneration: string;     // How corporations generate surplus (e.g., "aiRevenue * contributionRate")
+  wellbeingDelta: string;        // How wellbeing changes (e.g., "ubiBoost * 0.20 - displacementFriction * 0.12")
+  displacementFriction: string;  // How displacement affects wellbeing (e.g., "sin(adoption * PI) * baseFriction")
+  ubiUtility: string;            // How UBI converts to utility (e.g., "(ubi / utilityScale) * 120")
+
+  // Optional advanced equations
+  demandCollapse?: string;       // Customer purchasing power projection
+  reputationChange?: string;     // Corporation reputation dynamics
+  giniDamping?: string;          // Inequality effect on UBI utility
+}
+
+/** Metadata about the model */
+export interface ModelMetadata {
+  author: string;
+  version: string;
+  createdAt: string;
+  description: string;
+  overridesStandardCausality: boolean;  // If true, model intentionally deviates from expected causal relationships
+  justification?: string;                // Required if overridesStandardCausality is true
+  tags?: string[];                       // e.g., ['optimistic', 'heterodox', 'experimental']
+}
+
+/** Complete model configuration */
+export interface ModelConfig {
+  id: string;
+  name: string;
+  description: string;
+
+  // Parameters (can extend or override ModelParameters)
+  parameters: ParameterConfig[];
+
+  // Equations defining the model behavior
+  equations: EquationSet;
+
+  // Metadata
+  metadata: ModelMetadata;
+}
+
+/** Result of validating a model configuration */
+export interface ModelValidationResult {
+  valid: boolean;
+  tier1Passed: boolean;  // Sanity checks (bounds, money conservation, no NaN)
+  tier2Score: number;    // Anchor tests passed (0-6)
+  tier2Total: number;    // Total anchor tests (6)
+  failures: ValidationFailure[];
+  warnings: string[];
+  complexity: number;    // Lower is better (Occam's razor)
+}
+
+/** Individual validation failure */
+export interface ValidationFailure {
+  testId: string;
+  testName: string;
+  category: 'sanity' | 'causal' | 'equilibrium' | 'consistency';
+  reason: string;
+  expected?: string;
+  actual?: string;
+}
+
+/** Anchor test definition (for Phase 8-T7) */
+export interface AnchorTest {
+  id: string;
+  name: string;
+  category: 'causal' | 'equilibrium' | 'consistency';
+  description: string;
+  simulationMonths: number;
+  setup: AnchorTestSetup;
+  assert: AnchorTestAssertion;
+}
+
+export interface AnchorTestSetup {
+  displacementRate?: number;
+  allCorpsContributionRate?: number;
+  allCorpsPolicyStance?: 'generous' | 'moderate' | 'selfish';
+  distributionStrategy?: 'global' | 'customer-weighted' | 'hq-local';
+  marketPressure?: number;
+  compareStrategies?: string[];  // For comparison tests
+  anyValidConfiguration?: boolean;
+}
+
+export interface AnchorTestAssertion {
+  type: 'wellbeingDelta' | 'threshold' | 'comparison' | 'conservation' | 'gameTheory';
+  operator?: '<' | '>' | '<=' | '>=' | '==' | 'within';
+  value?: number;
+  tolerance?: number;
+}
+
+// ============================================================================
+// PHASE 9: MODEL STORAGE & LEADERBOARD TYPES
+// ============================================================================
+
+/**
+ * StoredModel - A model saved to the leaderboard storage
+ * Includes the model config plus validation results and metadata
+ */
+export interface StoredModel {
+  id: string;                        // UUID
+  modelConfig: ModelConfig;          // The actual model
+
+  // Validation results (cached from when model was submitted)
+  anchorTestsPassed: number;         // 0-6
+  anchorTestResults: AnchorTestResult[];  // Detailed results
+  complexity: number;                // Complexity score (lower = better)
+
+  // Submission metadata
+  submittedAt: string;               // ISO timestamp
+  updatedAt: string;                 // ISO timestamp
+  isPublic: boolean;                 // Show on leaderboard?
+
+  // Aggregate run statistics
+  runCount: number;                  // How many times this model has been run
+  avgWellbeing: number;              // Average final wellbeing across runs
+  avgFundSize: number;               // Average final fund size across runs
+
+  // Community feedback
+  rating: number;                    // 1-5 stars average
+  ratingCount: number;               // Number of ratings
+  flagCount: number;                 // Number of "broken" flags
+}
+
+/**
+ * AnchorTestResult - Result of a single anchor test
+ */
+export interface AnchorTestResult {
+  testId: string;
+  testName: string;
+  category: 'causal' | 'equilibrium' | 'consistency';
+  passed: boolean;
+  reason: string;
+  details?: {
+    expected: string;
+    actual: string;
+    metrics?: Record<string, number>;
+  };
+}
+
+/**
+ * RunRecord - Record of a single simulation run with a model
+ */
+export interface RunRecord {
+  id: string;                        // UUID
+  modelId: string;                   // Which model was used
+  runAt: string;                     // ISO timestamp
+
+  // Simulation results at month 60
+  finalMonth: number;                // Usually 60
+  finalWellbeing: number;            // Global average wellbeing
+  finalFundSize: number;             // Global fund total
+  countriesInCrisis: number;         // Count at end
+
+  // Game theory outcome
+  gameTheoryOutcome: 'virtuous-cycle' | 'prisoners-dilemma' | 'race-to-bottom' | 'mixed';
+  avgContributionRate: number;       // Final average contribution
+
+  // Model parameters used (snapshot)
+  modelName: string;
+  modelVersion: string;
+}
+
+/**
+ * LeaderboardEntry - Simplified view for leaderboard display
+ */
+export interface LeaderboardEntry {
+  rank: number;                      // Calculated rank (by complexity among eligible)
+  modelId: string;
+  modelName: string;
+  author: string;
+
+  // Validation
+  anchorsPassed: number;             // X/6
+  anchorsTotal: number;              // 6
+  isEligible: boolean;               // anchorsPassed >= 4
+
+  // Ranking score
+  complexity: number;                // Lower = better = higher rank
+
+  // Display metrics (not used for ranking)
+  avgWellbeing: number;
+  runCount: number;
+  rating: number;
+
+  // Metadata
+  submittedAt: string;
+}
+
+/**
+ * LeaderboardFilter - Filter options for leaderboard queries
+ */
+export interface LeaderboardFilter {
+  minAnchorsPassed?: number;         // e.g., 6 for "perfect only"
+  author?: string;                   // Filter by author
+  tags?: string[];                   // Filter by tags
+  onlyEligible?: boolean;            // Only show eligible models (4+ anchors)
+}
+
+/**
+ * LeaderboardSort - Sort options
+ */
+export type LeaderboardSort =
+  | 'rank'           // Default: by complexity (lower = higher rank)
+  | 'newest'         // By submission date
+  | 'mostRuns'       // By run count
+  | 'highestRating'  // By community rating
+  | 'bestWellbeing'; // By average wellbeing (display only)
+
+/**
+ * ModelRating - A single rating from a user
+ */
+export interface ModelRating {
+  modelId: string;
+  rating: number;                    // 1-5
+  comment?: string;
+  ratedAt: string;
+  isFlagged: boolean;                // User flagged as broken
+}
+
+/**
+ * StorageStats - Storage usage statistics
+ */
+export interface StorageStats {
+  modelCount: number;
+  runCount: number;
+  storageUsedBytes: number;
+  maxModels: number;                 // 50
+  maxRunsPerModel: number;           // 100
+}
