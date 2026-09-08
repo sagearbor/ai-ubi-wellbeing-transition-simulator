@@ -2057,8 +2057,8 @@ const App: React.FC = () => {
                   utility, and the monthly wellbeing update) and uses them in place of the built-in formulas for
                   every simulation step - the trajectory you see reflects your model. Two advanced equations
                   (demand-collapse projection and reputation dynamics) are parsed and validated but still use
-                  the default logic. The six anchor tests continue to run against the built-in engine, not your
-                  uploaded equations, so a model's anchor-test score does not yet reflect its own trajectory.
+                  the default logic. The six anchor tests now run against your model's own compiled equations
+                  too, so its anchor-test score reflects its own trajectory, not the built-in engine's.
                 </div>
 
                 {/* Mode toggle */}

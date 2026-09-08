@@ -14,6 +14,8 @@ import {
 } from './anchorTests';
 import type { AnchorTestResult, AnchorTestSuiteResult } from './anchorTests';
 import { validateTier1, calculateComplexity } from '../src/services/modelValidator';
+import { getCompiledEquationSet } from '../src/services/equationParser';
+import type { CompiledEquationSet } from '../src/services/equationParser';
 
 /** Progress callback for UI updates */
 export type ProgressCallback = (progress: TestRunProgress) => void;
@@ -42,9 +44,13 @@ export interface FullValidationResult {
 /**
  * Run all anchor tests with progress reporting
  * Uses chunked execution to avoid blocking UI
+ *
+ * @param equations Optional compiled equation set - when present, every anchor test
+ *   scores THIS model's own equations instead of the hardcoded default engine.
  */
 export async function runTestsWithProgress(
-  onProgress?: ProgressCallback
+  onProgress?: ProgressCallback,
+  equations?: CompiledEquationSet
 ): Promise<AnchorTestSuiteResult> {
   const results: AnchorTestResult[] = [];
 
@@ -64,7 +70,7 @@ export async function runTestsWithProgress(
     await new Promise(resolve => setTimeout(resolve, 0));
 
     try {
-      const result = runAnchorTest(test);
+      const result = runAnchorTest(test, equations);
       results.push(result);
     } catch (error) {
       results.push({
@@ -128,8 +134,11 @@ export async function runFullValidation(
     };
   }
 
-  // Run Tier 2 anchor tests
-  const tier2 = await runTestsWithProgress(onProgress);
+  // Run Tier 2 anchor tests against THIS model's own equations (falls back to the
+  // hardcoded default engine if compilation fails - Tier 1 already passed above, so
+  // this should normally succeed, but a null here must never crash validation).
+  const compiledEquations = getCompiledEquationSet(config.equations) ?? undefined;
+  const tier2 = await runTestsWithProgress(onProgress, compiledEquations);
 
   const eligible = tier1Passed && tier2.tier2Passed;
 
@@ -149,18 +158,21 @@ export async function runFullValidation(
 
 /**
  * Quick test run - just run Tier 2 without Tier 1 (for already validated models)
+ *
+ * @param equations Optional compiled equation set to score a specific model's own
+ *   equations instead of the hardcoded default engine.
  */
-export function runQuickTest(): AnchorTestSuiteResult {
-  return runAllAnchorTests();
+export function runQuickTest(equations?: CompiledEquationSet): AnchorTestSuiteResult {
+  return runAllAnchorTests(equations);
 }
 
 /**
  * Run a single test by ID
  */
-export function runSingleTest(testId: string): AnchorTestResult | null {
+export function runSingleTest(testId: string, equations?: CompiledEquationSet): AnchorTestResult | null {
   const test = ANCHOR_TESTS.find(t => t.id === testId);
   if (!test) return null;
-  return runAnchorTest(test);
+  return runAnchorTest(test, equations);
 }
 
 /**
