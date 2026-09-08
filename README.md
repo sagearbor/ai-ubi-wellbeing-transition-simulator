@@ -97,6 +97,12 @@ least 4 of 6 to be eligible, and is scored for **complexity** (an Occam's-razor
 tiebreaker — simpler models that still pass rank higher) on a leaderboard.
 Example configs live in [`examples/models/`](examples/models/).
 
+> **Status of custom models (preview):** uploads are parsed, schema-checked and
+> scored for complexity, and the anchor tests run against the built-in engine —
+> but the engine does **not yet execute uploaded equations** (checklist item
+> P8-T9). Applying a model changes the label and leaderboard bookkeeping; the
+> trajectory is still the default model's. See *Status & roadmap* below.
+
 ---
 
 ## How it works
@@ -148,6 +154,33 @@ npm run build
 npm run preview
 ```
 
+### Checks
+
+```bash
+npm run typecheck   # tsc --noEmit
+npm test            # vitest: parser sandbox, model storage, pure engine
+npm run validate    # the six anchor tests against simulation/pure.ts (exit 1 if < 4 pass)
+npm run check       # all of the above plus a production build (what CI runs)
+```
+
+CI (`.github/workflows/ci.yml`) runs `npm run check` on every push and pull request.
+
+### Deploy (Cloud Run)
+
+The live demo runs on Cloud Run. `Dockerfile` builds the Vite bundle and serves
+it with nginx; `scripts/deploy.sh` deploys the current checkout to the existing
+service (project/region/service are overridable via `GCP_PROJECT`,
+`GCP_REGION`, `CLOUD_RUN_SERVICE`):
+
+```bash
+npm run deploy           # new revision, NO traffic, preview at https://main---<service>.<region>.run.app
+npm run deploy:promote   # new revision receives 100% of traffic
+```
+
+The Gemini key is read from `GEMINI_API_KEY` or `.env.local` at build time and
+is embedded in the client bundle (the browser calls Gemini directly), so
+restrict the key by HTTP referrer in Google AI Studio.
+
 ---
 
 ## Status & roadmap
@@ -155,15 +188,25 @@ npm run preview
 **Early and actively developed (pre-1.0).** The core is real and working: the
 five-phase simulation engine, ~80 corporations and 128 countries, the game-theory
 dynamics, the world map and charts, the custom-model upload/validation/leaderboard
-pipeline, and the Gemini-powered analysis are all implemented. A snapshot of this
-version is being prepared as the basis for a **conference-panel presentation
-(February 2026)**.
+pipeline, and the Gemini-powered analysis are all implemented. A snapshot
+(`release/conference-v1`, February 2026) was shared with collaborators as the
+basis for a conference-panel presentation; `main` has moved on since.
 
 Because it's pre-1.0, expect rough edges: parameters and coefficients are still
 being tuned, the model catalog is small, and interfaces may change.
 
+Current anchor-test results for the built-in engine (`npm run validate`): 5 of 6
+pass. **AT-2 (generous UBI prevents collapse) fails** — with 40% contributions
+distributed globally and 80% displacement, average wellbeing still falls to
+about a third of its starting value over 60 months, because the per-capita UBI
+boost is small relative to displacement friction at current coefficients. This
+is a modelling question, not a code defect, and is left visible on purpose.
+
 Directions under exploration (see `developer_checklist.yaml` and `docs/`):
-- broader and deeper anchor-test coverage and richer validation reporting,
+- execute uploaded model equations inside the pure engine (P8-T9), so anchor
+  tests and the leaderboard discriminate between models,
+- revisit the UBI-boost / friction coefficients so AT-2 passes for an honest reason,
+- broader anchor-test coverage and richer validation reporting,
 - performance work on the pure engine (memoization, web-workers, batch runs),
 - a persistent / shared model leaderboard,
 - more scenario presets and richer regional behavior.

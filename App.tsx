@@ -2713,6 +2713,14 @@ const App: React.FC = () => {
                   )}
                 </div>
 
+                {/* Honest status of the custom-model pipeline (P8-T9 not yet implemented) */}
+                <div className="mb-6 p-4 bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-700 rounded-lg text-sm text-amber-900 dark:text-amber-200">
+                  <strong>Preview feature.</strong> Uploaded models are parsed, schema-checked and scored for complexity,
+                  and the six anchor tests run against the built-in engine. The simulation does <em>not yet execute
+                  custom equations</em>: applying a model changes the label above and records leaderboard runs under its
+                  name, but the trajectory you see is still the default model's.
+                </div>
+
                 {/* Mode toggle */}
                 <div className="flex gap-4 mb-6">
                   <button
