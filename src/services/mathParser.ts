@@ -29,6 +29,23 @@ const EVALUATION_TIMEOUT_MS = 100;
 // Create sandboxed math instance
 const math = create(all);
 
+// Numeric constants that may appear in equations without being declared as variables
+const MATH_CONSTANTS = new Set(['pi', 'PI', 'e', 'E', 'tau', 'phi', 'Infinity']);
+
+/** True when `name` is a mathjs numeric constant such as pi or e */
+function isMathConstant(name: string): boolean {
+  return MATH_CONSTANTS.has(name) && typeof (math as any)[name] === 'number';
+}
+
+/**
+ * True when a SymbolNode is the callee of a FunctionNode (e.g. the `sqrt` in `sqrt(x)`).
+ * mathjs represents the callee as a SymbolNode child at path `fn`, so a naive traversal
+ * would otherwise report every function name as an unknown variable.
+ */
+function isFunctionName(path: string | null, parent: MathNode | null): boolean {
+  return path === 'fn' && !!parent && parent.type === 'FunctionNode';
+}
+
 // Export types
 export interface ParseResult {
   valid: boolean;
@@ -64,12 +81,13 @@ function countOperations(node: MathNode): number {
 function extractVariables(node: MathNode): string[] {
   const variables: string[] = [];
 
-  node.traverse((n) => {
+  node.traverse((n, path, parent) => {
     if (n.type === 'SymbolNode') {
       const symbolNode = n as any;
       const name = symbolNode.name;
-      // Only include if not a constant (like pi, e)
-      if (!math.hasNumericValue(name) && !variables.includes(name)) {
+      // Skip function names (the `fn` child of a FunctionNode) and constants (pi, e, ...)
+      if (isFunctionName(path, parent) || isMathConstant(name)) return;
+      if (!variables.includes(name)) {
         variables.push(name);
       }
     }
@@ -84,7 +102,7 @@ function extractVariables(node: MathNode): string[] {
 function validateNode(node: MathNode): { valid: boolean; error?: string } {
   let error: string | undefined;
 
-  node.traverse((n) => {
+  node.traverse((n, path, parent) => {
     // If we already found an error, skip
     if (error) return;
 
@@ -101,8 +119,9 @@ function validateNode(node: MathNode): { valid: boolean; error?: string } {
     if (n.type === 'SymbolNode') {
       const symbolNode = n as any;
       const name = symbolNode.name;
-      // Allow constants like pi, e
-      if (!math.hasNumericValue(name) && !ALLOWED_VARIABLES.has(name)) {
+      // Function names are validated above via FunctionNode; constants (pi, e, ...) are allowed
+      if (isFunctionName(path, parent) || isMathConstant(name)) return;
+      if (!ALLOWED_VARIABLES.has(name)) {
         error = `Variable '${name}' is not allowed. Allowed variables: ${Array.from(ALLOWED_VARIABLES).join(', ')}`;
         return;
       }
