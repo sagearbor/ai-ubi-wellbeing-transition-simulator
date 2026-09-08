@@ -1579,8 +1579,9 @@ export const DEFAULT_EQUATIONS: EquationSet = {
 
   // Displacement friction formula
   // Variables: adoption, governance, gini
-  // Uses sin() for peak friction at mid-transition
-  displacementFriction: 'sin(adoption * 3.14159) * 40 * pow(1 - governance, 1.5) * (1 + gini * 0.5)',
+  // Uses sin() for peak friction at mid-transition. PI (not a decimal literal) so this
+  // reproduces the hardcoded engine's Math.PI bit-for-bit (see simulation/pure.ts).
+  displacementFriction: 'sin(adoption * PI) * 40 * pow(1 - governance, 1.5) * (1 + gini * 0.5)',
 
   // UBI utility conversion
   // Variables: ubi, utilityScale (gdpPerCapita/40 + 150)

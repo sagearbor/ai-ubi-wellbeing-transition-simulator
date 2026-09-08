@@ -20,6 +20,7 @@ import {
   CountryStats
 } from '../types';
 import { INITIAL_COUNTRIES } from '../constants';
+import { CompiledEquationSet } from '../src/services/equationParser';
 
 // ============================================================================
 // TYPE DEFINITIONS
@@ -30,6 +31,16 @@ export interface SimulationInput {
   state: SimulationState;
   corporations: Corporation[];
   model: ModelParameters;
+  /**
+   * P8-T9: an optional compiled set of user-supplied equations (see
+   * src/services/equationParser.ts::getCompiledEquationSet). When present, these
+   * equations REPLACE the hardcoded formulas below for the quantities they cover:
+   * AI adoption growth (Phase 1), corporation contribution/surplus (Phase 2), and
+   * UBI utility / displacement friction / the monthly wellbeing update (Phase 4).
+   * When omitted (the default), behaviour is byte-for-byte identical to before this
+   * field existed - see the "no equations supplied" regression test in pure.test.ts.
+   */
+  equations?: CompiledEquationSet;
 }
 
 /** Output from a simulation step */
@@ -472,7 +483,7 @@ function euCorpAdaptation(corp: Corporation, countries: Record<string, CountrySt
  * @returns New simulation state after one month
  */
 export function stepSimulationPure(input: SimulationInput): SimulationOutput {
-  const { state, corporations, model } = input;
+  const { state, corporations, model, equations } = input;
 
   const nextMonth = state.month + 1;
   const newCountryData = { ...state.countryData };
@@ -541,9 +552,22 @@ export function stepSimulationPure(input: SimulationInput): SimulationOutput {
     corp.operatingCountries.forEach(countryId => {
       const country = newCountryData[countryId];
       if (country) {
-        const regionalModifier = 1 + (country.gdpPerCapita / 100000);
-        const growth = model.aiGrowthRate * regionalModifier * corp.aiAdoptionLevel * 0.1;
-        country.aiAdoption = Math.min(0.999, country.aiAdoption + growth * (1 - country.aiAdoption));
+        // P8-T9: a custom aiAdoptionGrowth equation replaces the hardcoded delta.
+        // DEFAULT_EQUATIONS.aiAdoptionGrowth folds the (1 - adoption) damping term in
+        // directly, so its output is the full monthly delta (matches the else branch).
+        const adoptionDelta = equations
+          ? equations.aiAdoptionGrowth.evaluate({
+              aiGrowthRate: model.aiGrowthRate,
+              gdpPerCapita: country.gdpPerCapita,
+              aiAdoptionLevel: corp.aiAdoptionLevel,
+              adoption: country.aiAdoption
+            })
+          : (() => {
+              const regionalModifier = 1 + (country.gdpPerCapita / 100000);
+              const growth = model.aiGrowthRate * regionalModifier * corp.aiAdoptionLevel * 0.1;
+              return growth * (1 - country.aiAdoption);
+            })();
+        country.aiAdoption = Math.min(0.999, country.aiAdoption + adoptionDelta);
       }
     });
 
@@ -581,7 +605,13 @@ export function stepSimulationPure(input: SimulationInput): SimulationOutput {
   // ============================================================================
 
   updatedCorps.forEach(corp => {
-    const contribution = corp.aiRevenue * corp.contributionRate;
+    // P8-T9: a custom surplusGeneration equation replaces the hardcoded contribution formula.
+    const contribution = equations
+      ? equations.surplusGeneration.evaluate({
+          aiRevenue: corp.aiRevenue,
+          contributionRate: corp.contributionRate
+        })
+      : corp.aiRevenue * corp.contributionRate;
 
     // Track contribution
     newLedger.contributorBreakdown[corp.id] = contribution;
@@ -641,7 +671,10 @@ export function stepSimulationPure(input: SimulationInput): SimulationOutput {
     const scaledUBI = effectiveUBI * Math.max(0.5, wealthGradient);
 
     const utilityScale = country.gdpPerCapita / 40 + 150;
-    const ubiBoost = (scaledUBI / utilityScale) * 120;
+    // P8-T9: a custom ubiUtility equation replaces the hardcoded UBI -> wellbeing conversion.
+    const ubiBoost = equations
+      ? equations.ubiUtility.evaluate({ ubi: scaledUBI, utilityScale })
+      : (scaledUBI / utilityScale) * 120;
 
     // === 5. Displacement Gap Calculation ===
     const monthlyWage = country.gdpPerCapita / 12;
@@ -654,8 +687,18 @@ export function stepSimulationPure(input: SimulationInput): SimulationOutput {
     // ECONOMIC RATIONALE: Well-governed democracies have better social safety nets,
     // labor retraining programs, and institutions that buffer transition anxiety.
     // Friction increases as a power function (1.5) so low-gov countries feel exponentially more pain.
+    // baseFriction is always computed with the hardcoded formula: the shadow (no-intervention)
+    // counterfactual below always uses it, regardless of whether a custom model is active.
     const baseFriction = 40 * Math.pow(1 - country.governance, 1.5) * (1 + country.gini * 0.5);
-    const displacementFriction = Math.sin(country.aiAdoption * Math.PI) * baseFriction;
+    // P8-T9: a custom displacementFriction equation replaces the hardcoded formula.
+    const displacementFriction = equations
+      ? equations.displacementFriction.evaluate({
+          adoption: country.aiAdoption,
+          governance: country.governance,
+          gini: country.gini,
+          baseFriction
+        })
+      : Math.sin(country.aiAdoption * Math.PI) * baseFriction;
 
     // === 7. Wellbeing Calculation ===
     // REBALANCED COEFFICIENTS:
@@ -664,7 +707,12 @@ export function stepSimulationPure(input: SimulationInput): SimulationOutput {
     // RATIONALE: In well-governed economies with functional institutions, UBI should
     // outpace displacement anxiety. Previous 2:1 ratio (friction:boost) was causing
     // unrealistic collapse even in high-functioning democracies.
-    let wellbeingBase = country.wellbeing + (ubiBoost * 0.20) - (displacementFriction * 0.12);
+    // P8-T9: a custom wellbeingDelta equation replaces the hardcoded net-change formula.
+    let wellbeingBase = country.wellbeing + (
+      equations
+        ? equations.wellbeingDelta.evaluate({ ubiBoost, displacementFriction })
+        : (ubiBoost * 0.20) - (displacementFriction * 0.12)
+    );
 
     // Crisis detection: displacement gap exceeds 30% of monthly wage
     // CAPPED PENALTY: Even in crisis, societies adapt through informal economies,
