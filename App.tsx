@@ -2098,9 +2098,17 @@ const App: React.FC = () => {
                   <ModelEditor
                     initialConfig={activeModelConfig}
                     onSave={applyModelConfig}
+                    onRun={(config) => {
+                      // P8-T11: "Run Simulation" applies the edited model and re-simulates
+                      // it live - switch to the map view and start playing so the effect
+                      // of the edit is immediately visible.
+                      applyModelConfig(config);
+                      setActiveTab('map');
+                      setIsPlaying(true);
+                    }}
                     onCancel={() => setModelMode('upload')}
                     onRunTests={(config) => {
-                      // For now just apply the model
+                      // Apply the model so its own equations are what get scored.
                       applyModelConfig(config);
                     }}
                   />
