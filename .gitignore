@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Secrets (use .env.local; see .example.env)
+.env
+
+# Stale editor backups
+*.backup
