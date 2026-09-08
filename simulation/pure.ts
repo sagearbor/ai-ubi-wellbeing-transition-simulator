@@ -94,7 +94,8 @@ function distributeGlobal(
   globalLedger: GlobalLedger
 ): void {
   globalLedger.totalFunds += contribution;
-  globalLedger.monthlyInflow += contribution;
+  // monthlyInflow is credited once for every contribution in Phase 2 (all strategies);
+  // crediting it here as well double-counted global contributions (broke AT-6 conservation).
   // Funds will be distributed equally per capita worldwide in the next phase
 }
 

@@ -2,7 +2,7 @@
  * Tests for equationParser service
  */
 
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi, beforeAll, afterAll } from 'vitest';
 import {
   parseEquationSet,
   mergeWithDefaults,
@@ -13,6 +13,12 @@ import {
 } from './equationParser';
 import { EquationSet } from '../../types';
 import { DEFAULT_EQUATIONS } from '../../constants';
+
+// DEFAULT_EQUATIONS reference variables (ubi, ubiBoost, aiAdoptionLevel, ...) that the
+// sandbox does not expose yet (P8-T9 pending), so compileEquation logs errors for them.
+// Keep the test output readable; the behaviour itself is asserted below.
+beforeAll(() => { vi.spyOn(console, 'error').mockImplementation(() => {}); });
+afterAll(() => { vi.restoreAllMocks(); });
 
 describe('equationParser', () => {
   describe('parseEquationSet', () => {
