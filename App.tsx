@@ -19,6 +19,7 @@ import { SimulationState, ModelParameters, HistoryPoint, CountryStats, Corporati
 import { PRESET_MODELS, INITIAL_COUNTRIES, INITIAL_CORPORATIONS, SCENARIO_PRESETS, DEFAULT_MODEL_CONFIG } from './constants';
 import { getRedTeamAnalysis, getSimulationSummary } from './services/geminiService';
 import { rateModel, getLeaderboard, recordRun, listModels } from './src/services/modelStorage';
+import { getCompiledEquationSet, CompiledEquationSet } from './src/services/equationParser';
 
 // Helper for math rendering
 const MathEq: React.FC<{ children: React.ReactNode }> = ({ children }) => (
@@ -1082,6 +1083,14 @@ const App: React.FC = () => {
     }
   }
   const stepSimulation = useCallback(() => {
+    // P8-T9: when a custom model is active, compile its equations once per step and use
+    // them in place of the hardcoded formulas below (mirrors simulation/pure.ts, which is
+    // covered by unit tests - see simulation/pure.test.ts). null/invalid falls back to the
+    // default hardcoded engine, unchanged.
+    const equations: CompiledEquationSet | null = activeModelConfig
+      ? getCompiledEquationSet(activeModelConfig.equations)
+      : null;
+
     setState(prev => {
       const nextMonth = prev.month + 1;
       const newCountryData = { ...prev.countryData };
@@ -1150,9 +1159,20 @@ const App: React.FC = () => {
         corp.operatingCountries.forEach(countryId => {
           const country = newCountryData[countryId];
           if (country) {
-            const regionalModifier = 1 + (country.gdpPerCapita / 100000);
-            const growth = model.aiGrowthRate * regionalModifier * corp.aiAdoptionLevel * 0.1;
-            country.aiAdoption = Math.min(0.999, country.aiAdoption + growth * (1 - country.aiAdoption));
+            // P8-T9: a custom aiAdoptionGrowth equation replaces the hardcoded delta.
+            const adoptionDelta = equations
+              ? equations.aiAdoptionGrowth.evaluate({
+                  aiGrowthRate: model.aiGrowthRate,
+                  gdpPerCapita: country.gdpPerCapita,
+                  aiAdoptionLevel: corp.aiAdoptionLevel,
+                  adoption: country.aiAdoption
+                })
+              : (() => {
+                  const regionalModifier = 1 + (country.gdpPerCapita / 100000);
+                  const growth = model.aiGrowthRate * regionalModifier * corp.aiAdoptionLevel * 0.1;
+                  return growth * (1 - country.aiAdoption);
+                })();
+            country.aiAdoption = Math.min(0.999, country.aiAdoption + adoptionDelta);
           }
         });
 
@@ -1190,7 +1210,13 @@ const App: React.FC = () => {
       // ============================================================================
 
       updatedCorps.forEach(corp => {
-        const contribution = corp.aiRevenue * corp.contributionRate;
+        // P8-T9: a custom surplusGeneration equation replaces the hardcoded contribution formula.
+        const contribution = equations
+          ? equations.surplusGeneration.evaluate({
+              aiRevenue: corp.aiRevenue,
+              contributionRate: corp.contributionRate
+            })
+          : corp.aiRevenue * corp.contributionRate;
 
         // Track contribution
         newLedger.contributorBreakdown[corp.id] = contribution;
@@ -1250,7 +1276,10 @@ const App: React.FC = () => {
         const scaledUBI = effectiveUBI * Math.max(0.5, wealthGradient);
 
         const utilityScale = country.gdpPerCapita / 40 + 150;
-        const ubiBoost = (scaledUBI / utilityScale) * 120;
+        // P8-T9: a custom ubiUtility equation replaces the hardcoded UBI -> wellbeing conversion.
+        const ubiBoost = equations
+          ? equations.ubiUtility.evaluate({ ubi: scaledUBI, utilityScale })
+          : (scaledUBI / utilityScale) * 120;
 
         // === 5. Displacement Gap Calculation ===
         const monthlyWage = country.gdpPerCapita / 12;
@@ -1263,8 +1292,18 @@ const App: React.FC = () => {
         // ECONOMIC RATIONALE: Well-governed democracies have better social safety nets,
         // labor retraining programs, and institutions that buffer transition anxiety.
         // Friction increases as a power function (1.5) so low-gov countries feel exponentially more pain.
+        // baseFriction is always computed with the hardcoded formula: the shadow (no-intervention)
+        // counterfactual below always uses it, regardless of whether a custom model is active.
         const baseFriction = 40 * Math.pow(1 - country.governance, 1.5) * (1 + country.gini * 0.5);
-        const displacementFriction = Math.sin(country.aiAdoption * Math.PI) * baseFriction;
+        // P8-T9: a custom displacementFriction equation replaces the hardcoded formula.
+        const displacementFriction = equations
+          ? equations.displacementFriction.evaluate({
+              adoption: country.aiAdoption,
+              governance: country.governance,
+              gini: country.gini,
+              baseFriction
+            })
+          : Math.sin(country.aiAdoption * Math.PI) * baseFriction;
 
         // === 7. Wellbeing Calculation ===
         // REBALANCED COEFFICIENTS:
@@ -1273,7 +1312,12 @@ const App: React.FC = () => {
         // RATIONALE: In well-governed economies with functional institutions, UBI should
         // outpace displacement anxiety. Previous 2:1 ratio (friction:boost) was causing
         // unrealistic collapse even in high-functioning democracies.
-        let wellbeingBase = country.wellbeing + (ubiBoost * 0.20) - (displacementFriction * 0.12);
+        // P8-T9: a custom wellbeingDelta equation replaces the hardcoded net-change formula.
+        let wellbeingBase = country.wellbeing + (
+          equations
+            ? equations.wellbeingDelta.evaluate({ ubiBoost, displacementFriction })
+            : (ubiBoost * 0.20) - (displacementFriction * 0.12)
+        );
 
         // Crisis detection: displacement gap exceeds 30% of monthly wage
         // CAPPED PENALTY: Even in crisis, societies adapt through informal economies,
@@ -1383,7 +1427,7 @@ const App: React.FC = () => {
       setHistory(h => [...h.filter(p => p.month < nextMonth), { month: nextMonth, state: newState }]);
       return newState;
     });
-  }, [model, corporations, calculateAiRevenue, distributeGlobal, distributeCustomerWeighted, distributeHqLocal]);
+  }, [model, corporations, calculateAiRevenue, distributeGlobal, distributeCustomerWeighted, distributeHqLocal, activeModelConfig]);
 
   useEffect(() => {
     let timer: any;
@@ -2713,12 +2757,15 @@ const App: React.FC = () => {
                   )}
                 </div>
 
-                {/* Honest status of the custom-model pipeline (P8-T9 not yet implemented) */}
-                <div className="mb-6 p-4 bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-700 rounded-lg text-sm text-amber-900 dark:text-amber-200">
-                  <strong>Preview feature.</strong> Uploaded models are parsed, schema-checked and scored for complexity,
-                  and the six anchor tests run against the built-in engine. The simulation does <em>not yet execute
-                  custom equations</em>: applying a model changes the label above and records leaderboard runs under its
-                  name, but the trajectory you see is still the default model's.
+                {/* Honest status of the custom-model pipeline (P8-T9) */}
+                <div className="mb-6 p-4 bg-blue-50 dark:bg-blue-950/40 border border-blue-300 dark:border-blue-700 rounded-lg text-sm text-blue-900 dark:text-blue-200">
+                  <strong>Custom equations run.</strong> Applying a model compiles its five core equations
+                  (AI adoption growth, corporation contribution surplus, displacement friction, UBI-to-wellbeing
+                  utility, and the monthly wellbeing update) and uses them in place of the built-in formulas for
+                  every simulation step - the trajectory you see reflects your model. Two advanced equations
+                  (demand-collapse projection and reputation dynamics) are parsed and validated but still use
+                  the default logic. The six anchor tests continue to run against the built-in engine, not your
+                  uploaded equations, so a model's anchor-test score does not yet reflect its own trajectory.
                 </div>
 
                 {/* Mode toggle */}

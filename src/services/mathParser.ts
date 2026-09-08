@@ -18,7 +18,11 @@ const ALLOWED_VARIABLES = new Set([
   'adoption', 'wellbeing', 'gdp', 'gdpPerCapita', 'population', 'gini', 'governance',
   'contributionRate', 'displacementRate', 'fundSize', 'month', 'aiGrowthRate',
   'aiAdoption', 'ubiReceived', 'marketPressure', 'reputationScore',
-  'customerBaseWellbeing', 'projectedDemandCollapse', 'aiRevenue'
+  'customerBaseWellbeing', 'projectedDemandCollapse', 'aiRevenue',
+  // P8-T9: exposed so the engine (simulation/pure.ts) can evaluate custom equations
+  // in place of the hardcoded formulas for these intermediate quantities.
+  'ubi', 'ubiBoost', 'displacementFriction', 'baseFriction', 'utilityScale',
+  'aiAdoptionLevel', 'avgContributionRate'
 ]);
 
 // Security constraints
