@@ -1,4 +1,5 @@
 # Uploaded to Cloud Build for `gcloud run deploy --source .`
+# .env.local is deliberately NOT excluded: Vite reads GEMINI_API_KEY from it at build time.
 .git
 .gitignore
 node_modules
@@ -8,5 +9,4 @@ docs
 examples
 *.md
 .env
-.env.*
 App.tsx.backup

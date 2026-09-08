@@ -3,8 +3,9 @@
 # Stage 1 builds the Vite bundle; stage 2 serves it with nginx.
 # The Gemini key is baked into the client bundle at build time (the app calls
 # Gemini from the browser), so restrict the key by HTTP referrer in Google
-# AI Studio. Pass it with: docker build --build-arg GEMINI_API_KEY=... .
-# Without it the simulator still runs; only the Analysis tab is disabled.
+# AI Studio. Vite reads it from .env.local in the build context, or pass
+# --build-arg GEMINI_API_KEY=... for local docker builds. Without a key the
+# simulator still runs; only the Analysis tab is disabled.
 
 FROM node:22-alpine AS build
 WORKDIR /app

@@ -8,15 +8,15 @@
 # or pass --promote to send 100% of traffic to the new revision immediately.
 #
 # Requires: gcloud authenticated, Cloud Build + Artifact Registry APIs enabled.
+# The Gemini key is read by Vite from .env.local (uploaded with the source; not in git).
 set -euo pipefail
 
 PROJECT="${GCP_PROJECT:-gen-lang-client-0281141814}"
 REGION="${GCP_REGION:-us-west1}"
 SERVICE="${CLOUD_RUN_SERVICE:-wellbeing-transition-simulator}"
 TAG="${DEPLOY_TAG:-main}"
-KEY="${GEMINI_API_KEY:-}"
-if [[ -z "$KEY" && -f .env.local ]]; then
-  KEY="$(grep -E '^GEMINI_API_KEY=' .env.local | cut -d= -f2- || true)"
+if ! grep -qE '^GEMINI_API_KEY=.+' .env.local 2>/dev/null; then
+  echo "warning: no GEMINI_API_KEY in .env.local - the Analysis tab will be disabled in this build" >&2
 fi
 
 TRAFFIC_ARGS=(--no-traffic --tag "$TAG")
@@ -30,5 +30,4 @@ gcloud run deploy "$SERVICE" \
   --region "$REGION" \
   --source . \
   --allow-unauthenticated \
-  --build-env-vars-file <(printf 'GEMINI_API_KEY: "%s"\n' "$KEY") \
   "${TRAFFIC_ARGS[@]}"
