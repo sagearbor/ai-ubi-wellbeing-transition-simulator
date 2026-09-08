@@ -1,0 +1,12 @@
+# Uploaded to Cloud Build for `gcloud run deploy --source .`
+.git
+.gitignore
+node_modules
+dist
+tmp
+docs
+examples
+*.md
+.env
+.env.*
+App.tsx.backup
