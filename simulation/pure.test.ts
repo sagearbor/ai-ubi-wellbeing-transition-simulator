@@ -3,6 +3,7 @@
  * These tests verify that the extraction was successful and the function is callable.
  */
 
+import { describe, it, expect } from 'vitest';
 import { stepSimulationPure } from './pure';
 import type { SimulationState, Corporation, ModelParameters } from '../types';
 import { INITIAL_COUNTRIES } from '../constants';
@@ -15,6 +16,8 @@ function createTestState(): SimulationState {
   INITIAL_COUNTRIES.slice(0, 5).forEach(country => {
     countryData[country.id] = {
       ...country,
+      // INITIAL_COUNTRIES carries no wellbeing; App.tsx derives it from GDP per capita
+      wellbeing: Math.min(100, Math.max(10, country.gdpPerCapita / 1200 + 40)),
       wellbeingTrend: [50]
     };
   });

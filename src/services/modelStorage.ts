@@ -160,9 +160,15 @@ export function listModels(
     case 'rank':
       filtered.sort((a, b) => a.complexity - b.complexity);
       break;
-    case 'newest':
-      filtered.sort((a, b) => new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime());
+    case 'newest': {
+      // Tie-break equal timestamps by insertion order (later saved first) so ordering is deterministic
+      const order = new Map(filtered.map((m, i) => [m.id, i]));
+      filtered.sort((a, b) =>
+        (new Date(b.submittedAt).getTime() - new Date(a.submittedAt).getTime()) ||
+        (order.get(b.id)! - order.get(a.id)!)
+      );
       break;
+    }
     case 'mostRuns':
       filtered.sort((a, b) => b.runCount - a.runCount);
       break;

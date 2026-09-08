@@ -4,7 +4,7 @@
  */
 
 import * as yaml from 'js-yaml';
-import { ModelConfig } from '../types';
+import { ModelConfig } from '../../types';
 
 export type FileFormat = 'json' | 'yaml' | 'unknown';
 

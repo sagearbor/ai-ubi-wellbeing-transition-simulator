@@ -18,7 +18,7 @@ import { ModelRating } from './components/ModelRating';
 import { SimulationState, ModelParameters, HistoryPoint, CountryStats, Corporation, GlobalLedger, GameTheoryState, SavedState, SelectedEntity, ModelConfig, StoredModel } from './types';
 import { PRESET_MODELS, INITIAL_COUNTRIES, INITIAL_CORPORATIONS, SCENARIO_PRESETS, DEFAULT_MODEL_CONFIG } from './constants';
 import { getRedTeamAnalysis, getSimulationSummary } from './services/geminiService';
-import { rateModel, getLeaderboard, recordRun } from './src/services/modelStorage';
+import { rateModel, getLeaderboard, recordRun, listModels } from './src/services/modelStorage';
 
 // Helper for math rendering
 const MathEq: React.FC<{ children: React.ReactNode }> = ({ children }) => (
