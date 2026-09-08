@@ -18,7 +18,7 @@ import { ModelRating } from './components/ModelRating';
 import { SimulationState, ModelParameters, HistoryPoint, CountryStats, Corporation, GlobalLedger, GameTheoryState, SavedState, SelectedEntity, ModelConfig, StoredModel } from './types';
 import { PRESET_MODELS, INITIAL_COUNTRIES, INITIAL_CORPORATIONS, SCENARIO_PRESETS, DEFAULT_MODEL_CONFIG } from './constants';
 import { getRedTeamAnalysis, getSimulationSummary } from './services/geminiService';
-import { rateModel, getLeaderboard, recordRun } from './src/services/modelStorage';
+import { rateModel, getLeaderboard, recordRun, listModels } from './src/services/modelStorage';
 
 // Helper for math rendering
 const MathEq: React.FC<{ children: React.ReactNode }> = ({ children }) => (
@@ -2711,6 +2711,14 @@ const App: React.FC = () => {
                   ) : (
                     <span className="text-slate-600 dark:text-slate-400">Using default model (hardcoded equations)</span>
                   )}
+                </div>
+
+                {/* Honest status of the custom-model pipeline (P8-T9 not yet implemented) */}
+                <div className="mb-6 p-4 bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-700 rounded-lg text-sm text-amber-900 dark:text-amber-200">
+                  <strong>Preview feature.</strong> Uploaded models are parsed, schema-checked and scored for complexity,
+                  and the six anchor tests run against the built-in engine. The simulation does <em>not yet execute
+                  custom equations</em>: applying a model changes the label above and records leaderboard runs under its
+                  name, but the trajectory you see is still the default model's.
                 </div>
 
                 {/* Mode toggle */}

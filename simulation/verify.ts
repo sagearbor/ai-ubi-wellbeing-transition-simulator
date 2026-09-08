@@ -7,7 +7,7 @@
  */
 
 import { stepSimulationPure } from './pure';
-import type { SimulationState, Corporation, ModelParameters } from '../types';
+import type { SimulationState, Corporation, ModelParameters, CountryStats } from '../types';
 import { INITIAL_COUNTRIES, INITIAL_CORPORATIONS } from '../constants';
 
 // Create initial state
@@ -17,14 +17,16 @@ function createInitialState(): SimulationState {
   INITIAL_COUNTRIES.forEach(country => {
     countryData[country.id] = {
       ...country,
-      wellbeingTrend: [country.wellbeing]
+      // INITIAL_COUNTRIES carries no wellbeing; App.tsx derives it from GDP per capita
+      wellbeing: Math.min(100, Math.max(10, country.gdpPerCapita / 1200 + 40)),
+      wellbeingTrend: [Math.min(100, Math.max(10, country.gdpPerCapita / 1200 + 40))]
     };
   });
 
   return {
     month: 0,
     globalFund: 0,
-    averageWellbeing: INITIAL_COUNTRIES.reduce((sum, c) => sum + c.wellbeing, 0) / INITIAL_COUNTRIES.length,
+    averageWellbeing: (Object.values(countryData) as CountryStats[]).reduce((sum, c) => sum + c.wellbeing, 0) / INITIAL_COUNTRIES.length,
     totalAiCompanies: INITIAL_CORPORATIONS.length,
     countryData,
     shadowCountryData: JSON.parse(JSON.stringify(countryData)),

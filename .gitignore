@@ -22,3 +22,12 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Secrets (use .env.local; see .example.env)
+.env
+
+# Stale editor backups
+*.backup
+
+# Session scratch (wrapups, hlists). Two Dec-2025 notes remain tracked.
+tmp/

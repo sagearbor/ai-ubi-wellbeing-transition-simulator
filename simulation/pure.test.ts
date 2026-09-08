@@ -3,6 +3,7 @@
  * These tests verify that the extraction was successful and the function is callable.
  */
 
+import { describe, it, expect } from 'vitest';
 import { stepSimulationPure } from './pure';
 import type { SimulationState, Corporation, ModelParameters } from '../types';
 import { INITIAL_COUNTRIES } from '../constants';
@@ -15,6 +16,8 @@ function createTestState(): SimulationState {
   INITIAL_COUNTRIES.slice(0, 5).forEach(country => {
     countryData[country.id] = {
       ...country,
+      // INITIAL_COUNTRIES carries no wellbeing; App.tsx derives it from GDP per capita
+      wellbeing: Math.min(100, Math.max(10, country.gdpPerCapita / 1200 + 40)),
       wellbeingTrend: [50]
     };
   });
@@ -36,8 +39,8 @@ function createTestCorporation(): Corporation {
   return {
     id: 'test-corp',
     name: 'Test Corp',
-    headquartersCountry: 'usa',
-    operatingCountries: ['usa'],
+    headquartersCountry: 'USA',
+    operatingCountries: ['USA', 'CAN', 'MEX'],
     aiRevenue: 0,
     aiAdoptionLevel: 0.5,
     marketCap: 100,
@@ -124,6 +127,29 @@ describe('stepSimulationPure', () => {
 
     expect(result.ledger.totalFunds).toBeGreaterThanOrEqual(0);
     expect(result.ledger.corruptionLeakage).toBe(0);
+  });
+
+  it('should conserve money: ledger inflow equals UBI paid out (AT-6 invariant)', () => {
+    const state = createTestState();
+    const corporations = [
+      { ...createTestCorporation(), id: 'global-corp', distributionStrategy: 'global' as const },
+      { ...createTestCorporation(), id: 'cw-corp', distributionStrategy: 'customer-weighted' as const },
+      { ...createTestCorporation(), id: 'hq-corp', distributionStrategy: 'hq-local' as const }
+    ];
+    const model = createTestModel();
+
+    const result = stepSimulationPure({ state, corporations, model });
+
+    const contributions = Object.values(result.ledger.contributorBreakdown).reduce((a, b) => a + b, 0);
+    expect(contributions).toBeGreaterThan(0);
+    expect(result.ledger.monthlyInflow).toBeCloseTo(contributions, 6);
+    // The global pool is split per capita over INITIAL_COUNTRIES; this state only holds the
+    // first 5, so only that share of the global pool is observable here.
+    const worldPop = INITIAL_COUNTRIES.reduce((a, c) => a + c.population, 0);
+    const localPop = INITIAL_COUNTRIES.slice(0, 5).reduce((a, c) => a + c.population, 0);
+    const globalContribution = result.ledger.contributorBreakdown['global-corp'];
+    const expectedOutflow = contributions - globalContribution + globalContribution * (localPop / worldPop);
+    expect(result.ledger.monthlyOutflow).toBeCloseTo(expectedOutflow, 6);
   });
 
   it('should analyze game theory', () => {

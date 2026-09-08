@@ -39,8 +39,10 @@ const localStorageMock = (() => {
   };
 })();
 
-Object.defineProperty(window, 'localStorage', {
-  value: localStorageMock
+// Tests run under Node (no DOM); modelStorage reads the bare `localStorage` global.
+Object.defineProperty(globalThis, 'localStorage', {
+  value: localStorageMock,
+  configurable: true
 });
 
 // Helper to create a mock model config

@@ -122,7 +122,7 @@ export const WellbeingScatterPlot: React.FC<WellbeingScatterPlotProps> = ({
 }) => {
   // Transform country data to scatter plot points
   const { dataPoints, regression, archetypeData } = useMemo(() => {
-    const points: DataPoint[] = Object.values(countryData).map(country => ({
+    const points: DataPoint[] = Object.values<CountryStats>(countryData).map(country => ({
       id: country.id,
       name: country.name,
       aiAdoption: country.aiAdoption * 100, // Convert to percentage

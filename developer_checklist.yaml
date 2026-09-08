@@ -1,5 +1,5 @@
 # AI/UBI Transition Simulator - Development Checklist
-# Last Updated: 2024-12-28
+# Last Updated: 2026-09-07 (reconciled with code; verified by npm run check)
 #
 # ARCHIVED PHASES: Phases 1-7 are complete and archived.
 # See: docs/archived/phases_1-7_completed.yaml
@@ -17,8 +17,8 @@ project: "wellbeing-transition-simulator"
 # COMPLETION SUMMARY
 # =============================================================================
 summary:
-  last_updated: "2024-12-28"
-  overall_status: "🚧 Phase 8-9 Planned - Dynamic Models & Anchor Test Validation"
+  last_updated: "2026-09-07"
+  overall_status: "🚧 Phase 8-9 mostly built (PR #2, Dec 2025); P8-T9 (engine executes custom equations) still open"
 
   archived_phases:
     phases: [1, 2, 3, 4, 5, 6, 7]
@@ -34,11 +34,11 @@ summary:
       Phase 7: Per-Entity UI & Interaction (6 tasks)
 
   phase_8:
-    status: ⏳ Pending (0/14 tasks)
+    status: 🚧 11/14 complete, 2 partial (P8-T11, P8-T12), 1 pending (P8-T9)
     description: "Dynamic Model Configuration with Anchor Test Validation"
 
   phase_9:
-    status: ⏳ Pending (0/10 tasks)
+    status: 🚧 9/10 complete, 1 partial (P9-T8)
     description: "Model Sharing & Leaderboard with Automated Validation"
 
 # =============================================================================
@@ -52,7 +52,7 @@ summary:
 phase_8:
   name: "Dynamic Model Configuration"
   description: "User-uploadable economic models with anchor test validation"
-  status: ⏳ Pending
+  status: 🚧 Mostly complete - see task list; P8-T9 is the missing link
 
   design_principles:
     - "Safe equation parsing with math.js (never use eval())"
@@ -244,7 +244,7 @@ phase_8:
     - id: P8-T1
       name: "Install and configure math.js library"
       file: "package.json, services/mathParser.ts"
-      status: ⏳ Pending
+      status: ✅ Complete
       depends_on: []
       description: |
         npm install mathjs
@@ -256,7 +256,7 @@ phase_8:
     - id: P8-T2
       name: "Define ModelConfig JSON Schema"
       file: "schemas/modelConfig.schema.json"
-      status: ⏳ Pending
+      status: ✅ Complete
       depends_on: [P8-T1]
       description: |
         JSON Schema for model files:
@@ -268,7 +268,7 @@ phase_8:
     - id: P8-T3
       name: "Create equation parser service"
       file: "services/equationParser.ts"
-      status: ⏳ Pending
+      status: ✅ Complete
       depends_on: [P8-T1, P8-T2]
       description: |
         Functions: parseEquation(), validateEquation(), compileEquation()
@@ -279,7 +279,7 @@ phase_8:
     - id: P8-T4
       name: "Create ModelConfig TypeScript interface"
       file: "types.ts"
-      status: ⏳ Pending
+      status: ✅ Complete
       depends_on: [P8-T2]
       description: |
         Interfaces:
@@ -292,7 +292,7 @@ phase_8:
     - id: P8-T5
       name: "Create model validation service"
       file: "services/modelValidator.ts"
-      status: ⏳ Pending
+      status: ✅ Complete
       depends_on: [P8-T2, P8-T3, P8-T4]
       description: |
         validateModelConfig(): JSON Schema validation with ajv
@@ -302,7 +302,7 @@ phase_8:
     - id: P8-T6
       name: "Extract pure simulation function"
       file: "simulation/pure.ts"
-      status: ⏳ Pending
+      status: ✅ Complete
       depends_on: [P8-T4]
       description: |
         Extract stepSimulation logic from App.tsx into pure function
@@ -312,7 +312,7 @@ phase_8:
     - id: P8-T7
       name: "Implement anchor test definitions"
       file: "validation/anchorTests.ts"
-      status: ⏳ Pending
+      status: ✅ Complete
       depends_on: [P8-T4, P8-T6]
       description: |
         Define 6 anchor tests as TypeScript objects:
@@ -329,7 +329,7 @@ phase_8:
     - id: P8-T8
       name: "Implement anchor test runner"
       file: "validation/testRunner.ts"
-      status: ⏳ Pending
+      status: ✅ Complete
       depends_on: [P8-T6, P8-T7]
       description: |
         runAnchorTests(customModel, customCorps, tests) => ValidationResult[]
@@ -339,7 +339,7 @@ phase_8:
     - id: P8-T9
       name: "Integrate custom equations into stepSimulation"
       file: "App.tsx"
-      status: ⏳ Pending
+      status: ⏳ Pending (engine ignores custom equations; App only tracks the config label)
       depends_on: [P8-T3, P8-T5, P8-T6]
       description: |
         Add activeModelConfig state
@@ -349,7 +349,7 @@ phase_8:
     - id: P8-T10
       name: "Create model upload UI component"
       file: "components/ModelUpload.tsx"
-      status: ⏳ Pending
+      status: ✅ Complete
       depends_on: [P8-T5, P8-T8, P8-T9]
       description: |
         Drag-and-drop JSON/YAML upload
@@ -360,7 +360,7 @@ phase_8:
     - id: P8-T11
       name: "Create model editor UI"
       file: "components/ModelEditor.tsx"
-      status: ⏳ Pending
+      status: 🚧 Placeholder (name/description + validate/save only; no equation editor)
       depends_on: [P8-T4, P8-T10]
       description: |
         Equation editor with syntax highlighting
@@ -371,7 +371,7 @@ phase_8:
     - id: P8-T12
       name: "Add default equations as fallback"
       file: "constants.ts"
-      status: ⏳ Pending
+      status: 🚧 Partial (DEFAULT_EQUATIONS defined, but reference ubi/ubiBoost/aiAdoptionLevel/avgContributionRate which the sandbox does not expose, so they do not compile)
       depends_on: [P8-T4]
       description: |
         DEFAULT_EQUATIONS constant extracted from current stepSimulation
@@ -381,7 +381,7 @@ phase_8:
     - id: P8-T13
       name: "Add Models tab to UI"
       file: "App.tsx"
-      status: ⏳ Pending
+      status: ✅ Complete
       depends_on: [P8-T10, P8-T11]
       description: |
         New "Models" tab with:
@@ -393,7 +393,7 @@ phase_8:
     - id: P8-T14
       name: "Add YAML support and example models"
       file: "services/modelParser.ts, examples/models/"
-      status: ⏳ Pending
+      status: ✅ Complete
       depends_on: [P8-T5, P8-T12]
       description: |
         npm install js-yaml
@@ -415,7 +415,7 @@ phase_8:
 phase_9:
   name: "Model Sharing & Leaderboard"
   description: "Community model sharing with automated anchor test validation"
-  status: ⏳ Pending
+  status: 🚧 Complete except P9-T8 (share flow)
 
   design_principles:
     - "Fully automated - no manual curation required"
@@ -464,7 +464,7 @@ phase_9:
     - id: P9-T1
       name: "Design storage schema and API"
       file: "docs/api-spec.md, types.ts"
-      status: ⏳ Pending
+      status: ✅ Complete
       depends_on: [P8-T4, P8-T7]
       description: |
         Interfaces: StoredModel, RunRecord, LeaderboardEntry
@@ -474,7 +474,7 @@ phase_9:
     - id: P9-T2
       name: "Create storage service interface"
       file: "services/modelStorage.ts"
-      status: ⏳ Pending
+      status: ✅ Complete
       depends_on: [P9-T1]
       description: |
         Abstract interface:
@@ -487,7 +487,7 @@ phase_9:
     - id: P9-T3
       name: "Implement localStorage backend"
       file: "services/localModelStorage.ts"
-      status: ⏳ Pending
+      status: ✅ Complete
       depends_on: [P9-T2]
       description: |
         localStorage implementation of storage interface
@@ -498,7 +498,7 @@ phase_9:
     - id: P9-T4
       name: "Implement complexity scoring"
       file: "services/complexityScorer.ts"
-      status: ⏳ Pending
+      status: ✅ Complete
       depends_on: [P8-T4]
       description: |
         calculateComplexity(model) => number
@@ -512,7 +512,7 @@ phase_9:
     - id: P9-T5
       name: "Create leaderboard UI"
       file: "components/Leaderboard.tsx"
-      status: ⏳ Pending
+      status: ✅ Complete
       depends_on: [P9-T3, P9-T4]
       description: |
         Sortable table columns:
@@ -529,7 +529,7 @@ phase_9:
     - id: P9-T6
       name: "Create model detail modal"
       file: "components/ModelDetail.tsx"
-      status: ⏳ Pending
+      status: ✅ Complete
       depends_on: [P9-T5]
       description: |
         Anchor test results with pass/fail reasons
@@ -541,7 +541,7 @@ phase_9:
     - id: P9-T7
       name: "Add run tracking to simulation"
       file: "App.tsx"
-      status: ⏳ Pending
+      status: ✅ Complete (listModels import was missing until 2026-09-07)
       depends_on: [P9-T3]
       description: |
         Auto-record runs when simulation reaches month 60
@@ -552,7 +552,7 @@ phase_9:
     - id: P9-T8
       name: "Add share functionality"
       file: "components/ModelEditor.tsx"
-      status: ⏳ Pending
+      status: 🚧 Partial (share toggle in ModelEditor; no export/link flow)
       depends_on: [P9-T3]
       description: |
         "Share to Leaderboard" button
@@ -563,7 +563,7 @@ phase_9:
     - id: P9-T9
       name: "Add community rating UI"
       file: "components/ModelRating.tsx"
-      status: ⏳ Pending
+      status: ✅ Complete
       depends_on: [P9-T5]
       description: |
         5-star rating (informational, not for ranking)
@@ -574,7 +574,7 @@ phase_9:
     - id: P9-T10
       name: "Add Leaderboard tab to main UI"
       file: "App.tsx"
-      status: ⏳ Pending
+      status: ✅ Complete
       depends_on: [P9-T5, P9-T6]
       description: |
         New "Leaderboard" tab
@@ -615,6 +615,32 @@ implementation:
   estimated_effort:
     phase_8: "2-3 weeks (anchor tests add ~1 week to original estimate)"
     phase_9: "2-3 weeks (simpler without manual curation)"
+
+# =============================================================================
+# VERIFICATION (2026-09-07)
+# =============================================================================
+verification:
+  date: "2026-09-07"
+  commands:
+    - cmd: "npm run typecheck"
+      result: "0 errors (was 35 before the 2026-09-07 fixes)"
+    - cmd: "npm test"
+      result: "4 files, 61 tests passed (vitest)"
+    - cmd: "npm run validate"
+      result: "5/6 anchor tests pass; AT-2 fails (see below)"
+    - cmd: "npm run build"
+      result: "vite production build OK (single ~2 MB chunk)"
+  anchor_tests:
+    AT-1: pass
+    AT-2: "FAIL - with 40% contributions, global distribution and 80% displacement, average wellbeing ends at ~36% of initial after 60 months (needs >= 80%). Coefficient question for the model owner: per-capita UBI boost is small next to displacement friction."
+    AT-3: pass
+    AT-4: pass
+    AT-5: "pass, but barely: poor-country wellbeing 4.14 (global) vs 4.10 (hq-local) - both floors"
+    AT-6: "pass after fixing the double-counted global inflow in simulation/pure.ts"
+  known_gaps:
+    - "P8-T9: stepSimulationPure never reads ModelConfig.equations; anchor tests and leaderboard runs use the built-in engine regardless of the uploaded model"
+    - "P8-T12: DEFAULT_EQUATIONS use variables the mathParser sandbox does not expose (ubi, ubiBoost, aiAdoptionLevel, avgContributionRate)"
+    - "Live Cloud Run demo still serves the Dec-2025 AI Studio applet (see CONFERENCE.md); deploy path added in scripts/deploy.sh"
 
 # =============================================================================
 # BACKLOG

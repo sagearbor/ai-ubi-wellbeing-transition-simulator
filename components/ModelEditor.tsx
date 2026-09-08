@@ -6,6 +6,7 @@
 
 import React, { useState, useCallback } from 'react';
 import { ModelConfig } from '../types';
+import { DEFAULT_MODEL_CONFIG } from '../constants';
 import { saveModel, modelNameExists } from '../src/services/modelStorage';
 import { runFullValidation, FullValidationResult } from '../validation/testRunner';
 
@@ -34,14 +35,14 @@ export const ModelEditor: React.FC<ModelEditorProps> = ({
 
     // Fallback for placeholder - return a minimal valid config
     return {
+      ...DEFAULT_MODEL_CONFIG,
+      id: `custom-${Date.now()}`,
       name: name || 'Unnamed Model',
       description: description || 'No description',
-      version: '1.0.0',
-      parameters: [],
-      equations: [],
       metadata: {
+        ...DEFAULT_MODEL_CONFIG.metadata,
         author: 'Anonymous',
-        created: new Date().toISOString(),
+        createdAt: new Date().toISOString(),
         version: '1.0.0'
       }
     };
