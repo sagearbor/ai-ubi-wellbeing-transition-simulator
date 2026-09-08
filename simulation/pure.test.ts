@@ -17,6 +17,11 @@ function createTestState(): SimulationState {
   INITIAL_COUNTRIES.slice(0, 5).forEach(country => {
     countryData[country.id] = {
       ...country,
+      // INITIAL_COUNTRIES carries no aiAdoption; App.tsx's getInitialState() seeds it at
+      // 0.01. Leaving this unset previously made it `undefined`, so every arithmetic
+      // expression touching it (adoption deltas, displacement friction, ...) silently
+      // produced NaN - tests that didn't inspect those values never noticed.
+      aiAdoption: 0.01,
       // INITIAL_COUNTRIES carries no wellbeing; App.tsx derives it from GDP per capita
       wellbeing: Math.min(100, Math.max(10, country.gdpPerCapita / 1200 + 40)),
       wellbeingTrend: [50]
@@ -97,12 +102,18 @@ describe('stepSimulationPure', () => {
   });
 
   it('should be deterministic', () => {
-    const state = createTestState();
-    const corporations = [createTestCorporation()];
+    // stepSimulationPure shallow-copies state.countryData but mutates the nested
+    // per-country objects in place (see the pure_mutation_gotcha finding in the repo's
+    // tmp/wrapups/ notes), so the two calls below must each get their own fresh state/
+    // corporations - reusing the same instances would let the first call's in-place
+    // mutations leak into the second call's input, which is not what "deterministic"
+    // is meant to test here.
+    const corporations1 = [createTestCorporation()];
+    const corporations2 = [createTestCorporation()];
     const model = createTestModel();
 
-    const result1 = stepSimulationPure({ state, corporations, model });
-    const result2 = stepSimulationPure({ state, corporations, model });
+    const result1 = stepSimulationPure({ state: createTestState(), corporations: corporations1, model });
+    const result2 = stepSimulationPure({ state: createTestState(), corporations: corporations2, model });
 
     expect(result1.state.month).toBe(result2.state.month);
     expect(result1.state.averageWellbeing).toBe(result2.state.averageWellbeing);

@@ -10,6 +10,7 @@
 import { AnchorTest, AnchorTestSetup, Corporation, SimulationState, ModelParameters } from '../types';
 import { stepSimulationPure, SimulationInput, SimulationOutput } from '../simulation/pure';
 import { INITIAL_COUNTRIES, INITIAL_CORPORATIONS } from '../constants';
+import type { CompiledEquationSet } from '../src/services/equationParser';
 
 /** Result of running a single anchor test */
 export interface AnchorTestResult {
@@ -240,10 +241,17 @@ function createModelParams(setup: AnchorTestSetup): ModelParameters {
 
 /**
  * Run simulation for N months and return history
+ *
+ * @param equations Optional compiled equation set (see src/services/equationParser.ts::
+ *   getCompiledEquationSet). When present, the simulation runs with the model's OWN
+ *   equations instead of the hardcoded defaults - this is what lets a model's anchor-
+ *   test score actually reflect its own trajectory, rather than always scoring the
+ *   built-in engine regardless of which model is being validated.
  */
 function runSimulation(
   months: number,
-  setup: AnchorTestSetup
+  setup: AnchorTestSetup,
+  equations?: CompiledEquationSet
 ): { initial: SimulationState; final: SimulationState; history: SimulationOutput[]; maxRaceToBottomRisk: number } {
   const initialState = createInitialState();
   let corporations = createCorporations(setup);
@@ -257,7 +265,8 @@ function runSimulation(
     const input: SimulationInput = {
       state: currentState,
       corporations,
-      model
+      model,
+      equations
     };
 
     const output = stepSimulationPure(input);
@@ -281,15 +290,18 @@ function runSimulation(
 
 /**
  * Run a single anchor test
+ *
+ * @param equations Optional compiled equation set to score a specific model's own
+ *   equations instead of the hardcoded default engine (see runSimulation()).
  */
-export function runAnchorTest(test: AnchorTest): AnchorTestResult {
+export function runAnchorTest(test: AnchorTest, equations?: CompiledEquationSet): AnchorTestResult {
   try {
     // Special handling for comparison test (AT-5)
     if (test.setup.compareStrategies) {
-      return runComparisonTest(test);
+      return runComparisonTest(test, equations);
     }
 
-    const { initial, final, history, maxRaceToBottomRisk } = runSimulation(test.simulationMonths, test.setup);
+    const { initial, final, history, maxRaceToBottomRisk } = runSimulation(test.simulationMonths, test.setup, equations);
 
     const initialWellbeing = initial.averageWellbeing;
     const finalWellbeing = final.averageWellbeing;
@@ -387,7 +399,7 @@ export function runAnchorTest(test: AnchorTest): AnchorTestResult {
 /**
  * Run comparison test (AT-5)
  */
-function runComparisonTest(test: AnchorTest): AnchorTestResult {
+function runComparisonTest(test: AnchorTest, equations?: CompiledEquationSet): AnchorTestResult {
   const strategies = test.setup.compareStrategies!;
 
   // Run with global distribution
@@ -397,7 +409,7 @@ function runComparisonTest(test: AnchorTest): AnchorTestResult {
     allCorpsContributionRate: 0.20,
     allCorpsPolicyStance: 'moderate'
   };
-  const globalResult = runSimulation(test.simulationMonths, globalSetup);
+  const globalResult = runSimulation(test.simulationMonths, globalSetup, equations);
 
   // Run with HQ-local distribution
   const localSetup: AnchorTestSetup = {
@@ -406,7 +418,7 @@ function runComparisonTest(test: AnchorTest): AnchorTestResult {
     allCorpsContributionRate: 0.20,
     allCorpsPolicyStance: 'moderate'
   };
-  const localResult = runSimulation(test.simulationMonths, localSetup);
+  const localResult = runSimulation(test.simulationMonths, localSetup, equations);
 
   // Calculate poor countries' wellbeing in each scenario
   const globalPoorWellbeing = calculatePoorCountriesWellbeing(globalResult.final);
@@ -468,12 +480,17 @@ function evaluateAssertion(actual: number, operator: string, expected: number): 
 
 /**
  * Run all anchor tests
+ *
+ * @param equations Optional compiled equation set (see src/services/equationParser.ts::
+ *   getCompiledEquationSet). When present, every anchor test scores THIS model's own
+ *   equations instead of always scoring the hardcoded default engine. Omit to preserve
+ *   the previous default-engine-only behaviour exactly.
  */
-export function runAllAnchorTests(): AnchorTestSuiteResult {
+export function runAllAnchorTests(equations?: CompiledEquationSet): AnchorTestSuiteResult {
   const results: AnchorTestResult[] = [];
 
   for (const test of ANCHOR_TESTS) {
-    results.push(runAnchorTest(test));
+    results.push(runAnchorTest(test, equations));
   }
 
   const passed = results.filter(r => r.passed).length;
@@ -496,9 +513,9 @@ export function getAnchorTest(id: string): AnchorTest | undefined {
 /**
  * Run specific anchor tests by ID
  */
-export function runAnchorTestsById(ids: string[]): AnchorTestResult[] {
+export function runAnchorTestsById(ids: string[], equations?: CompiledEquationSet): AnchorTestResult[] {
   return ids
     .map(id => getAnchorTest(id))
     .filter((t): t is AnchorTest => t !== undefined)
-    .map(test => runAnchorTest(test));
+    .map(test => runAnchorTest(test, equations));
 }
