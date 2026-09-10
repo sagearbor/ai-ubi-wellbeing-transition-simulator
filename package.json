@@ -11,7 +11,10 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "validate": "tsx scripts/run-anchor-tests.ts",
-    "check": "npm run typecheck && npm run test && npm run validate && npm run build",
+    "validate:futures": "tsx scripts/validate-futures.ts",
+    "hindcast:fetch": "tsx scripts/hindcast/fetch-actuals.ts",
+    "hindcast": "tsx scripts/hindcast/run-hindcast.ts",
+    "check": "npm run typecheck && npm run test && npm run validate && npm run validate:futures && npm run build",
     "deploy": "bash scripts/deploy.sh",
     "deploy:promote": "bash scripts/deploy.sh --promote"
   },

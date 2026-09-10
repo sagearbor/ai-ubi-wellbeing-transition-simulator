@@ -1,1 +1,4 @@
 @import "tailwindcss";
+
+/* Make Tailwind `dark:` utilities follow the .dark class App.tsx sets on <html>, not only the OS preference. */
+@custom-variant dark (&:where(.dark, .dark *));

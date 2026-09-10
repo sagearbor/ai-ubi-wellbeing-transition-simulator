@@ -158,7 +158,8 @@ function renormaliseStates(P: Record<string, number[]>, stateIds: string[], nYea
   for (let t = 0; t < nYears; t++) {
     let z = 0;
     for (const id of stateIds) z += P[id][t];
-    if (z > 0) for (const id of stateIds) P[id][t] /= z;
+    // Skip when already normalised so a no-op solve reproduces the baseline bit-for-bit.
+    if (z > 0 && Math.abs(z - 1) > 1e-12) for (const id of stateIds) P[id][t] /= z;
   }
 }
 

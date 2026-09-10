@@ -1,0 +1,255 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ubi-simulator.example.com/schemas/futuresGraph.json",
+  "title": "FuturesGraph",
+  "description": "Schema for the AI Futures Map graph (src/futures/types.ts FuturesGraph). Also carries the Intervention definition, referenced separately by src/futures/validateGraph.ts as '#/definitions/Intervention'.",
+  "type": "object",
+  "required": ["schemaVersion", "graphVersion", "startYear", "endYear", "horizons", "axis", "nodes", "metadata"],
+  "additionalProperties": false,
+
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "graphVersion": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}(\\.\\d+)?$",
+      "description": "Date-based content version, e.g. '2026-09-10' or '2026-09-10.2'"
+    },
+    "title": { "type": "string" },
+    "description": { "type": "string" },
+    "startYear": { "type": "integer", "minimum": 1900, "maximum": 3000 },
+    "endYear": { "type": "integer", "minimum": 1900, "maximum": 3000 },
+    "horizons": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "integer", "minimum": 1900, "maximum": 3000 }
+    },
+    "axis": { "$ref": "#/definitions/Axis" },
+    "nodes": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/definitions/FuturesNode" }
+    },
+    "metadata": { "$ref": "#/definitions/Metadata" }
+  },
+
+  "definitions": {
+    "Tier": { "enum": ["locked", "expert", "public"] },
+    "NodeKind": { "enum": ["event", "state"] },
+    "Lane": { "enum": ["capability", "governance", "economy", "society", "catastrophe", "flourishing"] },
+    "Valence": { "enum": ["good", "bad", "neutral", "mixed"] },
+    "Severity": { "enum": ["none", "disruptive", "catastrophic", "existential"] },
+    "EdgeKind": { "enum": ["requires", "enables", "amplifies", "dampens", "prevents"] },
+    "Confidence": { "enum": ["low", "medium", "high"] },
+
+    "Curve": {
+      "type": "object",
+      "minProperties": 1,
+      "patternProperties": {
+        "^[0-9]{4}$": { "type": "number", "minimum": 0, "maximum": 1 }
+      },
+      "additionalProperties": false,
+      "description": "Year (string key) -> probability in [0, 1]"
+    },
+
+    "Source": {
+      "type": "object",
+      "required": ["label", "kind"],
+      "additionalProperties": false,
+      "properties": {
+        "label": { "type": "string", "minLength": 1 },
+        "kind": { "enum": ["survey", "forecast-market", "paper", "scenario", "public-statement", "editorial"] },
+        "url": { "type": "string" },
+        "value": { "type": "string" },
+        "retrieved": { "type": "string" },
+        "quote": { "type": "string" }
+      }
+    },
+
+    "Seed": {
+      "type": "object",
+      "required": ["curve", "basis", "confidence"],
+      "additionalProperties": false,
+      "properties": {
+        "curve": { "$ref": "#/definitions/Curve" },
+        "basis": { "type": "string", "minLength": 1 },
+        "confidence": { "$ref": "#/definitions/Confidence" },
+        "sources": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/Source" }
+        },
+        "seededBy": { "type": "string" },
+        "asOf": { "type": "string" }
+      }
+    },
+
+    "ParentEdge": {
+      "type": "object",
+      "required": ["from", "kind", "strength", "note"],
+      "additionalProperties": false,
+      "properties": {
+        "from": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+        "kind": { "$ref": "#/definitions/EdgeKind" },
+        "strength": { "type": "number", "minimum": -1, "maximum": 1 },
+        "lag": { "type": "integer", "minimum": 0 },
+        "note": { "type": "string", "minLength": 1 }
+      }
+    },
+
+    "FuturesNode": {
+      "type": "object",
+      "required": ["id", "kind", "label", "valence", "summary", "seed"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+        "kind": { "$ref": "#/definitions/NodeKind" },
+        "label": { "type": "string", "minLength": 1 },
+        "shortLabel": { "type": "string" },
+        "lane": { "$ref": "#/definitions/Lane" },
+        "valence": { "$ref": "#/definitions/Valence" },
+        "severity": { "$ref": "#/definitions/Severity" },
+        "goodness": { "type": "number", "minimum": 0, "maximum": 100 },
+        "summary": { "type": "string", "minLength": 1 },
+        "operationalisation": { "type": "string" },
+        "narrative": { "type": "string" },
+        "seed": { "$ref": "#/definitions/Seed" },
+        "parents": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/ParentEdge" }
+        },
+        "since": { "type": "string" },
+        "retired": { "type": "string" },
+        "supersededBy": { "type": "string" },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" }
+        }
+      }
+    },
+
+    "Axis": {
+      "type": "object",
+      "required": ["id", "label", "states", "horizons"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string" },
+        "label": { "type": "string" },
+        "states": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" }
+        },
+        "horizons": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "integer" }
+        },
+        "absorbing": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "floorGoodness": { "type": "number", "minimum": 0, "maximum": 100 },
+        "ceilingGoodness": { "type": "number", "minimum": 0, "maximum": 100 }
+      }
+    },
+
+    "ChangelogEntry": {
+      "type": "object",
+      "required": ["graphVersion", "date", "note"],
+      "additionalProperties": false,
+      "properties": {
+        "graphVersion": { "type": "string" },
+        "date": { "type": "string" },
+        "note": { "type": "string" }
+      }
+    },
+
+    "Metadata": {
+      "type": "object",
+      "required": ["editors", "changelog"],
+      "additionalProperties": false,
+      "properties": {
+        "editors": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "changelog": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/ChangelogEntry" }
+        }
+      }
+    },
+
+    "Magnitude": { "enum": ["slight", "moderate", "strong"] },
+    "Direction": { "enum": ["up", "down"] },
+    "CostBand": { "enum": [1, 2, 3, 4, 5] },
+
+    "Nudge": {
+      "type": "object",
+      "required": ["node", "direction", "magnitude"],
+      "additionalProperties": false,
+      "properties": {
+        "node": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+        "direction": { "$ref": "#/definitions/Direction" },
+        "magnitude": { "$ref": "#/definitions/Magnitude" },
+        "lag": { "type": "integer", "minimum": 0 },
+        "evidence": { "type": "string" }
+      }
+    },
+
+    "InterventionSource": {
+      "type": "object",
+      "required": ["kind"],
+      "additionalProperties": false,
+      "properties": {
+        "kind": { "enum": ["bill", "paper", "proposal", "editorial"] },
+        "url": { "type": "string" },
+        "title": { "type": "string" },
+        "quote": { "type": "string" }
+      }
+    },
+
+    "InterventionCost": {
+      "type": "object",
+      "required": ["band"],
+      "additionalProperties": false,
+      "properties": {
+        "band": { "$ref": "#/definitions/CostBand" },
+        "note": { "type": "string" }
+      }
+    },
+
+    "ExtractedBy": {
+      "type": "object",
+      "required": ["model", "asOf"],
+      "additionalProperties": false,
+      "properties": {
+        "model": { "type": "string" },
+        "asOf": { "type": "string" },
+        "reviewedBy": { "type": ["string", "null"] }
+      }
+    },
+
+    "Intervention": {
+      "type": "object",
+      "required": ["schemaVersion", "id", "label", "summary", "source", "tier", "status", "cost", "startYear", "nudges"],
+      "additionalProperties": false,
+      "properties": {
+        "schemaVersion": { "const": 1 },
+        "id": { "type": "string", "pattern": "^[a-z0-9-]+$" },
+        "label": { "type": "string", "minLength": 1 },
+        "summary": { "type": "string", "minLength": 1 },
+        "source": { "$ref": "#/definitions/InterventionSource" },
+        "tier": { "$ref": "#/definitions/Tier" },
+        "status": { "enum": ["ai-drafted", "reviewed", "locked"] },
+        "cost": { "$ref": "#/definitions/InterventionCost" },
+        "startYear": { "type": "integer", "minimum": 1900, "maximum": 3000 },
+        "nudges": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/definitions/Nudge" }
+        },
+        "extractedBy": { "$ref": "#/definitions/ExtractedBy" }
+      }
+    }
+  }
+}

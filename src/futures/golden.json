@@ -1,0 +1,31 @@
+{
+  "graphVersion": "2026-09-10",
+  "stateMarginals": {
+    "2030": {
+      "flourishing": 0.05,
+      "muddling": 0.7,
+      "stratified": 0.17,
+      "catastrophe": 0.06,
+      "existential": 0.02
+    },
+    "2035": {
+      "flourishing": 0.15,
+      "muddling": 0.48,
+      "stratified": 0.22,
+      "catastrophe": 0.1,
+      "existential": 0.05
+    },
+    "2045": {
+      "flourishing": 0.28,
+      "muddling": 0.32,
+      "stratified": 0.2,
+      "catastrophe": 0.12,
+      "existential": 0.08
+    }
+  },
+  "goodnessAtEndYear": {
+    "mean": 54.8,
+    "floor": 0.2,
+    "ceiling": 0.28
+  }
+}

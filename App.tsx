@@ -15,6 +15,10 @@ import { ModelEditor } from './components/ModelEditor';
 import { Leaderboard } from './components/Leaderboard';
 import { ModelDetail } from './components/ModelDetail';
 import { ModelRating } from './components/ModelRating';
+import FuturesTab from './components/futures/FuturesTab';
+import { InterventionImportPanel } from './components/futures/InterventionImportPanel';
+import { LOCKED_GRAPH, LOCKED_INTERVENTIONS, loadCustomInterventions, saveCustomInterventions } from './src/futures/data';
+import type { Intervention } from './src/futures/types';
 import { SimulationState, ModelParameters, HistoryPoint, CountryStats, Corporation, GlobalLedger, GameTheoryState, SavedState, SelectedEntity, ModelConfig, StoredModel } from './types';
 import { PRESET_MODELS, INITIAL_COUNTRIES, INITIAL_CORPORATIONS, SCENARIO_PRESETS, DEFAULT_MODEL_CONFIG } from './constants';
 import { getRedTeamAnalysis, getSimulationSummary } from './services/geminiService';
@@ -185,7 +189,8 @@ const App: React.FC = () => {
   const [history, setHistory] = useState<HistoryPoint[]>([]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [speed, setSpeed] = useState(1);
-  const [activeTab, setActiveTab] = useState<'map' | 'charts' | 'corporations' | 'analysis' | 'overview' | 'equations' | 'guide' | 'models' | 'leaderboard'>('map');
+  const [activeTab, setActiveTab] = useState<'map' | 'charts' | 'corporations' | 'futures' | 'analysis' | 'overview' | 'equations' | 'guide' | 'models' | 'leaderboard'>('map');
+  const [customInterventions, setCustomInterventions] = useState<Intervention[]>(() => loadCustomInterventions());
   const [viewMode, setViewMode] = useState<'adoption' | 'wellbeing'>('wellbeing'); // Default to wellbeing
   const [equationViewMode, setEquationViewMode] = useState<'simple' | 'detailed'>('simple');
   const [selectedArchetype, setSelectedArchetype] = useState<string | null>(null); // Archetype filter for map
@@ -1189,7 +1194,7 @@ const App: React.FC = () => {
         </div>
 
         <nav className="flex items-center gap-2 p-1 bg-slate-100 dark:bg-slate-800 rounded-lg lg:rounded-xl border border-slate-200 dark:border-slate-700">
-          {(['map', 'charts', 'corporations'] as const).map(tab => (
+          {(['map', 'charts', 'corporations', 'futures'] as const).map(tab => (
             <button
               key={tab}
               onClick={() => {
@@ -1755,6 +1760,25 @@ const App: React.FC = () => {
                     )}
                 </div>
               </div>
+            </div>
+          )}
+
+          {activeTab === 'futures' && (
+            <div className="h-full overflow-y-auto scrollbar-hide pb-32">
+              <FuturesTab
+                graph={LOCKED_GRAPH}
+                interventions={[...LOCKED_INTERVENTIONS, ...customInterventions]}
+                importPanel={
+                  <InterventionImportPanel
+                    graph={LOCKED_GRAPH}
+                    onAdd={(iv) => {
+                      const next = [...customInterventions.filter(x => x.id !== iv.id), iv];
+                      setCustomInterventions(next);
+                      saveCustomInterventions(next);
+                    }}
+                  />
+                }
+              />
             </div>
           )}
 
