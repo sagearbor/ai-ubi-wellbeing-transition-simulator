@@ -4,12 +4,19 @@
  * and a details expander carrying everything the number is claiming: the operationalisation,
  * the narrative, the seed basis with its sources, and every parent edge with its note.
  *
+ * When a non-locked tier is selected it also draws that tier's pooled curve over the top
+ * (design 9: "Locked = fill, expert = solid stroke, public = dashed, always with n inline")
+ * with its 25-75 band, and puts the voting box in the expander.
+ *
  * Design doc sections 3 and 9 ("Lanes"), and the reference implementation's lane markup.
  */
 
-import React, { useState } from 'react';
-import { FuturesNode } from '../../src/futures/types';
+import React, { useMemo, useState } from 'react';
+import { Aggregate, FuturesNode } from '../../src/futures/types';
+import { interpolateCurve } from '../../src/futures/engine';
+import { THIN_NEFF } from '../../src/futures/aggregate';
 import { clampN, colorVarOf, pct } from './GoodnessRiver';
+import VotePanel, { useTierOverlay } from './VotePanel';
 
 export interface NodeLaneProps {
   node: FuturesNode;
@@ -25,6 +32,12 @@ export interface NodeLaneProps {
   midYear: number;
   endYear: number;
   nodesById: Map<string, FuturesNode>;
+  /**
+   * The selected tier's pooled curve for this node. Optional: when it is not passed the lane
+   * reads it from `TierOverlayContext`, which is how FuturesTab supplies it today (NodeLanes
+   * stays a pure pass-through). An explicit prop always wins.
+   */
+  overlay?: Aggregate;
 }
 
 const LW = 300;
@@ -36,10 +49,51 @@ const ys = (p: number) => LH - 2 - p * (LH - 6);
 const pathOf = (arr: number[]) => arr.map((p, t) => `${t ? 'L' : 'M'}${xs(t, arr.length).toFixed(1)},${ys(p).toFixed(1)}`).join('');
 const areaOf = (arr: number[]) => `${pathOf(arr)}L${LW},${LH}L0,${LH}Z`;
 
-const NodeLane: React.FC<NodeLaneProps> = ({ node, years, base, cur, value, onChange, midYear, endYear, nodesById }) => {
+/** Closed ribbon between the 25th and 75th percentile curves. */
+const bandOf = (lo: number[], hi: number[]) => {
+  let d = pathOf(hi);
+  for (let t = lo.length - 1; t >= 0; t--) d += `L${xs(t, lo.length).toFixed(1)},${ys(lo[t]).toFixed(1)}`;
+  return `${d}Z`;
+};
+
+const NodeLane: React.FC<NodeLaneProps> = ({
+  node,
+  years,
+  base,
+  cur,
+  value,
+  onChange,
+  midYear,
+  endYear,
+  nodesById,
+  overlay,
+}) => {
   const [hoverT, setHoverT] = useState<number | null>(null);
   const nY = years.length;
   const color = colorVarOf(node);
+
+  const tierCtx = useTierOverlay();
+  const agg = overlay ?? (tierCtx.tier === 'locked' ? undefined : tierCtx.aggregates.get(node.id));
+
+  /** Dense overlay curves. Tiers are told apart by stroke weight and dash, never by hue. */
+  const ov = useMemo(() => {
+    if (!agg || Object.keys(agg.curve).length === 0) return null;
+    const dense = (c: Record<string, number>) =>
+      Object.keys(c).length ? interpolateCurve(c, years) : null;
+    const mid = dense(agg.curve);
+    if (!mid) return null;
+    return {
+      mid,
+      lo: dense(agg.band25),
+      hi: dense(agg.band75),
+      thin: agg.nEff < THIN_NEFF,
+      tier: agg.tier,
+      n: agg.n,
+      nEff: agg.nEff,
+    };
+  }, [agg, years]);
+
+  const ovColor = ov?.thin ? 'var(--fx-ink2)' : color;
 
   const at = (year: number) => clampN(years.indexOf(year) >= 0 ? years.indexOf(year) : nY - 1, 0, nY - 1);
   const tMid = at(midYear);
@@ -84,6 +138,20 @@ const NodeLane: React.FC<NodeLaneProps> = ({ node, years, base, cur, value, onCh
           <line x1={0} y1={ys(0.5)} x2={LW} y2={ys(0.5)} stroke="var(--fx-grid)" vectorEffect="non-scaling-stroke" />
           <path d={areaOf(base)} fill={color} opacity={0.22} />
           <path d={pathOf(cur)} fill="none" stroke={color} strokeWidth={2} vectorEffect="non-scaling-stroke" />
+          {ov && ov.lo && ov.hi && (
+            <path d={bandOf(ov.lo, ov.hi)} fill={ovColor} opacity={ov.thin ? 0.08 : 0.16} />
+          )}
+          {ov && (
+            <path
+              d={pathOf(ov.mid)}
+              fill="none"
+              stroke={ovColor}
+              strokeWidth={2}
+              strokeDasharray={ov.tier === 'public' ? '5 3' : undefined}
+              opacity={ov.thin ? 0.55 : 1}
+              vectorEffect="non-scaling-stroke"
+            />
+          )}
           {hoverT !== null && (
             <line
               x1={xs(hoverT, nY)}
@@ -121,6 +189,17 @@ const NodeLane: React.FC<NodeLaneProps> = ({ node, years, base, cur, value, onCh
           </summary>
           <div className="mt-1.5 space-y-2 text-[12px] text-slate-600 dark:text-slate-300">
             <p>{node.summary}</p>
+
+            {ov && (
+              <p className="text-[11px] tabular-nums text-slate-500 dark:text-slate-400">
+                <span className="font-semibold uppercase tracking-wider">{ov.tier}</span>{' '}
+                {ov.thin
+                  ? 'not enough estimates yet'
+                  : `${pct(ov.mid[tEnd])} by ${endYear} · n ${ov.n} (effective ${ov.nEff.toFixed(1)})`}
+              </p>
+            )}
+
+            <VotePanel node={node} />
             {node.operationalisation && (
               <p>
                 <span className="font-semibold text-slate-700 dark:text-slate-200">Resolves as: </span>

@@ -15,6 +15,7 @@
     "validate:korinek": "tsx scripts/validate-korinek.ts",
     "hindcast:fetch": "tsx scripts/hindcast/fetch-actuals.ts",
     "hindcast": "tsx scripts/hindcast/run-hindcast.ts",
+    "futures:aggregate": "tsx scripts/futures-aggregate.ts",
     "check": "npm run typecheck && npm run test && npm run validate && npm run validate:futures && npm run validate:korinek && npm run build",
     "deploy": "bash scripts/deploy.sh",
     "deploy:promote": "bash scripts/deploy.sh --promote"
