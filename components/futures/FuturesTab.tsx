@@ -266,7 +266,7 @@ const FuturesTab: React.FC<FuturesTabProps> = ({ graph, interventions, importPan
 
   return (
     <TierOverlayContext.Provider value={tierOverlay}>
-    <div className="fx-scope max-w-5xl mx-auto w-full px-3 sm:px-4 py-4 sm:py-6 space-y-4">
+    <div className="fx-scope max-w-5xl mx-auto w-full px-3 sm:px-4 py-4 sm:py-6 space-y-4 overflow-x-hidden">
       <style>{FX_SCOPE_CSS}</style>
 
       {/* header */}

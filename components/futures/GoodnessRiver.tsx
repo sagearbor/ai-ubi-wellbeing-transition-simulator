@@ -255,7 +255,14 @@ const GoodnessRiver: React.FC<GoodnessRiverProps> = ({
               fill="var(--fx-ink)"
               style={labelStroke}
             >
-              {`${node.label} ${pct(P[node.id]?.[nY - 1] ?? 0)}`}
+              {(() => {
+                const now = P[node.id]?.[nY - 1] ?? 0;
+                const was = baseP[node.id]?.[nY - 1] ?? now;
+                const d = now - was;
+                const arrow = Math.abs(d) < 0.005 ? '' : d > 0 ? ' ▲' : ' ▼';
+                const wasTxt = Math.abs(d) < 0.005 ? '' : ` (was ${pct(was)})`;
+                return `${node.label} ${pct(now)}${arrow}${wasTxt}`;
+              })()}
             </text>
           ))}
 

@@ -33,8 +33,8 @@ export const Hint: React.FC<HintProps> = ({ text, label, align = 'left', classNa
   const [open, setOpen] = useState(false);
 
   const visible = open
-    ? 'visible opacity-100'
-    : 'invisible opacity-0 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100';
+    ? 'block'
+    : 'hidden group-hover:block group-focus-within:block';
 
   return (
     <span className={`group relative inline-flex h-3.5 w-3.5 shrink-0 align-[-2px] ml-1 ${className}`}>
