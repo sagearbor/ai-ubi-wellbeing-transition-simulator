@@ -11,6 +11,15 @@ lives in its own chunk that is only fetched when the flag is on.
 Everything below targets the project the deploy script already uses:
 `gen-lang-client-0281141814`, region `us-west1`.
 
+> **Status 2026-09-11:** steps 1 to 8 are DONE (provisioned from the CLI and REST APIs, not the
+> console): Firebase added, Firestore `(default)` native in `us-west1`, anonymous + email-link
+> sign-in on (the project was upgraded to Identity Platform to enable providers via API; free tier),
+> authorised domains set for localhost and both Cloud Run hostnames, web app `futures-map`
+> registered, `VITE_FIREBASE_*` in `.env.local`, rules deployed, experts seeded for the two owner
+> addresses. The public path (anonymous vote → Firestore) was verified end to end. Step 9 (nightly
+> cron secret) and App Check for the public tier remain owner decisions; `npm run futures:aggregate`
+> runs the aggregation manually meanwhile.
+
 ---
 
 ## 1. Add Firebase to the existing GCP project
