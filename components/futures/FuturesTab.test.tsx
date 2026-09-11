@@ -68,7 +68,7 @@ describe('FuturesTab', () => {
 
   it('gives every chart an aria-label', () => {
     const out = html();
-    expect(out).toContain('aria-label="Goodness of the world from 2026 to 2045');
+    expect(out).toContain('aria-label="Share of futures by world-state from 2026 to 2045');
     expect(out).toContain('aria-label="Sankey diagram of probability mass');
   });
 });

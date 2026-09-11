@@ -1,20 +1,19 @@
 /**
- * GoodnessRiver — "the one graph" (design doc sections 0, 4.4 and 9).
+ * GoodnessRiver — the one graph.
  *
- * x = year (graph.startYear .. graph.endYear), y = goodness of the world 0-100.
- * Each world-state is a ribbon centred at its fixed goodness whose thickness is its
- * probability. The solid line is the current expected goodness, the dashed line the
- * baseline mean, and the violet wedge between them is the effect of everything the
- * user has toggled or dragged.
+ * Two panels sharing one x-axis (years):
+ *   A. "Share of futures": a 100% stacked area. The five exclusive world-states are stacked in
+ *      goodness order, best at the top, so up is good and down is bad, and every column sums to
+ *      100%. Band height = that state's probability in that year.
+ *   B. "Expected goodness": the probability-weighted mean goodness (0-100) with the baseline
+ *      mean dashed and the difference shaded as a wedge, the way climate stabilisation wedges
+ *      show what an intervention buys.
  *
- * This file also owns the shared valence palette (as CSS custom properties, so light
- * and dark are handled by CSS rather than by JS) and a couple of formatting helpers
- * that the sibling components import. Kept here rather than in a new module because
- * this package owns a fixed file list.
+ * Colour is reserved for valence (aqua good, orange bad, red existential, amber mixed, blue
+ * neutral). D3 is not needed: the maths is straight from src/futures/engine.ts.
  */
-
 import React, { useMemo, useState } from 'react';
-import { FuturesGraph, FuturesNode, GoodnessSeries } from '../../src/futures/types';
+import type { FuturesGraph, FuturesNode, GoodnessSeries } from '../../src/futures/types';
 
 // ---------------------------------------------------------------------------
 // Shared palette + helpers
@@ -22,9 +21,7 @@ import { FuturesGraph, FuturesNode, GoodnessSeries } from '../../src/futures/typ
 
 /**
  * Valence colours from the design doc, scoped to `.fx-scope` so they never leak.
- * Three dark signals are honoured: the OS preference (what Tailwind 4's `dark:`
- * variant uses by default in this repo) and the `.dark` / `.light` class App.tsx
- * puts on <html>, so the palette always agrees with the surrounding chrome.
+ * Honours the OS preference and the `.dark` / `.light` class App.tsx puts on <html>.
  */
 export const FX_SCOPE_CSS = `
 .fx-scope{
@@ -67,35 +64,39 @@ export function colorVarOf(node: FuturesNode): string {
   }
 }
 
-export const isExistentialState = (node: FuturesNode): boolean =>
-  node.kind === 'state' && (node.severity === 'existential' || node.goodness === 0);
+export function isExistentialState(node: FuturesNode): boolean {
+  return node.kind === 'state' && (node.severity === 'existential' || (node.goodness ?? 100) <= 0);
+}
 
-export const pct = (p: number, digits = 0): string => `${(p * 100).toFixed(digits)}%`;
-export const clampN = (x: number, lo: number, hi: number): number => Math.max(lo, Math.min(hi, x));
-
-/** State nodes on the axis, best goodness first. */
+/** World-states in goodness order, best first. */
 export function orderedStates(graph: FuturesGraph): FuturesNode[] {
-  const byId = new Map(graph.nodes.filter((n) => !n.retired).map((n) => [n.id, n]));
+  const byId = new Map(graph.nodes.map((n) => [n.id, n]));
   return graph.axis.states
     .map((id) => byId.get(id))
-    .filter((n): n is FuturesNode => !!n && n.kind === 'state')
+    .filter((n): n is FuturesNode => !!n && !n.retired)
     .sort((a, b) => (b.goodness ?? 0) - (a.goodness ?? 0));
 }
+
+export const pct = (p: number, digits = 0): string => `${(p * 100).toFixed(digits)}%`;
+
+export const clampN = (x: number, lo: number, hi: number): number => Math.max(lo, Math.min(hi, x));
 
 // ---------------------------------------------------------------------------
 // Geometry
 // ---------------------------------------------------------------------------
 
 const RW = 640;
-const RH = 260;
 const RL = 44;
 const RR = 16;
-const RT = 14;
-const RB = 28;
-/** Ribbon thickness in px at P = 1. */
-const THICK = 120;
-/** The existential ribbon is never thinner than this, or the tail vanishes. */
-const MIN_THICK = 2;
+// Panel A: share of futures (100% stacked)
+const AT = 14;
+const AB = 222;
+// Panel B: expected goodness
+const BT = 252;
+const BB = 346;
+const RH = 372;
+/** The existential band is never thinner than this, or the tail vanishes. */
+const MIN_BAND = 2;
 
 export interface GoodnessRiverProps {
   graph: FuturesGraph;
@@ -125,31 +126,48 @@ const GoodnessRiver: React.FC<GoodnessRiverProps> = ({
   const states = useMemo(() => orderedStates(graph), [graph]);
 
   const rx = (t: number) => RL + (nY > 1 ? t / (nY - 1) : 0) * (RW - RL - RR);
-  const ry = (g: number) => RT + ((100 - g) / 100) * (RH - RT - RB);
+  /** Panel A: cumulative share (0 at top, 1 at bottom). */
+  const ay = (share: number) => AT + share * (AB - AT);
+  /** Panel B: goodness 0-100, 100 at top. */
+  const by = (g: number) => BT + ((100 - g) / 100) * (BB - BT);
 
-  const halfThickness = (node: FuturesNode, t: number): number => {
-    const raw = (P[node.id]?.[t] ?? 0) * THICK;
-    const min = isExistentialState(node) ? MIN_THICK : 0;
-    return Math.max(raw, min) / 2;
-  };
-
-  const ribbonPath = (node: FuturesNode): string => {
-    const v = node.goodness ?? 0;
-    let d = '';
-    for (let t = 0; t < nY; t++) d += `${t ? 'L' : 'M'}${rx(t).toFixed(1)},${(ry(v) - halfThickness(node, t)).toFixed(1)} `;
-    for (let t = nY - 1; t >= 0; t--) d += `L${rx(t).toFixed(1)},${(ry(v) + halfThickness(node, t)).toFixed(1)} `;
-    return `${d}Z`;
-  };
+  // Stacked bands: top boundary = sum of P for states above (better), bottom = top + P.
+  // The existential band keeps a minimum pixel height so the tail never visually vanishes.
+  const bands = useMemo(() => {
+    const tops: number[][] = [];
+    const bottoms: number[][] = [];
+    const cum = new Array(nY).fill(0);
+    states.forEach((s) => {
+      const top = [...cum];
+      const bottom = cum.map((c, t) => c + (P[s.id]?.[t] ?? 0));
+      tops.push(top);
+      bottoms.push(bottom);
+      for (let t = 0; t < nY; t++) cum[t] = bottom[t];
+    });
+    return states.map((s, i) => {
+      let d = '';
+      for (let t = 0; t < nY; t++) d += `${t ? 'L' : 'M'}${rx(t).toFixed(1)},${ay(tops[i][t]).toFixed(1)} `;
+      for (let t = nY - 1; t >= 0; t--) {
+        let yB = ay(bottoms[i][t]);
+        if (isExistentialState(s)) yB = Math.max(yB, ay(tops[i][t]) + MIN_BAND);
+        d += `L${rx(t).toFixed(1)},${yB.toFixed(1)} `;
+      }
+      const endMid = (tops[i][nY - 1] + bottoms[i][nY - 1]) / 2;
+      const endShare = bottoms[i][nY - 1] - tops[i][nY - 1];
+      return { node: s, path: `${d}Z`, endMid, endShare };
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [states, P, nY]);
 
   const linePath = (arr: number[]): string =>
-    arr.map((g, t) => `${t ? 'L' : 'M'}${rx(t).toFixed(1)},${ry(g).toFixed(1)}`).join(' ');
+    arr.map((g, t) => `${t ? 'L' : 'M'}${rx(t).toFixed(1)},${by(g).toFixed(1)}`).join(' ');
 
   const changed = current.mean.some((g, t) => Math.abs(g - baseline.mean[t]) > 0.05);
 
   const wedgePath = useMemo(() => {
     if (!changed) return '';
     let d = linePath(current.mean);
-    for (let t = nY - 1; t >= 0; t--) d += ` L${rx(t).toFixed(1)},${ry(baseline.mean[t]).toFixed(1)}`;
+    for (let t = nY - 1; t >= 0; t--) d += ` L${rx(t).toFixed(1)},${by(baseline.mean[t]).toFixed(1)}`;
     return `${d} Z`;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [changed, current, baseline, nY]);
@@ -168,28 +186,80 @@ const GoodnessRiver: React.FC<GoodnessRiverProps> = ({
 
   const readoutT = hoverT ?? clampN(scrubYear - graph.startYear, 0, nY - 1);
   const scrubT = clampN(scrubYear - graph.startYear, 0, nY - 1);
+  const labelStroke = { paintOrder: 'stroke' as const, stroke: 'var(--fx-surface)', strokeWidth: 3, strokeLinejoin: 'round' as const };
 
   return (
     <div className="w-full">
       <svg
         viewBox={`0 0 ${RW} ${RH}`}
         role="img"
-        aria-label={`Goodness of the world from ${graph.startYear} to ${graph.endYear}; ribbon thickness is the probability of each world-state`}
+        aria-label={`Share of futures by world-state from ${graph.startYear} to ${graph.endYear}, stacked best to worst, and expected goodness of the world`}
         className="block w-full h-auto rounded-xl border border-slate-200 dark:border-slate-800"
         style={{ background: 'var(--fx-surface)', touchAction: 'pan-y' }}
         onPointerMove={(e) => setHoverT(tFromPointer(e))}
         onPointerDown={(e) => onScrubYear(graph.startYear + tFromPointer(e))}
         onPointerLeave={() => setHoverT(null)}
       >
-        {/* goodness gridlines, one per state */}
-        {states.map((s) => (
-          <g key={`grid-${s.id}`}>
-            <line x1={RL} x2={RW - RR} y1={ry(s.goodness ?? 0)} y2={ry(s.goodness ?? 0)} stroke="var(--fx-grid)" />
-            <text x={RL - 6} y={ry(s.goodness ?? 0) + 4} textAnchor="end" fontSize={11} fill="var(--fx-muted)">
-              {s.goodness}
+        {/* ---------- Panel A: share of futures ---------- */}
+        <text x={RL} y={AT - 3} fontSize={10} fill="var(--fx-muted)" style={{ letterSpacing: '0.06em' }}>
+          SHARE OF FUTURES · BEST AT TOP · EVERY YEAR SUMS TO 100%
+        </text>
+        {[0, 0.25, 0.5, 0.75, 1].map((s) => (
+          <g key={`agrid-${s}`}>
+            <line x1={RL} x2={RW - RR} y1={ay(s)} y2={ay(s)} stroke="var(--fx-grid)" />
+            <text x={RL - 6} y={ay(s) + 4} textAnchor="end" fontSize={10} fill="var(--fx-muted)">
+              {Math.round((1 - s) * 100)}%
             </text>
           </g>
         ))}
+        {bands.map(({ node, path }) => (
+          <path key={`band-${node.id}`} d={path} fill={colorVarOf(node)} opacity={0.72} stroke="var(--fx-surface)" strokeWidth={1.5}>
+            <title>{`${node.label}: ${pct(P[node.id]?.[readoutT] ?? 0, 1)} in ${years[readoutT]}`}</title>
+          </path>
+        ))}
+        {bands
+          .filter((b) => b.endShare >= 0.045)
+          .map(({ node, endMid }) => (
+            <text
+              key={`blab-${node.id}`}
+              x={rx(nY - 1) - 8}
+              y={ay(endMid) + 4}
+              textAnchor="end"
+              fontSize={11}
+              fontWeight={600}
+              fill="var(--fx-ink)"
+              style={labelStroke}
+            >
+              {`${node.label} ${pct(P[node.id]?.[nY - 1] ?? 0)}`}
+            </text>
+          ))}
+
+        {/* ---------- Panel B: expected goodness ---------- */}
+        <text x={RL} y={BT - 6} fontSize={10} fill="var(--fx-muted)" style={{ letterSpacing: '0.06em' }}>
+          EXPECTED GOODNESS OF THE WORLD (0–100) · SOLID = NOW · DASHED = BASELINE
+        </text>
+        {[0, 50, 100].map((g) => (
+          <g key={`bgrid-${g}`}>
+            <line x1={RL} x2={RW - RR} y1={by(g)} y2={by(g)} stroke="var(--fx-grid)" />
+            <text x={RL - 6} y={by(g) + 4} textAnchor="end" fontSize={10} fill="var(--fx-muted)">
+              {g}
+            </text>
+          </g>
+        ))}
+        {changed && <path d={wedgePath} fill="var(--fx-violet)" opacity={0.22} />}
+        {changed && <path d={linePath(baseline.mean)} fill="none" stroke="var(--fx-ink2)" strokeWidth={1.5} strokeDasharray="4 3" />}
+        <path d={linePath(current.mean)} fill="none" stroke="var(--fx-ink)" strokeWidth={2.5} />
+        <text
+          x={rx(nY - 1) - 8}
+          y={by(current.mean[nY - 1]) - 8}
+          textAnchor="end"
+          fontSize={11}
+          fontWeight={600}
+          fill="var(--fx-ink)"
+          style={labelStroke}
+        >
+          {`mean ${current.mean[nY - 1].toFixed(0)} by ${graph.endYear}${changed ? ` (was ${baseline.mean[nY - 1].toFixed(0)})` : ''}`}
+        </text>
 
         {/* year ticks */}
         {yearTicks.map((y) => (
@@ -198,56 +268,14 @@ const GoodnessRiver: React.FC<GoodnessRiverProps> = ({
           </text>
         ))}
 
-        {/* wedge between baseline mean and current mean */}
-        {changed && <path d={wedgePath} fill="var(--fx-violet)" opacity={0.18} />}
-
-        {/* ribbons */}
-        {states.map((s) => (
-          <path key={`rib-${s.id}`} d={ribbonPath(s)} fill={colorVarOf(s)} opacity={0.55}>
-            <title>{`${s.label}: ${pct(P[s.id]?.[readoutT] ?? 0, 1)} in ${years[readoutT]}`}</title>
-          </path>
-        ))}
-
-        {/* state labels, right-aligned at the end year on each ribbon's centre line */}
-        {states.map((s) => (
-          <text
-            key={`lab-${s.id}`}
-            x={rx(nY - 1) - 8}
-            y={ry(s.goodness ?? 0) + 4}
-            textAnchor="end"
-            fontSize={11}
-            fontWeight={600}
-            fill="var(--fx-ink)"
-            style={{ paintOrder: 'stroke', stroke: 'var(--fx-surface)', strokeWidth: 3, strokeLinejoin: 'round' }}
-          >
-            {`${s.label} ${pct(P[s.id]?.[nY - 1] ?? 0)}`}
-          </text>
-        ))}
-
-        {/* baseline mean (dashed) + current mean (solid) */}
-        {changed && <path d={linePath(baseline.mean)} fill="none" stroke="var(--fx-ink2)" strokeWidth={1.5} strokeDasharray="4 3" />}
-        <path d={linePath(current.mean)} fill="none" stroke="var(--fx-ink)" strokeWidth={2.5} />
-        <text
-          x={rx(Math.floor(nY / 2))}
-          y={ry(current.mean[Math.floor(nY / 2)]) - 8}
-          textAnchor="middle"
-          fontSize={11}
-          fontWeight={600}
-          fill="var(--fx-ink)"
-          style={{ paintOrder: 'stroke', stroke: 'var(--fx-surface)', strokeWidth: 3, strokeLinejoin: 'round' }}
-        >
-          {`mean ${current.mean[nY - 1].toFixed(0)} by ${graph.endYear}`}
-        </text>
-
-        {/* scrubber + hover line */}
-        <line x1={rx(scrubT)} x2={rx(scrubT)} y1={RT} y2={RH - RB} stroke="var(--fx-violet)" strokeWidth={1.5} strokeDasharray="3 3" />
+        {/* scrubber + hover line, across both panels */}
+        <line x1={rx(scrubT)} x2={rx(scrubT)} y1={AT} y2={BB} stroke="var(--fx-violet)" strokeWidth={1.5} strokeDasharray="3 3" />
         {hoverT !== null && hoverT !== scrubT && (
-          <line x1={rx(hoverT)} x2={rx(hoverT)} y1={RT} y2={RH - RB} stroke="var(--fx-ink2)" strokeWidth={1} opacity={0.7} />
+          <line x1={rx(hoverT)} x2={rx(hoverT)} y1={AT} y2={BB} stroke="var(--fx-ink2)" strokeWidth={1} opacity={0.7} />
         )}
-
       </svg>
       <p className="mt-1 text-[11px] uppercase tracking-wider" style={{ color: 'var(--fx-muted)' }}>
-        Goodness of the world · ribbon thickness = probability · solid = mean · dashed = baseline mean
+        Goodness of the world · top: share of futures by world-state, stacked best to worst · bottom: expected goodness, wedge = what your changes buy
       </p>
 
       {/* readout */}
@@ -264,6 +292,13 @@ const GoodnessRiver: React.FC<GoodnessRiverProps> = ({
             )}
           </span>
         ))}
+        <span className="inline-flex items-center gap-1">
+          <span className="inline-block w-3 h-0.5" style={{ background: 'var(--fx-ink)' }} aria-hidden="true" />
+          mean {current.mean[readoutT].toFixed(1)}
+          {Math.abs(current.mean[readoutT] - baseline.mean[readoutT]) >= 0.05 && (
+            <span style={{ color: 'var(--fx-muted)' }}>(was {baseline.mean[readoutT].toFixed(1)})</span>
+          )}
+        </span>
       </div>
 
       {/* year scrubber */}
@@ -276,7 +311,7 @@ const GoodnessRiver: React.FC<GoodnessRiverProps> = ({
           max={graph.endYear}
           step={1}
           value={scrubYear}
-          aria-label="Scrub year on the goodness river"
+          aria-label="Scrub year on the goodness chart"
           onChange={(e) => onScrubYear(Number(e.target.value))}
         />
       </label>

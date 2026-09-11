@@ -24,8 +24,14 @@ service cloud.firestore {
       return request.auth != null;
     }
 
+    // Anonymous users have no `email` claim at all; reading a missing map key is an error in
+    // rules (which evaluates as deny), so every access is guarded with `in`.
+    function hasEmail() {
+      return signedIn() && ('email' in request.auth.token) && request.auth.token.email != null;
+    }
+
     function emailOf() {
-      return signedIn() && request.auth.token.email != null ? request.auth.token.email.lower() : '';
+      return hasEmail() ? request.auth.token.email.lower() : '';
     }
 
     function expertDoc() {
@@ -33,7 +39,8 @@ service cloud.firestore {
     }
 
     function isExpert() {
-      return emailOf() != ''
+      return hasEmail()
+        && ('email_verified' in request.auth.token)
         && request.auth.token.email_verified == true
         && exists(/databases/$(database)/documents/experts/$(emailOf()));
     }
