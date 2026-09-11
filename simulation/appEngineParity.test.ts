@@ -119,7 +119,11 @@ describe('App.tsx <-> simulation/pure.ts parity (golden, full-scale production d
     expect(Number.isNaN(state.averageWellbeing)).toBe(false);
     expect(Number.isNaN(lastLedgerInflow)).toBe(false);
     expect(lastLedgerInflow).toBeGreaterThan(0);
-    expect(state.globalFund).toBeGreaterThan(0);
+    // The regional adaptation branches (usCorpAdaptation etc.) compared lowercase ids against
+    // the uppercase ISO3 ids in constants.ts and never fired; since that fix, US corporations
+    // switch to hq-local once US wellbeing collapses, so the global ledger can legitimately be
+    // empty by month 12 in this production seed. Only non-negativity is invariant.
+    expect(state.globalFund).toBeGreaterThanOrEqual(0);
     expect(state.countryData['USA'].aiAdoption).toBeGreaterThan(0.01);
     expect(state.countryData['USA'].aiAdoption).toBeLessThan(1);
   });

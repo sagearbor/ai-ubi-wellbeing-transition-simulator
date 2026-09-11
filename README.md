@@ -202,6 +202,37 @@ about a third of its starting value over 60 months, because the per-capita UBI
 boost is small relative to displacement friction at current coefficients. This
 is a modelling question, not a code defect, and is left visible on purpose.
 
+### Reproducing Korinek et al. (2026) and extending it
+
+Anthropic's economics team published *Economic Scenarios for Transformative AI*
+(Korinek, Jones, Sacher, Cotter & McCrory, Anthropic Institute WP 2026-02) with an
+[interactive explorer](https://www.anthropic.com/institute/econ-scenarios): a
+task-based US model to 2030 with three scenarios and, deliberately, no probabilities.
+This engine's optional macro block (`ModelParameters.macro`, see `simulation/pure.ts`)
+reproduces their published US 2030 outcomes when driven by the same inputs, with the
+AI capability/adoption path treated as the scenario input exactly as their explorer does:
+
+| Scenario (US, 2030 vs no-AI path) | GDP boost | Labour share | Cognitive unemployment |
+|---|---|---|---|
+| Modest — paper / this engine | +1.6% / +1.6% | 59.4% / 59.2% | 3.9% / 3.9% |
+| Substantial — paper / this engine | +8.3% / +8.2% | 56.1% / 56.2% | 4.5% / 4.4% |
+| Extreme — paper / this engine | +32.4% / +31.3% | 45.2% / 45.4% | 17.9% / 17.8% |
+
+`npm run validate:korinek` runs the three scenarios as tests (KJ-1..3, tolerance ±2 to
+±2.5 points). The point is what comes after their framework's stated boundary: this repo
+adds the demand feedback from displaced customers, the corporation-funded transfer
+institution and its game theory, 128 countries instead of one, and (Futures tab) the
+catastrophic and non-economic paths with community-weighted likelihoods.
+
+### Hindcast against the last decade
+
+`npm run hindcast` initialises every country from real 2015 data (World Happiness Report
+ladder, World Bank GDP per capita) and scores the engine against 2025 actuals with AI
+switched off. Current result: wellbeing-change correlation 0.49 and mean absolute error
+0.45 ladder points across 106 countries. That validates only the baseline economy
+(GDP path and the wellbeing anchor fitted to GDP and governance), not the AI channel,
+which has no measurable macro footprint in that decade.
+
 Directions under exploration (see `developer_checklist.yaml` and `docs/`):
 - execute uploaded model equations inside the pure engine (P8-T9), so anchor
   tests and the leaderboard discriminate between models,

@@ -44,7 +44,7 @@
 
 import { CountryStats, ModelParameters, Corporation, SimulationState } from '../types';
 import { stepSimulationPure, SimulationInput } from '../simulation/pure';
-import { INITIAL_COUNTRIES, INITIAL_CORPORATIONS } from '../constants';
+import { INITIAL_COUNTRIES, INITIAL_CORPORATIONS, DEFAULT_MACRO } from '../constants';
 
 // ============================================================================
 // DATA SHAPES (mirrors data/hindcast/*.json)
@@ -222,7 +222,11 @@ export function defaultHindcastParams(): ModelParameters {
     displacementRate: 0.75,
     directToWalletEnabled: true,
     defaultCorpPolicy: 'mixed-reality',
-    marketPressure: 0.5
+    marketPressure: 0.5,
+    // Macro block: gives the baseline economy dynamics of its own (GDP path, unemployment) and
+    // lets wellbeing relax toward the level implied by GDP and governance, so the hindcast has a
+    // non-trivial null model to score. wellbeingAnchorRate 0.02/month ~ 3-year half-life.
+    macro: { ...DEFAULT_MACRO, wellbeingAnchorRate: 0.02 }
   };
 }
 
