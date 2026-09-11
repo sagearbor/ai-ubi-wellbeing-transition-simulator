@@ -1187,13 +1187,13 @@ const App: React.FC = () => {
           <div className="w-8 h-8 lg:w-10 lg:h-10 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-lg lg:rounded-xl flex items-center justify-center shadow-lg shadow-blue-600/20">
             <Sparkles className="text-white" size={20} />
           </div>
-          <div>
+          <div className="hidden sm:block">
             <h1 className="text-base lg:text-lg font-bold leading-none text-slate-900 dark:text-white">Transition Engine</h1>
             <p className="text-[8px] lg:text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-widest mt-1 font-mono">Abundance Cycle v0.14</p>
           </div>
         </div>
 
-        <nav className="flex items-center gap-2 p-1 bg-slate-100 dark:bg-slate-800 rounded-lg lg:rounded-xl border border-slate-200 dark:border-slate-700">
+        <nav className="flex items-center gap-1 sm:gap-2 p-1 bg-slate-100 dark:bg-slate-800 rounded-lg lg:rounded-xl border border-slate-200 dark:border-slate-700 max-w-[calc(100vw-112px)] sm:max-w-[70vw] lg:max-w-none overflow-x-auto scrollbar-hide">
           {(['map', 'charts', 'corporations', 'futures'] as const).map(tab => (
             <button
               key={tab}
@@ -1202,9 +1202,9 @@ const App: React.FC = () => {
                 setAboutDropdownOpen(false);
                 if (tab !== 'map') setSelectedEntity(null); // Close detail panel when leaving Map tab
               }}
-              className={`px-3 py-1 lg:px-4 lg:py-1.5 rounded-md lg:rounded-lg text-[10px] lg:text-xs font-bold uppercase transition-all ${activeTab === tab ? 'bg-blue-600 text-white shadow-md' : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'}`}
+              className={`shrink-0 whitespace-nowrap px-2 sm:px-3 py-1 lg:px-4 lg:py-1.5 rounded-md lg:rounded-lg text-[10px] lg:text-xs font-bold uppercase transition-all ${activeTab === tab ? 'bg-blue-600 text-white shadow-md' : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'}`}
             >
-              {tab}
+              {tab === 'corporations' ? (<><span className="sm:hidden">corps</span><span className="hidden sm:inline">corporations</span></>) : tab}
             </button>
           ))}
           <div className="relative group">
@@ -1225,6 +1225,7 @@ const App: React.FC = () => {
                     <button onClick={() => { setActiveTab('equations'); setAboutDropdownOpen(false); setSelectedEntity(null); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors border-b border-slate-100 dark:border-slate-700 flex items-center gap-2"><FlaskConical size={14} /> Model Equations</button>
                     <button onClick={() => { setActiveTab('analysis'); setAboutDropdownOpen(false); setSelectedEntity(null); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors border-b border-slate-100 dark:border-slate-700 flex items-center gap-2"><BrainCircuit size={14} /> Analysis Hub</button>
                     <button onClick={() => { setActiveTab('models'); setAboutDropdownOpen(false); setSelectedEntity(null); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors border-b border-slate-100 dark:border-slate-700 flex items-center gap-2"><Settings size={14} /> Models</button>
+                    <button onClick={() => { setActiveTab('futures'); setAboutDropdownOpen(false); setSelectedEntity(null); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors border-b border-slate-100 dark:border-slate-700 flex items-center gap-2"><Sparkles size={14} /> AI Futures Map</button>
                     <button onClick={() => { setActiveTab('leaderboard'); setAboutDropdownOpen(false); setSelectedEntity(null); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors flex items-center gap-2"><Trophy size={14} /> Leaderboard</button>
                 </div>
             )}
