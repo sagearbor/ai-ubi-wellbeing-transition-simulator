@@ -28,7 +28,7 @@ addFormats(ajv);
 const validateSchema = ajv.compile(interventionSchema);
 
 /** Default extraction model. Matches services/geminiService.ts's Gemini calls. */
-export const DEFAULT_MODEL = 'gemini-2.0-flash';
+export const DEFAULT_MODEL = 'gemini-3.6-flash';
 
 const MAX_EXTRACTIONS_PER_SESSION = 10;
 const MAX_SOURCE_CHARS = 60_000;
