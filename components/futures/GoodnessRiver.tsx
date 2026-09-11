@@ -164,6 +164,22 @@ const GoodnessRiver: React.FC<GoodnessRiverProps> = ({
 
   const changed = current.mean.some((g, t) => Math.abs(g - baseline.mean[t]) > 0.05);
 
+  // "Before" boundaries for panel A: the cumulative stack of the baseline, drawn dashed when
+  // anything has been nudged, so the shift of every band is visible against where it was.
+  const baseBoundaries = useMemo(() => {
+    const stateChanged = states.some((s) => (P[s.id] ?? []).some((p, t) => Math.abs(p - (baseP[s.id]?.[t] ?? 0)) >= 0.005));
+    if (!stateChanged) return [] as string[];
+    const cum = new Array(nY).fill(0);
+    const paths: string[] = [];
+    states.forEach((s, i) => {
+      for (let t = 0; t < nY; t++) cum[t] += baseP[s.id]?.[t] ?? 0;
+      if (i === states.length - 1) return; // the bottom edge is always 100%
+      paths.push(cum.map((c, t) => `${t ? 'L' : 'M'}${rx(t).toFixed(1)},${ay(c).toFixed(1)}`).join(' '));
+    });
+    return paths;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [states, P, baseP, nY]);
+
   const wedgePath = useMemo(() => {
     if (!changed) return '';
     let d = linePath(current.mean);
@@ -217,6 +233,15 @@ const GoodnessRiver: React.FC<GoodnessRiverProps> = ({
             <title>{`${node.label}: ${pct(P[node.id]?.[readoutT] ?? 0, 1)} in ${years[readoutT]}`}</title>
           </path>
         ))}
+        {/* dashed "before" boundaries of the baseline stack */}
+        {baseBoundaries.map((d, i) => (
+          <path key={`bb-${i}`} d={d} fill="none" stroke="var(--fx-ink)" strokeWidth={1.2} strokeDasharray="4 3" opacity={0.85} />
+        ))}
+        {baseBoundaries.length > 0 && (
+          <text x={RW - RR} y={AT + 11} textAnchor="end" fontSize={10} fill="var(--fx-ink2)" style={labelStroke}>
+            dashed = before your changes
+          </text>
+        )}
         {bands
           .filter((b) => b.endShare >= 0.045)
           .map(({ node, endMid }) => (

@@ -17,6 +17,12 @@ import { interpolateCurve } from '../../src/futures/engine';
 import { THIN_NEFF } from '../../src/futures/aggregate';
 import { clampN, colorVarOf, pct } from './GoodnessRiver';
 import VotePanel, { useTierOverlay } from './VotePanel';
+import { Hint } from './Hint';
+
+const NUDGE_HINT =
+  'Nudge in log-odds: +1 \u2248 \u00d72.7 odds, \u22121 \u2248 \u00f72.7. The change propagates along the map\u2019s edges, so everything downstream of this event moves too.';
+const SEED_HINT =
+  'A curated starting number with a stated basis and sources \u2014 not a measurement.';
 
 export interface NodeLaneProps {
   node: FuturesNode;
@@ -172,16 +178,19 @@ const NodeLane: React.FC<NodeLaneProps> = ({
           </span>
         )}
 
-        <input
-          type="range"
-          className="w-full h-11 mt-0.5"
-          min={-3}
-          max={3}
-          step={0.25}
-          value={value}
-          aria-label={`Nudge ${node.label} in log-odds, -3 to 3`}
-          onChange={(e) => onChange(node.id, Number(e.target.value))}
-        />
+        <div className="flex items-center gap-2">
+          <input
+            type="range"
+            className="flex-1 h-11 mt-0.5"
+            min={-3}
+            max={3}
+            step={0.25}
+            value={value}
+            aria-label={`Nudge ${node.label} in log-odds, -3 to 3`}
+            onChange={(e) => onChange(node.id, Number(e.target.value))}
+          />
+          <Hint text={NUDGE_HINT} label="the nudge slider" align="right" className="mr-1" />
+        </div>
 
         <details className="mt-0.5">
           <summary className="cursor-pointer select-none text-[11px] text-slate-500 dark:text-slate-400 min-h-11 flex items-center">
@@ -209,8 +218,9 @@ const NodeLane: React.FC<NodeLaneProps> = ({
             {node.narrative && <p className="italic text-slate-500 dark:text-slate-400">{node.narrative}</p>}
 
             <div>
-              <span className="inline-block text-[10px] font-bold tracking-wider uppercase px-1.5 py-0.5 rounded border border-slate-300 dark:border-slate-600 text-slate-500 dark:text-slate-400 mr-1.5">
+              <span className="inline-flex items-center text-[10px] font-bold tracking-wider uppercase px-1.5 py-0.5 rounded border border-slate-300 dark:border-slate-600 text-slate-500 dark:text-slate-400 mr-1.5">
                 Seed
+                <Hint text={SEED_HINT} label="Seed" />
               </span>
               <span className="text-slate-500 dark:text-slate-400">
                 {node.seed.basis} · confidence {node.seed.confidence}

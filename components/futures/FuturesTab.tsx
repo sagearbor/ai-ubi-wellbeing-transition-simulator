@@ -9,7 +9,7 @@
  *   <FuturesTab graph={graph} interventions={interventions} importPanel={<InterventionImportPanel .../>} />
  */
 
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Compass, RotateCcw } from 'lucide-react';
 import {
   Aggregate,
@@ -38,6 +38,7 @@ import WhatMovedList from './WhatMovedList';
 import EquationsPanel from './EquationsPanel';
 import { TierOverlayContext, type TierOverlayValue } from './VotePanel';
 import { createStore, isCloudConfigured, type Identity } from '../../src/futures/store';
+import { Hint } from './Hint';
 
 export interface FuturesTabProps {
   graph: FuturesGraph;
@@ -53,11 +54,16 @@ export interface FuturesTabProps {
  * when the four VITE_FIREBASE_* build vars are present — see docs/futures-v1-setup.md. Until
  * then they stay disabled and nothing in this tab touches the network.
  */
-const TIER_LABELS: Array<{ id: Tier; label: string }> = [
-  { id: 'locked', label: 'Locked' },
-  { id: 'expert', label: 'Expert' },
-  { id: 'public', label: 'Public' },
+const TIER_LABELS: Array<{ id: Tier; label: string; hint: string }> = [
+  { id: 'locked', label: 'Locked', hint: 'The curated seed numbers, with stated sources.' },
+  { id: 'expert', label: 'Expert', hint: 'Pooled estimates from invited people in the field.' },
+  { id: 'public', label: 'Public', hint: 'Pooled estimates from anyone who votes.' },
 ];
+
+const TIER_HINT =
+  'Whose numbers the map is drawn from. Locked: the curated seed numbers with stated sources. ' +
+  'Expert: pooled estimates from invited people in the field. Public: pooled estimates from anyone ' +
+  'who votes. Pooled numbers show n and a spread.';
 
 const byNodeId = <T extends { nodeId: string }>(rows: T[]): Map<string, T> =>
   new Map(rows.map((r) => [r.nodeId, r]));
@@ -212,6 +218,31 @@ const FuturesTab: React.FC<FuturesTabProps> = ({ graph, interventions, importPan
     [graph, built.baseline],
   );
 
+  /**
+   * Ids present when the tab mounted (the locked seed plus anything restored from storage).
+   * Anything that shows up later is a card the owner just applied, so it is switched on for
+   * them and the chart is scrolled back into view — otherwise "Apply" looked like it did
+   * nothing, which is exactly the complaint this answers.
+   */
+  const seenInterventionIds = useRef<Set<string> | null>(null);
+  if (seenInterventionIds.current === null) {
+    seenInterventionIds.current = new Set(interventions.map((iv) => iv.id));
+  }
+  const chartRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const seen = seenInterventionIds.current!;
+    const fresh = interventions.filter((iv) => !seen.has(iv.id)).map((iv) => iv.id);
+    if (fresh.length === 0) return;
+    for (const id of fresh) seen.add(id);
+    setActiveInterventionIds((prev) => {
+      const next = new Set(prev);
+      for (const id of fresh) next.add(id);
+      return next;
+    });
+    chartRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, [interventions]);
+
   const onSlider = useCallback((nodeId: string, logOdds: number) => {
     setSliders((prev) => ({ ...prev, [nodeId]: logOdds }));
   }, []);
@@ -272,6 +303,7 @@ const FuturesTab: React.FC<FuturesTabProps> = ({ graph, interventions, importPan
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
+            <Hint text={TIER_HINT} label="the estimate tier" align="right" />
             <div
               role="group"
               aria-label="Estimate tier"
@@ -285,7 +317,7 @@ const FuturesTab: React.FC<FuturesTabProps> = ({ graph, interventions, importPan
                     type="button"
                     disabled={!enabled}
                     aria-pressed={tier === t.id}
-                    title={enabled ? `${t.label} tier` : 'Coming soon'}
+                    title={enabled ? `${t.label} tier — ${t.hint}` : `${t.hint} Coming soon.`}
                     onClick={() => enabled && setTier(t.id)}
                     className={`min-h-11 px-3 text-xs font-medium transition-colors ${
                       tier === t.id
@@ -323,7 +355,10 @@ const FuturesTab: React.FC<FuturesTabProps> = ({ graph, interventions, importPan
 
       {built.baseline && result && currentSeries && baselineSeries && (
         <>
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-3 sm:p-4">
+          <div
+            ref={chartRef}
+            className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-3 sm:p-4 scroll-mt-4"
+          >
             <GoodnessRiver
               graph={graph}
               years={result.years}

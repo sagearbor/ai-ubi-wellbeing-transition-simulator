@@ -20,6 +20,23 @@ import {
   InterventionMetrics,
 } from '../../src/futures/types';
 import { goodnessSeries, shiftsFromInterventions, solve } from '../../src/futures/engine';
+import { Hint } from './Hint';
+
+/** Plain-words glossary for the cost curve. Kept next to the table it explains. */
+const HINTS = {
+  interventions:
+    'Toggle one or more; their effects add in log-odds, so the second wedge on the same lever is smaller than the first.',
+  costBand:
+    'Rough cost and political difficulty. 1 = cheap and easy (a rule change), 2 = a funded programme, 3 = a major national programme, 4 = several percent of GDP or a new institution, 5 = a binding international treaty or a constitutional-scale change. Only used to rank interventions on the cost curve.',
+  meanShift: (endYear: number) =>
+    `Change in the expected goodness of the world in ${endYear} (0-100 scale, 100 = flourishing) versus the baseline.`,
+  floorLift: (endYear: number) =>
+    `How many percentage points the chance of catastrophe-or-worse by ${endYear} (goodness 20 or below) falls. An intervention can barely move the mean and still be the best thing here.`,
+  ceilingLift: (endYear: number) =>
+    `How many percentage points the chance of flourishing by ${endYear} (goodness 90 or above) rises.`,
+  shiftPerCost:
+    'Mean shift divided by the cost band. This is the order of the cost curve, like a climate abatement curve.',
+} as const;
 
 export interface InterventionPanelProps {
   graph: FuturesGraph;
@@ -85,6 +102,7 @@ const InterventionPanel: React.FC<InterventionPanelProps> = ({
       <div className="flex items-center gap-2">
         <FlaskConical size={16} className="text-violet-600 dark:text-violet-400" />
         <h3 className="text-sm font-bold text-slate-800 dark:text-white">Interventions</h3>
+        <Hint text={HINTS.interventions} label="Interventions" />
         <span className="text-[11px] text-slate-500 dark:text-slate-400">toggle to stack wedges</span>
       </div>
 
@@ -108,6 +126,18 @@ const InterventionPanel: React.FC<InterventionPanelProps> = ({
               }`}
             >
               {iv.label}
+              {iv.tier !== 'locked' && (
+                <span
+                  title="You added this card; it is not part of the curated seed."
+                  className={`ml-1.5 align-[1px] rounded-full px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${
+                    on
+                      ? 'bg-white/20 text-white'
+                      : 'bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-200'
+                  }`}
+                >
+                  yours
+                </span>
+              )}
               <span className={`ml-2 text-[11px] ${on ? 'text-violet-200' : 'text-slate-400 dark:text-slate-500'}`}>
                 from {iv.startYear} · cost {iv.cost.band}/5
               </span>
@@ -126,11 +156,26 @@ const InterventionPanel: React.FC<InterventionPanelProps> = ({
               <thead>
                 <tr className="text-slate-500 dark:text-slate-400 text-left">
                   <th className="font-semibold py-1.5 pr-2">Intervention</th>
-                  <th className="font-semibold py-1.5 pr-2">Cost band</th>
-                  <th className="font-semibold py-1.5 pr-2">Mean shift {graph.endYear}</th>
-                  <th className="font-semibold py-1.5 pr-2">Floor lift</th>
-                  <th className="font-semibold py-1.5 pr-2">Ceiling lift</th>
-                  <th className="font-semibold py-1.5">Shift per cost</th>
+                  <th className="font-semibold py-1.5 pr-2 whitespace-nowrap">
+                    Cost band
+                    <Hint text={HINTS.costBand} label="Cost band" />
+                  </th>
+                  <th className="font-semibold py-1.5 pr-2 whitespace-nowrap">
+                    Mean shift {graph.endYear}
+                    <Hint text={HINTS.meanShift(graph.endYear)} label="Mean shift" />
+                  </th>
+                  <th className="font-semibold py-1.5 pr-2 whitespace-nowrap">
+                    Floor lift
+                    <Hint text={HINTS.floorLift(graph.endYear)} label="Floor lift" />
+                  </th>
+                  <th className="font-semibold py-1.5 pr-2 whitespace-nowrap">
+                    Ceiling lift
+                    <Hint text={HINTS.ceilingLift(graph.endYear)} label="Ceiling lift" align="right" />
+                  </th>
+                  <th className="font-semibold py-1.5 whitespace-nowrap">
+                    Shift per cost
+                    <Hint text={HINTS.shiftPerCost} label="Shift per cost" align="right" />
+                  </th>
                 </tr>
               </thead>
               <tbody className="tabular-nums text-slate-700 dark:text-slate-200">

@@ -8,6 +8,7 @@
 import React from 'react';
 import { FuturesGraph, GoodnessSeries } from '../../src/futures/types';
 import { pct } from './GoodnessRiver';
+import { Hint } from './Hint';
 
 export interface MetricTilesProps {
   graph: FuturesGraph;
@@ -35,9 +36,18 @@ const TONE_CLASS: Record<Delta['tone'], string> = {
   flat: 'text-slate-400 dark:text-slate-500',
 };
 
-const Tile: React.FC<{ label: string; value: string; delta: Delta }> = ({ label, value, delta }) => (
+const Tile: React.FC<{ label: string; value: string; delta: Delta; hint: string; align?: 'left' | 'right' }> = ({
+  label,
+  value,
+  delta,
+  hint,
+  align,
+}) => (
   <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-3 sm:p-4">
-    <div className="text-[11px] leading-snug text-slate-500 dark:text-slate-400">{label}</div>
+    <div className="text-[11px] leading-snug text-slate-500 dark:text-slate-400">
+      {label}
+      <Hint text={hint} label={label} align={align} />
+    </div>
     <div className="text-2xl font-bold tabular-nums text-slate-800 dark:text-white leading-tight mt-0.5">{value}</div>
     <div className={`text-[11px] tabular-nums ${TONE_CLASS[delta.tone]}`}>{delta.text}</div>
   </div>
@@ -52,16 +62,20 @@ const MetricTiles: React.FC<MetricTilesProps> = ({ graph, current, baseline }) =
     <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
       <Tile
         label={`Expected goodness in ${graph.endYear}`}
+        hint={`The average goodness of the world in ${graph.endYear} across every future on the map, weighted by how likely each one is. 0-100, where 100 = flourishing. The delta below is the change versus the baseline (no interventions, no slider nudges).`}
         value={current.mean[last].toFixed(1)}
         delta={deltaOf(baseline.mean[last], current.mean[last], false, true)}
       />
       <Tile
         label={`Chance of catastrophe or worse by ${graph.endYear} (goodness ≤ ${floorG})`}
+        hint={`How much of the probability mass sits in the worst world-states (goodness ${floorG} or below) by ${graph.endYear}. Pushing this down is the "floor lift" in the cost curve: an intervention can barely move the mean and still be the best thing here.`}
         value={pct(current.floor[last])}
         delta={deltaOf(baseline.floor[last], current.floor[last], true, false)}
       />
       <Tile
         label={`Chance of flourishing by ${graph.endYear} (goodness ≥ ${ceilG})`}
+        hint={`How much of the probability mass sits in the best world-states (goodness ${ceilG} or above) by ${graph.endYear}. Pushing this up is the "ceiling lift" in the cost curve.`}
+        align="right"
         value={pct(current.ceiling[last])}
         delta={deltaOf(baseline.ceiling[last], current.ceiling[last], true, true)}
       />

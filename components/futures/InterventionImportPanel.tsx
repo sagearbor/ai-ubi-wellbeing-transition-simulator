@@ -19,6 +19,29 @@ import {
   SourceFetchError,
 } from '../../services/futuresExtract';
 import { CostBand, Direction, FuturesGraph, Intervention, Magnitude, Nudge } from '../../src/futures/types';
+import { Hint, HintedLabel } from './Hint';
+
+/** Plain-words glossary for the ⓘ bubbles on this card. Same wording as the rest of the tab. */
+const HINTS = {
+  label: 'Short name for this policy or proposal.',
+  summary: 'One or two sentences saying what the measure actually does. Shown on the chip and in the cost curve.',
+  source: 'Where the text came from: a URL you fetched, a document you pasted, or "editorial" when you wrote the card yourself.',
+  costBand:
+    'Rough cost and political difficulty. 1 = cheap and easy (a rule change), 2 = a funded programme, 3 = a major national programme, 4 = several percent of GDP or a new institution, 5 = a binding international treaty or a constitutional-scale change. Only used to rank interventions on the cost curve.',
+  startYear: 'First year the measure is in force. Each nudge begins then, plus its own lag.',
+  costNote: 'One line saying why you picked that cost band, so someone else can argue with it.',
+  node: 'Which branch of the map this clause pushes.',
+  direction: 'More likely, or less likely.',
+  magnitude:
+    'How strongly a clause changes a branch\u2019s odds. Slight \u2248 \u00d71.3 odds (+0.25 log-odds), moderate \u2248 \u00d71.65 (+0.5), strong \u2248 \u00d72.7 (+1.0). The model can only pick from these three.',
+  lag: 'Years after the start year before this nudge takes effect. Institutions take time.',
+  evidence:
+    'A sentence quoted from the source that justifies the pick. Required on AI-drafted cards: no quote, no nudge.',
+  aiDrafted:
+    'The model filled this card in from the pasted text. Picks are coarse and unverified \u2014 edit anything wrong before applying, and then it counts as your own.',
+  extract:
+    'Sends the text to Gemini, which may only pick branches from the map and coarse magnitudes, and must quote a sentence for each pick.',
+} as const;
 
 interface InterventionImportPanelProps {
   graph: FuturesGraph;
@@ -174,7 +197,7 @@ export const InterventionImportPanel: React.FC<InterventionImportPanelProps> = (
     onAdd(draft);
     setDraft(null);
     setDraftErrors([]);
-    setStatus('Applied to the graph.', 'success');
+    setStatus('Applied to the graph and switched on \u2014 scroll up to see the change (dashed = before).', 'success');
   };
 
   const statusColor =
@@ -232,15 +255,17 @@ export const InterventionImportPanel: React.FC<InterventionImportPanelProps> = (
           />
         </div>
 
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <button
             type="button"
             onClick={handleExtract}
             disabled={busy !== 'idle'}
+            title={HINTS.extract}
             className={primaryButton}
           >
             {busy === 'extracting' ? 'Extracting...' : 'Extract'}
           </button>
+          <Hint text={HINTS.extract} label="Extract" />
           <button type="button" onClick={handleBlankCard} disabled={busy !== 'idle'} className={secondaryButton}>
             Start from blank card
           </button>
@@ -268,15 +293,14 @@ export const InterventionImportPanel: React.FC<InterventionImportPanelProps> = (
             {draft.status === 'ai-drafted' && (
               <span className="inline-flex items-center rounded-full bg-amber-200 px-2.5 py-1 text-xs font-medium text-amber-900 dark:bg-amber-800 dark:text-amber-100">
                 AI-drafted, unreviewed
+                <Hint text={HINTS.aiDrafted} label="AI-drafted, unreviewed" align="right" />
               </span>
             )}
           </div>
 
           <div className="space-y-3">
             <div>
-              <label className={labelCls} htmlFor="futures-draft-label">
-                Label
-              </label>
+              <HintedLabel className={labelCls} htmlFor="futures-draft-label" label="Label" hint={HINTS.label} />
               <input
                 id="futures-draft-label"
                 type="text"
@@ -287,9 +311,7 @@ export const InterventionImportPanel: React.FC<InterventionImportPanelProps> = (
             </div>
 
             <div>
-              <label className={labelCls} htmlFor="futures-draft-summary">
-                Summary
-              </label>
+              <HintedLabel className={labelCls} htmlFor="futures-draft-summary" label="Summary" hint={HINTS.summary} />
               <textarea
                 id="futures-draft-summary"
                 value={draft.summary}
@@ -300,16 +322,20 @@ export const InterventionImportPanel: React.FC<InterventionImportPanelProps> = (
             </div>
 
             <div className="text-xs text-gray-500 dark:text-gray-400">
-              Source: {draft.source.kind}
+              Source
+              <Hint text={HINTS.source} label="Source" />: {draft.source.kind}
               {draft.source.title ? ` - ${draft.source.title}` : ''}
               {draft.source.url ? ` (${draft.source.url})` : ''}
             </div>
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className={labelCls} htmlFor="futures-draft-cost-band">
-                  Cost band (1-5)
-                </label>
+                <HintedLabel
+                  className={labelCls}
+                  htmlFor="futures-draft-cost-band"
+                  label="Cost band (1-5)"
+                  hint={HINTS.costBand}
+                />
                 <select
                   id="futures-draft-cost-band"
                   value={draft.cost.band}
@@ -324,9 +350,13 @@ export const InterventionImportPanel: React.FC<InterventionImportPanelProps> = (
                 </select>
               </div>
               <div>
-                <label className={labelCls} htmlFor="futures-draft-start-year">
-                  Start year
-                </label>
+                <HintedLabel
+                  className={labelCls}
+                  htmlFor="futures-draft-start-year"
+                  label="Start year"
+                  hint={HINTS.startYear}
+                  align="right"
+                />
                 <input
                   id="futures-draft-start-year"
                   type="number"
@@ -340,9 +370,7 @@ export const InterventionImportPanel: React.FC<InterventionImportPanelProps> = (
             </div>
 
             <div>
-              <label className={labelCls} htmlFor="futures-draft-cost-note">
-                Cost note
-              </label>
+              <HintedLabel className={labelCls} htmlFor="futures-draft-cost-note" label="Cost note" hint={HINTS.costNote} />
               <input
                 id="futures-draft-cost-note"
                 type="text"
@@ -376,7 +404,7 @@ export const InterventionImportPanel: React.FC<InterventionImportPanelProps> = (
                   >
                     <div className="grid grid-cols-1 sm:grid-cols-4 gap-2">
                       <div className="sm:col-span-2">
-                        <label className={labelCls}>Node</label>
+                        <HintedLabel className={labelCls} label="Node" hint={HINTS.node} />
                         <select
                           value={nudge.node}
                           onChange={(e) => updateNudge(i, { node: e.target.value })}
@@ -390,7 +418,7 @@ export const InterventionImportPanel: React.FC<InterventionImportPanelProps> = (
                         </select>
                       </div>
                       <div>
-                        <label className={labelCls}>Direction</label>
+                        <HintedLabel className={labelCls} label="Direction" hint={HINTS.direction} />
                         <select
                           value={nudge.direction}
                           onChange={(e) => updateNudge(i, { direction: e.target.value as Direction })}
@@ -404,7 +432,7 @@ export const InterventionImportPanel: React.FC<InterventionImportPanelProps> = (
                         </select>
                       </div>
                       <div>
-                        <label className={labelCls}>Magnitude</label>
+                        <HintedLabel className={labelCls} label="Magnitude" hint={HINTS.magnitude} align="right" />
                         <select
                           value={nudge.magnitude}
                           onChange={(e) => updateNudge(i, { magnitude: e.target.value as Magnitude })}
@@ -421,7 +449,7 @@ export const InterventionImportPanel: React.FC<InterventionImportPanelProps> = (
 
                     <div className="grid grid-cols-1 sm:grid-cols-4 gap-2 mt-2">
                       <div>
-                        <label className={labelCls}>Lag (years)</label>
+                        <HintedLabel className={labelCls} label="Lag (years)" hint={HINTS.lag} />
                         <input
                           type="number"
                           min={0}
@@ -431,7 +459,11 @@ export const InterventionImportPanel: React.FC<InterventionImportPanelProps> = (
                         />
                       </div>
                       <div className="sm:col-span-3">
-                        <label className={labelCls}>Evidence quote (read-only)</label>
+                        <HintedLabel
+                          className={labelCls}
+                          label="Evidence quote (read-only)"
+                          hint={HINTS.evidence}
+                        />
                         <textarea
                           readOnly
                           value={nudge.evidence ?? '(no evidence - manually added)'}
