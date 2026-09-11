@@ -12,9 +12,12 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci --no-audit --no-fund
 COPY . .
+# A build-arg is visible to RUN as an environment variable even when it is empty, and Vite's
+# loadEnv lets ANY process.env value (including "") override .env.local. So when no build-arg
+# is given, unset it before building so the key in .env.local is used. Every Cloud Build
+# before this fix shipped a bundle with no Gemini key for exactly this reason.
 ARG GEMINI_API_KEY=""
-ENV GEMINI_API_KEY=${GEMINI_API_KEY}
-RUN npm run build
+RUN if [ -z "$GEMINI_API_KEY" ]; then unset GEMINI_API_KEY; fi; npm run build
 
 FROM nginx:1.27-alpine
 # nginx's entrypoint renders *.template with envsubst, so PORT (set by Cloud Run) is honored.

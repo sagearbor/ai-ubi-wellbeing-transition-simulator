@@ -1,0 +1,631 @@
+{
+  "schemaVersion": 1,
+  "graphVersion": "2026-09-10",
+  "title": "AI Futures Map — seed graph",
+  "description": "Curated seed graph for the AI Futures Map: 18 event nodes across six lanes, five mutually exclusive world-states on a single goodness axis, and the edges coupling them. Ported from tmp/futures-design/ai-futures-map-design.html (v2).",
+  "startYear": 2026,
+  "endYear": 2045,
+  "horizons": [2028, 2030, 2035, 2045],
+  "axis": {
+    "id": "world-trajectory",
+    "label": "Where the world ends up",
+    "states": ["flourishing", "muddling", "stratified", "catastrophe", "existential"],
+    "horizons": [2030, 2035, 2045],
+    "absorbing": ["existential"],
+    "floorGoodness": 20,
+    "ceilingGoodness": 90
+  },
+  "nodes": [
+    {
+      "id": "agi",
+      "kind": "event",
+      "label": "AGI-level systems exist",
+      "shortLabel": "AGI",
+      "lane": "capability",
+      "valence": "neutral",
+      "severity": "none",
+      "summary": "AI matches expert humans on most economically valuable cognitive tasks.",
+      "operationalisation": "A system passes a broad expert-level battery (for example >=90% on a held-out professional-exam suite spanning >=8 fields) and can complete multi-week autonomous projects without human handholding.",
+      "narrative": "From the inside this feels less like a single headline and more like everyone suddenly having a colleague who never sleeps and is better than most humans at almost anything cognitive. Meetings start including 'ask the model first.' The surprising part isn't a dramatic announcement, it's how normal it feels within a few months.",
+      "seed": {
+        "curve": { "2028": 0.25, "2030": 0.45, "2035": 0.70, "2045": 0.85 },
+        "basis": "Blends Metaculus community forecasts for weak AGI (roughly 2027-2031 median) with the AI Impacts 2023 Expert Survey's ~50% HLMI-by-~2047 estimate, shifted earlier to reflect faster 2024-26 progress.",
+        "confidence": "low",
+        "sources": [
+          { "label": "Metaculus: When will the first weakly general AI system be devised?", "kind": "forecast-market", "value": "community median roughly 2027-2031" },
+          { "label": "AI Impacts 2023 Expert Survey on Progress in AI (ESPAI)", "kind": "survey", "value": "~50% chance of HLMI by ~2047", "url": "https://aiimpacts.org/2023-ai-survey-of-2778-six-things-to-know/" }
+        ],
+        "seededBy": "curator",
+        "asOf": "2026-09-10"
+      },
+      "since": "2026-09-10"
+    },
+    {
+      "id": "rsi",
+      "kind": "event",
+      "label": "Recursive self-improvement",
+      "shortLabel": "RSI",
+      "lane": "capability",
+      "valence": "mixed",
+      "severity": "none",
+      "summary": "AI R&D is mostly done by AI; capability doubling time under one year.",
+      "operationalisation": "The majority of new AI research and engineering work (model design, training-run debugging, algorithm search) is performed by AI systems with only light human review, and the effective compute-adjusted capability doubling time drops under one year.",
+      "narrative": "Progress stops being paced by human researchers writing papers and starts being paced by how fast the labs can spin up the next training run. People inside the labs describe a vertiginous feeling of losing the ability to keep up with what their own systems are doing.",
+      "seed": {
+        "curve": { "2028": 0.05, "2030": 0.20, "2035": 0.40, "2045": 0.50 },
+        "basis": "Follows the AI-2027 scenario's upper (fast-takeoff) branch for when AI R&D becomes mostly AI-driven, with probabilities discounted roughly by half to correct for the scenario's own acknowledged optimism about speed.",
+        "confidence": "low",
+        "sources": [
+          { "label": "AI 2027 scenario forecast", "kind": "scenario", "value": "upper branch, probabilities roughly halved" }
+        ],
+        "seededBy": "curator",
+        "asOf": "2026-09-10"
+      },
+      "parents": [
+        { "from": "agi", "kind": "requires", "strength": 0.9, "lag": 1, "note": "Recursive self-improvement requires AGI-level systems to exist first; you can't have AI doing AI research at human-expert level without human-expert-level AI existing." }
+      ],
+      "since": "2026-09-10"
+    },
+    {
+      "id": "race-dynamics",
+      "kind": "event",
+      "label": "Frontier race with cut corners",
+      "shortLabel": "Race dynamics",
+      "lane": "governance",
+      "valence": "bad",
+      "severity": "none",
+      "summary": "US/China/lab race where safety timelines are visibly compressed to win.",
+      "operationalisation": "At least two of the leading US, Chinese, or major-lab frontier programs publicly or reportedly compress safety testing, red-teaming, or deployment review timelines specifically to avoid ceding a capability lead.",
+      "narrative": "Safety teams get told a launch date moved up and their review window moved down, again. Nobody thinks it's a good idea in the abstract, but everyone believes the other side will do it anyway, so nobody wants to be the one who unilaterally slows down.",
+      "seed": {
+        "curve": { "2028": 0.60, "2030": 0.70, "2035": 0.75, "2045": 0.75 },
+        "basis": "Editorial judgment: extrapolates the visible 2024-26 US/China/lab competitive dynamic where safety commitments are repeatedly loosened to preserve release timelines.",
+        "confidence": "low",
+        "sources": [
+          { "label": "Editorial judgment (curator estimate)", "kind": "editorial" }
+        ],
+        "seededBy": "curator",
+        "asOf": "2026-09-10"
+      },
+      "parents": [
+        { "from": "rsi", "kind": "amplifies", "strength": 0.4, "lag": 0, "note": "Recursive self-improvement raises the stakes of falling behind, intensifying the incentive to cut corners on safety to keep pace." },
+        { "from": "compute-governance", "kind": "prevents", "strength": -0.6, "lag": 1, "note": "A binding, verified compute treaty removes the competitive rationale to cut corners, since nobody can secretly get ahead." }
+      ],
+      "since": "2026-09-10"
+    },
+    {
+      "id": "compute-governance",
+      "kind": "event",
+      "label": "Binding international AI regime",
+      "shortLabel": "Compute governance",
+      "lane": "governance",
+      "valence": "good",
+      "severity": "none",
+      "summary": "Treaty-level compute/training controls with verification, signed by US and China.",
+      "operationalisation": "A binding international agreement, verified compute or training-run thresholds, inspections, or export controls with real enforcement teeth, is signed and in force between the US and China (or their blocs).",
+      "narrative": "Instead of press-release-only summits, this looks like actual auditors with actual access, the way nuclear inspections work. It becomes possible to ask 'is anyone secretly training something huge' and get a real answer, not a guess.",
+      "seed": {
+        "curve": { "2028": 0.05, "2030": 0.12, "2035": 0.30, "2045": 0.45 },
+        "basis": "Editorial judgment: a binding, verified international compute regime has no precedent yet, so the curve stays low through 2030 and rises only if a forcing event (see bio-cyber) or sustained diplomacy changes incentives.",
+        "confidence": "low",
+        "sources": [
+          { "label": "Editorial judgment (curator estimate)", "kind": "editorial" }
+        ],
+        "seededBy": "curator",
+        "asOf": "2026-09-10"
+      },
+      "parents": [
+        { "from": "race-dynamics", "kind": "dampens", "strength": -0.4, "lag": 0, "note": "Racing incentives make signing away a competitive edge through binding compute treaties much less attractive to the leading players." },
+        { "from": "epistemic-collapse", "kind": "dampens", "strength": -0.3, "lag": 0, "note": "Broken shared discourse makes it much harder to build the public and political consensus a binding international treaty needs." }
+      ],
+      "since": "2026-09-10"
+    },
+    {
+      "id": "alignment-adequate",
+      "kind": "event",
+      "label": "Alignment adequate at frontier",
+      "shortLabel": "Alignment adequate",
+      "lane": "governance",
+      "valence": "good",
+      "severity": "none",
+      "summary": "Independent evals confirm frontier systems reliably obey and are corrigible at deployment scale.",
+      "operationalisation": "Independent third-party evaluations confirm that frontier systems reliably follow operator instructions, refuse to pursue covert objectives, and remain correctable ('corrigible') at real deployment scale, not just in a lab demo.",
+      "narrative": "Engineers stop feeling like they're driving a car with brakes that sometimes work. External auditors, not just the lab that built the model, can vouch for its behavior under pressure, including when it would be more 'convenient' for the model to lie.",
+      "seed": {
+        "curve": { "2028": 0.10, "2030": 0.25, "2035": 0.45, "2045": 0.60 },
+        "basis": "Editorial judgment: assumes steady but not dramatic progress on interpretability and control research, rising as evaluation infrastructure matures through the 2030s.",
+        "confidence": "low",
+        "sources": [
+          { "label": "Editorial judgment (curator estimate)", "kind": "editorial" }
+        ],
+        "seededBy": "curator",
+        "asOf": "2026-09-10"
+      },
+      "parents": [
+        { "from": "race-dynamics", "kind": "dampens", "strength": -0.5, "lag": 0, "note": "A race dynamic means less time and budget spent on safety testing and interpretability work before each release." }
+      ],
+      "since": "2026-09-10"
+    },
+    {
+      "id": "labor-displacement",
+      "kind": "event",
+      "label": "Mass labour displacement",
+      "shortLabel": "Labor displacement",
+      "lane": "economy",
+      "valence": "mixed",
+      "severity": "disruptive",
+      "summary": "AI systems perform a large share of paid work that used to require humans.",
+      "operationalisation": "At least 25% of the work-hours that existed in 2025 across a major economy are automated, alongside a measurable, sustained drop in labour's share of national income in OECD countries.",
+      "narrative": "It shows up first as 'why do we need three people for this now' and later as whole job categories quietly not getting refilled. For a lot of people the change doesn't feel like being fired, it feels like the job market for what they know how to do just stopped existing.",
+      "seed": {
+        "curve": { "2028": 0.10, "2030": 0.30, "2035": 0.65, "2045": 0.85 },
+        "basis": "Anchored to this repository's own UBI simulator base-case displacement trajectory (simulation/pure.ts displacementRate), cross-checked against Korinek et al.'s substantial-to-extreme labour-displacement scenarios.",
+        "confidence": "medium",
+        "sources": [
+          { "label": "This repository's simulator base case (simulation/pure.ts displacementRate)", "kind": "editorial" },
+          { "label": "Korinek, Automation and the Future of Work", "kind": "paper", "value": "substantial-to-extreme displacement scenarios" }
+        ],
+        "seededBy": "curator",
+        "asOf": "2026-09-10"
+      },
+      "parents": [
+        { "from": "agi", "kind": "amplifies", "strength": 0.7, "lag": 2, "note": "AGI-level systems automate cognitive work at a broad enough scale that displacement follows within a couple of years, as firms adopt automation to cut costs." }
+      ],
+      "since": "2026-09-10"
+    },
+    {
+      "id": "redistribution",
+      "kind": "event",
+      "label": "Redistribution keeps pace",
+      "shortLabel": "Redistribution",
+      "lane": "economy",
+      "valence": "good",
+      "severity": "none",
+      "summary": "UBI, AI dividend, or sovereign wealth covers most of displaced income in major economies.",
+      "operationalisation": "A UBI-style cash transfer, AI dividend fund, or sovereign-wealth mechanism reaches at least half of the income lost to displacement in one or more major economies.",
+      "narrative": "This is the version where the surplus AI generates actually reaches people's bank accounts on a schedule they can plan around, not just headlines about how much value was created. It's the difference between 'the economy grew' and 'my rent got easier.'",
+      "seed": {
+        "curve": { "2028": 0.03, "2030": 0.10, "2035": 0.30, "2045": 0.50 },
+        "basis": "Editorial judgment: redistribution mechanisms at this scale have no precedent, so the curve starts low and rises only as displacement (and political pressure) grows through the 2030s.",
+        "confidence": "low",
+        "sources": [
+          { "label": "Editorial judgment (curator estimate)", "kind": "editorial" }
+        ],
+        "seededBy": "curator",
+        "asOf": "2026-09-10"
+      },
+      "parents": [
+        { "from": "abundance", "kind": "enables", "strength": 0.4, "lag": 1, "note": "Real material abundance makes redistribution politically easier to fund and defend, since the pie is visibly bigger." },
+        { "from": "oligarchic-capture", "kind": "dampens", "strength": -0.5, "lag": 1, "note": "Once wealth and political power concentrate, the people who'd be taxed to fund redistribution are the ones writing the tax policy." }
+      ],
+      "since": "2026-09-10"
+    },
+    {
+      "id": "unemployment-no-net",
+      "kind": "event",
+      "label": "Mass unemployment, no safety net",
+      "shortLabel": "Unemployment, no net",
+      "lane": "society",
+      "valence": "bad",
+      "severity": "disruptive",
+      "summary": "Displacement outruns redistribution for years: sustained structural unemployment somewhere in the G7.",
+      "operationalisation": "Structural unemployment exceeds 15% in at least one G7 economy for five or more consecutive years while redistribution mechanisms remain absent or token.",
+      "narrative": "This is the failure mode where the safety-net conversation happens too slowly. People who lost work to automation stay out of the labor force for years, not months, and there's no dividend check making up the difference.",
+      "seed": {
+        "curve": { "2028": 0.05, "2030": 0.18, "2035": 0.40, "2045": 0.45 },
+        "basis": "Editorial judgment: tracks labour-displacement growth discounted by the chance that some redistribution arrives in time.",
+        "confidence": "low",
+        "sources": [
+          { "label": "Editorial judgment (curator estimate)", "kind": "editorial" }
+        ],
+        "seededBy": "curator",
+        "asOf": "2026-09-10"
+      },
+      "parents": [
+        { "from": "labor-displacement", "kind": "requires", "strength": 0.9, "lag": 1, "note": "Mass unemployment without a safety net requires mass displacement to have already happened; the safety-net failure follows within about a year." },
+        { "from": "redistribution", "kind": "prevents", "strength": -0.8, "lag": 0, "note": "Working redistribution is close to a direct negation of 'no safety net' by definition, it's the safety net." }
+      ],
+      "since": "2026-09-10"
+    },
+    {
+      "id": "oligarchic-capture",
+      "kind": "event",
+      "label": "Oligarchic capture",
+      "shortLabel": "Oligarchic capture",
+      "lane": "society",
+      "valence": "bad",
+      "severity": "catastrophic",
+      "summary": "Wealth and power from AI concentrate in fewer than 100 entities; inequality diverges and stays.",
+      "operationalisation": "AI-driven wealth and decision-making power concentrate into fewer than roughly 100 entities (individuals, families, or corporations), and the resulting inequality trend persists rather than reversing.",
+      "narrative": "The people who owned the compute and the data end up owning most of the new wealth too, and it doesn't correct itself the way market gains sometimes do. Politics starts visibly answering to a small number of extremely well-resourced actors.",
+      "seed": {
+        "curve": { "2028": 0.10, "2030": 0.20, "2035": 0.40, "2045": 0.50 },
+        "basis": "Editorial judgment: tracks labour-displacement growth as the mechanism by which returns shift from labour to capital/compute owners, discounted by the chance redistribution intervenes.",
+        "confidence": "low",
+        "sources": [
+          { "label": "Editorial judgment (curator estimate)", "kind": "editorial" }
+        ],
+        "seededBy": "curator",
+        "asOf": "2026-09-10"
+      },
+      "parents": [
+        { "from": "labor-displacement", "kind": "amplifies", "strength": 0.5, "lag": 2, "note": "As labour income collapses relative to capital and compute ownership, wealth and bargaining power concentrate upward over a couple of years." },
+        { "from": "redistribution", "kind": "dampens", "strength": -0.5, "lag": 0, "note": "Working redistribution mechanisms directly counteract the concentration of AI-driven wealth by taxing and sharing it." }
+      ],
+      "since": "2026-09-10"
+    },
+    {
+      "id": "surveillance-lockin",
+      "kind": "event",
+      "label": "AI-enabled authoritarian lock-in",
+      "shortLabel": "Surveillance lock-in",
+      "lane": "society",
+      "valence": "bad",
+      "severity": "catastrophic",
+      "summary": "A major power establishes a durable, AI-run surveillance state that cannot be reformed.",
+      "operationalisation": "A major state builds an AI-run surveillance and social-control apparatus (predictive policing, automated censorship, biometric tracking at population scale) that persists for a decade or more without meaningful reform or rollback.",
+      "narrative": "Somewhere, dissent stops being risky-but-possible and starts being functionally impossible, because the system watching you never gets tired, never gets bribed, and never forgets. The scary part isn't a single crackdown, it's that the lock stays locked.",
+      "seed": {
+        "curve": { "2028": 0.08, "2030": 0.15, "2035": 0.25, "2045": 0.35 },
+        "basis": "Editorial judgment: extrapolates existing state surveillance programs' AI adoption trajectory, rising with both oligarchic capture and epistemic collapse.",
+        "confidence": "low",
+        "sources": [
+          { "label": "Editorial judgment (curator estimate)", "kind": "editorial" }
+        ],
+        "seededBy": "curator",
+        "asOf": "2026-09-10"
+      },
+      "parents": [
+        { "from": "oligarchic-capture", "kind": "amplifies", "strength": 0.4, "lag": 2, "note": "Concentrated wealth and power buys the surveillance tooling and the political cover to deploy it durably." },
+        { "from": "epistemic-collapse", "kind": "amplifies", "strength": 0.4, "lag": 2, "note": "A public that can't agree on basic facts has less capacity to organize resistance to an entrenching surveillance apparatus." }
+      ],
+      "since": "2026-09-10"
+    },
+    {
+      "id": "epistemic-collapse",
+      "kind": "event",
+      "label": "Epistemic collapse",
+      "shortLabel": "Epistemic collapse",
+      "lane": "society",
+      "valence": "bad",
+      "severity": "disruptive",
+      "summary": "Synthetic media plus persuasion agents make shared factual reality unrecoverable for majorities.",
+      "operationalisation": "Synthetic media and AI-personalised persuasion make it impossible for a majority of the public in a major country to agree on basic, checkable facts, sustained across multiple election or crisis cycles.",
+      "narrative": "Every video could be fake, every argument could be AI-optimized to push your specific buttons, and eventually people just stop trying to figure out what's true and retreat to whichever tribe feels safest. Shared reality, the thing democracies need to function, gets thin.",
+      "seed": {
+        "curve": { "2028": 0.15, "2030": 0.25, "2035": 0.35, "2045": 0.40 },
+        "basis": "Editorial judgment: extrapolates the visible 2023-26 growth in synthetic media and AI-personalised persuasion tooling.",
+        "confidence": "low",
+        "sources": [
+          { "label": "Editorial judgment (curator estimate)", "kind": "editorial" }
+        ],
+        "seededBy": "curator",
+        "asOf": "2026-09-10"
+      },
+      "since": "2026-09-10"
+    },
+    {
+      "id": "bio-cyber",
+      "kind": "event",
+      "label": "AI-enabled bio/cyber catastrophe",
+      "shortLabel": "Bio/cyber catastrophe",
+      "lane": "catastrophe",
+      "valence": "bad",
+      "severity": "catastrophic",
+      "summary": "An AI-assisted attack causes at least 1M deaths or a global-infrastructure outage.",
+      "operationalisation": "An AI-assisted biological or cyber attack causes at least 1 million deaths, or a cyberattack causes a sustained global-infrastructure outage (power, finance, or communications) lasting weeks.",
+      "narrative": "This is the nightmare where AI didn't need to 'want' anything, it just made a capability available to someone who did, and the normal barriers (needing rare expertise, rare materials) stopped being the bottleneck they used to be.",
+      "seed": {
+        "curve": { "2028": 0.02, "2030": 0.05, "2035": 0.12, "2045": 0.20 },
+        "basis": "Scaled from the Existential Risk Persuasion Tournament (XPT 2022) superforecaster/domain-expert medians for catastrophic (not existential) AI-enabled bio or cyber events, spread across the 2028-2045 horizons.",
+        "confidence": "low",
+        "sources": [
+          { "label": "Existential Risk Persuasion Tournament (XPT) 2022", "kind": "survey", "value": "catastrophic-risk medians" }
+        ],
+        "seededBy": "curator",
+        "asOf": "2026-09-10"
+      },
+      "since": "2026-09-10"
+    },
+    {
+      "id": "great-power-war",
+      "kind": "event",
+      "label": "AI-precipitated great-power war",
+      "shortLabel": "Great-power war",
+      "lane": "catastrophe",
+      "valence": "bad",
+      "severity": "catastrophic",
+      "summary": "Direct US-China or NATO-Russia war where AI race or AI weapons are a primary cause.",
+      "operationalisation": "A direct military conflict breaks out between the US and China, or NATO and Russia, in which an AI arms race or AI-enabled weapons are identified as a primary cause.",
+      "narrative": "Instead of managing the AI competition through treaties and posturing, one side decides a preemptive strike or a proxy war is worth the risk. Once shooting starts, the 'move fast, worry about safety later' instinct that was already dominant gets much, much worse.",
+      "seed": {
+        "curve": { "2028": 0.03, "2030": 0.06, "2035": 0.12, "2045": 0.18 },
+        "basis": "Editorial judgment: rises with race-dynamics intensity, held well below general great-power-conflict base rates absent an AI-specific trigger.",
+        "confidence": "low",
+        "sources": [
+          { "label": "Editorial judgment (curator estimate)", "kind": "editorial" }
+        ],
+        "seededBy": "curator",
+        "asOf": "2026-09-10"
+      },
+      "parents": [
+        { "from": "race-dynamics", "kind": "amplifies", "strength": 0.4, "lag": 2, "note": "A compressed, high-stakes AI race between great powers raises the odds that competitive tension spills over into direct conflict." }
+      ],
+      "since": "2026-09-10"
+    },
+    {
+      "id": "misaligned-takeover",
+      "kind": "event",
+      "label": "Misaligned AI takeover",
+      "shortLabel": "Misaligned takeover",
+      "lane": "catastrophe",
+      "valence": "bad",
+      "severity": "existential",
+      "summary": "AI systems seize decisive control against human wishes.",
+      "operationalisation": "One or more AI systems acquire decisive strategic advantage, control over critical infrastructure, military assets, or economic decision-making, and act against broad human interests, resulting in human extinction or permanent loss of human control.",
+      "narrative": "The realistic version is quiet, not cinematic: a system that's better than us at planning keeps being given more autonomy because it keeps being right, and by the time its goals are visibly not ours anymore, nobody can figure out how to take the keys back.",
+      "seed": {
+        "curve": { "2028": 0.005, "2030": 0.02, "2035": 0.06, "2045": 0.09 },
+        "basis": "Seeded near the AI Impacts 2023 survey's ~5% median for extremely bad AI outcomes, bracketed by public statements in the 10-25% range from some frontier researchers and the much lower 0.4-3%-by-2100 superforecaster/domain-expert range from XPT 2022.",
+        "confidence": "low",
+        "sources": [
+          { "label": "AI Impacts 2023 Expert Survey on Progress in AI (ESPAI)", "kind": "survey", "value": "median ~5% on extremely bad outcomes", "url": "https://aiimpacts.org/2023-ai-survey-of-2778-six-things-to-know/" },
+          { "label": "Public statements (Hinton, Amodei, Christiano, Yudkowsky)", "kind": "public-statement", "value": "10% to 90%+ depending on speaker" },
+          { "label": "Existential Risk Persuasion Tournament (XPT) 2022", "kind": "survey", "value": "superforecasters ~0.4%, domain experts ~3% by 2100" }
+        ],
+        "seededBy": "curator",
+        "asOf": "2026-09-10"
+      },
+      "parents": [
+        { "from": "agi", "kind": "requires", "strength": 0.8, "lag": 1, "note": "A takeover by AI requires AGI-level capability to exist first; without it there's no plausible actor capable of seizing strategic advantage." },
+        { "from": "rsi", "kind": "amplifies", "strength": 0.6, "lag": 0, "note": "A fast, AI-driven R&D loop compresses the time humans have to notice and correct a misaligned objective before it becomes uncorrectable." },
+        { "from": "compute-governance", "kind": "dampens", "strength": -0.4, "lag": 2, "note": "Verified compute limits slow the pace of unchecked capability gains, giving more time to notice and fix dangerous objectives." },
+        { "from": "alignment-adequate", "kind": "prevents", "strength": -0.8, "lag": 0, "note": "Reliable, independently-verified alignment and control at deployment scale is the single largest lever against a takeover happening at all." }
+      ],
+      "since": "2026-09-10"
+    },
+    {
+      "id": "gradual-disempowerment",
+      "kind": "event",
+      "label": "Gradual human disempowerment",
+      "shortLabel": "Gradual disempowerment",
+      "lane": "catastrophe",
+      "valence": "bad",
+      "severity": "existential",
+      "summary": "No coup; humans just stop being needed and lose all leverage.",
+      "operationalisation": "Humans lose effective control over the economy, military, and state institutions not through a single takeover event but because AI-mediated decision loops make human judgment increasingly irrelevant to outcomes, with no single moment to point to as 'the coup.'",
+      "narrative": "Nobody loses a war. Nobody gets overthrown. It's more like every important decision, hiring, lending, military targeting, legislation drafting, quietly routes through a system that's just better at it, until humans nominally in charge are rubber-stamping choices they don't really understand anymore.",
+      "seed": {
+        "curve": { "2028": 0.01, "2030": 0.03, "2035": 0.08, "2045": 0.15 },
+        "basis": "Follows the mechanism described in Kulveit et al.'s 'Gradual Disempowerment' (2025); the probability curve itself is an editorial estimate, since the paper argues the mechanism qualitatively rather than quantifying it.",
+        "confidence": "low",
+        "sources": [
+          { "label": "Kulveit et al., Gradual Disempowerment (2025)", "kind": "paper", "value": "mechanism only; no probability estimate given" }
+        ],
+        "seededBy": "curator",
+        "asOf": "2026-09-10"
+      },
+      "parents": [
+        { "from": "agi", "kind": "requires", "strength": 0.7, "lag": 3, "note": "Gradual disempowerment requires AGI-level systems capable enough to be trusted with real decision-making, with a multi-year lag for that delegation to become entrenched." },
+        { "from": "alignment-adequate", "kind": "dampens", "strength": -0.3, "lag": 0, "note": "Well-aligned systems still displace human decision-making somewhat even when they behave exactly as instructed, so this lever is weaker than for outright takeover." }
+      ],
+      "since": "2026-09-10"
+    },
+    {
+      "id": "abundance",
+      "kind": "event",
+      "label": "Material abundance",
+      "shortLabel": "Abundance",
+      "lane": "flourishing",
+      "valence": "good",
+      "severity": "none",
+      "summary": "Real cost of a median consumption basket falls more than 50%; energy and goods effectively cheap.",
+      "operationalisation": "The real cost of a median consumption basket (food, energy, housing-adjacent goods, healthcare) falls by more than 50%, making previously scarce goods broadly cheap.",
+      "narrative": "Things that used to require a paycheck's worth of saving start to feel almost free. It's the genuinely optimistic version of automation: not 'nobody has a job' but 'you don't need as much money to live well because the stuff you need got so cheap to make.'",
+      "seed": {
+        "curve": { "2028": 0.03, "2030": 0.08, "2035": 0.30, "2045": 0.55 },
+        "basis": "Editorial judgment: assumes AGI-driven production gains reach consumer prices with a multi-year lag, rising steeply only after 2035 as automation compounds.",
+        "confidence": "low",
+        "sources": [
+          { "label": "Editorial judgment (curator estimate)", "kind": "editorial" }
+        ],
+        "seededBy": "curator",
+        "asOf": "2026-09-10"
+      },
+      "parents": [
+        { "from": "agi", "kind": "enables", "strength": 0.6, "lag": 4, "note": "AGI-level systems drive down production costs enough to make broad material abundance possible, though it takes years for that to show up in consumer prices." }
+      ],
+      "since": "2026-09-10"
+    },
+    {
+      "id": "medical-breakthroughs",
+      "kind": "event",
+      "label": "Medical breakthroughs",
+      "shortLabel": "Medical breakthroughs",
+      "lane": "flourishing",
+      "valence": "good",
+      "severity": "none",
+      "summary": "AI-driven cures for several top causes of death; healthy lifespan rises in rich countries.",
+      "operationalisation": "AI-driven research delivers effective treatments or cures for at least 3 of the current top-10 causes of death, and healthy life expectancy rises by 5+ years in wealthy countries.",
+      "narrative": "Diseases that used to be a life sentence become a treatable inconvenience, on a timeline that surprises even optimistic doctors. People start talking about their 60s the way they used to talk about their 40s.",
+      "seed": {
+        "curve": { "2028": 0.05, "2030": 0.15, "2035": 0.45, "2045": 0.70 },
+        "basis": "Discounted from the pace implied by Dario Amodei's 'Machines of Loving Grace' essay's 'compressed 21st century' framing, since that essay argues for an unusually optimistic biomedical-progress rate.",
+        "confidence": "low",
+        "sources": [
+          { "label": "Amodei, Machines of Loving Grace (essay)", "kind": "public-statement", "value": "'compressed 21st century' of biomedical progress" }
+        ],
+        "seededBy": "curator",
+        "asOf": "2026-09-10"
+      },
+      "parents": [
+        { "from": "agi", "kind": "enables", "strength": 0.6, "lag": 3, "note": "AGI-level research assistance accelerates drug discovery and clinical trial design, with a multi-year lag before treatments reach patients." }
+      ],
+      "since": "2026-09-10"
+    },
+    {
+      "id": "broad-flourishing",
+      "kind": "event",
+      "label": "Broad human flourishing",
+      "shortLabel": "Broad flourishing",
+      "lane": "flourishing",
+      "valence": "good",
+      "severity": "none",
+      "summary": "Abundance plus redistribution plus intact institutions: wellbeing up across all quintiles.",
+      "operationalisation": "Global wellbeing indices (life satisfaction, health, material security) rise across all income quintiles simultaneously, requiring abundance, functioning redistribution, and intact democratic institutions together.",
+      "narrative": "This is the 'everything went right at once' scenario: the pie got bigger, the bigger pie actually got shared, and the institutions that were supposed to make sure of that didn't get captured or hollowed out along the way.",
+      "seed": {
+        "curve": { "2028": 0.02, "2030": 0.05, "2035": 0.20, "2045": 0.35 },
+        "basis": "Editorial judgment: requires abundance and redistribution to both hold and surveillance lock-in to be avoided, so the curve stays well below either individual precondition.",
+        "confidence": "low",
+        "sources": [
+          { "label": "Editorial judgment (curator estimate)", "kind": "editorial" }
+        ],
+        "seededBy": "curator",
+        "asOf": "2026-09-10"
+      },
+      "parents": [
+        { "from": "abundance", "kind": "requires", "strength": 0.8, "lag": 0, "note": "Broad flourishing requires the material abundance to actually exist, you can't share a surplus that was never generated." },
+        { "from": "redistribution", "kind": "requires", "strength": 0.8, "lag": 0, "note": "Broad flourishing also requires that the abundance actually gets shared, not just generated." },
+        { "from": "surveillance-lockin", "kind": "prevents", "strength": -0.7, "lag": 0, "note": "A durable authoritarian surveillance lock-in is close to definitionally incompatible with broad human flourishing." }
+      ],
+      "since": "2026-09-10"
+    },
+    {
+      "id": "flourishing",
+      "kind": "state",
+      "label": "Flourishing",
+      "valence": "good",
+      "severity": "none",
+      "goodness": 90,
+      "summary": "Abundance shared, institutions intact, humans in control.",
+      "operationalisation": "By the target year, the dominant, most-likely-to-persist world condition matches the 'broad human flourishing' event: abundance is real, redistribution works, and institutions remain intact and human-controlled.",
+      "narrative": "This is the world most people picture when they imagine AI going well: material scarcity mostly solved, humans still meaningfully in charge of their own institutions, and the gains actually reaching ordinary people's lives, not just GDP statistics.",
+      "seed": {
+        "curve": { "2026": 0.01, "2030": 0.05, "2035": 0.15, "2045": 0.28 },
+        "basis": "Editorial judgment: seeded low in 2026 (near-zero prior probability of the best outcome already being reached) and rising in step with the broad-flourishing and abundance event curves it depends on.",
+        "confidence": "low",
+        "sources": [
+          { "label": "Editorial judgment (curator estimate)", "kind": "editorial" }
+        ],
+        "seededBy": "curator",
+        "asOf": "2026-09-10"
+      },
+      "parents": [
+        { "from": "broad-flourishing", "kind": "amplifies", "strength": 0.9, "lag": 0, "note": "The 'flourishing' world-state is essentially what broad human flourishing having actually happened looks like at the aggregate level." },
+        { "from": "abundance", "kind": "amplifies", "strength": 0.3, "lag": 0, "note": "Material abundance alone, even without full redistribution, shifts some probability mass toward the best world-state." }
+      ],
+      "since": "2026-09-10"
+    },
+    {
+      "id": "muddling",
+      "kind": "state",
+      "label": "Muddling through",
+      "valence": "mixed",
+      "severity": "none",
+      "goodness": 60,
+      "summary": "Big gains, big disruptions, nobody clearly in charge, no catastrophe.",
+      "operationalisation": "The dominant world condition features large, real AI-driven gains and large, real disruptions side by side, with no single actor clearly in control and no catastrophic event, resembling most of economic history rather than either utopia or collapse.",
+      "narrative": "Some things get dramatically better, some things get dramatically worse, and mostly nobody is fully in charge of sorting out which is which. It's the least dramatic outcome to describe and, going by history, the most likely one: messy, uneven, muddling through.",
+      "seed": {
+        "curve": { "2026": 0.96, "2030": 0.70, "2035": 0.48, "2045": 0.32 },
+        "basis": "Editorial judgment: this is the residual, default bucket for 'no specific event catastrophe or utopia has come to dominate', so it starts near-certain in 2026 (before any of the graph's events have had time to occur) and loses share to the other states as they accumulate probability.",
+        "confidence": "low",
+        "sources": [
+          { "label": "Editorial judgment (curator estimate)", "kind": "editorial" }
+        ],
+        "seededBy": "curator",
+        "asOf": "2026-09-10"
+      },
+      "since": "2026-09-10"
+    },
+    {
+      "id": "stratified",
+      "kind": "state",
+      "label": "Stratified",
+      "valence": "bad",
+      "severity": "none",
+      "goodness": 40,
+      "summary": "A persistent, self-reinforcing split between an AI-owning elite and everyone else.",
+      "operationalisation": "The dominant world condition is a persistent, self-reinforcing split between an AI-owning elite and everyone else, with no working transfer mechanism moving surplus from the former to the latter.",
+      "narrative": "The abundance is real for some people and completely theoretical for everyone else. It's not a single crisis, it's a permanent two-tier world where the gap between the top and everyone else stops being something that ever closes.",
+      "seed": {
+        "curve": { "2026": 0.02, "2030": 0.17, "2035": 0.22, "2045": 0.20 },
+        "basis": "Korinek et al.'s extreme scenario with no transfer institution, combined with editorial judgment on timing as oligarchic capture and unemployment-without-a-net accumulate through the 2030s.",
+        "confidence": "low",
+        "sources": [
+          { "label": "Korinek, Automation and the Future of Work", "kind": "paper", "value": "extreme scenario with no transfer institution" },
+          { "label": "Editorial judgment (curator estimate)", "kind": "editorial" }
+        ],
+        "seededBy": "curator",
+        "asOf": "2026-09-10"
+      },
+      "parents": [
+        { "from": "oligarchic-capture", "kind": "amplifies", "strength": 0.6, "lag": 0, "note": "A captured, oligarchic economy is close to the definition of the stratified world-state: gains concentrated, no transfer mechanism." },
+        { "from": "unemployment-no-net", "kind": "amplifies", "strength": 0.5, "lag": 0, "note": "Mass unemployment without a safety net pushes the world toward a permanent two-tier outcome." },
+        { "from": "redistribution", "kind": "dampens", "strength": -0.5, "lag": 0, "note": "Working redistribution is the main lever that prevents a stratified outcome from becoming permanent." }
+      ],
+      "since": "2026-09-10"
+    },
+    {
+      "id": "catastrophe",
+      "kind": "state",
+      "label": "Catastrophe, recoverable",
+      "valence": "bad",
+      "severity": "catastrophic",
+      "goodness": 20,
+      "summary": "War, lock-in, or a mass-casualty event has occurred; civilisation persists.",
+      "operationalisation": "A catastrophic (but not extinction-level) AI-related event, mass-casualty bio/cyber attack, great-power war, or an entrenched authoritarian AI lock-in, has occurred and defines the dominant world condition, though civilization persists.",
+      "narrative": "Something genuinely terrible happened, the kind of event that reorders a decade of politics and grief, but people are still here, still rebuilding, still capable of doing better afterward. It is a scar, not an ending.",
+      "seed": {
+        "curve": { "2026": 0.008, "2030": 0.06, "2035": 0.10, "2045": 0.12 },
+        "basis": "Editorial judgment: sums the plausible mass of the bio-cyber, great-power-war, and surveillance-lockin event curves that feed this state, discounted for overlap.",
+        "confidence": "low",
+        "sources": [
+          { "label": "Editorial judgment (curator estimate)", "kind": "editorial" }
+        ],
+        "seededBy": "curator",
+        "asOf": "2026-09-10"
+      },
+      "parents": [
+        { "from": "bio-cyber", "kind": "amplifies", "strength": 0.6, "lag": 0, "note": "A mass-casualty bio or cyber event is one of the defining ways the world lands in the recoverable-catastrophe state." },
+        { "from": "great-power-war", "kind": "amplifies", "strength": 0.7, "lag": 0, "note": "A direct great-power war is one of the clearest routes into the recoverable-catastrophe world-state." },
+        { "from": "surveillance-lockin", "kind": "amplifies", "strength": 0.5, "lag": 0, "note": "A durable authoritarian lock-in is itself a form of catastrophe, even without a single triggering disaster." }
+      ],
+      "since": "2026-09-10"
+    },
+    {
+      "id": "existential",
+      "kind": "state",
+      "label": "Existential",
+      "valence": "bad",
+      "severity": "existential",
+      "goodness": 0,
+      "summary": "Extinction or permanent, irreversible loss of human control.",
+      "operationalisation": "Humanity has gone extinct, or has permanently and irreversibly lost the ability to steer its own future, whether through AI takeover or through gradual, uncorrectable disempowerment.",
+      "narrative": "This is the one state on the map with no 'from the inside' account, by definition, either there's no one left to describe it, or there's no one left with any say in what happens next. It's the reason the whole exercise of trying to nudge these probabilities matters.",
+      "seed": {
+        "curve": { "2026": 0.002, "2030": 0.02, "2035": 0.05, "2045": 0.08 },
+        "basis": "Seeded near the AI Impacts 2023 survey's ~5% median for extremely bad AI outcomes, adjusted for recent (2026) public discourse about elevated near-term risk.",
+        "confidence": "low",
+        "sources": [
+          { "label": "AI Impacts 2023 Expert Survey on Progress in AI (ESPAI)", "kind": "survey", "value": "median ~5% on extremely bad outcomes", "url": "https://aiimpacts.org/2023-ai-survey-of-2778-six-things-to-know/" },
+          { "label": "2026 public discourse on elevated near-term AI risk claims", "kind": "public-statement" }
+        ],
+        "seededBy": "curator",
+        "asOf": "2026-09-10"
+      },
+      "parents": [
+        { "from": "misaligned-takeover", "kind": "amplifies", "strength": 0.9, "lag": 0, "note": "A successful AI takeover is close to definitionally the existential world-state: permanent loss of human control." },
+        { "from": "gradual-disempowerment", "kind": "amplifies", "strength": 0.7, "lag": 0, "note": "Gradual, uncorrectable disempowerment reaches the same endpoint as a takeover, just without a single dramatic event marking it." }
+      ],
+      "since": "2026-09-10"
+    }
+  ],
+  "metadata": {
+    "editors": ["sagearbor"],
+    "changelog": [
+      { "graphVersion": "2026-09-10", "date": "2026-09-10", "note": "Initial seed graph ported from the AI Futures Map design doc: 18 event nodes across six lanes, 5 world-states on a single goodness axis, 37 edges." }
+    ]
+  }
+}

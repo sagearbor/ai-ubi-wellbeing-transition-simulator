@@ -1,0 +1,74 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://wellbeing-transition-simulator.example.com/schemas/intervention.json",
+  "title": "Intervention",
+  "description": "A named bundle of nudges against AI Futures Map event nodes, plus cost, source, tier and review status. Must match the `Intervention` interface in src/futures/types.ts exactly.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "id", "label", "summary", "source", "tier", "status", "cost", "startYear", "nudges"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 120
+    },
+    "label": { "type": "string", "minLength": 1, "maxLength": 200 },
+    "summary": { "type": "string", "minLength": 1, "maxLength": 2000 },
+    "source": { "$ref": "#/definitions/InterventionSource" },
+    "tier": { "enum": ["locked", "expert", "public"] },
+    "status": { "enum": ["ai-drafted", "reviewed", "locked"] },
+    "cost": { "$ref": "#/definitions/Cost" },
+    "startYear": { "type": "number" },
+    "nudges": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/definitions/Nudge" }
+    },
+    "extractedBy": { "$ref": "#/definitions/ExtractedBy" }
+  },
+  "definitions": {
+    "InterventionSource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind"],
+      "properties": {
+        "kind": { "enum": ["bill", "paper", "proposal", "editorial"] },
+        "url": { "type": "string" },
+        "title": { "type": "string" },
+        "quote": { "type": "string" }
+      }
+    },
+    "Cost": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["band"],
+      "properties": {
+        "band": { "enum": [1, 2, 3, 4, 5] },
+        "note": { "type": "string" }
+      }
+    },
+    "Nudge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["node", "direction", "magnitude"],
+      "properties": {
+        "node": { "type": "string", "minLength": 1 },
+        "direction": { "enum": ["up", "down"] },
+        "magnitude": { "enum": ["slight", "moderate", "strong"] },
+        "lag": { "type": "number", "minimum": 0 },
+        "evidence": { "type": "string", "maxLength": 300 }
+      }
+    },
+    "ExtractedBy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["model", "asOf"],
+      "properties": {
+        "model": { "type": "string" },
+        "asOf": { "type": "string" },
+        "reviewedBy": { "type": ["string", "null"] }
+      }
+    }
+  }
+}

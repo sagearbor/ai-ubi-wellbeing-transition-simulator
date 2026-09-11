@@ -1,0 +1,174 @@
+rules_version = '2';
+
+// AI Futures Map — expert and public tiers (design doc section 8).
+//
+// Deploy:  cd firebase && firebase deploy --only firestore:rules      (see docs/futures-v1-setup.md)
+//
+// The model in one paragraph: anyone who can load the page gets an anonymous uid and may write
+// exactly one estimate document per node, at tier "public", at most once a minute. An email-link
+// sign-in whose address the owner has added to `experts/{email}` writes at tier "expert" instead.
+// Everything the nightly cron publishes — aggregates, snapshots — and the expert allowlist itself
+// are read-only to every client; only the service account behind scripts/futures-aggregate.ts
+// (which bypasses these rules) writes them.
+//
+// HORIZONS are hardcoded below because rules cannot read data/futures/graph.json. If the graph's
+// `horizons` or `axis.horizons` ever change, change HORIZONS here and redeploy, or honest votes
+// start failing with PERMISSION_DENIED.
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ---- identity ---------------------------------------------------------
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    // Anonymous users have no `email` claim at all; reading a missing map key is an error in
+    // rules (which evaluates as deny), so every access is guarded with `in`.
+    function hasEmail() {
+      return signedIn() && ('email' in request.auth.token) && request.auth.token.email != null;
+    }
+
+    function emailOf() {
+      return hasEmail() ? request.auth.token.email.lower() : '';
+    }
+
+    function expertDoc() {
+      return get(/databases/$(database)/documents/experts/$(emailOf()));
+    }
+
+    function isExpert() {
+      return hasEmail()
+        && ('email_verified' in request.auth.token)
+        && request.auth.token.email_verified == true
+        && exists(/databases/$(database)/documents/experts/$(emailOf()));
+    }
+
+    /** The only tier this caller may ever write. Never trust a client-supplied tier. */
+    function myTier() {
+      return isExpert() ? 'expert' : 'public';
+    }
+
+    /** Owner-set expert weight, 0.5-3, default 1. Public voters are always 1. */
+    function myWeight() {
+      return isExpert() && 'weight' in expertDoc().data ? expertDoc().data.weight : 1;
+    }
+
+    // ---- curve shape ------------------------------------------------------
+
+    // graph.json 2026-09-10: horizons [2028, 2030, 2035, 2045], axis.horizons [2030, 2035, 2045].
+    function horizons() {
+      return ['2028', '2030', '2035', '2045'];
+    }
+
+    function probAt(curve, k) {
+      return !curve.keys().hasAny([k])
+        || (curve[k] is number && curve[k] >= 0 && curve[k] <= 1);
+    }
+
+    function curveOk(curve) {
+      return curve is map
+        && curve.keys().size() >= 1
+        && curve.keys().hasOnly(horizons())
+        && probAt(curve, '2028')
+        && probAt(curve, '2030')
+        && probAt(curve, '2035')
+        && probAt(curve, '2045');
+    }
+
+    // ---- estimates --------------------------------------------------------
+
+    function estimateShapeOk(docId) {
+      let d = request.resource.data;
+      return d.keys().hasAll(['uid', 'tier', 'nodeId', 'graphVersion', 'curve', 'asOf', 'weight', 'updatedAt'])
+        && d.keys().hasOnly(['uid', 'tier', 'nodeId', 'graphVersion', 'curve', 'note', 'asOf', 'weight', 'updatedAt', 'email'])
+        && d.uid == request.auth.uid
+        && docId == d.uid + '_' + d.nodeId
+        && d.tier == myTier()
+        && d.nodeId is string && d.nodeId.size() > 0 && d.nodeId.size() <= 64
+        && d.graphVersion is string && d.graphVersion.size() <= 32
+        && d.asOf is string && d.asOf.size() <= 40
+        && d.weight == myWeight()
+        && d.updatedAt == request.time
+        && (!d.keys().hasAny(['note']) || (d.note is string && d.note.size() <= 500))
+        && (!d.keys().hasAny(['email']) || d.email == null || d.email == emailOf())
+        && curveOk(d.curve);
+    }
+
+    /** One write per minute per document, by the server clock. */
+    function notTooSoon() {
+      return !('updatedAt' in resource.data)
+        || !(resource.data.updatedAt is timestamp)
+        || request.time > resource.data.updatedAt + duration.value(60, 's');
+    }
+
+    match /estimates/{docId} {
+      // Votes are public data: the whole point is the pooled number. Nothing here is private
+      // beyond the uid, and the client needs to read the pool for the provisional aggregate.
+      allow read: if signedIn();
+      allow create: if signedIn() && estimateShapeOk(docId);
+      allow update: if signedIn()
+                    && resource.data.uid == request.auth.uid
+                    && estimateShapeOk(docId)
+                    && notTooSoon();
+      allow delete: if signedIn() && resource.data.uid == request.auth.uid;
+    }
+
+    // Append-only mirror. Clients write copies and never read them back; the cron reads it with
+    // admin credentials for the dated snapshots.
+    match /estimateLog/{entryId} {
+      allow read: if false;
+      allow create: if signedIn()
+                    && request.resource.data.uid == request.auth.uid
+                    && request.resource.data.tier == myTier()
+                    && curveOk(request.resource.data.curve);
+      allow update, delete: if false;
+    }
+
+    // ---- interventions ----------------------------------------------------
+
+    match /interventions/{id} {
+      allow read: if true;
+      allow create: if signedIn()
+                    && request.resource.data.uid == request.auth.uid
+                    && request.resource.data.tier == myTier()
+                    && request.resource.data.id == id
+                    && request.resource.data.label is string
+                    && request.resource.data.label.size() <= 200
+                    && request.resource.data.summary is string
+                    && request.resource.data.summary.size() <= 2000
+                    && request.resource.data.nudges is list
+                    && request.resource.data.nudges.size() <= 40;
+      allow update: if signedIn()
+                    && resource.data.uid == request.auth.uid
+                    && request.resource.data.uid == request.auth.uid
+                    && request.resource.data.tier == myTier();
+      allow delete: if signedIn() && resource.data.uid == request.auth.uid;
+    }
+
+    // ---- owner / cron owned, read-only to clients -------------------------
+
+    // The allowlist. Readable so a signed-in expert can see their own row (and the client can
+    // resolve its tier); written only in the Firebase console by the owner.
+    match /experts/{email} {
+      allow read: if signedIn();
+      allow write: if false;
+    }
+
+    match /aggregates/{tier}/nodes/{nodeId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    match /snapshots/{tier}/days/{day} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    // Anything not named above is closed.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

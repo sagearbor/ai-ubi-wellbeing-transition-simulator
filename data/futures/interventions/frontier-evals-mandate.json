@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "frontier-evals-mandate",
+  "label": "Mandatory frontier evals before deployment",
+  "summary": "A legal requirement that frontier AI systems pass independent, standardized safety and control evaluations before public or high-stakes deployment, similar in structure to drug-approval trials.",
+  "source": {
+    "kind": "editorial",
+    "quote": "Curator-drafted intervention: bundles the family of 'pre-deployment evaluation mandate' proposals discussed in AI-governance policy circles (e.g. requirements attached to frontier-model safety frameworks and various national AI-safety-institute mandates) into one representative nudge."
+  },
+  "tier": "locked",
+  "status": "locked",
+  "cost": {
+    "band": 2,
+    "note": "Low-to-moderate direct cost: mostly the cost of building and staffing evaluation infrastructure and the compliance burden on labs; does not require new international treaty machinery."
+  },
+  "startYear": 2027,
+  "nudges": [
+    { "node": "alignment-adequate", "direction": "up", "magnitude": "moderate", "lag": 1, "evidence": "Mandatory independent evaluation is a direct, if partial, implementation of the 'independent evals confirm frontier systems are adequate' criterion, with a one-year lag for the evaluation regime to stand up." },
+    { "node": "race-dynamics", "direction": "down", "magnitude": "slight", "lag": 0, "evidence": "A shared, mandatory bar that every frontier lab must clear somewhat levels the playing field and reduces the incentive to skip safety review purely to beat a competitor to market." }
+  ]
+}

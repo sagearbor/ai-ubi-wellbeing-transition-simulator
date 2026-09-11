@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "ai-dividend-fund",
+  "label": "AI dividend / sovereign wealth fund",
+  "summary": "A national or multinational fund that captures a slice of AI-driven corporate surplus and pays it out as a broad-based dividend, modeled on Alaska's Permanent Fund but scaled to AI revenue rather than oil revenue.",
+  "source": {
+    "kind": "editorial",
+    "quote": "Curator-drafted intervention, not tied to a specific bill: bundles the family of AI-dividend / sovereign-wealth-fund proposals (e.g. Sam Altman's 'Moore's Law for Everything' essay, various state-level AI-dividend bills) into one representative nudge."
+  },
+  "tier": "locked",
+  "status": "locked",
+  "cost": {
+    "band": 4,
+    "note": "High political cost: requires new taxing/capture authority over AI corporate surplus and durable cross-administration commitment to keep paying out; low direct fiscal cost once running since it is funded by the surplus it captures."
+  },
+  "startYear": 2028,
+  "nudges": [
+    { "node": "redistribution", "direction": "up", "magnitude": "strong", "lag": 2, "evidence": "A dedicated capture-and-payout mechanism is close to a direct implementation of 'redistribution keeps pace', so it gets the largest available nudge, with a lag for the fund to actually stand up and start paying out." },
+    { "node": "oligarchic-capture", "direction": "down", "magnitude": "slight", "lag": 3, "evidence": "Diverting a slice of AI surplus to a broad public fund modestly slows concentration, but only after the fund has had years to accumulate a meaningful share relative to private AI wealth." }
+  ]
+}

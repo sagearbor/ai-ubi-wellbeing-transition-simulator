@@ -19,8 +19,75 @@ import {
   ModelParameters,
   CountryStats
 } from '../types';
-import { INITIAL_COUNTRIES } from '../constants';
+import { INITIAL_COUNTRIES, COGNITIVE_SHARE_BY_ARCHETYPE, NATURAL_UNEMPLOYMENT_BY_ARCHETYPE } from '../constants';
 import { CompiledEquationSet } from '../src/services/equationParser';
+import type { MacroParameters } from '../types';
+
+// ============================================================================
+// MACRO BLOCK (optional; see MacroParameters in types.ts)
+// ============================================================================
+
+/** Labour share of income with no AI (Korinek et al. 2026 US calibration). */
+export const BASE_LABOR_SHARE = 0.60;
+
+/**
+ * Wellbeing level implied by GDP per capita and governance alone (0-100 index, where the
+ * World Happiness Report Cantril ladder x 10 is the target scale).
+ *
+ * Coefficients are an OLS fit of ladder x 10 on ln(GDP per capita, constant 2015 USD) and the
+ * repo's governance score over 335 country-years (2015/2020/2025, data/hindcast/*):
+ * R^2 = 0.65, RMSE = 5.7 index points. USA fits 69.6 (actual 71.0), Germany 68.8 (69.9).
+ */
+export const WELLBEING_ANCHOR_COEFFICIENTS = { intercept: 7.454, lnGdp: 5.103, governance: 7.658 } as const;
+
+export function wellbeingAnchor(gdpPerCapita: number, governance: number): number {
+  const k = WELLBEING_ANCHOR_COEFFICIENTS;
+  const anchor = k.intercept + k.lnGdp * Math.log(Math.max(100, gdpPerCapita)) + k.governance * governance;
+  return Math.max(15, Math.min(90, anchor));
+}
+
+/**
+ * One month of task-based macro dynamics for a country. Mutates `country`.
+ * Runs BEFORE the UBI/wellbeing calculation so that month's wages use current GDP.
+ *
+ *   affected      = aiAdoption x cognitiveShare               share of all labour tasks AI touches
+ *   gdpNoAi       grows at baselineGrowth per year
+ *   gdpPerCapita  = gdpNoAi x (1 + productivityGain x affected)
+ *   laborShare    = 0.60 x (1 - laborShareSensitivity x affected)
+ *   displaced in  = d(aiAdoption) x cognitiveShare x automationShare
+ *   displaced out = displacedPool / reemploymentMonths
+ *   unemployment  = natural + displacedPool;  cognitive = natural + displacedPool / cognitiveShare
+ *   wellbeing    += (anchor - wellbeing) x wellbeingAnchorRate        (0 = off)
+ */
+export function applyMacroDynamics(country: CountryStats, macro: MacroParameters): void {
+  const archetype = country.archetype ?? 'middle-stable';
+  if (country.cognitiveShare === undefined) country.cognitiveShare = COGNITIVE_SHARE_BY_ARCHETYPE[archetype];
+  if (country.naturalUnemployment === undefined) country.naturalUnemployment = NATURAL_UNEMPLOYMENT_BY_ARCHETYPE[archetype];
+  if (country.gdpNoAi === undefined) country.gdpNoAi = country.gdpPerCapita;
+  if (country.displacedPool === undefined) country.displacedPool = 0;
+  if (country.lastAiAdoption === undefined) country.lastAiAdoption = country.aiAdoption;
+
+  const monthlyGrowth = Math.pow(1 + macro.baselineGrowth, 1 / 12) - 1;
+  country.gdpNoAi *= 1 + monthlyGrowth;
+
+  const affected = country.aiAdoption * country.cognitiveShare;
+  country.gdpPerCapita = country.gdpNoAi * (1 + macro.productivityGain * affected);
+  country.laborShare = BASE_LABOR_SHARE * (1 - macro.laborShareSensitivity * affected);
+
+  const dAdoption = Math.max(0, country.aiAdoption - country.lastAiAdoption);
+  const inflow = dAdoption * country.cognitiveShare * macro.automationShare;
+  const outflowRate = macro.reemploymentMonths > 0 ? 1 / macro.reemploymentMonths : 1;
+  country.displacedPool = country.displacedPool * (1 - outflowRate) + inflow;
+  country.lastAiAdoption = country.aiAdoption;
+
+  country.unemployment = Math.min(0.6, country.naturalUnemployment + country.displacedPool);
+  country.cognitiveUnemployment = Math.min(0.9, country.naturalUnemployment + country.displacedPool / country.cognitiveShare);
+
+  if (macro.wellbeingAnchorRate > 0) {
+    const anchor = wellbeingAnchor(country.gdpPerCapita, country.governance);
+    country.wellbeing += (anchor - country.wellbeing) * macro.wellbeingAnchorRate;
+  }
+}
 
 // ============================================================================
 // TYPE DEFINITIONS
@@ -248,9 +315,12 @@ function adaptCorporationPolicy(
     corp.policyStance = corp.contributionRate > 0.20 ? 'generous' : 'moderate';
   }
 
-  // RECOVERY: If demand stable and reputation high, slight relaxation allowed
+  // RECOVERY: If demand stable and reputation high, slight relaxation allowed.
+  // Floor is min(5%, current rate): relaxation never RAISES a rate, so a corporation
+  // configured at 0% (e.g. anchor test AT-1) stays at 0% instead of drifting up to 5%.
   if (demandCollapse < 0.05 && corp.reputationScore > 70) {
-    corp.contributionRate = Math.max(0.05, corp.contributionRate - 0.005);
+    const floor = Math.min(0.05, corp.contributionRate);
+    corp.contributionRate = Math.max(floor, corp.contributionRate - 0.005);
   }
 }
 
@@ -363,9 +433,9 @@ function analyzeGameTheory(corps: Corporation[]): GameTheoryState {
  * @param countries Country data
  */
 function usCorpAdaptation(corp: Corporation, countries: Record<string, CountryStats>): void {
-  if (corp.headquartersCountry !== 'usa') return;
+  if (corp.headquartersCountry !== 'USA') return;
 
-  const usData = countries['usa'];
+  const usData = countries['USA'];
   if (!usData) return;
 
   const usWellbeing = usData.wellbeing;
@@ -404,9 +474,9 @@ function usCorpAdaptation(corp: Corporation, countries: Record<string, CountrySt
  * @param countries Country data
  */
 function chinaCorpAdaptation(corp: Corporation, countries: Record<string, CountryStats>): void {
-  if (corp.headquartersCountry !== 'chn') return;
+  if (corp.headquartersCountry !== 'CHN') return;
 
-  const chinaData = countries['chn'];
+  const chinaData = countries['CHN'];
   if (!chinaData) return;
 
   // Chinese corporations tend to be more responsive to state priorities
@@ -433,7 +503,7 @@ function chinaCorpAdaptation(corp: Corporation, countries: Record<string, Countr
  */
 function euCorpAdaptation(corp: Corporation, countries: Record<string, CountryStats>): void {
   // Check if HQ is in major EU countries
-  const euCountries = ['deu', 'fra', 'gbr', 'ita', 'esp', 'nld', 'swe', 'che'];
+  const euCountries = ['DEU', 'FRA', 'GBR', 'ITA', 'ESP', 'NLD', 'SWE', 'CHE'];
   if (!euCountries.includes(corp.headquartersCountry)) return;
 
   // Calculate average EU wellbeing
@@ -638,6 +708,9 @@ export function stepSimulationPure(input: SimulationInput): SimulationOutput {
   Object.keys(newCountryData).forEach(id => {
     const country = newCountryData[id];
     const shadow = newShadowData[id];
+
+    // === Macro block (optional): GDP path, labour share, displacement pool ===
+    if (model.macro) applyMacroDynamics(country, model.macro);
 
     // ============================================================================
     // PHASE 4: WELLBEING CALCULATION
