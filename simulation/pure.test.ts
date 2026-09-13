@@ -307,10 +307,14 @@ describe('stepSimulationPure - P8-T9 custom equations', () => {
       // simulation/pure.ts for the fixture above. If a future change to the hardcoded
       // Phase 1/2/4 formulas alters these, this test is expected to fail - update it only
       // as a deliberate, reviewed change to the default model, not as a side effect of P8-T9.
+      // Re-locked 2026-09-13 (stage 3, docs/design/model-card-default.md): AI revenue is now
+      // annual/12 (globalFund 1.1266875 -> 0.093890625) and per-capita UBI is in USD
+      // (averageWellbeing 58.02177 -> 58.02616). USA adoption is unchanged because this
+      // fixture has a single corporation, so the mean-over-corporations fix is a no-op here.
       expect(state.month).toBe(6);
-      expect(state.averageWellbeing).toBeCloseTo(58.0217714682572, 9);
+      expect(state.averageWellbeing).toBeCloseTo(58.0261597778361, 9);
       expect(state.countryData['USA'].aiAdoption).toBeCloseTo(0.13463907428778998, 9);
-      expect(state.globalFund).toBeCloseTo(1.1266875, 9);
+      expect(state.globalFund).toBeCloseTo(0.093890625, 9);
     });
   });
 

@@ -49,7 +49,7 @@ The engine advances in **five phases every month**:
 
 1. **Corporation revenue generation.** AI revenue is earned as a function of
    automation and customer purchasing power:
-   `aiRevenue ≈ aiAdoptionLevel × marketCap × 0.15 × demandFactor × reputationMultiplier`,
+   `aiRevenue ≈ aiAdoptionLevel × marketCap × 0.15 / 12 × demandFactor × reputationMultiplier` per month,
    where `demandFactor` shrinks when the corporation's customer countries are too
    poor to buy — poor customers literally reduce revenue.
 2. **Contribution decisions.** Each corporation contributes a share of that

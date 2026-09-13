@@ -23,11 +23,15 @@ describe('anchorTests - optional compiled equation set', () => {
     // artefact: stepSimulationPure mutated country objects in place, including the wellbeingTrend
     // array shared with the INITIAL_COUNTRIES constant, so each anchor test started from state
     // polluted by the previous one and AT-3's race-to-bottom trigger fired only because of that.
-    // With the engine made pure (docs/design/audit-2026-09-13.md) the honest baseline is 4/6:
+    // With the engine made pure (docs/design/audit-2026-09-13.md) the honest baseline was 4/6:
     // AT-1, AT-4, AT-5, AT-6 pass; AT-2 and AT-3 fail on a clean run (owner-acknowledged).
-    expect(suite.passed).toBe(4);
+    // Stage 3 (same day, docs/design/model-card-default.md) fixed three unit/aggregation
+    // artefacts - adoption summed over corporations (C2), per-capita UBI understated 10,000x
+    // (C3), monthly revenue at an annual ratio (C4). AT-2 now passes for the stated reason
+    // (UBI at real magnitude holds wellbeing); AT-3 still fails. Baseline: 5/6.
+    expect(suite.passed).toBe(5);
     const at2 = suite.results.find(r => r.testId === 'AT-2');
-    expect(at2?.passed).toBe(false);
+    expect(at2?.passed).toBe(true);
     const at3 = suite.results.find(r => r.testId === 'AT-3');
     expect(at3?.passed).toBe(false);
   });

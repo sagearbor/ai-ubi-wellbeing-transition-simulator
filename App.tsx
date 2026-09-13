@@ -1348,13 +1348,15 @@ const App: React.FC = () => {
                 <h2 className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-4">Core Parameters</h2>
                 <div className="space-y-6">
                 {[
-                    { label: 'Surplus Tax', key: 'corporateTaxRate', unit: '%', step: 0.01, min: 0, max: 0.9, multiplier: 100 },
-                    { label: 'Adoption Incentive', key: 'adoptionIncentive', unit: '', step: 0.01, min: 0, max: 1.0, multiplier: 1 },
-                    { label: 'Growth Speed', key: 'aiGrowthRate', unit: '%', step: 0.01, min: 0.01, max: 0.4, multiplier: 100 },
-                    { label: 'GDP Scaling', key: 'gdpScaling', unit: '', step: 0.05, min: 0, max: 1.0, multiplier: 1 },
+                    // `engine: false` marks parameters the built-in engine never reads (model card, finding C6).
+                    // They stay editable because custom equation sets may use them.
+                    { label: 'Surplus Tax', key: 'corporateTaxRate', unit: '%', step: 0.01, min: 0, max: 0.9, multiplier: 100, engine: false },
+                    { label: 'Adoption Incentive', key: 'adoptionIncentive', unit: '', step: 0.01, min: 0, max: 1.0, multiplier: 1, engine: false },
+                    { label: 'Growth Speed', key: 'aiGrowthRate', unit: '%', step: 0.01, min: 0.01, max: 0.4, multiplier: 100, engine: true },
+                    { label: 'GDP Scaling', key: 'gdpScaling', unit: '', step: 0.05, min: 0, max: 1.0, multiplier: 1, engine: true },
                 ].map(p => (
                     <div key={p.key}>
-                    <div className="flex justify-between text-[10px] mb-2 font-mono text-slate-500 dark:text-slate-400"><span>{p.label}</span><span className="text-slate-900 dark:text-white">{(model as any)[p.key] * p.multiplier}{p.unit}</span></div>
+                    <div className="flex justify-between text-[10px] mb-2 font-mono text-slate-500 dark:text-slate-400"><span>{p.label}{!p.engine && <span title="The built-in engine does not read this parameter; see docs/design/model-card-default.md" className="ml-1 px-1 rounded bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 font-sans normal-case">not used by engine</span>}</span><span className="text-slate-900 dark:text-white">{(model as any)[p.key] * p.multiplier}{p.unit}</span></div>
                     <input type="range" min={p.min} max={p.max} step={p.step} value={(model as any)[p.key]} onChange={(e) => setModel({ ...model, [p.key]: parseFloat(e.target.value) })} className="w-full h-1 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-blue-600" />
                     </div>
                 ))}
@@ -2377,6 +2379,12 @@ const App: React.FC = () => {
                     ? 'Core mathematical relationships driving the simulation'
                     : 'Complete equation set for peer review and verification'}
                 </p>
+                <p className="mx-auto max-w-2xl text-left text-xs rounded-xl border border-amber-200 dark:border-amber-900 bg-amber-50 dark:bg-amber-950/30 text-amber-900 dark:text-amber-200 px-4 py-3">
+                  <span className="font-bold">Parts of this page describe an earlier engine.</span> Formulas that use surplus tax, adoption incentive,
+                  redistribution rate or market pressure are not what runs today: the built-in engine reads only growth speed, displacement rate,
+                  GDP scaling and the optional macro block. The formulas as actually computed, with their evidence, are in the{' '}
+                  <a href="https://github.com/sagearbor/ai-ubi-wellbeing-transition-simulator/blob/main/docs/design/model-card-default.md" target="_blank" rel="noreferrer" className="underline underline-offset-2 font-semibold">model card</a>.
+                </p>
               </div>
 
               {/* Toggle Button */}
@@ -2876,6 +2884,16 @@ shadowWellbeing = max(1, shadowWellbeing - shadowFriction × 0.4)`}
                 </div>
 
                 <div className="grid gap-8">
+                     <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900 p-6 lg:p-8 rounded-[2rem] shadow-sm">
+                        <h3 className="text-amber-900 dark:text-amber-200 text-sm font-bold uppercase tracking-widest mb-3">Model card: what the default model is, and is not</h3>
+                        <p className="text-sm text-amber-900/90 dark:text-amber-100/90">
+                          The default world model is a deterministic, money-conserving mechanism model whose numbers are assumptions: 13 of its 15
+                          relationships have no source. It is an <span className="font-semibold">illustrative</span> default, not a reviewed one. The card lists
+                          every lever, what the engine actually reads, the evidence for each relationship, how outputs respond to small nudges, and the open
+                          failures (the UBI-to-wellbeing coefficient is not calibrated; lost wages are permanent by assumption).
+                        </p>
+                        <a href="https://github.com/sagearbor/ai-ubi-wellbeing-transition-simulator/blob/main/docs/design/model-card-default.md" target="_blank" rel="noreferrer" className="inline-block mt-3 text-sm font-bold text-amber-900 dark:text-amber-200 underline underline-offset-2">Read the model card</a>
+                     </div>
                      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-8 rounded-[2rem] shadow-sm">
                         <h3 className="text-slate-900 dark:text-white text-sm font-bold uppercase tracking-widest mb-6 border-b border-slate-200 dark:border-slate-800 pb-4">Getting Started</h3>
                         <ol className="list-decimal pl-5 space-y-6 text-slate-600 dark:text-slate-300 text-sm">

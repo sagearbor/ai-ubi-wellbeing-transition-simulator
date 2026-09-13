@@ -378,7 +378,14 @@ export function runHindcast(options: HindcastOptions): HindcastRun {
     const input: SimulationInput = { state, corporations: corps, model: params };
     const out = stepSimulationPure(input);
     state = out.state;
-    corps = out.corporations;
+    // Pin the configured contribution rate every month. The engine's demand-collapse trigger
+    // (adaptCorporationPolicy) raises a corporation's rate from 0 when its customers are poor,
+    // so without this pin the "AI off" run quietly paid UBI to low-wellbeing countries. Harmless
+    // while per-capita UBI was understated 10,000x (stage 3 finding C3); with real units it moved
+    // the AI-off score, which must reflect no UBI at all.
+    corps = corpRate !== null
+      ? out.corporations.map(c => ({ ...c, contributionRate: corpRate }))
+      : out.corporations;
     if ((m + 1) % monthsPerYear === 0) record(state);
   }
 
