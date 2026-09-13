@@ -19,11 +19,17 @@ describe('anchorTests - optional compiled equation set', () => {
     const suite = runAllAnchorTests();
 
     expect(suite.total).toBe(6);
-    // Locks the known baseline (see scripts/run-anchor-tests.ts output / prior wrapups):
-    // AT-1, AT-3, AT-4, AT-5, AT-6 pass; AT-2 fails (owner-acknowledged, untouched).
-    expect(suite.passed).toBe(5);
+    // Locks the known baseline. Until 2026-09-13 this read 5/6 (AT-2 failing). That count was an
+    // artefact: stepSimulationPure mutated country objects in place, including the wellbeingTrend
+    // array shared with the INITIAL_COUNTRIES constant, so each anchor test started from state
+    // polluted by the previous one and AT-3's race-to-bottom trigger fired only because of that.
+    // With the engine made pure (docs/design/audit-2026-09-13.md) the honest baseline is 4/6:
+    // AT-1, AT-4, AT-5, AT-6 pass; AT-2 and AT-3 fail on a clean run (owner-acknowledged).
+    expect(suite.passed).toBe(4);
     const at2 = suite.results.find(r => r.testId === 'AT-2');
     expect(at2?.passed).toBe(false);
+    const at3 = suite.results.find(r => r.testId === 'AT-3');
+    expect(at3?.passed).toBe(false);
   });
 
   it('golden: compiled DEFAULT_EQUATIONS reproduce the hardcoded-engine anchor results bit-for-bit', () => {
