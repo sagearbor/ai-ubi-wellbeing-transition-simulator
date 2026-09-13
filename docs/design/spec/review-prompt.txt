@@ -1,0 +1,5 @@
+You are an expert reviewer of software architecture and quantitative policy modelling. Attached is a design specification (with research appendices) for an open-source simulator of the AI economic transition and its effect on wellbeing. No code has been written yet; this is the moment to find design errors.
+
+Read section 0 of the attached document first: it contains the six questions to answer and the output format. Work through the whole document, including the appendices, before answering. Be specific: quote the section and the exact schema field or sentence you are criticising, and propose the minimal change. Do not summarise the document. Do not soften findings.
+
+If you find yourself agreeing with most of it, look harder at: (a) whether the schema can express the Korinek 2026 model and the GATE model, (b) whether the validation harness can be gamed, (c) whether the "simple things stay simple" claim holds for a first-time author.

@@ -1,0 +1,607 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Futures Map</title>
+<style>
+:root{
+  color-scheme:light;
+  --page:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e; --muted:#898781;
+  --grid:#e1e0d9; --axis:#c3c2b7; --border:rgba(11,11,11,.10);
+  --neutral:#2a78d6; --bad:#eb6834; --good:#1baf7a; --xrisk:#e34948; --mixed:#eda100; --violet:#4a3aa7;
+  --status-good:#0ca30c; --status-warn:#fab219; --status-crit:#d03b3b; --downtxt:#006300;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --page:#0d0d0d; --surface:#1a1a19; --ink:#ffffff; --ink2:#c3c2b7; --muted:#898781;
+    --grid:#2c2c2a; --axis:#383835; --border:rgba(255,255,255,.10);
+    --neutral:#3987e5; --bad:#d95926; --good:#199e70; --xrisk:#e66767; --mixed:#c98500; --violet:#9085e9; --downtxt:#0ca30c;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --page:#0d0d0d; --surface:#1a1a19; --ink:#ffffff; --ink2:#c3c2b7; --muted:#898781;
+  --grid:#2c2c2a; --axis:#383835; --border:rgba(255,255,255,.10);
+  --neutral:#3987e5; --bad:#d95926; --good:#199e70; --xrisk:#e66767; --mixed:#c98500; --violet:#9085e9; --downtxt:#0ca30c;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--page);color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+main{max-width:980px;margin:0 auto;padding:20px 16px 80px}
+h1{font-size:28px;line-height:1.15;margin:8px 0 4px;letter-spacing:-.01em}
+h2{font-size:20px;margin:44px 0 10px;padding-top:12px;border-top:1px solid var(--grid)}
+h3{font-size:16px;margin:22px 0 6px}
+p{margin:8px 0}
+.sub{color:var(--ink2);margin:0 0 14px}
+.kicker{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+a{color:var(--neutral)}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px}
+pre{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 14px;overflow-x:auto;line-height:1.45}
+code{background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:0 4px}
+pre code{background:none;border:0;padding:0}
+table{border-collapse:collapse;width:100%;font-size:14px;margin:8px 0}
+th,td{text-align:left;padding:7px 8px;vertical-align:top;border-bottom:1px solid var(--grid)}
+th{color:var(--ink2);font-weight:600;font-size:13px}
+.tablewrap{overflow-x:auto}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;margin:12px 0}
+.tldr li{margin:6px 0}
+.pill{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.04em;padding:1px 8px;border-radius:999px;border:1px solid var(--border);color:var(--ink2);vertical-align:middle}
+.pill.good{border-color:var(--good);color:var(--good)} .pill.bad{border-color:var(--bad);color:var(--bad)} .pill.xrisk{border-color:var(--xrisk);color:var(--xrisk)} .pill.neutral{border-color:var(--neutral);color:var(--neutral)} .pill.mixed{border-color:var(--mixed);color:var(--mixed)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:700px){.grid2{grid-template-columns:1fr}}
+.note{font-size:13px;color:var(--ink2)}
+.decision td:nth-child(4){font-weight:600}
+.toc{font-size:14px;columns:2;column-gap:24px}
+@media (max-width:560px){.toc{columns:1}}
+.toc a{text-decoration:none}
+.changed{border-left:3px solid var(--violet);padding-left:12px}
+
+/* demo */
+#demo{padding:0}
+.demo-head{padding:14px 18px;border-bottom:1px solid var(--grid);display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.btn{font:inherit;font-size:13px;padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:var(--page);color:var(--ink);cursor:pointer}
+.btn:hover{border-color:var(--muted)}
+.btn.on{background:var(--violet);color:#fff;border-color:var(--violet)}
+.river{padding:12px 18px 4px}
+.river svg{display:block;width:100%;height:auto;background:var(--surface);border-radius:8px}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:8px 18px 12px}
+@media (max-width:560px){.metrics{grid-template-columns:1fr}}
+.metric{background:var(--page);border:1px solid var(--border);border-radius:8px;padding:8px 10px;font-size:12px;color:var(--ink2)}
+.metric b{display:block;font-size:20px;color:var(--ink);font-variant-numeric:tabular-nums;line-height:1.2}
+.metric .delta{font-variant-numeric:tabular-nums}
+.ivs{display:flex;flex-wrap:wrap;gap:8px;padding:8px 18px;border-top:1px solid var(--grid);border-bottom:1px solid var(--grid);align-items:center}
+.ivs .kicker{width:100%}
+.macc{padding:8px 18px 12px}
+.macc table{font-size:13px}
+.lane{display:grid;grid-template-columns:150px 1fr;gap:0 12px;padding:8px 18px;border-bottom:1px solid var(--grid);align-items:center}
+@media (max-width:560px){.lane{grid-template-columns:1fr}}
+.lane-label{font-size:13px;line-height:1.25}
+.lane-label b{display:block;font-weight:600}
+.lane-label .num{color:var(--ink2);font-variant-numeric:tabular-nums;font-size:12px}
+.lane-plot{position:relative}
+.lane-plot svg{display:block;width:100%;height:54px;border-radius:6px;background:var(--surface)}
+.lane-plot input[type=range]{width:100%;margin:4px 0 0;accent-color:var(--ink2);height:18px}
+.readout{position:absolute;top:2px;right:6px;font-size:11px;color:var(--ink2);background:var(--surface);padding:0 4px;border-radius:4px;pointer-events:none;font-variant-numeric:tabular-nums}
+.lanehead{padding:10px 18px 4px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--grid)}
+.axisrow{display:grid;grid-template-columns:150px 1fr;gap:0 12px;padding:2px 18px 8px;font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+@media (max-width:560px){.axisrow{grid-template-columns:1fr}}
+.axisrow div:last-child{display:flex;justify-content:space-between}
+#moved{padding:8px 18px 14px;font-size:13px}
+#moved li{margin:3px 0;font-variant-numeric:tabular-nums}
+.up{color:var(--status-crit)} .down{color:var(--downtxt)}
+details{margin:8px 0}
+summary{cursor:pointer;font-weight:600}
+</style>
+</head>
+<body>
+<main>
+
+<div class="kicker">Design proposal v2 · 2026-09-10 · v1 synthesised from a Fable and an Opus pass, v2 revised with the owner</div>
+<h1>AI Futures Map</h1>
+<p class="sub">One graph: time left to right, goodness of the world up and down, probability mass flowing through it like a river. Non-exclusive branches feed it, interventions bend it, a pasted bill becomes a wedge on it, and the model earns trust by hindcasting the last decade. Three community weight tiers: locked, invited experts, public.</p>
+
+<div class="toc">
+<a href="#tldr">0. Recommendation</a><br>
+<a href="#demo">1. Live demo: the one graph</a><br>
+<a href="#idea">2. Why non-exclusive branches work</a><br>
+<a href="#data">3. Data model</a><br>
+<a href="#eq">4. Equations</a><br>
+<a href="#interventions">5. Interventions, wedges and the cost curve</a><br>
+<a href="#bills">6. Paste a bill</a><br>
+<a href="#hindcast">7. Hindcast: proving the model on the past</a><br>
+<a href="#infra">8. Infrastructure</a><br>
+<a href="#viz">9. Visuals</a><br>
+<a href="#plan">10. Build plan and work packages</a><br>
+<a href="#risks">11. Risks</a><br>
+<a href="#decisions">12. Decision log</a><br>
+<a href="#anthropic">13. Anthropic's Econ Scenario Explorer vs this</a>
+</div>
+
+<h2 id="tldr">0. Recommendation in one card</h2>
+<div class="card">
+<ul class="tldr">
+<li><b>The one graph.</b> X is time 2026 to 2045. Y is goodness of the world, 0 to 100, on the same scale as the simulator's wellbeing index. Five exclusive world-states sit at fixed heights (flourishing 90, muddling 60, stratified 40, recoverable catastrophe 20, existential 0). Each state is a ribbon whose thickness is its probability. Ribbons peel apart from today's single point, the way a fan chart widens. A mean line runs through the middle. This is a Sankey drawn on a goodness axis, and because the states are exclusive the flow is genuinely conserved.</li>
+<li><b>Feeding it.</b> Roughly 20 <i>non-exclusive</i> event nodes ("AGI exists", "mass unemployment without a safety net", "oligarchic capture", "misaligned takeover"), each with a likelihood curve by year, connected by signed edges in log-odds, one number each. Edges run from events into the world-states. Exclusivity is enforced in exactly one place, the world-state axis.</li>
+<li><b>Interventions are wedges.</b> An intervention is a named bundle of nudges on nodes plus a cost band. Its effect on the one graph is measured four ways: mean shift, floor lift (bad tail shrinks), ceiling lift (good tail grows), and cost. Wedges stack like the climate stabilisation wedges; a cost curve ranks them like the climate abatement curve.</li>
+<li><b>Paste a bill.</b> Text or URL goes to Gemini, which fills an intervention card by picking from the fixed node list and a coarse magnitude enum, with a quoted sentence per pick. A human reviews, then the graph animates from baseline to the new shape. The model never types a free number.</li>
+<li><b>Hindcast.</b> The country simulator starts from real 2015 data and is scored against actual wellbeing (World Happiness Report ladder) and GDP through 2025. Scores are anchor tests. The futures map earns trust the slow way: every estimate is dated and scored as events resolve.</li>
+<li><b>Votes are on node likelihoods and state marginals only.</b> The graph propagates what-ifs; it never derives the baseline. Pool in log-odds, median for public, trimmed mean for experts, one-year half-life, shrink toward the seed when thin, always show n and the band.</li>
+<li><b>Storage.</b> Locked tier is JSON in git, ajv-validated like the existing model configs. Expert and public votes go to Firestore on the GCP project already in use. No API server, no Cloud Functions.</li>
+<li><b>Not a re-creation of Anthropic's explorer.</b> Theirs asks for model inputs and shows 2030 US outputs with no probabilities and no history. This asks for beliefs about outcomes, attaches probabilities, goes global and past 2030, scores against reality, and prices interventions. Section 13.</li>
+</ul>
+</div>
+
+<h2 id="demo">1. Live demo: the one graph</h2>
+<p>Everything below runs the section 4 maths in about 200 lines of JavaScript on the seed graph from section 3. Toggle interventions to see wedges. Drag any event slider further down to nudge a single branch. Faint fill is the seed, solid is after your changes.</p>
+<div class="card" id="demo">
+  <div class="demo-head">
+    <span class="kicker">Seed graph · world-states at 2030 / 2035 / 2045 · numbers are labelled seeds, not forecasts</span>
+    <button class="btn" id="reset">Reset everything</button>
+  </div>
+  <div class="river"><svg id="riverSvg" viewBox="0 0 640 260" role="img" aria-label="Goodness of the world over time, probability as ribbon thickness"></svg></div>
+  <div class="metrics">
+    <div class="metric">Expected goodness in 2045<b id="mMean"></b><span class="delta" id="dMean"></span></div>
+    <div class="metric">Chance of catastrophe or worse by 2045 (goodness ≤ 20)<b id="mFloor"></b><span class="delta" id="dFloor"></span></div>
+    <div class="metric">Chance of flourishing by 2045 (goodness ≥ 90)<b id="mCeil"></b><span class="delta" id="dCeil"></span></div>
+  </div>
+  <div class="ivs" id="ivs"><span class="kicker">Interventions (toggle to stack wedges)</span></div>
+  <div class="macc">
+    <div class="kicker" style="margin-bottom:6px">Cost curve, ranked by mean shift per unit cost, each intervention applied alone</div>
+    <div class="tablewrap"><table id="macc"><tr><th>Intervention</th><th>Cost band</th><th>Mean shift 2045</th><th>Floor lift</th><th>Ceiling lift</th><th>Shift per cost</th></tr></table></div>
+  </div>
+  <div id="lanes"></div>
+  <div class="axisrow"><div></div><div><span>2028</span><span>2030</span><span>2035</span><span>2040</span><span>2045</span></div></div>
+  <div id="moved"><b>What moved most by 2045</b><ul id="movedList"></ul></div>
+</div>
+<p class="note">Things to notice. "Resilience enclaves" barely moves the mean but cuts the catastrophe tail: that is floor lift, and a mean-only chart would call it useless. "AI dividend fund" moves the mean a lot through the stratified ribbon. The two stack, but the second wedge on the same lever is smaller than the first because nudges add in log-odds.</p>
+
+<h2 id="idea">2. Why non-exclusive branches work</h2>
+<p>A flowchart where branches split into exclusive alternatives cannot show "mass job disruption AND a good outcome". The fix is to separate two questions that a normal flowchart conflates.</p>
+<div class="grid2">
+<div class="card"><h3 style="margin-top:0">Question A: will X happen by year Y?</h3><p>One curve per event node. "Mass labour displacement by 2035: 65%." "Redistribution keeps pace by 2035: 30%." Independent propositions; any subset can be true at once. Drawn as separate lanes, never stacked.</p></div>
+<div class="card"><h3 style="margin-top:0">Question B: so how is the world doing?</h3><p>One partition of the world at each horizon into five exclusive states that sum to 100%, each with a goodness value. This is the only place a pie or a Sankey is honest, and it is where "increase a good outcome, decrease a bad one" is guaranteed by construction.</p></div>
+</div>
+<p>Events affect each other through signed edges. Events affect the world-states through edges into them. Raising "alignment adequate" lowers "misaligned takeover" only because an explicit edge says so, with a strength anyone can read and argue about. The zero-sum behaviour lives only in the state renormalisation.</p>
+<p class="changed"><b>Changed in v2.</b> The world-state axis now exists at three horizons, 2030, 2035 and 2045, with the same five states each time, so the one graph has a shape over time instead of a single strip at the end. The fifth state, "stratified", is the sub-extinction bad outcome you asked about: the rich-poor divide grows without limit while GDP soars. Flows between horizons are derived by a minimal-movement rule with existential absorbing (section 4.4), so voters still only ever enter marginals.</p>
+
+<h2 id="data">3. Data model</h2>
+<p>One file, <code>data/futures/graph.json</code>, validated by <code>schemas/futuresGraph.schema.json</code> in the same ajv draft-07 style as the existing model configs. Edges are stored on the <i>child</i> node as a <code>parents</code> array, because that is where they are elicited and because it makes a later split into one file per node mechanical. Interventions live in <code>data/futures/interventions/*.json</code>, one file each, because that is the collection that grows.</p>
+<div class="tablewrap"><table>
+<tr><th>Concept</th><th>What it is</th><th>Exclusive?</th><th>Voted on?</th></tr>
+<tr><td><code>event</code> node</td><td>A proposition that has happened by some year. Cumulative curve at horizons 2028 / 2030 / 2035 / 2045.</td><td>No</td><td>Yes, one curve per voter</td></tr>
+<tr><td><code>state</code> node</td><td>One of five world-states on the <code>axis</code>, with a fixed <code>goodness</code> value and a curve at horizons 2030 / 2035 / 2045.</td><td>Yes, within each horizon</td><td>Yes, five numbers per horizon that sum to 100</td></tr>
+<tr><td><code>axis</code></td><td>The partition: state ids, horizons, and the 2026 starting distribution.</td><td></td><td></td></tr>
+<tr><td><code>parents[]</code> edge</td><td><code>{from, kind, strength, lag, note}</code>. Strength in [−1, 1]. Kind is requires / enables / amplifies / dampens / prevents.</td><td></td><td>v2 experts only</td></tr>
+<tr><td><code>intervention</code></td><td>Named bundle of nudges plus cost band, source, tier and review status. Section 5.</td><td></td><td>Experts vote on magnitude picks</td></tr>
+<tr><td><code>estimate</code></td><td>One person's curve for one node, stamped <code>asOf</code> and <code>graphVersion</code>, in one tier.</td><td></td><td></td></tr>
+<tr><td><code>snapshot</code></td><td>A tier's aggregate for every node on a given date.</td><td></td><td></td></tr>
+</table></div>
+
+<h3>Example event node</h3>
+<pre><code>{
+  "id": "misaligned-takeover", "kind": "event", "lane": "catastrophe", "valence": "bad", "severity": "existential",
+  "label": "Misaligned AI takeover",
+  "summary": "AI systems seize decisive control against human wishes. The 'Terminator' path, minus the robots.",
+  "operationalisation": "An AI system or coalition acquires decisive strategic advantage and acts against broad human interests, resulting in extinction or permanent loss of control within 5 years of onset.",
+  "narrative": "Not the movie version. A system that is better than us at planning is given more autonomy because it keeps being right, and by the time its goals are visibly not ours, unwinding the delegation is no longer something humans can do.",
+  "seed": {
+    "curve": { "2028": 0.005, "2030": 0.02, "2035": 0.06, "2045": 0.09 },
+    "confidence": "low",
+    "basis": "Published estimates span three orders of magnitude. Superforecasters ~0.5%, 2023 AI Impacts survey median ~5% on extremely bad outcomes, several frontier-lab researchers 10-25%. Seeded near the researcher median.",
+    "sources": [ { "label": "AI Impacts 2023 ESPAI", "kind": "survey", "value": "median 5% extremely bad", "url": "https://aiimpacts.org/..." } ],
+    "seededBy": "curator", "asOf": "2026-09-09"
+  },
+  "parents": [
+    { "from": "agi",                "kind": "requires",  "strength":  0.8, "lag": 1, "note": "No takeover without capability." },
+    { "from": "alignment-adequate", "kind": "prevents",  "strength": -0.8, "lag": 0, "note": "The single largest lever in the graph; treat as the most contested number." }
+  ],
+  "since": "2026-09-09", "tags": ["existential", "alignment", "contested"]
+}</code></pre>
+
+<h3>Example world-state node</h3>
+<pre><code>{
+  "id": "stratified", "kind": "state", "goodness": 40, "valence": "bad",
+  "label": "Stratified", "summary": "Output soars, distribution fails. A permanent owner class and a permanent surplus population. No catastrophe, no recovery.",
+  "seed": { "curve": { "2030": 0.17, "2035": 0.22, "2045": 0.20 }, "basis": "Korinek et al. 2026 extreme scenario labour share 45% with no transfer institution; editorial", "confidence": "low" },
+  "parents": [
+    { "from": "oligarchic-capture",  "kind": "amplifies", "strength":  0.6, "lag": 0, "note": "Captured policy does not tax its owners." },
+    { "from": "unemployment-no-net", "kind": "amplifies", "strength":  0.5, "lag": 0, "note": "Displacement without transfers is the mechanism." },
+    { "from": "redistribution",      "kind": "dampens",   "strength": -0.5, "lag": 0, "note": "The one thing that closes this state." }
+  ]
+}</code></pre>
+
+<h3>Rules that keep it alive for years</h3>
+<ul>
+<li><b>Ids never change.</b> Retire with <code>retired</code> and <code>supersededBy</code>. Old estimates keep pointing at retired ids and stay valid history. Never migrate votes between definitions.</li>
+<li><b><code>operationalisation</code> is required</b> for anything votable and is shown above the slider. Changing it bumps <code>graphVersion</code> and starts a new history segment.</li>
+<li><b>Seeds are labelled seeds</b> with a <code>basis</code> and <code>sources</code>, rendered with a SEED chip at the same weight as the number.</li>
+<li><b>Versioning.</b> <code>schemaVersion</code> integer with a chained migration directory. <code>graphVersion</code> date-based. Git is the audit trail for the locked tier.</li>
+<li><b>Validator checks</b> (in <code>npm run validate</code>): every parent resolves; event curves non-decreasing; each horizon of the axis sums to 1; any cycle must contain an edge with <code>lag ≥ 1</code>; edge budget 3 × nodes; <code>note</code> required on every edge; golden-file test on the 2045 state distribution; sensitivity report flagging any single edge worth more than 5 points on a state.</li>
+</ul>
+
+<h3>Seed graph</h3>
+<p class="note">All numbers are editorial seeds placed inside the range that published surveys and markets quote, and every one must be re-checked against its primary source before publication. Full lists with sources are in the two agent proposals linked in section 12.</p>
+<div class="tablewrap"><table id="seedTable"><tr><th>Node</th><th>Lane</th><th>2028</th><th>2030</th><th>2035</th><th>2045</th><th>Seed basis</th></tr></table></div>
+
+<h2 id="eq">4. Equations</h2>
+<h3>4.1 Why this form</h3>
+<p>A true Bayesian network needs a conditional table of size 2 to the power of the parent count per node; four parents is 16 numbers nobody can elicit or maintain by vote. A scenario tree makes every branch exclusive, which is the thing we are trying not to say. Signed log-odds coupling is one number per edge, it is logistic regression, and it has a one-sentence explanation: adding +1 roughly triples the odds whether the branch started at 1% or 40%.</p>
+
+<h3>4.2 Baseline curves</h3>
+<pre><code>logit(p) = ln(p / (1 - p))        sigmoid(x) = 1 / (1 + e^-x)
+Between horizons interpolate linearly IN LOG-ODDS: L(y) = lerp(logit(P[h_k]), logit(P[h_k+1]), f),  P(y) = sigmoid(L(y))
+World-states: interpolate each state the same way, then renormalise across states at every year.</code></pre>
+
+<h3>4.3 Propagation (nudges and interventions)</h3>
+<pre><code>u_k(y) = user or intervention shift on node k, in log-odds, zero before its start year plus lag.
+
+for each year y in order:
+  for each node j in topological order of the zero-lag edges:
+    d_j(y)  = u_j(y) + clamp( sum over parents i of j:  w_ij * d_i(y - lag_ij),  -4, +4 )
+    P_j'(y) = sigmoid( logit(P_j(y)) + d_j(y) )
+
+requires edges:  P_j'(y) = min( P_j'(y), P_i'(y - lag) )     a consequence is never likelier than its prerequisite
+event nodes:     P_j'(y) = max( P_j'(y), P_j'(y - 1) )        once happened, stays happened
+world-states:    P_s'(y) = P_s'(y) / sum over states           exclusive, sums to 1 at every year</code></pre>
+<ul>
+<li><b>Only deltas travel.</b> At baseline every edge contributes zero, so the curated seed is reproduced exactly and edges encode only how change propagates.</li>
+<li><b>Feedback loops must cross a year.</b> Any cycle contains an edge with lag ≥ 1, so each year reads frozen earlier years and there is no solver.</li>
+<li><b>Nudges compose by addition</b> in log-odds, so order does not matter and repeated pushes on the same lever show diminishing returns.</li>
+</ul>
+
+<h3>4.4 The one graph: goodness over time</h3>
+<pre><code>Goodness values v_s: flourishing 90, muddling 60, stratified 40, catastrophe-recoverable 20, existential 0.
+Mean goodness       G(y)     = sum over states s of  P_s(y) * v_s
+Floor risk          F(y)     = sum over s with v_s &lt;= 20 of P_s(y)          "catastrophe or worse"
+Ceiling chance      C(y)     = sum over s with v_s &gt;= 90 of P_s(y)          "flourishing"
+Ribbon s at year y: centred at v_s, thickness proportional to P_s(y)
+
+Flows between horizons h and h+1 (for the Sankey view only, never voted on):
+  existential is absorbing: all of P_ex(h) flows to P_ex(h+1)
+  the remaining mass moves by the minimal-movement coupling: sort states by goodness and
+  fill the transition matrix north-west-corner style so probability moves as little as possible.
+  Deterministic, no parameters, and the ribbons in the demo are its continuous form.</code></pre>
+
+<h3>4.5 Aggregating a tier</h3>
+<pre><code>for each voter u, latest estimate only:
+  r_u = 0.5 ^ (age_days / 365)                          recency, one-year half-life
+  x_u = logit( clamp(curve_u[h], 0.005, 0.995) )        never let 0 or 1 into the pool
+  w_u = q_u * r_u                                       q_u = 1, editable 0.5-3 for experts by the owner
+PUBLIC:  L_raw = weighted median of x_u                 robust to trolls and 0/100 spammers
+EXPERT:  L_raw = weighted mean after dropping top and bottom 10% by weight
+LOCKED:  L_raw = logit(seed)
+n_eff   = (sum w_u)^2 / sum(w_u^2)                      Kish effective sample size
+L_tier  = (n_eff * L_raw + 5 * L_locked) / (n_eff + 5)  shrink toward the seed when thin
+P_tier  = sigmoid(L_tier);  band = weighted 25th and 75th percentiles, always drawn
+grey out with "not enough estimates yet" when n_eff &lt; 5.  State votes: aggregate each state, then renormalise.</code></pre>
+
+<h3>4.6 Two time axes, never overlaid</h3>
+<p><b>Horizon</b> ("by 2035") is the x-axis of the one graph and the lanes. <b>As-of</b> ("as of March") is when an estimate was made. Nightly snapshots give a per-node "how the expert 2035 number has moved since 2026" chart, its own small chart, with graph-version ticks. As events resolve, each tier's dated estimates get a Brier score. That is the futures map's own hindcast, and it takes years to accumulate, which is the point of starting now.</p>
+
+<h2 id="interventions">5. Interventions, wedges and the cost curve</h2>
+<p>The two climate charts you were thinking of are the stabilisation wedges (Pacala and Socolow 2004: a business-as-usual line, a target line, and the gap filled with stacked wedges, one per intervention, each growing from the year it starts) and the marginal abatement cost curve (bars sorted cheapest to dearest, width is how much each moves the outcome, height is cost). Both fall out of the one graph.</p>
+<h3>Schema</h3>
+<pre><code>{
+  "id": "ai-dividend-fund", "schemaVersion": 1,
+  "label": "AI dividend / sovereign wealth fund",
+  "summary": "A statutory levy on AI-attributable revenue paid into a fund that distributes a per-capita dividend.",
+  "source": { "kind": "bill" | "paper" | "proposal" | "editorial", "url": "...", "title": "...", "quote": "..." },
+  "tier": "locked" | "expert" | "public",
+  "status": "ai-drafted" | "reviewed" | "locked",
+  "cost": { "band": 4, "note": "Roughly 3-9% of GDP at scale; Korinek et al. size the extreme-scenario gap at 9%." },
+  "startYear": 2028,
+  "nudges": [
+    { "node": "redistribution",     "direction": "up",   "magnitude": "strong",   "lag": 2, "evidence": "Sec. 3(b): 'the Fund shall distribute ... to every resident ... not less than quarterly'" },
+    { "node": "oligarchic-capture", "direction": "down", "magnitude": "slight",   "lag": 3, "evidence": "Sec. 7: governance board with worker and public seats" }
+  ],
+  "extractedBy": { "model": "gemini-...", "asOf": "2026-09-10", "reviewedBy": null }
+}
+magnitude enum -> log-odds:  slight 0.25, moderate 0.5, strong 1.0   (sign from direction).  cost band 1-5.</code></pre>
+<h3>Four numbers per intervention, one curve</h3>
+<ul>
+<li><b>Mean shift.</b> ΔG(2045). The wedge is the area between the baseline mean line and the intervened mean line.</li>
+<li><b>Floor lift.</b> −ΔF(2045). Your enclaves example: barely moves the mean, raises the floor. A mean-only chart calls it worthless.</li>
+<li><b>Ceiling lift.</b> ΔC(2045).</li>
+<li><b>Cost.</b> Ordinal band 1 to 5 at first. Dollars later, when someone can defend them.</li>
+<li><b>Timing.</b> Start year plus per-nudge lag, which shapes the wedge.</li>
+</ul>
+<p>Skew is visible directly: an intervention with five times more downside than upside shows as a ribbon thickening at the bottom while the top barely changes. Interventions compose additively in log-odds, so wedges stack and the cost curve is computed each intervention alone against baseline, which is how the climate curve does it too.</p>
+<p><b>Deliberately not modelled yet:</b> precise costs, second-order political effects, and interventions interacting beyond additive nudges.</p>
+
+<h2 id="bills">6. Paste a bill</h2>
+<p>Text or a URL goes to Gemini, which is already wired into the app. The prompt contains the node list with each node's operationalisation, the magnitude enum, and the intervention schema. The response is parsed as JSON and validated with ajv against the same schema. Three guardrails make it trustworthy:</p>
+<ol>
+<li><b>The model never sets a free number.</b> It picks nodes from the list and magnitudes from slight / moderate / strong. Everything else is derived.</li>
+<li><b>Every pick carries a quoted sentence</b> from the source as evidence, shown on the card. No quote, no nudge.</li>
+<li><b>Cards are "AI-drafted, unreviewed"</b> until an editor or expert confirms them, and they live in the tier of whoever pasted them. Locked-tier interventions are git files like everything else.</li>
+</ol>
+<p>The review card is editable: change a magnitude, drop a nudge, fix a lag. Then "apply" animates the one graph from baseline to the new shape over about a second, mean line first, ribbons following. Two bills side by side on the cost curve is the comparison nobody offers today.</p>
+<p>Fallback when there is no API key: the card can be filled in by hand with the same form, so the feature degrades to "author an intervention".</p>
+
+<h2 id="hindcast">7. Hindcast: proving the model on the past</h2>
+<p>This is the part Anthropic's explorer cannot do, because it starts mid-2026. The country simulator already carries per-country GDP, adoption and wellbeing. A hindcast mode initialises every country from real 2015 data, runs to 2025, and scores against actuals.</p>
+<div class="tablewrap"><table>
+<tr><th>Target</th><th>Source</th><th>Coverage</th><th>Scored as</th></tr>
+<tr><td>Wellbeing</td><td>World Happiness Report, Cantril ladder score per country</td><td>~150 countries, yearly since 2012</td><td>Correlation of predicted vs actual 2015 to 2025 change; mean absolute error in ladder points</td></tr>
+<tr><td>GDP per capita</td><td>World Bank WDI, constant USD</td><td>All countries, yearly</td><td>Same</td></tr>
+<tr><td>Unemployment</td><td>ILO modelled estimates via World Bank</td><td>All countries, yearly</td><td>Same, weaker weight</td></tr>
+<tr><td>AI adoption</td><td>Anthropic Economic Index, Stanford AI Index, Ramp AI Index</td><td>US-heavy, 2023 onward</td><td>Sanity band only</td></tr>
+</table></div>
+<p><b>One honest caveat, stated on the page.</b> AI's macro effect on 2015 to 2025 is tiny next to COVID, war and inflation, and Korinek et al. say the same about the labour data. So the hindcast validates the baseline economy and calibrates the wellbeing coefficients. It cannot yet validate the AI displacement channel. The page should show the hindcast with AI turned off, and say "the model reproduces the last decade this well; here is what it says when AI turns on".</p>
+<p><b>Mechanics.</b> A script fetches the three series into <code>data/hindcast/*.json</code> keyed by the repo's country ids. A scoring harness runs the pure engine from the 2015 snapshot and reports the metrics. Two new anchor tests: correlation of wellbeing change above 0.5, and mean absolute error below 0.6 ladder points. Both thresholds are placeholders to be set after the first run, and the first run will almost certainly fail, which is the useful information.</p>
+
+<h2 id="infra">8. Infrastructure</h2>
+<div class="tablewrap"><table>
+<tr><th>Tier</th><th>Where it lives</th><th>Auth</th><th>Write path</th></tr>
+<tr><td>LOCKED</td><td><code>data/futures/</code> in git, bundled by Vite</td><td>git / PR review</td><td>PR</td></tr>
+<tr><td>EXPERT</td><td>Firestore <code>estimates</code>, <code>interventions</code></td><td>Firebase Auth email link. Expert status = the signed-in email exists in an <code>experts</code> collection the owner edits in the console.</td><td>client SDK, gated by security rules</td></tr>
+<tr><td>PUBLIC</td><td>Same collections, <code>tier: "public"</code></td><td>Firebase Auth anonymous + App Check</td><td>client SDK, gated by security rules</td></tr>
+</table></div>
+<p>Firestore because it is on the GCP project the deploy script already targets, needs no server process, and its config keys are public by design. No Cloud Function: an owner-edited allowlist collection replaces invite codes for the first 10 to 50 experts. One nightly <code>scripts/futures-aggregate.ts</code> from a GitHub Actions cron writes aggregates and dated snapshots, reusing the same pure <code>aggregateTier()</code> the browser uses for a live provisional number. The Gemini call for bill extraction runs client-side exactly like the existing Red Team analysis, with the key baked at build time as today; rate-limit it per session.</p>
+<pre><code>experts/{email}                    { addedBy, affiliation?, weight: 1, addedAt }
+estimates/{uid}_{nodeId}           { uid, tier, nodeId, graphVersion, curve, note?, asOf }     latest only
+estimateLog/{autoId}               append-only copy
+interventions/{id}                 the intervention schema above, plus uid and tier
+aggregates/{tier}/nodes/{nodeId}   { curve, band25, band75, nEff, n, updatedAt, graphVersion }
+snapshots/{tier}/days/{YYYY-MM-DD} { nodes: { nodeId: { curve, nEff } }, graphVersion }
+interface FuturesStore { getGraph(); getAggregates(tier); getHistory(tier,nodeId,from,to); getMyEstimates(); submitEstimate(nodeId,curve,note?); listInterventions(tier); saveIntervention(iv); whoAmI() }
+LocalFuturesStore (localStorage, v0)  ->  FirestoreFuturesStore (v1).</code></pre>
+<p>What-if state and toggled interventions serialise into the URL hash exactly like <code>scenarioShare.ts</code>, so "here is my version of the future with this bill applied" is a link with no backend.</p>
+
+<h2 id="viz">9. Visuals</h2>
+<ul>
+<li><b>The one graph (headline).</b> The river above, finished: ribbons with hover readouts per state per year, the mean line, ghost of the baseline mean when anything is nudged, wedges shaded between the two. A year scrubber pinned at the bottom. Mobile: the river is the landing view at any width, lanes below it.</li>
+<li><b>Sankey view.</b> The same data drawn discretely: three columns at 2030 / 2035 / 2045, states ordered by goodness, ribbons between columns from the minimal-movement flows. Event labels on the biggest flows explain the mechanism.</li>
+<li><b>Lanes.</b> One per event node, x = year, area = likelihood, grouped and collapsible, slider in the bottom sheet.</li>
+<li><b>Interventions panel.</b> Toggle chips, a cost-curve table, the paste-a-bill box, and the review card.</li>
+<li><b>Influence graph.</b> On-demand layered DAG, focused on the tapped node at depth 2, never the full hairball first.</li>
+<li><b>Story mode.</b> Pick an ending, walk backwards through the highest-contribution chain one screen at a time using node narratives and edge notes.</li>
+<li><b>Tier comparison.</b> Locked = fill, expert = solid stroke, public = dashed, always with n inline. A disagreement dot-plot sorted by spread.</li>
+<li><b>Hindcast view.</b> On the existing world map, a "2015 to 2025 hindcast" mode colouring countries by error, plus a scatter of predicted vs actual wellbeing change.</li>
+</ul>
+<p>Colour is reserved for valence (aqua good, orange bad, red existential, blue neutral, amber mixed), validated for colour-vision deficiency in both themes. Tiers are told apart by stroke weight and dash, never by hue.</p>
+
+<h2 id="plan">10. Build plan and work packages</h2>
+<p>Design and contracts by Fable; implementation fanned out to Opus and Sonnet agents on disjoint file sets; integration and checks by Fable. Every package must pass <code>npm run check</code> alone.</p>
+<div class="tablewrap"><table>
+<tr><th>Package</th><th>Files</th><th>Agent</th><th>Delivers</th></tr>
+<tr><td><b>Contracts + core</b></td><td><code>src/futures/types.ts</code>, <code>src/futures/engine.ts</code></td><td>Fable</td><td>Types, curve maths, propagation, goodness and flows. The demo solver ported to TypeScript.</td></tr>
+<tr><td><b>A. Engine hardening</b></td><td><code>src/futures/{interventions,aggregate,share}.ts</code> + tests</td><td>Opus</td><td>Intervention application and metrics, tier pooling, URL-hash share, property tests (seed reproduced, monotone, sums to 1, order independence).</td></tr>
+<tr><td><b>B. Data + schema + validator</b></td><td><code>schemas/futuresGraph.schema.json</code>, <code>schemas/intervention.schema.json</code>, <code>data/futures/**</code>, <code>src/futures/validateGraph.ts</code>, <code>scripts/validate-futures.ts</code></td><td>Sonnet</td><td>Seed graph with sources, four seed interventions, validator with lag-cycle and golden-file checks, wired into <code>npm run validate</code>.</td></tr>
+<tr><td><b>C. UI</b></td><td><code>components/futures/*</code> except the import panel</td><td>Opus</td><td>FuturesTab, GoodnessRiver, StateSankey, NodeLanes, InterventionPanel, WhatMoved, EquationsPanel. Mobile first.</td></tr>
+<tr><td><b>D. Bill extraction</b></td><td><code>services/futuresExtract.ts</code>, <code>components/futures/InterventionImportPanel.tsx</code></td><td>Sonnet</td><td>Gemini prompt, JSON parse and ajv validation, review card, manual fallback.</td></tr>
+<tr><td><b>E. Hindcast</b></td><td><code>scripts/hindcast/*</code>, <code>data/hindcast/*</code>, <code>validation/hindcast.ts</code></td><td>Opus</td><td>Data fetch, scoring harness, two anchor tests, first-run report.</td></tr>
+<tr><td><b>Integration</b></td><td><code>App.tsx</code> tab wiring, <code>package.json</code> scripts</td><td>Fable</td><td>New Futures tab, checks green, commit on <code>feat/futures-map</code>.</td></tr>
+</table></div>
+<p><b>After v0:</b> v1 expert voting (Firebase Auth, allowlist, vote UI, nightly aggregation, overlays with n and band, disagreement view), then v2 public tier, snapshots, as-of history, Brier scoring, expert votes on intervention magnitudes.</p>
+
+<h2 id="risks">11. Risks</h2>
+<ol>
+<li><b>False precision becomes "the site's claim".</b> SEED chip at the same weight as the number, ranges wherever a tier has one, low-confidence curves hatched, tier selector in the header from the first frame, existential seed pinned to a citable survey median.</li>
+<li><b>Coupling weights rot.</b> Edge budget 3 × nodes, max 5 parents, required note on every edge, golden-file test, sensitivity report tagging any edge worth more than 5 points as contested.</li>
+<li><b>Bill extraction hallucinates.</b> Coarse enums, mandatory quotes, unreviewed badge, per-session rate limit, and locked interventions only via git.</li>
+<li><b>Hindcast is read as validating the AI channel.</b> It does not. Show it with AI off, say so on the page.</li>
+<li><b>Public tier gets brigaded.</b> Public never feeds locked or expert, deterministic doc ids, weighted median, App Check, n always on screen, curator freeze switch.</li>
+<li><b>Goodness values look arbitrary.</b> They are. Make them editable in the manifest, show them on the y-axis, and note that the ordering matters far more than the spacing.</li>
+</ol>
+
+<h2 id="decisions">12. Decision log</h2>
+<div class="tablewrap"><table class="decision">
+<tr><th>Question</th><th>Fable v1</th><th>Opus v1</th><th>v2 decision</th></tr>
+<tr><td>Feedback loops</td><td>Acyclic only</td><td>Cycles with a damped solver</td><td>Cycles allowed only across a lagged edge. No solver.</td></tr>
+<tr><td>Curve storage</td><td>Fixed horizons</td><td>Free anchors, hazard space</td><td>Fixed horizons. Constant log-odds shifts keep monotone curves monotone.</td></tr>
+<tr><td>Outcome buckets</td><td>Votable, one horizon</td><td>Derived softmax readout</td><td>Votable world-states at three horizons with goodness values; flows derived by minimal movement.</td></tr>
+<tr><td>Headline chart</td><td>River of overlapping event bands</td><td>Ridgeline lanes</td><td><b>Goodness river</b>: states as ribbons on a goodness axis. Lanes secondary. Sankey as the discrete twin.</td></tr>
+<tr><td>Sankey</td><td>Rejected</td><td>Rejected</td><td>Accepted for world-states only, where flow is conserved. Still rejected for events.</td></tr>
+<tr><td>Interventions</td><td>Not in v1</td><td>Not in v1</td><td>First-class, with wedges and a cost curve. Owner request.</td></tr>
+<tr><td>Bill extraction</td><td>Not in v1</td><td>Gemini drafts narratives only</td><td>Gemini fills intervention cards from enums with quotes; human review.</td></tr>
+<tr><td>Hindcast</td><td>Not in v1</td><td>Not in v1</td><td>In v0, on the simulator side. Owner request; the differentiator from Anthropic's explorer.</td></tr>
+<tr><td>File layout</td><td>One file</td><td>One per node</td><td>One graph file with edges on the child; interventions one file each.</td></tr>
+<tr><td>Expert auth</td><td>Invite codes + Function</td><td>Invite codes + Function</td><td>Email link + owner-edited allowlist, no Function.</td></tr>
+<tr><td>Aggregation</td><td>Median / trimmed mean, 180-day decay</td><td>Trimmed mean, 1-year half-life, Kish, shrink k = 5</td><td>Median public, trimmed mean expert, 1-year half-life, Kish, shrink to seed.</td></tr>
+<tr><td>Nightly job</td><td>GitHub Actions cron</td><td>Cloud Scheduler + Cloud Run</td><td>GitHub Actions.</td></tr>
+</table></div>
+<p class="note">Full v1 proposals: <a href="proposal-fable.md">Fable</a> and <a href="proposal-opus.md">Opus</a>. The brief both worked from is <a href="brief.md">here</a>.</p>
+
+<h2 id="anthropic">13. Anthropic's Econ Scenario Explorer vs this</h2>
+<p>Released 2026-09-09 by the Anthropic Institute's economics team: an interactive <a href="https://www.anthropic.com/institute/econ-scenarios">scenario explorer</a> plus Working Paper 2026-02, <i>Economic Scenarios for Transformative AI</i> (Korinek, Jones, Sacher, Cotter, McCrory), plus a Morning Consult survey of 10,980 US adults.</p>
+<ul>
+<li><b>A task-based macro model of the US economy, mid-2026 to 2030.</b> Every job is a bundle of O*NET tasks. Two worker groups: cognitive occupations (62.4% of employment) and everyone else. A frictional labour market with search costs and wage rigidity is where unemployment comes from.</li>
+<li><b>Five user-facing inputs.</b> Capabilities, Adoption, Autonomy, Productivity, Adjustment.</li>
+<li><b>Three scenarios, no probabilities attached,</b> in the paper's own words.</li>
+</ul>
+<div class="tablewrap"><table>
+<tr><th>2030 vs no-AI path</th><th>Modest</th><th>Substantial</th><th>Extreme</th></tr>
+<tr><td>GDP</td><td>+1.6%</td><td>+8.3%</td><td>+32.4%</td></tr>
+<tr><td>Cognitive-worker unemployment</td><td>3.9%</td><td>4.5%</td><td>17.9% (economy-wide 11.9%)</td></tr>
+<tr><td>Cognitive wage / other wage</td><td>within norms</td><td>−0.3% / +5.9%</td><td>−11.5% / +33.6%</td></tr>
+<tr><td>Labour share of income (from 60%)</td><td>59.4%</td><td>56.1%</td><td>45.2%</td></tr>
+</table></div>
+<p><b>What they say they leave out:</b> "catastrophic risks, political economy considerations, business cycles, and possible financial market disruptions"; "the negative feedback in which disruption depresses demand"; and, on the 9%-of-GDP transfer that would make the extreme scenario's losers whole, "the question of what institutions could lead to shared prosperity in this scenario is beyond our framework". US only, cognitive tasks only, nothing past 2030.</p>
+<div class="tablewrap"><table>
+<tr><th>Dimension</th><th>Anthropic explorer</th><th>This repo + futures map</th></tr>
+<tr><td>Question</td><td>What would have to be true of AI for each economic outcome?</td><td>How likely is each path, who funds the transfer, and what does a given intervention buy?</td></tr>
+<tr><td>Scope</td><td>US, 2026 to 2030</td><td>128 countries, 2015 hindcast to 2045</td></tr>
+<tr><td>Demand feedback</td><td>Absent (stated caveat)</td><td>Core mechanic of the simulator; edges in the map</td></tr>
+<tr><td>Transfer institution</td><td>"Beyond our framework"</td><td>The whole simulator, plus interventions priced on a cost curve</td></tr>
+<tr><td>Catastrophic paths</td><td>Excluded</td><td>The point of the map</td></tr>
+<tr><td>Probabilities</td><td>None, deliberately</td><td>Seeded, then community-weighted across three tiers</td></tr>
+<tr><td>Public input</td><td>Survey of model inputs, your answers vs the public</td><td>Beliefs about outcomes, three tiers, dated and scored over time</td></tr>
+<tr><td>Validation</td><td>Calibrated to O*NET, the Economic Index, flow data</td><td>Hindcast anchor tests against a decade of actuals</td></tr>
+</table></div>
+<p><b>What to still borrow.</b> Add their three scenarios as presets and anchor tests so the US country reproduces their 2030 numbers. Split labour into cognitive and other with a re-employment time. Express the funding gap in their units: "the transfer needed is X% of GDP; the corporate contribution rate that funds it is Y% of AI revenue". Use their parameter vocabulary and cite the Economic Index for adoption calibration.</p>
+<p class="note">Sources: the <a href="https://www.anthropic.com/institute/econ-scenarios">explorer page</a>, the <a href="https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf">working paper PDF</a>, <a href="https://www.unite.ai/anthropic-releases-interactive-model-of-ais-possible-economic-futures/">Unite.AI</a>, <a href="https://www.wypr.org/2026-09-09/a-new-anthropic-model-seeks-to-test-how-ai-could-impact-the-u-s-economy">NPR via WYPR</a>.</p>
+
+</main>
+
+<script>
+// ---------- seed graph ----------
+const H=[2028,2030,2035,2045], Y0=2026, Y1=2045, NY=Y1-Y0+1;
+const N=[
+ {id:"agi",label:"AGI-level systems exist",lane:"Capability",v:"neutral",c:{2028:.25,2030:.45,2035:.70,2045:.85},src:"Metaculus weak-AGI + ESPAI 2023, shifted earlier"},
+ {id:"rsi",label:"Recursive self-improvement",lane:"Capability",v:"mixed",c:{2028:.05,2030:.20,2035:.40,2045:.50},src:"AI-2027 upper branch, discounted ~2x"},
+ {id:"race-dynamics",label:"Frontier race with cut corners",lane:"Governance",v:"bad",c:{2028:.60,2030:.70,2035:.75,2045:.75},src:"editorial"},
+ {id:"compute-governance",label:"Binding international AI regime",lane:"Governance",v:"good",c:{2028:.05,2030:.12,2035:.30,2045:.45},src:"editorial"},
+ {id:"alignment-adequate",label:"Alignment adequate at frontier",lane:"Governance",v:"good",c:{2028:.10,2030:.25,2035:.45,2045:.60},src:"editorial"},
+ {id:"labor-displacement",label:"Mass labour displacement",lane:"Economy",v:"mixed",c:{2028:.10,2030:.30,2035:.65,2045:.85},src:"this repo's simulator base case; Korinek et al. substantial-to-extreme"},
+ {id:"redistribution",label:"Redistribution keeps pace",lane:"Economy",v:"good",c:{2028:.03,2030:.10,2035:.30,2045:.50},src:"editorial"},
+ {id:"unemployment-no-net",label:"Mass unemployment, no safety net",lane:"Society",v:"bad",c:{2028:.05,2030:.18,2035:.40,2045:.45},src:"editorial"},
+ {id:"oligarchic-capture",label:"Oligarchic capture",lane:"Society",v:"bad",c:{2028:.10,2030:.20,2035:.40,2045:.50},src:"editorial"},
+ {id:"surveillance-lockin",label:"AI-enabled authoritarian lock-in",lane:"Society",v:"bad",c:{2028:.08,2030:.15,2035:.25,2045:.35},src:"editorial"},
+ {id:"epistemic-collapse",label:"Epistemic collapse",lane:"Society",v:"bad",c:{2028:.15,2030:.25,2035:.35,2045:.40},src:"editorial"},
+ {id:"bio-cyber",label:"AI-enabled bio/cyber catastrophe",lane:"Catastrophe",v:"bad",c:{2028:.02,2030:.05,2035:.12,2045:.20},src:"XPT 2022 catastrophic-risk medians, scaled"},
+ {id:"great-power-war",label:"AI-precipitated great-power war",lane:"Catastrophe",v:"bad",c:{2028:.03,2030:.06,2035:.12,2045:.18},src:"editorial"},
+ {id:"misaligned-takeover",label:"Misaligned AI takeover",lane:"Catastrophe",v:"xrisk",c:{2028:.005,2030:.02,2035:.06,2045:.09},src:"ESPAI median 5%; public 10-20% statements; XPT 0.4-3% by 2100"},
+ {id:"gradual-disempowerment",label:"Gradual human disempowerment",lane:"Catastrophe",v:"xrisk",c:{2028:.01,2030:.03,2035:.08,2045:.15},src:"Kulveit et al. 2025, editorial numbers"},
+ {id:"abundance",label:"Material abundance",lane:"Flourishing",v:"good",c:{2028:.03,2030:.08,2035:.30,2045:.55},src:"editorial"},
+ {id:"medical-breakthroughs",label:"Medical breakthroughs",lane:"Flourishing",v:"good",c:{2028:.05,2030:.15,2035:.45,2045:.70},src:"'compressed 21st century' essay, discounted"},
+ {id:"broad-flourishing",label:"Broad human flourishing",lane:"Flourishing",v:"good",c:{2028:.02,2030:.05,2035:.20,2045:.35},src:"editorial"},
+ // world-states: curve keyed by horizon incl. the 2026 start
+ {id:"flourishing",st:1,g:90,label:"Flourishing",v:"good",c:{2026:.01,2030:.05,2035:.15,2045:.28},src:"editorial"},
+ {id:"muddling",st:1,g:60,label:"Muddling through",v:"mixed",c:{2026:.96,2030:.70,2035:.48,2045:.32},src:"editorial"},
+ {id:"stratified",st:1,g:40,label:"Stratified",v:"bad",c:{2026:.02,2030:.17,2035:.22,2045:.20},src:"Korinek et al. extreme scenario with no transfer institution; editorial"},
+ {id:"catastrophe",st:1,g:20,label:"Catastrophe, recoverable",v:"bad",c:{2026:.008,2030:.06,2035:.10,2045:.12},src:"editorial"},
+ {id:"existential",st:1,g:0,label:"Existential",v:"xrisk",c:{2026:.002,2030:.02,2035:.05,2045:.08},src:"ESPAI median 5% + recent discourse"},
+];
+const E=[
+ ["agi","rsi","requires",.9,1],["agi","labor-displacement","amplifies",.7,2],["agi","abundance","enables",.6,4],["agi","medical-breakthroughs","enables",.6,3],
+ ["agi","misaligned-takeover","requires",.8,1],["agi","gradual-disempowerment","requires",.7,3],["rsi","misaligned-takeover","amplifies",.6,0],["rsi","race-dynamics","amplifies",.4,0],
+ ["race-dynamics","alignment-adequate","dampens",-.5,0],["race-dynamics","great-power-war","amplifies",.4,2],["race-dynamics","compute-governance","dampens",-.4,0],
+ ["compute-governance","misaligned-takeover","dampens",-.4,2],["compute-governance","race-dynamics","prevents",-.6,1],
+ ["alignment-adequate","misaligned-takeover","prevents",-.8,0],["alignment-adequate","gradual-disempowerment","dampens",-.3,0],
+ ["labor-displacement","unemployment-no-net","requires",.9,1],["redistribution","unemployment-no-net","prevents",-.8,0],
+ ["labor-displacement","oligarchic-capture","amplifies",.5,2],["redistribution","oligarchic-capture","dampens",-.5,0],["oligarchic-capture","redistribution","dampens",-.5,1],
+ ["oligarchic-capture","surveillance-lockin","amplifies",.4,2],["epistemic-collapse","surveillance-lockin","amplifies",.4,2],["epistemic-collapse","compute-governance","dampens",-.3,0],
+ ["abundance","redistribution","enables",.4,1],["abundance","broad-flourishing","requires",.8,0],["redistribution","broad-flourishing","requires",.8,0],["surveillance-lockin","broad-flourishing","prevents",-.7,0],
+ // into world-states
+ ["broad-flourishing","flourishing","amplifies",.9,0],["abundance","flourishing","amplifies",.3,0],
+ ["oligarchic-capture","stratified","amplifies",.6,0],["unemployment-no-net","stratified","amplifies",.5,0],["redistribution","stratified","dampens",-.5,0],
+ ["bio-cyber","catastrophe","amplifies",.6,0],["great-power-war","catastrophe","amplifies",.7,0],["surveillance-lockin","catastrophe","amplifies",.5,0],
+ ["misaligned-takeover","existential","amplifies",.9,0],["gradual-disempowerment","existential","amplifies",.7,0],
+].map(([from,to,kind,w,lag])=>({from,to,kind,w,lag}));
+const MAG={slight:.25,moderate:.5,strong:1};
+const IV=[
+ {id:"dividend",label:"AI dividend / sovereign wealth fund",cost:4,start:2028,n:[["redistribution","up","strong",2],["oligarchic-capture","down","slight",3]]},
+ {id:"treaty",label:"Binding compute treaty with verification",cost:3,start:2028,n:[["compute-governance","up","strong",1],["race-dynamics","down","moderate",1]]},
+ {id:"enclaves",label:"Resilience enclaves + bio/cyber civil defence",cost:2,start:2027,n:[["bio-cyber","down","moderate",1],["great-power-war","down","slight",2],["surveillance-lockin","up","slight",2]]},
+ {id:"evals",label:"Mandatory frontier evals before deployment",cost:2,start:2027,n:[["alignment-adequate","up","moderate",1],["race-dynamics","down","slight",0]]},
+];
+
+const idx=Object.fromEntries(N.map((n,i)=>[n.id,i]));
+const logit=p=>{p=Math.min(.995,Math.max(.005,p));return Math.log(p/(1-p))};
+const sig=x=>1/(1+Math.exp(-x));
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+function baseCurve(n){
+  const ks=Object.keys(n.c).map(Number).sort((a,b)=>a-b), out=[];
+  for(let y=Y0;y<=Y1;y++){
+    if(y<=ks[0]){out.push(n.c[ks[0]]);continue}
+    let k=0; while(k<ks.length-2 && ks[k+1]<y) k++;
+    const f=clamp((y-ks[k])/(ks[k+1]-ks[k]),0,1);
+    out.push(sig((1-f)*logit(n.c[ks[k]])+f*logit(n.c[ks[k+1]])));
+  }
+  return out;
+}
+const BASE=N.map(baseCurve); const STATES=N.map((n,j)=>j).filter(j=>N[j].st);
+for(let t=0;t<NY;t++){const Z=STATES.reduce((a,j)=>a+BASE[j][t],0);STATES.forEach(j=>BASE[j][t]/=Z);}
+const inE=N.map(()=>[]); E.forEach(e=>inE[idx[e.to]].push(e));
+function topo(){const deg=N.map(()=>0);E.filter(e=>e.lag===0).forEach(e=>deg[idx[e.to]]++);
+  const q=N.map((_,i)=>i).filter(i=>deg[i]===0),order=[];
+  while(q.length){const i=q.shift();order.push(i);E.filter(e=>e.lag===0&&idx[e.from]===i).forEach(e=>{if(--deg[idx[e.to]]===0)q.push(idx[e.to])});}
+  if(order.length!==N.length)throw new Error("zero-lag cycle");return order;}
+const ORDER=topo();
+// u: id -> array over years of log-odds shift
+function solve(u){
+  const d=N.map(()=>new Array(NY).fill(0));
+  for(let t=0;t<NY;t++)for(const j of ORDER){let s=0;for(const e of inE[j]){const tt=t-e.lag;if(tt>=0)s+=e.w*d[idx[e.from]][tt];}
+    d[j][t]=((u[N[j].id]||[])[t]||0)+clamp(s,-4,4);}
+  const P=N.map((n,j)=>BASE[j].map((p,t)=>sig(logit(p)+d[j][t])));
+  for(const e of E)if(e.kind==="requires"){const j=idx[e.to],i=idx[e.from];for(let t=0;t<NY;t++)P[j][t]=Math.min(P[j][t],P[i][Math.max(0,t-e.lag)]);}
+  N.forEach((n,j)=>{if(!n.st)for(let t=1;t<NY;t++)P[j][t]=Math.max(P[j][t],P[j][t-1]);});
+  for(let t=0;t<NY;t++){const Z=STATES.reduce((a,j)=>a+P[j][t],0);STATES.forEach(j=>P[j][t]/=Z);}
+  return P;
+}
+const goodness=P=>{const G=[],F=[],C=[];for(let t=0;t<NY;t++){let g=0,f=0,c=0;STATES.forEach(j=>{const p=P[j][t],v=N[j].g;g+=p*v;if(v<=20)f+=p;if(v>=90)c+=p;});G.push(g);F.push(f);C.push(c);}return{G,F,C};};
+function shiftsFor(ivs,sliders){
+  const u={};const add=(id,t0,val)=>{u[id]=u[id]||new Array(NY).fill(0);for(let t=Math.max(0,t0);t<NY;t++)u[id][t]+=val;};
+  for(const iv of ivs)for(const [node,dir,mag,lag] of iv.n)add(node,iv.start-Y0+lag,(dir==="up"?1:-1)*MAG[mag]);
+  for(const id in sliders)if(sliders[id])add(id,0,sliders[id]);
+  return u;
+}
+// ---------- render ----------
+const col={neutral:"var(--neutral)",good:"var(--good)",bad:"var(--bad)",xrisk:"var(--xrisk)",mixed:"var(--mixed)"};
+const pct=p=>Math.round(p*100)+"%";
+const on=new Set(), sliders={};
+const RW=640,RH=260,RL=44,RR=16,RT=14,RB=28;
+const rx=t=>RL+t/(NY-1)*(RW-RL-RR), ry=g=>RT+(100-g)/100*(RH-RT-RB);
+const THICK=120; // px of ribbon at P=1
+function ribbonPath(P,j){const v=N[j].g;let top="",bot="";for(let t=0;t<NY;t++){const h=P[j][t]*THICK/2;top+=(t?"L":"M")+rx(t).toFixed(1)+","+(ry(v)-h).toFixed(1)+" ";}
+  for(let t=NY-1;t>=0;t--){const h=P[j][t]*THICK/2;bot+="L"+rx(t).toFixed(1)+","+(ry(v)+h).toFixed(1)+" ";}return top+bot+"Z";}
+const linePath=arr=>arr.map((g,t)=>(t?"L":"M")+rx(t).toFixed(1)+","+ry(g).toFixed(1)).join(" ");
+const svg=document.getElementById("riverSvg");
+function drawRiver(P,B){
+  const gb=goodness(B),gp=goodness(P);
+  let s=`<rect x="0" y="0" width="${RW}" height="${RH}" fill="var(--surface)"/>`;
+  [0,20,40,60,90].forEach(g=>{s+=`<line x1="${RL}" x2="${RW-RR}" y1="${ry(g)}" y2="${ry(g)}" stroke="var(--grid)"/><text x="${RL-6}" y="${ry(g)+4}" text-anchor="end" font-size="10" fill="var(--muted)" font-family="system-ui">${g}</text>`;});
+  [2026,2030,2035,2040,2045].forEach(y=>{s+=`<text x="${rx(y-Y0)}" y="${RH-8}" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="system-ui">${y}</text>`;});
+  // wedge between baseline mean and current mean
+  const changed=gb.G.some((g,t)=>Math.abs(g-gp.G[t])>.05);
+  if(changed){let w=linePath(gp.G);for(let t=NY-1;t>=0;t--)w+=" L"+rx(t).toFixed(1)+","+ry(gb.G[t]).toFixed(1);s+=`<path d="${w} Z" fill="var(--violet)" opacity=".18"/>`;}
+  STATES.forEach(j=>{s+=`<path class="rib" data-j="${j}" d="${ribbonPath(P,j)}" fill="${col[N[j].v]}" opacity=".55"><title>${N[j].label}</title></path>`;
+    s+=`<text x="${RW-RR+2}" y="${ry(N[j].g)+4}" font-size="10" fill="var(--ink2)" font-family="system-ui" text-anchor="start"></text>`;});
+  STATES.forEach(j=>{s+=`<text x="${RL+4}" y="${ry(N[j].g)-P[j][0]*THICK/2-3}" font-size="10" fill="var(--ink2)" font-family="system-ui">${N[j].label} ${pct(P[j][NY-1])} by 2045</text>`;});
+  if(changed)s+=`<path d="${linePath(gb.G)}" fill="none" stroke="var(--ink2)" stroke-width="1.5" stroke-dasharray="4 3"/>`;
+  s+=`<path d="${linePath(gp.G)}" fill="none" stroke="var(--ink)" stroke-width="2.5"/>`;
+  s+=`<text x="${rx(NY-1)-4}" y="${ry(gp.G[NY-1])-8}" text-anchor="end" font-size="11" font-weight="600" fill="var(--ink)" font-family="system-ui">mean ${gp.G[NY-1].toFixed(0)}</text>`;
+  s+=`<text x="${RL+4}" y="${RT+10}" font-size="10" fill="var(--muted)" font-family="system-ui">GOODNESS OF THE WORLD · ribbon thickness = probability · solid = mean · dashed = baseline mean</text>`;
+  svg.innerHTML=s;
+  // dl(a,b,isPct,upIsGood): green class is "down", red class is "up"
+  const dl=(a,b,isPct,upIsGood)=>{const d=b-a;if(Math.abs(d)<(isPct?.005:.05))return"unchanged";const good=upIsGood?d>0:d<0;return`<span class="${good?'down':'up'}">${d>0?"+":""}${isPct?(d*100).toFixed(1)+" pts":d.toFixed(1)}</span> vs baseline`;};
+  document.getElementById("mMean").textContent=gp.G[NY-1].toFixed(1);document.getElementById("dMean").innerHTML=dl(gb.G[NY-1],gp.G[NY-1],false,true);
+  document.getElementById("mFloor").textContent=pct(gp.F[NY-1]);document.getElementById("dFloor").innerHTML=dl(gb.F[NY-1],gp.F[NY-1],true,false);
+  document.getElementById("mCeil").textContent=pct(gp.C[NY-1]);document.getElementById("dCeil").innerHTML=dl(gb.C[NY-1],gp.C[NY-1],true,true);
+}
+// lanes
+const W=300,Hh=54,xs=t=>t/(NY-1)*W,ys=p=>Hh-2-p*(Hh-6);
+const pathOf=arr=>arr.map((p,t)=>(t?"L":"M")+xs(t).toFixed(1)+","+ys(p).toFixed(1)).join("");
+const areaOf=arr=>pathOf(arr)+`L${W},${Hh}L0,${Hh}Z`;
+const lanesEl=document.getElementById("lanes");let lastLane=null;
+N.forEach((n,j)=>{if(n.st)return;
+  if(n.lane!==lastLane){const h=document.createElement("div");h.className="lanehead";h.textContent=n.lane;lanesEl.appendChild(h);lastLane=n.lane;}
+  const el=document.createElement("div");el.className="lane";el.dataset.j=j;
+  el.innerHTML=`<div class="lane-label"><b>${n.label}</b><span class="num" id="num-${j}"></span></div><div class="lane-plot">
+   <svg viewBox="0 0 ${W} ${Hh}" preserveAspectRatio="none" aria-label="${n.label} likelihood by year"><line x1="0" y1="${ys(.5).toFixed(1)}" x2="${W}" y2="${ys(.5).toFixed(1)}" stroke="var(--grid)"/>
+   <path fill="${col[n.v]}" opacity=".22" d="${areaOf(BASE[j])}"/><path id="cur-${j}" fill="none" stroke="${col[n.v]}" stroke-width="2" vector-effect="non-scaling-stroke" d="${pathOf(BASE[j])}"/>
+   <line id="hx-${j}" x1="0" y1="0" x2="0" y2="${Hh}" stroke="var(--axis)" vector-effect="non-scaling-stroke" opacity="0"/></svg>
+   <span class="readout" id="ro-${j}"></span><input type="range" min="-3" max="3" step="0.25" value="0" data-id="${n.id}" aria-label="Nudge ${n.label} in log-odds"></div>`;
+  lanesEl.appendChild(el);});
+// intervention chips
+const ivsEl=document.getElementById("ivs");
+IV.forEach(iv=>{const b=document.createElement("button");b.className="btn";b.textContent=iv.label;b.dataset.id=iv.id;b.onclick=()=>{on.has(iv.id)?on.delete(iv.id):on.add(iv.id);b.classList.toggle("on");render();};ivsEl.appendChild(b);});
+// cost curve, each alone
+(function macc(){const gb=goodness(BASE);const rows=IV.map(iv=>{const P=solve(shiftsFor([iv],{}));const g=goodness(P);return{iv,dm:g.G[NY-1]-gb.G[NY-1],df:gb.F[NY-1]-g.F[NY-1],dc:g.C[NY-1]-gb.C[NY-1]};}).sort((a,b)=>b.dm/b.iv.cost-a.dm/a.iv.cost);
+  document.getElementById("macc").insertAdjacentHTML("beforeend",rows.map(r=>`<tr><td>${r.iv.label}</td><td>${"●".repeat(r.iv.cost)}${"○".repeat(5-r.iv.cost)}</td><td>${r.dm>=0?"+":""}${r.dm.toFixed(1)}</td><td>${(r.df*100).toFixed(1)} pts</td><td>${(r.dc*100).toFixed(1)} pts</td><td>${(r.dm/r.iv.cost).toFixed(2)}</td></tr>`).join(""));})();
+let P=BASE;
+function render(){
+  P=solve(shiftsFor(IV.filter(iv=>on.has(iv.id)),sliders));
+  drawRiver(P,BASE);
+  N.forEach((n,j)=>{if(n.st)return;document.getElementById("cur-"+j).setAttribute("d",pathOf(P[j]));
+    const ch=(a,b)=>Math.abs(a-b)>=.005?`<b>${pct(b)}</b> <s style="color:var(--muted)">${pct(a)}</s>`:pct(a);
+    document.getElementById("num-"+j).innerHTML=`by 2035 ${ch(BASE[j][2035-Y0],P[j][2035-Y0])} · by 2045 ${ch(BASE[j][NY-1],P[j][NY-1])}`;});
+  const moved=N.map((n,j)=>({n,j,d:P[j][NY-1]-BASE[j][NY-1]})).filter(x=>Math.abs(x.d)>=.005).sort((a,b)=>Math.abs(b.d)-Math.abs(a.d)).slice(0,8);
+  document.getElementById("movedList").innerHTML=moved.length?moved.map(x=>`<li><span class="${x.d>0?'up':'down'}">${x.d>0?'▲':'▼'} ${Math.abs(x.d*100).toFixed(1)} pts</span> ${x.n.label}${x.n.st?' (world-state)':''}: ${pct(BASE[x.j][NY-1])} to ${pct(P[x.j][NY-1])}</li>`).join(""):`<li class="note">Nothing yet. Toggle an intervention above, or drag a slider.</li>`;
+}
+lanesEl.addEventListener("input",e=>{if(e.target.type==="range"){sliders[e.target.dataset.id]=+e.target.value;render();}});
+document.getElementById("reset").onclick=()=>{for(const k in sliders)delete sliders[k];on.clear();ivsEl.querySelectorAll(".btn").forEach(b=>b.classList.remove("on"));lanesEl.querySelectorAll("input[type=range]").forEach(r=>r.value=0);render();};
+lanesEl.addEventListener("pointermove",e=>{const sv=e.target.closest("svg");if(!sv)return;const j=+sv.closest(".lane").dataset.j;const r=sv.getBoundingClientRect(),t=clamp(Math.round((e.clientX-r.left)/r.width*(NY-1)),0,NY-1);
+  const hx=document.getElementById("hx-"+j);hx.setAttribute("x1",xs(t));hx.setAttribute("x2",xs(t));hx.setAttribute("opacity","1");document.getElementById("ro-"+j).textContent=`${Y0+t}: ${pct(P[j][t])}`;});
+lanesEl.addEventListener("pointerleave",()=>{lanesEl.querySelectorAll("[id^=hx-]").forEach(l=>l.setAttribute("opacity","0"));lanesEl.querySelectorAll(".readout").forEach(r=>r.textContent="");},true);
+svg.addEventListener("pointermove",e=>{const r=svg.getBoundingClientRect();const x=(e.clientX-r.left)/r.width*RW;const t=clamp(Math.round((x-RL)/(RW-RL-RR)*(NY-1)),0,NY-1);
+  const rib=e.target.closest(".rib");if(rib){const j=+rib.dataset.j;rib.querySelector("title").textContent=`${N[j].label} in ${Y0+t}: ${pct(P[j][t])}`;}});
+render();
+document.getElementById("seedTable").insertAdjacentHTML("beforeend",N.map(n=>n.st
+  ?`<tr><td>${n.label} <span class="pill ${n.v}">world-state · goodness ${n.g}</span></td><td>State</td><td></td><td>${pct(n.c[2030])}</td><td>${pct(n.c[2035])}</td><td>${pct(n.c[2045])}</td><td class="note">${n.src}</td></tr>`
+  :`<tr><td>${n.label} <span class="pill ${n.v}">${n.v}</span></td><td>${n.lane}</td>${H.map(h=>`<td>${pct(n.c[h])}</td>`).join("")}<td class="note">${n.src}</td></tr>`).join(""));
+</script>
+</body>
+</html>
