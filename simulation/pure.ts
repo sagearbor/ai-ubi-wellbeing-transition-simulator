@@ -556,8 +556,28 @@ export function stepSimulationPure(input: SimulationInput): SimulationOutput {
   const { state, corporations, model, equations } = input;
 
   const nextMonth = state.month + 1;
-  const newCountryData = { ...state.countryData };
-  const newShadowData = { ...state.shadowCountryData };
+  // Clone every country record, not just the map. The phases below mutate country objects in
+  // place (wellbeing, adoption, UBI fields, wellbeingTrend); with a shallow map copy those
+  // mutations leaked into the PREVIOUS state, so every stored history point silently became the
+  // latest month (audit 2026-09-13: month-1 wellbeing read back as month-6's). Cloning here makes
+  // the step pure with respect to its input, which seek, replay, save files and paired
+  // comparisons all depend on.
+  const cloneCountries = (src: Record<string, CountryStats>): Record<string, CountryStats> => {
+    const out: Record<string, CountryStats> = {};
+    for (const id of Object.keys(src)) {
+      const c = src[id];
+      out[id] = {
+        ...c,
+        wellbeingTrend: c.wellbeingTrend ? [...c.wellbeingTrend] : [],
+        nationalPolicy: c.nationalPolicy ? { ...c.nationalPolicy } : c.nationalPolicy,
+        headquarteredCorps: c.headquarteredCorps ? [...c.headquarteredCorps] : c.headquarteredCorps,
+        customerOfCorps: c.customerOfCorps ? [...c.customerOfCorps] : c.customerOfCorps,
+      };
+    }
+    return out;
+  };
+  const newCountryData = cloneCountries(state.countryData);
+  const newShadowData = cloneCountries(state.shadowCountryData);
   let totalWellbeing = 0;
   let totalDisplacementGap = 0;
   let countriesInCrisis = 0;

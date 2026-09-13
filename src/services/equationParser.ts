@@ -7,6 +7,7 @@ import { EquationSet, ModelConfig } from '../../types';
 import {
   validateEquation,
   compileEquation,
+  compileEquationDetailed,
   CompiledEquation,
   getAllowedVariables,
   getAllowedFunctions
@@ -21,11 +22,13 @@ export interface EquationSetParseResult {
   compiledEquations?: CompiledEquationSet;
 }
 
-/** Individual equation error */
+/** Individual equation error: which equation, what went wrong, and (when mathjs's
+ *  parser gave one) the character position of the syntax error within that equation. */
 export interface EquationError {
   equation: keyof EquationSet;
   error: string;
   suggestion?: string;
+  position?: number;
 }
 
 /** Compiled versions of all equations for fast evaluation */
@@ -98,14 +101,17 @@ export function parseEquationSet(equations: EquationSet): EquationSetParseResult
   const compiled: Partial<CompiledEquationSet> = {};
 
   for (const eq of REQUIRED_EQUATIONS) {
-    const compiledEq = compileEquation(equations[eq]);
-    if (!compiledEq) {
+    const result = compileEquationDetailed(equations[eq]);
+    // NOTE: `=== false` (not `!result.ok`) - this repo's tsconfig doesn't enable `strict`,
+    // and without it TS does not narrow a discriminated union on a bare truthiness check.
+    if (result.ok === false) {
       errors.push({
         equation: eq,
-        error: `Failed to compile equation '${eq}'`
+        error: result.error || `Failed to compile equation '${eq}'`,
+        position: result.char
       });
     } else {
-      compiled[eq] = compiledEq;
+      compiled[eq] = result.compiled;
     }
   }
 
@@ -113,11 +119,11 @@ export function parseEquationSet(equations: EquationSet): EquationSetParseResult
   for (const eq of OPTIONAL_EQUATIONS) {
     const eqStr = equations[eq];
     if (eqStr && eqStr.trim() !== '') {
-      const compiledEq = compileEquation(eqStr);
-      if (!compiledEq) {
+      const result = compileEquationDetailed(eqStr);
+      if (result.ok === false) {
         warnings.push(`Optional equation '${eq}' failed to compile, will use default`);
       } else {
-        compiled[eq] = compiledEq;
+        compiled[eq] = result.compiled;
       }
     }
   }
@@ -144,8 +150,38 @@ export function mergeWithDefaults(equations: Partial<EquationSet>): EquationSet 
   };
 }
 
+/** Discriminated result of {@link compileEquationSet}. */
+export type EquationSetCompileResult =
+  | { ok: true; equations: CompiledEquationSet }
+  | { ok: false; errors: EquationError[] };
+
 /**
- * Get a compiled equation set with defaults for any missing equations
+ * Compile an entire equation set, or report why it doesn't compile.
+ *
+ * A thin wrapper over {@link parseEquationSet} that reshapes its result into a
+ * discriminated union so callers can't accidentally treat a failure as success (the
+ * mistake {@link getCompiledEquationSet}'s bare `null` invites - see its deprecation
+ * notice). Every error in the `ok: false` case carries the equation name, a message,
+ * and - when mathjs's parser gave one - the character position of the syntax error.
+ */
+export function compileEquationSet(equations: EquationSet): EquationSetCompileResult {
+  const result = parseEquationSet(equations);
+  if (!result.valid || !result.compiledEquations) {
+    return { ok: false, errors: result.errors };
+  }
+  return { ok: true, equations: result.compiledEquations };
+}
+
+/**
+ * Get a compiled equation set with defaults for any missing equations.
+ *
+ * @deprecated Collapses every failure reason to `null`. Historically callers wrote
+ * `getCompiledEquationSet(x) ?? <fall back to the default engine>`, which silently
+ * scores/runs the DEFAULT hardcoded equations under a custom model's name whenever
+ * that model fails to compile - the model looks like it ran (or passed anchor tests)
+ * when it never actually executed (see docs/design/audit-2026-09-13.md finding A5).
+ * Prefer {@link compileEquationSet}, whose `{ ok: false; errors }` case forces callers
+ * to handle the failure explicitly instead of silently substituting something else.
  */
 export function getCompiledEquationSet(equations: EquationSet): CompiledEquationSet | null {
   const result = parseEquationSet(equations);

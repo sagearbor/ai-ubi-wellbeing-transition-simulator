@@ -11,6 +11,10 @@ export default defineConfig(({ mode }) => {
         host: '0.0.0.0',
       },
       plugins: [react(), tailwindcss()],
+      test: {
+        // Agent worktrees are checked out under .claude/worktrees/; never collect their copies of the suite.
+        exclude: ['**/node_modules/**', '**/dist/**', '**/.claude/**'],
+      },
       define: {
         'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY),
         'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY)

@@ -18,7 +18,12 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { EquationSet, ModelConfig } from '../types';
 import { saveModel, modelNameExists } from '../src/services/modelStorage';
 import { runFullValidation, FullValidationResult } from '../validation/testRunner';
-import { getEquationDocumentation, ALLOWED_VARIABLES as getAllowedVariables, ALLOWED_FUNCTIONS as getAllowedFunctions } from '../src/services/equationParser';
+import {
+  getEquationDocumentation,
+  compileEquationSet,
+  ALLOWED_VARIABLES as getAllowedVariables,
+  ALLOWED_FUNCTIONS as getAllowedFunctions
+} from '../src/services/equationParser';
 import {
   EDITABLE_EQUATION_FIELDS,
   EquationValidationMap,
@@ -89,6 +94,15 @@ export const ModelEditor: React.FC<ModelEditorProps> = ({
 
   const allValid = useMemo(() => allFieldsValid(validationMap), [validationMap]);
 
+  // Whole-set compile status (P8-T9/A5): per-field validation above only covers the five
+  // editable equations. `equations` also carries demandCollapse/reputationChange/giniDamping
+  // (not shown in this UI - populated from defaults or from an imported/shared scenario),
+  // which never go through validateEquationField. Compiling the full set here is what
+  // catches a broken optional equation - or any other whole-set failure - before save,
+  // run, or test, instead of letting it through because every visible field looked valid.
+  const compileResult = useMemo(() => compileEquationSet(equations), [equations]);
+  const readyToActivate = allValid && compileResult.ok;
+
   // Load a scenario from a `#scenario=` share link on first mount, then consume the hash
   // so re-opening this tab (or switching Upload/Edit) doesn't silently reapply it again.
   useEffect(() => {
@@ -131,7 +145,7 @@ export const ModelEditor: React.FC<ModelEditorProps> = ({
 
   // Run the anchor-test suite (Tier 2) against this model's own equations.
   const handleRunTests = useCallback(async () => {
-    if (!allValid) return;
+    if (!readyToActivate) return;
     setIsValidating(true);
     try {
       const config = buildConfig();
@@ -142,19 +156,19 @@ export const ModelEditor: React.FC<ModelEditorProps> = ({
       console.error('Validation failed:', error);
     }
     setIsValidating(false);
-  }, [allValid, buildConfig, onRunTests]);
+  }, [readyToActivate, buildConfig, onRunTests]);
 
   // Apply this model to the running simulation without leaving this tab.
   const handleSave = useCallback(() => {
-    if (!allValid) return;
+    if (!readyToActivate) return;
     onSave(buildConfig());
-  }, [allValid, buildConfig, onSave]);
+  }, [readyToActivate, buildConfig, onSave]);
 
   // Apply this model AND re-simulate it live.
   const handleRunSimulation = useCallback(() => {
-    if (!allValid) return;
+    if (!readyToActivate) return;
     onRun(buildConfig());
-  }, [allValid, buildConfig, onRun]);
+  }, [readyToActivate, buildConfig, onRun]);
 
   const handleShare = useCallback(() => {
     if (!validationResult || validationResult.tier2.passed < 4) return;
@@ -335,11 +349,33 @@ export const ModelEditor: React.FC<ModelEditorProps> = ({
       </div>
 
       {/* Overall equation-set status */}
-      <div className={`mt-4 p-3 rounded text-sm ${allValid ? 'bg-green-900/20 text-green-400' : 'bg-yellow-900/20 text-yellow-400'}`}>
-        {allValid
-          ? 'All equations parse correctly - ready to save, run, or test.'
-          : 'Fix the equation errors above before saving, running, or testing.'}
+      <div
+        className={`mt-4 p-3 rounded text-sm ${readyToActivate ? 'bg-green-900/20 text-green-400' : 'bg-yellow-900/20 text-yellow-400'}`}
+        data-testid="equation-set-status"
+      >
+        {readyToActivate
+          ? 'All equations parse and compile correctly - ready to save, run, or test.'
+          : allValid
+            ? 'Every field above parses, but the full equation set fails to compile - see below.'
+            : 'Fix the equation errors above before saving, running, or testing.'}
       </div>
+
+      {compileResult.ok === false && (
+        <div
+          className="mt-3 p-3 rounded border bg-red-900/20 border-red-700 text-sm"
+          data-testid="whole-set-compile-errors"
+        >
+          <h4 className="font-semibold mb-1 text-red-400">Equation set does not compile</h4>
+          <ul className="text-red-300 space-y-1">
+            {compileResult.errors.map((e, i) => (
+              <li key={i}>
+                <span className="font-mono">{e.equation}</span>: {e.error}
+                {typeof e.position === 'number' ? ` (char ${e.position})` : ''}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       {/* Anchor-test validation results */}
       {validationResult && (
@@ -364,21 +400,21 @@ export const ModelEditor: React.FC<ModelEditorProps> = ({
         </button>
         <button
           onClick={handleSave}
-          disabled={!allValid}
+          disabled={!readyToActivate}
           className="flex-1 min-w-[100px] py-2 px-4 bg-slate-600 hover:bg-slate-500 disabled:bg-gray-700 disabled:text-gray-500 text-white rounded font-medium"
         >
           Save
         </button>
         <button
           onClick={handleRunSimulation}
-          disabled={!allValid}
+          disabled={!readyToActivate}
           className="flex-1 min-w-[130px] py-2 px-4 bg-green-600 hover:bg-green-700 disabled:bg-gray-700 disabled:text-gray-500 text-white rounded font-medium"
         >
           Run Simulation
         </button>
         <button
           onClick={handleRunTests}
-          disabled={!allValid || isValidating}
+          disabled={!readyToActivate || isValidating}
           className="flex-1 min-w-[130px] py-2 px-4 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 disabled:text-gray-400 text-white rounded font-medium"
         >
           {isValidating ? 'Running Tests...' : 'Run Anchor Tests'}

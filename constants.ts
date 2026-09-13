@@ -13,14 +13,20 @@ const getArchetype = (gdp: number, gov: number): Archetype => {
 
 /**
  * DEFAULT_MACRO - task-based macro dynamics (see MacroParameters in types.ts).
- * productivityGain and laborShareSensitivity are calibrated so the KORINEK_SCENARIOS below
- * reproduce the published 2030 numbers; wellbeingAnchorRate is 0 in the app so the classic
- * wellbeing behaviour is unchanged (the hindcast turns it on).
+ * This block is a reduced-form approximation calibrated to the published 2030 outputs of
+ * Korinek et al. (2026); not their mechanism. productivityGain and laborShareSensitivity
+ * are tuned so the KORINEK_SCENARIOS below land within tolerance of those published
+ * numbers - the block does not implement their equations. reemploymentMonths is our own
+ * displaced-pool parameter, not the paper's search discount mu (see the field below).
+ * wellbeingAnchorRate is 0 in the app so the classic wellbeing behaviour is unchanged (the
+ * hindcast turns it on).
  */
 export const DEFAULT_MACRO: MacroParameters = {
   baselineGrowth: 0.02,
   productivityGain: 1.13,
   automationShare: 0.5,
+  // Our own displaced-pool parameter (mean months to leave the pool below); not the
+  // paper's search discount mu - the two are not the same quantity and are not compared.
   reemploymentMonths: 12,
   laborShareSensitivity: 0.88,
   wellbeingAnchorRate: 0,
@@ -45,12 +51,17 @@ export const NATURAL_UNEMPLOYMENT_BY_ARCHETYPE: Record<Archetype, number> = {
 };
 
 /**
- * KORINEK_SCENARIOS - the three scenarios of Korinek, Jones, Sacher, Cotter & McCrory (2026),
- * "Economic Scenarios for Transformative AI", Anthropic Institute WP 2026-02, expressed as
- * inputs to this engine. `adoption2030` is the share of cognitive tasks AI performs by end-2030
- * (their m x d), driven exogenously as a logistic path from mid-2026 exactly as their explorer
- * treats capability/adoption as an input. Targets are their published US 2030 outcomes
- * relative to the no-AI path.
+ * KORINEK_SCENARIOS - a reduced-form approximation calibrated to the published 2030 outputs
+ * of Korinek et al. (2026); not their mechanism. The three scenarios are from Korinek,
+ * Jones, Sacher, Cotter & McCrory (2026), "Economic Scenarios for Transformative AI",
+ * Anthropic Institute WP 2026-02, expressed as inputs to this engine. `adoption2030` is the
+ * share of cognitive tasks AI performs by end-2030 (their m x d), driven exogenously as a
+ * logistic path from mid-2026 exactly as their explorer treats capability/adoption as an
+ * input. Targets are their published US 2030 outcomes relative to the no-AI path; this
+ * engine's macro block is tuned to land within tolerance of those outputs (see
+ * validation/korinekTests.ts), not to reproduce their underlying equations.
+ * reemploymentMonths per scenario below is our own displaced-pool parameter, not the
+ * paper's search discount mu.
  */
 export interface KorinekScenario {
   id: 'modest' | 'substantial' | 'extreme';

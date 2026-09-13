@@ -3,7 +3,9 @@
  * (design doc section 5, the marginal-abatement-curve analogue).
  *
  * Every row of the cost curve is computed with that intervention applied ALONE against
- * the baseline, which is how the climate curve is built; the chips above stack.
+ * the baseline, which is how the climate curve is built; the chips above stack. Rows are
+ * ranked by mean shift; cost is shown as an ordinal band, never divided into the ranking -
+ * a ratio of a quantity to an ordinal is not a cost-effectiveness number.
  *
  * Metrics may be supplied by the integrator via the `metrics` prop (e.g. from
  * src/futures/interventions.ts, owned by another package). When absent they are
@@ -27,15 +29,13 @@ const HINTS = {
   interventions:
     'Toggle one or more; their effects add in log-odds, so the second wedge on the same lever is smaller than the first.',
   costBand:
-    'Rough cost and political difficulty. 1 = cheap and easy (a rule change), 2 = a funded programme, 3 = a major national programme, 4 = several percent of GDP or a new institution, 5 = a binding international treaty or a constitutional-scale change. Only used to rank interventions on the cost curve.',
+    'Ordinal band, not a price. Rough cost and political difficulty: 1 = cheap and easy (a rule change), 2 = a funded programme, 3 = a major national programme, 4 = several percent of GDP or a new institution, 5 = a binding international treaty or a constitutional-scale change. Not used to rank the table.',
   meanShift: (endYear: number) =>
-    `Change in the expected goodness of the world in ${endYear} (0-100 scale, 100 = flourishing) versus the baseline.`,
+    `Change in the expected goodness of the world in ${endYear} (0-100 scale, 100 = flourishing) versus the baseline. This is the order of the cost curve.`,
   floorLift: (endYear: number) =>
     `How many percentage points the chance of catastrophe-or-worse by ${endYear} (goodness 20 or below) falls. An intervention can barely move the mean and still be the best thing here.`,
   ceilingLift: (endYear: number) =>
     `How many percentage points the chance of flourishing by ${endYear} (goodness 90 or above) rises.`,
-  shiftPerCost:
-    'Mean shift divided by the cost band. This is the order of the cost curve, like a climate abatement curve.',
 } as const;
 
 export interface InterventionPanelProps {
@@ -69,6 +69,8 @@ export function computeInterventionMetrics(
       floorLift: baseSeries.floor[last] - g.floor[last],
       ceilingLift: g.ceiling[last] - baseSeries.ceiling[last],
       cost: band,
+      // Kept for callers of the shared InterventionMetrics shape; not used by this panel's
+      // ranking or display - see the doc comment on src/futures/interventions.ts.
       shiftPerCost: band > 0 ? meanShift / band : 0,
     };
   });
@@ -93,7 +95,7 @@ const InterventionPanel: React.FC<InterventionPanelProps> = ({
     return m
       .filter((r) => byId.has(r.interventionId))
       .slice()
-      .sort((a, b) => b.shiftPerCost - a.shiftPerCost)
+      .sort((a, b) => b.meanShift - a.meanShift)
       .map((r) => ({ ...r, iv: byId.get(r.interventionId)! }));
   }, [graph, interventions, baseline, metrics]);
 
@@ -149,7 +151,7 @@ const InterventionPanel: React.FC<InterventionPanelProps> = ({
       {rows.length > 0 && (
         <div>
           <div className="text-[11px] uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-1.5">
-            Cost curve · ranked by mean shift per unit cost · each intervention applied alone
+            Cost curve · ranked by mean shift · each intervention applied alone
           </div>
           <div className="overflow-x-auto -mx-4 sm:-mx-5 px-4 sm:px-5">
             <table className="w-full min-w-[520px] text-xs">
@@ -168,13 +170,9 @@ const InterventionPanel: React.FC<InterventionPanelProps> = ({
                     Floor lift
                     <Hint text={HINTS.floorLift(graph.endYear)} label="Floor lift" />
                   </th>
-                  <th className="font-semibold py-1.5 pr-2 whitespace-nowrap">
+                  <th className="font-semibold py-1.5 whitespace-nowrap">
                     Ceiling lift
                     <Hint text={HINTS.ceilingLift(graph.endYear)} label="Ceiling lift" align="right" />
-                  </th>
-                  <th className="font-semibold py-1.5 whitespace-nowrap">
-                    Shift per cost
-                    <Hint text={HINTS.shiftPerCost} label="Shift per cost" align="right" />
                   </th>
                 </tr>
               </thead>
@@ -192,8 +190,7 @@ const InterventionPanel: React.FC<InterventionPanelProps> = ({
                     </td>
                     <td className="py-1.5 pr-2">{signed(r.meanShift)}</td>
                     <td className="py-1.5 pr-2">{signed(r.floorLift * 100)} pts</td>
-                    <td className="py-1.5 pr-2">{signed(r.ceilingLift * 100)} pts</td>
-                    <td className="py-1.5">{r.shiftPerCost.toFixed(2)}</td>
+                    <td className="py-1.5">{signed(r.ceilingLift * 100)} pts</td>
                   </tr>
                 ))}
               </tbody>

@@ -11,6 +11,7 @@ import {
   validateEquation,
   parseEquation,
   compileEquation,
+  compileEquationDetailed,
   evaluateEquation,
   analyzeEquation,
   getAllowedVariables,
@@ -91,6 +92,36 @@ describe('compileEquation / evaluateEquation', () => {
   it('returns null for equations that fail to compile', () => {
     expect(compileEquation('evilFunc(adoption)')).toBeNull();
     expect(evaluateEquation('hackerVar * 2', {})).toBeNull();
+  });
+});
+
+describe('compileEquationDetailed', () => {
+  it('returns ok:true with the compiled equation on success', () => {
+    const result = compileEquationDetailed('adoption * contributionRate');
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.compiled.variables.sort()).toEqual(['adoption', 'contributionRate']);
+      expect(result.compiled.evaluate({ adoption: 0.5, contributionRate: 0.4 })).toBeCloseTo(0.2, 10);
+    }
+  });
+
+  it('returns ok:false with the mathjs character position on a syntax error', () => {
+    // Trailing operator: mathjs's parser fails at the end of the string (char 12).
+    const result = compileEquationDetailed('aiRevenue *');
+    expect(result.ok).toBe(false);
+    if (result.ok === false) {
+      expect(result.error).toBeTruthy();
+      expect(result.char).toBe(12);
+    }
+  });
+
+  it('returns ok:false (without a position) for a disallowed variable', () => {
+    const result = compileEquationDetailed('hackerVar * 2');
+    expect(result.ok).toBe(false);
+    if (result.ok === false) {
+      expect(result.error).toMatch(/Variable 'hackerVar' is not allowed/);
+      expect(result.char).toBeUndefined();
+    }
   });
 });
 

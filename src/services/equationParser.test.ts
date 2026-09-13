@@ -7,6 +7,7 @@ import {
   parseEquationSet,
   mergeWithDefaults,
   getCompiledEquationSet,
+  compileEquationSet,
   analyzeEquationForUI,
   getEquationTemplate,
   getEquationDocumentation
@@ -188,6 +189,92 @@ describe('equationParser', () => {
       const compiled = getCompiledEquationSet(invalid);
 
       expect(compiled).toBeNull();
+    });
+  });
+
+  describe('compileEquationSet', () => {
+    const validSet: EquationSet = {
+      aiAdoptionGrowth: 'aiGrowthRate * adoption',
+      surplusGeneration: 'aiRevenue * contributionRate',
+      wellbeingDelta: 'ubiBoost - displacementFriction',
+      displacementFriction: 'adoption * gini',
+      ubiUtility: 'ubi / gdpPerCapita'
+    };
+
+    it('returns { ok: true; equations } for a set that compiles', () => {
+      const result = compileEquationSet(validSet);
+
+      expect(result.ok).toBe(true);
+      // `=== true` (not a bare `if (result.ok)`) - see the `=== false` note in the
+      // implementation: without `strict` in this repo's tsconfig, TS only narrows a
+      // discriminated union off an explicit `=== true`/`=== false` comparison.
+      if (result.ok === true) {
+        expect(result.equations.aiAdoptionGrowth.evaluate).toBeInstanceOf(Function);
+        expect(result.equations.surplusGeneration.evaluate).toBeInstanceOf(Function);
+        expect(result.equations.wellbeingDelta.evaluate).toBeInstanceOf(Function);
+      }
+    });
+
+    it('returns { ok: false; errors } with the equation name and message for a syntax error', () => {
+      const broken: EquationSet = {
+        ...validSet,
+        // Trailing operator - a real mathjs syntax error, not just a forbidden pattern.
+        aiAdoptionGrowth: 'aiGrowthRate *'
+      };
+
+      const result = compileEquationSet(broken);
+
+      expect(result.ok).toBe(false);
+      if (result.ok === false) {
+        expect(result.errors.length).toBeGreaterThan(0);
+        const err = result.errors.find(e => e.equation === 'aiAdoptionGrowth');
+        expect(err).toBeDefined();
+        expect(err?.error).toBeTruthy();
+      }
+    });
+
+    it('carries the mathjs character position on the error, when mathjs provides one', () => {
+      const broken: EquationSet = {
+        ...validSet,
+        aiAdoptionGrowth: 'aiGrowthRate *'
+      };
+
+      const result = compileEquationSet(broken);
+
+      expect(result.ok).toBe(false);
+      if (result.ok === false) {
+        const err = result.errors.find(e => e.equation === 'aiAdoptionGrowth');
+        expect(err?.position).toBe(15);
+      }
+    });
+
+    it('reports missing required equations by name, with no position', () => {
+      const incomplete = {
+        aiAdoptionGrowth: 'aiGrowthRate * adoption'
+        // surplusGeneration, wellbeingDelta, displacementFriction, ubiUtility missing
+      } as EquationSet;
+
+      const result = compileEquationSet(incomplete);
+
+      expect(result.ok).toBe(false);
+      if (result.ok === false) {
+        expect(result.errors.some(e => e.equation === 'surplusGeneration')).toBe(true);
+        const missing = result.errors.find(e => e.equation === 'surplusGeneration');
+        expect(missing?.position).toBeUndefined();
+      }
+    });
+
+    it('never returns ok:true when getCompiledEquationSet (the deprecated null-returning form) would return null', () => {
+      const invalid: EquationSet = {
+        aiAdoptionGrowth: 'invalid syntax @#$',
+        surplusGeneration: 'aiRevenue',
+        wellbeingDelta: 'ubiBoost',
+        displacementFriction: 'adoption',
+        ubiUtility: 'ubi'
+      };
+
+      expect(getCompiledEquationSet(invalid)).toBeNull();
+      expect(compileEquationSet(invalid).ok).toBe(false);
     });
   });
 });

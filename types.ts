@@ -1,3 +1,5 @@
+import type { SimulationRun } from './simulation/run';
+
 
 export interface ModelParameters {
   id: string;
@@ -120,7 +122,17 @@ export interface CountryStats {
 
 export interface HistoryPoint {
   month: number;
+  /**
+   * The country/aggregate slice of the run at this month. Kept as its own field so save files
+   * written before the SimulationRun contract (audit 2026-09-13, A3) still load.
+   */
   state: SimulationState;
+  /**
+   * The complete run at this month (state + corporations + ledger + game theory). Every point
+   * recorded by the current app carries this; seek restores it verbatim instead of restoring
+   * countries from the past next to corporations from the present. Optional only for old files.
+   */
+  run?: SimulationRun;
 }
 
 export interface Corporation {
@@ -219,6 +231,13 @@ export interface SavedState {
   gameTheoryState: GameTheoryState;  // Game theory metrics
   model: ModelParameters;            // Current model configuration
   history: HistoryPoint[];           // Historical data points for charts
+  /**
+   * The complete run at `month` (audit 2026-09-13, A6). Files written before this field exist
+   * are loaded by replaying from month 0 with `model` - see simulation/appState.ts.
+   */
+  run?: SimulationRun;
+  /** The custom model that was active, if any. Autosave has always written this. */
+  activeModelConfig?: ModelConfig | null;
 }
 
 /**
