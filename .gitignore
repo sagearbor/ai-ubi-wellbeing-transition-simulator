@@ -31,3 +31,6 @@ dist-ssr
 
 # Session scratch (wrapups, hlists). Two Dec-2025 notes remain tracked.
 tmp/
+
+# Agent worktrees
+.claude/worktrees/
