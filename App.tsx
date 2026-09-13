@@ -16,6 +16,7 @@ import { Leaderboard } from './components/Leaderboard';
 import { ModelDetail } from './components/ModelDetail';
 import { ModelRating } from './components/ModelRating';
 import FuturesTab from './components/futures/FuturesTab';
+import LabTab from './components/lab/LabTab';
 import { InterventionImportPanel } from './components/futures/InterventionImportPanel';
 import { LOCKED_GRAPH, LOCKED_INTERVENTIONS, loadCustomInterventions, saveCustomInterventions } from './src/futures/data';
 import type { Intervention } from './src/futures/types';
@@ -198,8 +199,16 @@ const App: React.FC = () => {
   const [history, setHistory] = useState<HistoryPoint[]>([]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [speed, setSpeed] = useState(1);
-  const [activeTab, setActiveTab] = useState<'map' | 'charts' | 'corporations' | 'futures' | 'analysis' | 'overview' | 'equations' | 'guide' | 'models' | 'leaderboard'>('map');
+  const [activeTab, setActiveTab] = useState<'map' | 'charts' | 'corporations' | 'futures' | 'lab' | 'analysis' | 'overview' | 'equations' | 'guide' | 'models' | 'leaderboard'>('map');
   const [customInterventions, setCustomInterventions] = useState<Intervention[]>(() => loadCustomInterventions());
+  // Deep link: /?tab=lab opens a tab directly (shareable, and it bypasses the header menu on phones).
+  useEffect(() => {
+    try {
+      const wanted = new URLSearchParams(window.location.search).get('tab');
+      const valid = ['map', 'charts', 'corporations', 'futures', 'lab', 'analysis', 'overview', 'equations', 'guide', 'models', 'leaderboard'];
+      if (wanted && valid.includes(wanted)) setActiveTab(wanted as any);
+    } catch { /* no window */ }
+  }, []);
   const [viewMode, setViewMode] = useState<'adoption' | 'wellbeing'>('wellbeing'); // Default to wellbeing
   const [equationViewMode, setEquationViewMode] = useState<'simple' | 'detailed'>('simple');
   const [selectedArchetype, setSelectedArchetype] = useState<string | null>(null); // Archetype filter for map
@@ -630,6 +639,21 @@ const App: React.FC = () => {
    * Load simulation state from a JSON file
    * Restores all state including history, corporations, and parameters
    */
+  /** Restore a saved state (file or autosave) as the whole run, replaying old formats. */
+  const restoreSavedState = useCallback((saved: SavedState & { activeModelConfig?: ModelConfig | null }) => {
+    if (!saved.version) console.warn('Loading a save with no version field. It will be replayed from month 0.');
+    const loaded = historyFromSave(saved);
+    if (loaded.replayed) console.warn(`[load] ${loaded.note}`);
+    else if (loaded.note) console.info(`[load] ${loaded.note}`);
+    setBaseRun(loaded.base);
+    setBaseCorporations(loaded.base.corporations);
+    setRun(loaded.run);
+    setHistory(loaded.history);
+    setModel(saved.model);
+    if (saved.activeModelConfig !== undefined) setActiveModelConfig(saved.activeModelConfig);
+    setIsPlaying(false);
+  }, []);
+
   const loadFromFile = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (!file) return;
@@ -638,29 +662,8 @@ const App: React.FC = () => {
     reader.onload = (e) => {
       try {
         const saved = JSON.parse(e.target?.result as string) as SavedState;
-
-        // Validate version compatibility
-        if (!saved.version) {
-          console.warn('Loading a save file with no version field. It will be replayed from month 0.');
-        }
-
-        // Restore the WHOLE run. Files written before the run format only stored the final
-        // month's corporations/ledger/game theory (and their history points were corrupted by
-        // the in-place mutation bug), so those are rebuilt by replaying with the saved model.
-        const loaded = historyFromSave(saved);
-        if (loaded.replayed) console.warn(`[load] ${loaded.note}`);
-        else if (loaded.note) console.info(`[load] ${loaded.note}`);
-
-        setBaseRun(loaded.base);
-        setBaseCorporations(loaded.base.corporations);
-        setRun(loaded.run);
-        setHistory(loaded.history);
-        setModel(saved.model);
-        if (saved.activeModelConfig !== undefined) setActiveModelConfig(saved.activeModelConfig);
-
-        // Stop playback on load
-        setIsPlaying(false);
-
+        // Restore the WHOLE run (old formats are replayed; see historyFromSave).
+        restoreSavedState(saved);
         console.log(`Simulation loaded successfully from ${new Date(saved.timestamp).toLocaleString()}`);
       } catch (err) {
         console.error("Failed to load save file:", err);
@@ -671,7 +674,7 @@ const App: React.FC = () => {
 
     // Reset the input so the same file can be loaded again
     event.target.value = '';
-  }, []);
+  }, [restoreSavedState]);
 
   /**
    * Advance one month.
@@ -1006,37 +1009,31 @@ const App: React.FC = () => {
     return () => clearInterval(interval);
   }, [state, run, corporations, globalLedger, gameTheoryState, model, history, activeModelConfig]);
 
-  // Load autosave on mount if available
+  // Autosave found on mount: offer to restore it in-page. A native confirm() dialog blocked the
+  // whole page (and any automation) until dismissed, so it is a banner with two buttons instead.
+  const [pendingAutosave, setPendingAutosave] = useState<(SavedState & { activeModelConfig?: ModelConfig | null }) | null>(null);
   useEffect(() => {
     try {
       const autoSave = localStorage.getItem('ubi-sim-autosave');
-      if (autoSave && state.month === 0) {
-        // Only offer to load autosave if we're at the initial state
-        const shouldLoad = window.confirm(
-          'An auto-saved simulation was found. Would you like to restore it?'
-        );
-        if (shouldLoad) {
-          const saved = JSON.parse(autoSave) as SavedState;
-          const loaded = historyFromSave(saved);
-          if (loaded.replayed) console.warn(`[autosave] ${loaded.note}`);
-          else if (loaded.note) console.info(`[autosave] ${loaded.note}`);
-          setBaseRun(loaded.base);
-          setBaseCorporations(loaded.base.corporations);
-          setRun(loaded.run);
-          setHistory(loaded.history);
-          setModel(saved.model);
-          // P8-T9: Restore custom model config if present
-          if (saved.activeModelConfig !== undefined) {
-            setActiveModelConfig(saved.activeModelConfig);
-          }
-          console.log('Auto-save restored successfully');
-        }
-      }
+      if (autoSave && state.month === 0) setPendingAutosave(JSON.parse(autoSave));
+    } catch (err) {
+      console.error("Failed to read auto-save:", err);
+      localStorage.removeItem('ubi-sim-autosave');
+    }
+  }, []); // Only run on mount
+  const restoreAutosave = useCallback(() => {
+    const saved = pendingAutosave;
+    if (!saved) return;
+    try {
+      restoreSavedState(saved);
+      console.log('Auto-save restored successfully');
     } catch (err) {
       console.error("Failed to load auto-save:", err);
       localStorage.removeItem('ubi-sim-autosave');
     }
-  }, []); // Only run on mount
+    setPendingAutosave(null);
+  }, [pendingAutosave]);
+  const discardAutosave = useCallback(() => { localStorage.removeItem('ubi-sim-autosave'); setPendingAutosave(null); }, []);
 
   // Record simulation run when reaching month 60 (P9-T7)
   useEffect(() => {
@@ -1170,7 +1167,7 @@ const App: React.FC = () => {
           </div>
         </div>
 
-        <nav className="flex items-center gap-1 sm:gap-2 p-1 bg-slate-100 dark:bg-slate-800 rounded-lg lg:rounded-xl border border-slate-200 dark:border-slate-700 max-w-[calc(100vw-112px)] sm:max-w-[70vw] lg:max-w-none overflow-x-auto scrollbar-hide">
+        <nav className="flex items-center gap-1 sm:gap-2 p-1 bg-slate-100 dark:bg-slate-800 rounded-lg lg:rounded-xl border border-slate-200 dark:border-slate-700 max-w-[calc(100vw-112px)] sm:max-w-[70vw] lg:max-w-none overflow-x-auto lg:overflow-visible scrollbar-hide">
           {(['map', 'charts', 'corporations', 'futures'] as const).map(tab => (
             <button
               key={tab}
@@ -1188,20 +1185,21 @@ const App: React.FC = () => {
             <button 
               onMouseEnter={() => setAboutDropdownOpen(true)}
               onClick={() => setAboutDropdownOpen(!aboutDropdownOpen)}
-              className={`px-3 py-1 lg:px-4 lg:py-1.5 rounded-md lg:rounded-lg text-[10px] lg:text-xs font-bold uppercase flex items-center gap-1 transition-all ${(activeTab === 'overview' || activeTab === 'equations' || activeTab === 'analysis' || activeTab === 'guide' || activeTab === 'models' || activeTab === 'leaderboard') ? 'bg-slate-800 text-white dark:bg-slate-700 dark:text-white' : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'}`}
+              className={`px-3 py-1 lg:px-4 lg:py-1.5 rounded-md lg:rounded-lg text-[10px] lg:text-xs font-bold uppercase flex items-center gap-1 transition-all ${(activeTab === 'overview' || activeTab === 'equations' || activeTab === 'analysis' || activeTab === 'guide' || activeTab === 'models' || activeTab === 'leaderboard' || activeTab === 'lab') ? 'bg-slate-800 text-white dark:bg-slate-700 dark:text-white' : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'}`}
             >
                 More <ChevronDown size={12} className={aboutDropdownOpen ? 'rotate-180' : ''} />
             </button>
             {aboutDropdownOpen && (
                 <div
                   onMouseLeave={() => setAboutDropdownOpen(false)}
-                  className="absolute right-0 top-full mt-2 w-48 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-2xl overflow-hidden z-[110]"
+                  className="absolute right-0 top-full mt-2 max-lg:fixed max-lg:top-14 max-lg:right-3 w-48 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-2xl overflow-hidden z-[110]"
                 >
                     <button onClick={() => { setActiveTab('guide'); setAboutDropdownOpen(false); setSelectedEntity(null); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors border-b border-slate-100 dark:border-slate-700 flex items-center gap-2"><BookOpen size={14} /> About & Guide</button>
                     <button onClick={() => { setActiveTab('overview'); setAboutDropdownOpen(false); setSelectedEntity(null); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors border-b border-slate-100 dark:border-slate-700 flex items-center gap-2"><Globe size={14} /> Overview</button>
                     <button onClick={() => { setActiveTab('equations'); setAboutDropdownOpen(false); setSelectedEntity(null); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors border-b border-slate-100 dark:border-slate-700 flex items-center gap-2"><FlaskConical size={14} /> Model Equations</button>
                     <button onClick={() => { setActiveTab('analysis'); setAboutDropdownOpen(false); setSelectedEntity(null); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors border-b border-slate-100 dark:border-slate-700 flex items-center gap-2"><BrainCircuit size={14} /> Analysis Hub</button>
                     <button onClick={() => { setActiveTab('models'); setAboutDropdownOpen(false); setSelectedEntity(null); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors border-b border-slate-100 dark:border-slate-700 flex items-center gap-2"><Settings size={14} /> Models</button>
+                    <button onClick={() => { setActiveTab('lab'); setAboutDropdownOpen(false); setSelectedEntity(null); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors border-b border-slate-100 dark:border-slate-700 flex items-center gap-2"><FlaskConical size={14} /> Model Lab</button>
                     <button onClick={() => { setActiveTab('futures'); setAboutDropdownOpen(false); setSelectedEntity(null); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors border-b border-slate-100 dark:border-slate-700 flex items-center gap-2"><Sparkles size={14} /> AI Futures Map</button>
                     <button onClick={() => { setActiveTab('leaderboard'); setAboutDropdownOpen(false); setSelectedEntity(null); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors flex items-center gap-2"><Trophy size={14} /> Leaderboard</button>
                 </div>
@@ -1733,6 +1731,12 @@ const App: React.FC = () => {
                     )}
                 </div>
               </div>
+            </div>
+          )}
+
+          {activeTab === 'lab' && (
+            <div className="h-full overflow-y-auto scrollbar-hide pb-32">
+              <LabTab />
             </div>
           )}
 
@@ -2938,6 +2942,14 @@ shadowWellbeing = max(1, shadowWellbeing - shadowFriction × 0.4)`}
       <footer className="px-4 lg:px-6 py-3 lg:py-4 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 sticky bottom-0 z-[100] backdrop-blur-md shrink-0">
         {/* A5: a custom model that does not compile blocks playback and says so, here, next to
             the controls it disables. The built-in engine is never used in its place. */}
+        {pendingAutosave && (
+          <div role="status" className="mx-4 lg:mx-6 mb-2 flex flex-wrap items-center gap-2 rounded-lg border border-amber-300 bg-amber-50 px-3 py-2 text-xs text-amber-900 dark:border-amber-700 dark:bg-amber-950/40 dark:text-amber-100">
+            <span className="font-semibold">Auto-saved simulation found</span>
+            <span className="text-amber-800/80 dark:text-amber-200/80">from {new Date(pendingAutosave.timestamp).toLocaleString()}, month {pendingAutosave.month}.</span>
+            <button type="button" onClick={restoreAutosave} className="min-h-9 rounded-md bg-amber-600 px-3 py-1 font-bold uppercase text-white hover:bg-amber-700">Restore</button>
+            <button type="button" onClick={discardAutosave} className="min-h-9 rounded-md border border-amber-400 px-3 py-1 font-bold uppercase hover:bg-amber-100 dark:hover:bg-amber-900/40">Discard</button>
+          </div>
+        )}
         <EquationErrorBanner
           modelName={activeModelConfig?.name || 'custom model'}
           errors={equationErrors}

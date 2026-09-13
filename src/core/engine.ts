@@ -242,7 +242,9 @@ export function compileModel(model: CoreModel): CompiledModel {
   });
   (model.inputs ?? []).forEach((i) => claim(i.id, 'input'));
   model.variables.forEach((v) => claim(v.id, 'variable'));
-  (model.solves ?? []).forEach((s) => claim(s.unknown, `solve unknown (${s.id})`));
+  (model.solves ?? []).forEach((s) => { claim(s.unknown, `solve unknown (${s.id})`); claim(`solve:${s.id}`, 'solve block'); });
+  // Effect ids are claimed too: the same effect declared twice in one file is a silent double count.
+  (model.effects ?? []).forEach((e) => claim(`effect:${e.id}`, 'effect'));
 
   const variables: CompiledModel['variables'] = new Map();
   const solves: CompiledModel['solves'] = new Map();

@@ -1,0 +1,72 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ubi-simulator.example.com/schemas/coreOverlay.json",
+  "title": "Overlay",
+  "description": "An overlay adds to a base CoreModel: new parameters (or new values for existing ones), new input curves, new variables, effects, solves, outputs and tests. It may not replace an existing variable's equation — that is a structural fork, not an overlay. Shapes are shared with coreModel.schema.json.",
+  "type": "object",
+  "required": ["id"],
+  "additionalProperties": false,
+
+  "properties": {
+    "id": { "$ref": "https://ubi-simulator.example.com/schemas/coreModel.json#/definitions/SlugId" },
+    "name": { "type": "string", "minLength": 1, "maxLength": 200 },
+    "description": { "type": "string", "maxLength": 4000 },
+
+    "parameters": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/OverlayParameter" },
+      "description": "Existing parameters are patched field by field; a parameter the base does not have needs both value and source."
+    },
+    "inputs": {
+      "type": "array",
+      "items": { "$ref": "https://ubi-simulator.example.com/schemas/coreModel.json#/definitions/Input" }
+    },
+    "variables": {
+      "type": "array",
+      "items": { "$ref": "https://ubi-simulator.example.com/schemas/coreModel.json#/definitions/Variable" },
+      "description": "New variables only. Redefining a base variable is rejected as a structural change."
+    },
+    "effects": {
+      "type": "array",
+      "items": { "$ref": "https://ubi-simulator.example.com/schemas/coreModel.json#/definitions/Effect" }
+    },
+    "solves": {
+      "type": "array",
+      "items": { "$ref": "https://ubi-simulator.example.com/schemas/coreModel.json#/definitions/SolveBlock" }
+    },
+    "outputs": {
+      "type": "array",
+      "items": { "$ref": "https://ubi-simulator.example.com/schemas/coreModel.json#/definitions/Identifier" }
+    },
+    "tests": {
+      "type": "array",
+      "items": { "$ref": "https://ubi-simulator.example.com/schemas/coreModel.json#/definitions/ModelTest" }
+    }
+  },
+
+  "definitions": {
+    "OverlayParameter": {
+      "type": "object",
+      "required": ["id"],
+      "additionalProperties": false,
+      "description": "Partial<Parameter> & { id }. Only `id` is required, so an overlay can move one number without restating its source; a brand-new parameter still needs value and source (checked by resolveModel, not by this schema).",
+      "properties": {
+        "id": { "$ref": "https://ubi-simulator.example.com/schemas/coreModel.json#/definitions/Identifier" },
+        "value": { "type": "number" },
+        "unit": { "type": "string", "maxLength": 64 },
+        "range": { "$ref": "https://ubi-simulator.example.com/schemas/coreModel.json#/definitions/Range" },
+        "source": { "$ref": "https://ubi-simulator.example.com/schemas/coreModel.json#/definitions/Source" },
+        "byEntity": {
+          "type": "object",
+          "additionalProperties": { "type": "number" }
+        },
+        "bounds": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": { "type": "number" }
+        }
+      }
+    }
+  }
+}
