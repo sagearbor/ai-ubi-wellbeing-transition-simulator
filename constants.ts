@@ -179,6 +179,35 @@ export const PRESET_MODELS: ModelParameters[] = [
     directToWalletEnabled: false,
     defaultCorpPolicy: 'mixed-reality',
     marketPressure: 0.4
+  },
+  {
+    id: 'evidence-anchored',
+    name: 'Evidence-Anchored (stage 4 candidate)',
+    description: 'Same corporations and adoption; wellbeing is a level model calibrated to evidence: anchored on labour income and governance (World Happiness Report fit), a saturating cash-transfer effect, an unemployment effect via the Korinek-style displaced pool. Starts from observed 2025 ladder values. Candidate, not the reviewed default.',
+    corporateTaxRate: 0.12,
+    adoptionIncentive: 0.30,
+    baseUBI: 200,
+    aiGrowthRate: 0.09,
+    volatility: 0.05,
+    gdpScaling: 0.4,
+    globalRedistributionRate: 0.3,
+    displacementRate: 0.75,
+    directToWalletEnabled: false,
+    defaultCorpPolicy: 'free-market',
+    marketPressure: 0.5,
+    macro: {
+      ...DEFAULT_MACRO,
+      wellbeingAnchorRate: 0.02,
+      wellbeingMode: 'anchored',
+      // docs/design/research/cash-transfer-wellbeing-evidence.md (2026-09-13):
+      //   transfer: ~0.35-0.45 ladder points per doubling of income (McGuire et al. 2022 pooled
+      //   d = 0.13 SD; Finland 2017-18; Kenya GiveDirectly) => 4 index points, p5-p95 2-5;
+      //   unemployment: ~0.04-0.05 ladder points per pp (GSOEP direct effect + Di Tella et al.
+      //   spillover) => 0.45 index points per pp, p5-p95 0.3-1.0.
+      // Calibrated to short-to-medium-run pilots; not validated for a permanent 100+-country UBI.
+      ubiEffectPerDoubling: 4,
+      unemploymentEffectPerPoint: 0.45,
+    },
   }
 ];
 

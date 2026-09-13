@@ -12,6 +12,7 @@ Model files (`*.json`) and overlays (`overlays/*.json`) for the authoring core e
 | `market-clearing.json` | An explicit scalar equilibrium (`solves`) block, resolved every step, driven by an exogenous input | Yes |
 | `market-no-root.json` | **Adversarial.** Same market as `market-clearing.json` but with the solve bracket deliberately set so no root exists in it (`[0, 5]` when the true price is `18`). Demonstrates that the engine fails explicitly (`solve-no-root`) instead of returning a wrong number. **Not registered** in `src/core/fixtures.ts` — it must never appear in the Lab picker — but `npm run validate:core` (the bundle validator) should still discover and run it, and is expected to report it as a failing model by design. Do not "fix" it. |
 | `cohort-flow.json` (+ `overlays/retraining.json`) | Time-stepping cohort/flow model: a monthly displaced-worker pool with inflow/outflow and a depth-2 lag (`x[t-2]`) exercised via declared `history` | Yes |
+| `korinek-2026.json` (+ `overlays/korinek-modest.json`, `overlays/korinek-extreme.json`) | **A published model.** The reduced-form transcription of Korinek, Jones, Sacher, Cotter & McCrory (2026) that `simulation/pure.ts` carries: exogenous adoption input, GDP path, labour share, displaced pool, unemployment. In-file tests reproduce the three published US-2030 scenarios within `validation/korinekTests.ts` tolerances; scenarios are overlays that swap the input curve and patch two coefficients. US only; approximation of published outputs, not the paper's equations. | Yes |
 
 ## Running the fixtures
 

@@ -1,0 +1,401 @@
+{
+  "schemaVersion": 1,
+  "id": "korinek-2026",
+  "name": "Korinek et al. 2026, substantial-change scenario (US, reduced form)",
+  "description": "A reduced-form approximation of the published US 2030 outputs of Korinek, Jones, Sacher, Cotter & McCrory (2026), \"Economic Scenarios for Transformative AI\" (Anthropic Institute WP 2026-02), ported from this repo's TypeScript macro block (simulation/pure.ts::applyMacroDynamics, constants.ts DEFAULT_MACRO / KORINEK_SCENARIOS) into the authoring-core format.\n\nIt is NOT their model. It reproduces four published 2030 numbers with a much smaller mechanism: AI adoption is exogenous, affected = adoption x cognitiveShare, GDP per capita = the no-AI path x (1 + productivityGain x affected), the labour share = 0.60 x (1 - laborShareSensitivity x affected), and newly displaced workers = the monthly rise in adoption x cognitiveShare x automationShare, leaving a pool at 1/reemploymentMonths per month. productivityGain (1.13) and laborShareSensitivity (0.88) are calibrated by this repo to land on the published outputs; the paper's own equations (task-based production, search frictions, its discount mu) are not implemented here. Anyone reading a number off this model is reading a curve fit to three published points, not a derivation.\n\nBase file = the SUBSTANTIAL scenario. overlays/korinek-modest.json and overlays/korinek-extreme.json swap the adoption curve and the two scenario-specific parameters for the other two published scenarios.\n\nTests: the three quantities validation/korinekTests.ts scores (GDP boost vs the no-AI path +/-2.0pp, labour share +/-2.0pp, cognitive-worker unemployment +/-2.5pp) are asserted here against the paper's published US 2030 values with exactly those tolerances. Headline unemployment is published (4.3% substantial) but korinekTests.ts declares no tolerance for it, so the fourth test below borrows the 2.0pp labour-share band and says so in its name rather than inventing a tighter one.\n\nTwo deliberate differences from validation/korinek.ts, both well inside tolerance: cognitiveShare is the paper's published US figure 0.624 rather than the engine's rounded rich-democracy archetype bucket 0.62; and the adoption path is read at the same step it is applied, where the TS harness applies the previous month's adoption (a one-month lag). Together these move the extreme-scenario GDP boost from 31.33% to 31.73% against a published 32.4% +/- 2.0.\n\nFormat limitations hit while porting: (1) the evidence-kind taxonomy has no label for \"a published descriptive statistic\", so the US cognitive-employment share and the natural unemployment rate are tagged associational with a note; (2) tests assert one scalar at one calendar step, so \"reproduces all three scenarios\" is expressed as three files (this one plus two overlays), not one test.",
+  "scope": "US only, 2026-2030, one country, no UBI and no policy: it says what GDP, the labour share and unemployment do under an assumed AI adoption path, and nothing about what anyone should do about it. Adoption is an input, not an outcome - the model cannot tell you how fast AI is adopted, only what follows if it is adopted this fast. Every number is a reduced-form fit to three published 2030 outputs of Korinek et al. (2026), so it reproduces those outputs and carries no independent evidence about any year, country or scenario other than the three it was fitted to. Off the fitted points (other countries, past 2030, adoption paths of a different shape) it is an extrapolation with no backing.",
+  "license": "Model file CC0. The published outputs it reproduces are Korinek, Jones, Sacher, Cotter & McCrory (2026).",
+  "sources": [
+    {
+      "label": "Korinek, Jones, Sacher, Cotter & McCrory (2026), \"Economic Scenarios for Transformative AI\", Anthropic Institute WP 2026-02",
+      "kind": "elicited",
+      "note": "The three scenarios and their published US 2030 outputs (GDP boost, labour share, unemployment, cognitive unemployment) are the targets this file is fitted to. Scenario targets as transcribed in constants.ts KORINEK_SCENARIOS."
+    },
+    {
+      "label": "This repo: simulation/pure.ts::applyMacroDynamics, constants.ts DEFAULT_MACRO and KORINEK_SCENARIOS, validation/korinek.ts, validation/korinekTests.ts",
+      "kind": "calibrated",
+      "note": "The reduced-form mechanism and the calibrated coefficients transcribed here. This core model reproduces that TypeScript block; it does not reproduce the paper's equations."
+    }
+  ],
+  "time": {
+    "start": 2026.5,
+    "end": 2031,
+    "step": "month"
+  },
+  "parameters": [
+    {
+      "id": "cognitiveShare",
+      "value": 0.624,
+      "unit": "share",
+      "bounds": [
+        0,
+        1
+      ],
+      "source": {
+        "label": "Share of US employment in cognitive occupations, 62.4% (Korinek et al. 2026)",
+        "kind": "associational",
+        "note": "A published descriptive statistic, not a correlation; the format's six evidence kinds have no label for an observed share, and \"assumed\" would wrongly count it as a modeling choice. constants.ts buckets this to 0.62 for the rich-democracy archetype; the published 0.624 is used here."
+      }
+    },
+    {
+      "id": "naturalUnemployment",
+      "value": 0.039,
+      "unit": "share",
+      "bounds": [
+        0,
+        1
+      ],
+      "source": {
+        "label": "US unemployment rate with no AI displacement, 3.9% (constants.ts NATURAL_UNEMPLOYMENT_BY_ARCHETYPE, rich-democracy)",
+        "kind": "associational",
+        "note": "A published descriptive statistic; same taxonomy caveat as cognitiveShare. It is also the paper's modest-scenario 2030 unemployment target, which is why the modest scenario reproduces trivially."
+      }
+    },
+    {
+      "id": "baseLaborShare",
+      "value": 0.6,
+      "unit": "share",
+      "bounds": [
+        0,
+        1
+      ],
+      "source": {
+        "label": "Labour share of income on the no-AI path, 0.60 (simulation/pure.ts BASE_LABOR_SHARE)",
+        "kind": "assumed",
+        "note": "A round starting constant chosen by this repo, close to the observed US labour share; not read off a series."
+      }
+    },
+    {
+      "id": "gdpPerCapitaStart",
+      "value": 63000,
+      "unit": "usd_per_person_per_year",
+      "source": {
+        "label": "US GDP per capita at the start of the run (constants.ts INITIAL_COUNTRIES, USA)",
+        "kind": "associational",
+        "note": "Only sets the level of the two GDP series; the GDP-boost test is a ratio and is unaffected by it."
+      }
+    },
+    {
+      "id": "baselineGrowth",
+      "value": 0.02,
+      "unit": "share_per_year",
+      "range": {
+        "dist": "normal",
+        "p5": 0.01,
+        "p95": 0.03
+      },
+      "source": {
+        "label": "Annual real GDP-per-capita growth on the no-AI counterfactual path, 2%/yr (constants.ts DEFAULT_MACRO)",
+        "kind": "assumed"
+      }
+    },
+    {
+      "id": "productivityGain",
+      "value": 1.13,
+      "unit": "ratio",
+      "range": {
+        "dist": "normal",
+        "p5": 0.85,
+        "p95": 1.4
+      },
+      "source": {
+        "label": "Korinek et al. 2026 reproduction, reduced form; see constants.ts DEFAULT_MACRO",
+        "kind": "calibrated",
+        "note": "GDP boost per unit of AI-affected task share. Tuned by this repo so the three scenarios land within tolerance of the published 2030 GDP numbers; it is not a parameter of the paper. The range is the author's own band on that fit, not a published interval."
+      }
+    },
+    {
+      "id": "laborShareSensitivity",
+      "value": 0.88,
+      "unit": "ratio",
+      "range": {
+        "dist": "normal",
+        "p5": 0.7,
+        "p95": 1.05
+      },
+      "source": {
+        "label": "Korinek et al. 2026 reproduction, reduced form; see constants.ts DEFAULT_MACRO",
+        "kind": "calibrated",
+        "note": "The labour share falls by this x the affected task share. Tuned to the published 2030 labour shares (59.4 / 56.1 / 45.2); not a parameter of the paper. Range is the author's band on the fit."
+      }
+    },
+    {
+      "id": "automationShare",
+      "value": 0.2,
+      "unit": "share",
+      "bounds": [
+        0,
+        1
+      ],
+      "range": {
+        "dist": "uniform",
+        "p5": 0.1,
+        "p95": 0.35
+      },
+      "source": {
+        "label": "Korinek et al. 2026 reproduction, reduced form; see constants.ts KORINEK_SCENARIOS (substantial: psi = 0.2)",
+        "kind": "calibrated",
+        "note": "psi: the fraction of AI-affected cognitive tasks that is automated (worker displaced) rather than augmented. Set per scenario (0.1 modest / 0.2 substantial / 0.9 extreme) so the displaced pool lands on the published cognitive-unemployment numbers. Overridden by the modest and extreme overlays."
+      }
+    },
+    {
+      "id": "reemploymentMonths",
+      "value": 12,
+      "unit": "months",
+      "range": {
+        "dist": "uniform",
+        "p5": 6,
+        "p95": 24
+      },
+      "source": {
+        "label": "Korinek et al. 2026 reproduction, reduced form; see constants.ts KORINEK_SCENARIOS (substantial: 12 months)",
+        "kind": "assumed",
+        "note": "Mean months a displaced worker spends in the pool before re-employment. This repo's own displaced-pool parameter (6 / 12 / 18 by scenario), NOT the paper's search discount mu - the two are different quantities and are not compared. Overridden by the modest and extreme overlays."
+      }
+    },
+    {
+      "id": "unemploymentCap",
+      "value": 0.6,
+      "unit": "share",
+      "bounds": [
+        0,
+        1
+      ],
+      "source": {
+        "label": "Guard rail carried over from simulation/pure.ts::applyMacroDynamics (min(0.6, ...))",
+        "kind": "assumed",
+        "note": "A chosen ceiling, not a derived bound: it stops the pool arithmetic from reporting an absurd unemployment rate under adoption paths far outside these scenarios. It does not bind in any of the three scenarios (the highest is 12.2%), so it affects none of the tests below."
+      }
+    },
+    {
+      "id": "cognitiveUnemploymentCap",
+      "value": 0.9,
+      "unit": "share",
+      "bounds": [
+        0,
+        1
+      ],
+      "source": {
+        "label": "Guard rail carried over from simulation/pure.ts::applyMacroDynamics (min(0.9, ...))",
+        "kind": "assumed",
+        "note": "A chosen ceiling, not a derived bound. It does not bind in any of the three scenarios (the highest is 17.8%)."
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "id": "ai_adoption",
+      "unit": "share",
+      "curve": {
+        "2027": 0.0112994858588,
+        "2028": 0.0210799241438,
+        "2029": 0.0557852536542,
+        "2030": 0.100411617813,
+        "2031": 0.118,
+        "2026.5": 0.01,
+        "2026.5833333333333": 0.0101463677951,
+        "2026.6666666666667": 0.0103156318055,
+        "2026.75": 0.0105112867966,
+        "2026.8333333333333": 0.0107373315308,
+        "2026.9166666666667": 0.0109983314742,
+        "2027.0833333333333": 0.011646698089,
+        "2027.1666666666667": 0.0120466478653,
+        "2027.25": 0.0125068625791,
+        "2027.3333333333333": 0.0130357844914,
+        "2027.4166666666667": 0.0136428289022,
+        "2027.5": 0.0143384269384,
+        "2027.5833333333333": 0.015134044745,
+        "2027.6666666666667": 0.0160421688044,
+        "2027.75": 0.017076244957,
+        "2027.8333333333333": 0.0182505566668,
+        "2027.9166666666667": 0.019580026498,
+        "2028.0833333333333": 0.0227654652976,
+        "2028.1666666666667": 0.0246512889761,
+        "2028.25": 0.0267508073887,
+        "2028.3333333333333": 0.0290754328242,
+        "2028.4166666666667": 0.0316337006261,
+        "2028.5": 0.0344303258072,
+        "2028.5833333333333": 0.0374652518217,
+        "2028.6666666666667": 0.0407327707788,
+        "2028.75": 0.0442208109537,
+        "2028.8333333333333": 0.0479104949669,
+        "2028.9166666666667": 0.051776065701,
+        "2029.0833333333333": 0.0599001188113,
+        "2029.1666666666667": 0.0640783462396,
+        "2029.25": 0.0682749156541,
+        "2029.3333333333333": 0.072444012131,
+        "2029.4166666666667": 0.0765410090456,
+        "2029.5": 0.080524343238,
+        "2029.5833333333333": 0.0843571188906,
+        "2029.6666666666667": 0.0880083168838,
+        "2029.75": 0.0914535415666,
+        "2029.8333333333333": 0.0946752956475,
+        "2029.9166666666667": 0.0976628256606,
+        "2030.0833333333333": 0.102922643834,
+        "2030.1666666666667": 0.105201459667,
+        "2030.25": 0.107257250098,
+        "2030.3333333333333": 0.109101894649,
+        "2030.4166666666667": 0.110749108976,
+        "2030.5": 0.112213695347,
+        "2030.5833333333333": 0.113510918045,
+        "2030.6666666666667": 0.114656005726,
+        "2030.75": 0.115663773264,
+        "2030.8333333333333": 0.116548349783,
+        "2030.9166666666667": 0.117322996823
+      },
+      "interp": "linear",
+      "outside": "hold",
+      "source": {
+        "label": "Scenario input: share of US cognitive tasks performed by AI by end-2030 (their m x d), ramped from 1% in mid-2026 along the logistic path in validation/korinek.ts::adoptionPath",
+        "kind": "assumed",
+        "note": "Korinek et al. treat the capability/adoption path as an exogenous input and derive outcomes from it; this model does the same. The 2030 end point (0.118 substantial, 0.023 modest, 0.45 extreme) is from the paper's scenarios; the logistic shape between mid-2026 and end-2030 is this repo's own smoothing assumption, not the paper's."
+      }
+    }
+  ],
+  "variables": [
+    {
+      "id": "monthly_growth",
+      "unit": "share_per_month",
+      "equation": "pow(1 + baselineGrowth, 1 / 12) - 1",
+      "description": "Baseline annual growth expressed per month"
+    },
+    {
+      "id": "gdp_no_ai",
+      "unit": "usd_per_person_per_year",
+      "initial": "gdpPerCapitaStart",
+      "equation": "gdp_no_ai[t-1] * (1 + monthly_growth)",
+      "description": "The counterfactual no-AI GDP-per-capita path; the denominator of the published \"GDP boost\" number"
+    },
+    {
+      "id": "affected",
+      "unit": "share",
+      "equation": "ai_adoption * cognitiveShare",
+      "description": "Share of ALL labour tasks touched by AI = the exogenous cognitive-task adoption share x the cognitive share of employment"
+    },
+    {
+      "id": "gdp_per_capita",
+      "unit": "usd_per_person_per_year",
+      "equation": "gdp_no_ai * (1 + productivityGain * affected)",
+      "description": "GDP per capita on the AI path"
+    },
+    {
+      "id": "labor_share",
+      "unit": "share",
+      "equation": "baseLaborShare * (1 - laborShareSensitivity * affected)",
+      "description": "Labour share of income; falls linearly in the affected task share"
+    },
+    {
+      "id": "newly_displaced",
+      "unit": "share_of_workforce_per_month",
+      "equation": "max(0, ai_adoption - ai_adoption[t-1]) * cognitiveShare * automationShare",
+      "description": "Inflow to the displaced pool: this month's rise in AI adoption, in cognitive tasks, of which a fraction psi is automation rather than augmentation. Never negative - adoption falling does not un-displace anyone."
+    },
+    {
+      "id": "reemployment_rate",
+      "unit": "share_per_month",
+      "equation": "1 / reemploymentMonths",
+      "description": "Monthly outflow rate from the pool; a variable rather than a bare parameter so an overlay (e.g. retraining) has a hook to attach to"
+    },
+    {
+      "id": "displaced_pool",
+      "unit": "share_of_workforce",
+      "initial": 0,
+      "equation": "displaced_pool[t-1] * (1 - reemployment_rate) + newly_displaced",
+      "description": "Stock of AI-displaced, not-yet-re-employed workers as a share of the workforce"
+    },
+    {
+      "id": "unemployment",
+      "unit": "share",
+      "equation": "min(unemploymentCap, naturalUnemployment + displaced_pool)",
+      "description": "Headline unemployment: the natural rate plus the displaced pool"
+    },
+    {
+      "id": "cognitive_unemployment",
+      "unit": "share",
+      "equation": "min(cognitiveUnemploymentCap, naturalUnemployment + displaced_pool / cognitiveShare)",
+      "description": "Unemployment among cognitive workers: the whole displaced pool falls on the cognitive share of the workforce"
+    },
+    {
+      "id": "gdp_boost_pct",
+      "unit": "percent",
+      "equation": "(gdp_per_capita / gdp_no_ai - 1) * 100",
+      "description": "Published headline: GDP per capita vs the no-AI path, in percent"
+    },
+    {
+      "id": "labor_share_pct",
+      "unit": "percent",
+      "equation": "labor_share * 100"
+    },
+    {
+      "id": "unemployment_pct",
+      "unit": "percent",
+      "equation": "unemployment * 100"
+    },
+    {
+      "id": "cognitive_unemployment_pct",
+      "unit": "percent",
+      "equation": "cognitive_unemployment * 100"
+    }
+  ],
+  "outputs": [
+    "ai_adoption",
+    "affected",
+    "gdp_no_ai",
+    "gdp_per_capita",
+    "gdp_boost_pct",
+    "labor_share_pct",
+    "newly_displaced",
+    "reemployment_rate",
+    "displaced_pool",
+    "unemployment_pct",
+    "cognitive_unemployment_pct",
+    "monthly_growth",
+    "labor_share",
+    "unemployment",
+    "cognitive_unemployment"
+  ],
+  "tests": [
+    {
+      "name": "substantial scenario, US end-2030: GDP per capita +8.3% vs the no-AI path (Korinek et al. 2026; korinekTests.ts tolerance 2.0pp)",
+      "at": 2031,
+      "expr": "gdp_boost_pct",
+      "expected": 8.3,
+      "tol": 2
+    },
+    {
+      "name": "substantial scenario, US end-2030: labour share 56.1% (Korinek et al. 2026; korinekTests.ts tolerance 2.0pp)",
+      "at": 2031,
+      "expr": "labor_share_pct",
+      "expected": 56.1,
+      "tol": 2
+    },
+    {
+      "name": "substantial scenario, US end-2030: cognitive-worker unemployment 4.5% (Korinek et al. 2026; korinekTests.ts tolerance 2.5pp)",
+      "at": 2031,
+      "expr": "cognitive_unemployment_pct",
+      "expected": 4.5,
+      "tol": 2.5
+    },
+    {
+      "name": "substantial scenario, US end-2030: headline unemployment 4.3% (published, but korinekTests.ts declares no tolerance for it; the 2.0pp labour-share band is borrowed here)",
+      "at": 2031,
+      "expr": "unemployment_pct",
+      "expected": 4.3,
+      "tol": 2
+    },
+    {
+      "name": "adoption is exogenous: the input curve reaches the scenario end point 0.118 at end-2030",
+      "at": 2031,
+      "expr": "ai_adoption",
+      "expected": 0.118,
+      "tol": 1e-9
+    },
+    {
+      "name": "no displacement before the adoption path moves (the pool starts empty at mid-2026)",
+      "at": 2026.5,
+      "expr": "displaced_pool",
+      "expected": 0,
+      "tol": 1e-12
+    }
+  ]
+}

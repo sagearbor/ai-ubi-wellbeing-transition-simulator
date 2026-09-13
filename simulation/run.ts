@@ -20,6 +20,7 @@ import type {
 import { stepSimulationPure } from './pure';
 import type { CompiledEquationSet } from '../src/services/equationParser';
 import { INITIAL_COUNTRIES, INITIAL_CORPORATIONS } from '../constants';
+import ladderJson from '../data/hindcast/wellbeing-ladder.json';
 
 /** Everything the engine reads and writes in one step. Immutable by convention: never edit in place. */
 export interface SimulationRun {
@@ -60,14 +61,43 @@ export const EMPTY_GAME_THEORY: GameTheoryState = {
 /** A country record before the simulation fields are set (what constants.ts INITIAL_COUNTRIES holds). */
 export type CountryBase = Omit<CountryStats, 'aiAdoption' | 'wellbeing' | 'companiesJoined'> & Partial<Pick<CountryStats, 'aiAdoption' | 'wellbeing' | 'companiesJoined'>>;
 
+/** Latest World Happiness Report ladder (0-10) per ISO3, from data/hindcast/wellbeing-ladder.json. */
+const LADDER_DATA: Record<string, Record<string, number>> = (ladderJson as { data: Record<string, Record<string, number>> }).data;
+
+/** Latest available ladder value for a country, scaled to the 0-100 index; undefined when unobserved. */
+export function latestLadderIndex(id: string): number | undefined {
+  const rec = LADDER_DATA[id];
+  if (!rec) return undefined;
+  const years = Object.keys(rec).map(Number).sort((a, b) => b - a);
+  return years.length ? rec[String(years[0])] * 10 : undefined;
+}
+
+export interface InitOptions {
+  /**
+   * 'formula' (default, legacy): wellbeing = clamp(gdpPerCapita / 1200 + 40, 10, 100), an
+   * unsourced rule (US 92.5). 'ladder': the latest World Happiness Report Cantril ladder × 10
+   * (US ~70), falling back to the formula for countries the WHR does not cover. Stage 4; used by
+   * models whose macro.wellbeingMode is 'anchored' so the level model starts on the scale it
+   * was calibrated on.
+   */
+  initialWellbeing?: 'formula' | 'ladder';
+}
+
+/** Which initialisation a model asks for (anchored models start from observed ladder values). */
+export function initOptionsFor(model?: Pick<ModelParameters, 'macro'> | null): InitOptions {
+  return { initialWellbeing: model?.macro?.wellbeingMode === 'anchored' ? 'ladder' : 'formula' };
+}
+
 /** The app's month-0 country initialisation, extracted verbatim from App.tsx getInitialState. */
-export function initialCountryData(countries: readonly CountryBase[] = INITIAL_COUNTRIES): Record<string, CountryStats> {
+export function initialCountryData(countries: readonly CountryBase[] = INITIAL_COUNTRIES, opts: InitOptions = {}): Record<string, CountryStats> {
   const out: Record<string, CountryStats> = {};
   for (const c of countries) {
+    const formula = Math.min(100, Math.max(10, c.gdpPerCapita / 1200 + 40));
+    const ladder = opts.initialWellbeing === 'ladder' ? latestLadderIndex(c.id) : undefined;
     out[c.id] = {
       ...c,
       aiAdoption: 0.01,
-      wellbeing: Math.min(100, Math.max(10, c.gdpPerCapita / 1200 + 40)),
+      wellbeing: ladder ?? formula,
       companiesJoined: 0,
       displacementGap: 0,
       headquarteredCorps: [],
@@ -87,8 +117,8 @@ export function initialCountryData(countries: readonly CountryBase[] = INITIAL_C
   return out;
 }
 
-export function initialState(countries: readonly CountryBase[] = INITIAL_COUNTRIES, corporations: readonly Corporation[] = INITIAL_CORPORATIONS): SimulationState {
-  const countryData = initialCountryData(countries);
+export function initialState(countries: readonly CountryBase[] = INITIAL_COUNTRIES, corporations: readonly Corporation[] = INITIAL_CORPORATIONS, opts: InitOptions = {}): SimulationState {
+  const countryData = initialCountryData(countries, opts);
   const n = Object.keys(countryData).length;
   const avg = n ? Object.values(countryData).reduce((s, c) => s + c.wellbeing, 0) / n : 0;
   return {
@@ -107,9 +137,10 @@ export function initialState(countries: readonly CountryBase[] = INITIAL_COUNTRI
 export function initialRun(
   corporations: readonly Corporation[] = INITIAL_CORPORATIONS,
   countries: readonly CountryBase[] = INITIAL_COUNTRIES,
+  opts: InitOptions = {},
 ): SimulationRun {
   return {
-    state: initialState(countries, corporations),
+    state: initialState(countries, corporations, opts),
     corporations: corporations.map((c) => ({ ...c })),
     ledger: { ...EMPTY_LEDGER, fundsByCountry: {}, contributorBreakdown: {}, distributionBreakdown: {} },
     gameTheory: { ...EMPTY_GAME_THEORY },

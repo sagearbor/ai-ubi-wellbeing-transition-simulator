@@ -11,7 +11,7 @@
 import type { HistoryPoint, SavedState } from '../types';
 import {
   advanceRun,
-  initialRun,
+  initialRun, initOptionsFor,
   replayTo,
   runMonths,
   type RunInputs,
@@ -131,7 +131,7 @@ export function historyFromSave(saved: SavedState): LoadedSave {
     const history = (saved.history ?? []).map((p) => (p.run ? historyPoint(p.run) : p));
     const partial = history.some((p) => !p.run);
     return {
-      base: nearestFullPoint(history, 0) ?? initialRun(),
+      base: nearestFullPoint(history, 0) ?? initialRun(undefined, undefined, initOptionsFor(saved.model)),
       run: saved.run,
       history,
       replayed: false,
@@ -140,7 +140,7 @@ export function historyFromSave(saved: SavedState): LoadedSave {
         : '',
     };
   }
-  const base = initialRun();
+  const base = initialRun(undefined, undefined, initOptionsFor(saved.model));
   const month = Math.max(0, saved.month || 0);
   const { run, history } = catchUp(base, month, inputs);
   return {

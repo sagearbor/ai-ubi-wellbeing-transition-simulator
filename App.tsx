@@ -25,7 +25,7 @@ import { PRESET_MODELS, INITIAL_COUNTRIES, INITIAL_CORPORATIONS, SCENARIO_PRESET
 import { getRedTeamAnalysis, getSimulationSummary } from './services/geminiService';
 import { rateModel, getLeaderboard, recordRun, listModels } from './src/services/modelStorage';
 import { parseEquationSet, CompiledEquationSet, EquationError } from './src/services/equationParser';
-import { advanceRun, initialRun, type RunInputs, type SimulationRun } from './simulation/run';
+import { advanceRun, initialRun, type RunInputs, type SimulationRun, initOptionsFor } from './simulation/run';
 import { catchUp, historyForPrompt, historyForSave, historyFromSave, recordRunInHistory, seekInHistory } from './simulation/appState';
 import EquationErrorBanner from './components/EquationErrorBanner';
 
@@ -416,15 +416,17 @@ const App: React.FC = () => {
    * waiting for a state update to land - the old code called setCorporations and then reset,
    * and the reset wiped the scenario's corporation overrides.
    */
-  const resetAll = useCallback((corpsA?: Corporation[]) => {
+  const resetAll = useCallback((corpsA?: Corporation[], modelForInit?: ModelParameters) => {
     const rosterA = corpsA ?? baseCorporations;
-    const freshA = initialRun(rosterA);
+    // Stage 4: anchored models start from observed ladder values, legacy ones from the formula.
+    const init = initOptionsFor(modelForInit ?? model);
+    const freshA = initialRun(rosterA, undefined, init);
     setBaseRun(freshA);
     setRun(freshA);
     setHistory([]);
 
     // The comparison panel is reset with its own roster so both start at month 0 together.
-    const freshB = initialRun(comparisonBaseRun.corporations);
+    const freshB = initialRun(comparisonBaseRun.corporations, undefined, initOptionsFor(comparisonModel));
     setComparisonBaseRun(freshB);
     setComparisonRun(freshB);
     setComparisonHistory([]);
@@ -436,7 +438,7 @@ const App: React.FC = () => {
     // Reset run recording flag (P9-T7)
     setRunRecorded(false);
     window.history.pushState("", document.title, window.location.pathname + window.location.search);
-  }, [baseCorporations, comparisonBaseRun]);
+  }, [baseCorporations, comparisonBaseRun, model, comparisonModel]);
 
   const handleReset = useCallback(() => { resetAll(); }, [resetAll]);
 
@@ -573,7 +575,7 @@ const App: React.FC = () => {
     // 3. Build the comparison run at month 0 from those corporations, then bring it up to the
     // month the main panel is already on, so both panels always show the same month
     // (audit 2026-09-13, finding A4: the comparison panel used to sit at month 0 forever).
-    const freshB = initialRun(updatedCorps);
+    const freshB = initialRun(updatedCorps, undefined, initOptionsFor(updatedModel));
     // A broken custom model may not be replayed through the built-in engine (A5), so the
     // comparison panel stays at month 0 until the equations compile.
     const target = canStepRef.current ? monthRef.current : 0;
@@ -1283,7 +1285,13 @@ const App: React.FC = () => {
                 {PRESET_MODELS.map(m => (
                     <button
                     key={m.id}
-                    onClick={() => { setModel({ ...m, isCustom: false }); if(window.innerWidth < 1024) setIsSidebarOpen(false); }}
+                    onClick={() => {
+                      setModel({ ...m, isCustom: false });
+                      // A preset that starts from a different wellbeing scale (anchored: observed ladder
+                      // values) cannot continue the current run; restart at month 0 with it.
+                      if (initOptionsFor(m).initialWellbeing !== initOptionsFor(model).initialWellbeing) resetAll(undefined, m);
+                      if(window.innerWidth < 1024) setIsSidebarOpen(false);
+                    }}
                     className={`w-full text-left p-3 rounded-xl border text-xs font-bold transition-all ${model.id === m.id ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-500 text-blue-700 dark:text-blue-400 shadow-sm' : 'bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-slate-400 dark:hover:border-slate-500'}`}
                     >
                     {m.name}
