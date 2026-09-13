@@ -14,7 +14,7 @@ import {
 } from './anchorTests';
 import type { AnchorTestResult, AnchorTestSuiteResult } from './anchorTests';
 import { validateTier1, calculateComplexity } from '../src/services/modelValidator';
-import { getCompiledEquationSet } from '../src/services/equationParser';
+import { compileEquationSet } from '../src/services/equationParser';
 import type { CompiledEquationSet } from '../src/services/equationParser';
 
 /** Progress callback for UI updates */
@@ -134,11 +134,41 @@ export async function runFullValidation(
     };
   }
 
-  // Run Tier 2 anchor tests against THIS model's own equations (falls back to the
-  // hardcoded default engine if compilation fails - Tier 1 already passed above, so
-  // this should normally succeed, but a null here must never crash validation).
-  const compiledEquations = getCompiledEquationSet(config.equations) ?? undefined;
-  const tier2 = await runTestsWithProgress(onProgress, compiledEquations);
+  // Run Tier 2 anchor tests against THIS model's own equations. Tier 1's equation check
+  // (validateEquation in modelValidator.ts) is a shallow length/forbidden-pattern check,
+  // not a real parse, so a model can pass Tier 1 and still fail to compile here. That
+  // must NEVER silently fall back to scoring the hardcoded default engine under this
+  // model's name (docs/design/audit-2026-09-13.md finding A5) - report it as a compile
+  // failure instead.
+  const compileResult = compileEquationSet(config.equations);
+  // `=== false`, not `!compileResult.ok`: this repo doesn't enable `strict`, and
+  // discriminated-union narrowing on a bare truthiness check needs strictNullChecks.
+  if (compileResult.ok === false) {
+    const reason = compileResult.errors
+      .map(e => `${e.equation}: ${e.error}${typeof e.position === 'number' ? ` (char ${e.position})` : ''}`)
+      .join('; ');
+    const tier2: AnchorTestSuiteResult = {
+      passed: 0,
+      total: ANCHOR_TESTS.length,
+      tier2Passed: false,
+      results: ANCHOR_TESTS.map(test => ({
+        testId: test.id,
+        testName: test.name,
+        category: test.category,
+        passed: false,
+        reason: `Equations do not compile, so this model was never run: ${reason}`
+      }))
+    };
+    return {
+      tier1: { passed: true, failures: [] },
+      tier2,
+      complexity,
+      eligible: false,
+      summary: `❌ Equations do not compile: ${reason}`
+    };
+  }
+
+  const tier2 = await runTestsWithProgress(onProgress, compileResult.equations);
 
   const eligible = tier1Passed && tier2.tier2Passed;
 
