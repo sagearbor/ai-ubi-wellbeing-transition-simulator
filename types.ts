@@ -17,7 +17,44 @@ export interface ModelParameters {
   defaultCorpPolicy: 'free-market' | 'selfish-start' | 'altruistic-start' | 'mixed-reality'; // Default policy stance for corporations
   marketPressure: number; // 0-1, how strongly demand affects corp decisions
 
+  /**
+   * Optional macro block (task-based labour-market dynamics in the spirit of Korinek,
+   * Jones, Sacher, Cotter & McCrory 2026, "Economic Scenarios for Transformative AI").
+   * When absent the engine behaves exactly as before: no GDP dynamics, no unemployment.
+   */
+  macro?: MacroParameters;
+
   isCustom?: boolean;
+}
+
+/**
+ * MacroParameters - per-country macro dynamics, applied each month when present.
+ *
+ * Mapping to Korinek et al. (2026): a country's `aiAdoption` is read as the share of
+ * cognitive tasks AI actually performs (their m x d). `affected = aiAdoption x cognitiveShare`
+ * is the share of ALL labour tasks touched by AI. GDP per capita = no-AI path x
+ * (1 + productivityGain x affected); labour share = 0.60 x (1 - laborShareSensitivity x affected);
+ * newly displaced workers = d(adoption) x cognitiveShare x automationShare, and they leave the
+ * displaced pool at 1/reemploymentMonths per month. Their 2030 extreme scenario
+ * (GDP +32%, labour share 45%, cognitive unemployment 17.9%) is reproduced with
+ * productivityGain 1.13, laborShareSensitivity 0.88, automationShare 0.9, reemploymentMonths 18.
+ */
+export interface MacroParameters {
+  /** Annual real GDP-per-capita growth on the no-AI path (e.g. 0.02). */
+  baselineGrowth: number;
+  /** GDP boost per unit of AI-affected task share (1.13 reproduces Korinek et al.). */
+  productivityGain: number;
+  /** psi: fraction of affected cognitive tasks that are automated rather than augmented (0-1). */
+  automationShare: number;
+  /** Mean months for a displaced worker to find a job in another occupation. */
+  reemploymentMonths: number;
+  /** Labour share falls by this x affected share (0.88 reproduces Korinek et al.). */
+  laborShareSensitivity: number;
+  /**
+   * Monthly rate at which wellbeing relaxes toward the level implied by GDP and governance
+   * (0 = off, which keeps the classic engine's wellbeing behaviour; the hindcast uses ~0.02).
+   */
+  wellbeingAnchorRate: number;
 }
 
 export interface SimulationState {
@@ -49,6 +86,16 @@ export interface CountryStats {
   archetype: 'rich-democracy' | 'middle-stable' | 'developing-fragile' | 'authoritarian' | 'failed-state'; // country classification
   participatesInGlobalUBI: boolean; // default true, corps/countries can opt out
   displacementGap?: number; // calculated during simulation, tracks crisis level
+
+  // Macro block outputs (only populated when ModelParameters.macro is set)
+  cognitiveShare?: number;        // share of workers in cognitive occupations (0-1), by archetype
+  naturalUnemployment?: number;   // unemployment rate with no AI displacement (0-1)
+  gdpNoAi?: number;               // counterfactual GDP per capita on the no-AI path
+  laborShare?: number;            // labour share of income (starts at 0.60)
+  displacedPool?: number;         // share of the labour force displaced and not yet re-employed
+  unemployment?: number;          // economy-wide unemployment rate (0-1)
+  cognitiveUnemployment?: number; // unemployment rate among cognitive-occupation workers (0-1)
+  lastAiAdoption?: number;        // previous month's adoption, for the displacement flow
 
   // Corporation relationship (countries are RECIPIENTS and MARKETS, not policy-makers)
   headquarteredCorps: string[];     // Corp IDs with HQ here

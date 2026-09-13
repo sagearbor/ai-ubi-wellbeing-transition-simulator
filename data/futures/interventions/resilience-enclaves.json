@@ -1,0 +1,22 @@
+{
+  "schemaVersion": 1,
+  "id": "resilience-enclaves",
+  "label": "Resilience enclaves + bio/cyber civil defence",
+  "summary": "Hardened biosecurity infrastructure (wastewater/metagenomic surveillance, PPE stockpiles, isolated backup food/power/communications systems) built out in anticipation of AI-enabled bio or cyber attacks, similar in spirit to civil-defence programs.",
+  "source": {
+    "kind": "editorial",
+    "quote": "Curator-drafted intervention: bundles biosecurity civil-defence proposals discussed in the pandemic-preparedness and AI-safety literature (e.g. Nucleic Acid Observatory-style early-warning systems, critical-infrastructure hardening) into one representative nudge."
+  },
+  "tier": "locked",
+  "status": "locked",
+  "cost": {
+    "band": 2,
+    "note": "Low-to-moderate direct fiscal cost relative to other interventions here: mostly public-health and infrastructure-hardening spending that does not require new international coordination or new taxing authority."
+  },
+  "startYear": 2027,
+  "nudges": [
+    { "node": "bio-cyber", "direction": "down", "magnitude": "moderate", "lag": 1, "evidence": "Early-warning surveillance and hardened infrastructure directly reduce the odds a bio or cyber attack reaches catastrophic (1M+ death or weeks-long outage) scale, though they cannot fully prevent an attack from being attempted." },
+    { "node": "great-power-war", "direction": "down", "magnitude": "slight", "lag": 2, "evidence": "Visible civil-defence hardening modestly lowers the odds that a catastrophic attack cascades into direct great-power conflict, by reducing the perceived payoff of an attack and giving states more time to de-escalate." },
+    { "node": "surveillance-lockin", "direction": "up", "magnitude": "slight", "lag": 2, "evidence": "Civil-defence infrastructure (biometric screening, population monitoring for early warning) has some dual-use surveillance potential; the same systems that detect a bioweapon can be repurposed for population control if institutions are not careful." }
+  ]
+}

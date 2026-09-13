@@ -1,5 +1,5 @@
 
-import { ModelParameters, CountryStats, Corporation, ScenarioPreset, EquationSet, ModelConfig } from './types';
+import { ModelParameters, MacroParameters, CountryStats, Corporation, ScenarioPreset, EquationSet, ModelConfig } from './types';
 
 // Helper to determine archetype based on GDP and governance
 type Archetype = 'rich-democracy' | 'middle-stable' | 'developing-fragile' | 'authoritarian' | 'failed-state';
@@ -10,6 +10,83 @@ const getArchetype = (gdp: number, gov: number): Archetype => {
   if (gdp >= 10000 && gov >= 0.60) return 'middle-stable';
   return 'developing-fragile';
 };
+
+/**
+ * DEFAULT_MACRO - task-based macro dynamics (see MacroParameters in types.ts).
+ * productivityGain and laborShareSensitivity are calibrated so the KORINEK_SCENARIOS below
+ * reproduce the published 2030 numbers; wellbeingAnchorRate is 0 in the app so the classic
+ * wellbeing behaviour is unchanged (the hindcast turns it on).
+ */
+export const DEFAULT_MACRO: MacroParameters = {
+  baselineGrowth: 0.02,
+  productivityGain: 1.13,
+  automationShare: 0.5,
+  reemploymentMonths: 12,
+  laborShareSensitivity: 0.88,
+  wellbeingAnchorRate: 0,
+};
+
+/** Share of employment in cognitive occupations, by archetype (US 62.4% per Korinek et al. 2026). */
+export const COGNITIVE_SHARE_BY_ARCHETYPE: Record<Archetype, number> = {
+  'rich-democracy': 0.62,
+  'middle-stable': 0.45,
+  'authoritarian': 0.40,
+  'developing-fragile': 0.30,
+  'failed-state': 0.20,
+};
+
+/** Unemployment rate with no AI displacement, by archetype. */
+export const NATURAL_UNEMPLOYMENT_BY_ARCHETYPE: Record<Archetype, number> = {
+  'rich-democracy': 0.039,
+  'middle-stable': 0.06,
+  'authoritarian': 0.05,
+  'developing-fragile': 0.08,
+  'failed-state': 0.15,
+};
+
+/**
+ * KORINEK_SCENARIOS - the three scenarios of Korinek, Jones, Sacher, Cotter & McCrory (2026),
+ * "Economic Scenarios for Transformative AI", Anthropic Institute WP 2026-02, expressed as
+ * inputs to this engine. `adoption2030` is the share of cognitive tasks AI performs by end-2030
+ * (their m x d), driven exogenously as a logistic path from mid-2026 exactly as their explorer
+ * treats capability/adoption as an input. Targets are their published US 2030 outcomes
+ * relative to the no-AI path.
+ */
+export interface KorinekScenario {
+  id: 'modest' | 'substantial' | 'extreme';
+  name: string;
+  description: string;
+  adoption2030: number;
+  macro: MacroParameters;
+  targets: { gdpBoostPct: number; cognitiveUnemploymentPct: number; laborSharePct: number; unemploymentPct: number };
+}
+
+export const KORINEK_SCENARIOS: KorinekScenario[] = [
+  {
+    id: 'modest',
+    name: 'Modest change (Korinek et al. 2026)',
+    description: 'AI acts like a normal technology: roughly the impact of the internet by 2030.',
+    adoption2030: 0.023,
+    macro: { ...DEFAULT_MACRO, automationShare: 0.1, reemploymentMonths: 6 },
+    targets: { gdpBoostPct: 1.6, cognitiveUnemploymentPct: 3.9, laborSharePct: 59.4, unemploymentPct: 3.9 },
+  },
+  {
+    id: 'substantial',
+    name: 'Substantial change (Korinek et al. 2026)',
+    description: 'A revolution in knowledge work: AI can do about half of it by 2030 and is used widely.',
+    adoption2030: 0.118,
+    macro: { ...DEFAULT_MACRO, automationShare: 0.2, reemploymentMonths: 12 },
+    targets: { gdpBoostPct: 8.3, cognitiveUnemploymentPct: 4.5, laborSharePct: 56.1, unemploymentPct: 4.3 },
+  },
+  {
+    id: 'extreme',
+    name: 'Extreme change (Korinek et al. 2026)',
+    description: 'Transformative AI: nearly half of today\'s cognitive work done by AI, growth 15%/yr, labour share 45%.',
+    adoption2030: 0.45,
+    macro: { ...DEFAULT_MACRO, automationShare: 0.9, reemploymentMonths: 18 },
+    targets: { gdpBoostPct: 32.4, cognitiveUnemploymentPct: 17.9, laborSharePct: 45.2, unemploymentPct: 11.9 },
+  },
+];
 
 export const PRESET_MODELS: ModelParameters[] = [
   {

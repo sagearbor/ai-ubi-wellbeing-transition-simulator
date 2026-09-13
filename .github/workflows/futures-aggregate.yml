@@ -1,0 +1,53 @@
+# AI Futures Map — nightly tier aggregation (design doc section 8).
+#
+# DISABLED BY DEFAULT. It does nothing until the repo has the Actions variable
+# FUTURES_AGGREGATE_ENABLED = true (Settings > Secrets and variables > Actions > Variables) and
+# the secret FIREBASE_SERVICE_ACCOUNT (the service-account JSON, pasted whole).
+# See docs/futures-v1-setup.md.
+
+name: futures-aggregate
+
+on:
+  schedule:
+    # 07:10 UTC — after midnight in every US timezone, so a "day" snapshot is a whole US day.
+    - cron: '10 7 * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Print the aggregates without writing them'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: futures-aggregate
+  cancel-in-progress: false
+
+jobs:
+  aggregate:
+    # The one switch. Until this variable is set to the string "true" the job is skipped.
+    if: vars.FUTURES_AGGREGATE_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - run: npm ci
+
+      - name: Aggregate expert and public tiers
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          FIREBASE_PROJECT_ID: ${{ vars.FIREBASE_PROJECT_ID }}
+        run: |
+          if [ -z "$FIREBASE_SERVICE_ACCOUNT" ]; then
+            echo "::error::FUTURES_AGGREGATE_ENABLED is true but the FIREBASE_SERVICE_ACCOUNT secret is missing."
+            exit 1
+          fi
+          npx tsx scripts/futures-aggregate.ts ${{ inputs.dry_run && '--dry-run' || '' }}

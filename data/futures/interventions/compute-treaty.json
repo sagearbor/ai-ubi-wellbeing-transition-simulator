@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "compute-treaty",
+  "label": "Binding compute treaty with verification",
+  "summary": "A US-China (or broader) treaty placing binding, independently verified limits on frontier training-compute thresholds, modeled loosely on nuclear arms-control verification regimes.",
+  "source": {
+    "kind": "editorial",
+    "quote": "Curator-drafted intervention: bundles the family of 'international AI/compute governance treaty' proposals discussed across AI-governance literature (e.g. compute governance and 'CERN for AI' style proposals) into one representative nudge with real verification, not just a communique."
+  },
+  "tier": "locked",
+  "status": "locked",
+  "cost": {
+    "band": 3,
+    "note": "Moderate direct cost (verification infrastructure, inspectors, monitoring), but the binding part is a high diplomatic and sovereignty cost: it requires great powers to accept external audits of their frontier training runs."
+  },
+  "startYear": 2028,
+  "nudges": [
+    { "node": "compute-governance", "direction": "up", "magnitude": "strong", "lag": 1, "evidence": "A verified, binding treaty is close to a direct implementation of the 'binding international AI regime' event, so it gets the largest available nudge, with a one-year lag for ratification and stand-up." },
+    { "node": "race-dynamics", "direction": "down", "magnitude": "moderate", "lag": 1, "evidence": "Removing the payoff to secretly outracing a rival meaningfully reduces the incentive to cut safety corners, though other competitive pressures (commercial, other states) remain." }
+  ]
+}
