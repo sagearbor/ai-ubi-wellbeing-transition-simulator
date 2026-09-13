@@ -178,8 +178,8 @@ const StateSankey: React.FC<StateSankeyProps> = ({ graph, years, P, defaultOpen 
           )}
         </svg>
         <p className="mt-2 text-[11px] text-slate-500 dark:text-slate-400">
-          Flows are the engine's deterministic minimal-movement coupling — absorbing states keep their mass,
-          the rest is matched north-west-corner style over states sorted by goodness. Never voted on.
+          Constructed from each year's state shares by a minimal-movement rule (existential absorbing).
+          Not a simulated transition; the engine does not track who moves between states.
         </p>
       </div>
     </details>

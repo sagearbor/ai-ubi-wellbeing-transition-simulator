@@ -13,6 +13,14 @@
  * The scored run is the AI-OFF one. A hindcast of 2015-2025 cannot validate the AI
  * displacement channel (AI's macro effect over that decade is dwarfed by COVID, war and
  * inflation) - it validates the baseline economy and the wellbeing coefficients.
+ *
+ * RETROSPECTIVE RECONSTRUCTION, NOT A FORECAST
+ * ---------------------------------------------
+ * The wellbeing anchor (wellbeingAnchorRate) was fitted on this same 2015-2025 span, so a
+ * good score here is a reconstruction of a period the coefficients were tuned against, not
+ * a forecast of an unseen one. The comparison to beat is therefore the persistence baseline
+ * (predicting no change for every country), not zero - see the "Baselines" section printed
+ * by scripts/hindcast/run-hindcast.ts.
  */
 
 import type { AnchorTestResult } from './anchorTests';
@@ -71,6 +79,17 @@ function degenerateNote(run: HindcastRun): string {
     : '';
 }
 
+/**
+ * The wellbeing anchor was fitted on this same span, so this is a retrospective
+ * reconstruction, not a forecast; the persistence baseline (predict no change) is the
+ * comparison to beat, not zero.
+ */
+function reconstructionNote(run: HindcastRun): string {
+  return ` - a retrospective reconstruction (the wellbeing anchor was fitted on this ` +
+    `${run.fromYear}-${run.toYear} span), not a forecast; the persistence baseline ` +
+    `(predicting no change) is the comparison to beat`;
+}
+
 /** HC-1: does the model rank countries' wellbeing trajectories correctly? */
 export function runHc1(options: HindcastTestOptions): AnchorTestResult {
   const run = resolveRun(options);
@@ -83,8 +102,8 @@ export function runHc1(options: HindcastTestOptions): AnchorTestResult {
     category: 'consistency',
     passed,
     reason: passed
-      ? `Predicted vs actual wellbeing change correlates at r=${r.toFixed(3)} across ${run.score.nCountries} countries`
-      : `Predicted vs actual wellbeing change correlates at only r=${r.toFixed(3)} across ${run.score.nCountries} countries (need >= ${HC1_CORR_THRESHOLD})${degenerateNote(run)}`,
+      ? `Predicted vs actual wellbeing change correlates at r=${r.toFixed(3)} across ${run.score.nCountries} countries${reconstructionNote(run)}`
+      : `Predicted vs actual wellbeing change correlates at only r=${r.toFixed(3)} across ${run.score.nCountries} countries (need >= ${HC1_CORR_THRESHOLD})${degenerateNote(run)}${reconstructionNote(run)}`,
     details: {
       expected: `>= ${HC1_CORR_THRESHOLD}`,
       actual: `r = ${r.toFixed(4)}`,
@@ -125,8 +144,8 @@ export function runHc2(options: HindcastTestOptions): AnchorTestResult {
     category: 'consistency',
     passed,
     reason: passed
-      ? `Mean absolute wellbeing error ${mae.toFixed(2)} index points (${(mae / LADDER_TO_INDEX_SCALE).toFixed(3)} ladder points) across ${run.score.nCountries} countries${nullModelNote(run)}`
-      : `Mean absolute wellbeing error ${mae.toFixed(2)} index points (${(mae / LADDER_TO_INDEX_SCALE).toFixed(3)} ladder points) exceeds the ${HC2_MAE_THRESHOLD} index-point (${HC2_MAE_LADDER_THRESHOLD} ladder-point) budget across ${run.score.nCountries} countries`,
+      ? `Mean absolute wellbeing error ${mae.toFixed(2)} index points (${(mae / LADDER_TO_INDEX_SCALE).toFixed(3)} ladder points) across ${run.score.nCountries} countries${nullModelNote(run)}${reconstructionNote(run)}`
+      : `Mean absolute wellbeing error ${mae.toFixed(2)} index points (${(mae / LADDER_TO_INDEX_SCALE).toFixed(3)} ladder points) exceeds the ${HC2_MAE_THRESHOLD} index-point (${HC2_MAE_LADDER_THRESHOLD} ladder-point) budget across ${run.score.nCountries} countries${reconstructionNote(run)}`,
     details: {
       expected: `<= ${HC2_MAE_THRESHOLD} index points (${HC2_MAE_LADDER_THRESHOLD} ladder points)`,
       actual: `${mae.toFixed(4)} index points (${(mae / LADDER_TO_INDEX_SCALE).toFixed(4)} ladder points)`,
