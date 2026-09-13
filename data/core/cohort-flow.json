@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "id": "cohort-flow",
+  "name": "Displaced-worker cohort pool (monthly inflow/outflow)",
+  "description": "A time-stepping cohort/flow model, monthly: a pool of displaced workers gets a monthly inflow from an exogenous displacement input and a monthly outflow at a re-employment rate, like the simulator's macro block. Unemployment is the natural rate plus the pool expressed as a share of the workforce. A second variable reads the pool two months back to show a lag of depth 2 with declared history.",
+  "scope": "Illustrative cohort/flow toy. The displacement path, the re-employment rate and the natural rate are guesses chosen to make the pool visibly build up, then settle toward a steady state once the displacement input stops changing. Not a calibrated labor-market forecast.",
+  "time": { "start": 2026, "end": 2031, "step": "month" },
+  "parameters": [
+    { "id": "workforce", "value": 100000, "unit": "people", "source": { "label": "illustrative", "kind": "guess" } },
+    {
+      "id": "reemploymentRateBase",
+      "value": 0.15,
+      "unit": "share_per_month",
+      "bounds": [0, 1],
+      "source": { "label": "illustrative monthly re-employment rate out of the displaced pool", "kind": "guess" }
+    },
+    {
+      "id": "naturalUnemployment",
+      "value": 0.04,
+      "unit": "share",
+      "source": { "label": "illustrative frictional/structural unemployment rate", "kind": "guess" }
+    }
+  ],
+  "inputs": [
+    {
+      "id": "displacementInput",
+      "unit": "share_of_workforce_per_month",
+      "curve": { "2026": 0.004, "2027": 0.002, "2028": 0.0025 },
+      "interp": "linear",
+      "outside": "hold",
+      "source": { "label": "illustrative displacement shock that ramps down then holds flat from 2028 on", "kind": "guess" }
+    }
+  ],
+  "variables": [
+    {
+      "id": "inflow",
+      "unit": "people",
+      "equation": "workforce * displacementInput",
+      "description": "New workers entering the displaced pool this month"
+    },
+    {
+      "id": "reemploymentRate",
+      "unit": "share_per_month",
+      "equation": "reemploymentRateBase",
+      "description": "Monthly re-employment rate out of the pool; a variable (not a bare parameter) so overlays can attach an effect to it"
+    },
+    {
+      "id": "displaced_pool",
+      "unit": "people",
+      "initial": 0,
+      "history": [0, 0],
+      "equation": "displaced_pool[t-1] * (1 - reemploymentRate) + inflow",
+      "description": "Stock of currently displaced, not-yet-re-employed workers"
+    },
+    {
+      "id": "processing_backlog",
+      "unit": "people",
+      "equation": "displaced_pool - displaced_pool[t-2]",
+      "description": "Change in the pool over the trailing two months; uses displaced_pool's declared history for the first two steps"
+    },
+    {
+      "id": "displaced_share",
+      "unit": "share",
+      "equation": "displaced_pool / workforce"
+    },
+    {
+      "id": "unemployment",
+      "unit": "share",
+      "equation": "naturalUnemployment + displaced_share",
+      "description": "Natural rate plus the displaced pool expressed as a share of the workforce"
+    }
+  ],
+  "outputs": ["inflow", "reemploymentRate", "displaced_pool", "processing_backlog", "displaced_share", "unemployment"],
+  "tests": [
+    { "name": "pool has settled near its steady state by 2031", "at": 2031, "expr": "displaced_pool", "expected": 1666.667, "tol": 20 },
+    { "name": "unemployment has settled near natural + steady-state share by 2031", "at": 2031, "expr": "unemployment", "expected": 0.056667, "tol": 0.0005 },
+    { "name": "the pool is nearly flat month-over-month once settled (2-month lag test)", "at": 2031, "expr": "processing_backlog", "expected": 0, "tol": 10 }
+  ]
+}

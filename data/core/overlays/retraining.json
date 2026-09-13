@@ -1,0 +1,57 @@
+{
+  "id": "retraining",
+  "name": "Retraining programme",
+  "description": "Adds a retraining programme on top of cohort-flow.json: a participation input, a parameter for how much participation raises the monthly re-employment rate, a multiplicative effect on reemploymentRate, and a new cost variable (participants x cost per participant). Neither of cohort-flow's equations is rewritten.",
+  "inputs": [
+    {
+      "id": "retrainingParticipation",
+      "unit": "share",
+      "curve": { "2026": 0, "2027": 0.3 },
+      "interp": "linear",
+      "outside": "hold",
+      "source": { "label": "illustrative ramp-up of programme participation among the displaced pool", "kind": "guess" }
+    }
+  ],
+  "parameters": [
+    {
+      "id": "retrainingReemploymentEffect",
+      "value": 0.5,
+      "unit": "share",
+      "source": { "label": "author guess: full participation raises the re-employment rate by 50%", "kind": "guess" }
+    },
+    {
+      "id": "retrainingCostPerParticipant",
+      "value": 400,
+      "unit": "usd_per_person_per_month",
+      "source": { "label": "author guess, illustrative programme cost", "kind": "guess" }
+    }
+  ],
+  "variables": [
+    {
+      "id": "retraining_participants",
+      "unit": "people",
+      "equation": "displaced_pool * retrainingParticipation",
+      "description": "Members of the displaced pool enrolled in retraining this month"
+    },
+    {
+      "id": "retraining_cost",
+      "unit": "usd",
+      "equation": "retraining_participants * retrainingCostPerParticipant",
+      "description": "Monthly programme cost"
+    }
+  ],
+  "effects": [
+    {
+      "id": "retraining-reemployment",
+      "target": "reemploymentRate",
+      "op": "multiply",
+      "expr": "1 + retrainingReemploymentEffect * retrainingParticipation",
+      "unit": "ratio",
+      "source": { "label": "author guess: participation scales the re-employment rate up", "kind": "guess" }
+    }
+  ],
+  "outputs": ["retraining_participants", "retraining_cost"],
+  "tests": [
+    { "name": "retraining cost tracks enrolled participants at full ramp", "at": 2031, "expr": "retraining_cost - retraining_participants * retrainingCostPerParticipant", "expected": 0, "tol": 1e-6 }
+  ]
+}

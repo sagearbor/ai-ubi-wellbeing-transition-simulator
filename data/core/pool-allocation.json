@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "id": "pool-allocation",
+  "name": "A shared pool with absorptive-capacity limits",
+  "description": "Four countries with different incomes each contribute a fixed rate of income to a shared pool. The pool is redistributed by a fixed share, but each country can only absorb up to its own capacity; whatever a country cannot absorb is tracked as an unused aggregate rather than silently disappearing or being redistributed again.",
+  "scope": "Illustrative entity/aggregate allocation toy. Incomes, the contribution rate, the distribution shares and the capacity limits are all guesses picked to make every branch of the capacity logic exercise (one country under capacity, one exactly at it, two capped). Not a model of any real transfer scheme.",
+  "time": { "start": 2026, "end": 2028, "step": "year" },
+  "entities": { "kind": "country", "ids": ["A", "B", "C", "D"] },
+  "parameters": [
+    {
+      "id": "income",
+      "value": 12000,
+      "unit": "usd_per_capita",
+      "byEntity": { "A": 20000, "B": 15000, "C": 8000, "D": 5000 },
+      "source": { "label": "illustrative per-capita income spread, not real country data", "kind": "guess" }
+    },
+    {
+      "id": "contributionRate",
+      "value": 0.1,
+      "unit": "share",
+      "source": { "label": "illustrative flat contribution rate", "kind": "guess" }
+    },
+    {
+      "id": "share",
+      "value": 0.25,
+      "unit": "share",
+      "byEntity": { "A": 0.4, "B": 0.3, "C": 0.2, "D": 0.1 },
+      "source": { "label": "illustrative distribution shares (sum to 1)", "kind": "guess" }
+    },
+    {
+      "id": "capacity",
+      "value": 1500,
+      "unit": "usd_per_capita",
+      "byEntity": { "A": 1500, "B": 1500, "C": 1500, "D": 100 },
+      "source": { "label": "illustrative absorptive-capacity ceilings, chosen so A and D bind and B and C do not", "kind": "guess" }
+    }
+  ],
+  "variables": [
+    {
+      "id": "contribution",
+      "unit": "usd_per_capita",
+      "equation": "contributionRate * income",
+      "description": "What one country puts into the shared pool"
+    },
+    {
+      "id": "pool",
+      "unit": "usd_per_capita",
+      "equation": "sum(contribution)",
+      "description": "The shared pool, summed across all four countries"
+    },
+    {
+      "id": "allocation_uncapped",
+      "unit": "usd_per_capita",
+      "equation": "pool * share",
+      "description": "What a country's share of the pool would be before its capacity limit applies"
+    },
+    {
+      "id": "allocation",
+      "unit": "usd_per_capita",
+      "equation": "min(allocation_uncapped, capacity)",
+      "description": "What the country actually receives, capped by its absorptive capacity"
+    },
+    {
+      "id": "unused",
+      "unit": "usd_per_capita",
+      "equation": "allocation_uncapped - allocation",
+      "description": "The part of this country's share it could not absorb"
+    },
+    {
+      "id": "unused_total",
+      "unit": "usd_per_capita",
+      "equation": "sum(unused)",
+      "description": "Aggregate remainder left unabsorbed across all countries"
+    }
+  ],
+  "outputs": ["contribution", "pool", "allocation_uncapped", "allocation", "unused", "unused_total"],
+  "tests": [
+    { "name": "pool sums all four contributions", "at": 2027, "entity": "A", "expr": "pool", "expected": 4800, "tol": 1e-6 },
+    { "name": "A is capped by its capacity", "at": 2027, "entity": "A", "expr": "allocation", "expected": 1500, "tol": 1e-6 },
+    { "name": "B is under capacity and gets its full share", "at": 2027, "entity": "B", "expr": "allocation", "expected": 1440, "tol": 1e-6 },
+    { "name": "C is under capacity and gets its full share", "at": 2027, "entity": "C", "expr": "allocation", "expected": 960, "tol": 1e-6 },
+    { "name": "D is capped hard by its tiny capacity", "at": 2027, "entity": "D", "expr": "allocation", "expected": 100, "tol": 1e-6 },
+    { "name": "unused remainder aggregates A's and D's unabsorbed shares", "at": 2027, "entity": "A", "expr": "unused_total", "expected": 800, "tol": 1e-6 }
+  ]
+}

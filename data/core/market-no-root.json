@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "id": "market-no-root",
+  "name": "Market clearing with a bracket that excludes the root (adversarial)",
+  "description": "Deliberately broken variant of market-clearing.json: the same linear supply and demand system, but the solve bracket is [0, 5] while the true clearing price is 18. The residual has the same sign at both ends of the bracket, so no root exists inside it.",
+  "scope": "Adversarial fixture for 'solver failure must be explicit' (v3 section 7). This model is expected to fail with diagnostic code solve-no-root and ok:false. It is intentionally NOT registered in src/core/fixtures.ts and should not be offered in the Lab picker. See data/core/README.md.",
+  "time": { "start": 2026, "end": 2030, "step": "year" },
+  "parameters": [
+    { "id": "supply_intercept", "value": 10, "source": { "label": "illustrative", "kind": "guess" } },
+    { "id": "supply_slope", "value": 2, "source": { "label": "illustrative", "kind": "guess" } },
+    { "id": "demand_intercept", "value": 100, "source": { "label": "illustrative", "kind": "guess" } },
+    { "id": "demand_slope", "value": 3, "source": { "label": "illustrative", "kind": "guess" } }
+  ],
+  "inputs": [
+    {
+      "id": "demand_shift",
+      "unit": "units",
+      "curve": { "2026": 0, "2030": 20 },
+      "interp": "linear",
+      "source": { "label": "illustrative rising exogenous demand shock", "kind": "guess" }
+    }
+  ],
+  "variables": [
+    { "id": "supply", "equation": "supply_intercept + supply_slope * price" },
+    { "id": "demand", "equation": "demand_intercept + demand_shift - demand_slope * price" }
+  ],
+  "solves": [
+    {
+      "id": "clear",
+      "unknown": "price",
+      "residual": "(demand_intercept + demand_shift - demand_slope * price) - (supply_intercept + supply_slope * price)",
+      "bracket": [0, 5],
+      "tol": 1e-10,
+      "description": "Wrong on purpose: the true root (18) is outside [0, 5], so the engine must fail explicitly instead of returning a wrong price."
+    }
+  ],
+  "outputs": ["price", "supply", "demand", "demand_shift"]
+}

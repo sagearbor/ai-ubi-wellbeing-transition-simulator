@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "id": "market-clearing",
+  "name": "Linear supply and demand with a demand shift",
+  "description": "A textbook linear supply and demand system solved for the clearing price each year, with an exogenous demand-shift input rising over 2026-2030. Demonstrates the engine's scalar equilibrium (solve) block: price is not computed by an equation, it is the root the engine finds each step.",
+  "scope": "Toy linear market. The intercepts and slopes are round guesses, not calibrated to any commodity or labor market; only the mechanism (an exogenous shock shifting demand and moving the clearing price) is meant to generalize.",
+  "time": { "start": 2026, "end": 2030, "step": "year" },
+  "parameters": [
+    { "id": "supply_intercept", "value": 10, "source": { "label": "illustrative", "kind": "guess" } },
+    { "id": "supply_slope", "value": 2, "source": { "label": "illustrative", "kind": "guess" } },
+    { "id": "demand_intercept", "value": 100, "source": { "label": "illustrative", "kind": "guess" } },
+    { "id": "demand_slope", "value": 3, "source": { "label": "illustrative", "kind": "guess" } }
+  ],
+  "inputs": [
+    {
+      "id": "demand_shift",
+      "unit": "units",
+      "curve": { "2026": 0, "2030": 20 },
+      "interp": "linear",
+      "source": { "label": "illustrative rising exogenous demand shock", "kind": "guess" }
+    }
+  ],
+  "variables": [
+    {
+      "id": "supply",
+      "equation": "supply_intercept + supply_slope * price",
+      "description": "Quantity supplied at the clearing price"
+    },
+    {
+      "id": "demand",
+      "equation": "demand_intercept + demand_shift - demand_slope * price",
+      "description": "Quantity demanded at the clearing price, shifted by the exogenous input"
+    }
+  ],
+  "solves": [
+    {
+      "id": "clear",
+      "unknown": "price",
+      "residual": "(demand_intercept + demand_shift - demand_slope * price) - (supply_intercept + supply_slope * price)",
+      "bracket": [0, 1000],
+      "tol": 1e-10,
+      "description": "Find the price where quantity demanded equals quantity supplied"
+    }
+  ],
+  "outputs": ["price", "supply", "demand", "demand_shift"],
+  "tests": [
+    { "name": "2026: supply equals demand", "at": 2026, "expr": "supply - demand", "expected": 0, "tol": 1e-6 },
+    { "name": "2030: supply equals demand after the shift", "at": 2030, "expr": "supply - demand", "expected": 0, "tol": 1e-6 },
+    { "name": "2026: price matches the closed-form root", "at": 2026, "expr": "price", "expected": 18, "tol": 1e-6 },
+    { "name": "2030: price is higher once demand has shifted up", "at": 2030, "expr": "price", "expected": 22, "tol": 1e-6 }
+  ]
+}
