@@ -13,10 +13,14 @@ interface Props {
   month: number;
   maxMonth: number;
   onSeek: (m: number) => void;
+  /** Blocks play/step, e.g. while the active custom model's equations do not compile (A5). */
+  disabled?: boolean;
+  disabledReason?: string;
 }
 
 const SimulationControls: React.FC<Props> = ({ 
-  isPlaying, onPlay, onPause, onReset, onStep, speed, setSpeed, month, maxMonth, onSeek 
+  isPlaying, onPlay, onPause, onReset, onStep, speed, setSpeed, month, maxMonth, onSeek,
+  disabled = false, disabledReason
 }) => {
   
   // Format month index to "Mon YYYY" starting from Jan 2025
@@ -55,15 +59,18 @@ const SimulationControls: React.FC<Props> = ({
           
           <button 
             onClick={isPlaying ? onPause : onPlay}
-            className="p-3 rounded-full bg-sky-500 hover:bg-sky-400 text-white transition-all shadow-lg shadow-sky-500/20 active:scale-95"
+            disabled={disabled}
+            title={disabled ? disabledReason : undefined}
+            className={`p-3 rounded-full text-white transition-all shadow-lg shadow-sky-500/20 active:scale-95 ${disabled ? 'bg-slate-500 cursor-not-allowed opacity-60' : 'bg-sky-500 hover:bg-sky-400'}`}
           >
             {isPlaying ? <Pause size={24} fill="currentColor" /> : <Play size={24} fill="currentColor" />}
           </button>
           
           <button 
             onClick={onStep}
-            className="p-2 rounded-full hover:bg-slate-700 text-slate-400 transition-colors"
-            title="Step Forward"
+            disabled={disabled}
+            className={`p-2 rounded-full text-slate-400 transition-colors ${disabled ? 'cursor-not-allowed opacity-40' : 'hover:bg-slate-700'}`}
+            title={disabled ? disabledReason : "Step Forward"}
           >
             <SkipForward size={20} />
           </button>
