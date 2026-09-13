@@ -22,11 +22,81 @@ import { INITIAL_COUNTRIES } from '../../constants';
 import {
   runHindcast,
   HindcastActuals,
+  HindcastCountryResult,
   HindcastRun,
   HindcastSeriesFile,
-  LADDER_TO_INDEX_SCALE
+  LADDER_TO_INDEX_SCALE,
+  mean,
+  pearson
 } from '../../validation/hindcast';
 import { runHindcastTests, HC1_CORR_THRESHOLD, HC2_MAE_THRESHOLD } from '../../validation/hindcastTests';
+
+// ---------------------------------------------------------------------------
+// Baselines: what a "no model at all" predictor scores, so the engine's numbers above have
+// something honest to beat. The hindcast wellbeing anchor was fitted on this same
+// 2015-2025 span (see validation/hindcastTests.ts), so it is a retrospective reconstruction,
+// not a forecast - neither baseline below feeds pass/fail, they are printed for context only.
+// ---------------------------------------------------------------------------
+
+interface BaselineResult {
+  corr: number;
+  mae: number;
+  nCountries: number;
+}
+
+/** Persistence baseline: predict no change at all for every country. Always computable. */
+function persistenceBaseline(countries: readonly HindcastCountryResult[]): BaselineResult {
+  const actual = countries.map(c => c.actualWellbeingChange);
+  const predicted = actual.map(() => 0);
+  return {
+    corr: pearson(predicted, actual),
+    mae: mean(actual.map(a => Math.abs(a))),
+    nCountries: countries.length
+  };
+}
+
+/**
+ * Trend-continuation baseline: for each country, fit a linear ladder-points-per-year rate
+ * from its earliest available observation before `fromYear` up to `fromYear`, then project
+ * that rate forward across the same number of years to `toYear`. Only scores countries with
+ * a usable pre-`fromYear` observation in the raw series (not just the fromYear/toYear pair
+ * the engine run uses) - skipped entirely where that data does not exist.
+ */
+function trendContinuationBaseline(
+  countries: readonly HindcastCountryResult[],
+  actuals: HindcastActuals,
+  fromYear: number,
+  toYear: number
+): BaselineResult {
+  const span = toYear - fromYear;
+  const predicted: number[] = [];
+  const actual: number[] = [];
+
+  for (const c of countries) {
+    const series = actuals.wellbeingLadder[c.id];
+    if (!series) continue;
+    const priorYears = Object.keys(series)
+      .map(Number)
+      .filter(y => Number.isFinite(y) && y < fromYear && typeof series[String(y)] === 'number');
+    if (priorYears.length === 0) continue;
+
+    const earliest = Math.min(...priorYears);
+    const yearsBack = fromYear - earliest;
+    const ladderAtEarliest = series[String(earliest)];
+    const ladderAtFrom = series[String(fromYear)];
+    if (yearsBack <= 0 || typeof ladderAtFrom !== 'number') continue;
+
+    const ratePerYear = (ladderAtFrom - ladderAtEarliest) / yearsBack; // ladder pts / year
+    predicted.push(ratePerYear * span * LADDER_TO_INDEX_SCALE);
+    actual.push(c.actualWellbeingChange);
+  }
+
+  return {
+    corr: pearson(predicted, actual),
+    mae: mean(predicted.map((p, i) => Math.abs(p - actual[i]))),
+    nCountries: predicted.length
+  };
+}
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const DATA_DIR = join(HERE, '..', '..', 'data', 'hindcast');
@@ -93,6 +163,12 @@ const aiOn: HindcastRun = runHindcast({ ...base, aiOff: false });
 
 const tests = runHindcastTests({ actuals, fromYear: FROM_YEAR, toYear: TO_YEAR, run: aiOff });
 
+/** Comparison-to-beat baselines, scored against the same AI-off run. Not part of pass/fail. */
+const baselines = {
+  persistence: persistenceBaseline(aiOff.countries),
+  trendContinuation: trendContinuationBaseline(aiOff.countries, actuals, FROM_YEAR, TO_YEAR)
+};
+
 // ---------------------------------------------------------------------------
 // Report
 // ---------------------------------------------------------------------------
@@ -124,7 +200,8 @@ if (AS_JSON) {
       'ai-off-ubi-on': aiOffUbiOn,
       'ai-on': aiOn
     },
-    tests
+    tests,
+    baselines
   }, null, 2));
 } else {
   const pct = (n: number) => `${n >= 0 ? '+' : ''}${n.toFixed(1)}%`;
@@ -186,6 +263,24 @@ if (AS_JSON) {
     );
   }
 
+  console.log(`\nBaselines (comparison to beat; scored on the "${aiOff.label}" run; not part of pass/fail)`);
+  console.log(
+    `  persistence (predict no change):      corr ${baselines.persistence.corr.toFixed(3)}  ` +
+    `MAE ${baselines.persistence.mae.toFixed(2)} index pts ` +
+    `(${(baselines.persistence.mae / LADDER_TO_INDEX_SCALE).toFixed(3)} ladder) ` +
+    `across ${baselines.persistence.nCountries} countries`
+  );
+  if (baselines.trendContinuation.nCountries > 0) {
+    console.log(
+      `  trend continuation (pre-${FROM_YEAR} rate, extrapolated): corr ${baselines.trendContinuation.corr.toFixed(3)}  ` +
+      `MAE ${baselines.trendContinuation.mae.toFixed(2)} index pts ` +
+      `(${(baselines.trendContinuation.mae / LADDER_TO_INDEX_SCALE).toFixed(3)} ladder) ` +
+      `across ${baselines.trendContinuation.nCountries} countries`
+    );
+  } else {
+    console.log(`  trend continuation: no country had a pre-${FROM_YEAR} ladder observation to extrapolate from`);
+  }
+
   console.log(`\nHindcast anchor tests (scored on the "${aiOff.label}" run; thresholds are design-doc placeholders)`);
   for (const t of tests) {
     console.log(`[${t.passed ? 'PASS' : 'FAIL'}] ${t.testId} ${t.testName}`);
@@ -198,10 +293,6 @@ if (AS_JSON) {
   console.log(`\nThresholds: HC-1 r >= ${HC1_CORR_THRESHOLD}, HC-2 MAE <= ${HC2_MAE_THRESHOLD} index points.`);
   console.log('Caveat: a 2015-2025 hindcast cannot validate the AI displacement channel (COVID, war and');
   console.log('inflation dominate the decade). It validates the baseline economy and the wellbeing coefficients.');
-}
-
-function mean(xs: number[]): number {
-  return xs.length === 0 ? 0 : xs.reduce((a, b) => a + b, 0) / xs.length;
 }
 
 const failed = tests.filter(t => !t.passed).length;

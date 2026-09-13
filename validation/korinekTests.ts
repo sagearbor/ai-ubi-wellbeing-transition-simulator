@@ -40,7 +40,7 @@ export function scoreKorinekOutcome(o: KorinekOutcome, index: number): AnchorTes
     category: 'consistency',
     passed: failures.length === 0,
     reason: failures.length === 0
-      ? `Reproduced within tolerance. ${summary}`
+      ? `Matches published outputs within tolerance. ${summary}`
       : `Off target on ${failures.map(([k]) => k).join(', ')}. ${summary}`,
     details: {
       expected: `GDP +${o.targets.gdpBoostPct}% ±${KJ_TOLERANCE.gdpBoostPct}, labour share ${o.targets.laborSharePct}% ±${KJ_TOLERANCE.laborSharePct}, cognitive unemployment ${o.targets.cognitiveUnemploymentPct}% ±${KJ_TOLERANCE.cognitiveUnemploymentPct}`,

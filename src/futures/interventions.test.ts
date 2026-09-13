@@ -21,9 +21,9 @@ describe('interventionMetrics', () => {
     expect(rows.map((r) => r.interventionId).sort()).toEqual(fixtureInterventions.map((i) => i.id).sort());
   });
 
-  it('sorts by shiftPerCost, best first', () => {
+  it('sorts by meanShift, best first', () => {
     for (let i = 1; i < rows.length; i++) {
-      expect(rows[i - 1].shiftPerCost).toBeGreaterThanOrEqual(rows[i].shiftPerCost);
+      expect(rows[i - 1].meanShift).toBeGreaterThanOrEqual(rows[i].meanShift);
     }
   });
 

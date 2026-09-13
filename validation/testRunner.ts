@@ -151,8 +151,8 @@ export async function runFullValidation(
     complexity,
     eligible,
     summary: eligible
-      ? `✅ Eligible for leaderboard (${tier2.passed}/${tier2.total} anchors, complexity: ${complexity})`
-      : `⚠️ Not eligible: passed ${tier2.passed}/${tier2.total} anchors (need 4+)`
+      ? `✅ Leaderboard-eligible (passes at least 4 of 6 anchor tests): ${tier2.passed}/${tier2.total} anchors, complexity: ${complexity}`
+      : `⚠️ Not leaderboard-eligible (needs at least 4 of 6 anchor tests): passed ${tier2.passed}/${tier2.total}`
   };
 }
 

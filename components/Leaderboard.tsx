@@ -97,7 +97,7 @@ export const Leaderboard: React.FC<LeaderboardProps> = ({ onApplyModel, onViewDe
               onChange={(e) => setShowAllModels(!e.target.checked)}
               className="rounded"
             />
-            Eligible only (4+ anchors)
+            Leaderboard-eligible only (4+ of 6 anchors)
           </label>
           <button
             onClick={loadLeaderboard}

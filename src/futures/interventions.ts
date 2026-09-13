@@ -53,12 +53,13 @@ export interface MovedNode {
 export const WHAT_MOVED_EPSILON = 0.005;
 
 /**
- * Score every intervention **alone** against the baseline, sorted by bang-per-buck.
+ * Score every intervention **alone** against the baseline, sorted by mean shift (biggest
+ * effect first). Cost is reported as an ordinal band alongside it, not folded into the sort.
  *
  * @param graph         the graph
  * @param interventions the cards to score
  * @param baseline      optional precomputed baseline, to avoid recomputing it per card
- * @returns one row per intervention, sorted by `shiftPerCost` descending (best first)
+ * @returns one row per intervention, sorted by `meanShift` descending (best first)
  */
 export function interventionMetrics(
   graph: FuturesGraph,
@@ -80,12 +81,15 @@ export function interventionMetrics(
       floorLift: gBase.floor[last] - g.floor[last],
       ceilingLift: g.ceiling[last] - gBase.ceiling[last],
       cost,
-      // cost bands are 1-5 by construction; the guard keeps a malformed card from producing NaN
+      // cost bands are 1-5 by construction; the guard keeps a malformed card from producing NaN.
+      // NOT a cost-effectiveness figure: it divides a quantity by an ordinal band (1-5), and an
+      // ordinal has no fixed unit size, so this ratio must never be presented as "bang per buck".
+      // Kept for callers that want it; the table itself ranks by meanShift instead.
       shiftPerCost: cost > 0 ? meanShift / cost : 0,
     };
   });
 
-  return rows.sort((a, b) => b.shiftPerCost - a.shiftPerCost);
+  return rows.sort((a, b) => b.meanShift - a.meanShift);
 }
 
 /**

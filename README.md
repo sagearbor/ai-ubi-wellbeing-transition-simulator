@@ -92,9 +92,11 @@ custom equations (AI-adoption growth, surplus generation, well-being delta,
 displacement friction, UBI utility) and parameter ranges. Uploaded models are
 run through a validation harness of **six "anchor tests"** — directional causal
 invariants that any honest model must satisfy (e.g. *displacement without UBI
-must reduce well-being*, *money must be conserved*). A model needs to pass at
-least 4 of 6 to be eligible, and is scored for **complexity** (an Occam's-razor
-tiebreaker — simpler models that still pass rank higher) on a leaderboard.
+must reduce well-being*, *money must be conserved*). A model is
+**leaderboard-eligible** once it passes at least 4 of 6 — an admission rule for
+the leaderboard, not a claim of scientific validity — and is scored for
+**complexity** (an Occam's-razor tiebreaker — simpler models that still pass
+rank higher) on a leaderboard.
 Example configs live in [`examples/models/`](examples/models/).
 
 > **Status of custom models (preview):** uploads are parsed, schema-checked and
@@ -195,22 +197,29 @@ basis for a conference-panel presentation; `main` has moved on since.
 Because it's pre-1.0, expect rough edges: parameters and coefficients are still
 being tuned, the model catalog is small, and interfaces may change.
 
-Current anchor-test results for the built-in engine (`npm run validate`): 5 of 6
+Current anchor-test results for the built-in engine (`npm run validate`): 4 of 6
 pass. **AT-2 (generous UBI prevents collapse) fails** — with 40% contributions
 distributed globally and 80% displacement, average wellbeing still falls to
 about a third of its starting value over 60 months, because the per-capita UBI
-boost is small relative to displacement friction at current coefficients. This
-is a modelling question, not a code defect, and is left visible on purpose.
+boost is small relative to displacement friction at current coefficients. **AT-3
+fails too on a clean run.** The previously reported 5 of 6 was an artefact: the
+engine mutated country objects in place, so every stored history point silently
+became the latest month and the anchor suite was order-dependent. That mutation
+was fixed on 2026-09-13 and the baseline was re-locked at the honest 4 of 6 (see
+[`docs/design/audit-2026-09-13.md`](docs/design/audit-2026-09-13.md) for the full
+audit). This is a modelling question, not a code defect, and is left visible on
+purpose.
 
-### Reproducing Korinek et al. (2026) and extending it
+### Reproducing the published outputs of Korinek et al. (2026)
 
 Anthropic's economics team published *Economic Scenarios for Transformative AI*
 (Korinek, Jones, Sacher, Cotter & McCrory, Anthropic Institute WP 2026-02) with an
 [interactive explorer](https://www.anthropic.com/institute/econ-scenarios): a
 task-based US model to 2030 with three scenarios and, deliberately, no probabilities.
-This engine's optional macro block (`ModelParameters.macro`, see `simulation/pure.ts`)
-reproduces their published US 2030 outcomes when driven by the same inputs, with the
-AI capability/adoption path treated as the scenario input exactly as their explorer does:
+This engine's optional macro block (`ModelParameters.macro`, see `simulation/pure.ts`) is
+a reduced-form approximation calibrated to match their published US 2030 outputs when
+driven by the same inputs — it is not a port of their equations — with the AI
+capability/adoption path treated as the scenario input exactly as their explorer does:
 
 | Scenario (US, 2030 vs no-AI path) | GDP boost | Labour share | Cognitive unemployment |
 |---|---|---|---|
@@ -228,10 +237,14 @@ catastrophic and non-economic paths with community-weighted likelihoods.
 
 `npm run hindcast` initialises every country from real 2015 data (World Happiness Report
 ladder, World Bank GDP per capita) and scores the engine against 2025 actuals with AI
-switched off. Current result: wellbeing-change correlation 0.49 and mean absolute error
-0.45 ladder points across 106 countries. That validates only the baseline economy
-(GDP path and the wellbeing anchor fitted to GDP and governance), not the AI channel,
-which has no measurable macro footprint in that decade.
+switched off. The wellbeing anchor was fitted on this same 2015-2025 span, so this is a
+retrospective reconstruction, not a forecast — the comparison to beat is the persistence
+baseline (predicting no change), not zero. Current result: wellbeing-change correlation
+0.49 and mean absolute error 0.45 ladder points across 106 countries; the script also
+prints the persistence baseline and, where enough pre-2015 data exists, a
+trend-continuation baseline alongside it. That validates only the baseline economy (GDP
+path and the wellbeing anchor fitted to GDP and governance), not the AI channel, which has
+no measurable macro footprint in that decade.
 
 Directions under exploration (see `developer_checklist.yaml` and `docs/`):
 - execute uploaded model equations inside the pure engine (P8-T9), so anchor
