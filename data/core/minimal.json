@@ -1,0 +1,71 @@
+{
+  "schemaVersion": 1,
+  "id": "minimal",
+  "name": "Income and wellbeing (three variables)",
+  "description": "The smallest useful model: income grows, wellbeing follows log income. Anchors and growth are illustrative.",
+  "scope": "Teaching fixture. The income-to-wellbeing coefficient is an association from the World Happiness Report regression, not a causal effect.",
+  "time": {
+    "start": 2026,
+    "end": 2035,
+    "step": "year"
+  },
+  "parameters": [
+    {
+      "id": "growth",
+      "value": 0.02,
+      "unit": "share",
+      "range": {
+        "dist": "normal",
+        "p5": 0.0,
+        "p95": 0.04
+      },
+      "source": {
+        "label": "illustrative annual real growth",
+        "kind": "guess"
+      }
+    },
+    {
+      "id": "incomeElasticity",
+      "value": 0.349,
+      "unit": "ladder_points_per_log_income",
+      "source": {
+        "label": "WHR 2024 Table 2.1 log-GDP coefficient (association)",
+        "kind": "associational"
+      }
+    }
+  ],
+  "variables": [
+    {
+      "id": "income",
+      "unit": "usd",
+      "initial": 50000,
+      "equation": "income[t-1] * (1 + growth)",
+      "description": "Real income per person"
+    },
+    {
+      "id": "incomeMultiple",
+      "unit": "",
+      "equation": "income / 50000"
+    },
+    {
+      "id": "wellbeing",
+      "unit": "ladder",
+      "equation": "6.5 + incomeElasticity * log(incomeMultiple)",
+      "description": "Life satisfaction, 0-10"
+    }
+  ],
+  "outputs": [
+    "income",
+    "incomeMultiple",
+    "wellbeing"
+  ],
+  "tests": [
+    {
+      "name": "income compounds",
+      "at": 2027,
+      "expr": "income",
+      "expected": 51000,
+      "tol": 1e-06
+    }
+  ]
+}

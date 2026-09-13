@@ -1,0 +1,141 @@
+{
+  "schemaVersion": 1,
+  "id": "training-budget",
+  "name": "Training funding meets a jobs constraint",
+  "description": "The v3 worked example. One year at a time: a training budget buys completions, capped by instructor capacity and eligible people; completions place at a rate, capped by suitable openings. All numbers are illustrative assumptions, not estimates.",
+  "scope": "Arithmetic and interface fixture. Tracks gross placements through one channel. Says nothing about net employment, displacement of other workers, earnings, or the wider value of education.",
+  "time": {
+    "start": 2026,
+    "end": 2029,
+    "step": "year"
+  },
+  "parameters": [
+    {
+      "id": "cost_per_completion",
+      "value": 5000,
+      "unit": "usd",
+      "source": {
+        "label": "illustrative",
+        "kind": "guess"
+      }
+    },
+    {
+      "id": "instructor_capacity",
+      "value": 3000,
+      "unit": "people",
+      "range": {
+        "dist": "uniform",
+        "p5": 2000,
+        "p95": 4000
+      },
+      "source": {
+        "label": "illustrative",
+        "kind": "guess"
+      }
+    },
+    {
+      "id": "eligible_people",
+      "value": 10000,
+      "unit": "people",
+      "source": {
+        "label": "illustrative",
+        "kind": "guess"
+      }
+    },
+    {
+      "id": "placement_rate",
+      "value": 0.5,
+      "unit": "share",
+      "range": {
+        "dist": "uniform",
+        "p5": 0.3,
+        "p95": 0.7
+      },
+      "bounds": [
+        0,
+        1
+      ],
+      "source": {
+        "label": "illustrative",
+        "kind": "guess"
+      }
+    },
+    {
+      "id": "suitable_openings",
+      "value": 1000,
+      "unit": "people",
+      "range": {
+        "dist": "uniform",
+        "p5": 600,
+        "p95": 1600
+      },
+      "source": {
+        "label": "illustrative",
+        "kind": "guess"
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "id": "training_budget",
+      "unit": "usd",
+      "interp": "step",
+      "curve": {
+        "2026": 6000000,
+        "2027": 10000000,
+        "2028": 11000000,
+        "2029": 20000000
+      },
+      "source": {
+        "label": "the authorised budget path in the v3 table",
+        "kind": "assumed"
+      }
+    }
+  ],
+  "variables": [
+    {
+      "id": "completions",
+      "unit": "people",
+      "equation": "min(training_budget / cost_per_completion, instructor_capacity, eligible_people)",
+      "description": "People who finish training this year"
+    },
+    {
+      "id": "actual_training_spend",
+      "unit": "usd",
+      "equation": "completions * cost_per_completion"
+    },
+    {
+      "id": "unspent_budget",
+      "unit": "usd",
+      "equation": "training_budget - actual_training_spend"
+    },
+    {
+      "id": "placements",
+      "unit": "people",
+      "equation": "min(completions * placement_rate, suitable_openings)",
+      "description": "Placements through this channel"
+    }
+  ],
+  "outputs": [
+    "completions",
+    "actual_training_spend",
+    "unspent_budget",
+    "placements"
+  ],
+  "tests": [
+    {
+      "name": "$11M: openings bind, 1000 placements",
+      "at": 2028,
+      "expr": "placements",
+      "expected": 1000,
+      "tol": 0
+    },
+    {
+      "name": "$20M: capacity binds, $5M unspent",
+      "at": 2029,
+      "expr": "unspent_budget",
+      "expected": 5000000,
+      "tol": 0
+    }
+  ]
+}
