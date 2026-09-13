@@ -19,12 +19,14 @@ import FuturesTab from './components/futures/FuturesTab';
 import { InterventionImportPanel } from './components/futures/InterventionImportPanel';
 import { LOCKED_GRAPH, LOCKED_INTERVENTIONS, loadCustomInterventions, saveCustomInterventions } from './src/futures/data';
 import type { Intervention } from './src/futures/types';
-import { SimulationState, ModelParameters, HistoryPoint, CountryStats, Corporation, GlobalLedger, GameTheoryState, SavedState, SelectedEntity, ModelConfig, StoredModel } from './types';
+import { SimulationState, ModelParameters, HistoryPoint, CountryStats, Corporation, SavedState, SelectedEntity, ModelConfig, StoredModel } from './types';
 import { PRESET_MODELS, INITIAL_COUNTRIES, INITIAL_CORPORATIONS, SCENARIO_PRESETS, DEFAULT_MODEL_CONFIG } from './constants';
 import { getRedTeamAnalysis, getSimulationSummary } from './services/geminiService';
 import { rateModel, getLeaderboard, recordRun, listModels } from './src/services/modelStorage';
-import { getCompiledEquationSet, CompiledEquationSet } from './src/services/equationParser';
-import { stepSimulationPure } from './simulation/pure';
+import { parseEquationSet, CompiledEquationSet, EquationError } from './src/services/equationParser';
+import { advanceRun, initialRun, type RunInputs, type SimulationRun } from './simulation/run';
+import { catchUp, historyForPrompt, historyForSave, historyFromSave, recordRunInHistory, seekInHistory } from './simulation/appState';
+import EquationErrorBanner from './components/EquationErrorBanner';
 
 // Helper for math rendering
 const MathEq: React.FC<{ children: React.ReactNode }> = ({ children }) => (
@@ -41,6 +43,13 @@ const Frac: React.FC<{ n: React.ReactNode, d: React.ReactNode }> = ({ n, d }) =>
 const formatMonthDate = (monthIndex: number) => {
     const date = new Date(2025, monthIndex, 1);
     return date.toLocaleDateString('en-US', { month: 'short', year: '2-digit' });
+};
+
+/** Population-unweighted mean AI adoption across the simulated countries. */
+const averageAdoption = (s: SimulationState) => {
+    const countries = Object.values(s.countryData);
+    if (countries.length === 0) return 0;
+    return countries.reduce((acc, c) => acc + c.aiAdoption, 0) / countries.length;
 };
 
 // Tooltip Component for Metric Cards
@@ -275,68 +284,27 @@ const App: React.FC = () => {
     }
   }, [tourStep]);
 
-  const getInitialState = useCallback((): SimulationState => {
-    const initialCountryData: Record<string, CountryStats> = {};
-    INITIAL_COUNTRIES.forEach(c => {
-      initialCountryData[c.id] = {
-        ...c,
-        aiAdoption: 0.01,
-        wellbeing: Math.min(100, Math.max(10, c.gdpPerCapita / 1200 + 40)),
-        companiesJoined: 0,
-        displacementGap: 0,
-        // Corporation-centric tracking fields (P5-T6)
-        headquarteredCorps: [],
-        customerOfCorps: [],
-        ubiReceivedGlobal: 0,
-        ubiReceivedLocal: 0,
-        ubiReceivedCustomerWeighted: 0,
-        totalUbiReceived: 0,
-        nationalPolicy: {
-          allowsDirectWallet: c.governance > 0.4, // Authoritarian regimes may block
-          localTaxOnUbi: 0,
-          corporateIncentives: 0
-        },
-        wellbeingTrend: []
-      };
-    });
-    // Shadow state starts identical - will diverge with no intervention
-    const shadowCountryData = JSON.parse(JSON.stringify(initialCountryData));
+  // ==========================================================================
+  // ONE RUN PER PANEL (audit 2026-09-13, findings A3/A4/A7)
+  // ==========================================================================
+  // The app used to keep countries, corporations, ledger and game theory in four separate
+  // hooks, store only the first in history, and write the other three from inside a setState
+  // updater. That is why seek mixed the past with the present, the comparison panel never
+  // moved and StrictMode double-fired. Each panel now holds ONE `SimulationRun`
+  // (simulation/run.ts) advanced by `advanceRun`, and history points carry the whole run.
+  // The derived consts below keep the render tree's variable names unchanged.
+  // ==========================================================================
 
-    return {
-      month: 0,
-      globalFund: 0,
-      averageWellbeing: 50,
-      totalAiCompanies: 0,
-      countryData: initialCountryData,
-      // New tracking fields
-      shadowCountryData,
-      globalDisplacementGap: 0,
-      corruptionLeakage: 0,
-      countriesInCrisis: 0
-    };
-  }, []);
+  /** The month-0 run the main timeline is anchored to (rebuilt on reset / scenario apply). */
+  const [baseRun, setBaseRun] = useState<SimulationRun>(() => initialRun());
+  const [run, setRun] = useState<SimulationRun>(baseRun);
+  /** The corporation roster month 0 starts from: INITIAL_CORPORATIONS, or a scenario's overrides. */
+  const [baseCorporations, setBaseCorporations] = useState<Corporation[]>(INITIAL_CORPORATIONS);
 
-  const [state, setState] = useState<SimulationState>(getInitialState());
-  const [corporations, setCorporations] = useState<Corporation[]>(INITIAL_CORPORATIONS);
-  const [globalLedger, setGlobalLedger] = useState<GlobalLedger>({
-    totalFunds: 0,
-    monthlyInflow: 0,
-    monthlyOutflow: 0,
-    fundsPerCapita: 0,
-    fundsByCountry: {},
-    contributorBreakdown: {},
-    distributionBreakdown: {},
-    corruptionLeakage: 0
-  });
-  const [gameTheoryState, setGameTheoryState] = useState<GameTheoryState>({
-    isInPrisonersDilemma: false,
-    defectionCount: 0,
-    cooperationCount: 0,
-    moderateCount: 0,
-    raceToBottomRisk: 0,
-    virtuousCycleStrength: 0,
-    avgContributionRate: 0
-  });
+  const state = run.state;
+  const corporations = run.corporations;
+  const globalLedger = run.ledger;
+  const gameTheoryState = run.gameTheory;
 
   // Active custom model configuration (null = use default hardcoded logic) (P8-T9)
   const [activeModelConfig, setActiveModelConfig] = useState<ModelConfig | null>(null);
@@ -344,29 +312,47 @@ const App: React.FC = () => {
   // Track if simulation run was recorded (P9-T7)
   const [runRecorded, setRunRecorded] = useState(false);
 
-  // Comparison simulation state (P7-T5) - second parallel simulation
-  const [comparisonState, setComparisonState] = useState<SimulationState>(getInitialState());
-  const [comparisonCorporations, setComparisonCorporations] = useState<Corporation[]>(INITIAL_CORPORATIONS);
-  const [comparisonLedger, setComparisonLedger] = useState<GlobalLedger>({
-    totalFunds: 0,
-    monthlyInflow: 0,
-    monthlyOutflow: 0,
-    fundsPerCapita: 0,
-    fundsByCountry: {},
-    contributorBreakdown: {},
-    distributionBreakdown: {},
-    corruptionLeakage: 0
-  });
-  const [comparisonGameTheory, setComparisonGameTheory] = useState<GameTheoryState>({
-    isInPrisonersDilemma: false,
-    defectionCount: 0,
-    cooperationCount: 0,
-    moderateCount: 0,
-    raceToBottomRisk: 0,
-    virtuousCycleStrength: 0,
-    avgContributionRate: 0
-  });
+  // Comparison simulation (P7-T5) - a second, independent run advanced in lockstep
+  const [comparisonBaseRun, setComparisonBaseRun] = useState<SimulationRun>(() => initialRun());
+  const [comparisonRun, setComparisonRun] = useState<SimulationRun>(comparisonBaseRun);
+  const [comparisonHistory, setComparisonHistory] = useState<HistoryPoint[]>([]);
   const [comparisonModel, setComparisonModel] = useState<ModelParameters>(PRESET_MODELS[0]);
+
+  const comparisonState = comparisonRun.state;
+  const comparisonCorporations = comparisonRun.corporations;
+
+  // ==========================================================================
+  // CUSTOM MODEL EQUATIONS (audit 2026-09-13, finding A5)
+  // ==========================================================================
+  // An uploaded model whose equations do not compile used to silently run the built-in engine
+  // under the custom model's name. Now the compile result is computed once per model and, when
+  // it fails, the app refuses to step and shows the errors. There is no fallback.
+  // ==========================================================================
+  const parsedEquations = useMemo(
+    () => (activeModelConfig ? parseEquationSet(activeModelConfig.equations) : null),
+    [activeModelConfig]
+  );
+  const equationErrors: EquationError[] = parsedEquations && !parsedEquations.valid ? parsedEquations.errors : [];
+  const compiledEquations: CompiledEquationSet | undefined = parsedEquations?.compiledEquations;
+  /** False while a custom model is active but broken: play, step and replay are all blocked. */
+  const canStep = equationErrors.length === 0;
+
+  const runInputs: RunInputs = useMemo(
+    () => ({ model, equations: compiledEquations }),
+    [model, compiledEquations]
+  );
+  const comparisonInputs: RunInputs = useMemo(
+    () => ({ model: comparisonModel, equations: compiledEquations }),
+    [comparisonModel, compiledEquations]
+  );
+
+  /** The current month, readable from effects that must not re-run every step. */
+  const monthRef = React.useRef(run.state.month);
+  monthRef.current = run.state.month;
+  const comparisonInputsRef = React.useRef(comparisonInputs);
+  comparisonInputsRef.current = comparisonInputs;
+  const canStepRef = React.useRef(canStep);
+  canStepRef.current = canStep;
 
   useEffect(() => {
     const hash = window.location.hash;
@@ -384,7 +370,7 @@ const App: React.FC = () => {
         console.error("Failed to decode shared state", e);
       }
     }
-  }, [getInitialState]);
+  }, []);
 
   // Dismiss start hint when playing
   useEffect(() => {
@@ -414,39 +400,36 @@ const App: React.FC = () => {
     }
   };
 
-  const handleReset = useCallback(() => {
-    setState(getInitialState());
+  /**
+   * Rewind both panels to month 0.
+   *
+   * `corpsA` lets a caller (applyScenario) hand in the roster month 0 should start from without
+   * waiting for a state update to land - the old code called setCorporations and then reset,
+   * and the reset wiped the scenario's corporation overrides.
+   */
+  const resetAll = useCallback((corpsA?: Corporation[]) => {
+    const rosterA = corpsA ?? baseCorporations;
+    const freshA = initialRun(rosterA);
+    setBaseRun(freshA);
+    setRun(freshA);
     setHistory([]);
+
+    // The comparison panel is reset with its own roster so both start at month 0 together.
+    const freshB = initialRun(comparisonBaseRun.corporations);
+    setComparisonBaseRun(freshB);
+    setComparisonRun(freshB);
+    setComparisonHistory([]);
+
     setAnalysis(null);
     setSummary(null);
     setIsPlaying(false);
     setShowStartHint(true);
-    // Reset corporations and global ledger (P5-T6)
-    setCorporations(INITIAL_CORPORATIONS);
-    setGlobalLedger({
-      totalFunds: 0,
-      monthlyInflow: 0,
-      monthlyOutflow: 0,
-      fundsPerCapita: 0,
-      fundsByCountry: {},
-      contributorBreakdown: {},
-      distributionBreakdown: {},
-      corruptionLeakage: 0
-    });
-    // Reset game theory state (P6-T4)
-    setGameTheoryState({
-      isInPrisonersDilemma: false,
-      defectionCount: 0,
-      cooperationCount: 0,
-      moderateCount: 0,
-      raceToBottomRisk: 0,
-      virtuousCycleStrength: 0,
-      avgContributionRate: 0
-    });
     // Reset run recording flag (P9-T7)
     setRunRecorded(false);
     window.history.pushState("", document.title, window.location.pathname + window.location.search);
-  }, [getInitialState]);
+  }, [baseCorporations, comparisonBaseRun]);
+
+  const handleReset = useCallback(() => { resetAll(); }, [resetAll]);
 
   // ============================================================================
   // MODEL CONFIGURATION MANAGEMENT (P8-T9)
@@ -477,11 +460,12 @@ const App: React.FC = () => {
   // ============================================================================
 
   const updateCorporation = useCallback((id: string, updates: Partial<Corporation>) => {
-    setCorporations(prevCorps =>
-      prevCorps.map(corp =>
+    setRun(r => ({
+      ...r,
+      corporations: r.corporations.map(corp =>
         corp.id === id ? { ...corp, ...updates } : corp
       )
-    );
+    }));
   }, []);
 
   // ============================================================================
@@ -491,13 +475,16 @@ const App: React.FC = () => {
   // ============================================================================
 
   const updateCountry = useCallback((id: string, updates: Partial<CountryStats>) => {
-    setState(prevState => ({
-      ...prevState,
-      countryData: {
-        ...prevState.countryData,
-        [id]: {
-          ...prevState.countryData[id],
-          ...updates
+    setRun(r => ({
+      ...r,
+      state: {
+        ...r.state,
+        countryData: {
+          ...r.state.countryData,
+          [id]: {
+            ...r.state.countryData[id],
+            ...updates
+          }
         }
       }
     }));
@@ -537,13 +524,14 @@ const App: React.FC = () => {
 
       return updated;
     });
-    setCorporations(updatedCorps);
-
-    // 3. Reset simulation to month 0
-    handleReset();
+    // 3. Reset simulation to month 0 STARTING FROM those corporations. The old code set the
+    // corporations and then called a reset that put INITIAL_CORPORATIONS back, so a scenario's
+    // corporation overrides never reached month 1.
+    setBaseCorporations(updatedCorps);
+    resetAll(updatedCorps);
 
     console.log(`Applied scenario: ${scenario.name}`);
-  }, [model, handleReset]);
+  }, [model, resetAll]);
 
   // ============================================================================
   // COMPARISON SCENARIO APPLICATION (P7-T5)
@@ -573,32 +561,22 @@ const App: React.FC = () => {
 
       return updated;
     });
-    setComparisonCorporations(updatedCorps);
+    // 3. Build the comparison run at month 0 from those corporations, then bring it up to the
+    // month the main panel is already on, so both panels always show the same month
+    // (audit 2026-09-13, finding A4: the comparison panel used to sit at month 0 forever).
+    const freshB = initialRun(updatedCorps);
+    // A broken custom model may not be replayed through the built-in engine (A5), so the
+    // comparison panel stays at month 0 until the equations compile.
+    const target = canStepRef.current ? monthRef.current : 0;
+    const caught = catchUp(freshB, target, { model: updatedModel, equations: comparisonInputsRef.current.equations });
+    setComparisonBaseRun(freshB);
+    setComparisonRun(caught.run);
+    setComparisonHistory(caught.history);
 
-    // 3. Reset comparison state to month 0
-    setComparisonState(getInitialState());
-    setComparisonLedger({
-      totalFunds: 0,
-      monthlyInflow: 0,
-      monthlyOutflow: 0,
-      fundsPerCapita: 0,
-      fundsByCountry: {},
-      contributorBreakdown: {},
-      distributionBreakdown: {},
-      corruptionLeakage: 0
-    });
-    setComparisonGameTheory({
-      isInPrisonersDilemma: false,
-      defectionCount: 0,
-      cooperationCount: 0,
-      moderateCount: 0,
-      raceToBottomRisk: 0,
-      virtuousCycleStrength: 0,
-      avgContributionRate: 0
-    });
-
-    console.log(`Applied comparison scenario: ${scenario.name}`);
-  }, [comparisonMode, comparisonScenarioId, getInitialState]);
+    console.log(`Applied comparison scenario: ${scenario.name} (caught up to month ${target})`);
+    // monthRef / comparisonInputsRef are read, not depended on: this effect must fire when the
+    // scenario or the mode changes, never on every simulated month.
+  }, [comparisonMode, comparisonScenarioId]);
 
   // ============================================================================
   // SAVE/LOAD FUNCTIONALITY (P6-T8)
@@ -614,15 +592,20 @@ const App: React.FC = () => {
   const saveToFile = useCallback(() => {
     try {
       const savedState: SavedState = {
-        version: "2.0",
+        version: "2.1",
         timestamp: Date.now(),
         month: state.month,
+        // The complete run, plus every history point's run: a reload restores the same
+        // simulation rather than countries alone (audit 2026-09-13, finding A6).
+        run,
+        // The flat fields below are kept so older builds can still open the file.
         corporations,
         countryData: state.countryData,
         globalLedger,
         gameTheoryState,
         model,
-        history
+        history: historyForSave(history),
+        activeModelConfig
       };
 
       // Create blob and download link
@@ -641,7 +624,7 @@ const App: React.FC = () => {
       console.error("Failed to save simulation:", err);
       alert("Failed to save simulation. Check console for details.");
     }
-  }, [state, corporations, globalLedger, gameTheoryState, model, history]);
+  }, [state, run, corporations, globalLedger, gameTheoryState, model, history, activeModelConfig]);
 
   /**
    * Load simulation state from a JSON file
@@ -657,30 +640,23 @@ const App: React.FC = () => {
         const saved = JSON.parse(e.target?.result as string) as SavedState;
 
         // Validate version compatibility
-        if (!saved.version || saved.version !== "2.0") {
-          console.warn(`Loading save file version ${saved.version || 'unknown'}. Current version is 2.0. May have compatibility issues.`);
+        if (!saved.version) {
+          console.warn('Loading a save file with no version field. It will be replayed from month 0.');
         }
 
-        // Restore all state
-        setState(prev => ({
-          ...prev,
-          month: saved.month,
-          countryData: saved.countryData,
-          globalFund: saved.globalLedger.totalFunds,
-          averageWellbeing: Object.values(saved.countryData).reduce((sum, c) => sum + c.wellbeing, 0) / Object.values(saved.countryData).length,
-          totalAiCompanies: saved.corporations.length,
-          // Preserve shadow data if not in save (for backwards compatibility)
-          shadowCountryData: saved.countryData, // Use same as main for now
-          globalDisplacementGap: prev.globalDisplacementGap,
-          corruptionLeakage: 0,
-          countriesInCrisis: prev.countriesInCrisis
-        }));
+        // Restore the WHOLE run. Files written before the run format only stored the final
+        // month's corporations/ledger/game theory (and their history points were corrupted by
+        // the in-place mutation bug), so those are rebuilt by replaying with the saved model.
+        const loaded = historyFromSave(saved);
+        if (loaded.replayed) console.warn(`[load] ${loaded.note}`);
+        else if (loaded.note) console.info(`[load] ${loaded.note}`);
 
-        setCorporations(saved.corporations);
-        setGlobalLedger(saved.globalLedger);
-        setGameTheoryState(saved.gameTheoryState);
+        setBaseRun(loaded.base);
+        setBaseCorporations(loaded.base.corporations);
+        setRun(loaded.run);
+        setHistory(loaded.history);
         setModel(saved.model);
-        setHistory(saved.history || []);
+        if (saved.activeModelConfig !== undefined) setActiveModelConfig(saved.activeModelConfig);
 
         // Stop playback on load
         setIsPlaying(false);
@@ -697,71 +673,68 @@ const App: React.FC = () => {
     event.target.value = '';
   }, []);
 
+  /**
+   * Advance one month.
+   *
+   * Everything is computed OUTSIDE the state updaters (audit 2026-09-13, finding A7: the old
+   * version called setCorporations / setGlobalLedger / setGameTheoryState from inside a
+   * setState updater, which double-fires under StrictMode and is how the four pieces of state
+   * drifted apart). In comparison mode both runs advance together, each with its own inputs.
+   */
   const stepSimulation = useCallback(() => {
-    // P8-T9: when a custom model is active, compile its equations once per step and use
-    // them in place of the hardcoded formulas in simulation/pure.ts's stepSimulationPure
-    // (the single shared engine - see simulation/appEngineParity.test.ts for the golden
-    // test that locked this behaviour before App.tsx stopped keeping its own duplicate
-    // copy of the engine). null/invalid falls back to the default hardcoded engine.
-    const equations: CompiledEquationSet | null = activeModelConfig
-      ? getCompiledEquationSet(activeModelConfig.equations)
-      : null;
+    // A5: a custom model whose equations do not compile does NOT fall back to the built-in
+    // engine under the custom model's label. It refuses to run and the banner says why.
+    if (!canStep) return;
 
-    setState(prev => {
-      const output = stepSimulationPure({
-        state: prev,
-        corporations,
-        model,
-        equations: equations ?? undefined
-      });
+    const next = advanceRun(run, runInputs);
+    setRun(next);
+    setHistory(h => recordRunInHistory(h, next));
 
-      // Update corporations state
-      setCorporations(output.corporations);
-      setGlobalLedger(output.ledger);
-
-      // Analyze game theory dynamics (P6-T4)
-      setGameTheoryState(output.gameTheory);
-
-      setHistory(h => [...h.filter(p => p.month < output.state.month), { month: output.state.month, state: output.state }]);
-      return output.state;
-    });
-  }, [model, corporations, activeModelConfig]);
+    if (comparisonMode) {
+      const nextB = advanceRun(comparisonRun, comparisonInputs);
+      setComparisonRun(nextB);
+      setComparisonHistory(h => recordRunInHistory(h, nextB));
+    }
+  }, [canStep, run, runInputs, comparisonMode, comparisonRun, comparisonInputs]);
 
   useEffect(() => {
     let timer: any;
-    if (isPlaying) {
-      timer = setInterval(() => {
-        stepSimulation();
-        // Also step comparison simulation if in comparison mode (P7-T5)
-        if (comparisonMode) {
-          // Comparison simulation runs in parallel with same month progression
-          // NOTE: For full implementation, would need to extract stepSimulation into reusable function
-          // For now, comparison state is set once and shows static snapshot at month 0
-        }
-      }, 1000 / speed);
+    if (isPlaying && canStep) {
+      // stepSimulation advances the comparison run too, so both panels stay on the same month.
+      timer = setInterval(() => { stepSimulation(); }, 1000 / speed);
     }
     return () => clearInterval(timer);
-  }, [isPlaying, speed, stepSimulation, comparisonMode]);
+  }, [isPlaying, speed, stepSimulation, canStep]);
 
+  /**
+   * Rewind (or fast-forward) to month `m`, restoring the COMPLETE run - countries,
+   * corporations, ledger and game theory - not just the countries (finding A3). Points
+   * recorded by this build carry their run; older ones are reproduced with replayTo.
+   */
   const handleSeek = (m: number) => {
     setIsPlaying(false);
-    if (m === 0) { setState(getInitialState()); return; }
-    const point = history.find(p => p.month === m);
-    if (point) setState(point.state);
+    if (!canStep && m !== 0) return;
+    setRun(seekInHistory(history, m, runInputs, baseRun));
+    if (comparisonMode) {
+      setComparisonRun(seekInHistory(comparisonHistory, m, comparisonInputs, comparisonBaseRun));
+    }
   };
 
   const handleCountryInvestment = (id: string, delta: number) => {
-    setState(prev => {
-      const country = prev.countryData[id];
-      if (!country) return prev;
+    setRun(r => {
+      const country = r.state.countryData[id];
+      if (!country) return r;
       return {
-        ...prev,
-        countryData: {
-          ...prev.countryData,
-          [id]: {
-            ...country,
-            companiesJoined: Math.max(0, country.companiesJoined + delta),
-            aiAdoption: Math.max(0.01, Math.min(0.999, country.aiAdoption + (delta / 50)))
+        ...r,
+        state: {
+          ...r.state,
+          countryData: {
+            ...r.state.countryData,
+            [id]: {
+              ...country,
+              companiesJoined: Math.max(0, country.companiesJoined + delta),
+              aiAdoption: Math.max(0.01, Math.min(0.999, country.aiAdoption + (delta / 50)))
+            }
           }
         }
       };
@@ -810,11 +783,14 @@ const App: React.FC = () => {
   };
 
   const handleBulkUpdateContribution = (newRate: number) => {
-    setCorporations(prev => prev.map(corp =>
-      selectedCorpIds.has(corp.id)
-        ? { ...corp, contributionRate: newRate }
-        : corp
-    ));
+    setRun(r => ({
+      ...r,
+      corporations: r.corporations.map(corp =>
+        selectedCorpIds.has(corp.id)
+          ? { ...corp, contributionRate: newRate }
+          : corp
+      )
+    }));
   };
 
   // ESC key handler for deselection
@@ -836,7 +812,7 @@ const App: React.FC = () => {
     }
     if (summary && !isSummarizing) return;
     setIsSummarizing(true);
-    const res = await getSimulationSummary(model, history);
+    const res = await getSimulationSummary(model, historyForPrompt(history));
     setSummary(res || "Summary failed.");
     setIsSummarizing(false);
   };
@@ -848,7 +824,7 @@ const App: React.FC = () => {
     }
     if (analysis && !isAnalyzing) return;
     setIsAnalyzing(true);
-    const res = await getRedTeamAnalysis(model, history);
+    const res = await getRedTeamAnalysis(model, historyForPrompt(history));
     setAnalysis(res || "Analysis failed.");
     setIsAnalyzing(false);
   };
@@ -993,32 +969,42 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const interval = setInterval(() => {
+      const build = (withRuns: boolean): SavedState => ({
+        version: "2.1",
+        timestamp: Date.now(),
+        month: state.month,
+        run,
+        corporations,
+        countryData: state.countryData,
+        globalLedger,
+        gameTheoryState,
+        model,
+        // Full runs per point make the timeline seekable after a restore. They are also the
+        // bulk of the payload, so if localStorage refuses the write we drop them and keep the
+        // chartable states; seeking then replays from month 0 instead.
+        history: withRuns ? historyForSave(history) : historyForPrompt(history),
+        activeModelConfig  // P8-T9: Include custom model config
+      });
       try {
-        const autoSave: SavedState & { activeModelConfig?: ModelConfig | null } = {
-          version: "2.0",
-          timestamp: Date.now(),
-          month: state.month,
-          corporations,
-          countryData: state.countryData,
-          globalLedger,
-          gameTheoryState,
-          model,
-          history,
-          activeModelConfig  // P8-T9: Include custom model config
-        };
-        localStorage.setItem('ubi-sim-autosave', JSON.stringify(autoSave));
+        localStorage.setItem('ubi-sim-autosave', JSON.stringify(build(true)));
         console.log(`Auto-saved at ${new Date().toLocaleTimeString()}`);
       } catch (err) {
-        console.error("Auto-save failed:", err);
-        // Clear old autosave if storage is full
         if (err instanceof DOMException && err.name === 'QuotaExceededError') {
-          localStorage.removeItem('ubi-sim-autosave');
+          try {
+            localStorage.setItem('ubi-sim-autosave', JSON.stringify(build(false)));
+            console.warn('Auto-save: storage full, saved without per-month runs (seek will replay).');
+          } catch (err2) {
+            console.error("Auto-save failed:", err2);
+            localStorage.removeItem('ubi-sim-autosave');
+          }
+        } else {
+          console.error("Auto-save failed:", err);
         }
       }
     }, 5 * 60 * 1000); // 5 minutes
 
     return () => clearInterval(interval);
-  }, [state, corporations, globalLedger, gameTheoryState, model, history, activeModelConfig]);
+  }, [state, run, corporations, globalLedger, gameTheoryState, model, history, activeModelConfig]);
 
   // Load autosave on mount if available
   useEffect(() => {
@@ -1030,24 +1016,15 @@ const App: React.FC = () => {
           'An auto-saved simulation was found. Would you like to restore it?'
         );
         if (shouldLoad) {
-          const saved = JSON.parse(autoSave) as SavedState & { activeModelConfig?: ModelConfig | null };
-          setState(prev => ({
-            ...prev,
-            month: saved.month,
-            countryData: saved.countryData,
-            globalFund: saved.globalLedger.totalFunds,
-            averageWellbeing: Object.values(saved.countryData).reduce((sum, c) => sum + c.wellbeing, 0) / Object.values(saved.countryData).length,
-            totalAiCompanies: saved.corporations.length,
-            shadowCountryData: saved.countryData,
-            globalDisplacementGap: prev.globalDisplacementGap,
-            corruptionLeakage: 0,
-            countriesInCrisis: prev.countriesInCrisis
-          }));
-          setCorporations(saved.corporations);
-          setGlobalLedger(saved.globalLedger);
-          setGameTheoryState(saved.gameTheoryState);
+          const saved = JSON.parse(autoSave) as SavedState;
+          const loaded = historyFromSave(saved);
+          if (loaded.replayed) console.warn(`[autosave] ${loaded.note}`);
+          else if (loaded.note) console.info(`[autosave] ${loaded.note}`);
+          setBaseRun(loaded.base);
+          setBaseCorporations(loaded.base.corporations);
+          setRun(loaded.run);
+          setHistory(loaded.history);
           setModel(saved.model);
-          setHistory(saved.history || []);
           // P8-T9: Restore custom model config if present
           if (saved.activeModelConfig !== undefined) {
             setActiveModelConfig(saved.activeModelConfig);
@@ -1608,7 +1585,7 @@ const App: React.FC = () => {
                         </div>
                         <div className="text-xs text-blue-50 flex items-center gap-4">
                           <span>Avg Wellbeing: <span className="font-bold text-white">{state.averageWellbeing.toFixed(1)}</span></span>
-                          <span>Adoption: <span className="font-bold text-white">{(state.averageAdoption * 100).toFixed(1)}%</span></span>
+                          <span>Adoption: <span className="font-bold text-white">{(averageAdoption(state) * 100).toFixed(1)}%</span></span>
                         </div>
                       </div>
                       <div className="flex-1 relative">
@@ -1634,16 +1611,11 @@ const App: React.FC = () => {
                               Comparison: {SCENARIO_PRESETS.find(s => s.id === comparisonScenarioId)?.name || 'Alternative'}
                             </div>
                           </div>
-                          <div className="text-xs font-bold text-purple-100 bg-purple-700/50 px-2 py-1 rounded-md">Month 0 (Starting Conditions)</div>
+                          <div className="text-xs font-bold text-purple-100 bg-purple-700/50 px-2 py-1 rounded-md">Month {comparisonState.month}</div>
                         </div>
-                        <div className="text-xs text-purple-50 bg-purple-800/30 rounded-lg px-3 py-2 border border-purple-400/30">
-                          <div className="flex items-start gap-2">
-                            <Info size={14} className="shrink-0 mt-0.5" />
-                            <div>
-                              <div className="font-bold mb-1">Baseline Comparison View</div>
-                              <div className="opacity-90">This shows how the selected scenario would START (Month 0), not a live simulation. Compare these initial conditions against your running simulation on the left.</div>
-                            </div>
-                          </div>
+                        <div className="text-xs text-purple-50 flex items-center gap-4">
+                          <span>Avg Wellbeing: <span className="font-bold text-white">{comparisonState.averageWellbeing.toFixed(1)}</span></span>
+                          <span>Adoption: <span className="font-bold text-white">{(averageAdoption(comparisonState) * 100).toFixed(1)}%</span></span>
                         </div>
                       </div>
                       <div className="flex-1 relative">
@@ -2964,7 +2936,14 @@ shadowWellbeing = max(1, shadowWellbeing - shadowFriction × 0.4)`}
       </main>
 
       <footer className="px-4 lg:px-6 py-3 lg:py-4 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 sticky bottom-0 z-[100] backdrop-blur-md shrink-0">
-        <SimulationControls isPlaying={isPlaying} onPlay={() => setIsPlaying(true)} onPause={() => setIsPlaying(false)} onReset={handleReset} onStep={stepSimulation} speed={speed} setSpeed={setSpeed} month={state.month} maxMonth={history.length > 0 ? Math.max(...history.map(h => h.month)) : state.month} onSeek={handleSeek} />
+        {/* A5: a custom model that does not compile blocks playback and says so, here, next to
+            the controls it disables. The built-in engine is never used in its place. */}
+        <EquationErrorBanner
+          modelName={activeModelConfig?.name || 'custom model'}
+          errors={equationErrors}
+          onClear={clearModelConfig}
+        />
+        <SimulationControls isPlaying={isPlaying} onPlay={() => setIsPlaying(true)} onPause={() => setIsPlaying(false)} onReset={handleReset} onStep={stepSimulation} speed={speed} setSpeed={setSpeed} month={state.month} maxMonth={history.length > 0 ? Math.max(...history.map(h => h.month)) : state.month} onSeek={handleSeek} disabled={!canStep} disabledReason={`Custom model "${activeModelConfig?.name || ''}" has ${equationErrors.length} equation errors`} />
       </footer>
 
       {/* Corporation Detail Panel (P5-T10) */}
