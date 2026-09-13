@@ -55,6 +55,9 @@ export interface ParseResult {
   valid: boolean;
   error?: string;
   node?: MathNode;
+  /** 1-based character offset into the equation string where mathjs's parser hit the
+   *  syntax error, when mathjs provides one (it attaches `.char` to the thrown error). */
+  char?: number;
 }
 
 export interface CompiledEquation {
@@ -62,6 +65,11 @@ export interface CompiledEquation {
   variables: string[];
   complexity: number;
 }
+
+/** Discriminated result of {@link compileEquationDetailed}. */
+export type CompileResult =
+  | { ok: true; compiled: CompiledEquation }
+  | { ok: false; error: string; char?: number };
 
 /**
  * Count operations in AST to enforce complexity limits
@@ -222,68 +230,106 @@ export function parseEquation(equation: string): ParseResult {
   } catch (err) {
     return {
       valid: false,
-      error: err instanceof Error ? err.message : 'Failed to parse equation'
+      error: err instanceof Error ? err.message : 'Failed to parse equation',
+      char: (err as { char?: number } | undefined)?.char
     };
   }
 }
 
 /**
- * Compile equation for fast repeated evaluation
+ * Compile equation for fast repeated evaluation, returning a structured result that
+ * carries the error message and (when mathjs provides one) the character position on
+ * failure, instead of the bare null that {@link compileEquation} returns.
  */
-export function compileEquation(equation: string): CompiledEquation | null {
+export function compileEquationDetailed(equation: string): CompileResult {
   const parseResult = parseEquation(equation);
 
   if (!parseResult.valid || !parseResult.node) {
-    console.error('Failed to compile equation:', parseResult.error);
-    return null;
+    return {
+      ok: false,
+      error: parseResult.error || 'Failed to parse equation',
+      char: parseResult.char
+    };
   }
 
   const node = parseResult.node;
   const variables = extractVariables(node);
   const complexity = countOperations(node);
 
-  // Compile the node for faster evaluation
-  const compiled = node.compile();
+  let compiled: EvalFunction;
+  try {
+    // Compile the node for faster evaluation
+    compiled = node.compile();
+  } catch (err) {
+    return {
+      ok: false,
+      error: err instanceof Error ? err.message : 'Failed to compile equation',
+      char: (err as { char?: number } | undefined)?.char
+    };
+  }
 
   return {
-    evaluate: (vars: Record<string, number>): number => {
-      // Timeout wrapper
-      const startTime = Date.now();
+    ok: true,
+    compiled: {
+      evaluate: (vars: Record<string, number>): number => {
+        // Timeout wrapper
+        const startTime = Date.now();
 
-      try {
-        // Create a clean scope with only the provided variables
-        const scope: Record<string, number> = {};
+        try {
+          // Create a clean scope with only the provided variables
+          const scope: Record<string, number> = {};
 
-        // Only copy allowed variables
-        for (const key of Object.keys(vars)) {
-          if (ALLOWED_VARIABLES.has(key)) {
-            scope[key] = vars[key];
+          // Only copy allowed variables
+          for (const key of Object.keys(vars)) {
+            if (ALLOWED_VARIABLES.has(key)) {
+              scope[key] = vars[key];
+            }
           }
-        }
 
-        // Evaluate with timeout check
-        const result = compiled.evaluate(scope);
+          // Evaluate with timeout check
+          const result = compiled.evaluate(scope);
 
-        const elapsed = Date.now() - startTime;
-        if (elapsed > EVALUATION_TIMEOUT_MS) {
-          console.warn(`Equation evaluation took ${elapsed}ms (timeout: ${EVALUATION_TIMEOUT_MS}ms)`);
-        }
+          const elapsed = Date.now() - startTime;
+          if (elapsed > EVALUATION_TIMEOUT_MS) {
+            console.warn(`Equation evaluation took ${elapsed}ms (timeout: ${EVALUATION_TIMEOUT_MS}ms)`);
+          }
 
-        // Ensure result is a number
-        if (typeof result !== 'number' || !isFinite(result)) {
-          console.error('Equation returned non-finite result:', result);
+          // Ensure result is a number
+          if (typeof result !== 'number' || !isFinite(result)) {
+            console.error('Equation returned non-finite result:', result);
+            return 0;
+          }
+
+          return result;
+        } catch (err) {
+          console.error('Equation evaluation error:', err);
           return 0;
         }
-
-        return result;
-      } catch (err) {
-        console.error('Equation evaluation error:', err);
-        return 0;
-      }
-    },
-    variables,
-    complexity
+      },
+      variables,
+      complexity
+    }
   };
+}
+
+/**
+ * Compile equation for fast repeated evaluation.
+ *
+ * @deprecated Loses the error message and character position on failure (collapses
+ * them to `null`, only logged to `console.error`). Prefer {@link compileEquationDetailed}
+ * (or `equationParser.ts`'s `compileEquationSet` for a whole equation set), which return
+ * the failure reason so callers can show it instead of silently treating `null` as "use
+ * something else".
+ */
+export function compileEquation(equation: string): CompiledEquation | null {
+  const result = compileEquationDetailed(equation);
+  // `=== false`, not `!result.ok`: see the note in equationParser.ts - this repo doesn't
+  // enable `strict`, and discriminated-union narrowing on a bare truthiness check needs it.
+  if (result.ok === false) {
+    console.error('Failed to compile equation:', result.error);
+    return null;
+  }
+  return result.compiled;
 }
 
 /**

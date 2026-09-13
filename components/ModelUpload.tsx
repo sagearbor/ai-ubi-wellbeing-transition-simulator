@@ -6,6 +6,7 @@
 import React, { useState, useCallback, useRef } from 'react';
 import { ModelConfig, ModelValidationResult } from '../types';
 import { validateModelConfig } from '../src/services/modelValidator';
+import { compileEquationSet, EquationSetCompileResult } from '../src/services/equationParser';
 import { runFullValidation, FullValidationResult } from '../validation/testRunner';
 import { parseModelFile } from '../src/services/modelParser';
 import { saveModel, modelNameExists } from '../src/services/modelStorage';
@@ -14,6 +15,108 @@ interface ModelUploadProps {
   onApply: (config: ModelConfig) => void;
   onCancel: () => void;
   currentModel: ModelConfig | null;
+}
+
+/**
+ * Pure render helper (exported for tests) for the Tier 1 schema-validation result plus
+ * the equation compile-status that follows it. When Tier 1 passes but the equations
+ * don't compile, this renders the per-equation errors (name, message, and character
+ * position when mathjs gave one) instead of a silent path to activation.
+ */
+export function renderValidationSection(
+  validationResult: ModelValidationResult | null,
+  compileResult: EquationSetCompileResult | null
+): React.ReactNode {
+  if (!validationResult) return null;
+
+  return (
+    <>
+      <div className={`mt-4 p-4 rounded border ${
+        validationResult.valid
+          ? 'bg-green-900/20 border-green-700'
+          : 'bg-red-900/20 border-red-700'
+      }`}>
+        <h4 className={`font-semibold mb-2 ${validationResult.valid ? 'text-green-400' : 'text-red-400'}`}>
+          Tier 1: {validationResult.valid ? '✅ Passed' : '❌ Failed'}
+        </h4>
+
+        {validationResult.failures.length > 0 && (
+          <ul className="text-sm text-red-300 space-y-1">
+            {validationResult.failures.map((f, i) => (
+              <li key={i}>• {f.reason}</li>
+            ))}
+          </ul>
+        )}
+
+        {validationResult.warnings.length > 0 && (
+          <ul className="text-sm text-yellow-300 mt-2 space-y-1">
+            {validationResult.warnings.map((w, i) => (
+              <li key={i}>⚠️ {w}</li>
+            ))}
+          </ul>
+        )}
+
+        <div className="mt-2 text-gray-400 text-sm">
+          Complexity score: {validationResult.complexity}
+        </div>
+      </div>
+
+      {validationResult.valid && compileResult && compileResult.ok === false && (
+        <div
+          className="mt-4 p-4 rounded border bg-red-900/20 border-red-700"
+          data-testid="compile-errors"
+        >
+          <h4 className="font-semibold mb-2 text-red-400">
+            ❌ Equations do not compile - this model cannot be activated
+          </h4>
+          <ul className="text-sm text-red-300 space-y-1">
+            {compileResult.errors.map((e, i) => (
+              <li key={i}>
+                <span className="font-mono">{e.equation}</span>: {e.error}
+                {typeof e.position === 'number' ? ` (char ${e.position})` : ''}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </>
+  );
+}
+
+/**
+ * Pure render helper (exported for tests) for the Cancel/Apply action row. The Apply
+ * ("activate") control is withheld entirely - not just disabled - once Tier 1 has
+ * passed but the equations fail to compile, so there is no path to silently running
+ * the default engine under this model's name.
+ */
+export function renderApplyButton(
+  validationResult: ModelValidationResult | null,
+  compileResult: EquationSetCompileResult | null,
+  onCancel: () => void,
+  onApply: () => void
+): React.ReactNode {
+  const compileFailed = !!(validationResult?.valid && compileResult && !compileResult.ok);
+
+  return (
+    <div className="mt-6 flex gap-3">
+      <button
+        onClick={onCancel}
+        className="flex-1 py-2 px-4 bg-gray-600 hover:bg-gray-500 text-white rounded font-medium"
+      >
+        Cancel
+      </button>
+      {!compileFailed && (
+        <button
+          onClick={onApply}
+          disabled={!validationResult?.valid}
+          className="flex-1 py-2 px-4 bg-green-600 hover:bg-green-700 disabled:bg-gray-600
+            disabled:cursor-not-allowed text-white rounded font-medium"
+        >
+          Apply Model
+        </button>
+      )}
+    </div>
+  );
 }
 
 export const ModelUpload: React.FC<ModelUploadProps> = ({
@@ -26,6 +129,7 @@ export const ModelUpload: React.FC<ModelUploadProps> = ({
   const [parsedConfig, setParsedConfig] = useState<ModelConfig | null>(null);
   const [parseError, setParseError] = useState<string | null>(null);
   const [validationResult, setValidationResult] = useState<ModelValidationResult | null>(null);
+  const [compileResult, setCompileResult] = useState<EquationSetCompileResult | null>(null);
   const [fullValidation, setFullValidation] = useState<FullValidationResult | null>(null);
   const [isValidating, setIsValidating] = useState(false);
   const [testProgress, setTestProgress] = useState<string>('');
@@ -40,6 +144,7 @@ export const ModelUpload: React.FC<ModelUploadProps> = ({
     setParseError(null);
     setParsedConfig(null);
     setValidationResult(null);
+    setCompileResult(null);
     setFullValidation(null);
     setShared(false);
     setShareError(null);
@@ -50,9 +155,15 @@ export const ModelUpload: React.FC<ModelUploadProps> = ({
 
       setParsedConfig(config);
 
-      // Run Tier 1 validation immediately
+      // Run Tier 1 (schema) validation immediately
       const result = validateModelConfig(config);
       setValidationResult(result);
+
+      // Tier 1's equation check is a shallow pattern/length check, not a real parse
+      // (see modelValidator.ts), so a model can pass Tier 1 and still fail to compile.
+      // Compile the equations right after schema validation so an uncompilable model
+      // never reaches the "Apply Model" control (docs/design/audit-2026-09-13.md A5).
+      setCompileResult(result.valid ? compileEquationSet(config.equations) : null);
 
     } catch (error) {
       setParseError(error instanceof Error ? error.message : 'Failed to parse file');
@@ -131,12 +242,12 @@ export const ModelUpload: React.FC<ModelUploadProps> = ({
     }
   }, [parsedConfig, fullValidation]);
 
-  // Apply the model
+  // Apply the model - refuses when Tier 1 failed OR the equations don't compile.
   const handleApply = useCallback(() => {
-    if (parsedConfig && validationResult?.valid) {
+    if (parsedConfig && validationResult?.valid && compileResult?.ok) {
       onApply(parsedConfig);
     }
-  }, [parsedConfig, validationResult, onApply]);
+  }, [parsedConfig, validationResult, compileResult, onApply]);
 
   return (
     <div className="bg-gray-800 rounded-lg p-6 max-w-2xl mx-auto">
@@ -209,41 +320,11 @@ export const ModelUpload: React.FC<ModelUploadProps> = ({
         </div>
       )}
 
-      {/* Tier 1 Validation result */}
-      {validationResult && (
-        <div className={`mt-4 p-4 rounded border ${
-          validationResult.valid
-            ? 'bg-green-900/20 border-green-700'
-            : 'bg-red-900/20 border-red-700'
-        }`}>
-          <h4 className={`font-semibold mb-2 ${validationResult.valid ? 'text-green-400' : 'text-red-400'}`}>
-            Tier 1: {validationResult.valid ? '✅ Passed' : '❌ Failed'}
-          </h4>
-
-          {validationResult.failures.length > 0 && (
-            <ul className="text-sm text-red-300 space-y-1">
-              {validationResult.failures.map((f, i) => (
-                <li key={i}>• {f.reason}</li>
-              ))}
-            </ul>
-          )}
-
-          {validationResult.warnings.length > 0 && (
-            <ul className="text-sm text-yellow-300 mt-2 space-y-1">
-              {validationResult.warnings.map((w, i) => (
-                <li key={i}>⚠️ {w}</li>
-              ))}
-            </ul>
-          )}
-
-          <div className="mt-2 text-gray-400 text-sm">
-            Complexity score: {validationResult.complexity}
-          </div>
-        </div>
-      )}
+      {/* Tier 1 validation + equation compile status */}
+      {renderValidationSection(validationResult, compileResult)}
 
       {/* Run anchor tests button */}
-      {validationResult?.valid && !fullValidation && (
+      {validationResult?.valid && compileResult?.ok && !fullValidation && (
         <button
           onClick={handleRunTests}
           disabled={isValidating}
@@ -308,22 +389,7 @@ export const ModelUpload: React.FC<ModelUploadProps> = ({
       )}
 
       {/* Action buttons */}
-      <div className="mt-6 flex gap-3">
-        <button
-          onClick={onCancel}
-          className="flex-1 py-2 px-4 bg-gray-600 hover:bg-gray-500 text-white rounded font-medium"
-        >
-          Cancel
-        </button>
-        <button
-          onClick={handleApply}
-          disabled={!validationResult?.valid}
-          className="flex-1 py-2 px-4 bg-green-600 hover:bg-green-700 disabled:bg-gray-600
-            disabled:cursor-not-allowed text-white rounded font-medium"
-        >
-          Apply Model
-        </button>
-      </div>
+      {renderApplyButton(validationResult, compileResult, onCancel, handleApply)}
     </div>
   );
 };
