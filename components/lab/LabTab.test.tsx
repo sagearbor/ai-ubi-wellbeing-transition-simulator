@@ -43,7 +43,8 @@ describe('LabTab (renders)', () => {
     const out = html({ initialModelId: 'training-budget' });
     expect(out).toContain('Model Lab');
     expect(out).toContain('Start from');
-    for (const f of CORE_FIXTURES) expect(out).toContain(f.label);
+    // renderToString escapes & in option text (the Alaska label contains one)
+    for (const f of CORE_FIXTURES) expect(out).toContain(f.label.replace(/&/g, '&amp;'));
   });
 
   it('shows the training fixture scope before any result', () => {
