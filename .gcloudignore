@@ -5,7 +5,7 @@
 node_modules
 dist
 tmp
-examples
+/examples
 # docs/ and *.md stay in: the Model Card tab imports docs/design/model-card-default.md at build time.
 .claude
 .env
