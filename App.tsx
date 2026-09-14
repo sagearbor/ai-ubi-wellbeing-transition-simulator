@@ -1490,6 +1490,15 @@ const App: React.FC = () => {
 
         {/* Main Content Area */}
         <section className="flex-1 overflow-y-auto p-4 lg:p-6 bg-slate-50 dark:bg-slate-950 relative h-full scrollbar-hide">
+          {/* Active run identity (review 2026-09-14, stage-5 gap 3): every view says which model its numbers come from. */}
+          {(activeTab === 'map' || activeTab === 'charts' || activeTab === 'corporations') && (
+            <p data-testid="active-model" className="mb-2 text-[11px] text-slate-500 dark:text-slate-400">
+              World simulation · <span className="font-semibold text-slate-700 dark:text-slate-200">{activeModelConfig ? `${activeModelConfig.name} (uploaded equations)` : model.name}</span> · month {state.month}. The Model Lab and the AI Futures Map are separate models and do not feed this view.
+            </p>
+          )}
+          {activeTab === 'futures' && (
+            <p className="mb-2 text-[11px] text-slate-500 dark:text-slate-400">AI Futures Map · a separate influence model with its own assumptions; it does not read or drive the world simulation.</p>
+          )}
           {activeTab === 'map' && (
             <div className="h-full flex flex-col gap-2">
               {/* Compact Stats Row - Primary */}
