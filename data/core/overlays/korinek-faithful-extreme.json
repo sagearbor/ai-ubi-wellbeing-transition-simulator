@@ -1,0 +1,250 @@
+{
+  "id": "korinek-faithful-extreme",
+  "name": "Korinek et al. 2026 faithful port: Extreme scenario",
+  "description": "Sets the faithful port (korinek-2026-faithful.json, the Substantial scenario) to the paper's EXTREME scenario by changing only its Table 1 scenario values (m_2030, d_2030, the mid-2026 gain and its slope, psi, rho, mu, theta^H). No equation is touched: in the paper the three scenarios differ only in these numbers. Its own tests assert every row of the Extreme column of Table 3 (p.31) at the paper's rounding, and the path slopes of Table A.2.",
+  "parameters": [
+    {
+      "id": "m2030",
+      "value": 0.5,
+      "source": {
+        "label": "Table 1 panel B (p.23): affected mass in 2030 = 0.5 (Extreme)",
+        "kind": "assumed",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "Scenario assumption."
+      }
+    },
+    {
+      "id": "d2030",
+      "value": 0.6,
+      "source": {
+        "label": "Table 1 panel B (p.24): diffusion share in 2030 = 0.6 (Extreme)",
+        "kind": "assumed",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "Scenario assumption."
+      }
+    },
+    {
+      "id": "aMid2026",
+      "value": 0.45,
+      "source": {
+        "label": "Table 1 panel B (p.24): log gain per instance, mid-2026 anchor = 0.45 (Extreme)",
+        "kind": "assumed",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "Scenario assumption."
+      }
+    },
+    {
+      "id": "ga",
+      "value": 0.1,
+      "source": {
+        "label": "Table 1 panel B (p.24): slope of the log gain g_a = 0.1 per year (Extreme)",
+        "kind": "assumed",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "Scenario assumption."
+      }
+    },
+    {
+      "id": "psi",
+      "value": 0.9,
+      "source": {
+        "label": "Table 1 panel C (p.24): automation share psi = 0.9, held constant (Extreme)",
+        "kind": "assumed",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "Scenario assumption."
+      }
+    },
+    {
+      "id": "rho",
+      "value": 0,
+      "source": {
+        "label": "Table 1 panel C (p.24): reinstatement ratio rho = 0 (Extreme)",
+        "kind": "assumed",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "Scenario assumption."
+      }
+    },
+    {
+      "id": "mu",
+      "value": 0.04,
+      "source": {
+        "label": "Table 1 panel C (p.24): search discount on the path mu = 0.04 (Extreme)",
+        "kind": "assumed",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "Scenario assumption."
+      }
+    },
+    {
+      "id": "thetaH",
+      "value": 0.5,
+      "source": {
+        "label": "Table 1 panel C (p.24): posting speed theta^H = 0.5 per month (Extreme)",
+        "kind": "assumed",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "Scenario assumption."
+      }
+    }
+  ],
+  "tests": [
+    {
+      "name": "Table 3 (p.31), Extreme, 2030.0: GDP, pct. above no-AI path",
+      "at": 2030,
+      "expr": "gdpGapPct",
+      "expected": 32.4,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Extreme, 2030.0: GDP index, 2024 = 100",
+      "at": 2030,
+      "expr": "gdpIndex",
+      "expected": 149.3,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Extreme, 2030.0: GDP growth, pct. per year",
+      "at": 2030,
+      "expr": "gdpGrowthPct",
+      "expected": 15.4,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Extreme, 2030.0: average wage, pct. above no-AI",
+      "at": 2030,
+      "expr": "avgWagePct",
+      "expected": 9.7,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Extreme, 2030.0: cognitive wage w_C",
+      "at": 2030,
+      "expr": "cogWagePct",
+      "expected": -11.5,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Extreme, 2030.0: all-other wage w_N",
+      "at": 2030,
+      "expr": "otherWagePct",
+      "expected": 33.6,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Extreme, 2030.0: net return r - delta, pct. per year",
+      "at": 2030,
+      "expr": "netReturnPct",
+      "expected": 8.3,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Extreme, 2030.0: capital stock, pct. above no-AI",
+      "at": 2030,
+      "expr": "capitalPct",
+      "expected": 56.3,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Extreme, 2030.0: labour share, pct.",
+      "at": 2030,
+      "expr": "laborSharePct",
+      "expected": 45.2,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Extreme, 2030.0: capital share, pct.",
+      "at": 2030,
+      "expr": "capitalSharePct",
+      "expected": 54.8,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Extreme, 2030.0: labour income, pct. above no-AI",
+      "at": 2030,
+      "expr": "laborIncomePct",
+      "expected": 0.5,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Extreme, 2030.0: wage bill of cognitive occupations",
+      "at": 2030,
+      "expr": "cogWageBillPct",
+      "expected": -31,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Extreme, 2030.0: capital income, pct. above no-AI",
+      "at": 2030,
+      "expr": "capitalIncomePct",
+      "expected": 81.4,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Extreme, 2030.0: cognitive employment, pct. change since mid-2026",
+      "at": 2030,
+      "expr": "cogEmpSinceMid2026Pct",
+      "expected": -21.5,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Extreme, 2030.0: unemployment rate, cognitive workers",
+      "at": 2030,
+      "expr": "uCogPct",
+      "expected": 17.9,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Extreme, 2030.0: unemployment rate, all workers",
+      "at": 2030,
+      "expr": "uAllPct",
+      "expected": 11.9,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Extreme, 2030.0: measured TFP, pct. above no-AI",
+      "at": 2030,
+      "expr": "tfpPct",
+      "expected": 13.4,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Extreme, 2030.0: measured TFP growth, pct. per year",
+      "at": 2030,
+      "expr": "tfpGrowthPct",
+      "expected": 7.3,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Extreme, 2030.0: ideas stock A, pct. above no-AI",
+      "at": 2030,
+      "expr": "ideasPct",
+      "expected": 0.61,
+      "tol": 0.0055000000000000005
+    },
+    {
+      "name": "Table 3 (p.31), Extreme, 2030.0: growth of the ideas stock, pct. per year",
+      "at": 2030,
+      "expr": "ideasGrowthPct",
+      "expected": 2.02,
+      "tol": 0.0055000000000000005
+    },
+    {
+      "name": "Table A.2 E (p.45): kappa_m = 0.75 (Extreme)",
+      "at": 2024,
+      "expr": "kappaM",
+      "expected": 0.75,
+      "tol": 0.0055
+    },
+    {
+      "name": "Table A.2 E (p.45): kappa_d = 0.74 (Extreme)",
+      "at": 2024,
+      "expr": "kappaD",
+      "expected": 0.74,
+      "tol": 0.0055
+    },
+    {
+      "name": "Table 1 B (p.24): a_2030 = 0.8 (Extreme)",
+      "at": 2030,
+      "expr": "a",
+      "expected": 0.8,
+      "tol": 0.0055
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "id": "korinek-faithful-rigid-wage",
+  "name": "Korinek et al. 2026 faithful port: very rigid cognitive wage (xi = 0.9)",
+  "description": "Sensitivity overlay from Table 6 (p.38): the cognitive wage closes only 10 percent of its gap to the clearing wage a year (xi = 0.9, a half-life of seven years). Applied to the base file it is the Substantial xi = 0.9 column of Table 6; its tests assert that column. The other Table 6 columns are checked in src/core/korinekFaithful.test.ts.",
+  "parameters": [
+    {
+      "id": "xi",
+      "value": 0.9,
+      "source": {
+        "label": "Table 6 (p.38): rigidity of the cognitive wage xi = 0.9",
+        "kind": "assumed",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "Robustness setting of the paper, not its calibration (xi = 0.5)."
+      }
+    }
+  ],
+  "tests": [
+    {
+      "name": "Table 6 (p.38), Substantial, xi = 0.9: GDP, pct. above no-AI",
+      "at": 2030,
+      "expr": "gdpGapPct",
+      "expected": 7.7,
+      "tol": 0.055
+    },
+    {
+      "name": "Table 6 (p.38), Substantial, xi = 0.9: average wage",
+      "at": 2030,
+      "expr": "avgWagePct",
+      "expected": 2.3,
+      "tol": 0.055
+    },
+    {
+      "name": "Table 6 (p.38), Substantial, xi = 0.9: cognitive wage",
+      "at": 2030,
+      "expr": "cogWagePct",
+      "expected": 1.4,
+      "tol": 0.055
+    },
+    {
+      "name": "Table 6 (p.38), Substantial, xi = 0.9: all-other wage",
+      "at": 2030,
+      "expr": "otherWagePct",
+      "expected": 3.7,
+      "tol": 0.055
+    },
+    {
+      "name": "Table 6 (p.38), Substantial, xi = 0.9: cognitive employment since mid-2026",
+      "at": 2030,
+      "expr": "cogEmpSinceMid2026Pct",
+      "expected": -5,
+      "tol": 0.055
+    },
+    {
+      "name": "Table 6 (p.38), Substantial, xi = 0.9: unemployment, cognitive",
+      "at": 2030,
+      "expr": "uCogPct",
+      "expected": 5.4,
+      "tol": 0.055
+    },
+    {
+      "name": "Table 6 (p.38), Substantial, xi = 0.9: unemployment, all",
+      "at": 2030,
+      "expr": "uAllPct",
+      "expected": 5.2,
+      "tol": 0.055
+    }
+  ]
+}

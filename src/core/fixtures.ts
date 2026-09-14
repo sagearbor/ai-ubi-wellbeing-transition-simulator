@@ -13,6 +13,11 @@ import retraining from '../../data/core/overlays/retraining.json';
 import korinek2026 from '../../data/core/korinek-2026.json';
 import korinekModest from '../../data/core/overlays/korinek-modest.json';
 import korinekExtreme from '../../data/core/overlays/korinek-extreme.json';
+import korinekFaithful from '../../data/core/korinek-2026-faithful.json';
+import korinekFaithfulModest from '../../data/core/overlays/korinek-faithful-modest.json';
+import korinekFaithfulExtreme from '../../data/core/overlays/korinek-faithful-extreme.json';
+import korinekFaithfulPegged from '../../data/core/overlays/korinek-faithful-pegged-rental.json';
+import korinekFaithfulRigid from '../../data/core/overlays/korinek-faithful-rigid-wage.json';
 import alaskaPfd from '../../data/core/alaska-pfd-calibration.json';
 import alaskaPfdWp from '../../data/core/overlays/alaska-pfd-wp2020.json';
 import gasteigerPrettner from '../../data/core/gasteiger-prettner-2020.json';
@@ -37,6 +42,16 @@ export const CORE_FIXTURES: FixtureEntry[] = [
     model: korinek2026 as unknown as CoreModel,
     overlays: [korinekModest as unknown as Overlay, korinekExtreme as unknown as Overlay],
     label: 'Korinek et al. 2026 scenarios, US 2030 (published model, reduced form)',
+  },
+  {
+    model: korinekFaithful as unknown as CoreModel,
+    overlays: [
+      korinekFaithfulModest as unknown as Overlay,
+      korinekFaithfulExtreme as unknown as Overlay,
+      korinekFaithfulPegged as unknown as Overlay,
+      korinekFaithfulRigid as unknown as Overlay,
+    ],
+    label: 'Korinek et al. 2026, faithful port (paper equations), US 2024-2030',
   },
   {
     model: alaskaPfd as unknown as CoreModel,

@@ -43,7 +43,8 @@ const jsonOut = process.argv.includes('--json');
 function loadJsonFiles(dir: string): Array<{ file: string; json: unknown }> {
   if (!existsSync(dir)) return [];
   return readdirSync(dir)
-    .filter((f) => f.endsWith('.json'))
+    // `*.expected.json` files are reference data for a model's tests (e.g. an oracle's paths), not models.
+    .filter((f) => f.endsWith('.json') && !f.endsWith('.expected.json'))
     .sort()
     .map((file) => ({ file, json: JSON.parse(readFileSync(join(dir, file), 'utf8')) as unknown }));
 }
