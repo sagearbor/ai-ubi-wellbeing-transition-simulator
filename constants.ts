@@ -62,6 +62,10 @@ export const NATURAL_UNEMPLOYMENT_BY_ARCHETYPE: Record<Archetype, number> = {
  * validation/korinekTests.ts), not to reproduce their underlying equations.
  * reemploymentMonths per scenario below is our own displaced-pool parameter, not the
  * paper's search discount mu.
+ *
+ * Targets corrected 2026-09-13 against Table 3 (p. 31): modest cognitive unemployment 2.9 (was 3.9),
+ * substantial headline unemployment 4.6 (was 4.3). The published values are for the START of 2030;
+ * validation/korinek.ts scores end-2030 (disclosed timing mismatch, not re-tuned).
  */
 export interface KorinekScenario {
   id: 'modest' | 'substantial' | 'extreme';
@@ -79,7 +83,7 @@ export const KORINEK_SCENARIOS: KorinekScenario[] = [
     description: 'AI acts like a normal technology: roughly the impact of the internet by 2030.',
     adoption2030: 0.023,
     macro: { ...DEFAULT_MACRO, automationShare: 0.1, reemploymentMonths: 6 },
-    targets: { gdpBoostPct: 1.6, cognitiveUnemploymentPct: 3.9, laborSharePct: 59.4, unemploymentPct: 3.9 },
+    targets: { gdpBoostPct: 1.6, cognitiveUnemploymentPct: 2.9, laborSharePct: 59.4, unemploymentPct: 3.9 },
   },
   {
     id: 'substantial',
@@ -87,7 +91,7 @@ export const KORINEK_SCENARIOS: KorinekScenario[] = [
     description: 'A revolution in knowledge work: AI can do about half of it by 2030 and is used widely.',
     adoption2030: 0.118,
     macro: { ...DEFAULT_MACRO, automationShare: 0.2, reemploymentMonths: 12 },
-    targets: { gdpBoostPct: 8.3, cognitiveUnemploymentPct: 4.5, laborSharePct: 56.1, unemploymentPct: 4.3 },
+    targets: { gdpBoostPct: 8.3, cognitiveUnemploymentPct: 4.5, laborSharePct: 56.1, unemploymentPct: 4.6 },
   },
   {
     id: 'extreme',

@@ -6,8 +6,8 @@ Where a row says "assumed", the number was chosen by the author and no source ex
 
 ```
 Model:            built-in engine, simulation/pure.ts, preset organic-incentive (PRESET_MODELS[0])
-Version:          branch stage3/qualify-default, 2026-09-13 (engine after findings C2, C3, C4 of
-                  docs/design/audit-2026-09-13.md were fixed)
+Version:          main after stages 2-4, 2026-09-13 (engine after findings C2, C3, C4 of
+                  docs/design/audit-2026-09-13.md were fixed; stage 4 slice 2 additions below)
 Maintainer:       repository owner
 Reviewed:         2026-09-13, internal (Claude), against the v3 plan section 4. Not externally
                   reviewed. Status: CANDIDATE, not a reviewed default (see "Known failures").
@@ -169,13 +169,29 @@ Switches (difference from base at 10 y):
 - **Reproduction:** the macro block reproduces Korinek et al. (2026) US-2030 outputs for three
   scenarios within tolerance (KJ-1 to KJ-3) as a reduced-form approximation with an exogenous
   adoption path; it does not implement their equations. The block is off in this preset.
+  Corrections 2026-09-13 (stage 4 slice 2, read from Table 3, p. 31 of the September 2026 working
+  paper): the modest scenario's cognitive unemployment is 2.9% (the repo had 3.9%, and the reduced
+  form still lands on 3.9%, now +1.0 pp off, inside the 2.5 pp band); the substantial scenario's
+  headline unemployment is 4.6% (repo had 4.3%; reduced form 4.2%). The published values are for
+  the start of 2030, while the reduced form is scored at end-2030, eleven months later — a timing
+  mismatch that is disclosed and not re-tuned. A faithful port of the paper's equations is the
+  stage 4 replacement for this reproduction claim.
 - **Historical reconstruction (2015 to 2025, 106 countries, AI off, macro on):** wellbeing-change
   correlation r = 0.485, MAE 4.48 index points (0.448 ladder points); persistence baseline
   (predict no change) MAE 4.68. The wellbeing anchor was fitted on this same span, so this is a
   reconstruction, not a forecast. GDP path: r −0.04, MAE 17% (the macro block's growth rule does
   not track country GDP). With UBI on at real units the reconstruction degrades to r 0.181 / MAE
   7.04, which is evidence against the current UBI coefficient (C5).
-- **Policy-effect benchmarks:** none. No published policy effect has been mapped onto this engine.
+- **Policy-effect benchmarks:** one case, Alaska Permanent Fund Dividend (Jones & Marinescu 2022;
+  `data/cases/alaska-pfd.json`, `npm run validate:cases`). The world engine (either wellbeing
+  mode) has **no mechanism** by which a transfer changes employment: running it with every
+  corporation contributing 0 vs 0.5 leaves US unemployment identical. That is verified by running
+  the engine, and it means the headline null (+0.1 pp, 95% CI −3.0 to +3.3) cannot be matched or
+  missed — the model is silent. The part-time (+1.8 pp), participation, hours and sector outcomes
+  are outside the model. The authors' own micro-vs-macro calibration, ported as a core model,
+  predicts −0.7 pp (published edition; −0.2 pp working-paper edition): discrepancy −0.8 pp,
+  not fitted, not independent of the authors. Dose for scale: the dividend was 7.25% of labour
+  income; the engine's transfer at a 50% contribution rate is 0.5% of US labour income.
 - **Fitting history:** wellbeing coefficients 0.20/0.12 hand-set (code comment, undated);
   wellbeing anchor OLS fitted 2026-09 on WHR 2015 to 2025; macro block tuned 2026-09 to Korinek
   2030 targets; C2 to C4 unit and aggregation fixes 2026-09-13, after which the anchor baseline
