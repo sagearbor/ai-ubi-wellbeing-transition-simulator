@@ -22,6 +22,7 @@ import {
 import { INITIAL_COUNTRIES, COGNITIVE_SHARE_BY_ARCHETYPE, NATURAL_UNEMPLOYMENT_BY_ARCHETYPE } from '../constants';
 import { CompiledEquationSet } from '../src/services/equationParser';
 import type { MacroParameters } from '../types';
+import { applyUsReference, US_REFERENCE_COUNTRY } from './usReference';
 import { usdPerPerson } from './units';
 
 // ============================================================================
@@ -773,6 +774,8 @@ export function stepSimulationPure(input: SimulationInput): SimulationOutput {
   // PHASE 3: UBI DISTRIBUTION TO CITIZENS
   // ============================================================================
 
+  const outOfScope: string[] = [...(state.outOfScope ?? [])];
+
   // Global ledger distributes equally per capita (blockchain, no corruption)
   const globalPerCapita = newLedger.totalFunds / worldPopulation || 0;
   newLedger.fundsPerCapita = globalPerCapita;
@@ -781,7 +784,16 @@ export function stepSimulationPure(input: SimulationInput): SimulationOutput {
     const country = newCountryData[id];
 
     // === Macro block (optional): GDP path, labour share, displacement pool ===
-    if (model.macro) applyMacroDynamics(country, model.macro);
+    if (model.macro) {
+      if (model.macro.usReference && id === US_REFERENCE_COUNTRY) {
+        // Faithful Korinek et al. (2026) US path; no reduced-form rules on top, no extrapolation.
+        if (!applyUsReference(country, nextMonth, model.macro.usReference, model.macro.baselineGrowth)) {
+          outOfScope.push('US reference path (Korinek et al. 2026) ends January 2030; later US macro values are not modelled.');
+        }
+      } else {
+        applyMacroDynamics(country, model.macro);
+      }
+    }
 
     // ============================================================================
     // PHASE 4: WELLBEING CALCULATION
@@ -938,7 +950,8 @@ export function stepSimulationPure(input: SimulationInput): SimulationOutput {
     countryData: newCountryData,
     globalDisplacementGap: totalDisplacementGap,
     corruptionLeakage: 0, // No corruption with direct-to-wallet
-    countriesInCrisis
+    countriesInCrisis,
+    ...(outOfScope.length ? { outOfScope: [...new Set(outOfScope)] } : {})
   };
 
   return {

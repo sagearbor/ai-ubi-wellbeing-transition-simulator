@@ -225,7 +225,10 @@ Anthropic's economics team published *Economic Scenarios for Transformative AI*
 [interactive explorer](https://www.anthropic.com/institute/econ-scenarios): a
 task-based US model to 2030 with three scenarios and, deliberately, no probabilities.
 A faithful port of their equations now lives in the Model Lab (`data/core/korinek-2026-faithful.json`,
-see the table above). Separately, this engine's optional macro block (`ModelParameters.macro`, see `simulation/pure.ts`) is
+see the table above) and is the canonical US reference: the preset "Provisional level model + US reference"
+feeds its US GDP gap, labour income and unemployment into the world engine from January 2025 to January
+2030 and stops there (`simulation/usReference.ts`). The reduced form below is kept only as an
+illustrative legacy approximation for old scenarios; it is not an authoritative reproduction. This engine's optional macro block (`ModelParameters.macro`, see `simulation/pure.ts`) is
 a reduced-form approximation calibrated to match their published US 2030 outputs when
 driven by the same inputs — it is not a port of their equations — with the AI
 capability/adoption path treated as the scenario input exactly as their explorer does:

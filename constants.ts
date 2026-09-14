@@ -219,6 +219,19 @@ export const PRESET_MODELS: ModelParameters[] = [
 ];
 
 /**
+ * US reference variant of the default (review 2026-09-14, owner decision 4(c)): identical to the
+ * provisional level model except that the United States follows the faithful port of Korinek et al.
+ * (2026), substantial scenario, from January 2025 to January 2030, and the run stops there.
+ */
+PRESET_MODELS.push({
+  ...PRESET_MODELS.find((m) => m.id === 'evidence-anchored')!,
+  id: 'us-reference-korinek',
+  name: 'Provisional level model + US reference (Korinek et al. 2026, to Jan 2030)',
+  description: 'The default provisional level model, with the United States taking GDP, labour share and unemployment from the faithful port of Korinek et al. (2026) instead of the reduced-form block. Only the US, only January 2025 to January 2030; the run stops at the end of the reference. The wellbeing bridge from those outputs is not reviewed.',
+  macro: { ...PRESET_MODELS.find((m) => m.id === 'evidence-anchored')!.macro!, usReference: 'substantial' },
+});
+
+/**
  * The preset the app opens with (review 2026-09-14, owner decision 4(a)): the corrected level model,
  * presented as provisional with evidence-informed assumptions. The legacy flow model stays in
  * PRESET_MODELS[0] for reproducibility of old scenarios and links.

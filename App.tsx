@@ -27,6 +27,7 @@ import { getRedTeamAnalysis, getSimulationSummary } from './services/geminiServi
 import { rateModel, getLeaderboard, recordRun, listModels } from './src/services/modelStorage';
 import { parseEquationSet, CompiledEquationSet, EquationError } from './src/services/equationParser';
 import { advanceRun, initialRun, type RunInputs, type SimulationRun, initOptionsFor } from './simulation/run';
+import { US_REFERENCE_LAST_WORLD_MONTH } from './simulation/usReference';
 import {
   catchUp, corporationEditForCounterfactual, editCorporation, editCountry, headlineStats, historyForPrompt, historyForSave,
   historyFromSave, rebuildCounterfactual, recordRunInHistory, seekInHistory, seekWithCounterfactual, stepWithCounterfactual,
@@ -359,7 +360,10 @@ const App: React.FC = () => {
   const equationErrors: EquationError[] = parsedEquations && !parsedEquations.valid ? parsedEquations.errors : [];
   const compiledEquations: CompiledEquationSet | undefined = parsedEquations?.compiledEquations;
   /** False while a custom model is active but broken: play, step and replay are all blocked. */
-  const canStep = equationErrors.length === 0;
+  // A model whose source ends at a date (the US reference ends January 2030) stops there: later
+  // months are not modelled, so the clock does not run past them (review 2026-09-14, decision 4(c)).
+  const referenceEnded = (!!model.macro?.usReference && state.month >= US_REFERENCE_LAST_WORLD_MONTH) || (state.outOfScope?.length ?? 0) > 0;
+  const canStep = equationErrors.length === 0 && !referenceEnded;
 
   const runInputs: RunInputs = useMemo(
     () => ({ model, equations: compiledEquations }),
@@ -404,6 +408,10 @@ const App: React.FC = () => {
       setIsSidebarOpen(false);
     }
   }, [showWorldControls]);
+
+  useEffect(() => {
+    if (referenceEnded) setIsPlaying(false);
+  }, [referenceEnded]);
 
   // Dismiss start hint when playing
   useEffect(() => {
@@ -749,7 +757,9 @@ const App: React.FC = () => {
    */
   const handleSeek = (m: number) => {
     setIsPlaying(false);
-    if (!canStep && m !== 0) return;
+    // Equation errors block every seek but a reset; the end of a reference only blocks moving past it.
+    if (equationErrors.length > 0 && m !== 0) return;
+    if (model.macro?.usReference && m > US_REFERENCE_LAST_WORLD_MONTH) return;
     const pair = seekWithCounterfactual(history, pairedHistory, m, runInputs, baseRun);
     setRun(pair.run);
     setPairedRun(pair.paired);
@@ -2972,12 +2982,17 @@ effect(t)      = wellbeing_main(t) - wellbeing_paired(t)`}
             <button type="button" onClick={discardAutosave} className="min-h-9 rounded-md border border-amber-400 px-3 py-1 font-bold uppercase hover:bg-amber-100 dark:hover:bg-amber-900/40">Discard</button>
           </div>
         )}
+        {referenceEnded && (
+          <div role="status" className="mx-4 lg:mx-6 mb-2 rounded-lg border border-sky-300 bg-sky-50 px-3 py-2 text-xs text-sky-900 dark:border-sky-700 dark:bg-sky-950/40 dark:text-sky-100">
+            <span className="font-semibold">End of the US reference (January 2030).</span> The United States follows the faithful port of Korinek et al. (2026) only to its reporting date; nothing after it is modelled, so the run stops here. Choose another preset to run longer.
+          </div>
+        )}
         <EquationErrorBanner
           modelName={activeModelConfig?.name || 'custom model'}
           errors={equationErrors}
           onClear={clearModelConfig}
         />
-        <SimulationControls isPlaying={isPlaying} onPlay={() => setIsPlaying(true)} onPause={() => setIsPlaying(false)} onReset={handleReset} onStep={stepSimulation} speed={speed} setSpeed={setSpeed} month={state.month} maxMonth={history.length > 0 ? Math.max(...history.map(h => h.month)) : state.month} onSeek={handleSeek} disabled={!canStep} disabledReason={`Custom model "${activeModelConfig?.name || ''}" has ${equationErrors.length} equation errors`} />
+        <SimulationControls isPlaying={isPlaying} onPlay={() => setIsPlaying(true)} onPause={() => setIsPlaying(false)} onReset={handleReset} onStep={stepSimulation} speed={speed} setSpeed={setSpeed} month={state.month} maxMonth={history.length > 0 ? Math.max(...history.map(h => h.month)) : state.month} onSeek={handleSeek} disabled={!canStep} disabledReason={referenceEnded ? 'The US reference path (Korinek et al. 2026) ends in January 2030; later months are not modelled.' : `Custom model "${activeModelConfig?.name || ''}" has ${equationErrors.length} equation errors`} />
       </footer>
 
       {/* Corporation Detail Panel (P5-T10) */}

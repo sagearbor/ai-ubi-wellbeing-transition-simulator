@@ -16,7 +16,7 @@ const suite = runKorinekSuite();
 if (json) {
   console.log(JSON.stringify(suite, null, 2));
 } else {
-  console.log('Korinek, Jones, Sacher, Cotter & McCrory (2026) "Economic Scenarios for Transformative AI" — US 2030 reproduction\n');
+  console.log('Korinek, Jones, Sacher, Cotter & McCrory (2026) — REDUCED-FORM approximation of the US 2030 outputs (illustrative legacy; the faithful port in data/core/korinek-2026-faithful.json is the reference)\n');
   for (const r of suite.results) {
     console.log(`[${r.passed ? 'PASS' : 'FAIL'}] ${r.testId} ${r.testName}`);
     console.log(`       ${r.reason}`);
