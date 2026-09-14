@@ -168,6 +168,7 @@ Switches (difference from base at 10 y):
 
 ## Evaluation
 
+- **Reference-target ledger:** every target below, with its status (misses, unchecked and unverified targets included) and the test that produces it: [`reference-ledger.md`](reference-ledger.md), checked by `npm run ledger -- --check`.
 - **Implementation checks:** 471 vitest tests; engine step is pure (clone-per-step test); compiled
   default equations reproduce the hardcoded engine bit-for-bit (golden test); money conservation
   (AT-6). Anchor tests 5/6: AT-1, AT-2, AT-4, AT-5, AT-6 pass; AT-3 (race-to-bottom risk > 0.6
