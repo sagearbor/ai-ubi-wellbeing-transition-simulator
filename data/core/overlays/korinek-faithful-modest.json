@@ -1,0 +1,250 @@
+{
+  "id": "korinek-faithful-modest",
+  "name": "Korinek et al. 2026 faithful port: Modest scenario",
+  "description": "Sets the faithful port (korinek-2026-faithful.json, the Substantial scenario) to the paper's MODEST scenario by changing only its Table 1 scenario values (m_2030, d_2030, the mid-2026 gain and its slope, psi, rho, mu, theta^H). No equation is touched: in the paper the three scenarios differ only in these numbers. Its own tests assert every row of the Modest column of Table 3 (p.31) at the paper's rounding, and the path slopes of Table A.2.",
+  "parameters": [
+    {
+      "id": "m2030",
+      "value": 0.2,
+      "source": {
+        "label": "Table 1 panel B (p.23): affected mass in 2030 = 0.2 (Modest)",
+        "kind": "assumed",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "Scenario assumption."
+      }
+    },
+    {
+      "id": "d2030",
+      "value": 0.2,
+      "source": {
+        "label": "Table 1 panel B (p.24): diffusion share in 2030 = 0.2 (Modest)",
+        "kind": "assumed",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "Scenario assumption."
+      }
+    },
+    {
+      "id": "aMid2026",
+      "value": 0.3,
+      "source": {
+        "label": "Table 1 panel B (p.24): log gain per instance, mid-2026 anchor = 0.3 (Modest)",
+        "kind": "assumed",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "Scenario assumption."
+      }
+    },
+    {
+      "id": "ga",
+      "value": 0,
+      "source": {
+        "label": "Table 1 panel B (p.24): slope of the log gain g_a = 0 per year (Modest)",
+        "kind": "assumed",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "Scenario assumption."
+      }
+    },
+    {
+      "id": "psi",
+      "value": 0.5,
+      "source": {
+        "label": "Table 1 panel C (p.24): automation share psi = 0.5, held constant (Modest)",
+        "kind": "assumed",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "Scenario assumption."
+      }
+    },
+    {
+      "id": "rho",
+      "value": 0.5,
+      "source": {
+        "label": "Table 1 panel C (p.24): reinstatement ratio rho = 0.5 (Modest)",
+        "kind": "assumed",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "Scenario assumption."
+      }
+    },
+    {
+      "id": "mu",
+      "value": 0.17,
+      "source": {
+        "label": "Table 1 panel C (p.24): search discount on the path mu = 0.17 (Modest)",
+        "kind": "assumed",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "Scenario assumption."
+      }
+    },
+    {
+      "id": "thetaH",
+      "value": 0.1,
+      "source": {
+        "label": "Table 1 panel C (p.24): posting speed theta^H = 0.1 per month (Modest)",
+        "kind": "assumed",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "Scenario assumption."
+      }
+    }
+  ],
+  "tests": [
+    {
+      "name": "Table 3 (p.31), Modest, 2030.0: GDP, pct. above no-AI path",
+      "at": 2030,
+      "expr": "gdpGapPct",
+      "expected": 1.6,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Modest, 2030.0: GDP index, 2024 = 100",
+      "at": 2030,
+      "expr": "gdpIndex",
+      "expected": 114.5,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Modest, 2030.0: GDP growth, pct. per year",
+      "at": 2030,
+      "expr": "gdpGrowthPct",
+      "expected": 2.4,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Modest, 2030.0: average wage, pct. above no-AI",
+      "at": 2030,
+      "expr": "avgWagePct",
+      "expected": 0.7,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Modest, 2030.0: cognitive wage w_C",
+      "at": 2030,
+      "expr": "cogWagePct",
+      "expected": 0.4,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Modest, 2030.0: all-other wage w_N",
+      "at": 2030,
+      "expr": "otherWagePct",
+      "expected": 1.1,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Modest, 2030.0: net return r - delta, pct. per year",
+      "at": 2030,
+      "expr": "netReturnPct",
+      "expected": 6.6,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Modest, 2030.0: capital stock, pct. above no-AI",
+      "at": 2030,
+      "expr": "capitalPct",
+      "expected": 2.3,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Modest, 2030.0: labour share, pct.",
+      "at": 2030,
+      "expr": "laborSharePct",
+      "expected": 59.4,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Modest, 2030.0: capital share, pct.",
+      "at": 2030,
+      "expr": "capitalSharePct",
+      "expected": 40.6,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Modest, 2030.0: labour income, pct. above no-AI",
+      "at": 2030,
+      "expr": "laborIncomePct",
+      "expected": 0.6,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Modest, 2030.0: wage bill of cognitive occupations",
+      "at": 2030,
+      "expr": "cogWageBillPct",
+      "expected": -0.3,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Modest, 2030.0: capital income, pct. above no-AI",
+      "at": 2030,
+      "expr": "capitalIncomePct",
+      "expected": 3.1,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Modest, 2030.0: cognitive employment, pct. change since mid-2026",
+      "at": 2030,
+      "expr": "cogEmpSinceMid2026Pct",
+      "expected": -0.5,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Modest, 2030.0: unemployment rate, cognitive workers",
+      "at": 2030,
+      "expr": "uCogPct",
+      "expected": 2.9,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Modest, 2030.0: unemployment rate, all workers",
+      "at": 2030,
+      "expr": "uAllPct",
+      "expected": 3.9,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Modest, 2030.0: measured TFP, pct. above no-AI",
+      "at": 2030,
+      "expr": "tfpPct",
+      "expected": 0.7,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Modest, 2030.0: measured TFP growth, pct. per year",
+      "at": 2030,
+      "expr": "tfpGrowthPct",
+      "expected": 1.2,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Modest, 2030.0: ideas stock A, pct. above no-AI",
+      "at": 2030,
+      "expr": "ideasPct",
+      "expected": 0.07,
+      "tol": 0.0055000000000000005
+    },
+    {
+      "name": "Table 3 (p.31), Modest, 2030.0: growth of the ideas stock, pct. per year",
+      "at": 2030,
+      "expr": "ideasGrowthPct",
+      "expected": 1.69,
+      "tol": 0.0055000000000000005
+    },
+    {
+      "name": "Table A.2 E (p.45): kappa_m = 0.14 (Modest)",
+      "at": 2024,
+      "expr": "kappaM",
+      "expected": 0.14,
+      "tol": 0.0055
+    },
+    {
+      "name": "Table A.2 E (p.45): kappa_d = 0.23 (Modest)",
+      "at": 2024,
+      "expr": "kappaD",
+      "expected": 0.23,
+      "tol": 0.0055
+    },
+    {
+      "name": "Table 1 B (p.24): a_2030 = 0.3 (Modest)",
+      "at": 2030,
+      "expr": "a",
+      "expected": 0.3,
+      "tol": 0.0055
+    }
+  ]
+}
