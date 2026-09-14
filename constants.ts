@@ -1,5 +1,7 @@
 
 import { ModelParameters, MacroParameters, CountryStats, Corporation, ScenarioPreset, EquationSet, ModelConfig } from './types';
+import legacyCountriesJson from './data/countries/legacy-hand-entered.json';
+import wbCountriesJson from './data/countries/wb-2026-09.json';
 
 // Helper to determine archetype based on GDP and governance
 type Archetype = 'rich-democracy' | 'middle-stable' | 'developing-fragile' | 'authoritarian' | 'failed-state';
@@ -239,155 +241,111 @@ PRESET_MODELS.push({
 export const DEFAULT_MODEL_ID = 'evidence-anchored';
 export const DEFAULT_MODEL: ModelParameters = PRESET_MODELS.find((m) => m.id === DEFAULT_MODEL_ID)!;
 
-// Base country data - will be enriched with computed fields
-const COUNTRY_BASE_DATA = [
-  // --- North America ---
-  // id, name, pop, gdp, governance, gini
-  { id: 'USA', name: 'United States', population: 331, gdpPerCapita: 63000, governance: 0.82, gini: 0.39 },
-  { id: 'CAN', name: 'Canada', population: 38, gdpPerCapita: 43000, governance: 0.92, gini: 0.33 },
-  { id: 'MEX', name: 'Mexico', population: 128, gdpPerCapita: 8300, governance: 0.55, gini: 0.45 },
+// ============================================================================
+// COUNTRY DATASETS (versioned; see data/countries/README.md)
+// ============================================================================
+// Country inputs are no longer hand-entered here. Each dataset is a JSON file with a value, year,
+// source and status per field, and its own wellbeing-anchor coefficients (the coefficients are only
+// meaningful on the governance scale they were fitted with). The app default is the sourced World
+// Bank dataset; the hand-entered table that lived here until commit bb85a92 is frozen as
+// `countries-legacy-v1` so saves and links created before the migration reopen unchanged.
 
-  // --- Central America & Caribbean ---
-  { id: 'GTM', name: 'Guatemala', population: 18, gdpPerCapita: 4600, governance: 0.40, gini: 0.48 },
-  { id: 'CUB', name: 'Cuba', population: 11, gdpPerCapita: 8000, governance: 0.35, gini: 0.38 },
-  { id: 'HTI', name: 'Haiti', population: 11.4, gdpPerCapita: 1200, governance: 0.18, gini: 0.41 },
-  { id: 'DOM', name: 'Dominican Rep.', population: 10.8, gdpPerCapita: 8000, governance: 0.55, gini: 0.44 },
-  { id: 'HND', name: 'Honduras', population: 9.9, gdpPerCapita: 2400, governance: 0.38, gini: 0.52 },
-  { id: 'NIC', name: 'Nicaragua', population: 6.6, gdpPerCapita: 1900, governance: 0.32, gini: 0.46 },
-  { id: 'SLV', name: 'El Salvador', population: 6.5, gdpPerCapita: 3800, governance: 0.48, gini: 0.40 },
-  { id: 'CRI', name: 'Costa Rica', population: 5.1, gdpPerCapita: 12000, governance: 0.78, gini: 0.49 },
-  { id: 'PAN', name: 'Panama', population: 4.3, gdpPerCapita: 15000, governance: 0.65, gini: 0.50 },
-  { id: 'JAM', name: 'Jamaica', population: 2.9, gdpPerCapita: 4600, governance: 0.60, gini: 0.45 },
-  { id: 'BLZ', name: 'Belize', population: 0.4, gdpPerCapita: 4400, governance: 0.55, gini: 0.53 },
-  { id: 'BHS', name: 'Bahamas', population: 0.4, gdpPerCapita: 28000, governance: 0.78, gini: 0.43 },
-  { id: 'TTO', name: 'Trinidad & Tobago', population: 1.4, gdpPerCapita: 15000, governance: 0.62, gini: 0.40 },
+export type CountryFieldStatus = 'observed' | 'legacy-unsourced' | 'missing';
 
-  // --- South America ---
-  { id: 'BRA', name: 'Brazil', population: 212, gdpPerCapita: 6700, governance: 0.52, gini: 0.53 },
-  { id: 'ARG', name: 'Argentina', population: 45, gdpPerCapita: 8400, governance: 0.58, gini: 0.42 },
-  { id: 'COL', name: 'Colombia', population: 51, gdpPerCapita: 5300, governance: 0.55, gini: 0.51 },
-  { id: 'CHL', name: 'Chile', population: 19, gdpPerCapita: 13000, governance: 0.78, gini: 0.45 },
-  { id: 'PER', name: 'Peru', population: 33, gdpPerCapita: 6100, governance: 0.50, gini: 0.43 },
-  { id: 'VEN', name: 'Venezuela', population: 28, gdpPerCapita: 3000, governance: 0.22, gini: 0.44 },
-  { id: 'ECU', name: 'Ecuador', population: 17, gdpPerCapita: 5600, governance: 0.48, gini: 0.45 },
-  { id: 'BOL', name: 'Bolivia', population: 12, gdpPerCapita: 3100, governance: 0.45, gini: 0.42 },
-  { id: 'PRY', name: 'Paraguay', population: 7, gdpPerCapita: 5400, governance: 0.50, gini: 0.46 },
-  { id: 'URY', name: 'Uruguay', population: 3.5, gdpPerCapita: 15000, governance: 0.82, gini: 0.40 },
-  { id: 'GUY', name: 'Guyana', population: 0.8, gdpPerCapita: 9000, governance: 0.52, gini: 0.45 },
-  { id: 'SUR', name: 'Suriname', population: 0.6, gdpPerCapita: 4700, governance: 0.52, gini: 0.57 },
+/** One field of one country in a dataset file. */
+export interface CountryFieldValue {
+  /** In the dataset's convention (data/countries/README.md). null only when status is 'missing'. */
+  value: number | null;
+  /** Observation year; null for hand-entered values. */
+  year: number | null;
+  /** Key into the dataset's `sources`. */
+  source: string;
+  status: CountryFieldStatus;
+  /** The value as published, before unit conversion (e.g. persons, Gini 0-100). */
+  raw?: number;
+  /** Governance only: the WGI estimates the value was derived from. */
+  components?: Record<string, number>;
+  /** Same-year current-US$ GDP per capita, reference only (never read by the engine). */
+  currentUsd?: number;
+  note?: string;
+}
 
-  // --- Europe ---
-  { id: 'RUS', name: 'Russia', population: 144, gdpPerCapita: 10000, governance: 0.35, gini: 0.36 },
-  { id: 'GBR', name: 'United Kingdom', population: 67, gdpPerCapita: 41000, governance: 0.88, gini: 0.35 },
-  { id: 'FRA', name: 'France', population: 67, gdpPerCapita: 39000, governance: 0.85, gini: 0.32 },
-  { id: 'DEU', name: 'Germany', population: 83, gdpPerCapita: 46000, governance: 0.92, gini: 0.31 },
-  { id: 'ITA', name: 'Italy', population: 60, gdpPerCapita: 31000, governance: 0.72, gini: 0.35 },
-  { id: 'ESP', name: 'Spain', population: 47, gdpPerCapita: 27000, governance: 0.78, gini: 0.35 },
-  { id: 'NLD', name: 'Netherlands', population: 17, gdpPerCapita: 52000, governance: 0.94, gini: 0.29 },
-  { id: 'SWE', name: 'Sweden', population: 10, gdpPerCapita: 51000, governance: 0.96, gini: 0.28 },
-  { id: 'BEL', name: 'Belgium', population: 11, gdpPerCapita: 45000, governance: 0.88, gini: 0.27 },
-  { id: 'AUT', name: 'Austria', population: 9, gdpPerCapita: 48000, governance: 0.92, gini: 0.30 },
-  { id: 'POL', name: 'Poland', population: 38, gdpPerCapita: 15600, governance: 0.72, gini: 0.30 },
-  { id: 'NOR', name: 'Norway', population: 5, gdpPerCapita: 67000, governance: 0.98, gini: 0.27 },
-  { id: 'CHE', name: 'Switzerland', population: 8, gdpPerCapita: 86000, governance: 0.96, gini: 0.33 },
-  { id: 'IRL', name: 'Ireland', population: 5, gdpPerCapita: 83000, governance: 0.90, gini: 0.32 },
-  { id: 'DNK', name: 'Denmark', population: 6, gdpPerCapita: 60000, governance: 0.96, gini: 0.28 },
-  { id: 'FIN', name: 'Finland', population: 5.5, gdpPerCapita: 49000, governance: 0.96, gini: 0.27 },
-  { id: 'PRT', name: 'Portugal', population: 10, gdpPerCapita: 23000, governance: 0.80, gini: 0.33 },
-  { id: 'GRC', name: 'Greece', population: 10.5, gdpPerCapita: 18000, governance: 0.65, gini: 0.34 },
-  { id: 'CZE', name: 'Czechia', population: 10.7, gdpPerCapita: 22000, governance: 0.82, gini: 0.25 },
-  { id: 'HUN', name: 'Hungary', population: 9.7, gdpPerCapita: 16000, governance: 0.65, gini: 0.30 },
-  { id: 'ROU', name: 'Romania', population: 19, gdpPerCapita: 13000, governance: 0.62, gini: 0.35 },
-  { id: 'UKR', name: 'Ukraine', population: 44, gdpPerCapita: 3700, governance: 0.48, gini: 0.26 },
-  { id: 'BLR', name: 'Belarus', population: 9.5, gdpPerCapita: 6400, governance: 0.28, gini: 0.25 },
-  { id: 'SRB', name: 'Serbia', population: 7, gdpPerCapita: 7700, governance: 0.58, gini: 0.36 },
-  { id: 'ISL', name: 'Iceland', population: 0.3, gdpPerCapita: 59000, governance: 0.95, gini: 0.26 },
-  { id: 'EST', name: 'Estonia', population: 1.3, gdpPerCapita: 23000, governance: 0.88, gini: 0.31 },
-  { id: 'LVA', name: 'Latvia', population: 1.9, gdpPerCapita: 18000, governance: 0.78, gini: 0.35 },
-  { id: 'LTU', name: 'Lithuania', population: 2.8, gdpPerCapita: 20000, governance: 0.80, gini: 0.36 },
-  { id: 'SVK', name: 'Slovakia', population: 5.4, gdpPerCapita: 19000, governance: 0.75, gini: 0.25 },
-  { id: 'SVN', name: 'Slovenia', population: 2.1, gdpPerCapita: 25000, governance: 0.85, gini: 0.25 },
-  { id: 'HRV', name: 'Croatia', population: 4.0, gdpPerCapita: 14000, governance: 0.68, gini: 0.30 },
-  { id: 'BIH', name: 'Bosnia & Herz.', population: 3.3, gdpPerCapita: 6000, governance: 0.48, gini: 0.33 },
-  { id: 'MNE', name: 'Montenegro', population: 0.6, gdpPerCapita: 7700, governance: 0.55, gini: 0.39 },
-  { id: 'MKD', name: 'North Macedonia', population: 2.0, gdpPerCapita: 5900, governance: 0.55, gini: 0.33 },
-  { id: 'ALB', name: 'Albania', population: 2.8, gdpPerCapita: 5200, governance: 0.52, gini: 0.33 },
-  { id: 'BGR', name: 'Bulgaria', population: 6.9, gdpPerCapita: 10000, governance: 0.62, gini: 0.40 },
-  { id: 'MDA', name: 'Moldova', population: 2.6, gdpPerCapita: 4500, governance: 0.48, gini: 0.26 },
-  { id: 'LUX', name: 'Luxembourg', population: 0.6, gdpPerCapita: 115000, governance: 0.96, gini: 0.35 },
-  { id: 'CYP', name: 'Cyprus', population: 1.2, gdpPerCapita: 26000, governance: 0.78, gini: 0.32 },
-  { id: 'MLT', name: 'Malta', population: 0.5, gdpPerCapita: 29000, governance: 0.82, gini: 0.29 },
+export interface CountryDatasetRecord {
+  id: string;
+  name: string;
+  population: CountryFieldValue;
+  gdpPerCapita: CountryFieldValue;
+  gini: CountryFieldValue;
+  governance: CountryFieldValue;
+}
 
-  // --- East & SE Asia ---
-  { id: 'CHN', name: 'China', population: 1400, gdpPerCapita: 12500, governance: 0.45, gini: 0.38 },
-  { id: 'JPN', name: 'Japan', population: 125, gdpPerCapita: 40000, governance: 0.88, gini: 0.33 },
-  { id: 'KOR', name: 'South Korea', population: 51, gdpPerCapita: 31000, governance: 0.85, gini: 0.31 },
-  { id: 'TWN', name: 'Taiwan', population: 23, gdpPerCapita: 33000, governance: 0.88, gini: 0.34 },
-  { id: 'MNG', name: 'Mongolia', population: 3.3, gdpPerCapita: 4000, governance: 0.58, gini: 0.32 },
-  { id: 'PRK', name: 'North Korea', population: 25, gdpPerCapita: 640, governance: 0.10, gini: 0.30 },
-  { id: 'VNM', name: 'Vietnam', population: 97, gdpPerCapita: 2700, governance: 0.52, gini: 0.36 },
-  { id: 'IDN', name: 'Indonesia', population: 273, gdpPerCapita: 3800, governance: 0.55, gini: 0.38 },
-  { id: 'PHL', name: 'Philippines', population: 109, gdpPerCapita: 3200, governance: 0.52, gini: 0.44 },
-  { id: 'THA', name: 'Thailand', population: 70, gdpPerCapita: 7100, governance: 0.55, gini: 0.36 },
-  { id: 'MYS', name: 'Malaysia', population: 32, gdpPerCapita: 10400, governance: 0.68, gini: 0.41 },
-  { id: 'SGP', name: 'Singapore', population: 5.7, gdpPerCapita: 65000, governance: 0.92, gini: 0.46 },
-  { id: 'MMR', name: 'Myanmar', population: 54, gdpPerCapita: 1400, governance: 0.22, gini: 0.31 },
-  { id: 'KHM', name: 'Cambodia', population: 16, gdpPerCapita: 1500, governance: 0.38, gini: 0.38 },
-  { id: 'LAO', name: 'Laos', population: 7, gdpPerCapita: 2600, governance: 0.35, gini: 0.36 },
-  { id: 'BRN', name: 'Brunei', population: 0.4, gdpPerCapita: 31000, governance: 0.70, gini: 0.35 },
-  { id: 'TLS', name: 'Timor-Leste', population: 1.3, gdpPerCapita: 1300, governance: 0.42, gini: 0.29 },
+export interface WellbeingAnchorCoefficients {
+  intercept: number;
+  lnGdp: number;
+  governance: number;
+}
 
-  // --- South & Central Asia ---
-  { id: 'IND', name: 'India', population: 1380, gdpPerCapita: 2100, governance: 0.55, gini: 0.35 },
-  { id: 'PAK', name: 'Pakistan', population: 220, gdpPerCapita: 1100, governance: 0.35, gini: 0.30 },
-  { id: 'BGD', name: 'Bangladesh', population: 164, gdpPerCapita: 1900, governance: 0.45, gini: 0.32 },
-  { id: 'LKA', name: 'Sri Lanka', population: 21, gdpPerCapita: 3800, governance: 0.52, gini: 0.40 },
-  { id: 'NPL', name: 'Nepal', population: 29, gdpPerCapita: 1100, governance: 0.45, gini: 0.33 },
-  { id: 'BTN', name: 'Bhutan', population: 0.8, gdpPerCapita: 3000, governance: 0.65, gini: 0.37 },
-  { id: 'MDV', name: 'Maldives', population: 0.5, gdpPerCapita: 10000, governance: 0.55, gini: 0.31 },
-  { id: 'KAZ', name: 'Kazakhstan', population: 19, gdpPerCapita: 9000, governance: 0.48, gini: 0.28 },
-  { id: 'UZB', name: 'Uzbekistan', population: 34, gdpPerCapita: 1700, governance: 0.38, gini: 0.35 },
-  { id: 'TKM', name: 'Turkmenistan', population: 6, gdpPerCapita: 7600, governance: 0.18, gini: 0.41 },
-  { id: 'KGZ', name: 'Kyrgyzstan', population: 6.5, gdpPerCapita: 1100, governance: 0.45, gini: 0.29 },
-  { id: 'TJK', name: 'Tajikistan', population: 9.5, gdpPerCapita: 850, governance: 0.32, gini: 0.34 },
+export interface CountryDatasetFile {
+  datasetId: string;
+  title: string;
+  sources: Record<string, { name: string; url?: string; lastUpdated?: string; retrievedAt?: string }>;
+  conventions: Record<string, string>;
+  wellbeingAnchor: WellbeingAnchorCoefficients & { fit?: unknown; before?: unknown; note?: string };
+  countries: CountryDatasetRecord[];
+  [key: string]: unknown;
+}
 
-  // --- Middle East / West Asia ---
-  { id: 'TUR', name: 'Turkey', population: 84, gdpPerCapita: 8500, governance: 0.48, gini: 0.42 },
-  { id: 'SAU', name: 'Saudi Arabia', population: 34, gdpPerCapita: 20000, governance: 0.48, gini: 0.45 },
-  { id: 'IRN', name: 'Iran', population: 83, gdpPerCapita: 5400, governance: 0.32, gini: 0.40 },
-  { id: 'IRQ', name: 'Iraq', population: 40, gdpPerCapita: 4200, governance: 0.28, gini: 0.30 },
-  { id: 'AFG', name: 'Afghanistan', population: 39, gdpPerCapita: 500, governance: 0.15, gini: 0.30 },
-  { id: 'ARE', name: 'UAE', population: 10, gdpPerCapita: 40000, governance: 0.78, gini: 0.32 },
-  { id: 'ISR', name: 'Israel', population: 9, gdpPerCapita: 43000, governance: 0.82, gini: 0.39 },
-  { id: 'JOR', name: 'Jordan', population: 10, gdpPerCapita: 4200, governance: 0.58, gini: 0.34 },
-  { id: 'LBN', name: 'Lebanon', population: 6.8, gdpPerCapita: 4000, governance: 0.30, gini: 0.32 },
-  { id: 'SYR', name: 'Syria', population: 17, gdpPerCapita: 1000, governance: 0.15, gini: 0.35 },
-  { id: 'YEM', name: 'Yemen', population: 30, gdpPerCapita: 800, governance: 0.12, gini: 0.37 },
-  { id: 'OMN', name: 'Oman', population: 5, gdpPerCapita: 15000, governance: 0.68, gini: 0.40 },
-  { id: 'QAT', name: 'Qatar', population: 2.8, gdpPerCapita: 60000, governance: 0.72, gini: 0.41 },
-  { id: 'KWT', name: 'Kuwait', population: 4.2, gdpPerCapita: 27000, governance: 0.62, gini: 0.40 },
-  { id: 'BHR', name: 'Bahrain', population: 1.7, gdpPerCapita: 23000, governance: 0.58, gini: 0.42 },
-  { id: 'AZE', name: 'Azerbaijan', population: 10, gdpPerCapita: 4200, governance: 0.38, gini: 0.26 },
-  { id: 'GEO', name: 'Georgia', population: 3.7, gdpPerCapita: 4300, governance: 0.65, gini: 0.35 },
-  { id: 'ARM', name: 'Armenia', population: 3, gdpPerCapita: 4200, governance: 0.55, gini: 0.30 },
-  { id: 'PSE', name: 'Palestine', population: 5, gdpPerCapita: 3000, governance: 0.35, gini: 0.34 },
+export const LEGACY_COUNTRY_DATASET_ID = 'countries-legacy-v1';
+export const WB_COUNTRY_DATASET_ID = 'countries-wb-2026-09';
+export type CountryDatasetId = typeof LEGACY_COUNTRY_DATASET_ID | typeof WB_COUNTRY_DATASET_ID;
 
-  // --- Africa ---
-  { id: 'NGA', name: 'Nigeria', population: 206, gdpPerCapita: 2000, governance: 0.32, gini: 0.35 },
-  { id: 'ZAF', name: 'South Africa', population: 59, gdpPerCapita: 5000, governance: 0.58, gini: 0.63 },
-  { id: 'EGY', name: 'Egypt', population: 102, gdpPerCapita: 3500, governance: 0.38, gini: 0.32 },
-  { id: 'ETH', name: 'Ethiopia', population: 114, gdpPerCapita: 850, governance: 0.35, gini: 0.35 },
-  { id: 'KEN', name: 'Kenya', population: 53, gdpPerCapita: 1800, governance: 0.52, gini: 0.41 },
-  { id: 'COD', name: 'DR Congo', population: 89, gdpPerCapita: 550, governance: 0.18, gini: 0.42 },
-  { id: 'MAR', name: 'Morocco', population: 37, gdpPerCapita: 3000, governance: 0.55, gini: 0.40 },
-  { id: 'DZA', name: 'Algeria', population: 44, gdpPerCapita: 3300, governance: 0.38, gini: 0.28 },
-  { id: 'AGO', name: 'Angola', population: 33, gdpPerCapita: 1800, governance: 0.28, gini: 0.51 },
+const COUNTRY_DATASET_FILES: Record<CountryDatasetId, CountryDatasetFile> = {
+  [LEGACY_COUNTRY_DATASET_ID]: legacyCountriesJson as unknown as CountryDatasetFile,
+  [WB_COUNTRY_DATASET_ID]: wbCountriesJson as unknown as CountryDatasetFile,
+};
 
-  // --- Oceania ---
-  { id: 'AUS', name: 'Australia', population: 25, gdpPerCapita: 51000, governance: 0.92, gini: 0.34 },
-  { id: 'NZL', name: 'New Zealand', population: 5, gdpPerCapita: 42000, governance: 0.95, gini: 0.32 },
-  { id: 'PNG', name: 'Papua New Guinea', population: 9, gdpPerCapita: 2600, governance: 0.38, gini: 0.42 }
-];
+export const COUNTRY_DATASET_IDS = Object.keys(COUNTRY_DATASET_FILES) as CountryDatasetId[];
+
+export function isCountryDatasetId(id: unknown): id is CountryDatasetId {
+  return typeof id === 'string' && Object.prototype.hasOwnProperty.call(COUNTRY_DATASET_FILES, id);
+}
+
+/** The dataset new runs use (review 2026-09-14, owner decision 4(b)). */
+export const DEFAULT_COUNTRY_DATASET_ID: CountryDatasetId = WB_COUNTRY_DATASET_ID;
+
+/**
+ * The dataset this process uses when nothing else says: the default, or the COUNTRY_DATASET
+ * environment variable in Node (CLI reproduction of old results, e.g.
+ * `COUNTRY_DATASET=countries-legacy-v1 npm run hindcast`). Browsers have no override.
+ */
+export const COUNTRY_DATASET_ID: CountryDatasetId = (() => {
+  const env = typeof process !== 'undefined' ? process.env?.COUNTRY_DATASET : undefined;
+  if (env === undefined || env === '') return DEFAULT_COUNTRY_DATASET_ID;
+  if (!isCountryDatasetId(env)) throw new Error(`COUNTRY_DATASET=${env} is not a known country dataset (${COUNTRY_DATASET_IDS.join(', ')})`);
+  return env;
+})();
+
+export function countryDatasetFile(id: CountryDatasetId): CountryDatasetFile {
+  return COUNTRY_DATASET_FILES[id];
+}
+
+/** The wellbeing-anchor coefficients fitted on this dataset's governance scale. */
+export function wellbeingAnchorCoefficientsFor(id: CountryDatasetId = COUNTRY_DATASET_ID): WellbeingAnchorCoefficients {
+  const k = COUNTRY_DATASET_FILES[id].wellbeingAnchor;
+  return { intercept: k.intercept, lnGdp: k.lnGdp, governance: k.governance };
+}
+
+/** The four engine inputs of one country, read from a dataset record. A 'missing' value is an error, never a default. */
+function baseCountryFromRecord(datasetId: CountryDatasetId, r: CountryDatasetRecord) {
+  const num = (field: 'population' | 'gdpPerCapita' | 'gini' | 'governance'): number => {
+    const v = r[field];
+    if (v.value === null || !Number.isFinite(v.value)) {
+      throw new Error(`${datasetId}: ${r.id}.${field} has no value (status ${v.status}); the engine needs every field`);
+    }
+    return v.value;
+  };
+  return { id: r.id, name: r.name, population: num('population'), gdpPerCapita: num('gdpPerCapita'), governance: num('governance'), gini: num('gini') };
+}
 
 // Helper to determine which corporations have HQ in a country
 const getHeadquarteredCorps = (countryId: string, corporations: typeof INITIAL_CORPORATIONS): string[] => {
@@ -433,8 +391,9 @@ const getNationalPolicy = (archetype: Archetype, governance: number) => {
   };
 };
 
-// Enrich base data with computed fields (without corporation relationships - those are added later)
-const INITIAL_COUNTRIES_BASE = COUNTRY_BASE_DATA.map(c => {
+// Enrich base data with computed fields (derived with the same rules for every dataset; the
+// corporation relationships are added once INITIAL_CORPORATIONS exists, in countriesForDataset).
+const enrichCountry = (c: ReturnType<typeof baseCountryFromRecord>) => {
   const archetype = getArchetype(c.gdpPerCapita, c.governance);
 
   return {
@@ -460,7 +419,7 @@ const INITIAL_COUNTRIES_BASE = COUNTRY_BASE_DATA.map(c => {
     // Wellbeing trend (start with current wellbeing, will grow during simulation)
     wellbeingTrend: [70] // Start at neutral wellbeing
   };
-});
+};
 
 // Corporation data for Phase 5: Corporation-Centric Architecture
 // ~90 major AI companies with realistic initial data
@@ -1531,12 +1490,38 @@ export const INITIAL_CORPORATIONS: Corporation[] = [
   }
 ];
 
-// Now that INITIAL_CORPORATIONS is defined, populate corporation relationships in countries
-export const INITIAL_COUNTRIES = INITIAL_COUNTRIES_BASE.map(c => ({
-  ...c,
-  headquarteredCorps: getHeadquarteredCorps(c.id, INITIAL_CORPORATIONS),
-  customerOfCorps: getCustomerOfCorps(c.id, INITIAL_CORPORATIONS)
-}));
+export type InitialCountry = ReturnType<typeof enrichCountry>;
+
+const COUNTRIES_BY_DATASET = new Map<CountryDatasetId, InitialCountry[]>();
+
+/**
+ * The initial country table of a dataset: the four sourced (or flagged) inputs, the derived fields
+ * (archetype, socialResilience, corruption, national policy) and the corporation relationships.
+ * Built once per dataset; callers must not mutate the records (the engine clones them).
+ */
+export function countriesForDataset(id: CountryDatasetId = COUNTRY_DATASET_ID): InitialCountry[] {
+  let out = COUNTRIES_BY_DATASET.get(id);
+  if (!out) {
+    out = COUNTRY_DATASET_FILES[id].countries.map((r) => {
+      const c = enrichCountry(baseCountryFromRecord(id, r));
+      return {
+        ...c,
+        headquarteredCorps: getHeadquarteredCorps(c.id, INITIAL_CORPORATIONS),
+        customerOfCorps: getCustomerOfCorps(c.id, INITIAL_CORPORATIONS),
+      };
+    });
+    COUNTRIES_BY_DATASET.set(id, out);
+  }
+  return out;
+}
+
+/** World population (millions) the global pool is shared over, for a dataset. */
+export function worldPopulationMillionsFor(id: CountryDatasetId = COUNTRY_DATASET_ID): number {
+  return countriesForDataset(id).reduce((a, c) => a + c.population, 0);
+}
+
+/** The shipped initial country table (dataset COUNTRY_DATASET_ID). */
+export const INITIAL_COUNTRIES = countriesForDataset(COUNTRY_DATASET_ID);
 
 /**
  * SCENARIO_PRESETS - Pre-configured scenarios demonstrating different game theory outcomes.

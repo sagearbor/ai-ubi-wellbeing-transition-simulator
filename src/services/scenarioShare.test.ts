@@ -11,13 +11,17 @@ import {
   buildScenarioShareUrl,
   extractScenarioHashParam,
   scenarioFileName,
-  ScenarioParseError
+  ScenarioParseError,
+  encodeSharePayload,
+  decodeSharePayload,
 } from './scenarioShare';
-import { DEFAULT_MODEL_CONFIG } from '../../constants';
+import { DEFAULT_MODEL_CONFIG, DEFAULT_MODEL, LEGACY_COUNTRY_DATASET_ID, WB_COUNTRY_DATASET_ID } from '../../constants';
 import { ModelConfig } from '../../types';
 
+// Scenarios record the country dataset they were made on (2026-09 migration); see the dataset tests below.
 const sampleConfig: ModelConfig = {
   ...DEFAULT_MODEL_CONFIG,
+  countryDataset: WB_COUNTRY_DATASET_ID,
   id: 'custom-test-1',
   name: 'Test Scenario ☀️ café',
   description: 'A scenario with unicode: 你好, éèê, emoji 🚀',
@@ -103,5 +107,35 @@ describe('scenarioShare: share-URL hash encode/decode round trip', () => {
   it('throws a ScenarioParseError when the hash payload decodes to non-scenario JSON', () => {
     const bogus = Buffer.from(JSON.stringify({ hello: 'world' }), 'utf-8').toString('base64');
     expect(() => decodeScenarioFromUrl(bogus)).toThrow(ScenarioParseError);
+  });
+});
+
+describe('scenarioShare: country datasets (2026-09 migration)', () => {
+  const { countryDataset: _none, ...preMigration } = sampleConfig;
+  const b64 = (v: unknown) => Buffer.from(JSON.stringify(v), 'utf-8').toString('base64');
+
+  it('a scenario file or link without a dataset id predates the migration and reads as countries-legacy-v1', () => {
+    expect(parseScenarioJson(JSON.stringify(preMigration)).countryDataset).toBe(LEGACY_COUNTRY_DATASET_ID);
+    expect(decodeScenarioFromUrl(b64(preMigration)).countryDataset).toBe(LEGACY_COUNTRY_DATASET_ID);
+  });
+
+  it('export and links stamp the given dataset when the scenario has none, and keep its own when it has one', () => {
+    expect(JSON.parse(exportScenarioJson(preMigration as ModelConfig, WB_COUNTRY_DATASET_ID)).countryDataset).toBe(WB_COUNTRY_DATASET_ID);
+    expect(decodeScenarioFromUrl(encodeScenarioForUrl({ ...sampleConfig, countryDataset: LEGACY_COUNTRY_DATASET_ID }, WB_COUNTRY_DATASET_ID)).countryDataset)
+      .toBe(LEGACY_COUNTRY_DATASET_ID);
+  });
+
+  it('rejects a dataset id this build does not have', () => {
+    expect(() => parseScenarioJson(JSON.stringify({ ...sampleConfig, countryDataset: 'nope' }))).toThrow(ScenarioParseError);
+  });
+
+  it('#share= payloads: old links (model only, plain btoa) reopen on legacy; new links carry their dataset', () => {
+    const old = decodeSharePayload(Buffer.from(JSON.stringify({ model: { id: 'organic-incentive' } }), 'latin1').toString('base64'));
+    expect(old.countryDataset).toBe(LEGACY_COUNTRY_DATASET_ID);
+    expect(old.model?.id).toBe('organic-incentive');
+    const fresh = decodeSharePayload(encodeSharePayload(DEFAULT_MODEL, WB_COUNTRY_DATASET_ID));
+    expect(fresh.countryDataset).toBe(WB_COUNTRY_DATASET_ID);
+    expect(fresh.model).toEqual(DEFAULT_MODEL);
+    expect(() => decodeSharePayload('not base64 !!')).toThrow(ScenarioParseError);
   });
 });

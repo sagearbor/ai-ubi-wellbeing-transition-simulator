@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { anchoredWellbeingTarget, wellbeingAnchor } from './pure';
 import { initialRun, advanceRun, latestLadderIndex, initOptionsFor } from './run';
-import { PRESET_MODELS, DEFAULT_MACRO } from '../constants';
+import { PRESET_MODELS, DEFAULT_MACRO, LEGACY_COUNTRY_DATASET_ID, WB_COUNTRY_DATASET_ID } from '../constants';
 import type { CountryStats, MacroParameters } from '../types';
 
 const anchoredModel = PRESET_MODELS.find((m) => m.id === 'evidence-anchored')!;
@@ -26,8 +26,12 @@ describe('stage 4 anchored wellbeing mode', () => {
 
   it('ladder initialisation puts the US near its observed ladder, not the formula value', () => {
     const ladder = initialRun(undefined, undefined, { initialWellbeing: 'ladder' }).state.countryData['USA'].wellbeing;
-    const formula = initialRun().state.countryData['USA'].wellbeing;
-    expect(formula).toBeCloseTo(92.5, 6);
+    // Formula = gdpPerCapita / 1200 + 40. Re-locked 2026-09-14 (country-data migration,
+    // docs/design/research/country-data-migration.md): 95.7138 on countries-wb-2026-09
+    // (US 66,856.51 constant-2015 US$), 92.5 on countries-legacy-v1 (hand-entered 63,000).
+    const formula = initialRun(undefined, undefined, { countryDataset: WB_COUNTRY_DATASET_ID }).state.countryData['USA'].wellbeing;
+    expect(formula).toBeCloseTo(95.71375833333333, 6);
+    expect(initialRun(undefined, undefined, { countryDataset: LEGACY_COUNTRY_DATASET_ID }).state.countryData['USA'].wellbeing).toBeCloseTo(92.5, 6);
     expect(ladder).toBeGreaterThan(60);
     expect(ladder).toBeLessThan(80);
     expect(latestLadderIndex('USA')).toBe(ladder);

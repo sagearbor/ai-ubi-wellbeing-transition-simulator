@@ -7,12 +7,13 @@ import {
   historyPoint,
   nearestFullPoint,
   recordRunInHistory,
+  saveCountryDataset,
   seekInHistory,
   stepBoth,
 } from './appState';
 import { initialRun, runMonths, runsEqual, type RunInputs, type SimulationRun } from './run';
-import { PRESET_MODELS } from '../constants';
-import type { HistoryPoint, SavedState } from '../types';
+import { PRESET_MODELS, COUNTRY_DATASET_ID, LEGACY_COUNTRY_DATASET_ID, WB_COUNTRY_DATASET_ID } from '../constants';
+import type { HistoryPoint, SavedState, SimulationState } from '../types';
 
 const inputs: RunInputs = { model: PRESET_MODELS[0] };
 const other: RunInputs = { model: PRESET_MODELS[1] };
@@ -167,14 +168,32 @@ describe('save files (audit A6)', () => {
     };
   }
 
-  /** What the app wrote before the run contract: final month only, history without runs. */
+  /**
+   * What the app wrote before the run contract: final month only, history without runs. Those
+   * saves also predate the 2026-09 country-data migration, so they ran on the hand-entered table
+   * and carry no dataset id.
+   */
   function oldFormatSave(months: number): SavedState {
-    const save = newFormatSave(months);
-    delete (save as Partial<SavedState>).run;
-    save.version = '2.0';
-    save.history = save.history.map((p) => ({ month: p.month, state: p.state }));
-    return save;
+    const legacyBase = initialRun(undefined, undefined, { countryDataset: LEGACY_COUNTRY_DATASET_ID });
+    const { run, history } = play(months, legacyBase);
+    const strip = (state: SimulationState): SimulationState => {
+      const { countryDataset: _none, ...rest } = state;
+      return rest;
+    };
+    return {
+      version: '2.0',
+      timestamp: Date.now(),
+      month: run.state.month,
+      corporations: run.corporations,
+      countryData: run.state.countryData,
+      globalLedger: run.ledger,
+      gameTheoryState: run.gameTheory,
+      model: inputs.model,
+      history: history.map((p) => ({ month: p.month, state: strip(p.state) })),
+    };
   }
+
+  const legacyInit = () => initialRun(undefined, undefined, { countryDataset: LEGACY_COUNTRY_DATASET_ID });
 
   it('a new-format save loads its run verbatim, with a seekable timeline', () => {
     const saved = newFormatSave(6);
@@ -188,7 +207,8 @@ describe('save files (audit A6)', () => {
   it('loading an old-format save yields the same run as a fresh replay', () => {
     const months = 8;
     const loaded = historyFromSave(oldFormatSave(months));
-    const fresh = runMonths(initialRun(), months, inputs)[months];
+    const fresh = runMonths(legacyInit(), months, inputs)[months];
+    expect(loaded.countryDataset).toBe(LEGACY_COUNTRY_DATASET_ID);
     expect(loaded.replayed).toBe(true);
     expect(loaded.run.state.month).toBe(months);
     expect(runsEqual(loaded.run, fresh)).toBe(true);
@@ -202,7 +222,45 @@ describe('save files (audit A6)', () => {
     expect(loaded.history.map((p) => p.month)).toEqual([1, 2, 3, 4, 5, 6, 7, 8]);
     for (const p of loaded.history) expect(p.run).toBeDefined();
     const sought = seekInHistory(loaded.history, 5, inputs, loaded.base);
-    expect(runsEqual(sought, runMonths(initialRun(), 5, inputs)[5])).toBe(true);
+    expect(runsEqual(sought, runMonths(legacyInit(), 5, inputs)[5])).toBe(true);
+  });
+
+  it('a new-format save records its dataset and reloads on it', () => {
+    const plain = newFormatSave(3);
+    const loaded = historyFromSave({ ...plain, countryDataset: plain.run!.state.countryDataset });
+    expect(loaded.countryDataset).toBe(COUNTRY_DATASET_ID);
+    expect(loaded.run.state.countryDataset).toBe(COUNTRY_DATASET_ID);
+    // A file whose run carries no stamp but whose top level does (e.g. an autosave written without runs).
+    const { run: _run, ...noRun } = plain;
+    expect(historyFromSave({ ...noRun, countryDataset: WB_COUNTRY_DATASET_ID }).countryDataset).toBe(WB_COUNTRY_DATASET_ID);
+  });
+
+  it('a run-format save written before the country-data migration reopens on countries-legacy-v1 and replays exactly', () => {
+    // Build the timeline on the legacy table, then remove every dataset id, as such a file has none.
+    const { run, history } = play(6, legacyInit());
+    const strip = (r: SimulationRun): SimulationRun => {
+      const { countryDataset: _none, ...state } = r.state;
+      return { ...r, state };
+    };
+    const saved: SavedState = {
+      version: '2.1', timestamp: 0, month: 6, run: strip(run), corporations: run.corporations,
+      countryData: run.state.countryData, globalLedger: run.ledger, gameTheoryState: run.gameTheory,
+      model: inputs.model, history: historyForSave(history.map((p) => historyPoint(strip(p.run!)))),
+    };
+    const loaded = historyFromSave(saved);
+    expect(loaded.countryDataset).toBe(LEGACY_COUNTRY_DATASET_ID);
+    expect(loaded.run.state.countryDataset).toBe(LEGACY_COUNTRY_DATASET_ID);
+    // Continuing the loaded run matches continuing the original legacy run.
+    const next = runMonths(loaded.run, 3, inputs)[3];
+    expect(runsEqual(next, runMonths(run, 3, inputs)[3])).toBe(true);
+    // Seeking to a month without a recorded run replays on the legacy dataset too.
+    const sparse = loaded.history.filter((p) => p.month !== 4);
+    expect(runsEqual(seekInHistory(sparse, 4, inputs, loaded.base), runMonths(legacyInit(), 4, inputs)[4])).toBe(true);
+  });
+
+  it('an unknown dataset id is an error, not a silent fallback', () => {
+    expect(() => saveCountryDataset({ countryDataset: 'countries-from-the-future' })).toThrow(/does not have/);
+    expect(saveCountryDataset({})).toBe(LEGACY_COUNTRY_DATASET_ID);
   });
 
   it('a save at month 0 round-trips without replaying anything', () => {
