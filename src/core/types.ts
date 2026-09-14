@@ -95,6 +95,12 @@ export interface SolveBlock {
   maxIter?: number;
   unit?: string;
   description?: string;
+  /**
+   * Variables that depend on `unknown` and that the residual reads. They are re-evaluated, with
+   * their effects, at every bisection step, so an effect on one of them enters the equilibrium
+   * instead of being applied after it. Listed in any order; they may reference each other.
+   */
+  through?: string[];
 }
 
 export interface ModelTest {
@@ -165,6 +171,7 @@ export interface Diagnostic {
     | 'structural-change'
     | 'solve-no-root'
     | 'solve-no-convergence'
+    | 'effect-after-solve'
     | 'input-out-of-range'
     | 'disconnected'
     | 'non-finite'

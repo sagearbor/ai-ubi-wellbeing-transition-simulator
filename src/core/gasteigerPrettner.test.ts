@@ -212,15 +212,28 @@ describe('capability probes (engine behaviour this port works around)', () => {
     expect(r.diagnostics.some((d) => d.code === 'cycle')).toBe(true);
   });
 
-  it('an effect on a variable downstream of the unknown is invisible to the solve, with no diagnostic', () => {
+  it('an effect on a variable downstream of the unknown is applied after the solve, and now says so (effect-after-solve)', () => {
+    // Found by this port (gap 2); closed after the port by SolveBlock.through (engine.test.ts). The
+    // port itself was built on the frozen engine and does not use through.
     const r = runModel(tiny({
       effects: [{ id: 'double', target: 'x', op: 'multiply', expr: '2', source: src }],
       solves: [{ id: 's', unknown: 'u', residual: 'a * u - 4', bracket: [0, 10], tol: 1e-12 }],
     }));
     expect(r.ok).toBe(true);
-    expect(r.diagnostics).toEqual([]);
+    expect(r.diagnostics.map((d) => d.code)).toEqual(['effect-after-solve']);
     expect(r.series._.u[0]).toBeCloseTo(2, 9); // the solve used x = a u = 4
-    expect(r.series._.x[0]).toBeCloseTo(8, 8); // but x is reported with the effect applied
+    expect(r.series._.x[0]).toBeCloseTo(8, 8); // x is reported with the effect applied
+  });
+
+  it('with through: the effect enters the equilibrium', () => {
+    const r = runModel(tiny({
+      effects: [{ id: 'double', target: 'x', op: 'multiply', expr: '2', source: src }],
+      solves: [{ id: 's', unknown: 'u', residual: 'x - 4', through: ['x'], bracket: [0, 10], tol: 1e-12 }],
+    }));
+    expect(r.ok).toBe(true);
+    expect(r.diagnostics).toEqual([]);
+    expect(r.series._.u[0]).toBeCloseTo(1, 9); // 2 * (a u) = 4 with a = 2
+    expect(r.series._.x[0]).toBeCloseTo(4, 9);
   });
 
   it('lags in a residual and history on a non-stock variable both work', () => {

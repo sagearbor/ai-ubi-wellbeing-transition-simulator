@@ -41,6 +41,13 @@ those probes starts failing, the engine has changed and the request should be re
 
 ## 2. Solve residuals cannot go through derived variables, so effects cannot act inside a solve
 
+> **Status 2026-09-13 (after the port was committed):** closed by option (a). `SolveBlock.through`
+> re-evaluates listed variables with their effects at every bisection step, and an effect on a
+> variable downstream of a solve unknown that is not listed now raises an `effect-after-solve`
+> warning (option (b)). Tests: `src/core/engine.test.ts` "through". The port above was built on
+> the frozen engine and deliberately left as written.
+
+
 - **Model needs:** the unknown `p` enters the residual directly and through `k(p)`, `X(p)`,
   `R(k, p)` and `psi(R)`. The robot tax is naturally a `multiply (1 + tau)` effect on `k`, and the
   published equation is literally `k = (1 + tau)·{…}`.

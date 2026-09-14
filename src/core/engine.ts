@@ -207,7 +207,8 @@ export interface CompiledModel {
   years: number[];
   order: PlanNode[];
   variables: Map<string, { def: Variable; expr: ParsedExpr; initial?: ParsedExpr; effects: Array<{ def: Effect; expr: ParsedExpr }> }>;
-  solves: Map<string, { def: SolveBlock; expr: ParsedExpr }>;
+  /** `through`: variable ids re-evaluated inside each bisection step, in dependency order. */
+  solves: Map<string, { def: SolveBlock; expr: ParsedExpr; through: string[] }>;
   aggregates: Map<string, { fn: string; variable: string }>;
   tests: Array<{ def: ModelTest; expr: ParsedExpr }>;
   diagnostics: Diagnostic[];
@@ -292,8 +293,24 @@ export function compileModel(model: CoreModel): CompiledModel {
   for (const s of model.solves ?? []) {
     const expr = parseExpr(s.residual);
     check(expr, `solve ${s.id}`);
-    if (!expr.symbols.has(s.unknown)) diagnostics.push({ level: 'error', code: 'parse', message: `solve "${s.id}": residual does not reference its unknown "${s.unknown}"`, where: s.id });
-    solves.set(s.id, { def: s, expr });
+    const through = s.through ?? [];
+    const throughSet = new Set(through);
+    for (const id of through) {
+      const v = model.variables.find((x) => x.id === id);
+      if (!v) diagnostics.push({ level: 'error', code: 'unknown-symbol', message: `solve "${s.id}": through variable "${id}" is not a variable`, where: s.id });
+      else if (v.initial !== undefined) diagnostics.push({ level: 'error', code: 'parse', message: `solve "${s.id}": through variable "${id}" is a stock (has "initial"); only same-step variables can be solved through`, where: s.id });
+    }
+    // Order the through variables so each is evaluated after the through variables it reads.
+    const ordered: string[] = [];
+    const pending = through.filter((id) => varIds.has(id));
+    while (pending.length) {
+      const i = pending.findIndex((id) => [...variables.get(id)?.expr.symbols ?? []].every((sym) => !throughSet.has(sym) || sym === id || ordered.includes(sym)));
+      if (i < 0) { diagnostics.push({ level: 'error', code: 'cycle', message: `solve "${s.id}": through variables reference each other in a cycle (${pending.join(', ')})`, where: s.id }); break; }
+      ordered.push(pending.splice(i, 1)[0]);
+    }
+    const reaches = through.length > 0 && [...throughSet].some((id) => expr.symbols.has(id));
+    if (!expr.symbols.has(s.unknown) && !reaches) diagnostics.push({ level: 'error', code: 'parse', message: `solve "${s.id}": residual does not reference its unknown "${s.unknown}"`, where: s.id });
+    solves.set(s.id, { def: s, expr, through: ordered });
   }
   const tests = (model.tests ?? []).map((t) => { const expr = parseExpr(t.expr); check(expr, `test ${t.name}`); return { def: t, expr }; });
 
@@ -315,7 +332,16 @@ export function compileModel(model: CoreModel): CompiledModel {
       nodes.set(`${entity}:${id}`, { key: `${entity}:${id}`, kind: 'variable', entity, id, deps });
     }
     for (const [id, s] of solves) {
-      const deps = new Set(depsOf(s.expr, entity).filter((d) => d !== `${entity}:solve:${id}`));
+      // A solve reads its through variables' own inputs directly; the through variables themselves
+      // are evaluated inside the bisection (and again, at the root, as ordinary nodes afterwards).
+      const inner = new Set(s.through.map((v) => `${entity}:${v}`));
+      const raw = depsOf(s.expr, entity);
+      for (const v of s.through) {
+        const cv = variables.get(v)!;
+        raw.push(...depsOf(cv.expr, entity));
+        for (const ef of cv.effects) raw.push(...depsOf(ef.expr, entity));
+      }
+      const deps = new Set(raw.filter((d) => d !== `${entity}:solve:${id}` && !inner.has(d)));
       nodes.set(`${entity}:solve:${id}`, { key: `${entity}:solve:${id}`, kind: 'solve', entity, id, deps });
     }
   }
@@ -347,6 +373,33 @@ export function compileModel(model: CoreModel): CompiledModel {
     if (node) order.push(node);
   };
   for (const key of nodes.keys()) visit(key);
+
+  // Effects on a variable that depends on a solve unknown, where the solve does not list the variable
+  // in `through`: the effect is applied after the equilibrium, which is right only if the residual
+  // is not meant to see it. Say so instead of leaving it silent.
+  if (solves.size && entities.length) {
+    const e0 = entities[0];
+    const reachesSolve = (start: string, solveKey: string): boolean => {
+      const seenK = new Set<string>();
+      const walk = (k: string): boolean => {
+        if (k === solveKey) return true;
+        if (seenK.has(k)) return false;
+        seenK.add(k);
+        const n = nodes.get(k);
+        return !!n && [...n.deps].some(walk);
+      };
+      return walk(start);
+    };
+    for (const [target, list] of effectsByTarget) {
+      if (!varIds.has(target)) continue;
+      for (const [sid, s] of solves) {
+        if (s.through.includes(target)) continue;
+        if (reachesSolve(`${e0}:${target}`, `${e0}:solve:${sid}`)) {
+          for (const ef of list) diagnostics.push({ level: 'warning', code: 'effect-after-solve', message: `effect "${ef.def.id}" on "${target}" is applied after solve "${sid}" finds "${s.def.unknown}"; the equilibrium does not see it. If the residual should, list "${target}" in the solve's "through".`, where: ef.def.id });
+        }
+      }
+    }
+  }
 
   // Disconnected variables: not an output, not referenced by anything, not tested.
   const referenced = new Set<string>();
@@ -541,7 +594,34 @@ export function runModel(base: CoreModel, opts: RunOptions = {}): RunResult {
         const rec = solves[node.id][entity];
         const scope = scopeFor(entity, t, s.expr);
         if (!scope) return { ...empty, diagnostics };
-        const f = (u: number) => s.expr.compiled.evaluate({ ...scope, [s.def.unknown]: u });
+        // Scopes for the through variables and their effects, built once; the unknown and the
+        // through values are overlaid per bisection step.
+        const inner = s.through.map((id) => {
+          const cv = cm.variables.get(id)!;
+          return {
+            id,
+            cv,
+            scope: scopeFor(entity, t, cv.expr),
+            effects: cv.effects.map((ef) => ({ ef, scope: scopeFor(entity, t, ef.expr) })),
+          };
+        });
+        if (inner.some((x) => !x.scope || x.effects.some((e) => !e.scope))) return { ...empty, diagnostics };
+        const f = (u: number) => {
+          const vals: Record<string, number> = { [s.def.unknown]: u };
+          for (const x of inner) {
+            let value = x.cv.expr.compiled.evaluate({ ...x.scope!, ...vals });
+            let add = 0;
+            let mul = 1;
+            for (const { ef, scope: es } of x.effects) {
+              if (ef.def.from !== undefined && years[t] < ef.def.from) continue;
+              const ev = ef.expr.compiled.evaluate({ ...es!, ...vals });
+              if (ef.def.op === 'add') add += ev; else mul *= ev;
+            }
+            value = (value + add) * mul;
+            vals[x.id] = value;
+          }
+          return s.expr.compiled.evaluate({ ...scope, ...vals });
+        };
         let [lo, hi] = s.def.bracket;
         let flo = f(lo);
         let fhi = f(hi);

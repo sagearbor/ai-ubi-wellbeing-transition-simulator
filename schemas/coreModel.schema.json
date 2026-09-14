@@ -259,7 +259,13 @@
         "tol": { "type": "number", "exclusiveMinimum": 0 },
         "maxIter": { "type": "integer", "minimum": 1, "maximum": 10000 },
         "unit": { "type": "string", "maxLength": 64 },
-        "description": { "type": "string", "maxLength": 2000 }
+        "description": { "type": "string", "maxLength": 2000 },
+        "through": {
+          "type": "array",
+          "description": "Variables depending on the unknown that the residual reads; re-evaluated with their effects at every bisection step.",
+          "items": { "$ref": "#/definitions/Identifier" },
+          "uniqueItems": true
+        }
       }
     },
 
