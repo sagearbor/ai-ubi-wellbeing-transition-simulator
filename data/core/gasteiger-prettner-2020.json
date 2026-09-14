@@ -1,0 +1,726 @@
+{
+  "schemaVersion": 1,
+  "id": "gasteiger-prettner-2020",
+  "name": "Gasteiger & Prettner (2020): automation, stagnation and a robot tax (general OLG model)",
+  "description": "Two-period overlapping-generations economy with traditional capital k and automation capital p (robots), CES substitution between robots and workers, full depreciation, and a robot tax whose revenue is paid lump-sum to young workers (a UBI-like transfer). Ported from the working paper Section 4.3 (general model), Section 5 (robot tax) and Appendix B. Each entity is one robot-tax rate (tau); tau = 0 is the Section 4.3 model without the tax and is the welfare baseline. Every step solves for p from the capital-market equation k_t + p_t = s_{t-1}/(1+n), where k_t follows from the tax-distorted no-arbitrage condition. Source errata, read against the pinned PDF: (1) Appendix B.3 p.36 prints y = k^alpha [nu p + (1-nu)]^((1-alpha)/mu) without the exponent mu on p; this port uses p^mu, which is what the production function on p.15 implies. (2) Figure 4(a) p.22 is titled \"scaled by 100\" but plots unscaled p (about 2.5e-4 at tau = 0); Figures 2(a) and 3(a) really are p*100. (3) Appendix B.1 p.33 defines r = R - delta; with full depreciation (delta = 1, Section 3 p.8) the gross return 1 + r equals the rental rate R, so psi uses R directly.",
+  "scope": "Reproduces the paper's steady states and welfare comparison, not a forecast. One time step is one 25-year generation (paper p.16); the engine only offers year or month steps, so the step is labelled \"year\" and the axis values 0-40 are generation indices, NOT calendar years. The paper's transition figures come from a linearised model with unstated initial conditions; this port runs the nonlinear equations from an assumed initial income, so only steady states (step 40) are quantitative targets and the path to them is qualitative. The consumption and welfare series are reported one step late (cohort born at t-1) because c1 needs next period's return and the engine has no leads; they equal the paper's c1, c2 at a steady state and mix cohorts during a transition. The welfare-maximising tax is only located on this entity grid (the engine has no argmax), and the welfare comparison is between steady states, not a transition from an untaxed economy. Closed economy with no endogenous innovation: the paper itself (p.26) says the robot-tax result holds only for a large bloc such as the OECD taken together. Parameters are the paper's illustrative calibration; there are no uncertainty ranges because the paper states none.",
+  "license": "Equations and parameter values from a published working paper; this file is an independent port.",
+  "sources": [
+    {
+      "label": "Gasteiger & Prettner (2020), Automation, Stagnation, and the Implications of a Robot Tax, ECON WPS 02/2020, TU Wien. Handle https://hdl.handle.net/10419/215429. PDF SHA-256 1b9b1f74bbf9ef00ec71d8eaee281fdabb4d0bb12ca9ccf61887ddbbd22a551c. Page numbers are the paper's printed numbers.",
+      "kind": "calibrated",
+      "url": "https://www.econstor.eu/bitstream/10419/215429/1/1693366916.pdf"
+    },
+    {
+      "label": "Journal version: Macroeconomic Dynamics 26(1), 218-249 (2022). Not checked against this port; parameters and figures here are from the working paper.",
+      "kind": "assumed"
+    }
+  ],
+  "time": {
+    "start": 0,
+    "end": 40,
+    "step": "year"
+  },
+  "entities": {
+    "kind": "robotTaxRate",
+    "ids": [
+      "tau=0.0",
+      "tau=0.25",
+      "tau=0.5",
+      "tau=0.51",
+      "tau=0.52",
+      "tau=0.53",
+      "tau=0.54",
+      "tau=0.55",
+      "tau=0.56",
+      "tau=0.57",
+      "tau=0.58",
+      "tau=0.59",
+      "tau=0.6",
+      "tau=0.8",
+      "tau=0.9",
+      "tau=1.0",
+      "tau=1.1",
+      "tau=1.2",
+      "tau=1.3",
+      "tau=1.4",
+      "tau=1.5",
+      "tau=2.0",
+      "tau=2.4",
+      "tau=2.5",
+      "tau=3.0",
+      "tau=4.0"
+    ]
+  },
+  "parameters": [
+    {
+      "id": "alpha",
+      "value": 0.3333333333333333,
+      "unit": "share",
+      "source": {
+        "label": "Gasteiger & Prettner (2020), Automation, Stagnation, and the Implications of a Robot Tax, ECON WPS 02/2020, TU Wien, §4.3 p.16 (also Fig. 1 notes p.14), citing Jones (1995) and Acemoglu (2009)",
+        "kind": "assumed",
+        "url": "https://www.econstor.eu/bitstream/10419/215429/1/1693366916.pdf",
+        "note": "Capital elasticity of output. Conventional value adopted by the authors; the cited studies were not re-checked for this port."
+      }
+    },
+    {
+      "id": "beta",
+      "value": 0.6,
+      "unit": "per generation",
+      "source": {
+        "label": "Gasteiger & Prettner (2020), Automation, Stagnation, and the Implications of a Robot Tax, ECON WPS 02/2020, TU Wien, §4.3 p.16: beta = 0.6 \"corresponding to a yearly discount rate of 2%\"",
+        "kind": "assumed",
+        "url": "https://www.econstor.eu/bitstream/10419/215429/1/1693366916.pdf",
+        "note": "Generational discount factor chosen by the authors. 0.98^25 = 0.603, so 0.6 is a rounded conversion of the stated annual rate."
+      }
+    },
+    {
+      "id": "n",
+      "value": 0.25,
+      "unit": "per generation",
+      "source": {
+        "label": "Gasteiger & Prettner (2020), Automation, Stagnation, and the Implications of a Robot Tax, ECON WPS 02/2020, TU Wien, §4.3 p.16: n = 0.25, \"a yearly population growth rate of 0.9% (World Bank, 2019)\"",
+        "kind": "calibrated",
+        "url": "https://www.econstor.eu/bitstream/10419/215429/1/1693366916.pdf",
+        "note": "Calibrated by the paper's authors to World Bank population growth (1.009^25 = 1.251). The World Bank figure was not re-checked for this port."
+      }
+    },
+    {
+      "id": "mu",
+      "value": 0.5,
+      "unit": "1",
+      "source": {
+        "label": "Gasteiger & Prettner (2020), Automation, Stagnation, and the Implications of a Robot Tax, ECON WPS 02/2020, TU Wien, §4.3 p.16: mu = 0.5 (robot-worker elasticity of substitution 2), citing Acemoglu & Autor (2012) and DeCanio (2016)",
+        "kind": "assumed",
+        "url": "https://www.econstor.eu/bitstream/10419/215429/1/1693366916.pdf",
+        "note": "Substitution parameter; elasticity 1/(1-mu). The paper motivates it by analogy with low/high-skill substitution; the cited studies were not re-checked. Sensitivity values 0.4 and 0.6 (p.24) are the overlays gasteiger-prettner-mu04 and gasteiger-prettner-mu06."
+      }
+    },
+    {
+      "id": "nu",
+      "value": 0.1,
+      "unit": "share",
+      "source": {
+        "label": "Gasteiger & Prettner (2020), Automation, Stagnation, and the Implications of a Robot Tax, ECON WPS 02/2020, TU Wien, §4.3 p.16: \"assume that nu = 0.1\"",
+        "kind": "assumed",
+        "url": "https://www.econstor.eu/bitstream/10419/215429/1/1693366916.pdf",
+        "note": "CES share parameter of automation capital. The paper gives no justification or citation for this value."
+      }
+    },
+    {
+      "id": "theta",
+      "value": 2,
+      "unit": "1",
+      "source": {
+        "label": "Gasteiger & Prettner (2020), Automation, Stagnation, and the Implications of a Robot Tax, ECON WPS 02/2020, TU Wien, §4.3 p.16: theta = 2, citing Chetty (2006) and Guvenen (2006)",
+        "kind": "assumed",
+        "url": "https://www.econstor.eu/bitstream/10419/215429/1/1693366916.pdf",
+        "note": "Coefficient of relative risk aversion (intertemporal elasticity 1/theta). Cited studies not re-checked for this port."
+      }
+    },
+    {
+      "id": "tau",
+      "value": 0,
+      "unit": "rate",
+      "byEntity": {
+        "tau=0.0": 0,
+        "tau=0.25": 0.25,
+        "tau=0.5": 0.5,
+        "tau=0.51": 0.51,
+        "tau=0.52": 0.52,
+        "tau=0.53": 0.53,
+        "tau=0.54": 0.54,
+        "tau=0.55": 0.55,
+        "tau=0.56": 0.56,
+        "tau=0.57": 0.57,
+        "tau=0.58": 0.58,
+        "tau=0.59": 0.59,
+        "tau=0.6": 0.6,
+        "tau=0.8": 0.8,
+        "tau=0.9": 0.9,
+        "tau=1.0": 1,
+        "tau=1.1": 1.1,
+        "tau=1.2": 1.2,
+        "tau=1.3": 1.3,
+        "tau=1.4": 1.4,
+        "tau=1.5": 1.5,
+        "tau=2.0": 2,
+        "tau=2.4": 2.4,
+        "tau=2.5": 2.5,
+        "tau=3.0": 3,
+        "tau=4.0": 4
+      },
+      "source": {
+        "label": "Gasteiger & Prettner (2020), Automation, Stagnation, and the Implications of a Robot Tax, ECON WPS 02/2020, TU Wien, §5 pp.17-19 (policy lever); Fig. 3 p.21 uses tau = 0.5; Figs. 4-5 pp.22, 25 sweep tau over [0, 4]",
+        "kind": "assumed",
+        "url": "https://www.econstor.eu/bitstream/10419/215429/1/1693366916.pdf",
+        "note": "Robot tax rate on the firm's use of automation capital. A policy scenario, not an estimate: each entity is one grid point. Grid is this port's choice: 0.01 spacing around the published optimum, coarser elsewhere. Do not give tau a Monte Carlo range: its base value is 0, and the engine rescales byEntity values by their ratio to the base value when sampling."
+      }
+    },
+    {
+      "id": "isBaseline",
+      "value": 0,
+      "unit": "indicator",
+      "byEntity": {
+        "tau=0.0": 1
+      },
+      "source": {
+        "label": "Gasteiger & Prettner (2020), Automation, Stagnation, and the Implications of a Robot Tax, ECON WPS 02/2020, TU Wien, §5 p.23: welfare is measured against the tau = 0 steady state",
+        "kind": "assumed",
+        "note": "Model structure, not a number from the paper: 1 marks the tau = 0 entity so aggregates can read its consumption (the engine has no syntax for referencing a named entity)."
+      }
+    },
+    {
+      "id": "w_init",
+      "value": 0.12,
+      "unit": "output per worker",
+      "source": {
+        "label": "Port choice: income of the cohort that saves into generation 0 (about half the tau = 0 steady-state wage); robot-tax transfer before the start is 0",
+        "kind": "assumed",
+        "note": "The paper does not state the initial condition of its (linearised) transition figures. Any interior value converges to the same steady state; only the path depends on it."
+      }
+    }
+  ],
+  "variables": [
+    {
+      "id": "young_income",
+      "unit": "output per worker",
+      "initial": "w_init",
+      "equation": "w[t-1] + transfer[t-1]",
+      "hook": false,
+      "description": "Wage plus robot-tax transfer of the previous generation's young, which they split between consumption and savings (paper p.18: s_t = (w_t + transfer_t)/psi_{t+1}). At step 0 it is the assumed initial income w_init."
+    },
+    {
+      "id": "X",
+      "unit": "1",
+      "equation": "nu * pow(p, mu) + (1 - nu)",
+      "hook": false,
+      "description": "CES aggregate of robots and workers per worker, nu p^mu + (1 - nu)."
+    },
+    {
+      "id": "k",
+      "unit": "output per worker",
+      "equation": "(1 + tau) * alpha / (nu * (1 - alpha)) * (nu * p + (1 - nu) * pow(p, 1 - mu))",
+      "hook": false,
+      "description": "Traditional capital per worker from the tax-distorted no-arbitrage condition (paper p.19; Appendix B.3 p.36). Not a hook: it feeds the solve for p, and the engine does not apply effects inside a solve, so an effect here would silently break the equilibrium."
+    },
+    {
+      "id": "R",
+      "unit": "gross return per generation",
+      "equation": "alpha * pow(k, alpha - 1) * pow(X, (1 - alpha) / mu)",
+      "hook": false,
+      "description": "Rental rate of capital (= marginal product of k = after-tax return on robots). Equal to 1 + r under full depreciation. The paper's figures plot R/100."
+    },
+    {
+      "id": "w",
+      "unit": "output per worker",
+      "equation": "(1 - alpha) * (1 - nu) * pow(k, alpha) * pow(X, (1 - alpha - mu) / mu)",
+      "hook": false,
+      "description": "Wage per worker (paper p.19)."
+    },
+    {
+      "id": "transfer",
+      "unit": "output per worker",
+      "equation": "tau * R * p",
+      "hook": false,
+      "description": "Robot-tax revenue per worker, paid lump-sum to the young (paper p.19, tau_bar = tau R p). The paper's Figures 3(f) and 4(f) plot it times 1000."
+    },
+    {
+      "id": "psi",
+      "unit": "1",
+      "equation": "1 + 1 / (pow(beta, 1 / theta) * pow(R, 1 / theta - 1))",
+      "hook": false,
+      "description": "Inverse savings rate out of income for the cohort that earns R this period (paper p.15; Appendix B.1 p.34 with 1 + r = R)."
+    },
+    {
+      "id": "y",
+      "unit": "output per worker",
+      "equation": "pow(k, alpha) * pow(X, (1 - alpha) / mu)",
+      "hook": false,
+      "description": "Output per worker, using p^mu (Appendix B.3 p.36 omits the exponent; see description)."
+    },
+    {
+      "id": "savings_prev",
+      "unit": "output per worker",
+      "equation": "(1 + n) * (k + p)",
+      "hook": false,
+      "description": "Savings per young worker of the previous generation, s_{t-1} = (1 + n)(k_t + p_t) (capital-market clearing, Appendix B.3 p.35)."
+    },
+    {
+      "id": "c1_prev",
+      "unit": "output per worker",
+      "equation": "young_income - savings_prev",
+      "hook": false,
+      "description": "Consumption when young of the cohort born at t-1 (budget constraint B.1). Equals the paper's c1 at a steady state."
+    },
+    {
+      "id": "c2_prev",
+      "unit": "output per worker",
+      "equation": "R * savings_prev",
+      "hook": false,
+      "description": "Consumption when old of the cohort born at t-1, c2 = R s (B.2 with 1 + r = R)."
+    },
+    {
+      "id": "c1_base_part",
+      "unit": "output per worker",
+      "equation": "isBaseline * c1_prev",
+      "hook": false,
+      "description": "c1 of the tau = 0 entity, zero elsewhere; summed across entities to read the baseline."
+    },
+    {
+      "id": "c2_base_part",
+      "unit": "output per worker",
+      "equation": "isBaseline * c2_prev",
+      "hook": false,
+      "description": "c2 of the tau = 0 entity, zero elsewhere."
+    },
+    {
+      "id": "c1_base",
+      "unit": "output per worker",
+      "equation": "sum(c1_base_part)",
+      "hook": false,
+      "description": "Baseline (tau = 0) consumption when young, the same number in every entity."
+    },
+    {
+      "id": "c2_base",
+      "unit": "output per worker",
+      "equation": "sum(c2_base_part)",
+      "hook": false,
+      "description": "Baseline (tau = 0) consumption when old."
+    },
+    {
+      "id": "utility_prev",
+      "unit": "utils",
+      "equation": "(pow(c1_prev, 1 - theta) - 1) / (1 - theta) + beta * (pow(c2_prev, 1 - theta) - 1) / (1 - theta)",
+      "hook": false,
+      "description": "Lifetime utility of the cohort born at t-1 (paper p.14, iso-elastic). The paper's \"tau = 0.55 maximizes welfare\" (p.24) is the tau with the highest steady-state utility; the compensating variations below rescale the same comparison into consumption units."
+    },
+    {
+      "id": "cv1",
+      "unit": "1",
+      "equation": "pow((pow(c1_base, 1 - theta) + beta * (pow(c2_base, 1 - theta) - pow(c2_prev, 1 - theta))) / pow(c1_prev, 1 - theta), 1 / (1 - theta)) - 1",
+      "hook": false,
+      "description": "Consumption-equivalent x1 (paper p.23): proportional change in young consumption that makes this tax rate's agent exactly as well off as at tau = 0. Negative = the tax is a welfare gain."
+    },
+    {
+      "id": "cv2",
+      "unit": "1",
+      "equation": "pow(((pow(c1_base, 1 - theta) - pow(c1_prev, 1 - theta)) / beta + pow(c2_base, 1 - theta)) / pow(c2_prev, 1 - theta), 1 / (1 - theta)) - 1",
+      "hook": false,
+      "description": "Consumption-equivalent x2 (paper p.23), in units of old-age consumption."
+    },
+    {
+      "id": "cv1_pct",
+      "unit": "% of output",
+      "equation": "cv1 * c1_prev / y * 100",
+      "hook": false,
+      "description": "Compensating variation x1 c1 / y in percent of output, as plotted in Figure 5 (p.25, solid line)."
+    },
+    {
+      "id": "cv2_pct",
+      "unit": "% of output",
+      "equation": "cv2 * c2_prev / y * 100",
+      "hook": false,
+      "description": "Compensating variation x2 c2 / y in percent of output, as plotted in Figure 5 (dashed line)."
+    }
+  ],
+  "solves": [
+    {
+      "id": "capital-market",
+      "unknown": "p",
+      "residual": "((1 + tau) * alpha / (nu * (1 - alpha)) * (nu * p + (1 - nu) * pow(p, 1 - mu))) + p - young_income / ((1 + n) * (1 + 1 / (pow(beta, 1 / theta) * pow((alpha * pow(((1 + tau) * alpha / (nu * (1 - alpha)) * (nu * p + (1 - nu) * pow(p, 1 - mu))), alpha - 1) * pow((nu * pow(p, mu) + (1 - nu)), (1 - alpha) / mu)), 1 / theta - 1))))",
+      "bracket": [
+        1e-12,
+        1
+      ],
+      "tol": 1e-15,
+      "maxIter": 200,
+      "unit": "output per worker",
+      "description": "Automation capital per worker p_t such that k(p) + p = (w_{t-1} + transfer_{t-1}) / ((1 + n) psi(R(k(p), p))) (Appendix B.3 p.36, re-indexed one step so no lead is needed). The residual spells k, X, R and psi out in p because the engine cannot route a residual through variables that depend on the unknown; the k, X, R, psi variables repeat the same formulas and tests check they agree. Bracket [1e-12, 1] is an assumed bound (p = 0 is excluded because of p^(1-mu) and k^(alpha-1)), not a derived one."
+    }
+  ],
+  "outputs": [
+    "p",
+    "k",
+    "w",
+    "R",
+    "y",
+    "transfer",
+    "c1_prev",
+    "c2_prev",
+    "utility_prev",
+    "cv1_pct",
+    "cv2_pct"
+  ],
+  "tests": [
+    {
+      "name": "identity (tau=0.0): capital-market residual recomputed from the k, psi variables is zero",
+      "at": 40,
+      "entity": "tau=0.0",
+      "expr": "k + p - young_income / ((1 + n) * psi)",
+      "expected": 0,
+      "tol": 1e-9
+    },
+    {
+      "name": "identity (tau=0.0): steady-state residual k + p - (w + transfer)/((1+n) psi) is zero",
+      "at": 40,
+      "entity": "tau=0.0",
+      "expr": "k + p - (w + transfer) / ((1 + n) * psi)",
+      "expected": 0,
+      "tol": 1e-9
+    },
+    {
+      "name": "identity (tau=0.55): capital-market residual recomputed from the k, psi variables is zero",
+      "at": 40,
+      "entity": "tau=0.55",
+      "expr": "k + p - young_income / ((1 + n) * psi)",
+      "expected": 0,
+      "tol": 1e-9
+    },
+    {
+      "name": "identity (tau=0.55): steady-state residual k + p - (w + transfer)/((1+n) psi) is zero",
+      "at": 40,
+      "entity": "tau=0.55",
+      "expr": "k + p - (w + transfer) / ((1 + n) * psi)",
+      "expected": 0,
+      "tol": 1e-9
+    },
+    {
+      "name": "identity (tau=4.0): capital-market residual recomputed from the k, psi variables is zero",
+      "at": 40,
+      "entity": "tau=4.0",
+      "expr": "k + p - young_income / ((1 + n) * psi)",
+      "expected": 0,
+      "tol": 1e-9
+    },
+    {
+      "name": "identity (tau=4.0): steady-state residual k + p - (w + transfer)/((1+n) psi) is zero",
+      "at": 40,
+      "entity": "tau=4.0",
+      "expr": "k + p - (w + transfer) / ((1 + n) * psi)",
+      "expected": 0,
+      "tol": 1e-9
+    },
+    {
+      "name": "identity (tau=0.5): no-arbitrage MPK (1 + tau) = MPP",
+      "at": 40,
+      "entity": "tau=0.5",
+      "expr": "(1 + tau) * alpha * pow(k, alpha - 1) * pow(X, (1 - alpha) / mu) / ((1 - alpha) * pow(k, alpha) * pow(X, (1 - alpha - mu) / mu) * nu * pow(p, mu - 1)) - 1",
+      "expected": 0,
+      "tol": 1e-8
+    },
+    {
+      "name": "identity (tau=4.0): no-arbitrage MPK (1 + tau) = MPP",
+      "at": 40,
+      "entity": "tau=4.0",
+      "expr": "(1 + tau) * alpha * pow(k, alpha - 1) * pow(X, (1 - alpha) / mu) / ((1 - alpha) * pow(k, alpha) * pow(X, (1 - alpha - mu) / mu) * nu * pow(p, mu - 1)) - 1",
+      "expected": 0,
+      "tol": 1e-8
+    },
+    {
+      "name": "T1 (p.24): welfare-maximising tau = 0.55 ± 0.01 — steady-state utility grid maximum is at the tau=0.55 entity (0.01 grid; fine-grid value in src/core/gasteigerPrettner.test.ts)",
+      "at": 40,
+      "entity": "tau=0.55",
+      "expr": "utility_prev - max(utility_prev)",
+      "expected": 0,
+      "tol": 0
+    },
+    {
+      "name": "Fig. 5 p.25: CV1 grid minimum is at tau = 0.55",
+      "at": 40,
+      "entity": "tau=0.55",
+      "expr": "cv1_pct - min(cv1_pct)",
+      "expected": 0,
+      "tol": 0
+    },
+    {
+      "name": "Fig. 5 p.25: CV2 grid minimum is at tau = 0.55",
+      "at": 40,
+      "entity": "tau=0.55",
+      "expr": "cv2_pct - min(cv2_pct)",
+      "expected": 0,
+      "tol": 0
+    },
+    {
+      "name": "Fig. 5 p.25: minimum of x1 c1/y × 100 ≈ -0.023 ± 0.002",
+      "at": 40,
+      "entity": "tau=0.55",
+      "expr": "min(cv1_pct)",
+      "expected": -0.023,
+      "tol": 0.002
+    },
+    {
+      "name": "Fig. 5 p.25: minimum of x2 c2/y × 100 ≈ -0.039 ± 0.002",
+      "at": 40,
+      "entity": "tau=0.55",
+      "expr": "min(cv2_pct)",
+      "expected": -0.039,
+      "tol": 0.002
+    },
+    {
+      "name": "Fig. 5 p.25: CV1 at tau = 4 ≈ +0.013 ± 0.002",
+      "at": 40,
+      "entity": "tau=4.0",
+      "expr": "cv1_pct",
+      "expected": 0.013,
+      "tol": 0.002
+    },
+    {
+      "name": "Fig. 5 p.25: CV2 at tau = 4 ≈ +0.022 ± 0.002",
+      "at": 40,
+      "entity": "tau=4.0",
+      "expr": "cv2_pct",
+      "expected": 0.022,
+      "tol": 0.002
+    },
+    {
+      "name": "Fig. 5 p.25: CV1 still negative (a gain) at tau = 2.4 (published crossing 2.4-2.5 ± 0.15)",
+      "at": 40,
+      "entity": "tau=2.4",
+      "expr": "cv1_pct / abs(cv1_pct)",
+      "expected": -1,
+      "tol": 1e-12
+    },
+    {
+      "name": "Fig. 5 p.25: CV1 positive (a loss) at tau = 2.5",
+      "at": 40,
+      "entity": "tau=2.5",
+      "expr": "cv1_pct / abs(cv1_pct)",
+      "expected": 1,
+      "tol": 1e-12
+    },
+    {
+      "name": "Fig. 5 p.25: CV2 still negative at tau = 2.4",
+      "at": 40,
+      "entity": "tau=2.4",
+      "expr": "cv2_pct / abs(cv2_pct)",
+      "expected": -1,
+      "tol": 1e-12
+    },
+    {
+      "name": "Fig. 5 p.25: CV2 positive at tau = 2.5",
+      "at": 40,
+      "entity": "tau=2.5",
+      "expr": "cv2_pct / abs(cv2_pct)",
+      "expected": 1,
+      "tol": 1e-12
+    },
+    {
+      "name": "baseline entity: CV1 at tau = 0 is exactly zero",
+      "at": 40,
+      "entity": "tau=0.0",
+      "expr": "cv1_pct",
+      "expected": 0,
+      "tol": 1e-12
+    },
+    {
+      "name": "Fig. 4(a) p.22: p_ss at tau = 0 ≈ 2.6e-4 ± 5% (panel says \"scaled by 100\" but plots unscaled p)",
+      "at": 40,
+      "entity": "tau=0.0",
+      "expr": "p",
+      "expected": 0.00026,
+      "tol": 0.000013
+    },
+    {
+      "name": "Fig. 4(a) p.22: p_ss at tau = 4 ≈ 1e-5 ± 5%",
+      "at": 40,
+      "entity": "tau=4.0",
+      "expr": "p",
+      "expected": 0.00001,
+      "tol": 5e-7
+    },
+    {
+      "name": "Fig. 4(b) p.22: k_ss at tau = 0 ≈ 0.0720 ± 0.5%",
+      "at": 40,
+      "entity": "tau=0.0",
+      "expr": "k",
+      "expected": 0.072,
+      "tol": 0.00036
+    },
+    {
+      "name": "Fig. 4(b) p.22: k_ss at tau = 4 ≈ 0.07262 ± 0.5%",
+      "at": 40,
+      "entity": "tau=4.0",
+      "expr": "k",
+      "expected": 0.07262,
+      "tol": 0.000363
+    },
+    {
+      "name": "Fig. 4(c) p.22: y_ss at tau = 0 ≈ 0.3624 ± 0.5%",
+      "at": 40,
+      "entity": "tau=0.0",
+      "expr": "y",
+      "expected": 0.3624,
+      "tol": 0.001812
+    },
+    {
+      "name": "Fig. 4(c) p.22: y_ss peak ≈ 0.36279 ± 0.5%",
+      "at": 40,
+      "entity": "tau=1.2",
+      "expr": "max(y)",
+      "expected": 0.36279,
+      "tol": 0.001814
+    },
+    {
+      "name": "Fig. 4(c) p.22: y_ss peak at tau ≈ 1.2 ± 0.15 — grid maximum of y is at tau = 1.2",
+      "at": 40,
+      "entity": "tau=1.2",
+      "expr": "y - max(y)",
+      "expected": 0,
+      "tol": 0
+    },
+    {
+      "name": "Fig. 4(c) p.22: y_ss at tau = 4 ≈ 0.3627 ± 0.5%",
+      "at": 40,
+      "entity": "tau=4.0",
+      "expr": "y",
+      "expected": 0.3627,
+      "tol": 0.0018135
+    },
+    {
+      "name": "Fig. 4(d) p.22: w_ss at tau = 0 ≈ 0.2412 ± 0.5%",
+      "at": 40,
+      "entity": "tau=0.0",
+      "expr": "w",
+      "expected": 0.2412,
+      "tol": 0.001206
+    },
+    {
+      "name": "Fig. 4(d) p.22: w_ss at tau = 4 ≈ 0.2417 ± 0.5%",
+      "at": 40,
+      "entity": "tau=4.0",
+      "expr": "w",
+      "expected": 0.2417,
+      "tol": 0.0012085
+    },
+    {
+      "name": "Fig. 4(e) p.22: R_ss/100 at tau = 0 ≈ 0.01677 ± 0.5%",
+      "at": 40,
+      "entity": "tau=0.0",
+      "expr": "R / 100",
+      "expected": 0.01677,
+      "tol": 0.00008385
+    },
+    {
+      "name": "Fig. 4(e) p.22: R_ss/100 at tau = 4 ≈ 0.01665 ± 0.5%",
+      "at": 40,
+      "entity": "tau=4.0",
+      "expr": "R / 100",
+      "expected": 0.01665,
+      "tol": 0.00008325
+    },
+    {
+      "name": "Fig. 4(f) p.22: tax revenue × 1000 peak ≈ 0.107 ± 5%",
+      "at": 40,
+      "entity": "tau=1.0",
+      "expr": "max(transfer) * 1000",
+      "expected": 0.107,
+      "tol": 0.00535
+    },
+    {
+      "name": "Fig. 4(f) p.22: revenue peak at tau ≈ 1.0 ± 0.15 — grid maximum is at tau = 1.0",
+      "at": 40,
+      "entity": "tau=1.0",
+      "expr": "transfer - max(transfer)",
+      "expected": 0,
+      "tol": 0
+    },
+    {
+      "name": "Fig. 4(h) p.22: c1_ss peak at tau ≈ 1.3 ± 0.2 — grid maximum of c1 is at tau = 1.4",
+      "at": 40,
+      "entity": "tau=1.4",
+      "expr": "c1_prev - max(c1_prev)",
+      "expected": 0,
+      "tol": 0
+    },
+    {
+      "name": "Fig. 4(i) p.22: c2_ss at tau = 0 ≈ 0.15166 ± 0.5%",
+      "at": 40,
+      "entity": "tau=0.0",
+      "expr": "c2_prev",
+      "expected": 0.15166,
+      "tol": 0.0007583
+    },
+    {
+      "name": "Fig. 4(i) p.22: c2_ss at tau = 4 ≈ 0.15128 ± 0.5%",
+      "at": 40,
+      "entity": "tau=4.0",
+      "expr": "c2_prev",
+      "expected": 0.15128,
+      "tol": 0.0007564
+    },
+    {
+      "name": "Fig. 4(i): c2_ss decreasing in tau — grid minimum of c2 is at tau = 4",
+      "at": 40,
+      "entity": "tau=4.0",
+      "expr": "c2_prev - min(c2_prev)",
+      "expected": 0,
+      "tol": 0
+    },
+    {
+      "name": "Fig. 2(a) p.20: p×100 plateau at tau = 0 ≈ 0.025 ± 3%",
+      "at": 40,
+      "entity": "tau=0.0",
+      "expr": "p * 100",
+      "expected": 0.025,
+      "tol": 0.00075
+    },
+    {
+      "name": "Fig. 2(b) p.20: k plateau at tau = 0 ≈ 0.072 ± 3%",
+      "at": 40,
+      "entity": "tau=0.0",
+      "expr": "k",
+      "expected": 0.072,
+      "tol": 0.00216
+    },
+    {
+      "name": "Fig. 2(c) p.20: w plateau at tau = 0 ≈ 0.24 ± 3%",
+      "at": 40,
+      "entity": "tau=0.0",
+      "expr": "w",
+      "expected": 0.24,
+      "tol": 0.0072
+    },
+    {
+      "name": "Fig. 2(d) p.20: R/100 plateau at tau = 0 ≈ 0.017 ± 3%",
+      "at": 40,
+      "entity": "tau=0.0",
+      "expr": "R / 100",
+      "expected": 0.017,
+      "tol": 0.00051
+    },
+    {
+      "name": "Fig. 2(e) p.20: y plateau at tau = 0 ≈ 0.36 ± 3%",
+      "at": 40,
+      "entity": "tau=0.0",
+      "expr": "y",
+      "expected": 0.36,
+      "tol": 0.0108
+    },
+    {
+      "name": "Fig. 3(b) p.21: k plateau at tau = 0.5 ≈ 0.072 ± 3%",
+      "at": 40,
+      "entity": "tau=0.5",
+      "expr": "k",
+      "expected": 0.072,
+      "tol": 0.00216
+    },
+    {
+      "name": "Fig. 3(f) p.21: tax revenue × 1000 plateau at tau = 0.5 ≈ 0.096 ± 3%",
+      "at": 40,
+      "entity": "tau=0.5",
+      "expr": "transfer * 1000",
+      "expected": 0.096,
+      "tol": 0.00288
+    },
+    {
+      "name": "Fig. 3(e) p.21: y plateau at tau = 0.5 ≈ 0.36 ± 3%",
+      "at": 40,
+      "entity": "tau=0.5",
+      "expr": "y",
+      "expected": 0.36,
+      "tol": 0.0108
+    }
+  ]
+}

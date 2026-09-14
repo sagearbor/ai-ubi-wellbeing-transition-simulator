@@ -1,0 +1,44 @@
+{
+  "id": "gasteiger-prettner-mu06",
+  "name": "Gasteiger & Prettner (2020), robot-worker substitution mu = 0.6",
+  "description": "Sensitivity case from p.24 of the working paper: mu = 0.6 (elasticity of substitution 2.50), all other parameters as in the base model. The paper reports that the welfare-maximising robot tax falls to 0.54. Only a parameter changes; no equation is touched.",
+  "parameters": [
+    {
+      "id": "mu",
+      "value": 0.6,
+      "unit": "1",
+      "source": {
+        "label": "Gasteiger & Prettner (2020), Automation, Stagnation, and the Implications of a Robot Tax, ECON WPS 02/2020, TU Wien, §5 p.24: sensitivity case mu = 0.6",
+        "kind": "assumed",
+        "url": "https://www.econstor.eu/bitstream/10419/215429/1/1693366916.pdf",
+        "note": "Alternative robot-worker substitution parameter used by the authors to show how the optimal tax moves."
+      }
+    }
+  ],
+  "tests": [
+    {
+      "name": "p.24: welfare-maximising tau = 0.54 ± 0.01 with mu = 0.6 — steady-state utility grid maximum is at tau = 0.55 (0.01 grid)",
+      "at": 40,
+      "entity": "tau=0.55",
+      "expr": "utility_prev - max(utility_prev)",
+      "expected": 0,
+      "tol": 0
+    },
+    {
+      "name": "p.24 (mu = 0.6): utility grid argmax 0.55 is within 0.01 of the published 0.54",
+      "at": 40,
+      "entity": "tau=0.55",
+      "expr": "abs(tau - 0.54)",
+      "expected": 0,
+      "tol": 0.0100000001
+    },
+    {
+      "name": "identity (mu = 0.6, tau = 0.55): capital-market residual is zero",
+      "at": 40,
+      "entity": "tau=0.55",
+      "expr": "k + p - (w + transfer) / ((1 + n) * psi)",
+      "expected": 0,
+      "tol": 1e-9
+    }
+  ]
+}
