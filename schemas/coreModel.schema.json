@@ -1,0 +1,300 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ubi-simulator.example.com/schemas/coreModel.json",
+  "title": "CoreModel",
+  "description": "Authoring-core model file (src/core/types.ts CoreModel). A model is data: sourced parameters, exogenous input curves, variable equations, effects that attach to hooks, scalar equilibrium blocks, outputs and reproduction tests. Every parameter and every effect must carry a source; mark an unsourced number {\"kind\":\"guess\"} rather than leaving it bare.",
+  "type": "object",
+  "required": ["schemaVersion", "id", "name", "time", "parameters", "variables", "outputs"],
+  "additionalProperties": false,
+
+  "properties": {
+    "schemaVersion": {
+      "const": 1,
+      "description": "Model file format version."
+    },
+    "id": {
+      "$ref": "#/definitions/SlugId",
+      "description": "Stable identifier, unique across bundled models."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "description": "Human-readable title."
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 4000
+    },
+    "scope": {
+      "type": "string",
+      "maxLength": 4000,
+      "description": "What this model can and cannot say. Shown before results."
+    },
+    "license": {
+      "type": "string",
+      "maxLength": 200
+    },
+    "sources": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/Source" },
+      "description": "Model-level bibliography. Per-number sources still live on the parameter or effect."
+    },
+    "time": {
+      "type": "object",
+      "required": ["start", "end", "step"],
+      "additionalProperties": false,
+      "properties": {
+        "start": { "type": "number", "description": "First calendar year (step index 0)." },
+        "end": { "type": "number", "description": "Last calendar year (inclusive)." },
+        "step": { "enum": ["year", "month"] }
+      }
+    },
+    "entities": { "$ref": "#/definitions/Entities" },
+    "parameters": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/Parameter" }
+    },
+    "inputs": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/Input" }
+    },
+    "variables": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/definitions/Variable" }
+    },
+    "effects": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/Effect" }
+    },
+    "solves": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/SolveBlock" }
+    },
+    "outputs": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/definitions/Identifier" },
+      "description": "Variable, input or solve-unknown ids the UI charts by default."
+    },
+    "tests": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/ModelTest" },
+      "description": "Reproduction tests the model must pass. A model with no tests makes no checkable claim."
+    }
+  },
+
+  "definitions": {
+    "Identifier": {
+      "type": "string",
+      "pattern": "^[A-Za-z_][A-Za-z0-9_]*$",
+      "minLength": 1,
+      "maxLength": 64,
+      "description": "A name usable in an expression: letters, digits and underscore, not starting with a digit."
+    },
+
+    "SlugId": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]*$",
+      "minLength": 1,
+      "maxLength": 64,
+      "description": "An id that is never referenced from an expression (model, effect, solve), so hyphens are allowed."
+    },
+
+    "Source": {
+      "type": "object",
+      "required": ["label"],
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500,
+          "description": "Where the number comes from, in one line."
+        },
+        "kind": {
+          "enum": ["causal", "associational", "calibrated", "elicited", "assumed", "guess"],
+          "description": "What kind of claim the number is. Defaults to 'assumed' when omitted."
+        },
+        "url": { "type": "string", "maxLength": 2000 },
+        "note": { "type": "string", "maxLength": 2000 }
+      }
+    },
+
+    "Range": {
+      "type": "object",
+      "required": ["dist", "p5", "p95"],
+      "additionalProperties": false,
+      "description": "Uncertainty literal: the 5th and 95th percentile of the declared shape. Sampled once per Monte Carlo run.",
+      "properties": {
+        "dist": { "enum": ["normal", "lognormal", "uniform"] },
+        "p5": { "type": "number" },
+        "p95": { "type": "number" }
+      }
+    },
+
+    "Parameter": {
+      "type": "object",
+      "required": ["id", "value", "source"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/definitions/Identifier" },
+        "value": { "type": "number", "description": "Point value used when no seed is given." },
+        "unit": { "type": "string", "maxLength": 64 },
+        "range": { "$ref": "#/definitions/Range" },
+        "source": { "$ref": "#/definitions/Source" },
+        "byEntity": {
+          "type": "object",
+          "additionalProperties": { "type": "number" },
+          "description": "Per-entity overrides of value, keyed by entity id."
+        },
+        "bounds": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": { "type": "number" },
+          "description": "[lo, hi] the sampled value is clamped to (e.g. [0, 1] for a probability)."
+        }
+      }
+    },
+
+    "Curve": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": false,
+      "patternProperties": {
+        "^-?[0-9]+(\\.[0-9]+)?$": { "type": "number" }
+      },
+      "description": "Sparse curve keyed by calendar year as a string, e.g. {\"2026\": 0.1, \"2030\": 0.45}."
+    },
+
+    "Input": {
+      "type": "object",
+      "required": ["id", "curve"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/definitions/Identifier" },
+        "unit": { "type": "string", "maxLength": 64 },
+        "curve": { "$ref": "#/definitions/Curve" },
+        "interp": {
+          "enum": ["linear", "step", "logodds"],
+          "description": "Interpolation between keys. 'logodds' is for probabilities. Default 'linear'."
+        },
+        "outside": {
+          "enum": ["hold", "error"],
+          "description": "Behaviour outside the keyed range. Default 'hold'."
+        },
+        "byEntity": {
+          "type": "object",
+          "additionalProperties": { "$ref": "#/definitions/Curve" }
+        },
+        "source": { "$ref": "#/definitions/Source" }
+      }
+    },
+
+    "Variable": {
+      "type": "object",
+      "required": ["id", "equation"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/definitions/Identifier" },
+        "unit": { "type": "string", "maxLength": 64 },
+        "equation": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000,
+          "description": "Evaluated each step. Lags are written inline as x[t-1]."
+        },
+        "initial": {
+          "type": ["number", "string"],
+          "description": "Marks a stock: the value at t = 0. The equation then applies for t >= 1."
+        },
+        "history": {
+          "type": "array",
+          "items": { "type": "number" },
+          "description": "Values for t < 0 needed by deep lags. index 0 = t-1, 1 = t-2, ..."
+        },
+        "hook": {
+          "type": "boolean",
+          "description": "Whether effects may attach here. Default true."
+        },
+        "description": { "type": "string", "maxLength": 2000 }
+      }
+    },
+
+    "Effect": {
+      "type": "object",
+      "required": ["id", "target", "op", "expr", "source"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/definitions/SlugId" },
+        "target": { "$ref": "#/definitions/Identifier" },
+        "op": {
+          "enum": ["add", "multiply"],
+          "description": "add: summed then added to the target's base value; multiply: product applied after the adds."
+        },
+        "expr": { "type": "string", "minLength": 1, "maxLength": 2000 },
+        "unit": { "type": "string", "maxLength": 64 },
+        "source": { "$ref": "#/definitions/Source" },
+        "from": { "type": "number", "description": "Apply only from this calendar year." }
+      }
+    },
+
+    "SolveBlock": {
+      "type": "object",
+      "required": ["id", "unknown", "residual", "bracket"],
+      "additionalProperties": false,
+      "description": "Scalar equilibrium: find `unknown` in `bracket` such that `residual` = 0 (bisection).",
+      "properties": {
+        "id": { "$ref": "#/definitions/SlugId" },
+        "unknown": { "$ref": "#/definitions/Identifier" },
+        "residual": { "type": "string", "minLength": 1, "maxLength": 2000 },
+        "bracket": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": { "type": "number" }
+        },
+        "tol": { "type": "number", "exclusiveMinimum": 0 },
+        "maxIter": { "type": "integer", "minimum": 1, "maximum": 10000 },
+        "unit": { "type": "string", "maxLength": 64 },
+        "description": { "type": "string", "maxLength": 2000 }
+      }
+    },
+
+    "ModelTest": {
+      "type": "object",
+      "required": ["name", "at", "expr", "expected", "tol"],
+      "additionalProperties": false,
+      "properties": {
+        "name": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "at": { "type": "number", "description": "Calendar year at which to evaluate." },
+        "entity": { "type": "string", "maxLength": 64 },
+        "expr": { "type": "string", "minLength": 1, "maxLength": 2000 },
+        "expected": { "type": "number" },
+        "tol": { "type": "number", "minimum": 0, "description": "Absolute tolerance." }
+      }
+    },
+
+    "Entities": {
+      "type": "object",
+      "required": ["kind", "ids"],
+      "additionalProperties": false,
+      "properties": {
+        "kind": { "type": "string", "minLength": 1, "maxLength": 64 },
+        "ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1, "maxLength": 64 }
+        },
+        "roles": {
+          "type": "object",
+          "additionalProperties": { "type": "string" },
+          "description": "Role name -> entity id, or an expression over entity parameters."
+        }
+      }
+    }
+  }
+}

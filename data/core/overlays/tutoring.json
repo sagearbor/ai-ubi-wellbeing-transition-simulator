@@ -1,0 +1,72 @@
+{
+  "id": "tutoring",
+  "name": "Add an AI tutoring variable",
+  "description": "A new input (share of people with AI tutoring access) that raises income growth and wellbeing through two sourced effects. Neither base equation is rewritten.",
+  "inputs": [
+    {
+      "id": "aiTutoringAccess",
+      "unit": "share",
+      "curve": {
+        "2026": 0,
+        "2032": 0.6
+      },
+      "source": {
+        "label": "illustrative adoption path",
+        "kind": "assumed"
+      }
+    }
+  ],
+  "parameters": [
+    {
+      "id": "tutoringIncomeEffect",
+      "value": 0.04,
+      "unit": "share",
+      "range": {
+        "dist": "lognormal",
+        "p5": 0.01,
+        "p95": 0.1
+      },
+      "source": {
+        "label": "author guess",
+        "kind": "guess"
+      }
+    },
+    {
+      "id": "tutoringWellbeingEffect",
+      "value": 0.12,
+      "unit": "ladder",
+      "range": {
+        "dist": "normal",
+        "p5": 0.0,
+        "p95": 0.25
+      },
+      "source": {
+        "label": "author guess",
+        "kind": "guess"
+      }
+    }
+  ],
+  "effects": [
+    {
+      "id": "tutoring-income",
+      "target": "income",
+      "op": "multiply",
+      "expr": "1 + tutoringIncomeEffect * aiTutoringAccess",
+      "source": {
+        "label": "author guess",
+        "kind": "guess"
+      }
+    },
+    {
+      "id": "tutoring-wellbeing",
+      "target": "wellbeing",
+      "op": "add",
+      "unit": "ladder",
+      "expr": "tutoringWellbeingEffect * aiTutoringAccess",
+      "source": {
+        "label": "author guess",
+        "kind": "guess"
+      }
+    }
+  ]
+}
