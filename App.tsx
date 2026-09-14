@@ -242,6 +242,13 @@ const App: React.FC = () => {
   const [aboutDropdownOpen, setAboutDropdownOpen] = useState(false);
   const [overviewStep, setOverviewStep] = useState(0);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  /**
+   * The sidebar (world model presets, scenarios, parameters) and the footer clock (play, step,
+   * month slider) drive the WORLD simulation. The Lab and the Model Card are about other models
+   * with their own calendars, so those controls are hidden there rather than shown next to an
+   * unrelated model (review 2026-09-14, stage 5 gap "Other tabs still use unrelated world state").
+   */
+  const showWorldControls = activeTab !== 'lab' && activeTab !== 'modelcard';
   const [showStartHint, setShowStartHint] = useState(true);
   const [showShareModal, setShowShareModal] = useState(false);
   const [shareUrl, setShareUrl] = useState<string | null>(null);
@@ -388,6 +395,15 @@ const App: React.FC = () => {
       }
     }
   }, []);
+
+  // Leaving the world views for the Lab or Model Card pauses the world clock and closes its drawer,
+  // so it does not keep running out of sight.
+  useEffect(() => {
+    if (!showWorldControls) {
+      setIsPlaying(false);
+      setIsSidebarOpen(false);
+    }
+  }, [showWorldControls]);
 
   // Dismiss start hint when playing
   useEffect(() => {
@@ -1162,6 +1178,8 @@ const App: React.FC = () => {
         <div className="flex items-center gap-3">
           <button 
             onClick={() => setIsSidebarOpen(!isSidebarOpen)} 
+            hidden={!showWorldControls}
+            aria-label={isSidebarOpen ? 'Close world simulation settings' : 'Open world simulation settings'}
             className="lg:hidden p-2 -ml-2 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white rounded-lg active:bg-slate-100 dark:active:bg-slate-800"
           >
             {isSidebarOpen ? <X size={20} /> : <Menu size={20} />}
@@ -1268,15 +1286,15 @@ const App: React.FC = () => {
 
       <main className="flex-1 overflow-hidden flex relative">
         {/* Mobile Backdrop */}
-        {isSidebarOpen && (
+        {showWorldControls && isSidebarOpen && (
             <div 
                 className="fixed inset-0 bg-black/60 z-[140] lg:hidden backdrop-blur-sm transition-opacity"
                 onClick={() => setIsSidebarOpen(false)}
             />
         )}
 
-        {/* Sidebar Navigation */}
-        <aside className={`
+        {/* Sidebar Navigation (world simulation only) */}
+        <aside hidden={!showWorldControls} className={`
             fixed inset-y-0 left-0 z-[150] w-80 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 p-6 flex flex-col gap-6 shadow-2xl transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]
             lg:relative lg:translate-x-0 lg:bg-white dark:lg:bg-slate-900 lg:shadow-none lg:z-0
             ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}
@@ -2943,7 +2961,7 @@ effect(t)      = wellbeing_main(t) - wellbeing_paired(t)`}
         </section>
       </main>
 
-      <footer className="px-4 lg:px-6 py-3 lg:py-4 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 sticky bottom-0 z-[100] backdrop-blur-md shrink-0">
+      <footer hidden={!showWorldControls} className="px-4 lg:px-6 py-3 lg:py-4 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 sticky bottom-0 z-[100] backdrop-blur-md shrink-0">
         {/* A5: a custom model that does not compile blocks playback and says so, here, next to
             the controls it disables. The built-in engine is never used in its place. */}
         {pendingAutosave && (
