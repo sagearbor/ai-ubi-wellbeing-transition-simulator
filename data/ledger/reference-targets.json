@@ -870,9 +870,9 @@
       },
       "caveat": "published values are for the start of 2030; the reduced form is scored at end-2030 (disclosed timing mismatch, not re-tuned); the macro block was tuned to these same targets, so this is a fit, not an independent reproduction; tolerance borrowed from another quantity",
       "covers": [
-        "infile:korinek-2026::substantial scenario, US end-2030: headline unemployment 4.3% (published, but korinekTests.ts declares no tolerance for it; the 2.0pp labour-share band is borrowed here)"
+        "infile:korinek-2026::substantial scenario, US end-2030: headline unemployment 4.6% (Table 3 p.31; was mistranscribed as 4.3 until 2026-09-14; tolerance 2.0pp borrowed from the labour-share band)"
       ],
-      "notes": "The in-file test still expects 4.3 (the pre-correction value); the ledger uses the corrected Table 3 value 4.6."
+      "notes": "In-file test corrected 2026-09-14 from the mistranscribed 4.3 to Table 3's 4.6."
     },
     {
       "id": "kj-core-extreme-gdpBoostPct",
