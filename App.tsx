@@ -31,7 +31,7 @@ import {
   catchUp, corporationEditForCounterfactual, editCorporation, editCountry, headlineStats, historyForPrompt, historyForSave,
   historyFromSave, rebuildCounterfactual, recordRunInHistory, seekInHistory, seekWithCounterfactual, stepWithCounterfactual,
 } from './simulation/appState';
-import { formatBillionsUsd, formatUsdPerPerson } from './simulation/units';
+import { formatBillionsUsd, formatUsdPerPerson, millionsToBillionsUsd } from './simulation/units';
 import EquationErrorBanner from './components/EquationErrorBanner';
 
 // Helper for math rendering
@@ -969,7 +969,7 @@ const App: React.FC = () => {
       data['Adoption_Global'] = globalAdoption;
 
       // Global displacement gap
-      data['DisplacementGap_Global'] = point.state.globalDisplacementGap / 1e9; // Convert to billions
+      data['DisplacementGap_Global'] = millionsToBillionsUsd(point.state.globalDisplacementGap); // USD/person x millions of people -> billions
 
       Object.keys(point.state.countryData).forEach(id => {
         data[`Wellbeing_${id}`] = point.state.countryData[id].wellbeing;
@@ -1525,10 +1525,10 @@ const App: React.FC = () => {
                 <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-3 py-2 rounded-lg flex justify-between items-center shadow-sm">
                   <div className="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-bold tracking-widest flex items-center">
                     Gap
-                    <InfoTooltip text="Global displacement gap - aggregate lost wages minus UBI received across all countries." />
+                    <InfoTooltip text="Global displacement gap this month: lost labour income not covered by UBI, summed over countries (billions USD per month)." />
                   </div>
                   <div className={`text-sm font-bold font-mono ${state.globalDisplacementGap > 0 ? 'text-rose-600 dark:text-rose-400' : 'text-emerald-600 dark:text-emerald-400'}`}>
-                    {state.globalDisplacementGap > 1e12 ? `$${(state.globalDisplacementGap / 1e12).toFixed(1)}T` : state.globalDisplacementGap > 1e9 ? `$${(state.globalDisplacementGap / 1e9).toFixed(0)}B` : '$0'}
+                    {formatBillionsUsd(millionsToBillionsUsd(state.globalDisplacementGap))}
                   </div>
                 </div>
               </div>

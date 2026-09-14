@@ -55,3 +55,17 @@ describe('map headline stats (finding 13)', () => {
     expect(next.state.globalFund).toBeLessThan(run.state.globalFund + next.ledger.monthlyInflow);
   });
 });
+
+describe('global displacement gap units', () => {
+  it('is USD/person/month x millions of people, i.e. millions of USD; the display shows billions', async () => {
+    const { millionsToBillionsUsd } = await import('./units');
+    const anchored = PRESET_MODELS[0];
+    const runs = runMonths(initialRun(), 60, { model: anchored });
+    const s = runs[runs.length - 1].state;
+    const manual = Object.values(s.countryData).reduce((a, c) => a + (c.displacementGap ?? 0) * c.population, 0);
+    expect(s.globalDisplacementGap).toBeCloseTo(manual, 6);
+    // e.g. a 1 USD/person/month gap over 1,000 million people is 1,000 million = 1 billion USD.
+    expect(millionsToBillionsUsd(1 * 1000)).toBe(1);
+    expect(formatBillionsUsd(millionsToBillionsUsd(s.globalDisplacementGap))).not.toBe('$0');
+  });
+});

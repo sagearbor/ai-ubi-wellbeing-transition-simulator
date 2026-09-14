@@ -13,6 +13,14 @@ export function usdPerPerson(billionsUsd: number, populationMillions: number): n
   return populationMillions > 0 ? (billionsUsd / populationMillions) * 1000 : 0;
 }
 
+/**
+ * Sum over countries of (USD per person) x (population in millions) is in MILLIONS of USD; this
+ * converts it to billions (e.g. state.globalDisplacementGap, USD/person/month x millions of people).
+ */
+export function millionsToBillionsUsd(millionsUsd: number): number {
+  return millionsUsd / 1000;
+}
+
 /** A billions-of-USD amount for display: "$2.28B", "$410M", "$0". */
 export function formatBillionsUsd(billionsUsd: number): string {
   if (!Number.isFinite(billionsUsd) || billionsUsd === 0) return '$0';
