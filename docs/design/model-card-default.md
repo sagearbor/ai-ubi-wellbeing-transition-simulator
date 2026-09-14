@@ -194,12 +194,69 @@ Switches (difference from base at 10 y):
   a bound by construction.
 - Five UI parameters and the Equations tab describe an engine that no longer runs (C6).
 - Country and corporation records have no source column.
-- AT-3 fails; the race-to-bottom metric has not been reviewed for whether 0.6 is a meaningful bar.
+- AT-3 fails for a measurement reason, not a dynamics one: race-to-bottom risk is
+  `(selfish − 0.4·N) / (0.6·N)` over the corporation table, which is 1.0 in the all-selfish
+  starting state, but the harness only records states after a step, and in month 1 the
+  demand-collapse trigger flips about 20 of 79 corporations to "generous" because their customer
+  countries start below wellbeing 40. The recorded maximum is 0.578 against a 0.6 bar. The bar is
+  met by the initial state, not the dynamics; the test is left failing and the metric is not a
+  finding about the market.
 - Countries with no operating corporation never adopt AI.
 - The Futures tab is a separate influence model with its own assumptions; nothing here validates
   its probabilities.
 
-**Verdict:** the default is a coherent, deterministic, conserving mechanism model whose numbers
+## Candidate variant (stage 4): `evidence-anchored`
+
+Same corporations, adoption and money flows; only the wellbeing update changes, from the
+accumulating flow above to a level model (`MacroParameters.wellbeingMode = 'anchored'`):
+
+```
+target    = anchor(labour income, governance) + ubiEffect − unemploymentEffect
+wellbeing += (target − wellbeing) × 0.02 per month           (3-year half-life)
+labour income     = GDP per capita × labourShare / 0.60         (macro block, Korinek reduced form)
+anchor            = 7.454 + 5.103·ln(income) + 7.658·governance (WHR 2015-2025 fit, R² 0.65)
+ubiEffect         = 4 × ln(1 + monthly UBI / monthly labour income)   [index points; p5-p95 2-5]
+unemploymentEffect = 0.45 × (unemployment − natural) in pp            [index points; p5-p95 0.3-1.0]
+```
+
+Initial wellbeing comes from the latest World Happiness Report ladder × 10 (US ≈ 70) instead of
+the unsourced `gdp/1200 + 40` rule (US 92.5); countries the WHR does not cover fall back to the
+rule. The legacy levers `displacementRate` and `gdpScaling` do nothing in this mode (disclosed);
+the macro block's `automationShare`, `reemploymentMonths`, `laborShareSensitivity`,
+`productivityGain` become the live levers.
+
+| Relationship | Kind | Population and dates | Source |
+|---|---|---|---|
+| Transfer → life satisfaction, log in transfer/income, ~0.4 ladder points per doubling | calibrated to evidence | Kenya (GiveDirectly, 2011-2019), Finland (2017-18), US pilots (2019-22); pooled meta-analysis of 45 studies | `docs/design/research/cash-transfer-wellbeing-evidence.md`; McGuire, Kaiser & Bach-Mortensen 2022 (d = 0.13 SD) |
+| Unemployment → mean life satisfaction, ~0.045 ladder points per pp | calibrated to evidence (direct GSOEP effect + Eurobarometer/US spillover) | Germany 1984-2011; Europe/US 1975-1997 | same note; Winkelmann & Winkelmann 1998, Di Tella, MacCulloch & Oswald 2001/2003, Kassenboehmer & Haisken-DeNew 2009 |
+| Labour income anchor | associational, calibrated | 106 countries 2015-2025 | WHR ladder, World Bank GDP (as above) |
+| GDP path, labour share, displaced pool | calibrated, reduced-form | US 2026-2030 | Korinek et al. 2026 published outputs |
+
+Not validated for: a permanent, simultaneous 100+-country transfer; rich-country UBI at national
+scale; persistence beyond ~2-3 years (the evidence's average follow-up).
+
+Response review (`npm run profile:default -- --model=evidence-anchored`):
+
+| Horizon | avg wellbeing | US wellbeing | poor-8 wellbeing | US adoption | countries in crisis |
+|---|---|---|---|---|---|
+| 5 y | 58.4 | 68.9 | 41.3 | 0.501 | 0 |
+| 10 y | 58.6 | 69.5 | 43.0 | 0.773 | 0 |
+
+- Every lever, public or macro, moves 10-year average wellbeing by at most ±0.4 points for a ±10%
+  nudge; all sweeps classify as linear or flat. "All global" distribution now adds +0.4 to the
+  poor-8 mean (legacy: +58), which is the order the transfer evidence supports at ~16 USD/month.
+- The transition is close to wellbeing-neutral under `DEFAULT_MACRO` because productivity gains
+  (+54% GDP at 77% adoption) roughly offset the labour-share fall (0.60 → 0.35) in the income
+  anchor, and re-employment at 12 months keeps the displaced pool near 2 pp. That is a statement
+  about the Korinek-calibrated "substantial" scenario, not about AI in general; the "extreme"
+  parameters (automationShare 0.9, reemploymentMonths 18) are one slider away and are the case to
+  review next.
+- No thresholds, no crisis rule, no floor hits in the reviewed region.
+
+Status: **candidate**. It is offered as a preset so the two wellbeing models can be compared side
+by side; switching the default is the owner's decision after external review.
+
+**Verdict (legacy default):** the default is a coherent, deterministic, conserving mechanism model whose numbers
 are assumptions. It qualifies as the *illustrative default* with this card attached. It does not
 qualify as a reviewed default until C5 is recalibrated with evidence and the displacement
 assumption is either sourced or bounded.

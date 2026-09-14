@@ -10,6 +10,9 @@ import poolAllocation from '../../data/core/pool-allocation.json';
 import marketClearing from '../../data/core/market-clearing.json';
 import cohortFlow from '../../data/core/cohort-flow.json';
 import retraining from '../../data/core/overlays/retraining.json';
+import korinek2026 from '../../data/core/korinek-2026.json';
+import korinekModest from '../../data/core/overlays/korinek-modest.json';
+import korinekExtreme from '../../data/core/overlays/korinek-extreme.json';
 
 export interface FixtureEntry {
   model: CoreModel;
@@ -25,6 +28,11 @@ export const CORE_FIXTURES: FixtureEntry[] = [
   { model: poolAllocation as unknown as CoreModel, overlays: [], label: 'A shared pool with absorptive-capacity limits' },
   { model: marketClearing as unknown as CoreModel, overlays: [], label: 'Linear supply and demand with a demand shift' },
   { model: cohortFlow as unknown as CoreModel, overlays: [retraining as unknown as Overlay], label: 'Displaced-worker cohort pool (monthly inflow/outflow)' },
+  {
+    model: korinek2026 as unknown as CoreModel,
+    overlays: [korinekModest as unknown as Overlay, korinekExtreme as unknown as Overlay],
+    label: 'Korinek et al. 2026 scenarios, US 2030 (published model, reduced form)',
+  },
 ];
 
 export function findFixture(id: string): FixtureEntry | undefined {

@@ -21,7 +21,7 @@
  */
 
 import { classifyShape, type ShapeDetail } from '../src/core/sensitivity';
-import { initialRun, advanceRun, type SimulationRun } from '../simulation/run';
+import { initialRun, advanceRun, initOptionsFor, type SimulationRun } from '../simulation/run';
 import { INITIAL_CORPORATIONS, PRESET_MODELS, DEFAULT_MACRO } from '../constants';
 import type { Corporation, ModelParameters } from '../types';
 
@@ -130,6 +130,31 @@ export const NUMERIC_LEVERS: NumericLever[] = [
   },
 ];
 
+/**
+ * Levers that exist only when the model carries a macro block. Profiled in addition to the
+ * public ones whenever `scenario.model.macro` is present (the evidence-anchored candidate).
+ */
+export const MACRO_LEVERS: NumericLever[] = (
+  [
+    ['automationShare', 'Share of affected cognitive tasks automated rather than augmented'],
+    ['reemploymentMonths', 'Mean months a displaced worker stays in the pool'],
+    ['laborShareSensitivity', 'Labour-share fall per unit of affected task share'],
+    ['productivityGain', 'GDP boost per unit of affected task share'],
+    ['ubiEffectPerDoubling', 'Wellbeing gained when a transfer doubles labour income (index points)'],
+    ['unemploymentEffectPerPoint', 'Wellbeing lost per point of excess unemployment'],
+  ] as const
+).map(([id, label]) => ({
+  id,
+  label,
+  kind: 'model' as const,
+  base: (s: Scenario) => (s.model.macro as any)?.[id] ?? 0,
+  set: (s: Scenario, v: number) => ({ ...s, model: { ...s.model, macro: { ...s.model.macro!, [id]: v } } }),
+}));
+
+export function leversFor(s: Scenario): NumericLever[] {
+  return s.model.macro ? [...NUMERIC_LEVERS, ...MACRO_LEVERS.filter((l) => (s.model.macro as any)[l.id] !== undefined)] : NUMERIC_LEVERS;
+}
+
 export const CATEGORICAL_SWITCHES: CategoricalSwitch[] = [
   {
     id: 'distributionStrategy',
@@ -161,7 +186,7 @@ export function defaultScenario(): Scenario {
 export function runScenario(s: Scenario, horizons: number[]): Record<number, Headline> {
   const out: Record<number, Headline> = {};
   const last = Math.max(...horizons);
-  let run = initialRun(s.corporations);
+  let run = initialRun(s.corporations, undefined, initOptionsFor(s.model));
   for (let m = 1; m <= last; m++) {
     run = advanceRun(run, { model: s.model });
     if (horizons.includes(m)) out[m] = headline(run);
@@ -265,8 +290,9 @@ export function runResponseProfile(opts: { scenario?: Scenario; horizons?: numbe
     modelId: s.model.id,
     horizons,
     base,
-    levers: NUMERIC_LEVERS.map((l) => profileLever(l, s, horizons, base)),
-    switches: CATEGORICAL_SWITCHES.map((sw) => profileSwitch(sw, s, horizons, base)),
+    levers: leversFor(s).map((l) => profileLever(l, s, horizons, base)),
+    // The macro on/off switch is meaningless for a model that already carries a macro block.
+    switches: CATEGORICAL_SWITCHES.filter((sw) => !(sw.id === 'macro' && s.model.macro)).map((sw) => profileSwitch(sw, s, horizons, base)),
   };
 }
 

@@ -57,6 +57,29 @@ export interface MacroParameters {
    * (0 = off, which keeps the classic engine's wellbeing behaviour; the hindcast uses ~0.02).
    */
   wellbeingAnchorRate: number;
+  /**
+   * Stage 4 (2026-09-13). 'legacy' (default): the classic flow update — monthly UBI boost minus
+   * displacement friction, crisis and subsistence penalties, accumulating with no level anchor.
+   * 'anchored': a level model. Each month wellbeing relaxes at `wellbeingAnchorRate` toward
+   *   target = anchor(labour income, governance) + ubiEffect(transfer / income) − unemploymentEffect,
+   * where labour income = GDP per capita × labourShare / 0.60 (so a falling labour share lowers
+   * the anchor), ubiEffect = ubiEffectPerDoubling × ln(1 + s) with s = monthly UBI / monthly
+   * labour income (the log form the cash-transfer meta-analysis supports: diminishing points per
+   * extra dollar), and unemploymentEffect = unemploymentEffectPerPoint × excess unemployment in
+   * percentage points. Both coefficients are evidence-calibrated with ranges; see
+   * docs/design/research/cash-transfer-wellbeing-evidence.md and the model card.
+   */
+  wellbeingMode?: 'legacy' | 'anchored';
+  /**
+   * Anchored mode: index points (0-100) gained when a sustained transfer doubles labour income
+   * (s = 1). Evidence: ~0.35-0.45 ladder points per doubling => 3.5-4.5 index; p5-p95 ~2-5.
+   */
+  ubiEffectPerDoubling?: number;
+  /**
+   * Anchored mode: index points lost per percentage point of unemployment above the natural rate.
+   * Evidence: ~0.04-0.05 ladder points per pp (direct + spillover) => ~0.45 index; p5-p95 0.3-1.0.
+   */
+  unemploymentEffectPerPoint?: number;
 }
 
 export interface SimulationState {

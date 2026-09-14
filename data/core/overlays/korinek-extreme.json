@@ -1,0 +1,148 @@
+{
+  "id": "korinek-extreme",
+  "name": "Korinek et al. 2026, extreme-change scenario",
+  "description": "Swaps korinek-2026.json from the substantial scenario to the EXTREME one: transformative AI, nearly half of today's cognitive work done by AI by 2030. Replaces the exogenous adoption curve (end point 0.45) and the two scenario-specific parameters (psi 0.9, re-employment 18 months). This is the scenario the reduced form is most strained by: it reproduces the published GDP boost to within 0.7pp and cognitive unemployment to within 0.7pp, inside tolerance but on a mechanism with none of the paper's structure behind it.",
+  "parameters": [
+    {
+      "id": "automationShare",
+      "value": 0.9,
+      "unit": "share",
+      "bounds": [
+        0,
+        1
+      ],
+      "range": {
+        "dist": "uniform",
+        "p5": 0.8,
+        "p95": 1
+      },
+      "source": {
+        "label": "Korinek et al. 2026 reproduction, reduced form; see constants.ts KORINEK_SCENARIOS (extreme: psi = 0.9)",
+        "kind": "calibrated",
+        "note": "Fraction of AI-affected cognitive tasks automated rather than augmented, chosen per scenario so the displaced pool lands on the published cognitive-unemployment number."
+      }
+    },
+    {
+      "id": "reemploymentMonths",
+      "value": 18,
+      "unit": "months",
+      "range": {
+        "dist": "uniform",
+        "p5": 12,
+        "p95": 24
+      },
+      "source": {
+        "label": "Korinek et al. 2026 reproduction, reduced form; see constants.ts KORINEK_SCENARIOS (extreme: 18 months)",
+        "kind": "assumed",
+        "note": "This repo's own displaced-pool residence time, not the paper's search discount mu."
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "id": "ai_adoption",
+      "unit": "share",
+      "curve": {
+        "2027": 0.0152942016468,
+        "2028": 0.0551404316968,
+        "2029": 0.196532514887,
+        "2030": 0.378343628126,
+        "2031": 0.45,
+        "2026.5": 0.01,
+        "2026.5833333333333": 0.0105963132394,
+        "2026.6666666666667": 0.0112859073555,
+        "2026.75": 0.0120830202826,
+        "2026.8333333333333": 0.0130039432737,
+        "2026.9166666666667": 0.0140672763764,
+        "2027.0833333333333": 0.0167087699923,
+        "2027.1666666666667": 0.0183381950068,
+        "2027.25": 0.0202131438407,
+        "2027.3333333333333": 0.022368010891,
+        "2027.4166666666667": 0.0248411547867,
+        "2027.5": 0.0276750727118,
+        "2027.5833333333333": 0.0309164785907,
+        "2027.6666666666667": 0.0346162432771,
+        "2027.75": 0.0388291461213,
+        "2027.8333333333333": 0.0436133790128,
+        "2027.9166666666667": 0.0490297375845,
+        "2028.0833333333333": 0.0620074512123,
+        "2028.1666666666667": 0.0696904365692,
+        "2028.25": 0.078244030102,
+        "2028.3333333333333": 0.0877147263207,
+        "2028.4166666666667": 0.0981372988472,
+        "2028.5": 0.109530956992,
+        "2028.5833333333333": 0.121895470385,
+        "2028.6666666666667": 0.135207584654,
+        "2028.75": 0.1494181187,
+        "2028.8333333333333": 0.16445016468,
+        "2028.9166666666667": 0.180198786189,
+        "2029.0833333333333": 0.213296780342,
+        "2029.1666666666667": 0.230319188383,
+        "2029.25": 0.247416323035,
+        "2029.3333333333333": 0.264401530904,
+        "2029.4166666666667": 0.281092999816,
+        "2029.5": 0.297321398377,
+        "2029.5833333333333": 0.312936410295,
+        "2029.6666666666667": 0.327811661378,
+        "2029.75": 0.341847761938,
+        "2029.8333333333333": 0.354973426712,
+        "2029.9166666666667": 0.367144845284,
+        "2030.0833333333333": 0.388573734139,
+        "2030.1666666666667": 0.397857798644,
+        "2030.25": 0.406233241139,
+        "2030.3333333333333": 0.413748459682,
+        "2030.4166666666667": 0.420459332864,
+        "2030.5": 0.426426166229,
+        "2030.5833333333333": 0.431711147591,
+        "2030.6666666666667": 0.436376319625,
+        "2030.75": 0.440482039224,
+        "2030.8333333333333": 0.444085869485,
+        "2030.9166666666667": 0.447241838908
+      },
+      "interp": "linear",
+      "outside": "hold",
+      "source": {
+        "label": "Scenario input: share of US cognitive tasks performed by AI by end-2030 (0.45) (their m x d), ramped from 1% in mid-2026 along the logistic path in validation/korinek.ts::adoptionPath",
+        "kind": "assumed",
+        "note": "Korinek et al. treat the capability/adoption path as an exogenous input and derive outcomes from it; this model does the same. The 2030 end point (0.118 substantial, 0.023 modest, 0.45 extreme) is from the paper's scenarios; the logistic shape between mid-2026 and end-2030 is this repo's own smoothing assumption, not the paper's."
+      }
+    }
+  ],
+  "tests": [
+    {
+      "name": "extreme scenario, US end-2030: GDP per capita +32.4% vs the no-AI path (korinekTests.ts tolerance 2.0pp)",
+      "at": 2031,
+      "expr": "gdp_boost_pct",
+      "expected": 32.4,
+      "tol": 2
+    },
+    {
+      "name": "extreme scenario, US end-2030: labour share 45.2% (korinekTests.ts tolerance 2.0pp)",
+      "at": 2031,
+      "expr": "labor_share_pct",
+      "expected": 45.2,
+      "tol": 2
+    },
+    {
+      "name": "extreme scenario, US end-2030: cognitive-worker unemployment 17.9% (korinekTests.ts tolerance 2.5pp)",
+      "at": 2031,
+      "expr": "cognitive_unemployment_pct",
+      "expected": 17.9,
+      "tol": 2.5
+    },
+    {
+      "name": "extreme scenario, US end-2030: headline unemployment 11.9% (published; korinekTests.ts declares no tolerance, 2.0pp borrowed from the labour-share band)",
+      "at": 2031,
+      "expr": "unemployment_pct",
+      "expected": 11.9,
+      "tol": 2
+    },
+    {
+      "name": "extreme scenario: the adoption input reaches 0.45 at end-2030",
+      "at": 2031,
+      "expr": "ai_adoption",
+      "expected": 0.45,
+      "tol": 1e-9
+    }
+  ]
+}

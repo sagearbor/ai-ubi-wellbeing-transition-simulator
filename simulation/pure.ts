@@ -83,10 +83,34 @@ export function applyMacroDynamics(country: CountryStats, macro: MacroParameters
   country.unemployment = Math.min(0.6, country.naturalUnemployment + country.displacedPool);
   country.cognitiveUnemployment = Math.min(0.9, country.naturalUnemployment + country.displacedPool / country.cognitiveShare);
 
-  if (macro.wellbeingAnchorRate > 0) {
+  // Legacy mode only: relax toward the GDP/governance anchor here. Anchored mode does its whole
+  // wellbeing update in Phase 4, once that month's UBI is known.
+  if (macro.wellbeingAnchorRate > 0 && (macro.wellbeingMode ?? 'legacy') === 'legacy') {
     const anchor = wellbeingAnchor(country.gdpPerCapita, country.governance);
     country.wellbeing += (anchor - country.wellbeing) * macro.wellbeingAnchorRate;
   }
+}
+
+/**
+ * Stage 4 "anchored" wellbeing target for one country (see MacroParameters.wellbeingMode).
+ * Pure; returns the level wellbeing relaxes toward this month, and its parts for diagnostics.
+ */
+export function anchoredWellbeingTarget(
+  country: CountryStats,
+  macro: MacroParameters,
+  monthlyUbiPerCapita: number,
+): { target: number; anchor: number; ubiEffect: number; unemploymentEffect: number; labourIncome: number } {
+  const laborShare = country.laborShare ?? BASE_LABOR_SHARE;
+  // Labour income per person per year: GDP scaled by the labour share relative to its no-AI value.
+  const labourIncome = country.gdpPerCapita * (laborShare / BASE_LABOR_SHARE);
+  const anchor = wellbeingAnchor(labourIncome, country.governance);
+  const monthlyIncome = labourIncome / 12;
+  const share = monthlyIncome > 0 ? monthlyUbiPerCapita / monthlyIncome : 0;
+  const perDoubling = macro.ubiEffectPerDoubling ?? 0;
+  const ubiEffect = perDoubling > 0 && share > 0 ? perDoubling * Math.log(1 + share) : 0;
+  const excessUnemployment = Math.max(0, (country.unemployment ?? 0) - (country.naturalUnemployment ?? 0));
+  const unemploymentEffect = (macro.unemploymentEffectPerPoint ?? 0) * excessUnemployment * 100;
+  return { target: anchor + ubiEffect - unemploymentEffect, anchor, ubiEffect, unemploymentEffect, labourIncome };
 }
 
 // ============================================================================
@@ -794,8 +818,14 @@ export function stepSimulationPure(input: SimulationInput): SimulationOutput {
       : (scaledUBI / utilityScale) * 120;
 
     // === 5. Displacement Gap Calculation ===
+    const anchored = !!model.macro && model.macro.wellbeingMode === 'anchored';
     const monthlyWage = country.gdpPerCapita / 12;
-    const lostWages = monthlyWage * country.aiAdoption * model.displacementRate;
+    // Legacy: a fixed share of all wages vanishes at full adoption, permanently. Anchored: the
+    // labour income actually lost against the no-AI path (labour share falls as tasks automate;
+    // productivity gains raise GDP), never negative for the gap.
+    const lostWages = anchored
+      ? Math.max(0, (country.gdpNoAi ?? country.gdpPerCapita) / 12 - monthlyWage * ((country.laborShare ?? BASE_LABOR_SHARE) / BASE_LABOR_SHARE))
+      : monthlyWage * country.aiAdoption * model.displacementRate;
     const displacementGap = Math.max(0, lostWages - totalUBI);
     country.displacementGap = displacementGap;
     totalDisplacementGap += displacementGap * country.population;
@@ -850,7 +880,16 @@ export function stepSimulationPure(input: SimulationInput): SimulationOutput {
       wellbeingBase += 2.0; // Increased from 0.8 - thriving societies
     }
 
-    country.wellbeing = Math.max(1, Math.min(100, wellbeingBase));
+    if (anchored) {
+      // Stage 4 level model: none of the legacy flow terms above apply; wellbeing relaxes toward
+      // an evidence-calibrated target (anchor on labour income and governance, plus a saturating
+      // transfer effect, minus an unemployment effect). See anchoredWellbeingTarget.
+      const { target } = anchoredWellbeingTarget(country, model.macro!, totalUBI);
+      const rate = model.macro!.wellbeingAnchorRate;
+      country.wellbeing = Math.max(1, Math.min(100, country.wellbeing + (target - country.wellbeing) * rate));
+    } else {
+      country.wellbeing = Math.max(1, Math.min(100, wellbeingBase));
+    }
     totalWellbeing += country.wellbeing;
 
     // Update wellbeing trend (rolling 6-month window for adaptive mechanisms)
