@@ -27,7 +27,11 @@ import { getRedTeamAnalysis, getSimulationSummary } from './services/geminiServi
 import { rateModel, getLeaderboard, recordRun, listModels } from './src/services/modelStorage';
 import { parseEquationSet, CompiledEquationSet, EquationError } from './src/services/equationParser';
 import { advanceRun, initialRun, type RunInputs, type SimulationRun, initOptionsFor } from './simulation/run';
-import { catchUp, historyForPrompt, historyForSave, historyFromSave, recordRunInHistory, seekInHistory } from './simulation/appState';
+import {
+  catchUp, corporationEditForCounterfactual, editCorporation, editCountry, headlineStats, historyForPrompt, historyForSave,
+  historyFromSave, rebuildCounterfactual, recordRunInHistory, seekInHistory, seekWithCounterfactual, stepWithCounterfactual,
+} from './simulation/appState';
+import { formatBillionsUsd, formatUsdPerPerson } from './simulation/units';
 import EquationErrorBanner from './components/EquationErrorBanner';
 
 // Helper for math rendering
@@ -188,13 +192,6 @@ const TourOverlay: React.FC<{ step: number, onNext: () => void, onBack: () => vo
 };
 
 // Helper for dynamic fund formatting
-const formatFundValue = (val: number) => {
-    if (val === 0) return "$0.0B";
-    if (val >= 1e9) return `$${(val / 1e9).toFixed(1)}B`;
-    if (val >= 1e6) return `$${(val / 1e6).toFixed(1)}M`;
-    return `$${val.toFixed(0)}`;
-};
-
 const App: React.FC = () => {
   const [model, setModel] = useState<ModelParameters>(PRESET_MODELS[0]);
   const [history, setHistory] = useState<HistoryPoint[]>([]);
@@ -245,6 +242,13 @@ const App: React.FC = () => {
   const [aboutDropdownOpen, setAboutDropdownOpen] = useState(false);
   const [overviewStep, setOverviewStep] = useState(0);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  /**
+   * The sidebar (world model presets, scenarios, parameters) and the footer clock (play, step,
+   * month slider) drive the WORLD simulation. The Lab and the Model Card are about other models
+   * with their own calendars, so those controls are hidden there rather than shown next to an
+   * unrelated model (review 2026-09-14, stage 5 gap "Other tabs still use unrelated world state").
+   */
+  const showWorldControls = activeTab !== 'lab' && activeTab !== 'modelcard';
   const [showStartHint, setShowStartHint] = useState(true);
   const [showShareModal, setShowShareModal] = useState(false);
   const [shareUrl, setShareUrl] = useState<string | null>(null);
@@ -312,6 +316,14 @@ const App: React.FC = () => {
   const [run, setRun] = useState<SimulationRun>(baseRun);
   /** The corporation roster month 0 starts from: INITIAL_CORPORATIONS, or a scenario's overrides. */
   const [baseCorporations, setBaseCorporations] = useState<Corporation[]>(INITIAL_CORPORATIONS);
+
+  /**
+   * The paired no-UBI counterfactual (review 2026-09-14, finding 2): the same month-0 run
+   * (`baseRun`), model, equations and corporation edits as the main run, with every contribution
+   * rate held at 0. Stepped, sought, reset and rebuilt together with `run`; Charts draws it.
+   */
+  const [pairedRun, setPairedRun] = useState<SimulationRun>(baseRun);
+  const [pairedHistory, setPairedHistory] = useState<HistoryPoint[]>([]);
 
   const state = run.state;
   const corporations = run.corporations;
@@ -384,6 +396,15 @@ const App: React.FC = () => {
     }
   }, []);
 
+  // Leaving the world views for the Lab or Model Card pauses the world clock and closes its drawer,
+  // so it does not keep running out of sight.
+  useEffect(() => {
+    if (!showWorldControls) {
+      setIsPlaying(false);
+      setIsSidebarOpen(false);
+    }
+  }, [showWorldControls]);
+
   // Dismiss start hint when playing
   useEffect(() => {
     if (isPlaying) setShowStartHint(false);
@@ -427,6 +448,8 @@ const App: React.FC = () => {
     setBaseRun(freshA);
     setRun(freshA);
     setHistory([]);
+    setPairedRun(freshA);
+    setPairedHistory([]);
 
     // The comparison panel is reset with its own roster so both start at month 0 together.
     const freshB = initialRun(comparisonBaseRun.corporations, undefined, initOptionsFor(comparisonModel));
@@ -474,12 +497,9 @@ const App: React.FC = () => {
   // ============================================================================
 
   const updateCorporation = useCallback((id: string, updates: Partial<Corporation>) => {
-    setRun(r => ({
-      ...r,
-      corporations: r.corporations.map(corp =>
-        corp.id === id ? { ...corp, ...updates } : corp
-      )
-    }));
+    setRun(r => editCorporation(r, id, updates));
+    // The counterfactual gets the same edit, except its contribution rate stays at 0.
+    setPairedRun(r => editCorporation(r, id, corporationEditForCounterfactual(updates)));
   }, []);
 
   // ============================================================================
@@ -489,19 +509,9 @@ const App: React.FC = () => {
   // ============================================================================
 
   const updateCountry = useCallback((id: string, updates: Partial<CountryStats>) => {
-    setRun(r => ({
-      ...r,
-      state: {
-        ...r.state,
-        countryData: {
-          ...r.state.countryData,
-          [id]: {
-            ...r.state.countryData[id],
-            ...updates
-          }
-        }
-      }
-    }));
+    // Country edits are not the intervention, so both runs of the pair receive them.
+    setRun(r => editCountry(r, id, () => updates));
+    setPairedRun(r => editCountry(r, id, () => updates));
   }, []);
 
   // ============================================================================
@@ -654,6 +664,21 @@ const App: React.FC = () => {
     setBaseCorporations(loaded.base.corporations);
     setRun(loaded.run);
     setHistory(loaded.history);
+    // Save files carry only the main timeline; the counterfactual is replayed from the same
+    // month-0 run with the saved model (and the saved custom equations, when they compile).
+    const savedConfig = saved.activeModelConfig;
+    const savedEquations = savedConfig ? parseEquationSet(savedConfig.equations) : null;
+    if (!savedEquations || savedEquations.valid) {
+      const cf = rebuildCounterfactual(loaded.base, loaded.history, loaded.run.state.month, {
+        model: saved.model,
+        equations: savedEquations?.compiledEquations,
+      });
+      setPairedRun(cf.paired);
+      setPairedHistory(cf.pairedHistory);
+    } else {
+      setPairedRun(loaded.base);
+      setPairedHistory([]);
+    }
     setModel(saved.model);
     if (saved.activeModelConfig !== undefined) setActiveModelConfig(saved.activeModelConfig);
     setIsPlaying(false);
@@ -694,16 +719,19 @@ const App: React.FC = () => {
     // engine under the custom model's label. It refuses to run and the banner says why.
     if (!canStep) return;
 
-    const next = advanceRun(run, runInputs);
-    setRun(next);
-    setHistory(h => recordRunInHistory(h, next));
+    // The main run and its paired no-UBI counterfactual always advance together.
+    const next = stepWithCounterfactual({ run, paired: pairedRun }, runInputs);
+    setRun(next.run);
+    setHistory(h => recordRunInHistory(h, next.run));
+    setPairedRun(next.paired);
+    setPairedHistory(h => recordRunInHistory(h, next.paired));
 
     if (comparisonMode) {
       const nextB = advanceRun(comparisonRun, comparisonInputs);
       setComparisonRun(nextB);
       setComparisonHistory(h => recordRunInHistory(h, nextB));
     }
-  }, [canStep, run, runInputs, comparisonMode, comparisonRun, comparisonInputs]);
+  }, [canStep, run, pairedRun, runInputs, comparisonMode, comparisonRun, comparisonInputs]);
 
   useEffect(() => {
     let timer: any;
@@ -722,31 +750,21 @@ const App: React.FC = () => {
   const handleSeek = (m: number) => {
     setIsPlaying(false);
     if (!canStep && m !== 0) return;
-    setRun(seekInHistory(history, m, runInputs, baseRun));
+    const pair = seekWithCounterfactual(history, pairedHistory, m, runInputs, baseRun);
+    setRun(pair.run);
+    setPairedRun(pair.paired);
     if (comparisonMode) {
       setComparisonRun(seekInHistory(comparisonHistory, m, comparisonInputs, comparisonBaseRun));
     }
   };
 
   const handleCountryInvestment = (id: string, delta: number) => {
-    setRun(r => {
-      const country = r.state.countryData[id];
-      if (!country) return r;
-      return {
-        ...r,
-        state: {
-          ...r.state,
-          countryData: {
-            ...r.state.countryData,
-            [id]: {
-              ...country,
-              companiesJoined: Math.max(0, country.companiesJoined + delta),
-              aiAdoption: Math.max(0.01, Math.min(0.999, country.aiAdoption + (delta / 50)))
-            }
-          }
-        }
-      };
+    const invest = (country: CountryStats): Partial<CountryStats> => ({
+      companiesJoined: Math.max(0, country.companiesJoined + delta),
+      aiAdoption: Math.max(0.01, Math.min(0.999, country.aiAdoption + (delta / 50)))
     });
+    setRun(r => editCountry(r, id, invest));
+    setPairedRun(r => editCountry(r, id, invest));
   };
 
   // Unified entity selection handlers
@@ -790,6 +808,7 @@ const App: React.FC = () => {
     setSelectedCorpIds(new Set(filtered.map(c => c.id)));
   };
 
+  // Contribution rates are the counterfactual's one difference, so this edits the main run only.
   const handleBulkUpdateContribution = (newRate: number) => {
     setRun(r => ({
       ...r,
@@ -942,7 +961,8 @@ const App: React.FC = () => {
       const data: any = {
           month: point.month,
           date: formatMonthDate(point.month),
-          fund: point.state.globalFund / 1e9
+          // globalFund is already billions USD (the global pool this month).
+          fund: point.state.globalFund
       };
       data['Wellbeing_Global'] = point.state.averageWellbeing;
       const globalAdoption = (Object.values(point.state.countryData) as CountryStats[]).reduce((acc, curr) => acc + curr.aiAdoption, 0) / INITIAL_COUNTRIES.length * 100;
@@ -1158,6 +1178,8 @@ const App: React.FC = () => {
         <div className="flex items-center gap-3">
           <button 
             onClick={() => setIsSidebarOpen(!isSidebarOpen)} 
+            hidden={!showWorldControls}
+            aria-label={isSidebarOpen ? 'Close world simulation settings' : 'Open world simulation settings'}
             className="lg:hidden p-2 -ml-2 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white rounded-lg active:bg-slate-100 dark:active:bg-slate-800"
           >
             {isSidebarOpen ? <X size={20} /> : <Menu size={20} />}
@@ -1264,15 +1286,15 @@ const App: React.FC = () => {
 
       <main className="flex-1 overflow-hidden flex relative">
         {/* Mobile Backdrop */}
-        {isSidebarOpen && (
+        {showWorldControls && isSidebarOpen && (
             <div 
                 className="fixed inset-0 bg-black/60 z-[140] lg:hidden backdrop-blur-sm transition-opacity"
                 onClick={() => setIsSidebarOpen(false)}
             />
         )}
 
-        {/* Sidebar Navigation */}
-        <aside className={`
+        {/* Sidebar Navigation (world simulation only) */}
+        <aside hidden={!showWorldControls} className={`
             fixed inset-y-0 left-0 z-[150] w-80 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 p-6 flex flex-col gap-6 shadow-2xl transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]
             lg:relative lg:translate-x-0 lg:bg-white dark:lg:bg-slate-900 lg:shadow-none lg:z-0
             ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}
@@ -1462,12 +1484,14 @@ const App: React.FC = () => {
             <div className="h-full flex flex-col gap-2">
               {/* Compact Stats Row - Primary */}
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 shrink-0">
-                {[
-                  { label: 'Wellbeing', val: state.averageWellbeing.toFixed(1), color: 'text-emerald-600 dark:text-emerald-400', desc: "Avg Human Wellbeing (0-100). Includes UBI utility + displacement friction." },
-                  { label: 'Dividend', val: `$${(state.globalFund / (INITIAL_COUNTRIES.reduce((a,b)=>a+b.population,0)*10)).toFixed(0)}`, color: 'text-amber-600 dark:text-amber-400', desc: "Monthly payment per citizen, weighted by GDP scaling parameter." },
-                  { label: 'Adoption', val: `${((Object.values(state.countryData) as CountryStats[]).reduce((acc, curr) => acc + curr.aiAdoption, 0) / INITIAL_COUNTRIES.length * 100).toFixed(0)}%`, color: 'text-blue-600 dark:text-blue-400', desc: "Percentage of corporate value produced by Autonomous Systems." },
-                  { label: 'Fund', val: formatFundValue(state.globalFund), color: 'text-slate-900 dark:text-white', desc: "Total accumulated Surplus Pool available for distribution." }
-                ].map((stat, i) => (
+                {/* Review 2026-09-14 finding 13: values come from headlineStats (simulation/appState.ts),
+                    which converts units with the same helper the engine uses. */}
+                {(() => { const hs = headlineStats(state); return [
+                  { label: 'Wellbeing', val: hs.meanCountryWellbeing.toFixed(1), color: 'text-emerald-600 dark:text-emerald-400', desc: "Mean of country wellbeing indices (0-100), unweighted: every country counts once regardless of population. Not the average person's wellbeing." },
+                  { label: 'Dividend', val: formatUsdPerPerson(hs.globalDividendUsd), color: 'text-amber-600 dark:text-amber-400', desc: "Global dividend this month: USD per person from the global pool, paid equally per capita worldwide. Customer-weighted and HQ-local payments come on top and vary by country." },
+                  { label: 'Adoption', val: `${(hs.meanCountryAdoption * 100).toFixed(0)}%`, color: 'text-blue-600 dark:text-blue-400', desc: "Mean of country AI adoption, unweighted: every country counts once regardless of population." },
+                  { label: 'Pool', val: formatBillionsUsd(hs.globalPoolBillions), color: 'text-slate-900 dark:text-white', desc: "Global pool this month: contributions routed to equal per-capita distribution. Paid out the same month, not accumulated. Excludes customer-weighted and HQ-local contributions." }
+                ]; })().map((stat, i) => (
                     <div key={i} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-3 py-2 rounded-lg flex justify-between items-center shadow-sm">
                         <div className="text-[10px] text-slate-500 dark:text-slate-400 uppercase font-bold tracking-widest flex items-center">
                             {stat.label}
@@ -1827,7 +1851,9 @@ const App: React.FC = () => {
 
                   <div className="h-[400px] shrink-0">
                     <MotionChart 
-                        history={history.slice(0, state.month + 1)} // Slice for motion
+                        // Up to the displayed month (history[0] is month 1, so slice(0, month + 1) showed one month too many after a seek).
+                        history={history.filter(h => h.month <= state.month)}
+                        pairedHistory={pairedHistory}
                         maxMonth={Math.max(...history.map(h => h.month), 10)}
                         selectedCountries={selectedCountries} 
                         allCountries={['Global', ...INITIAL_COUNTRIES.map(c => c.id)].map(id => ({ id, name: id }))}
@@ -1838,10 +1864,10 @@ const App: React.FC = () => {
 
                   <div className="h-[300px] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-sm relative overflow-hidden">
                      <h3 className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
-                        <Database size={14} /> Global Fund Accumulation ($B)
+                        <Database size={14} /> Global Pool per Month ($B)
                      </h3>
                      <ResponsiveContainer width="100%" height="100%">
-                        <AreaChart data={chartData.slice(0, state.month + 1)} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                        <AreaChart data={chartData.filter(d => d.month <= state.month)} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
                             <defs>
                                 <linearGradient id="colorFund" x1="0" y1="0" x2="0" y2="1">
                                     <stop offset="5%" stopColor="#f59e0b" stopOpacity={0.8}/>
@@ -1855,7 +1881,7 @@ const App: React.FC = () => {
                                 contentStyle={{ backgroundColor: theme === 'light' ? '#fff' : '#0f172a', border: '1px solid #334155', borderRadius: '12px', fontSize: '12px' }}
                                 itemStyle={{ color: theme === 'light' ? '#000' : '#fff' }}
                             />
-                            <Area type="monotone" dataKey="fund" stroke="#f59e0b" fillOpacity={1} fill="url(#colorFund)" strokeWidth={2} name="Total Fund ($B)" isAnimationActive={false} />
+                            <Area type="monotone" dataKey="fund" stroke="#f59e0b" fillOpacity={1} fill="url(#colorFund)" strokeWidth={2} name="Global pool this month ($B)" isAnimationActive={false} />
                         </AreaChart>
                      </ResponsiveContainer>
                   </div>
@@ -1878,7 +1904,7 @@ const App: React.FC = () => {
                        </div>
                      </div>
                      <ResponsiveContainer width="100%" height="100%">
-                        <LineChart data={chartData.slice(0, state.month + 1)} margin={{ top: 10, right: 30, left: 0, bottom: 20 }}>
+                        <LineChart data={chartData.filter(d => d.month <= state.month)} margin={{ top: 10, right: 30, left: 0, bottom: 20 }}>
                             <CartesianGrid strokeDasharray="3 3" stroke={theme === 'light' ? '#e2e8f0' : '#1e293b'} vertical={false} />
                             <XAxis
                               dataKey="date"
@@ -2597,11 +2623,11 @@ effectiveContribution = globalContribution + (localContribution - localLeakage)`
                     </div>
 
                     <div>
-                      <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">2.6 Global Fund Accumulation</h4>
+                      <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">2.6 Global Pool (Monthly)</h4>
                       <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono text-slate-900 dark:text-slate-100">
-                        globalFund(t+1) = globalFund(t) + Σ(effectiveContribution)
+                        globalFund(t) = Σ contribution(t) of corporations using the global strategy   [billions USD]
                       </code>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">Sum across all countries</p>
+                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">Rebuilt every month and paid out the same month; nothing accumulates.</p>
                     </div>
                   </div>
 
@@ -2620,9 +2646,9 @@ localPool = globalFund × (1 - globalRedistributionRate)`}
                     <div>
                       <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">3.2 Global Dividend (Equal Per Capita)</h4>
                       <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono text-slate-900 dark:text-slate-100">
-                        globalDividendPerCapita = globalPool / (worldPopulation × 10)
+                        globalDividendPerCapita [USD/person/month] = globalFund [$B] / worldPopulation [millions] × 1000
                       </code>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">Division by 10 converts annual to monthly equivalent</p>
+                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">Billions of dollars over millions of people is thousands of dollars per person (simulation/units.ts usdPerPerson, used by the engine and the map).</p>
                     </div>
 
                     <div>
@@ -2778,65 +2804,25 @@ else if totalUBI > subsistenceFloor × 2.5:
                     </div>
                   </div>
 
-                  {/* Section 6: Shadow Simulation (Counterfactual) */}
+                  {/* Section 6: Paired counterfactual (review 2026-09-14, finding 2) */}
                   <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl space-y-4">
-                    <h3 className="font-bold text-slate-900 dark:text-white text-lg border-b border-slate-200 dark:border-slate-700 pb-2">6. Shadow Simulation (No-Intervention Baseline)</h3>
+                    <h3 className="font-bold text-slate-900 dark:text-white text-lg border-b border-slate-200 dark:border-slate-700 pb-2">6. Paired Counterfactual (Same Model, No Corporate UBI)</h3>
                     <p className="text-xs text-slate-600 dark:text-slate-400 italic">
-                      Counterfactual scenario showing what happens WITHOUT UBI intervention. Validates model by demonstrating intervention effectiveness.
+                      The dashed "No UBI" lines in Charts come from a second run of the same model, not from separate equations.
                     </p>
 
                     <div>
-                      <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">6.1 Shadow Adoption Growth (Slower)</h4>
-                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono whitespace-pre text-slate-900 dark:text-slate-100">
-{`shadowGrowth = aiGrowthRate × 0.5 × regionalModifier × (1 - shadowAdoption(t))
-shadowAdoption(t+1) = min(0.999, shadowAdoption(t) + shadowGrowth)`}
+                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono whitespace-pre text-slate-900 dark:text-slate-100 overflow-x-auto">
+{`pairedRun(0)   = mainRun(0)                      same countries, corporations, model, equations
+contributionRate_c(t) = 0  for every corporation c and month t
+pairedRun(t+1) = step(pairedRun(t))              the engine used for the main run
+effect(t)      = wellbeing_main(t) - wellbeing_paired(t)`}
                       </code>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">50% speed: No incentives to automate (no UBI system exists)</p>
-                    </div>
-
-                    <div>
-                      <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">6.2 Shadow Wage (Collapsing Income)</h4>
-                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono text-slate-900 dark:text-slate-100">
-                        shadowWage = monthlyWage × (1 - shadowAdoption × 0.9)
-                      </code>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">90% displacement with NO UBI buffer (vs. displacementRate with intervention)</p>
-                    </div>
-
-                    <div>
-                      <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">6.3 Shadow Subsistence (Stress Adjustment)</h4>
-                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono whitespace-pre text-slate-900 dark:text-slate-100">
-{`shadowSubsistence = gdpPerCapita / 25
-subsistenceAdjusted = shadowSubsistence × (shadowWage < 800 ? 1.7 : 1)`}
-                      </code>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">Survival costs increase under economic stress (prices rise, hoarding, black markets)</p>
-                    </div>
-
-                    <div>
-                      <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">6.4 Shadow Wellbeing (Michaelis-Menten Curve)</h4>
-                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono whitespace-pre text-slate-900 dark:text-slate-100">
-{`r = shadowWage / (shadowWage + subsistenceAdjusted)
-shadowWellbeing = max(1, min(100, r × 100))`}
-                      </code>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">Basic survival economics: wellbeing approaches zero as income approaches zero</p>
-                    </div>
-
-                    <div>
-                      <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">6.5 Shadow Friction (Amplified)</h4>
-                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono whitespace-pre text-slate-900 dark:text-slate-100">
-{`shadowFriction = sin(shadowAdoption × π) × baseFriction × 2.0
-shadowWellbeing = max(1, shadowWellbeing - shadowFriction × 0.4)`}
-                      </code>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">Doubled friction: No safety net = worse social cohesion breakdown</p>
-                    </div>
-
-                    <div>
-                      <h4 className="text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">6.6 Instability Penalty (High Adoption without UBI)</h4>
-                      <code className="block bg-slate-100 dark:bg-slate-800 p-3 rounded-lg text-xs font-mono whitespace-pre text-slate-900 dark:text-slate-100">
-{`if shadowAdoption > 0.5:
-  instabilityPenalty = (shadowAdoption - 0.5)² × 20
-  shadowWellbeing = max(1, shadowWellbeing - instabilityPenalty)`}
-                      </code>
-                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">Mass unemployment without safety net leads to riots, political breakdown, instability</p>
+                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-2">
+                        Both runs advance, seek and reset together; edits to countries and corporations reach both, except contribution rates.
+                        With every contribution at 0 the two runs are identical. An earlier version used a separate "shadow" formula with slower adoption,
+                        90% wage loss and extra friction, which showed a large gap even when no UBI was paid; it has been removed.
+                      </p>
                     </div>
                   </div>
 
@@ -2975,7 +2961,7 @@ shadowWellbeing = max(1, shadowWellbeing - shadowFriction × 0.4)`}
         </section>
       </main>
 
-      <footer className="px-4 lg:px-6 py-3 lg:py-4 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 sticky bottom-0 z-[100] backdrop-blur-md shrink-0">
+      <footer hidden={!showWorldControls} className="px-4 lg:px-6 py-3 lg:py-4 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 sticky bottom-0 z-[100] backdrop-blur-md shrink-0">
         {/* A5: a custom model that does not compile blocks playback and says so, here, next to
             the controls it disables. The built-in engine is never used in its place. */}
         {pendingAutosave && (

@@ -6,11 +6,49 @@ import { HistoryPoint, CountryStats } from '../types';
 
 interface MotionChartProps {
   history: HistoryPoint[];
+  /**
+   * The paired counterfactual's timeline: the same month-0 run, model, equations and
+   * corporations with every contribution rate held at 0 (simulation/appState.ts
+   * stepWithCounterfactual). Matched to `history` by month.
+   */
+  pairedHistory?: HistoryPoint[];
   maxMonth: number;
   selectedCountries: string[];
   allCountries: { id: string; name: string }[];
   onToggleCountry: (id: string) => void;
   theme: 'dark' | 'light';
+}
+
+/** Series name for the paired counterfactual, used in the tooltip and the toggle's title. */
+export const PAIRED_SERIES_LABEL = 'Same model, no corporate UBI (paired run)';
+
+/**
+ * The rows the 2D and 3D charts draw. Exported so tests check the numbers at the component
+ * boundary: `Paired_<id>` is the counterfactual run's wellbeing at the same month, never a
+ * separately computed "baseline" (review 2026-09-14, finding 2).
+ */
+export function buildMotionChartData(history: HistoryPoint[], pairedHistory: HistoryPoint[] = []): Record<string, number>[] {
+  const pairedByMonth = new Map<number, HistoryPoint['state']>();
+  for (const p of pairedHistory) pairedByMonth.set(p.month, p.state ?? p.run!.state);
+  return history.map((point) => {
+    const state = point.state ?? point.run!.state;
+    const ids = Object.keys(state.countryData);
+    const data: Record<string, number> = { month: point.month };
+    // "Global" is the unweighted mean over countries, as state.averageWellbeing is.
+    data['Wellbeing_Global'] = state.averageWellbeing;
+    data['Adoption_Global'] = ids.length
+      ? ((Object.values(state.countryData) as CountryStats[]).reduce((acc, c) => acc + c.aiAdoption, 0) / ids.length) * 100
+      : 0;
+    const paired = pairedByMonth.get(point.month);
+    if (paired) data['Paired_Global'] = paired.averageWellbeing;
+    for (const id of ids) {
+      data[`Wellbeing_${id}`] = state.countryData[id].wellbeing;
+      data[`Adoption_${id}`] = state.countryData[id].aiAdoption * 100;
+      const pc = paired?.countryData[id];
+      if (pc) data[`Paired_${id}`] = pc.wellbeing;
+    }
+    return data;
+  });
 }
 
 const formatDate = (monthIndex: number) => {
@@ -278,44 +316,14 @@ const ThreeDChart: React.FC<{
 };
 
 const MotionChart: React.FC<MotionChartProps> = ({
-    history, maxMonth, selectedCountries, allCountries, onToggleCountry, theme
+    history, pairedHistory, maxMonth, selectedCountries, allCountries, onToggleCountry, theme
 }) => {
   const [is3D, setIs3D] = useState(false);
   const [fontSize, setFontSize] = useState(16);
-  const [showShadow, setShowShadow] = useState(true);
+  const [showPaired, setShowPaired] = useState(true);
 
-  // Transform data for charts including shadow data
-  const chartData = useMemo(() => {
-    return history.map(point => {
-      const data: any = {
-          month: point.month,
-      };
-
-      // Global - Main simulation
-      data['Wellbeing_Global'] = point.state.averageWellbeing;
-      const globalAdoption = (Object.values(point.state.countryData) as CountryStats[]).reduce((acc, curr) => acc + curr.aiAdoption, 0) / Object.keys(point.state.countryData).length * 100;
-      data['Adoption_Global'] = globalAdoption;
-
-      // Shadow Global - No intervention baseline
-      if (point.state.shadowCountryData) {
-        const shadowWellbeings = Object.values(point.state.shadowCountryData) as CountryStats[];
-        const shadowAvg = shadowWellbeings.reduce((acc, curr) => acc + curr.wellbeing, 0) / shadowWellbeings.length;
-        data['Shadow_Global'] = shadowAvg;
-      }
-
-      // Countries - Main + Shadow
-      Object.keys(point.state.countryData).forEach(id => {
-        data[`Wellbeing_${id}`] = point.state.countryData[id].wellbeing;
-        data[`Adoption_${id}`] = point.state.countryData[id].aiAdoption * 100;
-
-        // Shadow per country
-        if (point.state.shadowCountryData && point.state.shadowCountryData[id]) {
-          data[`Shadow_${id}`] = point.state.shadowCountryData[id].wellbeing;
-        }
-      });
-      return data;
-    });
-  }, [history]);
+  // Main run and paired no-UBI counterfactual, matched by month.
+  const chartData = useMemo(() => buildMotionChartData(history, pairedHistory), [history, pairedHistory]);
 
   return (
     <div className="flex flex-col gap-4 h-full">
@@ -358,12 +366,13 @@ const MotionChart: React.FC<MotionChartProps> = ({
                  </>
              )}
             <button
-                onClick={() => setShowShadow(!showShadow)}
-                className={`px-3 py-2 rounded-xl text-xs font-bold uppercase tracking-widest flex items-center gap-2 transition-all shadow-sm ${showShadow ? 'bg-slate-600 text-white' : 'bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-700'}`}
-                title="Toggle No-Intervention Baseline"
+                onClick={() => setShowPaired(!showPaired)}
+                aria-pressed={showPaired}
+                className={`px-3 py-2 rounded-xl text-xs font-bold uppercase tracking-widest flex items-center gap-2 transition-all shadow-sm ${showPaired ? 'bg-slate-600 text-white' : 'bg-white dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-700'}`}
+                title={`Show or hide: ${PAIRED_SERIES_LABEL}`}
             >
                 <span className="w-3 h-0.5 bg-current border-dashed" style={{ borderStyle: 'dashed', borderWidth: '1px' }} />
-                Baseline
+                No UBI
             </button>
             <button
                 onClick={() => setIs3D(!is3D)}
@@ -402,19 +411,19 @@ const MotionChart: React.FC<MotionChartProps> = ({
                         labelFormatter={(v) => formatDate(v as number)}
                         contentStyle={{ backgroundColor: theme === 'light' ? '#fff' : '#0f172a', border: '1px solid #334155', borderRadius: '12px', fontSize: '12px', color: theme === 'light' ? '#000' : '#fff' }} 
                     />
-                    {/* Shadow Lines (No Intervention Baseline) */}
-                    {showShadow && selectedCountries.map((id, idx) => {
+                    {/* Paired counterfactual: same model, contribution rates held at 0 */}
+                    {showPaired && selectedCountries.map((id) => {
                         return (
                             <Line
-                                key={`shadow-${id}`}
+                                key={`paired-${id}`}
                                 type="monotone"
-                                dataKey={`Shadow_${id}`}
+                                dataKey={`Paired_${id}`}
                                 stroke="#6b7280"
                                 strokeWidth={2}
                                 strokeDasharray="5 5"
                                 strokeOpacity={0.6}
                                 dot={false}
-                                name={`${id} (No UBI)`}
+                                name={`${id}: ${PAIRED_SERIES_LABEL}`}
                                 isAnimationActive={false}
                             />
                         );
@@ -441,6 +450,17 @@ const MotionChart: React.FC<MotionChartProps> = ({
             <ThreeDChart data={chartData} selectedCountries={selectedCountries} theme={theme} maxMonth={maxMonth} baseFontSize={fontSize} />
          )}
       </div>
+
+      {!is3D && showPaired && (
+        <p className="shrink-0 text-[10px] leading-snug text-slate-500 dark:text-slate-400">
+          Dashed grey: {PAIRED_SERIES_LABEL}.{' '}
+          <span className="hidden sm:inline">
+            A second run from the same starting point, model, equations and corporations, with every corporation's
+            contribution rate held at 0 each month. The gap between a solid and a dashed line is this model's effect
+            of corporate UBI, nothing else.
+          </span>
+        </p>
+      )}
 
       {/* Control Strip */}
       <div className="shrink-0">
