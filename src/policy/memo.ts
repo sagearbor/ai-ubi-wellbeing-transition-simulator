@@ -5,6 +5,7 @@
  * model cannot say, and the manifest to reproduce it.
  */
 
+import { steadyStateOf, timeLabel, timeUnitName } from '../core/calendar';
 import { resolveModel } from '../core/engine';
 import type { CoreModel, EvidenceKind, Overlay } from '../core/types';
 import { coverage, mappingUnits, normaliseWhitespace } from './draft';
@@ -20,6 +21,8 @@ export interface MemoInput {
   sourceText?: string;
   /** Years to report; defaults to every step for yearly models and each whole year for monthly ones (at most 12 rows). */
   years?: number[];
+  /** 'imported': the model was loaded into the Lab, not shipped with the app; the memo says it is experimental. */
+  modelStatus?: 'curated' | 'imported';
 }
 
 const ASSUMPTION_KINDS: EvidenceKind[] = ['guess', 'assumed'];
@@ -85,6 +88,8 @@ export function renderMemo(input: MemoInput): string {
   if (draft.draftedBy) push(`- **Drafted by:** ${draft.draftedBy.name} (${draft.draftedBy.kind}${draft.draftedBy.date ? `, ${draft.draftedBy.date}` : ''})`);
   if (draft.reviewedBy) push(`- **Reviewed by:** ${draft.reviewedBy.name}${draft.reviewedBy.date ? ` (${draft.reviewedBy.date})` : ''}`);
   push(`- **Model:** ${model.name} (\`${model.id}\`, version ${result.manifest.modelHash})`);
+  if (input.modelStatus === 'imported') push('- **Model status:** experimental — not curated. This model was imported into the Lab from a file; it is not one of the app\'s reviewed models.');
+  if (model.time?.stepLabel) push(`- **Time unit:** one step is one ${model.time.stepLabel}${model.time.stepYears ? ` (${model.time.stepYears} years)` : ''}; the ${model.time.stepLabel} column counts ${model.time.stepLabel}s, not calendar years.`);
   if (overlays.length) push(`- **Scenario overlays on both sides:** ${overlays.map((o) => `\`${o.id}\``).join(', ')}`);
   push(`- **Provisions listed:** ${cov.text}; ${cov.statusText}. This counts only what the draft lists.`);
   push(`- **Source coverage:** ${cov.source.text}${cov.source.status === 'complete' || cov.source.status === 'incomplete' ? ` (clause inventory ${cov.source.inventoryVersion})` : ''}.`);
@@ -153,19 +158,26 @@ export function renderMemo(input: MemoInput): string {
     push('');
   } else {
     push(
-      `Baseline and policy use the same model version, the same scenario overlays, seed ${result.seed} and the same ${result.runs} draws; only the policy overlay differs. ` +
+      (result.deterministic
+        ? 'Deterministic: uncertainty off. No parameter declares a range on either side, so the model was run once; the brackets repeat the point value. '
+        : `Baseline and policy use the same model version, the same scenario overlays, seed ${result.seed} and the same ${result.runs} draws; only the policy overlay differs. `) +
         'Each cell is the median with the 5th–95th percentile across draws in brackets. The difference is computed inside each draw, then summarised — it is not the policy column minus the baseline column. ' +
         'The spread comes only from parameters that declare a range; it is not a forecast interval.',
       '',
     );
     const steps = reportSteps(result, input.years);
+    const unitName = timeUnitName(model.time);
+    const steady = steadyStateOf(resolved);
+    const steadyIndex = steady ? result.years.findIndex((y) => Math.abs(y - steady.at) < 1e-9) : -1;
     for (const entity of result.entities) {
       for (const output of result.outputs) {
         const unit = resolved.variables.find((v) => v.id === output)?.unit ?? (resolved.inputs ?? []).find((i) => i.id === output)?.unit ?? '';
         push(`### ${output}${unit ? ` (${unit})` : ''}${result.entities.length > 1 ? ` — ${entity}` : ''}`, '');
-        push('| Year | Baseline | Policy | Paired difference |', '|---|---|---|---|');
-        for (const t of steps) {
-          push(`| ${fmtYear(result.years[t])} | ${band(result.baseline[entity]?.[output], t)} | ${band(result.policy[entity]?.[output], t)} | ${band(result.difference[entity]?.[output], t)} |`);
+        const steadyOnly = steady?.outputs.has(output) && steadyIndex >= 0;
+        if (steadyOnly) push(`Steady state only: ${normaliseWhitespace(steady!.reason)} Only the steady-state row is reported.`, '');
+        push(`| ${unitName} | Baseline | Policy | Paired difference |`, '|---|---|---|---|');
+        for (const t of steadyOnly ? [steadyIndex] : steps) {
+          push(`| ${timeLabel(model.time, result.years[t])} | ${band(result.baseline[entity]?.[output], t)} | ${band(result.policy[entity]?.[output], t)} | ${band(result.difference[entity]?.[output], t)} |`);
         }
         push('');
       }
@@ -186,7 +198,7 @@ export function renderMemo(input: MemoInput): string {
         if (!b.length && !p.length) continue;
         any = true;
         const same = b.join('; ') === p.join('; ');
-        push(`- ${fmtYear(result.years[t])}${result.entities.length > 1 ? ` (${entity})` : ''}: ${same ? `both sides — ${b.join('; ')}` : `baseline — ${b.join('; ') || 'none'}; policy — ${p.join('; ') || 'none'}`}`);
+        push(`- ${timeLabel(model.time, result.years[t])}${result.entities.length > 1 ? ` (${entity})` : ''}: ${same ? `both sides — ${b.join('; ')}` : `baseline — ${b.join('; ') || 'none'}; policy — ${p.join('; ') || 'none'}`}`);
       }
     }
     if (any) push('', 'These are point runs (every parameter at its stated value). A limit that binds explains why more of the policy lever does not move the output.', '');

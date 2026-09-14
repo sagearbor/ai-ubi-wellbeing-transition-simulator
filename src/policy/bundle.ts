@@ -10,7 +10,10 @@
  * Bundle (downloaded JSON): manifest (engine version, model hash, draws, seed, coverage and
  *        completeness status), draft, optional source text, scenario overlays, the derived policy
  *        overlay, the results and the tolerance they must reproduce within. reopenBundle re-runs it
- *        and says whether it reproduced, and if not, where and by how much.
+ *        and says whether it reproduced, and if not, where and by how much. A bundle made on a model
+ *        the app does not ship (one imported into the Lab) carries the model itself in `model`, with
+ *        `modelStatus: "experimental — not curated"`, so it reopens anywhere; the opener validates
+ *        that model and passes it to reopenBundle through the registry.
  *
  * Validation governs both: a draft with validation errors is never run from a link or a bundle —
  * the link does not open and the bundle reports "cannot open", each with the errors.
@@ -203,9 +206,15 @@ export interface BundleResults {
   difference: Record<string, Record<string, Quantiles>>;
 }
 
+export const EXPERIMENTAL_MODEL_STATUS = 'experimental — not curated';
+
 export interface PolicyBundle {
   schema: typeof BUNDLE_SCHEMA;
   manifest: PolicyRunManifest;
+  /** The model itself, when it is not one the app ships (an imported model). Its hash is manifest.modelHash. */
+  model?: CoreModel;
+  /** Present with `model`: an embedded model is never curated. */
+  modelStatus?: typeof EXPERIMENTAL_MODEL_STATUS;
   draft: PolicyDraft;
   /** Present when the bundle was made with the source text, so quotes can be re-checked. */
   sourceText?: string;
@@ -220,11 +229,12 @@ export function buildBundle(
   overlays: Overlay[],
   draft: PolicyDraft,
   result: PairedRunResult,
-  opts: { sourceText?: string; tolerance?: Tolerance } = {},
+  opts: { sourceText?: string; tolerance?: Tolerance; embedModel?: boolean } = {},
 ): PolicyBundle {
   return {
     schema: BUNDLE_SCHEMA,
     manifest: result.manifest,
+    ...(opts.embedModel ? { model, modelStatus: EXPERIMENTAL_MODEL_STATUS } : {}),
     draft,
     ...(opts.sourceText ? { sourceText: opts.sourceText } : {}),
     overlays,
@@ -261,6 +271,7 @@ export function parseBundleJson(text: string): Decoded<PolicyBundle> {
     if (!isObject(parsed[key])) return { ok: false, reason: `the bundle is missing "${key}"` };
   }
   if (!Array.isArray(parsed.overlays)) return { ok: false, reason: 'the bundle is missing "overlays"' };
+  if (parsed.model !== undefined && !isObject(parsed.model)) return { ok: false, reason: 'the bundle\'s embedded "model" is not an object' };
   const tol = parsed.tolerance as Record<string, unknown>;
   if (!(typeof tol.absolute === 'number' && tol.absolute >= 0) || !(typeof tol.relative === 'number' && tol.relative >= 0)) {
     return { ok: false, reason: 'the bundle does not declare a valid tolerance' };

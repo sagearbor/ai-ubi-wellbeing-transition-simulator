@@ -60,19 +60,20 @@ export const EvidenceChip: React.FC<{ kind?: EvidenceKind; label?: string }> = (
   );
 };
 
-const CurveField: React.FC<{ id: string; curve?: Record<string, number>; onCurve: (c: Record<string, number> | undefined) => void }> = ({ id, curve, onCurve }) => {
+const CurveField: React.FC<{ id: string; curve?: Record<string, number>; time: CoreModel['time']; onCurve: (c: Record<string, number> | undefined) => void }> = ({ id, curve, time, onCurve }) => {
+  const unit = time?.stepLabel ?? 'year';
   const [text, setText] = useState(curveToText(curve));
   const [error, setError] = useState<string | null>(null);
   return (
     <div>
       <label className={label} htmlFor={id}>
-        or a curve (year: value, …)
+        {`or a curve (${unit}: value, …)`}
       </label>
       <input
         id={id}
         className={`${field} h-11 font-mono`}
         value={text}
-        placeholder="2026: 0, 2027: 12000000"
+        placeholder={time?.stepLabel ? `${time.start}: 0, ${time.end}: 1` : '2026: 0, 2027: 12000000'}
         onChange={(e) => setText(e.target.value)}
         onBlur={() => {
           if (!text.trim()) {
@@ -80,7 +81,7 @@ const CurveField: React.FC<{ id: string; curve?: Record<string, number>; onCurve
             onCurve(undefined);
             return;
           }
-          const parsed = parseCurveText(text);
+          const parsed = parseCurveText(text, { calendar: !time?.stepLabel });
           setError(parsed.error);
           if (parsed.curve) onCurve(parsed.curve);
         }}
@@ -255,7 +256,7 @@ const ProvisionEditor: React.FC<ProvisionEditorProps> = ({ provision: p, index, 
                 </div>
                 <div>
                   <label className={label} htmlFor={`${idBase}-from`}>
-                    from year (optional)
+                    {`from ${model.time?.stepLabel ?? 'year'} (optional)`}
                   </label>
                   <input
                     id={`${idBase}-from`}
@@ -281,7 +282,7 @@ const ProvisionEditor: React.FC<ProvisionEditorProps> = ({ provision: p, index, 
                     onChange={(e) => onMapping({ value: e.target.value === '' ? undefined : Number(e.target.value) })}
                   />
                 </div>
-                {m.kind === 'input' && m.op === 'set' && <CurveField id={`${idBase}-curve`} curve={m.curve} onCurve={(curve) => onMapping({ curve })} />}
+                {m.kind === 'input' && m.op === 'set' && <CurveField id={`${idBase}-curve`} curve={m.curve} time={model.time} onCurve={(curve) => onMapping({ curve })} />}
                 {m.kind === 'input' && m.op === 'add' && (
                   <div>
                     <label className={label} htmlFor={`${idBase}-stacks`}>
