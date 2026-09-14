@@ -81,9 +81,13 @@ export function _setPolicyClientForTests(c: GenerateClient | null): void {
   client = c;
 }
 
+/** A configured key, or undefined. Vite's `define` turns a missing key into the string "undefined". */
 function apiKey(): string | undefined {
+  const usable = (k: unknown): k is string => typeof k === 'string' && k.trim() !== '' && k !== 'undefined' && k !== 'null';
   try {
-    return process.env.API_KEY || process.env.GEMINI_API_KEY || undefined;
+    const a = process.env.API_KEY;
+    const b = process.env.GEMINI_API_KEY;
+    return usable(a) ? a : usable(b) ? b : undefined;
   } catch {
     return undefined;
   }

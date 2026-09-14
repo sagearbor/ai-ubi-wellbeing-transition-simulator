@@ -207,6 +207,8 @@ const App: React.FC = () => {
       const wanted = new URLSearchParams(window.location.search).get('tab');
       const valid = ['map', 'charts', 'corporations', 'futures', 'lab', 'analysis', 'overview', 'equations', 'guide', 'models', 'leaderboard'];
       if (wanted && valid.includes(wanted)) setActiveTab(wanted as any);
+      // A shared policy scenario (#lab=...) opens the Model Lab, which reads and reports on the link itself.
+      if (window.location.hash.startsWith('#lab=')) setActiveTab('lab');
     } catch { /* no window */ }
   }, []);
   const [viewMode, setViewMode] = useState<'adoption' | 'wellbeing'>('wellbeing'); // Default to wellbeing
