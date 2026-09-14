@@ -15,6 +15,9 @@ import korinekModest from '../../data/core/overlays/korinek-modest.json';
 import korinekExtreme from '../../data/core/overlays/korinek-extreme.json';
 import alaskaPfd from '../../data/core/alaska-pfd-calibration.json';
 import alaskaPfdWp from '../../data/core/overlays/alaska-pfd-wp2020.json';
+import gasteigerPrettner from '../../data/core/gasteiger-prettner-2020.json';
+import gasteigerPrettnerMu04 from '../../data/core/overlays/gasteiger-prettner-mu04.json';
+import gasteigerPrettnerMu06 from '../../data/core/overlays/gasteiger-prettner-mu06.json';
 
 export interface FixtureEntry {
   model: CoreModel;
@@ -39,6 +42,11 @@ export const CORE_FIXTURES: FixtureEntry[] = [
     model: alaskaPfd as unknown as CoreModel,
     overlays: [alaskaPfdWp as unknown as Overlay],
     label: 'Alaska Permanent Fund Dividend: income effect vs spending effect on jobs (Jones & Marinescu 2022)',
+  },
+  {
+    model: gasteigerPrettner as unknown as CoreModel,
+    overlays: [gasteigerPrettnerMu04 as unknown as Overlay, gasteigerPrettnerMu06 as unknown as Overlay],
+    label: 'Gasteiger and Prettner 2020: robots, stagnation and a robot tax paid to workers (OLG, one step = one generation)',
   },
 ];
 
