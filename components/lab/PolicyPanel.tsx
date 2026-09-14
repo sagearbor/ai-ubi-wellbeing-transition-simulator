@@ -227,6 +227,7 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
   const run = () => {
     setResults(runAll(model, overlays, drafts, runs, seed));
     setReport(null);
+    setNotice(null);
   };
 
   // -- sharing ----------------------------------------------------------------
