@@ -377,15 +377,15 @@ Korinek et al. (2026) — each output once, no reduced-form rules on top, the pa
 there. Other countries keep the reduced form. The bridge from those outputs to wellbeing (the anchored
 target) is an extension that has **not been reviewed**.
 
-| US at January 2030 (world month 60) | wellbeing | unemployment | GDP vs no-AI |
+| US at January 2030 (world month 60; sourced dataset `countries-wb-2026-09`) | wellbeing | unemployment | GDP vs no-AI |
 |---|---|---|---|
-| default, reduced-form US block | 69.0 | 6.4% | +35.1% |
-| US reference, modest | 69.8 | 3.9% | +1.6% |
-| US reference, substantial | 69.7 | 4.6% | +8.3% |
-| US reference, extreme | 68.9 | 11.9% | +32.4% |
+| default, reduced-form US block | 69.6 | 6.5% | +35.8% |
+| US reference, modest | 70.4 | 3.9% | +1.6% |
+| US reference, substantial | 70.3 | 4.6% | +8.3% |
+| US reference, extreme | 69.5 | 11.9% | +32.4% |
 
 Finding: under the default preset the reduced-form US block reaches a GDP gap above the paper's
-*extreme* scenario by 2030 (+35% vs +32.4%) with unemployment of 6.4%, because corporation-driven
+*extreme* scenario by 2030 (+36% vs +32.4%) with unemployment of 6.5%, because corporation-driven
 adoption is far faster than the paper's substantial path. The reduced form is kept only as an
 illustrative legacy approximation.
 

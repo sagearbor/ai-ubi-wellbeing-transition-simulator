@@ -11633,10 +11633,10 @@
         "uncertainty": "placeholder threshold, not an observed value"
       },
       "model": {
-        "value": 0.485066,
+        "value": 0.472518,
         "computed": true
       },
-      "discrepancy": 0.0850657,
+      "discrepancy": 0.0725176,
       "tolerance": {
         "kind": "gte",
         "setBy": "validation/hindcastTests.ts:44 HC1_CORR_THRESHOLD (placeholder regression guard)"
@@ -11671,10 +11671,10 @@
         "uncertainty": "placeholder threshold (0.5 ladder points), not an observed value"
       },
       "model": {
-        "value": 4.47611,
+        "value": 4.53205,
         "computed": true
       },
-      "discrepancy": -0.523886,
+      "discrepancy": -0.467955,
       "tolerance": {
         "kind": "lte",
         "setBy": "validation/hindcastTests.ts:49 HC2_MAE_THRESHOLD (placeholder regression guard)"
@@ -11708,10 +11708,10 @@
         "uncertainty": "placeholder threshold, not an observed value"
       },
       "model": {
-        "value": 0.485066,
+        "value": 0.472518,
         "computed": true
       },
-      "discrepancy": 0.0850657,
+      "discrepancy": 0.0725176,
       "tolerance": {
         "kind": "gte",
         "setBy": "validation/hindcastTests.ts:44 HC1_CORR_THRESHOLD (placeholder regression guard)"
@@ -11743,10 +11743,10 @@
         "uncertainty": "placeholder threshold (0.5 ladder points), not an observed value"
       },
       "model": {
-        "value": 4.47611,
+        "value": 4.53205,
         "computed": true
       },
-      "discrepancy": -0.523886,
+      "discrepancy": -0.467955,
       "tolerance": {
         "kind": "lte",
         "setBy": "validation/hindcastTests.ts:49 HC2_MAE_THRESHOLD (placeholder regression guard)"
@@ -11777,10 +11777,10 @@
         "uncertainty": "placeholder threshold, not an observed value"
       },
       "model": {
-        "value": 0.180832,
+        "value": 0.175447,
         "computed": true
       },
-      "discrepancy": -0.219168,
+      "discrepancy": -0.224553,
       "tolerance": {
         "kind": "none",
         "setBy": "none: HC-1 is scored on the AI-off runs only"
@@ -11813,10 +11813,10 @@
         "uncertainty": "placeholder threshold (0.5 ladder points), not an observed value"
       },
       "model": {
-        "value": 7.03702,
+        "value": 7.0347,
         "computed": true
       },
-      "discrepancy": 2.03702,
+      "discrepancy": 2.0347,
       "tolerance": {
         "kind": "none",
         "setBy": "none: HC-2 is scored on the AI-off runs only"
@@ -11848,10 +11848,10 @@
         "uncertainty": "placeholder threshold, not an observed value"
       },
       "model": {
-        "value": 0.248638,
+        "value": 0.244411,
         "computed": true
       },
-      "discrepancy": -0.151362,
+      "discrepancy": -0.155589,
       "tolerance": {
         "kind": "none",
         "setBy": "none: HC-1 is scored on the AI-off runs only"
@@ -11884,10 +11884,10 @@
         "uncertainty": "placeholder threshold (0.5 ladder points), not an observed value"
       },
       "model": {
-        "value": 25.552,
+        "value": 25.3527,
         "computed": true
       },
-      "discrepancy": 20.552,
+      "discrepancy": 20.3527,
       "tolerance": {
         "kind": "none",
         "setBy": "none: HC-2 is scored on the AI-off runs only"
@@ -11919,10 +11919,10 @@
         "uncertainty": "placeholder threshold, not an observed value"
       },
       "model": {
-        "value": 0.499433,
+        "value": 0.487976,
         "computed": true
       },
-      "discrepancy": 0.0994333,
+      "discrepancy": 0.0879763,
       "tolerance": {
         "kind": "none",
         "setBy": "none: HC-1 is scored on the AI-off runs only"
@@ -11955,10 +11955,10 @@
         "uncertainty": "placeholder threshold (0.5 ladder points), not an observed value"
       },
       "model": {
-        "value": 4.42551,
+        "value": 4.47534,
         "computed": true
       },
-      "discrepancy": -0.574486,
+      "discrepancy": -0.524659,
       "tolerance": {
         "kind": "none",
         "setBy": "none: HC-2 is scored on the AI-off runs only"
@@ -11990,10 +11990,10 @@
         "uncertainty": "comparator, not an observed value"
       },
       "model": {
-        "value": -0.20332,
+        "value": -0.147389,
         "computed": true
       },
-      "discrepancy": -0.20332,
+      "discrepancy": -0.147389,
       "tolerance": {
         "kind": "lt",
         "setBy": "scripts/hindcast/run-hindcast.ts:47 (\"the comparison to beat\"; printed, not part of pass/fail)"
@@ -12093,10 +12093,10 @@
         "uncertainty": "design threshold"
       },
       "model": {
-        "value": -20.3344,
+        "value": -20.6405,
         "computed": true
       },
-      "discrepancy": -15.3344,
+      "discrepancy": -15.6405,
       "tolerance": {
         "kind": "lt",
         "setBy": "validation/anchorTests.ts:79 (anchor-test design)"
@@ -12130,10 +12130,10 @@
         "uncertainty": "design threshold"
       },
       "model": {
-        "value": 1.06463,
+        "value": 1.02672,
         "computed": true
       },
-      "discrepancy": 0.264625,
+      "discrepancy": 0.226717,
       "tolerance": {
         "kind": "gte",
         "setBy": "validation/anchorTests.ts:102 (anchor-test design)"
@@ -12205,10 +12205,10 @@
         "uncertainty": "design threshold"
       },
       "model": {
-        "value": 0.171,
+        "value": 0.152,
         "computed": true
       },
-      "discrepancy": 0.171,
+      "discrepancy": 0.152,
       "tolerance": {
         "kind": "gt",
         "setBy": "validation/anchorTests.ts:132 (anchor-test design)"
@@ -12243,10 +12243,10 @@
         "uncertainty": "design threshold"
       },
       "model": {
-        "value": 37.6739,
+        "value": 40.3051,
         "computed": true
       },
-      "discrepancy": 37.6739,
+      "discrepancy": 40.3051,
       "tolerance": {
         "kind": "gt",
         "setBy": "validation/anchorTests.ts:154 (anchor-test design)"
