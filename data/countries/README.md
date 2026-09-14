@@ -130,7 +130,8 @@ disagrees with the hand rating (for example China 0.45 → 0.60, Saudi Arabia 0.
 shrinks the spread toward the hand-entered mean (regression dilution) and so imports the hand
 column's noise into the scale; it reclassifies 19 countries.
 
-In WGI units the engine's thresholds now read: 0.35 ↔ −0.96, 0.40 ↔ −0.74, 0.50 ↔ −0.30,
+The clamp at 1 binds for Norway, Denmark, Finland and Luxembourg (WGI mean above 1.92; the
+hand-entered maximum was 0.98); nothing reaches 0. In WGI units the engine's thresholds now read: 0.35 ↔ −0.96, 0.40 ↔ −0.74, 0.50 ↔ −0.30,
 0.60 ↔ +0.15, 0.80 ↔ +1.03 (recorded in the file as `engineThresholdsInWgiUnits`).
 
 ### Wellbeing anchor
