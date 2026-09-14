@@ -12,6 +12,7 @@ import { findFixture } from '../../src/core/fixtures';
 import { encodeLabLink, LAB_HASH_PREFIX } from '../../src/policy/bundle';
 import { findPolicyExample } from '../../src/policy/examples';
 import { modelHash } from '../../src/policy/hash';
+import { hasPolicyApiKey } from '../../services/policyExtract';
 
 const html = (props: React.ComponentProps<typeof LabTab> = {}): string => renderToString(React.createElement(LabTab, props)).replace(/<!-- -->/g, '');
 const example = findPolicyExample('s3877-itwa-2026')!;
@@ -36,8 +37,10 @@ describe('LabTab Policy panel (renders)', () => {
     expect(out).toContain('not a prediction of what the policy');
     expect(out).toContain('Start a manual draft');
     expect(out).toContain('Load worked example');
-    // tests run without a Gemini key: the button is disabled and says why
-    expect(out).toContain('AI extraction is off');
+    // Vite's define inlines GEMINI_API_KEY from .env.local when present, so the key state depends on
+    // the checkout: without a key the button is disabled and says why; with one, no such notice.
+    if (hasPolicyApiKey()) expect(out).not.toContain('AI extraction is off');
+    else expect(out).toContain('AI extraction is off');
     // the existing Lab sections are still there, with the policy panel before the files
     expect(out.indexOf('What limits the result')).toBeLessThan(out.indexOf('Policy: read a text against this model'));
     expect(out.indexOf('Policy: read a text against this model')).toBeLessThan(out.indexOf('Advanced: model file'));
