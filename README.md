@@ -216,6 +216,7 @@ Current results for the built-in engine (`npm run check`, 2026-09-13): 767 tests
 | Historical policy-effect case: Alaska Permanent Fund Dividend (Jones & Marinescu 2022) | `data/cases/alaska-pfd.json`, [`docs/design/research/alaska-pfd-case.md`](docs/design/research/alaska-pfd-case.md), `npm run validate:cases` |
 | Cash-transfer and unemployment → wellbeing evidence | [`docs/design/research/cash-transfer-wellbeing-evidence.md`](docs/design/research/cash-transfer-wellbeing-evidence.md) |
 | Country data provenance against the World Bank | [`data/provenance/README.md`](data/provenance/README.md) |
+| Reference-target ledger: every published/empirical/historical/anchor target with its status, misses kept even when a regression test pins them | [`docs/design/reference-ledger.md`](docs/design/reference-ledger.md), `data/ledger/reference-targets.json`, `npm run ledger` |
 | Policy text → provisions → overlay → paired run → share link / bundle → memo | Model Lab → Policy panel, `src/policy/`, worked example `data/policy/examples/` (S. 3877) |
 
 ### Reproducing the published outputs of Korinek et al. (2026)
@@ -225,7 +226,10 @@ Anthropic's economics team published *Economic Scenarios for Transformative AI*
 [interactive explorer](https://www.anthropic.com/institute/econ-scenarios): a
 task-based US model to 2030 with three scenarios and, deliberately, no probabilities.
 A faithful port of their equations now lives in the Model Lab (`data/core/korinek-2026-faithful.json`,
-see the table above). Separately, this engine's optional macro block (`ModelParameters.macro`, see `simulation/pure.ts`) is
+see the table above) and is the canonical US reference: the preset "Provisional level model + US reference"
+feeds its US GDP gap, labour income and unemployment into the world engine from January 2025 to January
+2030 and stops there (`simulation/usReference.ts`). The reduced form below is kept only as an
+illustrative legacy approximation for old scenarios; it is not an authoritative reproduction. This engine's optional macro block (`ModelParameters.macro`, see `simulation/pure.ts`) is
 a reduced-form approximation calibrated to match their published US 2030 outputs when
 driven by the same inputs — it is not a port of their equations — with the AI
 capability/adoption path treated as the scenario input exactly as their explorer does:

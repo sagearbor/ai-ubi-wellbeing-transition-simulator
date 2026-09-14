@@ -44,6 +44,12 @@ export interface ModelParameters {
 export interface MacroParameters {
   /** Annual real GDP-per-capita growth on the no-AI path (e.g. 0.02). */
   baselineGrowth: number;
+  /**
+   * When set, the United States takes its GDP gap, labour share and unemployment from the faithful
+   * port of Korinek et al. (2026) for this scenario (simulation/usReference.ts) instead of the
+   * reduced-form block, from January 2025 to January 2030 only. Other countries are unaffected.
+   */
+  usReference?: 'modest' | 'substantial' | 'extreme';
   /** GDP boost per unit of AI-affected task share (1.13 reproduces Korinek et al.). */
   productivityGain: number;
   /** psi: fraction of affected cognitive tasks that are automated rather than augmented (0-1). */
@@ -104,9 +110,21 @@ export interface SimulationState {
    * noCorporateUbiInputs). Older fixtures and save files may still carry the field; it is ignored.
    */
   shadowCountryData?: Record<string, CountryStats>;
+  /**
+   * Parts of the model that have run past the scope of their source, e.g. the US reference path
+   * after January 2030. Non-empty means later values for those parts are not modelled; the app stops.
+   */
+  outOfScope?: string[];
   globalDisplacementGap: number; // Aggregate displacement gap across all countries (total displaced - total receiving UBI)
   corruptionLeakage: number; // Total dollars lost to corruption this month
   countriesInCrisis: number; // Count of countries where displacement exceeds UBI coverage
+  /**
+   * The country dataset this run was built from (constants.ts COUNTRY_DATASET_IDS; data/countries/).
+   * The engine reads it for the world population and the wellbeing-anchor coefficients. Absent =
+   * the process default. Save files and links written before the 2026-09 migration have no such
+   * field and are reopened on 'countries-legacy-v1' (simulation/appState.ts historyFromSave).
+   */
+  countryDataset?: string;
 }
 
 export interface CountryStats {
@@ -274,6 +292,8 @@ export interface SavedState {
   run?: SimulationRun;
   /** The custom model that was active, if any. Autosave has always written this. */
   activeModelConfig?: ModelConfig | null;
+  /** Country dataset id (constants.ts COUNTRY_DATASET_IDS). Absent in pre-migration saves = 'countries-legacy-v1'. */
+  countryDataset?: string;
 }
 
 /**
@@ -355,6 +375,13 @@ export interface ModelConfig {
 
   // Metadata
   metadata: ModelMetadata;
+
+  /**
+   * Country dataset a shared scenario was made on (src/services/scenarioShare.ts). Stamped when a
+   * scenario is exported or linked; a scenario file or link without it predates the 2026-09
+   * migration and is read as 'countries-legacy-v1'. Absent on models built in this session.
+   */
+  countryDataset?: string;
 }
 
 /** Result of validating a model configuration */

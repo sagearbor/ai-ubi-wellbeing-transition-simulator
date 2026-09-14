@@ -8,6 +8,7 @@
  */
 
 import React from 'react';
+import { steadyStateOf, timeLabel, timeUnitName } from '../../src/core/calendar';
 import type { CoreModel } from '../../src/core/types';
 import type { PairedRunResult, Quantiles } from '../../src/policy/types';
 import { Hint } from '../futures/Hint';
@@ -27,6 +28,8 @@ export interface PolicyResultsProps {
   active: number;
   year: number | null;
   onYear: (year: number) => void;
+  /** 'imported': results are labelled experimental — not curated. */
+  modelStatus?: 'curated' | 'imported';
 }
 
 const bandText = (q: Quantiles | undefined, t: number): string => {
@@ -40,7 +43,7 @@ const signed = (q: Quantiles | undefined, t: number): string => {
   return `${s(q.p50[t])} [${s(q.p5[t])}, ${s(q.p95[t])}]`;
 };
 
-const PolicyResults: React.FC<PolicyResultsProps> = ({ model, entries, active, year, onYear }) => {
+const PolicyResults: React.FC<PolicyResultsProps> = ({ model, entries, active, year, onYear, modelStatus = 'curated' }) => {
   const first = entries.find((e) => e.result.ok);
   if (!first) {
     return (
@@ -56,9 +59,18 @@ const PolicyResults: React.FC<PolicyResultsProps> = ({ model, entries, active, y
   const entity = entities[0];
   const t = year === null ? years.length - 1 : stepForYear(years, year);
   const shown = entries[active]?.result.ok ? entries[active] : first;
+  const unitName = timeUnitName(model.time);
+  const steady = steadyStateOf(model);
+  const steadyIndex = steady ? years.findIndex((y) => Math.abs(y - steady.at) < 1e-9) : -1;
+  const tFor = (o: string) => (steady?.outputs.has(o) && steadyIndex >= 0 ? steadyIndex : t);
 
   return (
     <div className="space-y-3">
+      {modelStatus === 'imported' && (
+        <p className="rounded-lg border border-amber-300 bg-amber-50 dark:border-amber-800 dark:bg-amber-950/40 px-3 py-2 text-xs font-semibold text-amber-800 dark:text-amber-200">
+          Experimental — not curated: these results come from a model imported into the Lab, not one of the app's reviewed models.
+        </p>
+      )}
       {entries.some((e) => e.stale) && (
         <p className="rounded-lg border border-amber-300 bg-amber-50 dark:border-amber-800 dark:bg-amber-950/40 px-3 py-2 text-xs text-amber-800 dark:text-amber-200">
           The draft or the scenario changed after this run ({entries.filter((e) => e.stale).map((e) => e.label).join(', ')}). These numbers are for the earlier version — run again.
@@ -72,7 +84,7 @@ const PolicyResults: React.FC<PolicyResultsProps> = ({ model, entries, active, y
 
       <div className="flex flex-wrap items-center gap-2">
         <label className="text-[11px] font-medium text-slate-600 dark:text-slate-300" htmlFor="policy-year">
-          Year
+          {unitName}
         </label>
         <select
           id="policy-year"
@@ -82,12 +94,14 @@ const PolicyResults: React.FC<PolicyResultsProps> = ({ model, entries, active, y
         >
           {years.map((y) => (
             <option key={y} value={y}>
-              {Number.isInteger(y) ? y : y.toFixed(2)}
+              {timeLabel(model.time, y)}
             </option>
           ))}
         </select>
         <span className="text-[11px] text-slate-500 dark:text-slate-400">
-          median [p5, p95] over {first.result.runs} paired draws, seed {first.result.seed}
+          {first.result.deterministic
+            ? 'deterministic: uncertainty off — no parameter declares a range, so both sides ran once; brackets repeat the point value'
+            : `median [p5, p95] over ${first.result.runs} paired draws, seed ${first.result.seed}`}
           <Hint
             label="paired draws"
             text="Both sides use the same model version, the same scenario overlays and the same parameter draws; only the policy overlay differs. The spread comes only from parameters that declare a range. It is not a forecast interval, and it says nothing about whether the model's equations are right."
@@ -123,12 +137,13 @@ const PolicyResults: React.FC<PolicyResultsProps> = ({ model, entries, active, y
                 <td className="px-2 py-1.5 font-mono whitespace-nowrap">
                   {o}
                   <span className="ml-1 font-sans text-[11px] text-slate-400">{unitOf(model, o)}</span>
+                  {tFor(o) !== t && <span className="ml-1 font-sans text-[11px] text-amber-700 dark:text-amber-300">{`steady state only (${timeLabel(model.time, years[tFor(o)])})`}</span>}
                 </td>
-                <td className="px-2 py-1.5 whitespace-nowrap">{bandText(first.result.baseline[entity]?.[o], t)}</td>
+                <td className="px-2 py-1.5 whitespace-nowrap">{bandText(first.result.baseline[entity]?.[o], tFor(o))}</td>
                 {entries.map((e) => (
                   <React.Fragment key={e.label}>
-                    <td className="px-2 py-1.5 whitespace-nowrap">{e.result.ok ? bandText(e.result.policy[entity]?.[o], t) : '—'}</td>
-                    <td className="px-2 py-1.5 whitespace-nowrap font-semibold">{e.result.ok ? signed(e.result.difference[entity]?.[o], t) : '—'}</td>
+                    <td className="px-2 py-1.5 whitespace-nowrap">{e.result.ok ? bandText(e.result.policy[entity]?.[o], tFor(o)) : '—'}</td>
+                    <td className="px-2 py-1.5 whitespace-nowrap font-semibold">{e.result.ok ? signed(e.result.difference[entity]?.[o], tFor(o)) : '—'}</td>
                   </React.Fragment>
                 ))}
               </tr>
@@ -138,7 +153,7 @@ const PolicyResults: React.FC<PolicyResultsProps> = ({ model, entries, active, y
       </div>
 
       <div className="rounded-lg bg-slate-100 dark:bg-slate-800/60 px-3 py-2 text-xs">
-        <p className="font-semibold text-slate-700 dark:text-slate-200">What limits it in {Number.isInteger(years[t]) ? years[t] : years[t].toFixed(2)} (point run)</p>
+        <p className="font-semibold text-slate-700 dark:text-slate-200">What limits it in {timeLabel(model.time, years[t])} (point run)</p>
         <ul className="mt-1 space-y-0.5 text-slate-600 dark:text-slate-300">
           <li>
             <span className="font-medium">baseline:</span> {(first.result.binding.baseline[entity]?.[t] ?? []).join('; ') || 'no min()/max() limit recorded'}
@@ -159,6 +174,8 @@ const PolicyResults: React.FC<PolicyResultsProps> = ({ model, entries, active, y
             <OutputChart
               key={o}
               id={o}
+              time={model.time}
+              steadyState={steady?.outputs.has(o) && steadyIndex >= 0 ? { reason: steady.reason, index: steadyIndex } : undefined}
               unit={unitOf(model, o)}
               years={years}
               current={shown.result.policy[entity]?.[o]?.p50 ?? []}

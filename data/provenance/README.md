@@ -1,5 +1,17 @@
 # data/provenance
 
+> **Status 2026-09-14: countries migrated.** Owner decision 4(b) replaced the hand-entered country
+> table with the versioned, sourced dataset `countries-wb-2026-09` (`data/countries/`,
+> `docs/design/research/country-data-migration.md`). The table audited below is frozen as
+> `countries-legacy-v1` (`data/countries/legacy-hand-entered.json`) and is still used for saves and
+> links made before the migration. The measured numbers in this file describe that legacy table;
+> reproduce them with `COUNTRY_DATASET=countries-legacy-v1 npm run provenance:countries`. Run on
+> the default dataset, the same report now shows population and Gini identical to the reference
+> (median gap 1.00x and 0.0 points), governance Spearman ρ 0.973 against GE alone (the dataset uses
+> the GE/RL/CC mean), and GDP per capita median gap 1.23x — a convention difference, not an error:
+> the dataset is constant 2015 US$ (`NY.GDP.PCAP.KD`), this reference is current US$
+> (`NY.GDP.PCAP.CD`). Corporations are unchanged and remain hand-entered.
+
 Provenance and reference-data audit for the two hand-entered tables in
 `constants.ts`: `COUNTRY_BASE_DATA` (~128 countries) and `INITIAL_CORPORATIONS`
 (~79 corporations). Every number in those tables was hand-entered without a
@@ -13,7 +25,7 @@ Regenerate the reference data and report with:
 
 ```bash
 npm run provenance:fetch      # writes data/provenance/country-reference.json (World Bank API; network required)
-npm run provenance:countries  # prints the markdown report below, from the current constants.ts + reference file
+npm run provenance:countries  # prints the markdown report below, from the selected country dataset + reference file
 ```
 
 `country-reference.json` is idempotent (skips if present; `-- --force` to
@@ -81,8 +93,8 @@ are "wrong" — several of the worst offenders (Guyana's oil-boom GDP, Suriname'
 small-sample-survey Gini, China's WGI-vs-intuitive governance gap) are cases
 where the *reference* itself is the more surprising number. It does mean any
 of these four fields could be refreshed from World Bank data with a documented
-year and source, if the owner decides to move off hand-entered values — see
-the "Owner decision pending" note in project memory.
+year and source. The owner decided to do so (decision 4(b), 2026-09-14); see the status note at the
+top of this file.
 
 ## Reference data source blocks
 

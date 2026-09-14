@@ -41,7 +41,7 @@ export const CORE_FIXTURES: FixtureEntry[] = [
   {
     model: korinek2026 as unknown as CoreModel,
     overlays: [korinekModest as unknown as Overlay, korinekExtreme as unknown as Overlay],
-    label: 'Korinek et al. 2026 scenarios, US 2030 (published model, reduced form)',
+    label: 'Korinek et al. 2026, reduced-form approximation (illustrative legacy; use the faithful port)',
   },
   {
     model: korinekFaithful as unknown as CoreModel,

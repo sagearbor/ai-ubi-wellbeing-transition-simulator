@@ -12,6 +12,7 @@
 
 import React from 'react';
 import { FlaskConical, X } from 'lucide-react';
+import { timeLabel, timeUnitName } from '../../src/core/calendar';
 import type { CoreModel, RunResult } from '../../src/core/types';
 import { Hint } from '../futures/Hint';
 import { bindingChain, fmtDelta, fmtExact, hypotheticalBanner, type Hypothetical } from './labState';
@@ -47,7 +48,8 @@ const BindingPanel: React.FC<BindingPanelProps> = ({
   onClearHypothetical,
 }) => {
   const years = result.years;
-  const year = years[step];
+  const year = timeLabel(model.time, years[step]);
+  const unitName = timeUnitName(model.time);
   const groups = bindingChain(model, result, entity, selectedOutput, step);
   const chain = groups.filter((g) => g.depth !== null);
   const rest = groups.filter((g) => g.depth === null);
@@ -91,7 +93,7 @@ const BindingPanel: React.FC<BindingPanelProps> = ({
         What limits the result
         <Hint
           label="What limits the result"
-          text='Where the model takes a min() or max(), one argument is the one that actually decides the answer. "limited by X" means that at this year, raising anything else changes nothing until X moves.'
+          text='Where the model takes a min() or max(), one argument is the one that actually decides the answer. "limited by X" means that at this step, raising anything else changes nothing until X moves.'
         />
       </h3>
       <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
@@ -102,7 +104,7 @@ const BindingPanel: React.FC<BindingPanelProps> = ({
 
       <div className="mt-2 flex items-center gap-2">
         <label className="text-[11px] text-slate-500 dark:text-slate-400 shrink-0" htmlFor="lab-year">
-          Year
+          {unitName}
         </label>
         <input
           id="lab-year"
@@ -114,7 +116,7 @@ const BindingPanel: React.FC<BindingPanelProps> = ({
           value={step}
           onChange={(e) => onStep(Number(e.target.value))}
         />
-        <span className="text-xs tabular-nums font-semibold text-slate-700 dark:text-slate-200 w-12 text-right shrink-0">{year}</span>
+        <span className="text-xs tabular-nums font-semibold text-slate-700 dark:text-slate-200 min-w-12 text-right shrink-0">{year}</span>
       </div>
 
       {groups.length === 0 ? (

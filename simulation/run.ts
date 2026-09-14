@@ -19,7 +19,7 @@ import type {
 } from '../types';
 import { stepSimulationPure } from './pure';
 import type { CompiledEquationSet } from '../src/services/equationParser';
-import { INITIAL_COUNTRIES, INITIAL_CORPORATIONS } from '../constants';
+import { COUNTRY_DATASET_ID, INITIAL_CORPORATIONS, countriesForDataset, type CountryDatasetId } from '../constants';
 import ladderJson from '../data/hindcast/wellbeing-ladder.json';
 
 /** Everything the engine reads and writes in one step. Immutable by convention: never edit in place. */
@@ -102,17 +102,26 @@ export interface InitOptions {
    * was calibrated on.
    */
   initialWellbeing?: 'formula' | 'ladder';
+  /**
+   * Country dataset (data/countries/). Chooses the country table when none is passed and is
+   * stamped on the state so the engine uses that dataset's world population and anchor
+   * coefficients. Default: COUNTRY_DATASET_ID.
+   */
+  countryDataset?: CountryDatasetId;
 }
 
 /** Which initialisation a model asks for (anchored models start from observed ladder values). */
-export function initOptionsFor(model?: Pick<ModelParameters, 'macro'> | null): InitOptions {
-  return { initialWellbeing: model?.macro?.wellbeingMode === 'anchored' ? 'ladder' : 'formula' };
+export function initOptionsFor(model?: Pick<ModelParameters, 'macro'> | null, countryDataset?: CountryDatasetId): InitOptions {
+  return {
+    initialWellbeing: model?.macro?.wellbeingMode === 'anchored' ? 'ladder' : 'formula',
+    ...(countryDataset ? { countryDataset } : {}),
+  };
 }
 
 /** The app's month-0 country initialisation, extracted verbatim from App.tsx getInitialState. */
-export function initialCountryData(countries: readonly CountryBase[] = INITIAL_COUNTRIES, opts: InitOptions = {}): Record<string, CountryStats> {
+export function initialCountryData(countries?: readonly CountryBase[], opts: InitOptions = {}): Record<string, CountryStats> {
   const out: Record<string, CountryStats> = {};
-  for (const c of countries) {
+  for (const c of countries ?? countriesForDataset(opts.countryDataset ?? COUNTRY_DATASET_ID)) {
     const formula = Math.min(100, Math.max(10, c.gdpPerCapita / 1200 + 40));
     const ladder = opts.initialWellbeing === 'ladder' ? latestLadderIndex(c.id) : undefined;
     out[c.id] = {
@@ -138,7 +147,7 @@ export function initialCountryData(countries: readonly CountryBase[] = INITIAL_C
   return out;
 }
 
-export function initialState(countries: readonly CountryBase[] = INITIAL_COUNTRIES, corporations: readonly Corporation[] = INITIAL_CORPORATIONS, opts: InitOptions = {}): SimulationState {
+export function initialState(countries?: readonly CountryBase[], corporations: readonly Corporation[] = INITIAL_CORPORATIONS, opts: InitOptions = {}): SimulationState {
   const countryData = initialCountryData(countries, opts);
   const n = Object.keys(countryData).length;
   const avg = n ? Object.values(countryData).reduce((s, c) => s + c.wellbeing, 0) / n : 0;
@@ -151,12 +160,13 @@ export function initialState(countries: readonly CountryBase[] = INITIAL_COUNTRI
     globalDisplacementGap: 0,
     corruptionLeakage: 0,
     countriesInCrisis: 0,
+    countryDataset: opts.countryDataset ?? COUNTRY_DATASET_ID,
   };
 }
 
 export function initialRun(
   corporations: readonly Corporation[] = INITIAL_CORPORATIONS,
-  countries: readonly CountryBase[] = INITIAL_COUNTRIES,
+  countries?: readonly CountryBase[],
   opts: InitOptions = {},
 ): SimulationRun {
   return {

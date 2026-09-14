@@ -92,6 +92,9 @@ describe('policyState', () => {
     expect(parseCurveText('{"2030": 1.5}').curve).toEqual({ '2030': 1.5 });
     expect(parseCurveText('soon: 3').error).toContain('not a year');
     expect(parseCurveText('2026: lots').error).toContain('not a number');
+    // a model that counts its own unit (generations) takes any step value as a key
+    expect(parseCurveText('0: 1, 40: 2', { calendar: false }).curve).toEqual({ '0': 1, '40': 2 });
+    expect(parseCurveText('0: 1').error).toContain('not a year');
   });
 
   it('splits a shared scenario into fixture toggles and your own overlays, by content', () => {

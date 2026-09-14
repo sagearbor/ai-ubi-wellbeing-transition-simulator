@@ -22,11 +22,13 @@ import { InterventionImportPanel } from './components/futures/InterventionImport
 import { LOCKED_GRAPH, LOCKED_INTERVENTIONS, loadCustomInterventions, saveCustomInterventions } from './src/futures/data';
 import type { Intervention } from './src/futures/types';
 import { SimulationState, ModelParameters, HistoryPoint, CountryStats, Corporation, SavedState, SelectedEntity, ModelConfig, StoredModel } from './types';
-import { PRESET_MODELS, INITIAL_COUNTRIES, INITIAL_CORPORATIONS, SCENARIO_PRESETS, DEFAULT_MODEL_CONFIG } from './constants';
+import { PRESET_MODELS, INITIAL_COUNTRIES, INITIAL_CORPORATIONS, SCENARIO_PRESETS, DEFAULT_MODEL_CONFIG, DEFAULT_MODEL, COUNTRY_DATASET_ID, isCountryDatasetId, type CountryDatasetId } from './constants';
+import { encodeSharePayload, decodeSharePayload } from './src/services/scenarioShare';
 import { getRedTeamAnalysis, getSimulationSummary } from './services/geminiService';
 import { rateModel, getLeaderboard, recordRun, listModels } from './src/services/modelStorage';
 import { parseEquationSet, CompiledEquationSet, EquationError } from './src/services/equationParser';
 import { advanceRun, initialRun, type RunInputs, type SimulationRun, initOptionsFor } from './simulation/run';
+import { US_REFERENCE_LAST_WORLD_MONTH } from './simulation/usReference';
 import {
   catchUp, corporationEditForCounterfactual, editCorporation, editCountry, headlineStats, historyForPrompt, historyForSave,
   historyFromSave, rebuildCounterfactual, recordRunInHistory, seekInHistory, seekWithCounterfactual, stepWithCounterfactual,
@@ -193,7 +195,7 @@ const TourOverlay: React.FC<{ step: number, onNext: () => void, onBack: () => vo
 
 // Helper for dynamic fund formatting
 const App: React.FC = () => {
-  const [model, setModel] = useState<ModelParameters>(PRESET_MODELS[0]);
+  const [model, setModel] = useState<ModelParameters>(DEFAULT_MODEL);
   const [history, setHistory] = useState<HistoryPoint[]>([]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [speed, setSpeed] = useState(1);
@@ -311,8 +313,17 @@ const App: React.FC = () => {
   // The derived consts below keep the render tree's variable names unchanged.
   // ==========================================================================
 
+  /**
+   * The country dataset this session runs on (data/countries/README.md). New sessions use the
+   * sourced default; a save or link from before the 2026-09 migration switches the session to
+   * 'countries-legacy-v1' so it reproduces, and resets keep whatever the session is on.
+   */
+  const [countryDataset, setCountryDataset] = useState<CountryDatasetId>(COUNTRY_DATASET_ID);
+  const countryDatasetRef = React.useRef(countryDataset);
+  countryDatasetRef.current = countryDataset;
+
   /** The month-0 run the main timeline is anchored to (rebuilt on reset / scenario apply). */
-  const [baseRun, setBaseRun] = useState<SimulationRun>(() => initialRun());
+  const [baseRun, setBaseRun] = useState<SimulationRun>(() => initialRun(undefined, undefined, initOptionsFor(DEFAULT_MODEL, COUNTRY_DATASET_ID)));
   const [run, setRun] = useState<SimulationRun>(baseRun);
   /** The corporation roster month 0 starts from: INITIAL_CORPORATIONS, or a scenario's overrides. */
   const [baseCorporations, setBaseCorporations] = useState<Corporation[]>(INITIAL_CORPORATIONS);
@@ -337,10 +348,10 @@ const App: React.FC = () => {
   const [runRecorded, setRunRecorded] = useState(false);
 
   // Comparison simulation (P7-T5) - a second, independent run advanced in lockstep
-  const [comparisonBaseRun, setComparisonBaseRun] = useState<SimulationRun>(() => initialRun());
+  const [comparisonBaseRun, setComparisonBaseRun] = useState<SimulationRun>(() => initialRun(undefined, undefined, initOptionsFor(DEFAULT_MODEL, COUNTRY_DATASET_ID)));
   const [comparisonRun, setComparisonRun] = useState<SimulationRun>(comparisonBaseRun);
   const [comparisonHistory, setComparisonHistory] = useState<HistoryPoint[]>([]);
-  const [comparisonModel, setComparisonModel] = useState<ModelParameters>(PRESET_MODELS[0]);
+  const [comparisonModel, setComparisonModel] = useState<ModelParameters>(DEFAULT_MODEL);
 
   const comparisonState = comparisonRun.state;
   const comparisonCorporations = comparisonRun.corporations;
@@ -359,7 +370,10 @@ const App: React.FC = () => {
   const equationErrors: EquationError[] = parsedEquations && !parsedEquations.valid ? parsedEquations.errors : [];
   const compiledEquations: CompiledEquationSet | undefined = parsedEquations?.compiledEquations;
   /** False while a custom model is active but broken: play, step and replay are all blocked. */
-  const canStep = equationErrors.length === 0;
+  // A model whose source ends at a date (the US reference ends January 2030) stops there: later
+  // months are not modelled, so the clock does not run past them (review 2026-09-14, decision 4(c)).
+  const referenceEnded = (!!model.macro?.usReference && state.month >= US_REFERENCE_LAST_WORLD_MONTH) || (state.outOfScope?.length ?? 0) > 0;
+  const canStep = equationErrors.length === 0 && !referenceEnded;
 
   const runInputs: RunInputs = useMemo(
     () => ({ model, equations: compiledEquations }),
@@ -383,12 +397,25 @@ const App: React.FC = () => {
     if (hash.startsWith('#share=')) {
       try {
         const base64 = hash.split('#share=')[1];
-        const decoded = JSON.parse(atob(base64));
+        // Links made before the 2026-09 country-data migration carry no dataset id and reopen on
+        // 'countries-legacy-v1' (src/services/scenarioShare.ts decodeSharePayload).
+        const decoded = decodeSharePayload(base64);
         // ONLY Load Model Params
         if (decoded.model) {
             setModel(decoded.model);
             // We consciously do not load history to keep URL small and reliable
-            // User starts fresh with the shared parameters
+            // User starts fresh with the shared parameters, on the link's country dataset
+            setCountryDataset(decoded.countryDataset);
+            const fresh = initialRun(INITIAL_CORPORATIONS, undefined, initOptionsFor(decoded.model, decoded.countryDataset));
+            setBaseRun(fresh);
+            setRun(fresh);
+            setPairedRun(fresh);
+            setHistory([]);
+            setPairedHistory([]);
+            const freshB = initialRun(INITIAL_CORPORATIONS, undefined, initOptionsFor(DEFAULT_MODEL, decoded.countryDataset));
+            setComparisonBaseRun(freshB);
+            setComparisonRun(freshB);
+            setComparisonHistory([]);
         }
       } catch (e) {
         console.error("Failed to decode shared state", e);
@@ -405,6 +432,10 @@ const App: React.FC = () => {
     }
   }, [showWorldControls]);
 
+  useEffect(() => {
+    if (referenceEnded) setIsPlaying(false);
+  }, [referenceEnded]);
+
   // Dismiss start hint when playing
   useEffect(() => {
     if (isPlaying) setShowStartHint(false);
@@ -414,10 +445,7 @@ const App: React.FC = () => {
     try {
         // STRATEGY: Only share parameters (model). 
         // This ensures URL is tiny and robust.
-        const payload = { model };
-        
-        const jsonStr = JSON.stringify(payload);
-        const base64 = btoa(jsonStr);
+        const base64 = encodeSharePayload(model, countryDataset);
         const url = `${window.location.origin}${window.location.pathname}#share=${base64}`;
         setShareUrl(url);
     } catch (err) {
@@ -440,10 +468,11 @@ const App: React.FC = () => {
    * waiting for a state update to land - the old code called setCorporations and then reset,
    * and the reset wiped the scenario's corporation overrides.
    */
-  const resetAll = useCallback((corpsA?: Corporation[], modelForInit?: ModelParameters) => {
+  const resetAll = useCallback((corpsA?: Corporation[], modelForInit?: ModelParameters, datasetForInit?: CountryDatasetId) => {
     const rosterA = corpsA ?? baseCorporations;
+    const dataset = datasetForInit ?? countryDataset;
     // Stage 4: anchored models start from observed ladder values, legacy ones from the formula.
-    const init = initOptionsFor(modelForInit ?? model);
+    const init = initOptionsFor(modelForInit ?? model, dataset);
     const freshA = initialRun(rosterA, undefined, init);
     setBaseRun(freshA);
     setRun(freshA);
@@ -452,7 +481,7 @@ const App: React.FC = () => {
     setPairedHistory([]);
 
     // The comparison panel is reset with its own roster so both start at month 0 together.
-    const freshB = initialRun(comparisonBaseRun.corporations, undefined, initOptionsFor(comparisonModel));
+    const freshB = initialRun(comparisonBaseRun.corporations, undefined, initOptionsFor(comparisonModel, dataset));
     setComparisonBaseRun(freshB);
     setComparisonRun(freshB);
     setComparisonHistory([]);
@@ -464,7 +493,7 @@ const App: React.FC = () => {
     // Reset run recording flag (P9-T7)
     setRunRecorded(false);
     window.history.pushState("", document.title, window.location.pathname + window.location.search);
-  }, [baseCorporations, comparisonBaseRun, model, comparisonModel]);
+  }, [baseCorporations, comparisonBaseRun, model, comparisonModel, countryDataset]);
 
   const handleReset = useCallback(() => { resetAll(); }, [resetAll]);
 
@@ -477,9 +506,13 @@ const App: React.FC = () => {
   // Apply a custom model configuration
   const applyModelConfig = useCallback((config: ModelConfig) => {
     setActiveModelConfig(config);
+    // A scenario file or link records the country dataset it was made on (legacy when it predates
+    // the migration); running it switches the session to that dataset. Models built here have none.
+    const dataset = isCountryDatasetId(config.countryDataset) ? config.countryDataset : undefined;
+    if (dataset) setCountryDataset(dataset);
     // Reset simulation when applying new model
-    handleReset();
-  }, [handleReset]);
+    resetAll(undefined, undefined, dataset);
+  }, [resetAll]);
 
   // Clear custom model and revert to default
   const clearModelConfig = useCallback(() => {
@@ -570,7 +603,7 @@ const App: React.FC = () => {
     if (!scenario) return;
 
     // 1. Update comparison model with scenario's settings
-    const updatedModel = { ...PRESET_MODELS[0], ...scenario.modelParams };
+    const updatedModel = { ...DEFAULT_MODEL, ...scenario.modelParams };
     setComparisonModel(updatedModel);
 
     // 2. Apply corporation overrides to comparison corps
@@ -588,7 +621,7 @@ const App: React.FC = () => {
     // 3. Build the comparison run at month 0 from those corporations, then bring it up to the
     // month the main panel is already on, so both panels always show the same month
     // (audit 2026-09-13, finding A4: the comparison panel used to sit at month 0 forever).
-    const freshB = initialRun(updatedCorps, undefined, initOptionsFor(updatedModel));
+    const freshB = initialRun(updatedCorps, undefined, initOptionsFor(updatedModel, countryDatasetRef.current));
     // A broken custom model may not be replayed through the built-in engine (A5), so the
     // comparison panel stays at month 0 until the equations compile.
     const target = canStepRef.current ? monthRef.current : 0;
@@ -629,7 +662,8 @@ const App: React.FC = () => {
         gameTheoryState,
         model,
         history: historyForSave(history),
-        activeModelConfig
+        activeModelConfig,
+        countryDataset,
       };
 
       // Create blob and download link
@@ -648,7 +682,7 @@ const App: React.FC = () => {
       console.error("Failed to save simulation:", err);
       alert("Failed to save simulation. Check console for details.");
     }
-  }, [state, run, corporations, globalLedger, gameTheoryState, model, history, activeModelConfig]);
+  }, [state, run, corporations, globalLedger, gameTheoryState, model, history, activeModelConfig, countryDataset]);
 
   /**
    * Load simulation state from a JSON file
@@ -658,6 +692,8 @@ const App: React.FC = () => {
   const restoreSavedState = useCallback((saved: SavedState & { activeModelConfig?: ModelConfig | null }) => {
     if (!saved.version) console.warn('Loading a save with no version field. It will be replayed from month 0.');
     const loaded = historyFromSave(saved);
+    // Saves from before the 2026-09 country-data migration reopen on 'countries-legacy-v1'.
+    setCountryDataset(loaded.countryDataset);
     if (loaded.replayed) console.warn(`[load] ${loaded.note}`);
     else if (loaded.note) console.info(`[load] ${loaded.note}`);
     setBaseRun(loaded.base);
@@ -749,7 +785,9 @@ const App: React.FC = () => {
    */
   const handleSeek = (m: number) => {
     setIsPlaying(false);
-    if (!canStep && m !== 0) return;
+    // Equation errors block every seek but a reset; the end of a reference only blocks moving past it.
+    if (equationErrors.length > 0 && m !== 0) return;
+    if (model.macro?.usReference && m > US_REFERENCE_LAST_WORLD_MONTH) return;
     const pair = seekWithCounterfactual(history, pairedHistory, m, runInputs, baseRun);
     setRun(pair.run);
     setPairedRun(pair.paired);
@@ -1011,7 +1049,8 @@ const App: React.FC = () => {
         // bulk of the payload, so if localStorage refuses the write we drop them and keep the
         // chartable states; seeking then replays from month 0 instead.
         history: withRuns ? historyForSave(history) : historyForPrompt(history),
-        activeModelConfig  // P8-T9: Include custom model config
+        activeModelConfig,  // P8-T9: Include custom model config
+        countryDataset,
       });
       try {
         localStorage.setItem('ubi-sim-autosave', JSON.stringify(build(true)));
@@ -1032,7 +1071,7 @@ const App: React.FC = () => {
     }, 5 * 60 * 1000); // 5 minutes
 
     return () => clearInterval(interval);
-  }, [state, run, corporations, globalLedger, gameTheoryState, model, history, activeModelConfig]);
+  }, [state, run, corporations, globalLedger, gameTheoryState, model, history, activeModelConfig, countryDataset]);
 
   // Autosave found on mount: offer to restore it in-page. A native confirm() dialog blocked the
   // whole page (and any automation) until dismissed, so it is a banner with two buttons instead.
@@ -1480,6 +1519,15 @@ const App: React.FC = () => {
 
         {/* Main Content Area */}
         <section className="flex-1 overflow-y-auto p-4 lg:p-6 bg-slate-50 dark:bg-slate-950 relative h-full scrollbar-hide">
+          {/* Active run identity (review 2026-09-14, stage-5 gap 3): every view says which model its numbers come from. */}
+          {(activeTab === 'map' || activeTab === 'charts' || activeTab === 'corporations') && (
+            <p data-testid="active-model" className="mb-2 text-[11px] text-slate-500 dark:text-slate-400">
+              World simulation · <span className="font-semibold text-slate-700 dark:text-slate-200">{activeModelConfig ? `${activeModelConfig.name} (uploaded equations)` : model.name}</span> · month {state.month}. The Model Lab and the AI Futures Map are separate models and do not feed this view.
+            </p>
+          )}
+          {activeTab === 'futures' && (
+            <p className="mb-2 text-[11px] text-slate-500 dark:text-slate-400">AI Futures Map · a separate influence model with its own assumptions; it does not read or drive the world simulation.</p>
+          )}
           {activeTab === 'map' && (
             <div className="h-full flex flex-col gap-2">
               {/* Compact Stats Row - Primary */}
@@ -1693,7 +1741,7 @@ const App: React.FC = () => {
                             <button onClick={() => setShowStartHint(false)} className="text-blue-200 hover:text-white"><X size={14}/></button>
                         </div>
                         <div>
-                            <p className="text-[10px] leading-relaxed opacity-90 mb-3">Press <span className="font-bold text-white bg-white/20 px-1 rounded">PLAY</span> below to begin the simulation. Observe how the gradient UBI stabilizes global wellbeing.</p>
+                            <p className="text-[10px] leading-relaxed opacity-90 mb-3">Press <span className="font-bold text-white bg-white/20 px-1 rounded">PLAY</span> below to begin the simulation. Watch what adoption and transfers do to wellbeing in this model, and compare with the paired no-UBI run on the Charts tab.</p>
                             <button
                                 onClick={() => setTourStep(0)}
                                 className="w-full py-1.5 bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 rounded-lg text-[10px] font-bold uppercase hover:bg-blue-50 dark:hover:bg-slate-700 transition-colors"
@@ -2183,8 +2231,9 @@ const App: React.FC = () => {
               <div className="text-center space-y-3">
                 <h2 className="text-3xl font-bold text-slate-900 dark:text-white">The Abundance Cycle</h2>
                 <p className="text-slate-500 dark:text-slate-400 max-w-2xl text-sm">
-                  Watch how the system creates a positive feedback loop. Corps share surplus → UBI stabilizes citizens →
-                  citizens spend → corps grow larger. The pie expands for everyone.
+                  The loop the model is built around: corporations share AI revenue → transfers reach citizens →
+                  citizens spend → corporate demand holds up. It is the model's hypothesis, not a demonstrated result;
+                  whether the loop closes, and for whom, is what the simulation and its paired no-UBI run test.
                 </p>
               </div>
 
@@ -2972,12 +3021,17 @@ effect(t)      = wellbeing_main(t) - wellbeing_paired(t)`}
             <button type="button" onClick={discardAutosave} className="min-h-9 rounded-md border border-amber-400 px-3 py-1 font-bold uppercase hover:bg-amber-100 dark:hover:bg-amber-900/40">Discard</button>
           </div>
         )}
+        {referenceEnded && (
+          <div role="status" className="mx-4 lg:mx-6 mb-2 rounded-lg border border-sky-300 bg-sky-50 px-3 py-2 text-xs text-sky-900 dark:border-sky-700 dark:bg-sky-950/40 dark:text-sky-100">
+            <span className="font-semibold">End of the US reference (January 2030).</span> The United States follows the faithful port of Korinek et al. (2026) only to its reporting date; nothing after it is modelled, so the run stops here. Choose another preset to run longer.
+          </div>
+        )}
         <EquationErrorBanner
           modelName={activeModelConfig?.name || 'custom model'}
           errors={equationErrors}
           onClear={clearModelConfig}
         />
-        <SimulationControls isPlaying={isPlaying} onPlay={() => setIsPlaying(true)} onPause={() => setIsPlaying(false)} onReset={handleReset} onStep={stepSimulation} speed={speed} setSpeed={setSpeed} month={state.month} maxMonth={history.length > 0 ? Math.max(...history.map(h => h.month)) : state.month} onSeek={handleSeek} disabled={!canStep} disabledReason={`Custom model "${activeModelConfig?.name || ''}" has ${equationErrors.length} equation errors`} />
+        <SimulationControls isPlaying={isPlaying} onPlay={() => setIsPlaying(true)} onPause={() => setIsPlaying(false)} onReset={handleReset} onStep={stepSimulation} speed={speed} setSpeed={setSpeed} month={state.month} maxMonth={history.length > 0 ? Math.max(...history.map(h => h.month)) : state.month} onSeek={handleSeek} disabled={!canStep} disabledReason={referenceEnded ? 'The US reference path (Korinek et al. 2026) ends in January 2030; later months are not modelled.' : `Custom model "${activeModelConfig?.name || ''}" has ${equationErrors.length} equation errors`} />
       </footer>
 
       {/* Corporation Detail Panel (P5-T10) */}

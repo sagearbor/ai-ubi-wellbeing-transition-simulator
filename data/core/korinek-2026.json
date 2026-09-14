@@ -377,10 +377,10 @@
       "tol": 2.5
     },
     {
-      "name": "substantial scenario, US end-2030: headline unemployment 4.3% (published, but korinekTests.ts declares no tolerance for it; the 2.0pp labour-share band is borrowed here)",
+      "name": "substantial scenario, US end-2030: headline unemployment 4.6% (Table 3 p.31; was mistranscribed as 4.3 until 2026-09-14; tolerance 2.0pp borrowed from the labour-share band)",
       "at": 2031,
       "expr": "unemployment_pct",
-      "expected": 4.3,
+      "expected": 4.6,
       "tol": 2
     },
     {
