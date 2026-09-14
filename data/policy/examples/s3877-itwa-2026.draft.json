@@ -1,0 +1,197 @@
+{
+  "schemaVersion": 1,
+  "id": "s3877-itwa-2026",
+  "title": "Investing in Tomorrow's Workforce Act of 2026 (S. 3877) read against the training-funding model",
+  "source": {
+    "title": "S. 3877 (119th Congress), Investing in Tomorrow's Workforce Act of 2026, sections 4 and 5 as introduced in the Senate",
+    "url": "https://www.govinfo.gov/content/pkg/BILLS-119s3877is/html/BILLS-119s3877is.htm",
+    "textSha256": "b1a0bf0a83111b0a513b31b7a9e0aeedc41f3dcd9eb0b59cf288ac6839d2ffb1",
+    "excerptChars": 10362,
+    "excerptNote": "Sections 4 and 5 verbatim (GPO IS text). Sections 1-3 (short title, findings, definitions) are not operative and are not in the excerpt.",
+    "retrieved": "2026-09-13"
+  },
+  "modelId": "training-budget",
+  "modelHash": "ad0f66637da4dedf",
+  "reviewStatus": "author-drafted",
+  "draftedBy": {
+    "kind": "agent",
+    "name": "Claude Code (Claude Opus 5), stage 5 implementation session",
+    "date": "2026-09-13"
+  },
+  "notes": "Granularity: one provision per paragraph of sections 4 and 5 that does something; sub-items of the same paragraph (application contents, report items) are one provision. The model is a four-year arithmetic fixture with illustrative numbers for a single training channel, so only the bill's one dollar amount maps. Everything else is either missing a number or has no mechanism in the model, and is listed so the gap stays visible. The result is what this toy model does with $40M a year; it is not an estimate of what S. 3877 would do. Not reviewed by a person.",
+  "provisions": [
+    {
+      "id": "sec5b2-ndwg-authorization",
+      "quote": "In addition to any funds reserved under section 132(a)(2)(A) to carry out this section, there are authorized to be appropriated to carry out this section $40,000,000 for each of fiscal years 2026 through 2030.",
+      "summary": "Authorizes $40 million a year, on top of existing reserved funds, for national dislocated worker grants, FY2026-FY2030.",
+      "status": "mapped",
+      "role": "funding",
+      "mapping": {
+        "kind": "input",
+        "target": "training_budget",
+        "op": "add",
+        "value": 40000000,
+        "unit": "usd",
+        "evidence": {
+          "label": "S. 3877 sec. 5(b)(2): $40,000,000 authorized for each of FY2026-2030, in addition to existing funds",
+          "kind": "assumed",
+          "url": "https://www.govinfo.gov/content/pkg/BILLS-119s3877is/html/BILLS-119s3877is.htm",
+          "note": "The amount and the years are the bill's. Three modelling choices are not: that an authorization is appropriated in full; that fiscal years line up with the model's calendar years; and that all of it buys training completions in this model's single channel (national dislocated worker grants also pay for non-training assistance)."
+        }
+      },
+      "reason": "training_budget is the model's only funding input. 'In addition to any funds reserved' is an add, not a replacement. FY2026-2030 covers every year the model runs (2026-2029), so a constant add at every key of the step curve is exact."
+    },
+    {
+      "id": "sec5b1-automation-trigger",
+      "quote": "in subsection (b)(1)(A), by inserting ``advances in automation technology,'' before ``plant closures,''",
+      "summary": "Adds advances in automation technology to the events that can justify a national dislocated worker grant.",
+      "status": "unresolved",
+      "role": "constraint",
+      "reason": "Widens eligibility. The nearest model quantity is eligible_people, but the text gives no count of newly eligible workers, and eligible_people (10,000, a guess) never binds in the baseline, so there is no honest value to set."
+    },
+    {
+      "id": "sec5a-wioa-allowable-use",
+      "quote": "training programs for individuals who are, or are likely to become, dislocated workers as a result of automation, including activities that prepare the individuals for occupations in the technology sector.",
+      "summary": "Adds automation-displaced workers' training to the allowable statewide uses of existing WIOA adult and dislocated worker funds.",
+      "status": "unresolved",
+      "role": "control",
+      "reason": "An allowable use of existing formula funds, with no new money. States might redirect some funds to this group, but the text sets no amount and the model has no split of existing funds between uses."
+    },
+    {
+      "id": "sec4g-such-sums",
+      "quote": "There are authorized to be appropriated to carry out this section such sums as may be necessary for fiscal years 2026 through 2030.",
+      "summary": "Open-ended authorization for the section 4 automation training grants.",
+      "status": "unresolved",
+      "role": "funding",
+      "reason": "A second funding line with no amount. Mapping it would mean inventing a dollar figure. If money is appropriated under it, the mapped run understates funding."
+    },
+    {
+      "id": "sec4a1-competitive-grants",
+      "quote": "the Secretary shall award grants, on a competitive basis, to eligible partnerships to support demonstration and pilot projects relating to the training needs of workers who are, or are likely to become, dislocated workers as a result of automation.",
+      "summary": "Creates competitive demonstration and pilot grants to industry or sector partnerships.",
+      "status": "unresolved",
+      "role": "control",
+      "reason": "This is the channel the section 4(g) money would pay for. The model's budget-to-completions arithmetic could represent it, but its size depends on 4(g), which has no amount."
+    },
+    {
+      "id": "sec4a2-duration",
+      "quote": "A grant awarded under this section shall be for a period not to exceed 4 years.",
+      "summary": "Caps each grant at four years.",
+      "status": "outside-model",
+      "role": "control",
+      "reason": "The model has one aggregate budget line and no grant-level structure, so a maximum grant length has nothing to act on."
+    },
+    {
+      "id": "sec4b-applications",
+      "quote": "an eligible partnership shall submit an application to the Secretary at such time, in such manner, and containing such information as the Secretary shall reasonably require.",
+      "summary": "Application process and contents: partners, training plans (including retraining as an alternative to layoffs and technology skills), goals, covered populations.",
+      "status": "outside-model",
+      "role": "control",
+      "reason": "Administrative selection process. The model has no applicants, selection or programme design."
+    },
+    {
+      "id": "sec4c1-covered-population-priority",
+      "quote": "first give priority to eligible partnerships that are located in areas with a high percentage of individuals from covered populations",
+      "summary": "First priority to partnerships in areas with many people facing barriers to employment.",
+      "status": "outside-model",
+      "role": "control",
+      "reason": "The model has no population groups or places, so it cannot say who is served. Distributional effects are outside its scope."
+    },
+    {
+      "id": "sec4c2a-industry-priority",
+      "quote": "industries with a higher likelihood of being impacted by automation",
+      "summary": "Second-tier priority to areas concentrated in automation-exposed or in-demand industries.",
+      "status": "outside-model",
+      "role": "control",
+      "reason": "The model has no industries or regions; targeting cannot be represented."
+    },
+    {
+      "id": "sec4c2b-incumbent-backfill",
+      "quote": "that partner with local employers that intend to backfill the pre-training positions of the incumbent workers by hiring new workers to fill those positions",
+      "summary": "Priority to incumbent-worker training where employers backfill the trainees' old positions.",
+      "status": "outside-model",
+      "role": "control",
+      "reason": "Backfilling opens jobs for other workers, which is a net-employment effect. The model's scope says it tracks gross placements through one channel and nothing about other workers."
+    },
+    {
+      "id": "sec4c2c-supports-priority",
+      "quote": "eligible partnerships that will provide workers with a transportation stipend, paid sick leave, paid family and medical leave, access to child care services, or other employment benefits",
+      "summary": "Priority to partnerships offering transport, leave, child care or other benefits.",
+      "status": "outside-model",
+      "role": "control",
+      "reason": "The model has no take-up, completion or dropout behaviour for these supports to change."
+    },
+    {
+      "id": "sec4c2d-shared-curriculum",
+      "quote": "eligible partnerships with a plan to develop a shared training curriculum that can be used across local and regional networks of employers and training providers",
+      "summary": "Priority to partnerships building a shared curriculum.",
+      "status": "unresolved",
+      "role": "coefficient",
+      "reason": "Could lower cost_per_completion. How much is a response coefficient the model does not have and the bill cannot supply, so no effect is attached."
+    },
+    {
+      "id": "sec4d1-training-services",
+      "quote": "Providing training services under the demonstration or pilot project, which may include training services that prepare workers for in-demand industry sectors or occupations.",
+      "summary": "Grant money may pay for training services.",
+      "status": "unresolved",
+      "role": "control",
+      "reason": "This is the use the model's channel represents (budget buys completions), but these are section 4 funds, which have no amount (see sec4g-such-sums)."
+    },
+    {
+      "id": "sec4d2-staff-position",
+      "quote": "Providing assistance for employers in developing a staff position for an individual who will be responsible for supporting training services provided under the grant.",
+      "summary": "Grant money may pay for an employer staff position supporting training.",
+      "status": "unresolved",
+      "role": "coefficient",
+      "reason": "Could raise instructor_capacity, the limit that binds once money is ample. Turning staff spending into training places needs a coefficient the model lacks, so nothing is attached."
+    },
+    {
+      "id": "sec4d3-equipment",
+      "quote": "Purchasing equipment or technology necessary for training services provided under paragraph (1).",
+      "summary": "Grant money may buy training equipment or technology.",
+      "status": "unresolved",
+      "role": "coefficient",
+      "reason": "Could raise instructor_capacity. The conversion from equipment spending to training places is an empirical coefficient that neither the model nor the bill provides."
+    },
+    {
+      "id": "sec4d4-job-search",
+      "quote": "Providing job search and other transitional assistance to workers in industries with high rates of job loss.",
+      "summary": "Grant money may pay for job search and transitional help.",
+      "status": "outside-model",
+      "role": "control",
+      "reason": "The model places people only through training completions (placement_rate, capped by suitable_openings). It has no search process for workers outside training."
+    },
+    {
+      "id": "sec4d5-training-stipend",
+      "quote": "Providing a training stipend to workers for training services.",
+      "summary": "Grant money may pay stipends to trainees.",
+      "status": "outside-model",
+      "role": "control",
+      "reason": "The model has no trainee income or completion behaviour. It also cannot split one grant between stipends and training places."
+    },
+    {
+      "id": "sec4d6-integrated-education",
+      "quote": "Providing integrated education and training.",
+      "summary": "Grant money may pay for integrated education and training.",
+      "status": "outside-model",
+      "role": "control",
+      "reason": "The model has one undifferentiated kind of training; different costs or placement rates by programme type are not represented."
+    },
+    {
+      "id": "sec4e-reporting",
+      "quote": "the number of such workers who successfully transitioned into a new position following completion of the training services;",
+      "summary": "Grantees report participants, transitions, earnings and employment in quarters 2 and 4 after exit, disaggregated by training type, age, gender and race.",
+      "status": "outside-model",
+      "role": "control",
+      "reason": "A reporting duty. It would produce data that could later calibrate placement_rate, but it changes nothing in a run."
+    },
+    {
+      "id": "sec4f-labor-standards",
+      "quote": "consistent with the labor standards and protections described in section 181 of the Workforce Innovation and Opportunity Act",
+      "summary": "Grant use must follow WIOA labor standards and nondiscrimination rules.",
+      "status": "outside-model",
+      "role": "constraint",
+      "reason": "Legal conditions on how money is used; the model has no compliance mechanism or cost for them."
+    }
+  ]
+}
