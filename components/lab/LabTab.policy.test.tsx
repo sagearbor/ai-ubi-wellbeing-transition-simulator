@@ -87,7 +87,9 @@ describe('LabTab Policy panel (renders)', () => {
     expect(out).toContain('Opened a shared policy scenario');
     expect(out).toContain('value="cohort-flow" selected=""');
     expect(out).toContain('Baseline: cohort-flow with retraining');
-    expect(out).toContain('over 3 paired draws, seed 5');
+    // cohort-flow declares no ranges: the comparison runs once, and says so instead of claiming 3 draws
+    expect(out).toContain('deterministic: uncertainty off');
+    expect(out).not.toContain('over 3 paired draws');
     // a link carries no source text: coverage is unknown, and it says so
     expect(out).toContain('Source: source unavailable — coverage unknown');
   });

@@ -8,6 +8,12 @@
  *   pairedRun(model, overlays, draft, { runs, seed, sourceText })
  *                                                         -> baseline vs policy, per-draw differences;
  *                                                            refuses to run a draft with validation errors
+ *   pairedRunSteps(...)                                   -> the same, as a generator that yields after
+ *                                                            each draw (the worker runner drives it)
+ *
+ * Draws are bounded by RUN_LIMITS.maxDraws (src/core/limits.ts): a request over it is refused with
+ * `limit-exceeded` before anything runs. When neither side samples anything (no parameter declares a
+ * range), the model is run once instead of N identical times and the result says `deterministic`.
  *
  * Validation governs execution: every diagnostic at level 'error' blocks pairedRun (and so the
  * panel's Run button, bundle reopening and link opening). Unresolved and outside-model provisions
@@ -29,7 +35,8 @@
  *     not against the draft's list, and completeness is claimed only by a named person's attestation.
  */
 
-import { ENGINE_VERSION, explainBinding, resolveModel, runModel } from '../core/engine';
+import { ENGINE_VERSION, drain, explainBinding, isDeterministic, resolveModel, runModel, type DrawProgress } from '../core/engine';
+import { effectiveLimits } from '../core/limits';
 import type { CoreModel, EvidenceKind, Input, Overlay, RunResult } from '../core/types';
 import { sourceCoverage, type SourceCoverage } from './clauses';
 import { contentHash, modelHash, sha256Hex } from './hash';
@@ -673,7 +680,14 @@ export function evidenceOf(draft: PolicyDraft): PolicyRunManifest['evidence'] {
  * and no engine run happens.
  */
 export function pairedRun(model: CoreModel, overlays: Overlay[], draft: PolicyDraft, opts: PairedRunOptions = {}): PairedRunResult {
-  const runs = Math.max(1, Math.floor(opts.runs ?? DEFAULT_RUNS));
+  return drain(pairedRunSteps(model, overlays, draft, opts));
+}
+
+/** pairedRun as a generator: yields { done, total } after each paired draw. */
+export function* pairedRunSteps(model: CoreModel, overlays: Overlay[], draft: PolicyDraft, opts: PairedRunOptions = {}): Generator<DrawProgress, PairedRunResult, void> {
+  const requested = Math.max(1, Math.floor(opts.runs ?? DEFAULT_RUNS));
+  const overDraws = requested > effectiveLimits().maxDraws;
+  let runs = overDraws ? 0 : requested;
   const seed = Math.floor(opts.seed ?? DEFAULT_SEED);
   const sourceText = typeof opts.sourceText === 'string' && opts.sourceText.trim() ? opts.sourceText : undefined;
   const diagnostics = validateDraft(draft, model, { overlays, sourceText });
@@ -708,7 +722,7 @@ export function pairedRun(model: CoreModel, overlays: Overlay[], draft: PolicyDr
     },
     exclusions: (Array.isArray(draft.exclusions) ? draft.exclusions : []).map((x) => ({ clauseId: x.clauseId, kind: x.kind, ...(x.interprets?.length ? { interprets: x.interprets } : {}) })),
     evidence: evidenceOf(draft),
-    runs,
+    runs: requested,
     seed,
     draws: { count: runs, seed, firstIndex: 0 },
     conversions: conversionsOf(draft, model, overlays),
@@ -736,6 +750,15 @@ export function pairedRun(model: CoreModel, overlays: Overlay[], draft: PolicyDr
   };
   if (blocked.length) {
     return { ...empty, blocked, errors: [`the draft has ${blocked.length} validation error${blocked.length === 1 ? '' : 's'} and was not run`, ...blocked.map((d) => `[${d.code}] ${d.message}`)] };
+  }
+  if (overDraws) {
+    return { ...empty, errors: [`[limit-exceeded] ${requested.toLocaleString('en-US')} draws requested; the limit is ${effectiveLimits().maxDraws.toLocaleString('en-US')} draws per run. Nothing was run.`] };
+  }
+  // Nothing sampled on either side: every draw would equal the point run, so run it once.
+  const deterministic = isDeterministic(resolveModel(model, overlays).model) && isDeterministic(resolveModel(model, policyOverlays).model);
+  if (deterministic) {
+    runs = 1;
+    manifest.draws = { count: 1, seed, firstIndex: 0, deterministic: true };
   }
 
   const pointB = runModel(model, { overlays });
@@ -779,6 +802,7 @@ export function pairedRun(model: CoreModel, overlays: Overlay[], draft: PolicyDr
       }
       for (const o of polOutputs) drawsP[e][o].push(p.series[e]?.[o] ?? new Array(nY).fill(NaN));
     }
+    yield { done: r + 1, total: runs };
   }
 
   const summarise = (d: Draws) =>
@@ -795,6 +819,7 @@ export function pairedRun(model: CoreModel, overlays: Overlay[], draft: PolicyDr
     outputs,
     policyOnlyOutputs,
     runs,
+    ...(deterministic ? { deterministic: true } : {}),
     seed,
     point: { baseline: pick(pointB, outputs), policy: pick(pointP, polOutputs) },
     baseline: summarise(drawsB),
