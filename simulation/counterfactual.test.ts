@@ -17,7 +17,7 @@ import {
   type RunPair,
 } from './appState';
 import { initialRun, noCorporateUbiInputs, runMonths, runsEqual, type RunInputs, type SimulationRun } from './run';
-import { INITIAL_CORPORATIONS, PRESET_MODELS } from '../constants';
+import { INITIAL_CORPORATIONS, PRESET_MODELS, LEGACY_COUNTRY_DATASET_ID } from '../constants';
 import type { HistoryPoint, SavedState } from '../types';
 
 const inputs: RunInputs = { model: PRESET_MODELS[0] };
@@ -40,7 +40,9 @@ const ids = (run: SimulationRun) => ['Global', ...Object.keys(run.state.countryD
 
 describe('paired no-UBI counterfactual at the chart boundary (finding 2)', () => {
   it('with every contribution at 0, the displayed counterfactual equals the main run exactly', () => {
-    const base = initialRun(zeroRoster());
+    // The reviewer's probe ran on the hand-entered country table, so this reproduction is pinned
+    // to countries-legacy-v1 (2026-09 country-data migration); the equality checks hold on any dataset.
+    const base = initialRun(zeroRoster(), undefined, { countryDataset: LEGACY_COUNTRY_DATASET_ID });
     const { history, pairedHistory } = playPair(24, base);
     const rows = buildMotionChartData(history, pairedHistory);
 

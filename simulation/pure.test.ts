@@ -6,7 +6,18 @@
 import { describe, it, expect } from 'vitest';
 import { stepSimulationPure } from './pure';
 import type { SimulationState, Corporation, ModelParameters } from '../types';
-import { INITIAL_COUNTRIES, DEFAULT_EQUATIONS } from '../constants';
+import { INITIAL_COUNTRIES, DEFAULT_EQUATIONS, COUNTRY_DATASET_ID } from '../constants';
+
+/**
+ * Regression snapshots per country dataset. Re-locked 2026-09-14 for the country-data migration
+ * (docs/design/research/country-data-migration.md): the default dataset is now
+ * countries-wb-2026-09; the pre-migration values stay pinned for countries-legacy-v1 and are
+ * checked with `COUNTRY_DATASET=countries-legacy-v1 npx vitest run`.
+ */
+const PINNED = {
+  'countries-wb-2026-09': { avgWellbeing6: 59.049231541324595, usAdoption6: 0.13544496337164927, usCrash1: 45.71375833333333 },
+  'countries-legacy-v1': { avgWellbeing6: 58.0261597778361, usAdoption6: 0.13463907428778998, usCrash1: 42.5 },
+}[COUNTRY_DATASET_ID];
 import { getCompiledEquationSet } from '../src/services/equationParser';
 
 // Helper to create a minimal test state
@@ -311,9 +322,13 @@ describe('stepSimulationPure - P8-T9 custom equations', () => {
       // annual/12 (globalFund 1.1266875 -> 0.093890625) and per-capita UBI is in USD
       // (averageWellbeing 58.02177 -> 58.02616). USA adoption is unchanged because this
       // fixture has a single corporation, so the mean-over-corporations fix is a no-op here.
+      // Re-locked 2026-09-14 (country-data migration, see PINNED): the fixture's five countries
+      // now come from countries-wb-2026-09 (sourced GDP, Gini and WGI-based governance):
+      // averageWellbeing 58.02616 -> 59.04923, USA adoption 0.134639 -> 0.135445 (adoption growth
+      // scales with GDP per capita). The global fund did not move.
       expect(state.month).toBe(6);
-      expect(state.averageWellbeing).toBeCloseTo(58.0261597778361, 9);
-      expect(state.countryData['USA'].aiAdoption).toBeCloseTo(0.13463907428778998, 9);
+      expect(state.averageWellbeing).toBeCloseTo(PINNED.avgWellbeing6, 9);
+      expect(state.countryData['USA'].aiAdoption).toBeCloseTo(PINNED.usAdoption6, 9);
       expect(state.globalFund).toBeCloseTo(0.093890625, 9);
     });
   });
@@ -379,8 +394,10 @@ describe('stepSimulationPure - P8-T9 custom equations', () => {
       expect(custom.state.countryData['USA'].wellbeing).toBeLessThan(
         hardcoded.state.countryData['USA'].wellbeing
       );
-      // Starting wellbeing (92.5) - 50 = 42.5, well below the default trajectory.
-      expect(custom.state.countryData['USA'].wellbeing).toBeCloseTo(42.5, 6);
+      // Starting wellbeing (formula: gdpPerCapita / 1200 + 40) - 50, well below the default
+      // trajectory. Re-locked 2026-09-14 (country-data migration, see PINNED): US GDP per capita
+      // is now 66,856.51 constant-2015 US$ (NY.GDP.PCAP.KD 2024), so 95.7138 - 50 (legacy 92.5 - 50).
+      expect(custom.state.countryData['USA'].wellbeing).toBeCloseTo(PINNED.usCrash1, 6);
     });
 
     it('displacementFriction: zeroing friction produces higher wellbeing than the default', () => {

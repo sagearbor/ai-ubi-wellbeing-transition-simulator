@@ -107,6 +107,13 @@ export interface SimulationState {
   globalDisplacementGap: number; // Aggregate displacement gap across all countries (total displaced - total receiving UBI)
   corruptionLeakage: number; // Total dollars lost to corruption this month
   countriesInCrisis: number; // Count of countries where displacement exceeds UBI coverage
+  /**
+   * The country dataset this run was built from (constants.ts COUNTRY_DATASET_IDS; data/countries/).
+   * The engine reads it for the world population and the wellbeing-anchor coefficients. Absent =
+   * the process default. Save files and links written before the 2026-09 migration have no such
+   * field and are reopened on 'countries-legacy-v1' (simulation/appState.ts historyFromSave).
+   */
+  countryDataset?: string;
 }
 
 export interface CountryStats {
@@ -274,6 +281,8 @@ export interface SavedState {
   run?: SimulationRun;
   /** The custom model that was active, if any. Autosave has always written this. */
   activeModelConfig?: ModelConfig | null;
+  /** Country dataset id (constants.ts COUNTRY_DATASET_IDS). Absent in pre-migration saves = 'countries-legacy-v1'. */
+  countryDataset?: string;
 }
 
 /**
@@ -355,6 +364,13 @@ export interface ModelConfig {
 
   // Metadata
   metadata: ModelMetadata;
+
+  /**
+   * Country dataset a shared scenario was made on (src/services/scenarioShare.ts). Stamped when a
+   * scenario is exported or linked; a scenario file or link without it predates the 2026-09
+   * migration and is read as 'countries-legacy-v1'. Absent on models built in this session.
+   */
+  countryDataset?: string;
 }
 
 /** Result of validating a model configuration */

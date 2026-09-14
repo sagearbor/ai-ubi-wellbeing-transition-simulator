@@ -19,7 +19,16 @@ import {
   ModelParameters,
   CountryStats
 } from '../types';
-import { INITIAL_COUNTRIES, COGNITIVE_SHARE_BY_ARCHETYPE, NATURAL_UNEMPLOYMENT_BY_ARCHETYPE } from '../constants';
+import {
+  COGNITIVE_SHARE_BY_ARCHETYPE,
+  NATURAL_UNEMPLOYMENT_BY_ARCHETYPE,
+  COUNTRY_DATASET_ID,
+  isCountryDatasetId,
+  wellbeingAnchorCoefficientsFor,
+  worldPopulationMillionsFor,
+  type CountryDatasetId,
+  type WellbeingAnchorCoefficients,
+} from '../constants';
 import { CompiledEquationSet } from '../src/services/equationParser';
 import type { MacroParameters } from '../types';
 import { usdPerPerson } from './units';
@@ -35,14 +44,24 @@ export const BASE_LABOR_SHARE = 0.60;
  * Wellbeing level implied by GDP per capita and governance alone (0-100 index, where the
  * World Happiness Report Cantril ladder x 10 is the target scale).
  *
- * Coefficients are an OLS fit of ladder x 10 on ln(GDP per capita, constant 2015 USD) and the
- * repo's governance score over 335 country-years (2015/2020/2025, data/hindcast/*):
- * R^2 = 0.65, RMSE = 5.7 index points. USA fits 69.6 (actual 71.0), Germany 68.8 (69.9).
+ * Coefficients are an OLS fit of ladder x 10 on ln(GDP per capita, constant 2015 USD) and a
+ * country dataset's governance column over 335 country-years (2015/2020/2025, data/hindcast/*),
+ * made by scripts/countries/anchorFit.ts. They belong to the governance scale they were fitted on,
+ * so each country dataset carries its own (data/countries/README.md, "Wellbeing anchor"):
+ *   countries-wb-2026-09 (default): 2.877 + 5.991 ln(gdp) + 1.830 governance, R^2 0.644, RMSE 5.78
+ *   countries-legacy-v1:            7.454 + 5.103 ln(gdp) + 7.658 governance, R^2 0.651, RMSE 5.73
+ * The engine picks them from SimulationState.countryDataset; this constant is the process default.
  */
-export const WELLBEING_ANCHOR_COEFFICIENTS = { intercept: 7.454, lnGdp: 5.103, governance: 7.658 } as const;
+export const WELLBEING_ANCHOR_COEFFICIENTS: Readonly<WellbeingAnchorCoefficients> = wellbeingAnchorCoefficientsFor(COUNTRY_DATASET_ID);
 
-export function wellbeingAnchor(gdpPerCapita: number, governance: number): number {
-  const k = WELLBEING_ANCHOR_COEFFICIENTS;
+/** The country dataset a state was built from; a state without the field uses the process default (COUNTRY_DATASET_ID). */
+export function stateCountryDataset(state: Pick<SimulationState, 'countryDataset'>): CountryDatasetId {
+  const id = state.countryDataset ?? COUNTRY_DATASET_ID;
+  if (!isCountryDatasetId(id)) throw new Error(`unknown country dataset "${id}"`);
+  return id;
+}
+
+export function wellbeingAnchor(gdpPerCapita: number, governance: number, k: Readonly<WellbeingAnchorCoefficients> = WELLBEING_ANCHOR_COEFFICIENTS): number {
   const anchor = k.intercept + k.lnGdp * Math.log(Math.max(100, gdpPerCapita)) + k.governance * governance;
   return Math.max(15, Math.min(90, anchor));
 }
@@ -60,7 +79,7 @@ export function wellbeingAnchor(gdpPerCapita: number, governance: number): numbe
  *   unemployment  = natural + displacedPool;  cognitive = natural + displacedPool / cognitiveShare
  *   wellbeing    += (anchor - wellbeing) x wellbeingAnchorRate        (0 = off)
  */
-export function applyMacroDynamics(country: CountryStats, macro: MacroParameters): void {
+export function applyMacroDynamics(country: CountryStats, macro: MacroParameters, anchorK: Readonly<WellbeingAnchorCoefficients> = WELLBEING_ANCHOR_COEFFICIENTS): void {
   const archetype = country.archetype ?? 'middle-stable';
   if (country.cognitiveShare === undefined) country.cognitiveShare = COGNITIVE_SHARE_BY_ARCHETYPE[archetype];
   if (country.naturalUnemployment === undefined) country.naturalUnemployment = NATURAL_UNEMPLOYMENT_BY_ARCHETYPE[archetype];
@@ -87,7 +106,7 @@ export function applyMacroDynamics(country: CountryStats, macro: MacroParameters
   // Legacy mode only: relax toward the GDP/governance anchor here. Anchored mode does its whole
   // wellbeing update in Phase 4, once that month's UBI is known.
   if (macro.wellbeingAnchorRate > 0 && (macro.wellbeingMode ?? 'legacy') === 'legacy') {
-    const anchor = wellbeingAnchor(country.gdpPerCapita, country.governance);
+    const anchor = wellbeingAnchor(country.gdpPerCapita, country.governance, anchorK);
     country.wellbeing += (anchor - country.wellbeing) * macro.wellbeingAnchorRate;
   }
 }
@@ -100,6 +119,7 @@ export function anchoredWellbeingTarget(
   country: CountryStats,
   macro: MacroParameters,
   monthlyUbiPerCapita: number,
+  anchorK: Readonly<WellbeingAnchorCoefficients> = WELLBEING_ANCHOR_COEFFICIENTS,
 ): { target: number; anchor: number; ubiEffect: number; unemploymentEffect: number; anchorIncome: number; labourIncome: number; transferShare: number } {
   const laborShare = country.laborShare ?? BASE_LABOR_SHARE;
   // Two different income concepts (review 2026-09-14, finding 6):
@@ -110,7 +130,7 @@ export function anchoredWellbeingTarget(
   //    transfer denominator (an assumption: the transfer studies used household income or consumption).
   const anchorIncome = country.gdpPerCapita * (laborShare / BASE_LABOR_SHARE);
   const labourIncome = country.gdpPerCapita * laborShare;
-  const anchor = wellbeingAnchor(anchorIncome, country.governance);
+  const anchor = wellbeingAnchor(anchorIncome, country.governance, anchorK);
   const monthlyLabourIncome = labourIncome / 12;
   const transferShare = monthlyLabourIncome > 0 ? monthlyUbiPerCapita / monthlyLabourIncome : 0;
   const perDoubling = macro.ubiEffectPerDoubling ?? 0;
@@ -615,7 +635,11 @@ export function stepSimulationPure(input: SimulationInput): SimulationOutput {
   let totalDisplacementGap = 0;
   let countriesInCrisis = 0;
 
-  const worldPopulation = INITIAL_COUNTRIES.reduce((a: number, b: any) => a + b.population, 0);
+  // The global pool is shared over the whole dataset's population (even when this state holds a
+  // subset), and the anchor uses the coefficients fitted on this dataset's governance scale.
+  const countryDataset = stateCountryDataset(state);
+  const worldPopulation = worldPopulationMillionsFor(countryDataset);
+  const anchorK = wellbeingAnchorCoefficientsFor(countryDataset);
 
   // ============================================================================
   // CORPORATION-CENTRIC SIMULATION ARCHITECTURE (P5-T6)
@@ -781,7 +805,7 @@ export function stepSimulationPure(input: SimulationInput): SimulationOutput {
     const country = newCountryData[id];
 
     // === Macro block (optional): GDP path, labour share, displacement pool ===
-    if (model.macro) applyMacroDynamics(country, model.macro);
+    if (model.macro) applyMacroDynamics(country, model.macro, anchorK);
 
     // ============================================================================
     // PHASE 4: WELLBEING CALCULATION
@@ -888,7 +912,7 @@ export function stepSimulationPure(input: SimulationInput): SimulationOutput {
       // Stage 4 level model: none of the legacy flow terms above apply; wellbeing relaxes toward
       // an evidence-calibrated target (anchor on labour income and governance, plus a saturating
       // transfer effect, minus an unemployment effect). See anchoredWellbeingTarget.
-      const { target } = anchoredWellbeingTarget(country, model.macro!, totalUBI);
+      const { target } = anchoredWellbeingTarget(country, model.macro!, totalUBI, anchorK);
       const rate = model.macro!.wellbeingAnchorRate;
       country.wellbeing = Math.max(1, Math.min(100, country.wellbeing + (target - country.wellbeing) * rate));
     } else {
@@ -938,7 +962,8 @@ export function stepSimulationPure(input: SimulationInput): SimulationOutput {
     countryData: newCountryData,
     globalDisplacementGap: totalDisplacementGap,
     corruptionLeakage: 0, // No corruption with direct-to-wallet
-    countriesInCrisis
+    countriesInCrisis,
+    ...(state.countryDataset !== undefined ? { countryDataset: state.countryDataset } : {}),
   };
 
   return {
