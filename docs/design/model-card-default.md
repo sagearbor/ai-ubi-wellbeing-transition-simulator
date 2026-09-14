@@ -209,7 +209,13 @@ Switches (difference from base at 10 y):
 - Wellbeing accumulates monthly changes with no level anchor in this preset; a long run drifts to
   a bound by construction.
 - Five UI parameters and the Equations tab describe an engine that no longer runs (C6).
-- Country and corporation records have no source column.
+- Country and corporation records are hand-entered with no recorded source. Measured against the
+  World Bank on 2026-09-13 (`data/provenance/README.md`, `npm run provenance:countries`): population
+  is close (median gap 6%), GDP per capita is loose (median gap 36%; Guyana 0.30x), Gini within
+  1.7 points median (29 countries have no reference), governance ranks agree with WGI Government
+  Effectiveness at Spearman 0.93 with large gaps for China and Saudi Arabia. Corporation AI revenue
+  and adoption have no public reference series and are assumptions. Values are not replaced
+  (owner decision; it re-locks pinned tests).
 - AT-3 fails for a measurement reason, not a dynamics one: race-to-bottom risk is
   `(selfish − 0.4·N) / (0.6·N)` over the corporation table, which is 1.0 in the all-selfish
   starting state, but the harness only records states after a step, and in month 1 the
