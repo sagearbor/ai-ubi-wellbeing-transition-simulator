@@ -216,6 +216,7 @@ Current results for the built-in engine (`npm run check`, 2026-09-13): 767 tests
 | Historical policy-effect case: Alaska Permanent Fund Dividend (Jones & Marinescu 2022) | `data/cases/alaska-pfd.json`, [`docs/design/research/alaska-pfd-case.md`](docs/design/research/alaska-pfd-case.md), `npm run validate:cases` |
 | Cash-transfer and unemployment → wellbeing evidence | [`docs/design/research/cash-transfer-wellbeing-evidence.md`](docs/design/research/cash-transfer-wellbeing-evidence.md) |
 | Country data provenance against the World Bank | [`data/provenance/README.md`](data/provenance/README.md) |
+| Reference-target ledger: every published/empirical/historical/anchor target with its status, misses kept even when a regression test pins them | [`docs/design/reference-ledger.md`](docs/design/reference-ledger.md), `data/ledger/reference-targets.json`, `npm run ledger` |
 | Policy text → provisions → overlay → paired run → share link / bundle → memo | Model Lab → Policy panel, `src/policy/`, worked example `data/policy/examples/` (S. 3877) |
 
 ### Reproducing the published outputs of Korinek et al. (2026)
