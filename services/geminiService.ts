@@ -51,7 +51,7 @@ export const getRedTeamAnalysis = async (model: ModelParameters, results: any[])
 
     5. **Job Displacement vs UBI Coverage:** As AI adoption grows, workers lose jobs. The "displacement gap" is the number of displaced workers NOT receiving adequate UBI coverage. High gaps indicate crisis conditions.
 
-    6. **Counterfactual Baseline:** The simulation tracks a parallel "shadow" timeline showing what happens WITHOUT the UBI intervention. Compare actual vs counterfactual outcomes to measure true impact.
+    6. **Counterfactual:** The app's Charts tab compares against a paired run of the same model with every corporate contribution held at 0. That paired run is not included in the data below, so do not infer a no-UBI outcome from it.
 
     Model Parameters:
     - Name: ${model.name}
@@ -136,7 +136,7 @@ export const getSimulationSummary = async (model: ModelParameters, results: any[
 
     5. **Job Displacement Crisis:** AI adoption displaces workers. The critical metric is "displacement gap" - workers who lost jobs but are NOT receiving adequate UBI. Large gaps indicate social crisis and demand collapse risk.
 
-    6. **Counterfactual Baseline:** The simulation tracks a parallel "shadow" timeline showing outcomes WITHOUT corporate UBI. Compare actual vs counterfactual to measure true impact.
+    6. **Counterfactual:** The app's Charts tab compares against a paired run of the same model with every corporate contribution held at 0. That paired run is not included in the data below, so do not infer a no-UBI outcome from it.
 
     Model Parameters for "${model.name}":
     - Default Corp Policy: ${model.defaultCorpPolicy} (initial stance: free-market, selfish-start, altruistic-start, or mixed-reality)

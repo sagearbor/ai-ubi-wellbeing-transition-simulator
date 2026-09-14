@@ -91,7 +91,10 @@ export interface SolveBlock {
   unknown: string;
   residual: string;
   bracket: [number, number];
+  /** Absolute floor for residual acceptance when residualTol is not given. Default 1e-9. */
   tol?: number;
+  /** A candidate is accepted as a root only if |residual| <= residualTol (default: max(tol, 1e-9 x |residual at the bracket ends|)). */
+  residualTol?: number;
   maxIter?: number;
   unit?: string;
   description?: string;
@@ -112,6 +115,20 @@ export interface ModelTest {
   expected: number;
   /** Absolute tolerance. */
   tol: number;
+}
+
+/**
+ * A condition that must hold at every step for every entity, e.g. `completions <= instructor_capacity`.
+ * Checked on final values (after effects). A violation fails the run with `invariant-violated`, so an
+ * overlay or an added variable cannot silently push a constrained or accounting output past its limit.
+ * Overlays may add invariants but never remove them.
+ */
+export interface Invariant {
+  id: string;
+  /** Boolean expression over the same symbols as equations (lags and aggregates included). */
+  expr: string;
+  description?: string;
+  source?: Source;
 }
 
 export interface Entities {
@@ -139,6 +156,7 @@ export interface CoreModel {
   solves?: SolveBlock[];
   outputs: string[];
   tests?: ModelTest[];
+  invariants?: Invariant[];
 }
 
 /** An overlay adds to a base model. It may not replace an existing variable's equation. */
@@ -153,6 +171,7 @@ export interface Overlay {
   solves?: SolveBlock[];
   outputs?: string[];
   tests?: ModelTest[];
+  invariants?: Invariant[];
 }
 
 // ---------------------------------------------------------------------------
@@ -172,6 +191,9 @@ export interface Diagnostic {
     | 'solve-no-root'
     | 'solve-no-convergence'
     | 'effect-after-solve'
+    | 'solve-discontinuity'
+    | 'invariant-violated'
+    | 'effect-after-constraint'
     | 'input-out-of-range'
     | 'disconnected'
     | 'non-finite'
@@ -194,7 +216,7 @@ export interface BindingRecord {
 }
 
 export interface SolveRecord {
-  status: 'ok' | 'no-root' | 'no-convergence';
+  status: 'ok' | 'no-root' | 'no-convergence' | 'discontinuity';
   iterations: number[];
   residual: number[];
 }
@@ -220,9 +242,11 @@ export interface RunResult {
 export interface RunManifest {
   modelId: string;
   overlayIds: string[];
-  /** Stable hash of the resolved model + overlays + seed. */
+  /** Stable hash of model + overlays + seed + draw index + engine version (a version id, not a trust badge). */
   hash: string;
   seed: number | null;
+  /** Monte Carlo draw index (0 for a deterministic run). */
+  run: number;
   engineVersion: string;
   createdAt: string;
 }

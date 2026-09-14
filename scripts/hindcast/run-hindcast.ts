@@ -312,8 +312,9 @@ if (AS_JSON) {
     console.log(`       ${t.reason}`);
   }
   console.log(`\nThresholds: HC-1 r >= ${HC1_CORR_THRESHOLD}, HC-2 MAE <= ${HC2_MAE_THRESHOLD} index points.`);
-  console.log('Caveat: a 2015-2025 hindcast cannot validate the AI displacement channel (COVID, war and');
-  console.log('inflation dominate the decade). It validates the baseline economy and the wellbeing coefficients.');
+  console.log('Caveat: this is an in-sample retrospective reconstruction, not validation. The wellbeing anchor was');
+  console.log('fitted on this span, the gated run switches off AI and UBI, and COVID, war and inflation dominate the');
+  console.log('decade. Read the scores next to the persistence baseline; no predictive or causal claim follows.');
 }
 
 const failed = tests.filter(t => !t.passed).length;

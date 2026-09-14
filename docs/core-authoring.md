@@ -97,7 +97,14 @@ anything that depends on it is evaluated that step:
 ```
 
 `residual` must reference `unknown` (compile error if it doesn't — a solve that can't move its own
-unknown isn't a solve). At runtime the engine checks the residual's sign at both ends of
+unknown isn't a solve).
+
+**How a root is accepted.** A root is accepted on its residual, never on bracket width alone: either
+`|residual| <= residualTol` (default `tol`), including at either end of the bracket, or the bracket has
+narrowed to `tol` *and* the residual has shrunk to `residualTol` (default one billionth of its size at
+the bracket ends). A sign change that narrows without the residual shrinking is a jump or a pole, and
+the run fails with `solve-discontinuity`; a non-finite residual inside the bracket fails the same way.
+Set `residualTol` explicitly when the residual's scale makes the default too strict or too loose. At runtime the engine checks the residual's sign at both ends of
 `bracket`; same sign on both ends means no guaranteed root, and the run stops with an explicit
 `solve-no-root` diagnostic and `ok: false` rather than returning whatever bisection happened to
 land on. Not converging within `maxIter` (default 100) is a separate explicit failure,
@@ -120,6 +127,16 @@ the root as ordinary variables. If an effect targets a variable that depends on 
 and the solve does not list it, the engine emits an `effect-after-solve` warning: the effect is
 applied to the reported value only, and the equilibrium does not see it. That case was found by
 the independently selected Gasteiger & Prettner port (`docs/design/capability-requests/gasteiger-prettner.md`, gap 2).
+
+## Invariants: limits that must hold on final values
+
+`invariants[]` are boolean expressions checked at every step, for every entity, on final values
+(after effects): `{ "id": "within-capacity", "expr": "completions <= instructor_capacity" }`. A
+violation fails the run with `invariant-violated` and names the values. Use them for capacity limits
+and accounting identities, so an overlay or an added variable cannot push a limited output past its
+limit while the binding explanation still reports the limit. Overlays may add invariants but cannot
+replace or relax one. Relatedly, an effect attached to a variable whose equation is a `min()`/`max()`
+limit raises `effect-after-constraint`: attach it to an input of the limit instead.
 
 ## Entities and `byEntity`
 

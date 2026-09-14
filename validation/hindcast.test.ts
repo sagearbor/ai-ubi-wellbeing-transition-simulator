@@ -235,7 +235,7 @@ describe('runHindcast', () => {
     // With adoption 0 and no UBI every legacy flow term is zero, and the anchored target reduces to
     // the same WHR anchor (labour share at its base value, no transfer, no excess unemployment).
     const base = defaultHindcastParams();
-    const anchored = { ...base, macro: { ...base.macro!, wellbeingMode: 'anchored' as const, ubiEffectPerDoubling: 4, unemploymentEffectPerPoint: 0.45 } };
+    const anchored = { ...base, macro: { ...base.macro!, wellbeingMode: 'anchored' as const, ubiEffectPerDoubling: 2.8, unemploymentEffectPerPoint: 0.45 } };
     const legacy = runHindcast({ ...runOpts, aiOff: true });
     const anch = runHindcast({ ...runOpts, aiOff: true, params: anchored });
     for (let i = 0; i < legacy.countries.length; i++) {

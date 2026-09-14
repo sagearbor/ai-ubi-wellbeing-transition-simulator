@@ -71,13 +71,55 @@ describe('parsePolicyExtraction', () => {
     expect(m.evidence.kind).toBe('assumed');
     expect(m.evidence.label).toContain('AI-drafted mapping');
     expect(validateDraft(draft!, training, { sourceText: SOURCE }).filter((d) => d.level === 'error')).toEqual([]);
-    expect(coverage(draft!).allAccountedFor).toBe(true);
+    expect(coverage(draft!).allHaveStatus).toBe(true);
+    // two of the three clauses are quoted; the AI proposed no exclusion, so coverage says so
+    expect(coverage(draft!, SOURCE).source).toMatchObject({ status: 'incomplete', clauses: 3, covered: 2, uncovered: ['sec2(c)'] });
+    expect(draft!.completeness).toBeUndefined();
   });
 
-  it('forces ai-drafted even when the model claims a review', () => {
-    const { draft } = parsePolicyExtraction(payload([childCare], { reviewStatus: 'human-reviewed' }), training, SOURCE);
+  it('forces ai-drafted even when the model claims a review, and never keeps a completeness attestation', () => {
+    const { draft } = parsePolicyExtraction(
+      payload([childCare], { reviewStatus: 'human-reviewed', completeness: { name: 'gemini', kind: 'person', date: '2026-09-14', statement: 'complete' } }),
+      training,
+      SOURCE,
+    );
     expect(draft!.reviewStatus).toBe('ai-drafted');
     expect(draft!.reviewedBy).toBeUndefined();
+    expect(draft!.completeness).toBeUndefined();
+    expect(coverage(draft!, SOURCE).completeness.text).toBe('completeness not attested');
+  });
+
+  it('keeps proposed exclusions for real clauses and drops the rest; the prompt lists the clause inventory', () => {
+    const prompt = buildPolicyPrompt(training, SOURCE);
+    expect(prompt).toContain('SOURCE CLAUSES');
+    expect(prompt).toContain('- sec2(c): (c) Training shall reduce unemployment by 30 percent.');
+    const { draft, droppedExclusions } = parsePolicyExtraction(
+      payload([fund, childCare], {
+        exclusions: [
+          { clauseId: 'sec2(c)', kind: 'other', reason: 'A claimed effect, not a setting.' },
+          { clauseId: 'sec9(x)', kind: 'other', reason: 'invented' },
+          { clauseId: 'sec2(c)', kind: 'other', reason: 'twice' },
+        ],
+      }),
+      training,
+      SOURCE,
+    );
+    expect(draft!.exclusions).toEqual([{ clauseId: 'sec2(c)', kind: 'other', reason: 'A claimed effect, not a setting.' }]);
+    expect(droppedExclusions.map((x) => x.clauseId)).toEqual(['sec9(x)', 'sec2(c)']);
+    expect(coverage(draft!, SOURCE).source.status).toBe('complete');
+    expect(validateDraft(draft!, training, { sourceText: SOURCE }).filter((d) => d.level === 'error')).toEqual([]);
+  });
+
+  it('a mapping in million usd converts; one with no unit is kept but blocked until a person gives it one', () => {
+    const million = { ...fund, mapping: { ...fund.mapping, curve: undefined, value: 15, unit: 'million usd' } };
+    const { draft } = parsePolicyExtraction(payload([million]), training, SOURCE);
+    const ds = validateDraft(draft!, training, { sourceText: SOURCE });
+    expect(ds.filter((d) => d.level === 'error')).toEqual([]);
+    expect(ds.find((d) => d.code === 'unit-converted')?.message).toContain('converted to 15,000,000');
+    const noUnit = { ...fund, mapping: { ...fund.mapping, unit: undefined } };
+    const blocked = parsePolicyExtraction(payload([noUnit]), training, SOURCE).draft!;
+    expect(blocked.provisions[0].status).toBe('mapped');
+    expect(validateDraft(blocked, training, { sourceText: SOURCE }).map((d) => d.code)).toContain('unit-missing');
   });
 
   it('demotes a mapped provision whose quote is not verbatim', () => {
@@ -102,7 +144,7 @@ describe('parsePolicyExtraction', () => {
       summary: 'Claims an effect.',
       status: 'mapped',
       role: 'control',
-      mapping: { kind: 'effect', target: 'placements', op: 'multiply', expr: '1 + unemployment_cut' },
+      mapping: { kind: 'effect', target: 'potential_placements', op: 'multiply', expr: '1 + unemployment_cut' },
     };
     const { draft, demoted } = parsePolicyExtraction(payload([unknownTarget, effect]), training, SOURCE);
     expect(demoted.map((d) => d.id)).toEqual(['fund', 'claim']);
@@ -117,7 +159,7 @@ describe('parsePolicyExtraction', () => {
       summary: 'Claims an effect.',
       status: 'mapped',
       role: 'control',
-      mapping: { kind: 'effect', target: 'placements', op: 'multiply', expr: '1.3', evidenceLabel: 'the bill says 30 percent' },
+      mapping: { kind: 'effect', target: 'potential_placements', op: 'multiply', expr: '1.3', evidenceLabel: 'the bill says 30 percent' },
     };
     const { draft } = parsePolicyExtraction(payload([effect]), training, SOURCE);
     const p = draft!.provisions[0];

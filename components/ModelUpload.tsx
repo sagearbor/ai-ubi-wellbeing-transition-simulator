@@ -221,8 +221,8 @@ export const ModelUpload: React.FC<ModelUploadProps> = ({
     if (!parsedConfig || !fullValidation?.tier2) return;
 
     // Check eligibility
-    if (fullValidation.tier2.passed < 4) {
-      setShareError('Model must pass at least 4/6 anchor tests to share');
+    if (!fullValidation.tier2.tier2Passed) {
+      setShareError('Model must hold the accounting invariants (AT-6) to share');
       return;
     }
 
@@ -373,7 +373,7 @@ export const ModelUpload: React.FC<ModelUploadProps> = ({
             className="w-full py-2 px-4 bg-purple-600 hover:bg-purple-700 disabled:bg-gray-600
               text-white rounded font-medium transition-colors"
           >
-            {fullValidation.eligible ? 'Share to Leaderboard' : 'Not eligible (need 4+ anchors)'}
+            {fullValidation.eligible ? 'Share to Leaderboard' : 'Not eligible (accounting invariant fails)'}
           </button>
           {shareError && (
             <div className="text-red-400 text-sm mt-2">{shareError}</div>

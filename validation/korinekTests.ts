@@ -7,7 +7,7 @@
  *   cognitive-worker unemployment +/- 2.5 percentage points
  *
  * Kept as a separate suite from the six causal anchor tests (AT-1..6) so that the
- * model-eligibility rule "4 of 6" is untouched.
+ * model-eligibility rule (accounting invariants) is untouched.
  */
 
 import type { AnchorTestResult } from './anchorTests';

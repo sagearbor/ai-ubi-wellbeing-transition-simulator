@@ -187,7 +187,7 @@ export const PRESET_MODELS: ModelParameters[] = [
   {
     id: 'evidence-anchored',
     name: 'Evidence-Anchored (stage 4 candidate)',
-    description: 'Same corporations and adoption; wellbeing is a level model calibrated to evidence: anchored on labour income and governance (World Happiness Report fit), a saturating cash-transfer effect, an unemployment effect via the Korinek-style displaced pool. Starts from observed 2025 ladder values. Candidate, not the reviewed default.',
+    description: 'Same corporations and adoption; wellbeing is a level model with evidence-informed assumptions: anchored on a GDP-equivalent income index and governance (World Happiness Report fit), a log2 cash-transfer effect per doubling of labour income, an unemployment effect via the Korinek-style displaced pool, and an assumed 3-year adjustment half-life. Starts from observed 2025 ladder values. Candidate, not the reviewed default.',
     corporateTaxRate: 0.12,
     adoptionIncentive: 0.30,
     baseUBI: 200,
@@ -203,13 +203,16 @@ export const PRESET_MODELS: ModelParameters[] = [
       ...DEFAULT_MACRO,
       wellbeingAnchorRate: 0.02,
       wellbeingMode: 'anchored',
-      // docs/design/research/cash-transfer-wellbeing-evidence.md (2026-09-13):
-      //   transfer: ~0.35-0.45 ladder points per doubling of income (McGuire et al. 2022 pooled
-      //   d = 0.13 SD; Finland 2017-18; Kenya GiveDirectly) => 4 index points, p5-p95 2-5;
+      // Evidence-informed ASSUMPTIONS, not estimates (review 2026-09-14, findings 6-7; see
+      // docs/design/research/cash-transfer-wellbeing-evidence.md):
+      //   transfer: pooled d = 0.13 SD (McGuire et al. 2022, ~2-year follow-up) ~ 0.25-0.3 ladder
+      //   points, read as the effect of a transfer that doubles labour income => 2.8 index points per
+      //   doubling, log2 form; plausible range 1.6-4 (assumed; a pooled CI is not a slope range).
       //   unemployment: ~0.04-0.05 ladder points per pp (GSOEP direct effect + Di Tella et al.
-      //   spillover) => 0.45 index points per pp, p5-p95 0.3-1.0.
-      // Calibrated to short-to-medium-run pilots; not validated for a permanent 100+-country UBI.
-      ubiEffectPerDoubling: 4,
+      //   spillover; possible double count, not verified) => 0.45 index points per pp, range 0.3-1.0.
+      // The 0.02/month adjustment speed (3-year half-life) is also assumed: after 24 months only 38%
+      // of a constant target change is realised. Not validated for a permanent 100+-country UBI.
+      ubiEffectPerDoubling: 2.8,
       unemploymentEffectPerPoint: 0.45,
     },
   }

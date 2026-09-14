@@ -83,3 +83,16 @@ describe('anchorTests - optional compiled equation set', () => {
     expect(custom.results).not.toEqual(hardcoded.results);
   });
 });
+
+describe('review finding 10: directional anchors never gate eligibility', () => {
+  it('eligibility is the accounting invariant alone; directional passes are reported separately', async () => {
+    const { summariseAnchors } = await import('./anchorTests');
+    const r = (id: string, category: 'causal' | 'equilibrium' | 'consistency', passed: boolean) => ({ testId: id, testName: id, category, passed, reason: '' });
+    const allDirectionalFail = summariseAnchors([r('AT-1', 'causal', false), r('AT-2', 'causal', false), r('AT-3', 'equilibrium', false), r('AT-6', 'consistency', true)]);
+    expect(allDirectionalFail.tier2Passed).toBe(true);
+    expect(allDirectionalFail.directional).toEqual({ passed: 0, total: 3 });
+    const brokenAccounting = summariseAnchors([r('AT-1', 'causal', true), r('AT-2', 'causal', true), r('AT-6', 'consistency', false)]);
+    expect(brokenAccounting.tier2Passed).toBe(false);
+    expect(summariseAnchors([]).tier2Passed).toBe(false);
+  });
+});

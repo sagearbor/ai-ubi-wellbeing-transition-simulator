@@ -1,0 +1,9 @@
+{
+  "description": "Reviewed list of deliberately failing model files in data/core/. scripts/validate-core.ts requires each to fail with exactly the listed diagnostic code. Any other unregistered model file fails the build (review 2026-09-14, finding 10).",
+  "fixtures": {
+    "market-no-root.json": {
+      "code": "solve-no-root",
+      "why": "Solve bracket [0, 5] deliberately excludes the true clearing price 18; the engine must refuse, not return a number."
+    }
+  }
+}

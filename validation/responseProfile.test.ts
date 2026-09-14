@@ -40,12 +40,12 @@ describe('responseProfile - stage 3 response review of the default world model',
 describe('responseProfile - stage 4 displacement stress of the anchored candidate', () => {
   const anchored = { ...defaultScenario(), model: { ...PRESET_MODELS.find((m) => m.id === 'evidence-anchored')! } };
 
-  it('each harsher stress case lowers US wellbeing, and none of them is a cliff', () => {
-    const us = [anchored, ...MACRO_STRESS_SWITCH.alternatives.map((a) => a.apply(anchored))].map((s) => runScenario(s, [48])[48].usWellbeing);
-    for (let i = 1; i < us.length; i++) expect(us[i]).toBeLessThan(us[i - 1]);
-    // Bounded by the unemployment evidence and the 3-year half-life (model card, stress review).
-    expect(us[0] - us[us.length - 1]).toBeGreaterThan(2);
-    expect(us[0] - us[us.length - 1]).toBeLessThan(10);
+  it('each stress case reaches the displacement channel it names (unemployment rises; wellbeing is finite)', () => {
+    // Mechanism reach only. No bound on how far wellbeing may fall: a size limit would reward a
+    // preferred degree of calm (review 2026-09-14, finding 8).
+    const runs = [anchored, ...MACRO_STRESS_SWITCH.alternatives.map((a) => a.apply(anchored))].map((s) => runScenario(s, [48])[48]);
+    for (const r of runs) expect(Number.isFinite(r.usWellbeing)).toBe(true);
+    expect(runs.slice(1).every((r) => r.usWellbeing < runs[0].usWellbeing)).toBe(true);
   });
 
   it('is offered only to models with a macro block', () => {

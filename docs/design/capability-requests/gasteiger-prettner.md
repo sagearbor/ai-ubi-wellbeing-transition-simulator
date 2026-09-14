@@ -41,6 +41,9 @@ those probes starts failing, the engine has changed and the request should be re
 
 ## 2. Solve residuals cannot go through derived variables, so effects cannot act inside a solve
 
+> **Status 2026-09-14:** reopened by the independent review (finding 11: through-variable ordering
+> ignored effect expressions) and fixed again in `core-0.2.0` with an order-invariance test.
+>
 > **Status 2026-09-13 (after the port was committed):** closed by option (a). `SolveBlock.through`
 > re-evaluates listed variables with their effects at every bisection step, and an effect on a
 > variable downstream of a solve unknown that is not listed now raises an `effect-after-solve`

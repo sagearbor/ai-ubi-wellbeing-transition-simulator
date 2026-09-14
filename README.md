@@ -90,13 +90,12 @@ The simulator isn't just one model — it's a **platform for competing models**.
 You can upload your own economic model as a YAML or JSON config that defines
 custom equations (AI-adoption growth, surplus generation, well-being delta,
 displacement friction, UBI utility) and parameter ranges. Uploaded models are
-run through a validation harness of **six "anchor tests"** — directional causal
-invariants that any honest model must satisfy (e.g. *displacement without UBI
-must reduce well-being*, *money must be conserved*). A model is
-**leaderboard-eligible** once it passes at least 4 of 6 — an admission rule for
-the leaderboard, not a claim of scientific validity — and is scored for
-**complexity** (an Occam's-razor tiebreaker — simpler models that still pass
-rank higher) on a leaderboard.
+run through **six "anchor tests"**. One is an accounting invariant (*money must be
+conserved*, AT-6); the other five are directional expectations (e.g. *displacement without
+UBI reduces wellbeing*). A model is **leaderboard-eligible** when it compiles and holds the
+accounting invariant; the directional results are reported beside it but never gate, because
+a desired direction can exclude a competing model without showing it is wrong. Eligible models
+are scored for **complexity** (an Occam's-razor tiebreaker) on a leaderboard.
 Example configs live in [`examples/models/`](examples/models/).
 
 > **Status of custom models (preview):** uploads are parsed, schema-checked and
@@ -252,9 +251,10 @@ retrospective reconstruction, not a forecast — the comparison to beat is the p
 baseline (predicting no change), not zero. Current result: wellbeing-change correlation
 0.49 and mean absolute error 0.45 ladder points across 106 countries; the script also
 prints the persistence baseline and, where enough pre-2015 data exists, a
-trend-continuation baseline alongside it. That validates only the baseline economy (GDP
-path and the wellbeing anchor fitted to GDP and governance), not the AI channel, which has
-no measurable macro footprint in that decade.
+trend-continuation baseline alongside it. It is an in-sample reconstruction and validates
+nothing: the anchor was fitted on the span, the gated run switches AI and UBI off, and the AI
+channel has no measurable macro footprint in that decade. Its wellbeing MAE beats persistence
+(4.68) by 0.2 index points.
 
 Directions under exploration (see `developer_checklist.yaml` and `docs/`):
 - execute uploaded model equations inside the pure engine (P8-T9), so anchor

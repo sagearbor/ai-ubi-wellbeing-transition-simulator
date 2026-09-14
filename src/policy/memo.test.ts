@@ -6,8 +6,8 @@ import type { Provision } from './types';
 
 describe('renderMemo', () => {
   const draft = threeStatusDraft();
-  const result = pairedRun(training, [], draft, { runs: 40, seed: 1, now: () => '2026-09-13T00:00:00.000Z' });
-  const memo = renderMemo({ model: training, overlays: [], draft, result, diagnostics: validateDraft(draft, training, { sourceText: SOURCE_TEXT }) });
+  const result = pairedRun(training, [], draft, { runs: 40, seed: 1, now: () => '2026-09-13T00:00:00.000Z', sourceText: SOURCE_TEXT });
+  const memo = renderMemo({ model: training, overlays: [], draft, result, diagnostics: validateDraft(draft, training, { sourceText: SOURCE_TEXT }), sourceText: SOURCE_TEXT });
 
   it('says what it is not before anything else', () => {
     expect(memo.indexOf('not a prediction')).toBeGreaterThan(-1);
@@ -18,7 +18,10 @@ describe('renderMemo', () => {
     expect(memo).toContain('https://example.gov/test-act');
     expect(memo).toContain('`author-drafted`');
     expect(memo).toContain('Test Author');
-    expect(memo).toContain('1 of 3 provisions mapped, 1 unresolved, 1 outside model. Every provision is accounted for.');
+    expect(memo).toContain('1 of 3 provisions mapped, 1 unresolved, 1 outside model; every listed provision has a status.');
+    expect(memo).not.toContain('accounted for');
+    expect(memo).toContain('**Source coverage:** 3 of 3 source clauses covered or explicitly excluded');
+    expect(memo).toContain('**Completeness:** completeness not attested.');
     for (const p of draft.provisions) expect(memo).toContain(p.quote.slice(0, 30));
     expect(memo).toContain('input `training_budget` set');
   });
@@ -42,20 +45,28 @@ describe('renderMemo', () => {
 
   it('ends with the manifest', () => {
     const json = memo.slice(memo.indexOf('```json') + 7, memo.lastIndexOf('```'));
-    expect(JSON.parse(json)).toMatchObject({ schema: 'policy-run/1', modelId: 'training-budget', runs: 40, seed: 1 });
+    expect(JSON.parse(json)).toMatchObject({ schema: 'policy-run/2', modelId: 'training-budget', runs: 40, seed: 1, coverage: { completeness: 'completeness not attested' } });
+  });
+
+  it('says when the source is unavailable, and lists exclusions', () => {
+    const d = draftFor(training, [budgetProvision], { exclusions: [{ clauseId: 'sec1(b)', kind: 'other', reason: 'No stipend mechanism.' }] });
+    const m = renderMemo({ model: training, overlays: [], draft: d, result: pairedRun(training, [], d, { runs: 2 }) });
+    expect(m).toContain('**Source coverage:** source unavailable — coverage unknown.');
+    expect(m).toContain('| `sec1(b)` | other | No stipend mechanism. |');
   });
 
   it('lists response coefficients the draft introduced, and escapes table cells', () => {
-    const coeff: Provision = { ...budgetProvision, id: 'resp', role: 'coefficient', quote: 'a | b', mapping: { kind: 'effect', target: 'placements', op: 'multiply', expr: '1.1', evidence: { label: 'author guess', kind: 'guess' } } };
+    const coeff: Provision = { ...budgetProvision, id: 'resp', role: 'coefficient', quote: 'a | b', mapping: { kind: 'effect', target: 'potential_placements', op: 'multiply', expr: '1.1', evidence: { label: 'author guess', kind: 'guess' } } };
     const d = draftFor(training, [coeff]);
     const m = renderMemo({ model: training, overlays: [], draft: d, result: pairedRun(training, [], d, { runs: 2 }) });
+    expect(m).toContain('| Year | Baseline');
     expect(m).toContain('Response coefficients introduced by the draft');
     expect(m).toContain('"a \\| b"');
     expect(cell('x|y\nz')).toBe('x\\|y z');
   });
 
-  it('reports a failed run as no results rather than numbers', () => {
-    const broken: Provision = { ...budgetProvision, role: 'coefficient', mapping: { kind: 'effect', target: 'placements', op: 'add', expr: 'ghost', evidence: { label: 'x', kind: 'assumed' } } };
+  it('reports a draft that did not run as no results rather than numbers', () => {
+    const broken: Provision = { ...budgetProvision, role: 'coefficient', mapping: { kind: 'effect', target: 'potential_placements', op: 'add', expr: 'ghost', unit: 'people', evidence: { label: 'x', kind: 'assumed' } } };
     const d = draftFor(training, [broken]);
     const m = renderMemo({ model: training, overlays: [], draft: d, result: pairedRun(training, [], d, { runs: 2 }) });
     expect(m).toContain('The run did not complete');

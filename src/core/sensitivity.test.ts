@@ -127,7 +127,7 @@ describe('sweep', () => {
     const r = sweep(training, { parameter: 'instructor_capacity', output: 'completions', at: 2029, grid: [1000, 3000, 5000] });
     expect(r.points[0].binding).toEqual(['completions is limited by instructor_capacity']);
     // budget/cost = 4000 at 2029, so a 5000 capacity stops being the binding constraint.
-    expect(r.points[2].binding).toEqual(['completions is limited by training_budget / cost_per_completion']);
+    expect(r.points[2].binding).toEqual(['completions is limited by funded_completions']);
     expect(r.bindingSummary).toHaveLength(2);
   });
 });

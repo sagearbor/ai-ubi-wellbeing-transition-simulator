@@ -35,6 +35,27 @@ export interface RunInputs {
   model: ModelParameters;
   /** Compiled uploaded equations; undefined = the built-in engine. */
   equations?: CompiledEquationSet;
+  /**
+   * When set, every corporation's contributionRate is held at this value: it is applied before
+   * each month is stepped (so contributions are computed from it) and again to the stepped
+   * corporations (so the engine's adaptive rules cannot move it). Everything else - initial
+   * state, model, equations, corporations' other fields - is untouched. This is the one
+   * difference between a run and its paired no-UBI counterfactual; see noCorporateUbiInputs.
+   */
+  contributionRateOverride?: number;
+}
+
+/**
+ * The paired counterfactual's inputs: the same model and equations, with every corporation's
+ * contribution rate held at 0 every month, so no corporate UBI is paid. Advanced from the same
+ * month-0 run as the main timeline, the difference between the two runs is the effect of the
+ * corporate UBI in THIS model - nothing else (review 2026-09-14, finding 2).
+ *
+ * Caveat: an uploaded surplusGeneration equation that pays out when contributionRate is 0 would
+ * still fund transfers; the counterfactual pins the rate, not the equation.
+ */
+export function noCorporateUbiInputs(inputs: RunInputs): RunInputs {
+  return { ...inputs, contributionRateOverride: 0 };
 }
 
 export const EMPTY_LEDGER: GlobalLedger = {
@@ -127,7 +148,6 @@ export function initialState(countries: readonly CountryBase[] = INITIAL_COUNTRI
     averageWellbeing: avg,
     totalAiCompanies: corporations.length,
     countryData,
-    shadowCountryData: JSON.parse(JSON.stringify(countryData)),
     globalDisplacementGap: 0,
     corruptionLeakage: 0,
     countriesInCrisis: 0,
@@ -149,13 +169,16 @@ export function initialRun(
 
 /** Advance one month. Pure: the input run is not modified (the engine clones countries; corporations are re-mapped). */
 export function advanceRun(run: SimulationRun, inputs: RunInputs): SimulationRun {
+  const pin = inputs.contributionRateOverride;
+  const hold = (corps: Corporation[]): Corporation[] =>
+    pin === undefined ? corps : corps.map((c) => (c.contributionRate === pin ? c : { ...c, contributionRate: pin }));
   const out = stepSimulationPure({
     state: run.state,
-    corporations: run.corporations,
+    corporations: hold(run.corporations),
     model: inputs.model,
     equations: inputs.equations,
   });
-  return { state: out.state, corporations: out.corporations, ledger: out.ledger, gameTheory: out.gameTheory };
+  return { state: out.state, corporations: hold(out.corporations), ledger: out.ledger, gameTheory: out.gameTheory };
 }
 
 /** Advance `months` times, returning every intermediate run (index 0 = the input). */

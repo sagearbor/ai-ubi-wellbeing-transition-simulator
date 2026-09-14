@@ -3,15 +3,16 @@
  *
  * Edits never touch the model: they change a PolicyDraft, which becomes an overlay only when run.
  * Editing a human-reviewed draft downgrades it (the review was of the old text), so a shared link
- * can never carry a "human-reviewed" label over content nobody reviewed.
+ * can never carry a "human-reviewed" label over content nobody reviewed. The same edit voids a
+ * completeness attestation: it attested the old provisions and exclusions.
  */
 
-import { resolveModel } from '../../src/core/engine';
+import { ENGINE_VERSION, resolveModel } from '../../src/core/engine';
 import type { CoreModel, Overlay } from '../../src/core/types';
 import type { FixtureEntry } from '../../src/core/fixtures';
-import { contentHash, modelHash } from '../../src/policy/hash';
+import { contentHash, modelHash, sha256Hex } from '../../src/policy/hash';
 import type { LabLinkState } from '../../src/policy/bundle';
-import type { PolicyDraft, Provision, ProvisionMapping, ProvisionStatus } from '../../src/policy/types';
+import type { ClauseExclusion, ExclusionKind, PolicyDraft, Provision, ProvisionMapping, ProvisionStatus } from '../../src/policy/types';
 
 export interface TargetOption {
   id: string;
@@ -41,13 +42,36 @@ export function defaultMapping(model: CoreModel, overlays: Overlay[], kind: Prov
   };
 }
 
-/** Apply an edit; a human-reviewed draft whose content changes is no longer human-reviewed. */
+/**
+ * Apply an edit. When the content changes (anything but the review and attestation fields), a
+ * human-reviewed draft is no longer human-reviewed, and a completeness attestation is dropped.
+ */
 export function withEdit(before: PolicyDraft, after: PolicyDraft): PolicyDraft {
-  if (before.reviewStatus !== 'human-reviewed') return after;
-  const strip = (d: PolicyDraft) => ({ ...d, reviewStatus: undefined, reviewedBy: undefined });
+  if (before.reviewStatus !== 'human-reviewed' && !before.completeness) return after;
+  const strip = (d: PolicyDraft) => ({ ...d, reviewStatus: undefined, reviewedBy: undefined, completeness: undefined });
   if (contentHash(strip(before)) === contentHash(strip(after))) return after;
-  const { reviewedBy: _dropped, ...rest } = after;
-  return { ...rest, reviewStatus: 'author-drafted' };
+  const { reviewedBy: _dropped, completeness: _void, ...rest } = after;
+  return { ...rest, reviewStatus: after.reviewStatus === 'human-reviewed' ? 'author-drafted' : after.reviewStatus };
+}
+
+/** Re-pin the draft to the text now in the panel; its quotes and coverage are then checked against it. */
+export function repinSource(draft: PolicyDraft, text: string): PolicyDraft {
+  return withEdit(draft, { ...draft, source: { ...draft.source, textSha256: sha256Hex(text), excerptChars: text.length } });
+}
+
+export function addExclusion(draft: PolicyDraft, clauseId: string, kind: ExclusionKind = 'not-operative', reason = ''): PolicyDraft {
+  const exclusions = [...(draft.exclusions ?? []).filter((x) => x.clauseId !== clauseId), { clauseId, kind, reason }];
+  return withEdit(draft, { ...draft, exclusions });
+}
+
+export function updateExclusion(draft: PolicyDraft, clauseId: string, patch: Partial<ClauseExclusion>): PolicyDraft {
+  const exclusions = (draft.exclusions ?? []).map((x) => (x.clauseId === clauseId ? { ...x, ...patch } : x));
+  return withEdit(draft, { ...draft, exclusions });
+}
+
+export function removeExclusion(draft: PolicyDraft, clauseId: string): PolicyDraft {
+  const exclusions = (draft.exclusions ?? []).filter((x) => x.clauseId !== clauseId);
+  return withEdit(draft, { ...draft, exclusions: exclusions.length ? exclusions : undefined });
 }
 
 export function updateProvision(draft: PolicyDraft, index: number, patch: Partial<Provision>): PolicyDraft {
@@ -155,12 +179,12 @@ export function splitScenarioOverlays(fixture: FixtureEntry, overlays: Overlay[]
 }
 
 export function linkStateFor(model: CoreModel, overlays: Overlay[], drafts: PolicyDraft[], runs: number, seed: number): LabLinkState {
-  return { v: 1, modelId: model.id, modelHash: modelHash(model), overlays, drafts, runs, seed };
+  return { v: 2, modelId: model.id, modelHash: modelHash(model), engineVersion: ENGINE_VERSION, overlays, drafts, runs, seed };
 }
 
 /** Identity of a run's inputs: a result is stale when this changes. */
-export function runKey(model: CoreModel, overlays: Overlay[], draft: PolicyDraft, runs: number, seed: number): string {
-  return contentHash({ m: modelHash(model), overlays, draft, runs, seed });
+export function runKey(model: CoreModel, overlays: Overlay[], draft: PolicyDraft, runs: number, seed: number, sourceText = ''): string {
+  return contentHash({ m: modelHash(model), e: ENGINE_VERSION, overlays, draft, runs, seed, text: sourceText.trim() ? sha256Hex(sourceText) : '' });
 }
 
 /** Tailwind classes for a provision status chip. */

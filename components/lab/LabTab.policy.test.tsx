@@ -8,6 +8,7 @@ import { describe, expect, it } from 'vitest';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import LabTab from './LabTab';
+import { ENGINE_VERSION } from '../../src/core/engine';
 import { findFixture } from '../../src/core/fixtures';
 import { encodeLabLink, LAB_HASH_PREFIX } from '../../src/policy/bundle';
 import { findPolicyExample } from '../../src/policy/examples';
@@ -48,8 +49,12 @@ describe('LabTab Policy panel (renders)', () => {
 
   it('shows the worked example: coverage, review status, provisions and evidence', () => {
     const out = exampleHtml();
-    expect(out).toContain('1 of 20 provisions mapped, 8 unresolved, 11 outside model');
-    expect(out).toContain('every provision accounted for');
+    expect(out).toContain('1 of 23 provisions mapped, 10 unresolved, 12 outside model — every listed provision has a status');
+    expect(out).not.toContain('accounted for');
+    expect(out).toContain('Source: 79 of 79 source clauses covered or explicitly excluded (23 by a provision quote, 56 excluded)');
+    expect(out).toContain('Completeness: completeness not attested');
+    expect(out).toContain('Source clauses (79; 0 neither quoted nor excluded)');
+    expect(out).not.toContain('Run is disabled');
     expect(out).toContain('author-drafted');
     expect(out).toContain('sec5b2-ndwg-authorization');
     expect(out).toContain('outside-model');
@@ -77,23 +82,59 @@ describe('LabTab Policy panel (renders)', () => {
       modelHash: modelHash(cohort.model),
       provisions: example.draft.provisions.filter((p) => p.status !== 'mapped'),
     };
-    const hash = `${LAB_HASH_PREFIX}${encodeLabLink({ v: 1, modelId: 'cohort-flow', modelHash: modelHash(cohort.model), overlays: [cohort.overlays[0]], drafts: [draft], runs: 3, seed: 5 })}`;
+    const hash = `${LAB_HASH_PREFIX}${encodeLabLink({ v: 2, modelId: 'cohort-flow', modelHash: modelHash(cohort.model), engineVersion: ENGINE_VERSION, overlays: [cohort.overlays[0]], drafts: [draft], runs: 3, seed: 5 })}`;
     const out = html({ initialHash: hash });
     expect(out).toContain('Opened a shared policy scenario');
     expect(out).toContain('value="cohort-flow" selected=""');
     expect(out).toContain('Baseline: cohort-flow with retraining');
     expect(out).toContain('over 3 paired draws, seed 5');
+    // a link carries no source text: coverage is unknown, and it says so
+    expect(out).toContain('Source: source unavailable — coverage unknown');
   });
 
   it('reports a link it cannot open instead of opening a different baseline', () => {
-    const stale = `${LAB_HASH_PREFIX}${encodeLabLink({ v: 1, modelId: 'training-budget', modelHash: '0000000000000000', overlays: [], drafts: [example.draft], runs: 3, seed: 1 })}`;
+    const stale = `${LAB_HASH_PREFIX}${encodeLabLink({ v: 2, modelId: 'training-budget', modelHash: '0000000000000000', engineVersion: ENGINE_VERSION, overlays: [], drafts: [example.draft], runs: 3, seed: 1 })}`;
     const out = html({ initialHash: stale });
     expect(out).toContain('Cannot open this lab link');
     expect(out).toContain('would silently use a different baseline');
     expect(out).not.toContain('sec5b2-ndwg-authorization');
 
-    const unknown = `${LAB_HASH_PREFIX}${encodeLabLink({ v: 1, modelId: 'gate-2027', modelHash: 'abc', overlays: [], drafts: [example.draft], runs: 3, seed: 1 })}`;
+    const unknown = `${LAB_HASH_PREFIX}${encodeLabLink({ v: 2, modelId: 'gate-2027', modelHash: 'abc', engineVersion: ENGINE_VERSION, overlays: [], drafts: [example.draft], runs: 3, seed: 1 })}`;
     expect(html({ initialHash: unknown })).toContain('which this version of the app does not include');
     expect(html({ initialHash: '#lab=not-a-real-payload!!' })).toContain('Cannot open this lab link');
+
+    const otherEngine = `${LAB_HASH_PREFIX}${encodeLabLink({ v: 2, modelId: 'training-budget', modelHash: modelHash(findFixture('training-budget')!.model), engineVersion: 'core-0.0.0', overlays: [], drafts: [example.draft], runs: 3, seed: 1 })}`;
+    const eng = html({ initialHash: otherEngine });
+    expect(eng).toContain('Cannot open this lab link');
+    expect(eng).toContain('this app runs engine');
+  });
+
+  it('refuses a link whose draft has validation errors, and never runs it', () => {
+    const training = findFixture('training-budget')!.model;
+    const mapped = example.draft.provisions.find((p) => p.status === 'mapped')!;
+    const bad = { ...example.draft, provisions: [...example.draft.provisions, { ...mapped, id: 'second-setter', mapping: { ...mapped.mapping!, op: 'set' as const, value: 1 } }] };
+    const hash = `${LAB_HASH_PREFIX}${encodeLabLink({ v: 2, modelId: 'training-budget', modelHash: modelHash(training), engineVersion: ENGINE_VERSION, overlays: [], drafts: [bad], runs: 3, seed: 1 })}`;
+    const out = html({ initialHash: hash });
+    expect(out).toContain('Cannot open this lab link');
+    expect(out).toContain('set-add-ambiguous');
+    expect(out).not.toContain('paired difference A');
+  });
+
+  it('disables Run and lists the blocking errors when a loaded draft is invalid', () => {
+    const mapped = example.draft.provisions.find((p) => p.status === 'mapped')!;
+    const twenty = { ...mapped, mapping: { ...mapped.mapping!, value: 20, unit: 'people' } };
+    const bad = { ...example.draft, provisions: example.draft.provisions.map((p) => (p.id === mapped.id ? twenty : p)) };
+    const out = html({
+      initialModelId: 'training-budget',
+      initialHash: '',
+      initialPolicy: { drafts: [bad], source: { title: example.source.title, url: example.source.url, text: example.source.text }, runs: 5, seed: 1, run: true },
+    });
+    expect(out).toContain('Run is disabled: fix these validation errors first.');
+    expect(out).toContain('unit-mismatch');
+    expect(out).toContain('20 people → training_budget (usd)');
+    expect(out).toMatch(/<button[^>]*disabled=""[^>]*>(?:(?!<\/button>).)*Run paired comparison/);
+    expect(out).not.toContain('paired difference A');
+    // the run-on-mount attempt was refused too: its result reports the draft was not run
+    expect(out).toContain('was not run');
   });
 });

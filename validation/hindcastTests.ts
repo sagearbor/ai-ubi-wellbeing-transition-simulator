@@ -10,9 +10,9 @@
  * The design predicted the first run would fail, and it does; that is the useful
  * information, so nothing here is tuned to make the tests pass.
  *
- * The scored run is the AI-OFF one. A hindcast of 2015-2025 cannot validate the AI
- * displacement channel (AI's macro effect over that decade is dwarfed by COVID, war and
- * inflation) - it validates the baseline economy and the wellbeing coefficients.
+ * The scored run is the AI-OFF one. This is an in-sample reconstruction (the anchor was fitted
+ * on the same span), so passing HC-1/HC-2 is not validation of the baseline economy, the
+ * wellbeing coefficients, or the AI displacement channel.
  *
  * RETROSPECTIVE RECONSTRUCTION, NOT A FORECAST
  * ---------------------------------------------

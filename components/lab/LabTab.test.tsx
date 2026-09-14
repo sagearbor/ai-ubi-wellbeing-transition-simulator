@@ -171,7 +171,7 @@ describe('labState.bindingChain', () => {
     const groups = bindingChain(training, result, '_', 'placements', t);
     expect(groups.map((g) => g.variable)).toEqual(['placements', 'completions']);
     expect(groups[0].depth).toBe(0);
-    expect(groups[1].depth).toBe(1);
+    expect(groups[1].depth).toBe(2); // placements -> potential_placements (no limit) -> completions
     expect(groups[0].lines[0].text).toBe('placements is limited by suitable_openings');
     expect(groups[1].lines[0].text).toBe('completions is limited by instructor_capacity');
   });
@@ -179,8 +179,8 @@ describe('labState.bindingChain', () => {
   it('offers a relax only when the binding argument is a bare parameter', () => {
     const groups = bindingChain(training, result, '_', 'placements', 0);
     const placements = groups.find((g) => g.variable === 'placements')!;
-    // 2026: the completions * placement_rate branch binds, which is an expression, not a parameter
-    expect(placements.lines[0].text).toBe('placements is limited by completions * placement_rate');
+    // 2026: the potential_placements branch binds, which is a variable, not a parameter to relax
+    expect(placements.lines[0].text).toBe('placements is limited by potential_placements');
     expect(placements.lines[0].relaxParameter).toBeNull();
     const t = stepForYear(result.years, 2029);
     expect(bindingChain(training, result, '_', 'placements', t)[0].lines[0].relaxParameter).toBe('suitable_openings');
@@ -225,5 +225,27 @@ describe('labState overlays', () => {
     expect(sourceStyle(undefined).label).toBe('assumed');
     expect(countAssumptions(training.parameters).text).toBe('5 of 5 parameters are assumptions');
     expect(countAssumptions(minimal.parameters).text).toBe('1 of 2 parameters are assumptions');
+  });
+});
+
+describe('review 2026-09-14 finding 3: the add-variable defaults cannot break the training model limits', () => {
+  it('the default form attaches before the limits, every invariant holds, and no effect-after-constraint warning appears', async () => {
+    const { emptyOverlayForm, applyOverlayForm } = await import('./labState');
+    const form = emptyOverlayForm(training);
+    expect(form.effects.every((e) => e.target !== 'completions' && e.target !== 'placements')).toBe(true);
+    const { overlay, errors } = applyOverlayForm(form, training);
+    expect(errors).toEqual([]);
+    const r = runModel(training, { overlays: [overlay!] });
+    expect(r.ok, r.diagnostics.map((d) => d.message).join('; ')).toBe(true);
+    expect(r.diagnostics.some((d) => d.code === 'effect-after-constraint')).toBe(false);
+    r.series._.completions.forEach((c) => expect(c).toBeLessThanOrEqual(3000));
+    r.series._.unspent_budget.forEach((u) => expect(u).toBeGreaterThanOrEqual(0));
+  });
+
+  it('an effect on a limited output is refused (no hook), and an invariant catches any other breach', () => {
+    const onCompletions = runModel(training, { overlays: [{ id: 'x', effects: [{ id: 'x', target: 'completions', op: 'multiply', expr: '1.025', source: { label: 'g', kind: 'guess' } }] }] });
+    expect(onCompletions.ok).toBe(false);
+    expect(onCompletions.diagnostics.some((d) => d.code === 'no-hook')).toBe(true);
+    expect((training.invariants ?? []).map((i) => i.id)).toEqual(['within-instructor-capacity', 'within-eligible', 'within-openings', 'budget-not-overspent']);
   });
 });

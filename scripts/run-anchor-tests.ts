@@ -3,7 +3,8 @@
  * Anchor Test CLI
  *
  * Runs the six anchor tests (causal invariants) against the pure simulation
- * engine and exits non-zero if the engine is not eligible (fewer than 4/6 pass).
+ * engine and exits non-zero if a hard invariant (AT-6 money conservation) fails. Directional
+ * expectations (AT-1..AT-5) are reported and never gate (review 2026-09-14, finding 10).
  *
  * Usage:
  *   npm run validate            # human-readable report
@@ -28,7 +29,7 @@ if (json) {
       console.log(`       actual:   ${r.details.actual}`);
     }
   }
-  console.log(`\n${suite.passed}/${suite.total} passed; tier-2 eligible (>=4): ${suite.tier2Passed}`);
+  console.log(`\n${suite.passed}/${suite.total} passed: accounting invariants ${suite.invariants.passed}/${suite.invariants.total} (required); directional expectations ${suite.directional.passed}/${suite.directional.total} (reported, not required)`);
 }
 
 process.exit(suite.tier2Passed ? 0 : 1);

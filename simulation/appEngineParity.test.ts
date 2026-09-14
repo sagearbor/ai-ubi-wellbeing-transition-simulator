@@ -60,15 +60,12 @@ function getProductionInitialState(): SimulationState {
       wellbeingTrend: []
     };
   });
-  const shadowCountryData = JSON.parse(JSON.stringify(initialCountryData));
-
   return {
     month: 0,
     globalFund: 0,
     averageWellbeing: 50,
     totalAiCompanies: 0,
     countryData: initialCountryData,
-    shadowCountryData,
     globalDisplacementGap: 0,
     corruptionLeakage: 0,
     countriesInCrisis: 0

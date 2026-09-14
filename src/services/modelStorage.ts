@@ -25,6 +25,7 @@ import {
   AnchorTestResult
 } from '../../types';
 import { calculateComplexity } from './complexityScorer';
+import { summariseAnchors } from '../../validation/anchorTests';
 
 // Storage keys
 const STORAGE_KEYS = {
@@ -137,6 +138,11 @@ export function getModel(id: string): StoredModel | null {
 /**
  * List all models
  */
+/** Eligible = every stored hard-invariant anchor result passed (directional anchors never gate). */
+function storedEligible(m: StoredModel): boolean {
+  return summariseAnchors(m.anchorTestResults ?? []).tier2Passed;
+}
+
 export function listModels(
   filter?: LeaderboardFilter,
   sort: LeaderboardSort = 'rank'
@@ -145,7 +151,7 @@ export function listModels(
 
   // Apply filters
   let filtered = models.filter(m => {
-    if (filter?.onlyEligible && m.anchorTestsPassed < 4) return false;
+    if (filter?.onlyEligible && !storedEligible(m)) return false;
     if (filter?.minAnchorsPassed && m.anchorTestsPassed < filter.minAnchorsPassed) return false;
     if (filter?.author && m.modelConfig.metadata.author !== filter.author) return false;
     if (filter?.tags?.length) {
@@ -304,7 +310,7 @@ export function getLeaderboard(
       author: m.modelConfig.metadata.author,
       anchorsPassed: m.anchorTestsPassed,
       anchorsTotal: 6,
-      isEligible: m.anchorTestsPassed >= 4,
+      isEligible: storedEligible(m),
       complexity: m.complexity,
       avgWellbeing: m.avgWellbeing,
       runCount: m.runCount,

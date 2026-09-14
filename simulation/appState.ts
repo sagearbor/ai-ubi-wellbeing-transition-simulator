@@ -8,15 +8,18 @@
  * see simulation/appState.test.ts. App.tsx keeps only the state wiring.
  */
 
-import type { HistoryPoint, SavedState } from '../types';
+import type { Corporation, CountryStats, HistoryPoint, SavedState, SimulationState } from '../types';
+import { INITIAL_COUNTRIES } from '../constants';
 import {
   advanceRun,
   initialRun, initOptionsFor,
+  noCorporateUbiInputs,
   replayTo,
   runMonths,
   type RunInputs,
   type SimulationRun,
 } from './run';
+import { usdPerPerson } from './units';
 
 /** One history point carrying the whole run, not just the country slice. */
 export function historyPoint(run: SimulationRun): HistoryPoint {
@@ -86,6 +89,114 @@ export function catchUp(
   const target = Math.max(0, month);
   const runs = runMonths(base, target, inputs);
   return { run: runs[target], history: runs.slice(1).map(historyPoint) };
+}
+
+// ============================================================================
+// PAIRED NO-UBI COUNTERFACTUAL (review 2026-09-14, finding 2)
+// ============================================================================
+// The Charts tab compares the main run with a second run from the SAME month-0 run, model,
+// equations and corporations, differing only in that every contribution rate is held at 0.
+// These helpers are the only way App.tsx steps, seeks and rebuilds that pair, so the two
+// timelines cannot drift apart.
+
+/** The main run and its paired counterfactual at the same month. */
+export interface RunPair {
+  run: SimulationRun;
+  paired: SimulationRun;
+}
+
+/** Advance the main run with `inputs` and the counterfactual with the same inputs minus corporate UBI. */
+export function stepWithCounterfactual(pair: RunPair, inputs: RunInputs): RunPair {
+  return { run: advanceRun(pair.run, inputs), paired: advanceRun(pair.paired, noCorporateUbiInputs(inputs)) };
+}
+
+/** Seek both timelines to `month`. Both share the month-0 `base`. */
+export function seekWithCounterfactual(
+  history: HistoryPoint[],
+  pairedHistory: HistoryPoint[],
+  month: number,
+  inputs: RunInputs,
+  base: SimulationRun,
+): RunPair {
+  return {
+    run: seekInHistory(history, month, inputs, base),
+    paired: seekInHistory(pairedHistory, month, noCorporateUbiInputs(inputs), base),
+  };
+}
+
+/**
+ * Rebuild the counterfactual for a timeline that exists without one (a loaded save or autosave):
+ * replay from the shared month-0 run to the furthest recorded month, and return the paired run
+ * at `month` plus its history.
+ */
+export function rebuildCounterfactual(
+  base: SimulationRun,
+  history: HistoryPoint[],
+  month: number,
+  inputs: RunInputs,
+): { paired: SimulationRun; pairedHistory: HistoryPoint[] } {
+  const last = Math.max(month, 0, ...history.map((p) => p.month));
+  const caught = catchUp(base, last, noCorporateUbiInputs(inputs));
+  const at = caught.history.find((p) => p.month === month)?.run ?? base;
+  return { paired: at, pairedHistory: caught.history };
+}
+
+/**
+ * A user edit to a corporation, as it should reach the counterfactual: identical except that the
+ * contribution rate stays pinned (the counterfactual's one stated difference).
+ */
+export function corporationEditForCounterfactual(updates: Partial<Corporation>): Partial<Corporation> {
+  const { contributionRate: _ignored, ...rest } = updates;
+  return rest;
+}
+
+/** Apply the same corporation edit to a run (used for both members of the pair). */
+export function editCorporation(run: SimulationRun, id: string, updates: Partial<Corporation>): SimulationRun {
+  return { ...run, corporations: run.corporations.map((c) => (c.id === id ? { ...c, ...updates } : c)) };
+}
+
+/** Apply the same country edit to a run (used for both members of the pair). */
+export function editCountry(
+  run: SimulationRun,
+  id: string,
+  edit: (country: CountryStats) => Partial<CountryStats>,
+): SimulationRun {
+  const country = run.state.countryData[id];
+  if (!country) return run;
+  return {
+    ...run,
+    state: { ...run.state, countryData: { ...run.state.countryData, [id]: { ...country, ...edit(country) } } },
+  };
+}
+
+// ============================================================================
+// MAP HEADLINE STATS (review 2026-09-14, finding 13)
+// ============================================================================
+
+/** World population in millions, the denominator the engine's global pool is shared over. */
+export const WORLD_POPULATION_MILLIONS = INITIAL_COUNTRIES.reduce((a, c) => a + c.population, 0);
+
+export interface HeadlineStats {
+  /** Unweighted mean of country wellbeing (0-100). */
+  meanCountryWellbeing: number;
+  /** USD per person this month from the global pool (equal per capita; excludes customer-weighted and HQ-local payments). */
+  globalDividendUsd: number;
+  /** Unweighted mean of country AI adoption (0-1). */
+  meanCountryAdoption: number;
+  /** Billions USD routed to the global pool this month (paid out the same month, not accumulated). */
+  globalPoolBillions: number;
+}
+
+/** The numbers the map's headline row shows, from the same state the engine wrote. */
+export function headlineStats(state: SimulationState): HeadlineStats {
+  const countries = Object.values(state.countryData);
+  const n = countries.length || 1;
+  return {
+    meanCountryWellbeing: state.averageWellbeing,
+    globalDividendUsd: usdPerPerson(state.globalFund, WORLD_POPULATION_MILLIONS),
+    meanCountryAdoption: countries.reduce((a, c) => a + c.aiAdoption, 0) / n,
+    globalPoolBillions: state.globalFund,
+  };
 }
 
 /**

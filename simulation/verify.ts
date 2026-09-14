@@ -29,7 +29,6 @@ function createInitialState(): SimulationState {
     averageWellbeing: (Object.values(countryData) as CountryStats[]).reduce((sum, c) => sum + c.wellbeing, 0) / INITIAL_COUNTRIES.length,
     totalAiCompanies: INITIAL_CORPORATIONS.length,
     countryData,
-    shadowCountryData: JSON.parse(JSON.stringify(countryData)),
     globalDisplacementGap: 0,
     corruptionLeakage: 0,
     countriesInCrisis: 0

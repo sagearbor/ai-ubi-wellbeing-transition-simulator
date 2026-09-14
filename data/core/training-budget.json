@@ -94,26 +94,43 @@
   ],
   "variables": [
     {
+      "id": "funded_completions",
+      "unit": "people",
+      "equation": "training_budget / cost_per_completion",
+      "description": "Completions the budget pays for (budget / cost). Not a hook: raising it without money would overspend the budget; change the budget input or the cost instead.",
+      "hook": false
+    },
+    {
       "id": "completions",
       "unit": "people",
-      "equation": "min(training_budget / cost_per_completion, instructor_capacity, eligible_people)",
-      "description": "People who finish training this year"
+      "equation": "min(funded_completions, instructor_capacity, eligible_people)",
+      "hook": false,
+      "description": "People who finish training this year (limited; effects cannot attach after the limit)"
     },
     {
       "id": "actual_training_spend",
       "unit": "usd",
-      "equation": "completions * cost_per_completion"
+      "equation": "completions * cost_per_completion",
+      "hook": false
     },
     {
       "id": "unspent_budget",
       "unit": "usd",
-      "equation": "training_budget - actual_training_spend"
+      "equation": "training_budget - actual_training_spend",
+      "hook": false
+    },
+    {
+      "id": "potential_placements",
+      "unit": "people",
+      "equation": "completions * placement_rate",
+      "description": "Placements the completions would produce with unlimited openings. Effects on placement rates attach here, before the openings limit."
     },
     {
       "id": "placements",
       "unit": "people",
-      "equation": "min(completions * placement_rate, suitable_openings)",
-      "description": "Placements through this channel"
+      "equation": "min(potential_placements, suitable_openings)",
+      "hook": false,
+      "description": "Placements through this channel (limited by openings)"
     }
   ],
   "outputs": [
@@ -136,6 +153,28 @@
       "expr": "unspent_budget",
       "expected": 5000000,
       "tol": 0
+    }
+  ],
+  "invariants": [
+    {
+      "id": "within-instructor-capacity",
+      "expr": "completions <= instructor_capacity",
+      "description": "Completions never exceed instructor capacity"
+    },
+    {
+      "id": "within-eligible",
+      "expr": "completions <= eligible_people",
+      "description": "Completions never exceed eligible people"
+    },
+    {
+      "id": "within-openings",
+      "expr": "placements <= suitable_openings",
+      "description": "Placements never exceed suitable openings"
+    },
+    {
+      "id": "budget-not-overspent",
+      "expr": "unspent_budget >= -1e-6",
+      "description": "Spending never exceeds the budget (accounting)"
     }
   ]
 }
