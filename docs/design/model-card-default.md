@@ -185,8 +185,8 @@ Switches (difference from base at 10 y):
   Lab model, not wired into the world engine; the world engine's macro block remains the reduced form.
 - **Historical reconstruction (2015 to 2025, 106 countries, AI off, macro on):** wellbeing-change
   correlation r = 0.485, MAE 4.48 index points (0.448 ladder points); persistence baseline
-  (predict no change) MAE 4.68. The wellbeing anchor was fitted on this same span, so this is a
-  reconstruction, not a forecast. GDP path: r −0.04, MAE 17% (the macro block's growth rule does
+  (predict no change) MAE 4.68. The wellbeing anchor was fitted on this same span, so this is an
+  in-sample reconstruction, not validation and not a forecast. GDP path: r −0.04, MAE 17% (the macro block's growth rule does
   not track country GDP). With UBI on at real units the reconstruction degrades to r 0.181 / MAE
   7.04, which is evidence against the current UBI coefficient (C5).
 - **Policy-effect benchmarks:** one case, Alaska Permanent Fund Dividend (Jones & Marinescu 2022;
@@ -240,13 +240,22 @@ Same corporations, adoption and money flows; only the wellbeing update changes, 
 accumulating flow above to a level model (`MacroParameters.wellbeingMode = 'anchored'`):
 
 ```
-target    = anchor(labour income, governance) + ubiEffect − unemploymentEffect
-wellbeing += (target − wellbeing) × 0.02 per month           (3-year half-life)
-labour income     = GDP per capita × labourShare / 0.60         (macro block, Korinek reduced form)
-anchor            = 7.454 + 5.103·ln(income) + 7.658·governance (WHR 2015-2025 fit, R² 0.65)
-ubiEffect         = 4 × ln(1 + monthly UBI / monthly labour income)   [index points; p5-p95 2-5]
-unemploymentEffect = 0.45 × (unemployment − natural) in pp            [index points; p5-p95 0.3-1.0]
+target       = anchor(anchorIncome, governance) + ubiEffect − unemploymentEffect
+wellbeing   += (target − wellbeing) × 0.02 per month          (assumed speed; 3-year half-life)
+anchorIncome = GDP per capita × labourShare / 0.60             (normalised GDP-equivalent index, not an income)
+anchor       = clamp(7.454 + 5.103·ln(anchorIncome) + 7.658·governance, 15, 90)   (WHR 2015-2025 fit, R² 0.65)
+labourIncome = GDP per capita × labourShare                    (actual labour income per resident)
+ubiEffect    = 2.8 × log2(1 + monthly UBI / (labourIncome / 12))   [index points per doubling; range 1.6-4, assumed]
+unemploymentEffect = 0.45 × (unemployment − natural) in pp         [index points; range 0.3-1.0, assumed]
 ```
+
+Corrections after the independent review of 2026-09-14 (`docs/design/reviews/`, findings 6-9):
+the transfer term is now genuinely per doubling (`log2`; the earlier `4 × ln` gave 2.77 index points
+per doubling while this card advertised 0.4 ladder points), its denominator is actual labour income
+rather than the normalised anchor input (the old proxy understated transfer/income by 40%), and the
+anchor clamp is shown. The clamp and the wellbeing bounds [1, 100] were not active for any country in
+the base run or the harshest stress case below. Headline numbers moved by at most 0.2 points
+because transfers are small at current fund sizes.
 
 Initial wellbeing comes from the latest World Happiness Report ladder × 10 (US ≈ 70) instead of
 the unsourced `gdp/1200 + 40` rule (US 92.5); countries the WHR does not cover fall back to the
@@ -256,8 +265,9 @@ the macro block's `automationShare`, `reemploymentMonths`, `laborShareSensitivit
 
 | Relationship | Kind | Population and dates | Source |
 |---|---|---|---|
-| Transfer → life satisfaction, log in transfer/income, ~0.4 ladder points per doubling | calibrated to evidence | Kenya (GiveDirectly, 2011-2019), Finland (2017-18), US pilots (2019-22); pooled meta-analysis of 45 studies | `docs/design/research/cash-transfer-wellbeing-evidence.md`; McGuire, Kaiser & Bach-Mortensen 2022 (d = 0.13 SD) |
-| Unemployment → mean life satisfaction, ~0.045 ladder points per pp | calibrated to evidence (direct GSOEP effect + Eurobarometer/US spillover) | Germany 1984-2011; Europe/US 1975-1997 | same note; Winkelmann & Winkelmann 1998, Di Tella, MacCulloch & Oswald 2001/2003, Kassenboehmer & Haisken-DeNew 2009 |
+| Transfer → life satisfaction, 0.28 ladder points per doubling of labour income, log2 | **evidence-informed assumption.** The meta-analysis gives a pooled, dose-blind effect (d = 0.13 SD ≈ 0.25-0.3 ladder points, ~2-year average follow-up); reading it as the effect of a doubling, the log form, the income denominator, and applying it as a permanent long-run target are all modelling choices. The range 1.6-4 is assumed; a pooled 95% CI is not a slope distribution. | Kenya (GiveDirectly, 2011-2019), Finland (2017-18), US pilots (2019-22); 45 LMIC-heavy studies | `docs/design/research/cash-transfer-wellbeing-evidence.md`; McGuire, Kaiser & Bach-Mortensen 2022 |
+| Unemployment → mean life satisfaction, ~0.045 ladder points per pp | **evidence-informed assumption** combining a direct effect on the unemployed (GSOEP) with an aggregate spillover estimate from other populations; whether the aggregate estimate already contains the direct effect is not verified (possible double count), and an unemployment-rate point is treated as a population point. Range 0.3-1.0 assumed. | Germany 1984-2011; Europe/US 1975-1997 | same note; Winkelmann & Winkelmann 1998, Di Tella, MacCulloch & Oswald 2001/2003, Kassenboehmer & Haisken-DeNew 2009 |
+| Adjustment speed 0.02/month | **assumed** (no source). After 24 months only 38% of a constant target change is realised, so the transfer evidence's two-year effects are not reproduced on their own timescale. | — | — |
 | Labour income anchor | associational, calibrated | 106 countries 2015-2025 | WHR ladder, World Bank GDP (as above) |
 | GDP path, labour share, displaced pool | calibrated, reduced-form | US 2026-2030 | Korinek et al. 2026 published outputs |
 
@@ -268,19 +278,23 @@ Response review (`npm run profile:default -- --model=evidence-anchored`):
 
 | Horizon | avg wellbeing | US wellbeing | poor-8 wellbeing | US adoption | countries in crisis |
 |---|---|---|---|---|---|
-| 5 y | 58.4 | 68.9 | 41.3 | 0.501 | 0 |
+| 5 y | 58.4 | 69.0 | 41.3 | 0.501 | 0 |
 | 10 y | 58.6 | 69.5 | 43.0 | 0.773 | 0 |
 
 - Every lever, public or macro, moves 10-year average wellbeing by at most ±0.4 points for a ±10%
-  nudge; all sweeps classify as linear or flat. "All global" distribution now adds +0.4 to the
-  poor-8 mean (legacy: +58), which is the order the transfer evidence supports at ~16 USD/month.
+  nudge; sweeps classify as linear or flat, except the assumed adjustment speed
+  (`wellbeingAnchorRate`, now profiled), which is non-monotone over 0.5x-1.5x with a 0.1-point span
+  (faster adjustment moves countries toward targets that lie on both sides of their start). "All
+  global" distribution adds +0.6 to the poor-8 mean (legacy: +58). These are small because the
+  transfers are small and the displacement channel is mild under `DEFAULT_MACRO`, not because the
+  model has been shown to be robust; small responses are a property of these assumptions.
 - The transition is close to wellbeing-neutral under `DEFAULT_MACRO` because productivity gains
   (+54% GDP at 77% adoption) roughly offset the labour-share fall (0.60 → 0.35) in the income
   anchor, and re-employment at 12 months keeps the displaced pool near 2 pp. That is a statement
   about the Korinek-calibrated "substantial" scenario, not about AI in general; the "extreme"
   parameters (automationShare 0.9, reemploymentMonths 18) are one slider away and are the case to
   review next.
-- No thresholds, no crisis rule, no floor hits in the reviewed region.
+- No thresholds, no crisis rule, no clamp or floor active in the reviewed region (checked every month).
 
 Stress review, stage 4 slice 2 (`profile:default -- --model=evidence-anchored`, "stress" switch;
 the model's own wellbeing coefficients, only the displacement coefficients change):
@@ -292,10 +306,12 @@ the model's own wellbeing coefficients, only the displacement coefficients chang
 | extreme, re-employment 60 mo | 65.9 / 64.0 | 20.9% (yr 6) | 0.347 | 57.5 | 43.0 |
 | extreme, 60 mo, adoption growth ×2 | 63.4 / 62.1 | 27.7% (yr 4) | 0.287 | 57.0 | 43.0 |
 
-- The displacement channel works and is bounded by two things: the unemployment evidence
-  (0.45 index points per pp, so a 24 pp excess costs ~11 points of target) and the 3-year
-  half-life (wellbeing lags the target by ~5 points at the unemployment peak). Worst case US −7.4
-  at 10 y. A Greece-2008-scale shock (+20 pp) costing about one ladder point is the observed order.
+- The size of the displacement response is set by two assumptions, not established limits: the
+  unemployment coefficient (0.45 index points per pp, so a 24 pp excess lowers the target by ~11
+  points) and the assumed adjustment speed (wellbeing lags the target by ~5 points at the
+  unemployment peak; a faster speed would show more of the drop sooner). Worst case here US −7.4 at
+  10 y. These rows are a description of the model under stated coefficients, not a bound on how bad a
+  transition could be; the coefficient and speed ranges have not been swept jointly.
 - The income anchor barely moves: labour income falls ~20% against the no-AI path in the
   harshest case (GDP 128k × 0.287/0.60 = 61k vs 77k), which the log slope turns into −1.1 index
   points. Capital income, which rises with GDP, is not in the anchor and benefits nobody in this
@@ -307,17 +323,22 @@ the model's own wellbeing coefficients, only the displacement coefficients chang
   engine's adoption is corporation-driven and is not the same quantity as their task share m × d.
   No transfer-side protection is visible: US UBI stays near 12 USD/month, so `ubiEffect` ≈ 0.01.
 
-Historical reconstruction of the candidate (`npm run hindcast`, 2015-2025, 106 countries):
+In-sample retrospective reconstruction of the candidate (`npm run hindcast`, 2015-2025, 106
+countries; the anchor was fitted on this span, so this is not validation):
 
 | Run | corr ΔWB | MAE (index) | note |
 |---|---|---|---|
 | legacy + anchor, AI off | 0.485 | 4.48 | headline gate (HC-1, HC-2) |
 | anchored, AI off | 0.485 | 4.48 | identical by construction: with no adoption and no transfer both reduce to the same anchor (pinned as a limiting-case test) |
 | legacy, AI on | 0.249 | 25.55 | the flow model collapses over a decade that did not collapse |
-| anchored, AI on | 0.500 | 4.43 | AI on no longer destroys the reconstruction; mean change +1.0 vs actual +2.6 |
+| anchored, AI on | 0.499 | 4.43 | mean change +1.0 vs actual +2.6; GDP-growth MAE 28.4%, GDP-change correlation −0.13 |
+| persistence (predict no change) | 0.000 | 4.68 | the comparator to beat |
 
-The anchor was fitted on the same span, so none of these is a forecast; the anchored-AI-on row
-shows only that the candidate does not contradict the decade, which the legacy default does.
+Outcome by outcome: the anchored-AI-on run beats persistence on wellbeing by 0.25 index points of
+MAE (0.025 ladder points) in-sample, and does badly on GDP growth. That supports only the narrow
+statement that switching AI on in the candidate does not blow up an in-sample wellbeing fit, which
+the legacy default does. It supports no predictive or causal claim; that would need frozen
+calibration and data vintages scored on temporal or country holdouts against the same comparators.
 
 Status: **candidate**. It is offered as a preset so the two wellbeing models can be compared side
 by side; switching the default is the owner's decision after external review.

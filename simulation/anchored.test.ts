@@ -14,7 +14,7 @@ const country = (over: Partial<CountryStats> = {}): CountryStats =>
     unemployment: 0.05, naturalUnemployment: 0.05, ...over,
   }) as CountryStats;
 
-const macro: MacroParameters = { ...DEFAULT_MACRO, wellbeingAnchorRate: 0.02, wellbeingMode: 'anchored', ubiEffectPerDoubling: 4, unemploymentEffectPerPoint: 0.45 };
+const macro: MacroParameters = { ...DEFAULT_MACRO, wellbeingAnchorRate: 0.02, wellbeingMode: 'anchored', ubiEffectPerDoubling: 2.8, unemploymentEffectPerPoint: 0.45 };
 
 describe('stage 4 anchored wellbeing mode', () => {
   it('the preset exists and asks for ladder-based initial wellbeing; legacy presets do not', () => {
@@ -43,18 +43,22 @@ describe('stage 4 anchored wellbeing mode', () => {
   });
 
   it('a transfer raises the target monotonically with diminishing returns (log in transfer/income)', () => {
-    const c = country(); // monthly labour income 2000
-    const t1 = anchoredWellbeingTarget(c, macro, 200).ubiEffect;   // 10% of monthly income
-    const t2 = anchoredWellbeingTarget(c, macro, 2000).ubiEffect;  // a doubling
-    const t3 = anchoredWellbeingTarget(c, macro, 20000).ubiEffect; // 10x income
+    const c = country(); // actual monthly labour income = 24000 x 0.6 / 12 = 1200
+    const t1 = anchoredWellbeingTarget(c, macro, 120).ubiEffect;   // 10% of monthly labour income
+    const t2 = anchoredWellbeingTarget(c, macro, 1200).ubiEffect;  // a doubling
+    const t3 = anchoredWellbeingTarget(c, macro, 12000).ubiEffect; // 10x income
     expect(t1).toBeGreaterThan(0);
     expect(t2).toBeGreaterThan(t1);
     expect(t3).toBeGreaterThan(t2);
     expect(t3).toBeLessThan(10 * t2); // concave
-    // A doubling of income is worth exactly ubiEffectPerDoubling x ln 2.
-    expect(t2).toBeCloseTo(4 * Math.log(2), 9);
-    // 10% of income: about 0.38 index points (0.04 ladder), the evidence note's rule of thumb.
-    expect(t1).toBeCloseTo(4 * Math.log(1.1), 9);
+    // A doubling of labour income is worth exactly ubiEffectPerDoubling (review 2026-09-14, finding 6).
+    expect(t2).toBeCloseTo(2.8, 9);
+    expect(t1).toBeCloseTo(2.8 * Math.log2(1.1), 9);
+    // The denominator is actual labour income (GDP x labour share), not the normalised anchor income.
+    const parts = anchoredWellbeingTarget(c, macro, 1200);
+    expect(parts.labourIncome).toBe(24000 * 0.6);
+    expect(parts.anchorIncome).toBe(24000);
+    expect(parts.transferShare).toBe(1);
   });
 
   it('excess unemployment and a falling labour share lower the target', () => {

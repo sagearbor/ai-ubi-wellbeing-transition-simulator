@@ -61,23 +61,28 @@ export interface MacroParameters {
    * Stage 4 (2026-09-13). 'legacy' (default): the classic flow update — monthly UBI boost minus
    * displacement friction, crisis and subsistence penalties, accumulating with no level anchor.
    * 'anchored': a level model. Each month wellbeing relaxes at `wellbeingAnchorRate` toward
-   *   target = anchor(labour income, governance) + ubiEffect(transfer / income) − unemploymentEffect,
-   * where labour income = GDP per capita × labourShare / 0.60 (so a falling labour share lowers
-   * the anchor), ubiEffect = ubiEffectPerDoubling × ln(1 + s) with s = monthly UBI / monthly
-   * labour income (the log form the cash-transfer meta-analysis supports: diminishing points per
-   * extra dollar), and unemploymentEffect = unemploymentEffectPerPoint × excess unemployment in
-   * percentage points. Both coefficients are evidence-calibrated with ranges; see
+   *   target = anchor(anchorIncome, governance) + ubiEffect − unemploymentEffect,
+   * where anchorIncome = GDP per capita × labourShare / 0.60 is a normalised GDP-equivalent index
+   * (so a falling labour share lowers the anchor; the WHR fit was on GDP per capita), ubiEffect =
+   * ubiEffectPerDoubling × log2(1 + s) with s = monthly UBI / monthly actual labour income
+   * (GDP per capita × labourShare), and unemploymentEffect = unemploymentEffectPerPoint × excess
+   * unemployment in percentage points. Both coefficients are evidence-informed ASSUMPTIONS (the
+   * studies do not identify this functional form); see
    * docs/design/research/cash-transfer-wellbeing-evidence.md and the model card.
    */
   wellbeingMode?: 'legacy' | 'anchored';
   /**
    * Anchored mode: index points (0-100) gained when a sustained transfer doubles labour income
-   * (s = 1). Evidence: ~0.35-0.45 ladder points per doubling => 3.5-4.5 index; p5-p95 ~2-5.
+   * (s = 1), applied as log2(1 + s). Evidence-informed assumption: the pooled cash-transfer effect
+   * (d = 0.13 SD, ~0.25-0.3 ladder points) read as if it were the effect of a doubling => 2.8 index.
+   * The meta-analysis is dose-blind; that reading, and the plausible range 1.6-4, are assumptions.
    */
   ubiEffectPerDoubling?: number;
   /**
    * Anchored mode: index points lost per percentage point of unemployment above the natural rate.
-   * Evidence: ~0.04-0.05 ladder points per pp (direct + spillover) => ~0.45 index; p5-p95 0.3-1.0.
+   * Evidence-informed assumption: ~0.04-0.05 ladder points per pp combining a direct effect on the
+   * unemployed with a spillover estimate from other populations; whether the aggregate estimate already
+   * contains the direct effect is not verified (possible double count). Plausible range 0.3-1.0 (assumed).
    */
   unemploymentEffectPerPoint?: number;
 }

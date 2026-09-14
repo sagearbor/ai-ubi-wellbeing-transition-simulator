@@ -35,6 +35,14 @@ confirmation.
 
 ### Implications for the model (cash transfers)
 
+> **Erratum 2026-09-14 (independent review, finding 6-7).** Item (a) below mixes two quantities. In
+> `Δladder ≈ k · ln(1 + s)`, a doubling (s = 1) gives k · ln 2, so a doubling worth 0.25-0.3 ladder
+> points means k ≈ 0.36-0.43 **per natural-log unit**, not "0.35-0.45 ladder points per doubling".
+> The simulator now uses `ubiEffectPerDoubling × log2(1 + s)` with 2.8 index points (0.28 ladder
+> points) per doubling. Everything below is an evidence-informed assumption, not an estimate: the
+> pooled effect is dose-blind, the log form and the income denominator are modelling choices, and
+> the 95% CI of a pooled mean is not a p5-p95 range for a slope.
+
 - **(a) Level-effect rule of thumb.** The best-supported single number is McGuire et al.'s pooled
   d = 0.13 SD for subjective wellbeing, from a literature of *transfers that were mostly large
   relative to recipient income* (the QJE/Econometrica Kenya transfers were on the order of many

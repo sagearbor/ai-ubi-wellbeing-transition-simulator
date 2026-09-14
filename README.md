@@ -252,9 +252,10 @@ retrospective reconstruction, not a forecast — the comparison to beat is the p
 baseline (predicting no change), not zero. Current result: wellbeing-change correlation
 0.49 and mean absolute error 0.45 ladder points across 106 countries; the script also
 prints the persistence baseline and, where enough pre-2015 data exists, a
-trend-continuation baseline alongside it. That validates only the baseline economy (GDP
-path and the wellbeing anchor fitted to GDP and governance), not the AI channel, which has
-no measurable macro footprint in that decade.
+trend-continuation baseline alongside it. It is an in-sample reconstruction and validates
+nothing: the anchor was fitted on the span, the gated run switches AI and UBI off, and the AI
+channel has no measurable macro footprint in that decade. Its wellbeing MAE beats persistence
+(4.68) by 0.2 index points.
 
 Directions under exploration (see `developer_checklist.yaml` and `docs/`):
 - execute uploaded model equations inside the pure engine (P8-T9), so anchor

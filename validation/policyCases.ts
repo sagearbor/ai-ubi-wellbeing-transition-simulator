@@ -238,7 +238,8 @@ function runTransferUnemploymentCheck(
     errors.push(`${m.outcome}: ${STRUCTURAL_CHECK_COUNTRY} has no unemployment state under "${m.model}"`);
     return null;
   }
-  const labourIncomeMonthly = (on.gdpPerCapita * ((on.laborShare ?? BASE_LABOR_SHARE) / BASE_LABOR_SHARE)) / 12;
+  // Actual labour income per resident (GDP x labour share), the same basis as the case's dividends/labour income.
+  const labourIncomeMonthly = (on.gdpPerCapita * (on.laborShare ?? BASE_LABOR_SHARE)) / 12;
   const moved = Math.abs(on.unemployment - off.unemployment) > 1e-12;
   return {
     outcome: m.outcome,

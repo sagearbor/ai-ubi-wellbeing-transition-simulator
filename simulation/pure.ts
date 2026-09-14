@@ -99,18 +99,25 @@ export function anchoredWellbeingTarget(
   country: CountryStats,
   macro: MacroParameters,
   monthlyUbiPerCapita: number,
-): { target: number; anchor: number; ubiEffect: number; unemploymentEffect: number; labourIncome: number } {
+): { target: number; anchor: number; ubiEffect: number; unemploymentEffect: number; anchorIncome: number; labourIncome: number; transferShare: number } {
   const laborShare = country.laborShare ?? BASE_LABOR_SHARE;
-  // Labour income per person per year: GDP scaled by the labour share relative to its no-AI value.
-  const labourIncome = country.gdpPerCapita * (laborShare / BASE_LABOR_SHARE);
-  const anchor = wellbeingAnchor(labourIncome, country.governance);
-  const monthlyIncome = labourIncome / 12;
-  const share = monthlyIncome > 0 ? monthlyUbiPerCapita / monthlyIncome : 0;
+  // Two different income concepts (review 2026-09-14, finding 6):
+  //  - anchorIncome: the GDP-per-capita-equivalent input the WHR regression was fitted on, scaled by
+  //    the labour share relative to its no-AI value so that a falling labour share lowers the anchor.
+  //    It is a normalised index, not anyone's income.
+  //  - labourIncome: actual labour income per resident, GDP per capita x labour share. It is the
+  //    transfer denominator (an assumption: the transfer studies used household income or consumption).
+  const anchorIncome = country.gdpPerCapita * (laborShare / BASE_LABOR_SHARE);
+  const labourIncome = country.gdpPerCapita * laborShare;
+  const anchor = wellbeingAnchor(anchorIncome, country.governance);
+  const monthlyLabourIncome = labourIncome / 12;
+  const transferShare = monthlyLabourIncome > 0 ? monthlyUbiPerCapita / monthlyLabourIncome : 0;
   const perDoubling = macro.ubiEffectPerDoubling ?? 0;
-  const ubiEffect = perDoubling > 0 && share > 0 ? perDoubling * Math.log(1 + share) : 0;
+  // Genuinely per doubling: a transfer equal to labour income (share 1) adds exactly ubiEffectPerDoubling.
+  const ubiEffect = perDoubling > 0 && transferShare > 0 ? perDoubling * Math.log2(1 + transferShare) : 0;
   const excessUnemployment = Math.max(0, (country.unemployment ?? 0) - (country.naturalUnemployment ?? 0));
   const unemploymentEffect = (macro.unemploymentEffectPerPoint ?? 0) * excessUnemployment * 100;
-  return { target: anchor + ubiEffect - unemploymentEffect, anchor, ubiEffect, unemploymentEffect, labourIncome };
+  return { target: anchor + ubiEffect - unemploymentEffect, anchor, ubiEffect, unemploymentEffect, anchorIncome, labourIncome, transferShare };
 }
 
 // ============================================================================

@@ -4,12 +4,14 @@
  * PURE - no I/O. The caller loads data/hindcast/*.json (see
  * scripts/hindcast/fetch-actuals.ts) and hands the parsed series in.
  *
- * WHAT THIS DOES AND DOES NOT VALIDATE
- * ------------------------------------
- * AI's macro effect on 2015-2025 is tiny next to COVID, war and inflation, so a
- * hindcast cannot validate the AI displacement channel. It validates the baseline
- * economy and calibrates the wellbeing coefficients. The headline run is therefore
- * the one with AI OFF; the AI-on run is reported next to it for contrast only.
+ * WHAT THIS IS: AN IN-SAMPLE RETROSPECTIVE RECONSTRUCTION, NOT VALIDATION
+ * -----------------------------------------------------------------------
+ * The wellbeing anchor was fitted on this same 2015-2025 span, and the headline run switches
+ * off the channels of interest (AI displacement and corporate UBI), so a good score here
+ * validates nothing: it shows how closely the fitted anchor reproduces the decade it was fitted
+ * on, next to simple comparators (persistence, trend). AI's macro effect over 2015-2025 is also
+ * tiny next to COVID, war and inflation. Predictive claims would need frozen calibration and
+ * data vintages scored on temporal or country holdouts; causal claims need more than that.
  *
  * SCALING CHOICE (documented, load-bearing)
  * -----------------------------------------

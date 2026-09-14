@@ -142,6 +142,7 @@ export const MACRO_LEVERS: NumericLever[] = (
     ['productivityGain', 'GDP boost per unit of affected task share'],
     ['ubiEffectPerDoubling', 'Wellbeing gained when a transfer doubles labour income (index points)'],
     ['unemploymentEffectPerPoint', 'Wellbeing lost per point of excess unemployment'],
+    ['wellbeingAnchorRate', 'Monthly adjustment speed toward the wellbeing target (assumed; 0.02 = 3-year half-life)'],
   ] as const
 ).map(([id, label]) => ({
   id,
