@@ -83,6 +83,8 @@ const modelFiles = loadJsonFiles(MODEL_DIR);
 const modelsById = new Map<string, CoreModel>();
 
 const registeredModelIds = new Set(CORE_FIXTURES.map((f) => f.model.id));
+/** Reviewed negative fixtures: file -> the exact error code it must fail with. */
+const NEGATIVE: Record<string, { code: string; why: string }> = JSON.parse(readFileSync(join(MODEL_DIR, 'negative', 'manifest.json'), 'utf8')).fixtures;
 
 for (const { file, json } of modelFiles) {
   const v = validateCoreModel(json);
@@ -100,14 +102,19 @@ for (const { file, json } of modelFiles) {
   if (registered) {
     ok = v.ok && testsPassed === tests.length;
     if (v.ok && tests.length === 0) notes.push('no reproduction tests: this model makes no checkable claim');
-  } else {
-    // data/core/README.md: an unregistered model is adversarial and must fail explicitly.
-    ok = !v.ok;
+  } else if (NEGATIVE[file]) {
+    // A reviewed negative fixture must fail, and fail for the documented reason only.
+    const codes = [...new Set(v.diagnostics.filter((d) => d.level === 'error').map((d) => d.code))];
+    const want = NEGATIVE[file].code;
+    ok = !v.ok && codes.length === 1 && codes[0] === want;
     notes.push(
       ok
-        ? `not registered in src/core/fixtures.ts, so it is treated as an adversarial fixture; it failed as expected (${v.diagnostics.filter((d) => d.level === 'error').map((d) => d.code).join(', ')})`
-        : 'not registered in src/core/fixtures.ts but it validates cleanly: either register it as a bundled model or document why it is expected to fail',
+        ? `reviewed negative fixture: failed with ${want} as documented (${NEGATIVE[file].why})`
+        : `reviewed negative fixture expected to fail with exactly ${want}, got ${v.ok ? 'no error' : codes.join(', ')}`,
     );
+  } else {
+    ok = false;
+    notes.push(`not registered in src/core/fixtures.ts and not listed in data/core/negative/manifest.json: register it, list it as a reviewed negative fixture with its exact failure code, or remove it (errors: ${v.diagnostics.filter((d) => d.level === 'error').map((d) => d.code).join(', ') || 'none'})`);
   }
   reports.push({
     file: `data/core/${file}`,

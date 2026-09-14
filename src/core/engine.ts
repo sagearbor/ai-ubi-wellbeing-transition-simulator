@@ -23,6 +23,7 @@ import type {
   Diagnostic,
   Effect,
   Input,
+  Invariant,
   ModelTest,
   MonteCarloResult,
   Overlay,
@@ -36,7 +37,8 @@ import type {
   Variable,
 } from './types';
 
-export const ENGINE_VERSION = 'core-0.1.0';
+/** Bump on any change to numerical behaviour (solver acceptance, ordering, invariants); it is part of every run hash. */
+export const ENGINE_VERSION = 'core-0.2.0';
 const SINGLE = '_';
 
 // ---------------------------------------------------------------------------
@@ -156,6 +158,7 @@ export function resolveModel(base: CoreModel, overlays: Overlay[] = []): { model
   model.effects = model.effects ?? [];
   model.solves = model.solves ?? [];
   model.tests = model.tests ?? [];
+  model.invariants = model.invariants ?? [];
   for (const o of overlays) {
     for (const p of o.parameters ?? []) {
       const existing = model.parameters.find((x) => x.id === p.id);
@@ -183,6 +186,10 @@ export function resolveModel(base: CoreModel, overlays: Overlay[] = []): { model
     }
     for (const out of o.outputs ?? []) if (!model.outputs.includes(out)) model.outputs.push(out);
     for (const t of o.tests ?? []) model.tests.push(t);
+    for (const inv of o.invariants ?? []) {
+      if (model.invariants.some((x) => x.id === inv.id)) diagnostics.push({ level: 'error', code: 'duplicate-id', message: `overlay ${o.id}: invariant "${inv.id}" already exists; overlays cannot replace or relax an invariant`, where: inv.id });
+      else model.invariants.push(inv);
+    }
   }
   return { model, diagnostics };
 }
@@ -211,6 +218,7 @@ export interface CompiledModel {
   solves: Map<string, { def: SolveBlock; expr: ParsedExpr; through: string[] }>;
   aggregates: Map<string, { fn: string; variable: string }>;
   tests: Array<{ def: ModelTest; expr: ParsedExpr }>;
+  invariants: Array<{ def: Invariant; expr: ParsedExpr }>;
   diagnostics: Diagnostic[];
 }
 
@@ -304,7 +312,13 @@ export function compileModel(model: CoreModel): CompiledModel {
     const ordered: string[] = [];
     const pending = through.filter((id) => varIds.has(id));
     while (pending.length) {
-      const i = pending.findIndex((id) => [...variables.get(id)?.expr.symbols ?? []].every((sym) => !throughSet.has(sym) || sym === id || ordered.includes(sym)));
+      // A through variable is ready once every through variable its equation OR its effects read is ordered.
+      const readsOf = (id: string): string[] => {
+        const cv = variables.get(id);
+        if (!cv) return [];
+        return [...cv.expr.symbols, ...cv.effects.flatMap((ef) => [...ef.expr.symbols])];
+      };
+      const i = pending.findIndex((id) => readsOf(id).every((sym) => !throughSet.has(sym) || sym === id || ordered.includes(sym)));
       if (i < 0) { diagnostics.push({ level: 'error', code: 'cycle', message: `solve "${s.id}": through variables reference each other in a cycle (${pending.join(', ')})`, where: s.id }); break; }
       ordered.push(pending.splice(i, 1)[0]);
     }
@@ -313,6 +327,14 @@ export function compileModel(model: CoreModel): CompiledModel {
     solves.set(s.id, { def: s, expr, through: ordered });
   }
   const tests = (model.tests ?? []).map((t) => { const expr = parseExpr(t.expr); check(expr, `test ${t.name}`); return { def: t, expr }; });
+  const invariants = (model.invariants ?? []).map((inv) => { claim(`invariant:${inv.id}`, 'invariant'); const expr = parseExpr(inv.expr); check(expr, `invariant ${inv.id}`); return { def: inv, expr }; });
+  // An effect on a variable whose equation is a min()/max() limit is applied AFTER the limit, so the
+  // result can exceed it while the binding explanation still reports the limit as active.
+  for (const [id, v] of variables) {
+    if (v.expr.bindingCalls.length && v.effects.length) {
+      for (const ef of v.effects) diagnostics.push({ level: 'warning', code: 'effect-after-constraint', message: `effect "${ef.def.id}" on "${id}" is applied after its ${v.expr.bindingCalls.map((c) => c.fn + '()').join(', ')}; the result can exceed that limit and the binding explanation describes the value before the effect. Attach it to an input of the limit instead.`, where: ef.def.id });
+    }
+  }
 
   // Build the expanded graph.
   const nodes = new Map<string, PlanNode>();
@@ -329,6 +351,8 @@ export function compileModel(model: CoreModel): CompiledModel {
     for (const [id, v] of variables) {
       const deps = new Set(depsOf(v.expr, entity));
       for (const ef of v.effects) depsOf(ef.expr, entity).forEach((d) => deps.add(d));
+      // A stock's initial expression is evaluated at t = 0 in the same plan, so what it reads must come first.
+      if (v.initial) depsOf(v.initial, entity).filter((d) => d !== `${entity}:${id}`).forEach((d) => deps.add(d));
       nodes.set(`${entity}:${id}`, { key: `${entity}:${id}`, kind: 'variable', entity, id, deps });
     }
     for (const [id, s] of solves) {
@@ -414,7 +438,7 @@ export function compileModel(model: CoreModel): CompiledModel {
   }
   for (const out of model.outputs) if (!varIds.has(out) && !inputIds.has(out) && !solveByUnknown.has(out)) diagnostics.push({ level: 'error', code: 'unknown-symbol', message: `output "${out}" is not a variable, input or solve unknown`, where: out });
 
-  return { model, entities, years, order, variables, solves, aggregates, tests, diagnostics };
+  return { model, entities, years, order, variables, solves, aggregates, tests, invariants, diagnostics };
 }
 
 // ---------------------------------------------------------------------------
@@ -509,9 +533,10 @@ export interface RunOptions {
   run?: number;
 }
 
-function manifestFor(model: CoreModel, overlays: Overlay[], seed: number | null): RunManifest {
-  const hash = hashString(JSON.stringify({ model, overlays, seed, ENGINE_VERSION })).toString(16).padStart(8, '0');
-  return { modelId: model.id, overlayIds: overlays.map((o) => o.id), hash, seed, engineVersion: ENGINE_VERSION, createdAt: new Date().toISOString() };
+function manifestFor(model: CoreModel, overlays: Overlay[], seed: number | null, run = 0): RunManifest {
+  // The draw index is part of the identity: seed 1 draw 0 and seed 1 draw 1 are different runs.
+  const hash = hashString(JSON.stringify({ model, overlays, seed, run: seed === null ? 0 : run, ENGINE_VERSION })).toString(16).padStart(8, '0');
+  return { modelId: model.id, overlayIds: overlays.map((o) => o.id), hash, seed, run: seed === null ? 0 : run, engineVersion: ENGINE_VERSION, createdAt: new Date().toISOString() };
 }
 
 export function runModel(base: CoreModel, opts: RunOptions = {}): RunResult {
@@ -520,7 +545,7 @@ export function runModel(base: CoreModel, opts: RunOptions = {}): RunResult {
   const { model, diagnostics: d0 } = resolveModel(base, overlays);
   const cm = compileModel(model);
   const diagnostics = [...d0, ...cm.diagnostics];
-  const manifest = manifestFor(base, overlays, seed);
+  const manifest = manifestFor(base, overlays, seed, opts.run ?? 0);
   const empty: RunResult = { ok: false, diagnostics, years: cm.years, series: {}, aggregates: {}, binding: {}, solves: {}, parameters: {}, manifest };
   if (diagnostics.some((d) => d.level === 'error')) return empty;
 
@@ -622,29 +647,51 @@ export function runModel(base: CoreModel, opts: RunOptions = {}): RunResult {
           }
           return s.expr.compiled.evaluate({ ...scope, ...vals });
         };
+        const fail = (status: 'no-root' | 'no-convergence' | 'discontinuity', code: Diagnostic['code'], message: string): RunResult => {
+          rec.status = status;
+          diagnostics.push({ level: 'error', code, message: `solve "${s.def.id}" (${entity}, step ${t}): ${message}`, where: s.def.id, entity, step: t });
+          return { ...empty, diagnostics };
+        };
         let [lo, hi] = s.def.bracket;
-        let flo = f(lo);
-        let fhi = f(hi);
+        let flo = Number(f(lo));
+        let fhi = Number(f(hi));
         const tol = s.def.tol ?? 1e-9;
+        const residualTol = s.def.residualTol;
         const maxIter = s.def.maxIter ?? 100;
-        if (!Number.isFinite(flo) || !Number.isFinite(fhi) || flo * fhi > 0) {
-          rec.status = 'no-root';
-          diagnostics.push({ level: 'error', code: 'solve-no-root', message: `solve "${s.def.id}" (${entity}, step ${t}): residual has the same sign at both ends of the bracket [${lo}, ${hi}] (${flo.toPrecision(3)}, ${fhi.toPrecision(3)})`, where: s.def.id, entity, step: t });
-          return { ...empty, diagnostics };
+        if (!Number.isFinite(flo) || !Number.isFinite(fhi)) {
+          return fail('no-root', 'solve-no-root', `residual is not finite at a bracket end [${lo}, ${hi}] (${flo}, ${fhi})`);
         }
-        let mid = lo;
+        const scale0 = Math.max(Math.abs(flo), Math.abs(fhi));
+        // A root is accepted on its residual, never on bracket width alone. Either the residual is
+        // (absolutely) zero to within `exactTol`, or the bracket is narrow by `tol` AND the residual has
+        // shrunk to `acceptTol` (default: one billionth of its magnitude at the bracket ends). A jump or
+        // a pole narrows the bracket without shrinking the residual, and is rejected.
+        const exactTol = residualTol ?? tol;
+        const acceptTol = residualTol ?? Math.max(tol, 1e-9 * scale0);
+        let root: number | null = null;
         let it = 0;
-        for (; it < maxIter; it++) {
-          mid = (lo + hi) / 2;
-          const fm = f(mid);
-          if (Math.abs(fm) <= tol || (hi - lo) / 2 <= tol * Math.max(1, Math.abs(mid))) { flo = fm; break; }
-          if (flo * fm < 0) { hi = mid; fhi = fm; } else { lo = mid; flo = fm; }
+        // Endpoint roots first: bisection never evaluates the ends again.
+        if (Math.abs(flo) <= exactTol) root = lo;
+        else if (Math.abs(fhi) <= exactTol) root = hi;
+        else if (flo * fhi > 0) {
+          return fail('no-root', 'solve-no-root', `residual has the same sign at both ends of the bracket [${lo}, ${hi}] (${flo.toPrecision(3)}, ${fhi.toPrecision(3)})`);
+        } else {
+          for (; it < maxIter; it++) {
+            const mid = (lo + hi) / 2;
+            const fm = Number(f(mid));
+            if (!Number.isFinite(fm)) return fail('discontinuity', 'solve-discontinuity', `residual is not finite at u = ${mid} inside the bracket: a pole or undefined region, not a root`);
+            if (Math.abs(fm) <= exactTol) { root = mid; break; }
+            if (flo * fm < 0) { hi = mid; fhi = fm; } else { lo = mid; flo = fm; }
+            if (hi - lo <= tol * Math.max(1, Math.abs(mid)) && Math.abs(fm) <= acceptTol) { root = mid; break; }
+            // Narrowing to machine precision without the residual reaching zero means the sign change
+            // is a jump or a pole (or the residual tolerance is below what the arithmetic can reach).
+            if (hi - lo <= 4 * Number.EPSILON * Math.max(1, Math.abs(mid))) {
+              return fail('discontinuity', 'solve-discontinuity', `the residual changes sign at u ≈ ${mid} but does not reach |residual| <= ${acceptTol.toPrecision(3)} there (${flo.toPrecision(3)} to ${fhi.toPrecision(3)}): a discontinuity or pole, not a root. If the residual is continuous, set a larger residualTol.`);
+            }
+          }
+          if (root === null) return fail('no-convergence', 'solve-no-convergence', `did not converge in ${maxIter} iterations (bracket [${lo}, ${hi}], residual ${flo.toPrecision(3)} to ${fhi.toPrecision(3)})`);
         }
-        if (it >= maxIter) {
-          rec.status = 'no-convergence';
-          diagnostics.push({ level: 'error', code: 'solve-no-convergence', message: `solve "${s.def.id}" (${entity}, step ${t}) did not converge in ${maxIter} iterations`, where: s.def.id, entity, step: t });
-          return { ...empty, diagnostics };
-        }
+        const mid = root;
         rec.iterations[t] = it;
         rec.residual[t] = f(mid);
         series[entity][s.def.unknown][t] = mid;
@@ -684,6 +731,18 @@ export function runModel(base: CoreModel, opts: RunOptions = {}): RunResult {
         return { ...empty, diagnostics };
       }
       series[entity][node.id][t] = value;
+    }
+    for (const inv of cm.invariants) {
+      for (const entity of entities) {
+        const sc = scopeFor(entity, t, inv.expr);
+        if (!sc) return { ...empty, diagnostics };
+        const held: unknown = inv.expr.compiled.evaluate(sc);
+        if (held !== true && !(typeof held === 'number' && held !== 0 && Number.isFinite(held))) {
+          const shown = [...inv.expr.symbols].map((sym) => `${sym} = ${sc[sym]}`).join(', ');
+          diagnostics.push({ level: 'error', code: 'invariant-violated', message: `invariant "${inv.def.id}" (${inv.def.expr}) fails at ${years[t]}${entity === SINGLE ? '' : ` for ${entity}`}: ${shown}`, where: inv.def.id, entity, step: t });
+          return { ...empty, diagnostics };
+        }
+      }
     }
   }
 

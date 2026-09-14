@@ -41,6 +41,11 @@
     "tests": {
       "type": "array",
       "items": { "$ref": "https://ubi-simulator.example.com/schemas/coreModel.json#/definitions/ModelTest" }
+    },
+    "invariants": {
+      "type": "array",
+      "items": { "$ref": "https://ubi-simulator.example.com/schemas/coreModel.json#/definitions/Invariant" },
+      "description": "New invariants only; an overlay cannot replace or relax a base invariant."
     }
   },
 

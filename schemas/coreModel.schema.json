@@ -82,10 +82,26 @@
       "type": "array",
       "items": { "$ref": "#/definitions/ModelTest" },
       "description": "Reproduction tests the model must pass. A model with no tests makes no checkable claim."
+    },
+    "invariants": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/Invariant" },
+      "description": "Conditions checked on final values at every step for every entity; a violation fails the run."
     }
   },
 
   "definitions": {
+    "Invariant": {
+      "type": "object",
+      "required": ["id", "expr"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/definitions/SlugId" },
+        "expr": { "type": "string", "minLength": 1, "maxLength": 2000 },
+        "description": { "type": "string", "maxLength": 2000 },
+        "source": { "$ref": "#/definitions/Source" }
+      }
+    },
     "Identifier": {
       "type": "string",
       "pattern": "^[A-Za-z_][A-Za-z0-9_]*$",
@@ -257,6 +273,7 @@
           "items": { "type": "number" }
         },
         "tol": { "type": "number", "exclusiveMinimum": 0 },
+        "residualTol": { "type": "number", "exclusiveMinimum": 0 },
         "maxIter": { "type": "integer", "minimum": 1, "maximum": 10000 },
         "unit": { "type": "string", "maxLength": 64 },
         "description": { "type": "string", "maxLength": 2000 },

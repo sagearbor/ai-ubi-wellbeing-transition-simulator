@@ -281,3 +281,134 @@ describe('resolveModel', () => {
     expect(resolveModel(minimal, [tutoring]).model.effects?.length).toBe(2);
   });
 });
+
+// ---------------------------------------------------------------------------
+// Review 2026-09-14 (docs/design/reviews/2026-09-14-v3-implementation-review-97f751d.md)
+// ---------------------------------------------------------------------------
+
+const one = (extra: Partial<CoreModel>): CoreModel => ({
+  schemaVersion: 1, id: 'probe', name: 'probe', time: { start: 0, end: 0, step: 'year' },
+  parameters: [{ id: 'a', value: 1, source: guess('g') }],
+  variables: [{ id: 'v', equation: 'a + u' }],
+  outputs: ['v'],
+  ...extra,
+});
+const solveOnly = (residual: string, bracket: [number, number], more: Record<string, unknown> = {}) =>
+  runModel(one({ solves: [{ id: 's', unknown: 'u', residual, bracket, ...more }] }));
+
+describe('review finding 1: the solver accepts roots on the residual, never on bracket width', () => {
+  it('finds a root at the lower end of the bracket (u on [0, 1] is 0, not 1)', () => {
+    const r = solveOnly('u', [0, 1]);
+    expect(r.ok).toBe(true);
+    expect(r.series._.u[0]).toBe(0);
+    expect(r.solves.s._.residual[0]).toBe(0);
+  });
+
+  it('finds a root at the upper end', () => {
+    const r = solveOnly('u - 1', [0, 1]);
+    expect(r.ok).toBe(true);
+    expect(r.series._.u[0]).toBe(1);
+  });
+
+  it('a jump that changes sign without a root fails explicitly (floor(u) - 0.5 on [0, 2])', () => {
+    const r = solveOnly('floor(u) - 0.5', [0, 2]);
+    expect(r.ok).toBe(false);
+    expect(r.diagnostics.map((d) => d.code)).toEqual(['solve-discontinuity']);
+  });
+
+  it('a pole that changes sign fails explicitly (1 / (u - 0.3) on [0, 1])', () => {
+    const r = solveOnly('1 / (u - 0.3)', [0, 1]);
+    expect(r.ok).toBe(false);
+    expect(r.diagnostics.map((d) => d.code)).toEqual(['solve-discontinuity']);
+  });
+
+  it('a non-finite residual inside the bracket is a failure, not a sign', () => {
+    const r = solveOnly('u < 0.5 ? -1 : (u == 0.5 ? 1/0 : 1)', [0, 1]);
+    expect(r.ok).toBe(false);
+  });
+
+  it('every reported root satisfies |residual| <= residualTol, including steep smooth residuals', () => {
+    for (const [res, br] of [['1e6 * (u - 0.123456789)', [0, 1]], ['exp(u) - 2', [0, 5]], ['u^3 - 1e-9', [0, 1]]] as const) {
+      const r = solveOnly(res, br as [number, number], { residualTol: 1e-6 });
+      expect(r.ok, `${res}: ${r.diagnostics.map((d) => d.message).join('; ')}`).toBe(true);
+      expect(Math.abs(r.solves.s._.residual[0])).toBeLessThanOrEqual(1e-6);
+    }
+  });
+
+  it('non-convergence within maxIter is still explicit', () => {
+    const r = solveOnly('u - 0.3', [0, 1], { maxIter: 3, tol: 1e-12 });
+    expect(r.ok).toBe(false);
+    expect(r.diagnostics.map((d) => d.code)).toEqual(['solve-no-convergence']);
+  });
+});
+
+describe('review finding 11: dependency order includes effects and initial expressions', () => {
+  it('through variables are ordered by what their effects read, not only their equations', () => {
+    const m: CoreModel = {
+      schemaVersion: 1, id: 'p', name: 'p', time: { start: 0, end: 0, step: 'year' }, parameters: [],
+      variables: [{ id: 'x', equation: 'u' }, { id: 'y', equation: 'u' }],
+      effects: [{ id: 'e', target: 'x', op: 'add', expr: 'y', source: guess('g') }],
+      outputs: ['x'],
+      solves: [{ id: 's', unknown: 'u', residual: 'x - 1', through: ['x', 'y'], bracket: [0, 1] }],
+    };
+    const r = runModel(m);
+    expect(r.ok, r.diagnostics.map((d) => d.message).join('; ')).toBe(true);
+    expect(r.series._.u[0]).toBeCloseTo(0.5, 8);
+    // Order invariance: listing y first gives the same root.
+    const r2 = runModel({ ...m, solves: [{ ...m.solves![0], through: ['y', 'x'] }] });
+    expect(r2.series._.u[0]).toBeCloseTo(0.5, 8);
+  });
+
+  it('a stock initialised from a variable listed after it runs, in either declaration order', () => {
+    const vars = [{ id: 'stock', equation: 'stock[t-1] + 1', initial: 'c * 3' }, { id: 'c', equation: 'k' }];
+    const base = { schemaVersion: 1 as const, id: 'p', name: 'p', time: { start: 0, end: 2, step: 'year' as const }, parameters: [{ id: 'k', value: 2, source: guess('g') }], outputs: ['stock'] };
+    for (const variables of [vars, [...vars].reverse()]) {
+      const r = runModel({ ...base, variables });
+      expect(r.ok, r.diagnostics.map((d) => d.message).join('; ')).toBe(true);
+      expect(r.series._.stock).toEqual([6, 7, 8]);
+    }
+  });
+});
+
+describe('review finding 3: limits hold on final values', () => {
+  const boosted: Overlay = { id: 'boost', effects: [{ id: 'boost', target: 'completions', op: 'multiply', expr: '1.025', source: guess('g') }] };
+
+  it('an effect applied after a min() limit warns (effect-after-constraint)', () => {
+    const r = runModel(training, { overlays: [boosted] });
+    expect(r.diagnostics.filter((d) => d.code === 'effect-after-constraint')).toHaveLength(1);
+  });
+
+  it('an invariant fails the run when the effect pushes the limited value past its limit', () => {
+    const guarded: CoreModel = { ...training, invariants: [{ id: 'capacity', expr: 'completions <= instructor_capacity' }] };
+    expect(runModel(guarded).ok).toBe(true);
+    const r = runModel(guarded, { overlays: [boosted] });
+    expect(r.ok).toBe(false);
+    const d = r.diagnostics.find((x) => x.code === 'invariant-violated')!;
+    expect(d.message).toMatch(/capacity.*2029.*completions = 307[45]/);
+  });
+
+  it('an overlay cannot replace or relax an invariant', () => {
+    const guarded: CoreModel = { ...training, invariants: [{ id: 'capacity', expr: 'completions <= instructor_capacity' }] };
+    const relax: Overlay = { id: 'relax', invariants: [{ id: 'capacity', expr: 'completions <= 1e12' }] };
+    const r = runModel(guarded, { overlays: [relax] });
+    expect(r.ok).toBe(false);
+    expect(r.diagnostics.some((d) => d.code === 'duplicate-id')).toBe(true);
+  });
+});
+
+describe('review finding 12: run identity', () => {
+  const ranged: CoreModel = {
+    ...training,
+    parameters: training.parameters.map((p) => (p.id === 'instructor_capacity' ? { ...p, range: { dist: 'uniform' as const, p5: 2000, p95: 4000 } } : p)),
+  };
+  it('different draws of the same seed have different hashes and record the draw index', () => {
+    const d0 = runModel(ranged, { seed: 1, run: 0 });
+    const d1 = runModel(ranged, { seed: 1, run: 1 });
+    expect(d0.parameters._.instructor_capacity).not.toBe(d1.parameters._.instructor_capacity);
+    expect(d0.manifest.hash).not.toBe(d1.manifest.hash);
+    expect([d0.manifest.run, d1.manifest.run]).toEqual([0, 1]);
+  });
+  it('the manifest names the numerical engine version', () => {
+    expect(runModel(training).manifest.engineVersion).toBe('core-0.2.0');
+  });
+});
