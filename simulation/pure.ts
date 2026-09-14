@@ -22,6 +22,7 @@ import {
 import { INITIAL_COUNTRIES, COGNITIVE_SHARE_BY_ARCHETYPE, NATURAL_UNEMPLOYMENT_BY_ARCHETYPE } from '../constants';
 import { CompiledEquationSet } from '../src/services/equationParser';
 import type { MacroParameters } from '../types';
+import { usdPerPerson } from './units';
 
 // ============================================================================
 // MACRO BLOCK (optional; see MacroParameters in types.ts)
@@ -603,7 +604,6 @@ export function stepSimulationPure(input: SimulationInput): SimulationOutput {
     return out;
   };
   const newCountryData = cloneCountries(state.countryData);
-  const newShadowData = cloneCountries(state.shadowCountryData);
   let totalWellbeing = 0;
   let totalDisplacementGap = 0;
   let countriesInCrisis = 0;
@@ -772,7 +772,6 @@ export function stepSimulationPure(input: SimulationInput): SimulationOutput {
 
   Object.keys(newCountryData).forEach(id => {
     const country = newCountryData[id];
-    const shadow = newShadowData[id];
 
     // === Macro block (optional): GDP path, labour share, displacement pool ===
     if (model.macro) applyMacroDynamics(country, model.macro);
@@ -797,9 +796,7 @@ export function stepSimulationPure(input: SimulationInput): SimulationOutput {
     // so billions / millions = thousands of USD per person. Until stage 3 (2026-09-13, finding
     // C3) this divided by (population x 10), understating per-capita UBI 10,000-fold, which is
     // why no contribution rate could ever move wellbeing (anchor test AT-2).
-    const totalUBI = country.population > 0
-      ? (totalUbiAmount / country.population) * 1000
-      : 0;
+    const totalUBI = usdPerPerson(totalUbiAmount, country.population);
 
     // === 4.1. Gini Dampening (Inequality reduces UBI utility) ===
     const giniDamper = 1.5 - country.gini;
@@ -834,8 +831,8 @@ export function stepSimulationPure(input: SimulationInput): SimulationOutput {
     // ECONOMIC RATIONALE: Well-governed democracies have better social safety nets,
     // labor retraining programs, and institutions that buffer transition anxiety.
     // Friction increases as a power function (1.5) so low-gov countries feel exponentially more pain.
-    // baseFriction is always computed with the hardcoded formula: the shadow (no-intervention)
-    // counterfactual below always uses it, regardless of whether a custom model is active.
+    // baseFriction is always computed with the hardcoded formula; a custom displacementFriction
+    // equation receives it as an input.
     const baseFriction = 40 * Math.pow(1 - country.governance, 1.5) * (1 + country.gini * 0.5);
     // P8-T9: a custom displacementFriction equation replaces the hardcoded formula.
     const displacementFriction = equations
@@ -900,39 +897,6 @@ export function stepSimulationPure(input: SimulationInput): SimulationOutput {
     if (country.wellbeingTrend.length > 6) {
       country.wellbeingTrend.shift(); // Keep only last 6 months
     }
-
-    // === SHADOW SIMULATION (No Intervention Baseline) ===
-    // RATIONALE: This counterfactual shows what happens WITHOUT a UBI system.
-    // Should clearly demonstrate that intervention helps, validating the entire model.
-
-    // Slower adoption without incentives: half the main path's rate, same functional form
-    // (mean corporate capability x 0.1; stage 3 aligned this with the C2 fix above).
-    const regionalModifier = 1 + (country.gdpPerCapita / 100000);
-    const shadowGrowth = model.aiGrowthRate * regionalModifier * meanCorpLevel(id) * 0.1 * 0.5 * (1 - shadow.aiAdoption);
-    shadow.aiAdoption = Math.min(0.999, shadow.aiAdoption + shadowGrowth);
-
-    // No UBI - wages collapse dramatically with automation (90% displacement)
-    const shadowWage = monthlyWage * (1 - shadow.aiAdoption * 0.9);
-    const shadowSubsistence = country.gdpPerCapita / 25;
-
-    // Michaelis-Menten wellbeing curve - basic survival economics
-    const shadowDemand = shadowWage;
-    const subsistenceAdjusted = shadowSubsistence * (shadowDemand < 800 ? 1.7 : 1);
-    const r = shadowDemand / (shadowDemand + subsistenceAdjusted);
-    shadow.wellbeing = Math.max(1, Math.min(100, r * 100));
-
-    // Shadow displacement friction - STRONGER without UBI buffer
-    // No social safety net = worse anxiety and social cohesion breakdown
-    const shadowFriction = Math.sin(shadow.aiAdoption * Math.PI) * baseFriction * 2.0;
-    shadow.wellbeing = Math.max(1, shadow.wellbeing - shadowFriction * 0.4);
-
-    // Additional penalty for high adoption without safety net
-    // RATIONALE: Mass unemployment without UBI leads to social breakdown, riots, instability
-    if (shadow.aiAdoption > 0.5) {
-      const instabilityPenalty = Math.pow(shadow.aiAdoption - 0.5, 2) * 20;
-      shadow.wellbeing = Math.max(1, shadow.wellbeing - instabilityPenalty);
-    }
-
   });
 
   // ============================================================================
@@ -965,7 +929,6 @@ export function stepSimulationPure(input: SimulationInput): SimulationOutput {
     averageWellbeing: totalWellbeing / Object.keys(newCountryData).length,
     totalAiCompanies,
     countryData: newCountryData,
-    shadowCountryData: newShadowData,
     globalDisplacementGap: totalDisplacementGap,
     corruptionLeakage: 0, // No corruption with direct-to-wallet
     countriesInCrisis

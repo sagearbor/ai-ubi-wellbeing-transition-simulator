@@ -84,13 +84,21 @@ export interface MacroParameters {
 
 export interface SimulationState {
   month: number;
+  /** This month's contributions routed to the global pool, billions USD. Paid out the same month, not accumulated. */
   globalFund: number;
+  /** Unweighted mean of country wellbeing indices (each country counts once, whatever its population). */
   averageWellbeing: number;
   totalAiCompanies: number;
   countryData: Record<string, CountryStats>;
 
-  // Shadow/counterfactual tracking for impact analysis
-  shadowCountryData: Record<string, CountryStats>; // Parallel "no intervention" simulation for comparison
+  /**
+   * @deprecated No longer computed or read. It held a "no intervention" timeline built from
+   * different adoption, displacement and wellbeing equations, so it differed from the main run
+   * even with zero transfers (review 2026-09-14, finding 2). The Charts comparison is now a
+   * paired SimulationRun with every contribution rate held at 0 (simulation/run.ts
+   * noCorporateUbiInputs). Older fixtures and save files may still carry the field; it is ignored.
+   */
+  shadowCountryData?: Record<string, CountryStats>;
   globalDisplacementGap: number; // Aggregate displacement gap across all countries (total displaced - total receiving UBI)
   corruptionLeakage: number; // Total dollars lost to corruption this month
   countriesInCrisis: number; // Count of countries where displacement exceeds UBI coverage
