@@ -2,35 +2,54 @@
  * Policy drafts — validate, turn into an overlay, and run paired against the baseline. Pure.
  *
  *   validateDraft(draft, model, { sourceText, overlays }) -> diagnostics
- *   coverage(draft)                                      -> counts per status, "all accounted for"
- *   draftToOverlay(draft, model, overlays)               -> Overlay (mapped provisions only)
- *   pairedRun(model, overlays, draft, { runs, seed })    -> baseline vs policy, per-draw differences
+ *   coverage(draft, sourceText?)                          -> provision statuses, source-clause coverage,
+ *                                                            completeness attestation
+ *   draftToOverlay(draft, model, overlays)                -> Overlay (mapped provisions only, units converted)
+ *   pairedRun(model, overlays, draft, { runs, seed, sourceText })
+ *                                                         -> baseline vs policy, per-draw differences;
+ *                                                            refuses to run a draft with validation errors
  *
- * Honesty rules enforced here (spec section 8):
+ * Validation governs execution: every diagnostic at level 'error' blocks pairedRun (and so the
+ * panel's Run button, bundle reopening and link opening). Unresolved and outside-model provisions
+ * are NOT errors — they run, and change nothing, and are listed as omitted.
+ *
+ * Honesty rules enforced here (spec section 8, review 2026-09-14 findings 4 and 5):
  *   - every provision has a status; unresolved and outside-model carry a reason;
  *   - quotes are verbatim (after whitespace normalisation) when the source text is available;
  *   - a mapping may only target things the model already has; it never rewrites an equation;
+ *   - a mapped value's unit converts to the target's declared unit (src/policy/units.ts) or the
+ *     draft does not run — "20 million usd" becomes 20,000,000, "20 people" into usd is an error;
+ *   - setters do not contradict each other: two sets of one target must agree (after conversion); a
+ *     set and an add on one input need the add to name the set it stacks on (`stacksOn`), and then
+ *     sets apply first and adds on top, whatever the list order;
  *   - a 'coefficient' (how the world responds) is never supported by the policy's own text, and a
  *     coefficient without a real source is flagged so it is shown as an assumption;
- *   - "human-reviewed" names a reviewer who is not the drafter.
+ *   - "human-reviewed" names a reviewer who is not the drafter;
+ *   - coverage is measured against the source text's own clause inventory (src/policy/clauses.ts),
+ *     not against the draft's list, and completeness is claimed only by a named person's attestation.
  */
 
 import { ENGINE_VERSION, explainBinding, resolveModel, runModel } from '../core/engine';
 import type { CoreModel, EvidenceKind, Input, Overlay, RunResult } from '../core/types';
+import { sourceCoverage, type SourceCoverage } from './clauses';
 import { contentHash, modelHash, sha256Hex } from './hash';
 import {
+  EXCLUSION_KINDS,
   PROVISION_ROLES,
   PROVISION_STATUSES,
   REVIEW_STATUSES,
+  type CompletenessSummary,
   type Coverage,
   type DraftDiagnostic,
   type PairedRunResult,
   type PolicyDraft,
   type PolicyRunManifest,
   type Provision,
+  type ProvisionMapping,
   type QuantileKey,
   type Quantiles,
 } from './types';
+import { describeConversion, isDimensionless, unitFactor } from './units';
 
 export const DEFAULT_RUNS = 200;
 export const DEFAULT_SEED = 1;
@@ -55,7 +74,38 @@ export function policyOverlayId(draft: Pick<PolicyDraft, 'id'>): string {
 // Coverage
 // ---------------------------------------------------------------------------
 
-export function coverage(draft: Pick<PolicyDraft, 'provisions'>): Coverage {
+/** Why an attestation does not count, or null when it does. */
+export function attestationProblem(draft: Pick<PolicyDraft, 'completeness' | 'source'>): string | null {
+  const a = draft.completeness;
+  if (!a) return 'no attestation';
+  if (a.kind !== 'person') return `only a named person can attest completeness; this attestation is by ${a.kind === 'ai' ? 'an AI' : 'a coding agent'} ("${a.name}")`;
+  if (!a.name?.trim()) return 'the attestation does not name who made it';
+  if (!a.date?.trim()) return 'the attestation has no date';
+  if (!a.statement?.trim()) return 'the attestation has no statement';
+  if (a.textSha256 && draft.source?.textSha256 && a.textSha256 !== draft.source.textSha256) return 'the attestation is of a different source text (SHA-256 differs)';
+  return null;
+}
+
+export function completenessOf(draft: Pick<PolicyDraft, 'completeness' | 'source'>): CompletenessSummary {
+  const problem = attestationProblem(draft);
+  if (!problem) {
+    const a = draft.completeness!;
+    return { attested: true, text: `completeness attested by ${a.name} on ${a.date}`, attestation: a };
+  }
+  return {
+    attested: false,
+    text: draft.completeness ? `completeness not attested (the attestation on file does not count: ${problem})` : 'completeness not attested',
+    ...(draft.completeness ? { attestation: draft.completeness } : {}),
+  };
+}
+
+/**
+ * Two separate claims, never merged:
+ *   - every LISTED provision has a status (the draft's own list, which a drafter controls);
+ *   - N of M source clauses are covered or explicitly excluded (M comes from the source text).
+ * Without the source text, the second is "source unavailable — coverage unknown".
+ */
+export function coverage(draft: Pick<PolicyDraft, 'provisions'> & Partial<Pick<PolicyDraft, 'exclusions' | 'source' | 'completeness'>>, sourceText?: string): Coverage {
   const provisions = Array.isArray(draft?.provisions) ? draft.provisions : [];
   const total = provisions.length;
   const count = (s: string) => provisions.filter((p) => p?.status === s).length;
@@ -65,16 +115,84 @@ export function coverage(draft: Pick<PolicyDraft, 'provisions'>): Coverage {
   const unaccounted = total - mapped - unresolved - outsideModel;
   const parts = [`${mapped} of ${total} provision${total === 1 ? '' : 's'} mapped`, `${unresolved} unresolved`, `${outsideModel} outside model`];
   if (unaccounted > 0) parts.push(`${unaccounted} with no status`);
+  const allHaveStatus = total > 0 && unaccounted === 0;
+  const src: SourceCoverage = sourceCoverage({ provisions, exclusions: draft.exclusions, source: draft.source as PolicyDraft['source'] }, sourceText);
   return {
     total,
     mapped,
     unresolved,
     outsideModel,
     unaccounted,
-    allAccountedFor: total > 0 && unaccounted === 0,
+    allHaveStatus,
     text: total === 0 ? 'No provisions yet' : parts.join(', '),
+    statusText:
+      total === 0 ? 'no provisions listed' : allHaveStatus ? 'every listed provision has a status' : `${unaccounted} listed provision${unaccounted === 1 ? ' has' : 's have'} no status`,
+    source: { status: src.status, inventoryVersion: src.inventoryVersion, clauses: src.clauses, covered: src.covered, excluded: src.excluded, uncovered: src.uncovered, text: src.text },
+    completeness: completenessOf({ completeness: draft.completeness, source: draft.source as PolicyDraft['source'] }),
   };
 }
+
+// ---------------------------------------------------------------------------
+// Units
+// ---------------------------------------------------------------------------
+
+export interface MappingUnits {
+  ok: boolean;
+  /** Multiply the mapping's value / curve / expression by this to get the target's unit. */
+  factor: number;
+  targetUnit?: string;
+  /** "20 million usd → training_budget (usd): converted to 20,000,000" when a conversion happens. */
+  conversion?: string;
+  error?: { code: DraftDiagnostic['code']; message: string };
+  warning?: string;
+}
+
+/**
+ * The unit rule for one mapping against the scenario model:
+ *   - multiply effects are dimensionless (a unit other than "", "1", "ratio", "factor" is an error);
+ *   - when the target declares a unit, the mapping must say its unit, and it must convert;
+ *   - when the target declares none, the mapping's unit (if any) must be dimensionless.
+ */
+export function mappingUnits(m: ProvisionMapping, resolved: CoreModel): MappingUnits {
+  let targetUnit: string | undefined;
+  if (m.kind === 'parameter') targetUnit = resolved.parameters.find((p) => p.id === m.target)?.unit;
+  else if (m.kind === 'input') targetUnit = (resolved.inputs ?? []).find((i) => i.id === m.target)?.unit;
+  else if (m.kind === 'effect') targetUnit = resolved.variables.find((v) => v.id === m.target)?.unit;
+  const unit = typeof m.unit === 'string' ? m.unit.trim() : '';
+  const tu = (targetUnit ?? '').trim();
+
+  if (m.kind === 'effect' && m.op === 'multiply') {
+    if (unit && !isDimensionless(unit)) return { ok: false, factor: 1, targetUnit, error: { code: 'unit-mismatch', message: `a multiplier is dimensionless, but the mapping says "${unit}"` } };
+    return { ok: true, factor: 1, targetUnit };
+  }
+  if (!tu) {
+    if (unit && !isDimensionless(unit)) return { ok: false, factor: 1, targetUnit, error: { code: 'unit-mismatch', message: `"${m.target}" declares no unit, so a value in "${unit}" cannot be checked or converted` } };
+    return { ok: true, factor: 1, targetUnit };
+  }
+  if (!unit) return { ok: false, factor: 1, targetUnit, error: { code: 'unit-missing', message: `"${m.target}" is in ${tu}; the mapping must say what unit its value is in (it is converted, never assumed)` } };
+  const conv = unitFactor(unit, tu, m.target, { step: resolved.time?.step, perStepTarget: m.kind !== 'parameter' });
+  if (!conv.ok) {
+    const lead = typeof m.value === 'number' && Number.isFinite(m.value) ? `${fmt(m.value)} ` : '';
+    return { ok: false, factor: 1, targetUnit, error: { code: 'unit-mismatch', message: `${lead}${conv.message}` } };
+  }
+  let conversion: string | undefined;
+  if (conv.factor !== 1) {
+    if (m.kind === 'effect') conversion = `effect expression in ${unit} → ${m.target} (${tu}): multiplied by ${conv.factor}`;
+    else if (typeof m.value === 'number' && Number.isFinite(m.value)) conversion = describeConversion(m.value, unit, tu, m.target, conv.factor);
+    else conversion = `${unit} → ${m.target} (${tu}): every curve value multiplied by ${conv.factor}`;
+  }
+  return { ok: true, factor: conv.factor, targetUnit, ...(conversion ? { conversion } : {}), ...(conv.warning ? { warning: conv.warning } : {}) };
+}
+
+/** The curve an input 'set' mapping describes, in the target's unit. */
+function setCurve(m: ProvisionMapping, factor: number, start: number): Record<string, number> | null {
+  if (m.curve && typeof m.curve === 'object' && Object.keys(m.curve).length) return Object.fromEntries(Object.entries(m.curve).map(([k, v]) => [k, v * factor]));
+  if (typeof m.value === 'number' && Number.isFinite(m.value)) return { [String(start)]: m.value * factor };
+  return null;
+}
+
+const sameNumber = (a: number, b: number) => a === b || Math.abs(a - b) <= 1e-12 * Math.max(Math.abs(a), Math.abs(b));
+const fmt = (x: number) => (Number.isFinite(x) ? x.toLocaleString('en-US', { maximumFractionDigits: 10 }) : String(x));
 
 // ---------------------------------------------------------------------------
 // Validation
@@ -126,6 +244,7 @@ export function validateDraft(draft: PolicyDraft, model: CoreModel, opts: Valida
     push({ level: 'error', code: 'schema', message: 'The draft needs a provisions list.' });
     return out;
   }
+  if (draft.exclusions !== undefined && !Array.isArray(draft.exclusions)) push({ level: 'error', code: 'schema', message: 'exclusions must be a list.' });
 
   // -- model identity -------------------------------------------------------
   if (draft.modelId !== model.id) {
@@ -153,13 +272,14 @@ export function validateDraft(draft: PolicyDraft, model: CoreModel, opts: Valida
   }
 
   // -- source text --------------------------------------------------------------
-  const sourceText = opts.sourceText;
-  if (typeof sourceText === 'string') {
+  const sourceText = typeof opts.sourceText === 'string' && opts.sourceText.trim() ? opts.sourceText : undefined;
+  let textMatches = false;
+  if (sourceText !== undefined) {
     if (draft.source?.textSha256 && sha256Hex(sourceText) !== draft.source.textSha256) {
-      push({ level: 'error', code: 'text-hash-mismatch', message: 'The source text supplied is not the text this draft was checked against (SHA-256 differs).' });
-    }
+      push({ level: 'error', code: 'text-hash-mismatch', message: 'The source text supplied is not the text this draft was checked against (SHA-256 differs). Re-pin the draft to this text so its quotes are re-checked.' });
+    } else textMatches = true;
   } else if (draft.provisions.length > 0) {
-    push({ level: 'info', code: 'quote-unchecked', message: 'Source text not available here, so quotes were not re-checked against it.' });
+    push({ level: 'info', code: 'quote-unchecked', message: 'Source text not available here, so quotes were not re-checked and source coverage is unknown.' });
   }
 
   // -- provisions ---------------------------------------------------------------
@@ -171,7 +291,8 @@ export function validateDraft(draft: PolicyDraft, model: CoreModel, opts: Valida
   const known = new Set<string>([...params.keys(), ...inputs.keys(), ...variables.keys(), ...unknowns]);
 
   const seenIds = new Set<string>();
-  const targets = new Map<string, Provision[]>();
+  const provisionIds = new Set(draft.provisions.filter(isObject).map((p) => String(p.id)));
+  const targets = new Map<string, Array<{ p: Provision; factor: number; unitsOk: boolean }>>();
 
   for (const [index, p] of draft.provisions.entries()) {
     const pid = isObject(p) && typeof p.id === 'string' && p.id ? p.id : `#${index + 1}`;
@@ -187,11 +308,21 @@ export function validateDraft(draft: PolicyDraft, model: CoreModel, opts: Valida
     if (p.role !== undefined && !PROVISION_ROLES.includes(p.role)) at('error', 'schema', `unknown role "${String(p.role)}"`);
 
     if (typeof p.quote !== 'string' || !normaliseWhitespace(p.quote)) at('error', 'empty-quote', 'every provision needs a verbatim quote from the source');
-    else if (typeof sourceText === 'string' && !quoteInSource(p.quote, sourceText)) at('error', 'quote-not-found', 'the quote is not found verbatim in the source text');
+    else if (textMatches && !quoteInSource(p.quote, sourceText!)) at('error', 'quote-not-found', 'the quote is not found verbatim in the source text');
 
     if ((p.status === 'unresolved' || p.status === 'outside-model') && !p.reason?.trim()) {
       at('error', 'missing-reason', `a ${p.status} provision must say why, so the missing mechanism stays visible`);
     }
+
+    // definitions and what they interpret
+    if (p.interprets !== undefined) {
+      if (!Array.isArray(p.interprets)) at('error', 'schema', 'interprets must be a list of provision ids');
+      else for (const id of p.interprets) if (!provisionIds.has(String(id)) || id === pid) at('error', 'unknown-interprets', `interprets "${String(id)}", which is not another provision of this draft`);
+    }
+    if (p.role === 'definition' && !(Array.isArray(p.interprets) && p.interprets.length)) {
+      at('warning', 'definition-unlinked', 'a definition should list the provisions whose reading it decides (interprets)');
+    }
+
     if (p.status !== 'mapped') {
       if (p.mapping) at('info', 'mapping-ignored', 'has a mapping, but only mapped provisions change the run');
       continue;
@@ -199,25 +330,21 @@ export function validateDraft(draft: PolicyDraft, model: CoreModel, opts: Valida
 
     // mapped
     if (!p.role) at('error', 'schema', 'a mapped provision needs a role (control, funding, constraint or coefficient)');
+    if (p.role === 'definition') at('error', 'schema', 'a definition does not set anything itself; map the provisions it interprets instead');
     const m = p.mapping;
     if (!isObject(m)) { at('error', 'missing-mapping', 'mapped, but says nothing about what it sets'); continue; }
     if (!m.evidence?.label?.trim()) at('error', 'missing-source', 'the mapping needs an evidence label — "assumed: ..." is a valid one');
 
-    const key = `${m.kind}:${m.target}`;
-    if (!targets.has(key)) targets.set(key, []);
-    targets.get(key)!.push(p);
-
-    let targetUnit: string | undefined;
+    let targetExists = false;
     if (m.kind === 'parameter') {
-      const param = params.get(m.target);
-      if (!param) at('error', 'unknown-target', `"${m.target}" is not a parameter of ${model.id}`);
-      targetUnit = param?.unit;
+      targetExists = params.has(m.target);
+      if (!targetExists) at('error', 'unknown-target', `"${m.target}" is not a parameter of ${model.id}`);
       if (m.op !== 'set') at('error', 'bad-op', 'a parameter mapping can only set a value');
       if (typeof m.value !== 'number' || !Number.isFinite(m.value)) at('error', 'bad-value', 'a parameter mapping needs a finite value');
     } else if (m.kind === 'input') {
       const input = inputs.get(m.target);
+      targetExists = !!input;
       if (!input) at('error', 'unknown-target', `"${m.target}" is not an input of ${model.id}`);
-      targetUnit = input?.unit;
       if (m.op === 'set') {
         const curveOk = isObject(m.curve) && Object.keys(m.curve).length > 0 && Object.entries(m.curve).every(([k, v]) => Number.isFinite(Number(k)) && typeof v === 'number' && Number.isFinite(v));
         const valueOk = typeof m.value === 'number' && Number.isFinite(m.value);
@@ -228,9 +355,9 @@ export function validateDraft(draft: PolicyDraft, model: CoreModel, opts: Valida
       } else at('error', 'bad-op', 'an input mapping can set or add');
     } else if (m.kind === 'effect') {
       const v = variables.get(m.target);
+      targetExists = !!v;
       if (!v) at('error', 'unknown-target', `"${m.target}" is not a variable of ${model.id}`);
       else if (v.hook === false) at('error', 'no-hook', `"${m.target}" does not accept effects`);
-      targetUnit = m.op === 'add' ? v?.unit : undefined;
       if (m.op !== 'add' && m.op !== 'multiply') at('error', 'bad-op', 'an effect adds or multiplies');
       if (typeof m.expr !== 'string' || !m.expr.trim()) at('error', 'bad-value', 'an effect needs an expression');
       else for (const s of expressionSymbols(m.expr)) if (!known.has(s)) at('error', 'unknown-target', `the effect reads "${s}", which the model does not have`);
@@ -238,7 +365,31 @@ export function validateDraft(draft: PolicyDraft, model: CoreModel, opts: Valida
     } else {
       at('error', 'schema', `unknown mapping kind "${String((m as { kind?: unknown }).kind)}"`);
     }
-    if (m.unit && targetUnit && m.unit !== targetUnit) at('warning', 'unit-mismatch', `mapping is in ${m.unit} but "${m.target}" is in ${targetUnit}`);
+
+    // units: convert or block
+    let unitsOk = false;
+    let factor = 1;
+    if (targetExists) {
+      const u = mappingUnits(m, resolved);
+      unitsOk = u.ok;
+      factor = u.factor;
+      if (u.error) at('error', u.error.code, u.error.message);
+      if (u.conversion) at('info', 'unit-converted', u.conversion);
+      if (u.warning) at('warning', 'unit-assumed', u.warning);
+    }
+
+    // stacking
+    if (m.stacksOn !== undefined) {
+      const base = draft.provisions.find((x) => isObject(x) && x.id === m.stacksOn);
+      if (m.kind !== 'input' || m.op !== 'add') at('error', 'bad-stack', 'only an input "add" can stack on another provision');
+      else if (!base || base.status !== 'mapped' || base.mapping?.kind !== 'input' || base.mapping.op !== 'set' || base.mapping.target !== m.target) {
+        at('error', 'bad-stack', `stacksOn "${String(m.stacksOn)}" must name a mapped provision that sets input "${m.target}"`);
+      }
+    }
+
+    const key = `${m.kind}:${m.target}`;
+    if (!targets.has(key)) targets.set(key, []);
+    targets.get(key)!.push({ p, factor, unitsOk });
 
     // Controls versus coefficients.
     // An effect is a response by construction, so the coefficient rules apply to it whatever its role.
@@ -261,15 +412,98 @@ export function validateDraft(draft: PolicyDraft, model: CoreModel, opts: Valida
     }
   }
 
-  // -- duplicate targets ----------------------------------------------------------
+  // -- setters on one target --------------------------------------------------------
   for (const [key, list] of targets) {
     if (list.length < 2) continue;
-    const ids = list.map((p) => p.id).join(', ');
+    const ids = list.map((x) => x.p.id).join(', ');
     const [kind, target] = key.split(':');
-    const hasSet = list.some((p) => p.mapping?.op === 'set');
-    if (kind === 'effect') push({ level: 'warning', code: 'duplicate-target', message: `${ids} all attach effects to "${target}"; they compose — check nothing is counted twice` });
-    else if (hasSet) push({ level: 'error', code: 'duplicate-target', message: `${ids} all change ${kind} "${target}" and at least one replaces it; only one provision may set a target` });
-    else push({ level: 'warning', code: 'duplicate-target', message: `${ids} all add to "${target}"; they are summed — check nothing is counted twice` });
+    if (kind === 'effect') {
+      push({ level: 'warning', code: 'duplicate-target', message: `${ids} all attach effects to "${target}"; they compose — check nothing is counted twice` });
+      continue;
+    }
+    const sets = list.filter((x) => x.p.mapping?.op === 'set');
+    const adds = list.filter((x) => x.p.mapping?.op === 'add');
+    if (sets.length > 1 && sets.every((x) => x.unitsOk)) {
+      const start = resolved.time.start;
+      const shape = (x: (typeof sets)[number]) => (kind === 'parameter' ? { [String(start)]: (x.p.mapping!.value ?? NaN) * x.factor } : setCurve(x.p.mapping!, x.factor, start) ?? {});
+      const first = shape(sets[0]);
+      let conflict: string | null = null;
+      for (const other of sets.slice(1)) {
+        const c = shape(other);
+        const years = [...new Set([...Object.keys(first), ...Object.keys(c)])].sort((a, b) => Number(a) - Number(b));
+        const differs = years.find((y) => !(y in first) || !(y in c) || !sameNumber(first[y], c[y]));
+        if (differs !== undefined) {
+          const a = first[differs];
+          const b = c[differs];
+          conflict =
+            kind === 'parameter'
+              ? `${sets[0].p.id} sets ${fmt(a)} and ${other.p.id} sets ${fmt(b)}`
+              : `in ${differs}, ${sets[0].p.id} sets ${a === undefined ? 'no value' : fmt(a)} and ${other.p.id} sets ${b === undefined ? 'no value' : fmt(b)}`;
+          break;
+        }
+      }
+      if (conflict) {
+        push({ level: 'error', code: 'conflicting-setters', message: `${ids} set ${kind} "${target}" to different values (${conflict}, after unit conversion). Only one reading can run: mark the others unresolved and say why.` });
+      } else {
+        push({ level: 'warning', code: 'duplicate-target', message: `${sets.map((x) => x.p.id).join(', ')} set ${kind} "${target}" to the same value; it is applied once` });
+      }
+    }
+    if (sets.length >= 1 && adds.length >= 1) {
+      const setIds = new Set(sets.map((x) => x.p.id));
+      const loose = adds.filter((x) => !setIds.has(String(x.p.mapping?.stacksOn)));
+      if (loose.length) {
+        push({
+          level: 'error',
+          code: 'set-add-ambiguous',
+          message: `${loose.map((x) => x.p.id).join(', ')} add${loose.length === 1 ? 's' : ''} to input "${target}", which ${sets.map((x) => x.p.id).join(', ')} also set${sets.length === 1 ? 's' : ''}. Say whether the add is on top of that set: give it stacksOn "${sets[0].p.id}" (sets apply first, then adds), or mark one of them unresolved.`,
+        });
+      }
+    }
+    if (adds.length > 1) push({ level: 'warning', code: 'duplicate-target', message: `${adds.map((x) => x.p.id).join(', ')} all add to "${target}"; they are summed — check nothing is counted twice` });
+  }
+
+  // -- exclusions, coverage and completeness ---------------------------------------------
+  const exclusions = Array.isArray(draft.exclusions) ? draft.exclusions : [];
+  const seenClauses = new Set<string>();
+  for (const [i, x] of exclusions.entries()) {
+    const where = isObject(x) && typeof x.clauseId === 'string' && x.clauseId ? `exclusion ${x.clauseId}` : `exclusion #${i + 1}`;
+    if (!isObject(x) || typeof x.clauseId !== 'string' || !x.clauseId.trim()) { push({ level: 'error', code: 'bad-exclusion', message: `${where}: needs the id of a source clause` }); continue; }
+    if (seenClauses.has(x.clauseId)) push({ level: 'error', code: 'duplicate-exclusion', message: `${where}: the clause is excluded twice` });
+    seenClauses.add(x.clauseId);
+    if (!EXCLUSION_KINDS.includes(x.kind)) push({ level: 'error', code: 'bad-exclusion', message: `${where}: kind must be one of ${EXCLUSION_KINDS.join(', ')}` });
+    if (typeof x.reason !== 'string' || !x.reason.trim()) push({ level: 'error', code: 'bad-exclusion', message: `${where}: an exclusion must say why` });
+    if (x.interprets !== undefined) {
+      if (!Array.isArray(x.interprets)) push({ level: 'error', code: 'schema', message: `${where}: interprets must be a list of provision ids` });
+      else for (const id of x.interprets) if (!provisionIds.has(String(id))) push({ level: 'error', code: 'unknown-interprets', message: `${where}: interprets "${String(id)}", which is not a provision of this draft` });
+    }
+    if (x.kind === 'definition' && !(Array.isArray(x.interprets) && x.interprets.length)) {
+      push({ level: 'warning', code: 'definition-unlinked', message: `${where}: a definition should list the provisions whose reading it decides (interprets)` });
+    }
+    if (x.duplicateOf !== undefined && !provisionIds.has(String(x.duplicateOf))) push({ level: 'error', code: 'unknown-interprets', message: `${where}: duplicateOf "${String(x.duplicateOf)}" is not a provision of this draft` });
+    if (x.kind === 'duplicate' && x.duplicateOf === undefined) push({ level: 'warning', code: 'bad-exclusion', message: `${where}: a duplicate should name the provision that carries the content (duplicateOf)` });
+  }
+
+  if (textMatches) {
+    const src = sourceCoverage(draft, sourceText);
+    for (const id of src.unknownExclusions) push({ level: 'error', code: 'unknown-clause', message: `exclusion ${id}: the source text has no clause with that id (inventory ${src.inventoryVersion})` });
+    for (const id of src.ambiguousQuotes) push({ level: 'warning', code: 'quote-ambiguous', message: `${id}: the quote occurs more than once in the source, so it cannot show which clause it covers — lengthen it`, provisionId: id });
+    for (const d of src.detail.filter((c) => c.state === 'covered-and-excluded')) {
+      push({ level: 'info', code: 'duplicate-exclusion', message: `exclusion ${d.id}: the clause is also quoted by ${d.provisions.join(', ')}` });
+    }
+    if (src.uncovered.length) {
+      push({
+        level: 'warning',
+        code: 'coverage-incomplete',
+        message: `${src.uncovered.length} of ${src.clauses} source clauses are neither quoted by a provision nor explicitly excluded: ${src.uncovered.slice(0, 8).join(', ')}${src.uncovered.length > 8 ? ` and ${src.uncovered.length - 8} more` : ''}`,
+      });
+    }
+    if (draft.completeness && !attestationProblem(draft) && src.uncovered.length) {
+      push({ level: 'warning', code: 'attestation', message: `completeness is attested, but ${src.uncovered.length} source clauses are uncovered — the attestation and the inventory disagree` });
+    }
+  }
+  if (draft.completeness) {
+    const problem = attestationProblem(draft);
+    if (problem) push({ level: draft.completeness.kind === 'person' ? 'warning' : 'error', code: 'attestation', message: `completeness attestation: ${problem}` });
   }
 
   if (!draft.provisions.some((p) => p?.status === 'mapped')) {
@@ -282,13 +516,20 @@ export function hasErrors(diagnostics: DraftDiagnostic[]): boolean {
   return diagnostics.some((d) => d.level === 'error');
 }
 
+/** The diagnostics that stop a draft from running. */
+export function blockingErrors(diagnostics: DraftDiagnostic[]): DraftDiagnostic[] {
+  return diagnostics.filter((d) => d.level === 'error');
+}
+
 // ---------------------------------------------------------------------------
 // Draft -> overlay
 // ---------------------------------------------------------------------------
 
 /**
- * The overlay a draft's mapped provisions describe, on top of `overlays` (the scenario). Mappings
- * that cannot be applied (unknown target, bad value) are skipped — validateDraft reports them.
+ * The overlay a draft's mapped provisions describe, on top of `overlays` (the scenario). Values are
+ * converted to the target's unit. Sets apply before adds, whatever the list order. Mappings that
+ * cannot be applied (unknown target, bad value, unconvertible unit) are skipped — validateDraft
+ * reports them, and pairedRun refuses to run a draft with such errors.
  */
 export function draftToOverlay(draft: PolicyDraft, model: CoreModel, overlays: Overlay[] = []): Overlay {
   const { model: resolved } = resolveModel(model, overlays);
@@ -304,36 +545,45 @@ export function draftToOverlay(draft: PolicyDraft, model: CoreModel, overlays: O
     effects: [],
   };
   const newInputs = new Map<string, Input>();
+  const mapped = (draft.provisions ?? []).filter((p) => p?.status === 'mapped' && p.mapping);
+  const ordered = [...mapped.filter((p) => p.mapping!.op !== 'add' || p.mapping!.kind !== 'input'), ...mapped.filter((p) => p.mapping!.op === 'add' && p.mapping!.kind === 'input')];
 
-  for (const p of draft.provisions ?? []) {
-    if (p?.status !== 'mapped' || !p.mapping) continue;
-    const m = p.mapping;
-    const source = { ...m.evidence, note: [m.evidence?.note, `policy provision ${p.id}: "${normaliseWhitespace(p.quote).slice(0, 160)}"`].filter(Boolean).join(' — ') };
+  for (const p of ordered) {
+    const m = p.mapping!;
+    const units = mappingUnits(m, resolved);
+    if (!units.ok) continue;
+    const k = units.factor;
+    const source = {
+      ...m.evidence,
+      note: [m.evidence?.note, `policy provision ${p.id}: "${normaliseWhitespace(p.quote).slice(0, 160)}"`, units.conversion].filter(Boolean).join(' — '),
+    };
     if (m.kind === 'parameter' && m.op === 'set' && params.has(m.target) && Number.isFinite(m.value)) {
-      overlay.parameters!.push({ id: m.target, value: m.value as number, range: undefined, source });
+      if (overlay.parameters!.some((x) => x.id === m.target)) continue; // an identical duplicate (validated)
+      overlay.parameters!.push({ id: m.target, value: (m.value as number) * k, range: undefined, source });
     } else if (m.kind === 'input' && inputs.has(m.target)) {
-      const current = newInputs.get(m.target) ?? JSON.parse(JSON.stringify(inputs.get(m.target))) as Input;
+      const current = newInputs.get(m.target) ?? (JSON.parse(JSON.stringify(inputs.get(m.target))) as Input);
       if (m.op === 'set') {
-        const curve = m.curve && Object.keys(m.curve).length ? { ...m.curve } : Number.isFinite(m.value) ? { [String(resolved.time.start)]: m.value as number } : null;
+        const curve = setCurve(m, k, resolved.time.start);
         if (!curve) continue;
         newInputs.set(m.target, { ...current, curve, byEntity: undefined, source });
       } else if (m.op === 'add' && Number.isFinite(m.value)) {
-        const add = m.value as number;
-        const shift = (c: Record<string, number>) => Object.fromEntries(Object.entries(c).map(([k, v]) => [k, v + add]));
+        const add = (m.value as number) * k;
+        const shift = (c: Record<string, number>) => Object.fromEntries(Object.entries(c).map(([key, v]) => [key, v + add]));
         newInputs.set(m.target, {
           ...current,
           curve: shift(current.curve),
           byEntity: current.byEntity ? Object.fromEntries(Object.entries(current.byEntity).map(([e, c]) => [e, shift(c)])) : undefined,
-          source: { ...source, note: `${source.note} — added to the scenario's own curve (${current.source?.label ?? 'no source'})` },
+          source: { ...source, note: `${source.note} — added to ${m.stacksOn ? `the curve set by ${m.stacksOn}` : `the scenario's own curve (${current.source?.label ?? 'no source'})`}` },
         });
       }
     } else if (m.kind === 'effect' && variables.has(m.target) && (m.op === 'add' || m.op === 'multiply') && m.expr?.trim()) {
+      const expr = m.expr.trim();
       overlay.effects!.push({
         id: `${policyOverlayId(draft)}-${p.id}`,
         target: m.target,
         op: m.op,
-        expr: m.expr.trim(),
-        unit: m.unit || undefined,
+        expr: m.op === 'add' && k !== 1 ? `(${expr}) * ${k}` : expr,
+        unit: m.op === 'add' ? units.targetUnit || undefined : undefined,
         source,
         from: Number.isFinite(m.from) ? m.from : undefined,
       });
@@ -341,6 +591,18 @@ export function draftToOverlay(draft: PolicyDraft, model: CoreModel, overlays: O
   }
   overlay.inputs = [...newInputs.values()];
   return overlay;
+}
+
+/** Every unit conversion the draft's mappings apply, in words. */
+export function conversionsOf(draft: PolicyDraft, model: CoreModel, overlays: Overlay[] = []): string[] {
+  const { model: resolved } = resolveModel(model, overlays);
+  return (draft.provisions ?? [])
+    .filter((p) => p?.status === 'mapped' && p.mapping)
+    .map((p) => {
+      const u = mappingUnits(p.mapping!, resolved);
+      return u.conversion ? `${p.id}: ${u.conversion}` : '';
+    })
+    .filter(Boolean);
 }
 
 // ---------------------------------------------------------------------------
@@ -383,6 +645,8 @@ function bindingByStep(result: RunResult): Record<string, string[][]> {
 export interface PairedRunOptions {
   runs?: number;
   seed?: number;
+  /** The source text, when available: quotes are re-checked and source coverage is measured. */
+  sourceText?: string;
   /** Clock for the manifest; tests pin it. */
   now?: () => string;
 }
@@ -404,19 +668,22 @@ export function evidenceOf(draft: PolicyDraft): PolicyRunManifest['evidence'] {
  * Policy versus baseline on the same model, same scenario overlays, same seed and the same draw
  * indices; only the draft's overlay differs. Differences are taken inside each draw and then
  * summarised, so correlated uncertainty cancels the way it should.
+ *
+ * A draft with validation errors does not run: the result is ok:false, `blocked` lists the errors,
+ * and no engine run happens.
  */
 export function pairedRun(model: CoreModel, overlays: Overlay[], draft: PolicyDraft, opts: PairedRunOptions = {}): PairedRunResult {
   const runs = Math.max(1, Math.floor(opts.runs ?? DEFAULT_RUNS));
   const seed = Math.floor(opts.seed ?? DEFAULT_SEED);
+  const sourceText = typeof opts.sourceText === 'string' && opts.sourceText.trim() ? opts.sourceText : undefined;
+  const diagnostics = validateDraft(draft, model, { overlays, sourceText });
+  const blocked = blockingErrors(diagnostics);
   const policyOverlay = draftToOverlay(draft, model, overlays);
   const policyOverlays = [...overlays, policyOverlay];
-  const cov = coverage(draft);
-
-  const pointB = runModel(model, { overlays });
-  const pointP = runModel(model, { overlays: policyOverlays });
+  const cov = coverage(draft, sourceText);
 
   const manifest: PolicyRunManifest = {
-    schema: 'policy-run/1',
+    schema: 'policy-run/2',
     modelId: model.id,
     modelName: model.name,
     modelHash: modelHash(model),
@@ -429,19 +696,32 @@ export function pairedRun(model: CoreModel, overlays: Overlay[], draft: PolicyDr
     reviewStatus: draft.reviewStatus,
     ...(draft.draftedBy ? { draftedBy: draft.draftedBy } : {}),
     ...(draft.reviewedBy ? { reviewedBy: draft.reviewedBy } : {}),
-    coverage: { total: cov.total, mapped: cov.mapped, unresolved: cov.unresolved, outsideModel: cov.outsideModel, allAccountedFor: cov.allAccountedFor },
+    coverage: {
+      total: cov.total,
+      mapped: cov.mapped,
+      unresolved: cov.unresolved,
+      outsideModel: cov.outsideModel,
+      allHaveStatus: cov.allHaveStatus,
+      statusText: cov.statusText,
+      source: { status: cov.source.status, inventoryVersion: cov.source.inventoryVersion, clauses: cov.source.clauses, covered: cov.source.covered, excluded: cov.source.excluded, uncovered: cov.source.uncovered.length, text: cov.source.text },
+      completeness: cov.completeness.text,
+    },
+    exclusions: (Array.isArray(draft.exclusions) ? draft.exclusions : []).map((x) => ({ clauseId: x.clauseId, kind: x.kind, ...(x.interprets?.length ? { interprets: x.interprets } : {}) })),
     evidence: evidenceOf(draft),
     runs,
     seed,
-    baselineRunHash: pointB.manifest.hash,
-    policyRunHash: pointP.manifest.hash,
+    draws: { count: runs, seed, firstIndex: 0 },
+    conversions: conversionsOf(draft, model, overlays),
+    baselineRunHash: '',
+    policyRunHash: '',
     createdAt: (opts.now ?? (() => new Date().toISOString()))(),
   };
 
   const empty: PairedRunResult = {
     ok: false,
     errors: [],
-    years: pointB.years,
+    blocked: [],
+    years: [],
     entities: [],
     outputs: [],
     policyOnlyOutputs: [],
@@ -454,6 +734,16 @@ export function pairedRun(model: CoreModel, overlays: Overlay[], draft: PolicyDr
     binding: { baseline: {}, policy: {} },
     manifest,
   };
+  if (blocked.length) {
+    return { ...empty, blocked, errors: [`the draft has ${blocked.length} validation error${blocked.length === 1 ? '' : 's'} and was not run`, ...blocked.map((d) => `[${d.code}] ${d.message}`)] };
+  }
+
+  const pointB = runModel(model, { overlays });
+  const pointP = runModel(model, { overlays: policyOverlays });
+  manifest.baselineRunHash = pointB.manifest.hash;
+  manifest.policyRunHash = pointP.manifest.hash;
+  empty.years = pointB.years;
+
   const failures = (side: string, r: RunResult) =>
     r.diagnostics.filter((d) => d.level === 'error').map((d) => `${side}: [${d.code}] ${d.message}`);
   if (!pointB.ok || !pointP.ok) {
@@ -499,6 +789,7 @@ export function pairedRun(model: CoreModel, overlays: Overlay[], draft: PolicyDr
   return {
     ok: true,
     errors: [],
+    blocked: [],
     years: pointB.years,
     entities: entities.length ? entities : [SINGLE],
     outputs,

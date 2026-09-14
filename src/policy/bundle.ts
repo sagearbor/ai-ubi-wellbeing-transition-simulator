@@ -1,24 +1,31 @@
 /**
  * Share links and downloadable bundles for policy drafts. Pure; nothing here throws on bad input.
  *
- * Link  (`#lab=<base64url JSON>`): the model id + version hash, the scenario overlays, one or two
- *        drafts, runs and seed. Results are not in the link — opening it re-runs them. It never
- *        carries the model file itself: a link made for a model version this app does not have
- *        reports that, instead of silently opening against a different baseline.
- * Bundle (downloaded JSON): manifest, draft, optional source text, scenario overlays, the derived
- *        policy overlay, the results and the tolerance they must reproduce within. reopenBundle
- *        re-runs it and says whether it reproduced, and if not, where and by how much.
+ * Link  (`#lab=<base64url JSON>`): the model id + version hash, the engine version, the scenario
+ *        overlays, one or two drafts, the draw count and seed. Results are not in the link — opening
+ *        it re-runs them. It never carries the model file itself or the source text: a link made
+ *        for a model or engine version this app does not have reports that, instead of silently
+ *        opening against a different baseline; and its source coverage is "source unavailable —
+ *        coverage unknown".
+ * Bundle (downloaded JSON): manifest (engine version, model hash, draws, seed, coverage and
+ *        completeness status), draft, optional source text, scenario overlays, the derived policy
+ *        overlay, the results and the tolerance they must reproduce within. reopenBundle re-runs it
+ *        and says whether it reproduced, and if not, where and by how much.
+ *
+ * Validation governs both: a draft with validation errors is never run from a link or a bundle —
+ * the link does not open and the bundle reports "cannot open", each with the errors.
  */
 
 import { ENGINE_VERSION } from '../core/engine';
 import type { CoreModel, Overlay } from '../core/types';
 import { contentHash, modelHash } from './hash';
-import { draftToOverlay, pairedRun, QUANTILE_KEYS, validateDraft } from './draft';
+import { blockingErrors, draftToOverlay, pairedRun, QUANTILE_KEYS, validateDraft } from './draft';
 import type { DraftDiagnostic, PairedRunResult, PolicyDraft, PolicyRunManifest, Quantiles } from './types';
 
 export const LAB_HASH_PREFIX = '#lab=';
-export const LAB_LINK_VERSION = 1;
-export const BUNDLE_SCHEMA = 'policy-bundle/1';
+export const LAB_LINK_VERSION = 2;
+export const BUNDLE_SCHEMA = 'policy-bundle/2';
+export const RUN_MANIFEST_SCHEMA = 'policy-run/2';
 /** Links longer than this are refused by the encoder's caller: download a bundle instead. */
 export const MAX_LINK_PAYLOAD_CHARS = 120_000;
 
@@ -52,9 +59,11 @@ const isObject = (x: unknown): x is Record<string, unknown> => typeof x === 'obj
 // ---------------------------------------------------------------------------
 
 export interface LabLinkState {
-  v: 1;
+  v: 2;
   modelId: string;
   modelHash: string;
+  /** The numerical engine the link was made with (src/core/engine.ts ENGINE_VERSION). */
+  engineVersion: string;
   /** Scenario overlays both sides share, in order. */
   overlays: Overlay[];
   /** Draft A, and optionally draft B, both on the same baseline. */
@@ -92,9 +101,11 @@ export function decodeLabLink(payload: string): Decoded<LabLinkState> {
     return { ok: false, reason: 'the link data is not valid JSON (it may have been cut off)' };
   }
   if (!isObject(parsed)) return { ok: false, reason: 'the link data is not a scenario object' };
+  if (parsed.v === 1) return { ok: false, reason: 'this is a version 1 lab link, made before links recorded the engine version, so its results cannot be reproduced reliably; it was not opened' };
   if (parsed.v !== LAB_LINK_VERSION) return { ok: false, reason: `unsupported lab link version ${JSON.stringify(parsed.v ?? null)}; this app reads version ${LAB_LINK_VERSION}` };
   if (typeof parsed.modelId !== 'string' || !parsed.modelId) return { ok: false, reason: 'the link does not say which model it was made for' };
   if (typeof parsed.modelHash !== 'string' || !parsed.modelHash) return { ok: false, reason: 'the link does not pin a model version' };
+  if (typeof parsed.engineVersion !== 'string' || !parsed.engineVersion) return { ok: false, reason: 'the link does not record the engine version it was made with' };
   if (!Array.isArray(parsed.overlays) || !parsed.overlays.every((o) => isObject(o) && typeof o.id === 'string')) return { ok: false, reason: 'the link\'s scenario overlays are malformed' };
   if (!Array.isArray(parsed.drafts) || parsed.drafts.length === 0 || parsed.drafts.length > 2 || !parsed.drafts.every(isObject)) return { ok: false, reason: 'the link must carry one or two policy drafts' };
   const runs = Number(parsed.runs);
@@ -103,7 +114,7 @@ export function decodeLabLink(payload: string): Decoded<LabLinkState> {
   if (!Number.isInteger(seed)) return { ok: false, reason: 'the link has an invalid seed' };
   return {
     ok: true,
-    value: { v: 1, modelId: parsed.modelId, modelHash: parsed.modelHash, overlays: parsed.overlays as Overlay[], drafts: parsed.drafts as unknown as PolicyDraft[], runs, seed },
+    value: { v: 2, modelId: parsed.modelId, modelHash: parsed.modelHash, engineVersion: parsed.engineVersion, overlays: parsed.overlays as Overlay[], drafts: parsed.drafts as unknown as PolicyDraft[], runs, seed },
   };
 }
 
@@ -121,8 +132,13 @@ export interface OpenedScenario {
   drafts: PolicyDraft[];
   runs: number;
   seed: number;
-  /** Validation of each draft against the model (quotes unchecked: links carry no source text). */
+  /** Validation of each draft against the model (quotes unchecked and coverage unknown: links carry no source text). */
   diagnostics: DraftDiagnostic[][];
+}
+
+function engineProblem(recorded: unknown): string | null {
+  if (recorded === ENGINE_VERSION) return null;
+  return `it was made with engine ${JSON.stringify(recorded ?? null)}, but this app runs engine ${ENGINE_VERSION}. The numbers would not be reproducible, so it was not opened (the engine version is part of a run's identity, like the model version).`;
 }
 
 function modelProblem(modelId: string, pinned: string, registry: ModelRegistry): { model: CoreModel } | { reason: string } {
@@ -139,6 +155,8 @@ function modelProblem(modelId: string, pinned: string, registry: ModelRegistry):
 
 /** Resolve a decoded link against the models this app has. */
 export function openLabLink(state: LabLinkState, registry: ModelRegistry): Decoded<OpenedScenario> {
+  const engine = engineProblem(state.engineVersion);
+  if (engine) return { ok: false, reason: engine };
   const m = modelProblem(state.modelId, state.modelHash, registry);
   if ('reason' in m) return { ok: false, reason: m.reason };
   for (const d of state.drafts) {
@@ -147,9 +165,13 @@ export function openLabLink(state: LabLinkState, registry: ModelRegistry): Decod
     }
   }
   const diagnostics = state.drafts.map((d) => validateDraft(d, m.model, { overlays: state.overlays }));
-  const schemaBroken = diagnostics.findIndex((ds) => ds.some((x) => x.code === 'schema' && x.level === 'error'));
-  if (schemaBroken >= 0) {
-    return { ok: false, reason: `draft ${schemaBroken + 1} is malformed: ${diagnostics[schemaBroken].filter((x) => x.code === 'schema').map((x) => x.message).join('; ')}` };
+  const broken = diagnostics.findIndex((ds) => blockingErrors(ds).length > 0);
+  if (broken >= 0) {
+    const errs = blockingErrors(diagnostics[broken]);
+    return {
+      ok: false,
+      reason: `draft ${broken + 1} ("${String(state.drafts[broken]?.id)}") has ${errs.length} validation error${errs.length === 1 ? '' : 's'}, so it cannot run: ${errs.map((x) => `[${x.code}] ${x.message}`).join('; ')}`,
+    };
   }
   return { ok: true, value: { model: m.model, overlays: state.overlays, drafts: state.drafts, runs: state.runs, seed: state.seed, diagnostics } };
 }
@@ -274,7 +296,7 @@ export function reopenBundle(bundle: PolicyBundle, registry: ModelRegistry): Reo
     return report;
   }
   const { manifest, draft } = bundle;
-  if (!isObject(manifest) || manifest.schema !== 'policy-run/1') {
+  if (!isObject(manifest) || manifest.schema !== RUN_MANIFEST_SCHEMA) {
     report.errors.push(`unsupported run manifest ${JSON.stringify((manifest as { schema?: unknown })?.schema ?? null)}`);
     return report;
   }
@@ -283,12 +305,14 @@ export function reopenBundle(bundle: PolicyBundle, registry: ModelRegistry): Reo
     report.errors.push(`Cannot open: ${m.reason}`);
     return report;
   }
+  const engine = engineProblem(manifest.engineVersion);
+  if (engine) {
+    report.errors.push(`Cannot open: ${engine}`);
+    return report;
+  }
   const model = m.model;
   report.model = model;
   report.tolerance = bundle.tolerance;
-  if (manifest.engineVersion !== ENGINE_VERSION) {
-    report.warnings.push(`made with engine ${manifest.engineVersion}; this app runs ${ENGINE_VERSION}. The reproduction check below decides whether that matters.`);
-  }
   if (!isObject(draft) || contentHash(draft) !== manifest.draftHash) {
     report.errors.push('the draft in the bundle is not the draft the results were computed from (its hash differs from the manifest)');
     return report;
@@ -310,9 +334,16 @@ export function reopenBundle(bundle: PolicyBundle, registry: ModelRegistry): Reo
   }
   report.overlays = overlays;
   report.draft = draft;
-  report.draftDiagnostics = validateDraft(draft, model, { overlays, sourceText: typeof bundle.sourceText === 'string' ? bundle.sourceText : undefined });
+  const sourceText = typeof bundle.sourceText === 'string' ? bundle.sourceText : undefined;
+  report.draftDiagnostics = validateDraft(draft, model, { overlays, sourceText });
+  const blocking = blockingErrors(report.draftDiagnostics);
+  if (blocking.length) {
+    report.errors.push(`Cannot open: the bundled draft has ${blocking.length} validation error${blocking.length === 1 ? '' : 's'}, so it is not run: ${blocking.map((x) => `[${x.code}] ${x.message}`).join('; ')}`);
+    return report;
+  }
+  if (!sourceText) report.warnings.push('The bundle carries no source text: quotes were not re-checked, and source coverage is unknown.');
 
-  const rerun = pairedRun(model, overlays, draft, { runs: manifest.runs, seed: manifest.seed });
+  const rerun = pairedRun(model, overlays, draft, { runs: manifest.runs, seed: manifest.seed, sourceText });
   report.rerun = rerun;
   if (!rerun.ok) {
     report.status = 'not-reproduced';
@@ -369,6 +400,9 @@ export function reopenBundle(bundle: PolicyBundle, registry: ModelRegistry): Reo
       `${failures} of ${report.compared} values are outside the declared tolerance (absolute ${tol.absolute}, relative ${tol.relative}); the largest is ${w.side} ${w.output} ${w.quantile} in ${w.year}: stored ${w.expected}, re-run ${w.actual}`,
     );
     return report;
+  }
+  if (rerun.manifest.coverage && contentHash(rerun.manifest.coverage) !== contentHash(manifest.coverage)) {
+    report.warnings.push(`The coverage recorded in the bundle (${manifest.coverage?.source?.text ?? 'none'}; ${manifest.coverage?.completeness ?? 'none'}) differs from what this app computes (${rerun.manifest.coverage.source.text}; ${rerun.manifest.coverage.completeness}).`);
   }
   report.status = 'reproduced';
   return report;

@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { ENGINE_VERSION } from '../../src/core/engine';
 import { findFixture } from '../../src/core/fixtures';
 import type { CoreModel } from '../../src/core/types';
 import { decodeLabLink, encodeLabLink, openLabLink } from '../../src/policy/bundle';
@@ -7,17 +8,21 @@ import { findPolicyExample } from '../../src/policy/examples';
 import { modelHash } from '../../src/policy/hash';
 import { SOURCE_TEXT, threeStatusDraft } from '../../src/policy/testDrafts';
 import {
+  addExclusion,
   addProvision,
   copyAsDraftB,
   defaultMapping,
   linkStateFor,
   parseCurveText,
+  removeExclusion,
   removeProvision,
   repin,
+  repinSource,
   runKey,
   setProvisionStatus,
   splitScenarioOverlays,
   targetOptions,
+  updateExclusion,
   updateMapping,
   updateProvision,
   withEdit,
@@ -43,6 +48,7 @@ describe('policyState', () => {
     d = updateMapping(d, 1, { kind: 'parameter' }, training, []);
     expect(d.provisions[1].mapping).toMatchObject({ kind: 'parameter', op: 'set' });
     d = updateMapping(d, 1, { target: 'suitable_openings', value: 1200, evidence: { label: 'assumed: author choice', kind: 'assumed' } }, training, []);
+    // switching target carries the target's unit, so the value converts (here: no conversion)
     expect(d.provisions[1].mapping?.unit).toBe('people');
     d = updateProvision(d, 1, { reason: 'test' });
     // the first provision already sets training_budget; this one sets a parameter, so no conflict
@@ -98,6 +104,7 @@ describe('policyState', () => {
   it('a link built from the panel state reopens the same drafts, and the run key tracks every input', () => {
     const ex = findPolicyExample('s3877-itwa-2026')!;
     const state = linkStateFor(training, [], [ex.draft], 200, 1);
+    expect(state).toMatchObject({ v: 2, engineVersion: ENGINE_VERSION, runs: 200, seed: 1 });
     const decoded = decodeLabLink(encodeLabLink(state));
     expect(decoded.ok).toBe(true);
     const opened = openLabLink(decoded.value!, (id) => findFixture(id)?.model);
@@ -107,5 +114,21 @@ describe('policyState', () => {
     expect(runKey(training, [], ex.draft, 200, 2)).not.toBe(k);
     expect(runKey(training, [], { ...ex.draft, title: 'x' }, 200, 1)).not.toBe(k);
     expect(runKey(training, [], ex.draft, 200, 1)).toBe(k);
+    expect(runKey(training, [], ex.draft, 200, 1, ex.source.text)).not.toBe(k);
+  });
+
+  it('exclusions and source re-pinning are edits: they void a completeness attestation', () => {
+    const attested = threeStatusDraft({ completeness: { name: 'Jane', kind: 'person', date: '2026-09-14', statement: 'Checked.' } });
+    const excluded = addExclusion(attested, 'sec1(c)', 'procedural', 'Reporting.');
+    expect(excluded.exclusions).toEqual([{ clauseId: 'sec1(c)', kind: 'procedural', reason: 'Reporting.' }]);
+    expect(excluded.completeness).toBeUndefined();
+    expect(updateExclusion(excluded, 'sec1(c)', { kind: 'other' }).exclusions![0].kind).toBe('other');
+    expect(removeExclusion(excluded, 'sec1(c)').exclusions).toBeUndefined();
+    // withEdit with no content change keeps it
+    expect(withEdit(attested, { ...attested }).completeness).toBeDefined();
+    const repinned = repinSource(attested, `${SOURCE_TEXT}\n    (d) New.`);
+    expect(repinned.source.excerptChars).toBe(SOURCE_TEXT.length + 13);
+    expect(repinned.completeness).toBeUndefined();
+    expect(validateDraft(repinned, training, { sourceText: `${SOURCE_TEXT}\n    (d) New.` }).map((d) => d.code)).not.toContain('text-hash-mismatch');
   });
 });

@@ -28,8 +28,10 @@ export type ProvisionStatus = 'mapped' | 'unresolved' | 'outside-model';
  * funding     : a budget, appropriation, cap or revenue line.
  * constraint  : a limit the text imposes on the mechanism (a cap on who or how much).
  * coefficient : how the world responds to the policy. Never supported by the bill's own text.
+ * definition  : a definition that decides how other provisions read (who is eligible, what counts).
+ *               Link it to the provisions it interprets with `interprets`.
  */
-export type ProvisionRole = 'control' | 'coefficient' | 'funding' | 'constraint';
+export type ProvisionRole = 'control' | 'coefficient' | 'funding' | 'constraint' | 'definition';
 
 /**
  * ai-drafted     : produced by an extraction model, unreviewed.
@@ -41,7 +43,7 @@ export type ProvisionRole = 'control' | 'coefficient' | 'funding' | 'constraint'
 export type ReviewStatus = 'ai-drafted' | 'author-drafted' | 'human-reviewed';
 
 export const PROVISION_STATUSES: ProvisionStatus[] = ['mapped', 'unresolved', 'outside-model'];
-export const PROVISION_ROLES: ProvisionRole[] = ['control', 'funding', 'constraint', 'coefficient'];
+export const PROVISION_ROLES: ProvisionRole[] = ['control', 'funding', 'constraint', 'coefficient', 'definition'];
 export const REVIEW_STATUSES: ReviewStatus[] = ['ai-drafted', 'author-drafted', 'human-reviewed'];
 
 export interface PolicySource {
@@ -75,7 +77,18 @@ export interface ProvisionMapping {
   curve?: Record<string, number>;
   expr?: string;
   from?: number;
+  /**
+   * The unit `value` / `curve` / `expr` is written in. Required whenever the target declares a unit;
+   * converted to the target's unit (src/policy/units.ts) or the draft does not run.
+   */
   unit?: string;
+  /**
+   * For an input 'add' on a target another provision also 'set's: the id of that set provision. The
+   * rule is explicit stacking — sets apply first, then adds that name the set they stack on. A set and
+   * an add on one target without this link is a blocking error, because the reading is ambiguous
+   * ("in addition to" versus "instead of").
+   */
+  stacksOn?: string;
   /** Where the mapped number comes from, and what kind of claim it is. */
   evidence: Source;
 }
@@ -91,6 +104,40 @@ export interface Provision {
   mapping?: ProvisionMapping;
   /** Required for unresolved and outside-model; recommended for mapped (why this mapping). */
   reason?: string;
+  /** For role 'definition': the ids of the provisions whose reading this definition decides. */
+  interprets?: string[];
+}
+
+/**
+ * Why a clause of the source text has no provision. Every substantive clause of the source-clause
+ * inventory (src/policy/clauses.ts) needs a provision quote inside it or one of these.
+ */
+export type ExclusionKind = 'not-operative' | 'definition' | 'procedural' | 'duplicate' | 'other';
+export const EXCLUSION_KINDS: ExclusionKind[] = ['not-operative', 'definition', 'procedural', 'duplicate', 'other'];
+
+export interface ClauseExclusion {
+  /** A clause id from the inventory, e.g. "sec3(4)". */
+  clauseId: string;
+  kind: ExclusionKind;
+  reason: string;
+  /** kind 'definition': the provision ids whose reading this definition decides. */
+  interprets?: string[];
+  /** kind 'duplicate': the provision that already carries this clause's content. */
+  duplicateOf?: string;
+}
+
+/**
+ * A named person's statement that the provisions and exclusions cover the whole source text. Without
+ * it, every export says "completeness not attested". An AI or a coding agent cannot attest — least of
+ * all its own extraction.
+ */
+export interface CompletenessAttestation {
+  name: string;
+  kind: 'person' | 'agent' | 'ai';
+  date: string;
+  statement: string;
+  /** The source text attested (SHA-256); an attestation of different text is void. */
+  textSha256?: string;
 }
 
 export interface DraftedBy {
@@ -110,6 +157,9 @@ export interface PolicyDraft {
   reviewStatus: ReviewStatus;
   draftedBy?: DraftedBy;
   reviewedBy?: { name: string; date?: string };
+  /** Clauses of the source deliberately not given a provision, each with a kind and a reason. */
+  exclusions?: ClauseExclusion[];
+  completeness?: CompletenessAttestation;
   notes?: string;
 }
 
@@ -133,7 +183,21 @@ export interface DraftDiagnostic {
     | 'bad-value'
     | 'no-hook'
     | 'unit-mismatch'
+    | 'unit-missing'
+    | 'unit-converted'
+    | 'unit-assumed'
     | 'duplicate-target'
+    | 'conflicting-setters'
+    | 'set-add-ambiguous'
+    | 'bad-stack'
+    | 'unknown-clause'
+    | 'bad-exclusion'
+    | 'duplicate-exclusion'
+    | 'definition-unlinked'
+    | 'unknown-interprets'
+    | 'quote-ambiguous'
+    | 'coverage-incomplete'
+    | 'attestation'
     | 'coefficient-unsupported'
     | 'coefficient-from-source-text'
     | 'effect-not-coefficient'
@@ -151,17 +215,42 @@ export interface Coverage {
   outsideModel: number;
   /** Provisions with no valid status. */
   unaccounted: number;
-  /** True when every provision is mapped, unresolved or outside-model — and there is at least one. */
-  allAccountedFor: boolean;
+  /**
+   * True when every LISTED provision is mapped, unresolved or outside-model — and there is at least
+   * one. Says nothing about provisions the draft does not list: see `source`.
+   */
+  allHaveStatus: boolean;
   /** "7 of 9 provisions mapped, 1 unresolved, 1 outside model" */
   text: string;
+  /** "every listed provision has a status" / "2 listed provisions have no status" */
+  statusText: string;
+  /** Coverage of the source text's clauses: the denominator comes from the text, not the draft. */
+  source: SourceCoverageSummary;
+  completeness: CompletenessSummary;
+}
+
+export interface SourceCoverageSummary {
+  status: 'complete' | 'incomplete' | 'source-unavailable' | 'source-mismatch';
+  inventoryVersion: string;
+  clauses: number;
+  covered: number;
+  excluded: number;
+  uncovered: string[];
+  text: string;
+}
+
+export interface CompletenessSummary {
+  attested: boolean;
+  /** "completeness attested by Jane Doe on 2026-09-20" / "completeness not attested" */
+  text: string;
+  attestation?: CompletenessAttestation;
 }
 
 export type QuantileKey = 'p5' | 'p25' | 'p50' | 'p75' | 'p95' | 'mean';
 export type Quantiles = Record<QuantileKey, number[]>;
 
 export interface PolicyRunManifest {
-  schema: 'policy-run/1';
+  schema: 'policy-run/2';
   modelId: string;
   modelName: string;
   modelHash: string;
@@ -175,11 +264,20 @@ export interface PolicyRunManifest {
   reviewStatus: ReviewStatus;
   draftedBy?: DraftedBy;
   reviewedBy?: { name: string; date?: string };
-  coverage: Pick<Coverage, 'total' | 'mapped' | 'unresolved' | 'outsideModel' | 'allAccountedFor'>;
+  coverage: Pick<Coverage, 'total' | 'mapped' | 'unresolved' | 'outsideModel' | 'allHaveStatus' | 'statusText'> & {
+    source: Omit<SourceCoverageSummary, 'uncovered'> & { uncovered: number };
+    completeness: string;
+  };
+  /** Exclusions of source clauses, by kind. */
+  exclusions: Array<{ clauseId: string; kind: string; interprets?: string[] }>;
   /** Evidence behind every mapped number. */
   evidence: Array<{ provisionId: string; role?: ProvisionRole; target: string; kind: EvidenceKind; label: string; url?: string }>;
   runs: number;
   seed: number;
+  /** The draws are run indices 0..runs-1 with this seed, identical on both sides. */
+  draws: { count: number; seed: number; firstIndex: 0 };
+  /** Unit conversions applied to mapped values ("20 million usd → training_budget (usd): converted to 20,000,000"). */
+  conversions: string[];
   /** Engine RunManifest.hash of the point (unsampled) runs. */
   baselineRunHash: string;
   policyRunHash: string;
@@ -188,8 +286,10 @@ export interface PolicyRunManifest {
 
 export interface PairedRunResult {
   ok: boolean;
-  /** Why the run did not complete, from either side. */
+  /** Why the run did not complete, from either side — or the validation errors that blocked it. */
   errors: string[];
+  /** Validation errors that stopped the draft from running at all (empty when it ran). */
+  blocked: DraftDiagnostic[];
   years: number[];
   entities: string[];
   /** Outputs present on both sides (paired differences exist for these). */

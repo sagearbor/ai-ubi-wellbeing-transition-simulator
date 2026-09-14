@@ -3,22 +3,22 @@
   "id": "s3877-itwa-2026",
   "title": "Investing in Tomorrow's Workforce Act of 2026 (S. 3877) read against the training-funding model",
   "source": {
-    "title": "S. 3877 (119th Congress), Investing in Tomorrow's Workforce Act of 2026, sections 4 and 5 as introduced in the Senate",
+    "title": "S. 3877 (119th Congress), Investing in Tomorrow's Workforce Act of 2026, sections 1 to 5 as introduced in the Senate",
     "url": "https://www.govinfo.gov/content/pkg/BILLS-119s3877is/html/BILLS-119s3877is.htm",
-    "textSha256": "b1a0bf0a83111b0a513b31b7a9e0aeedc41f3dcd9eb0b59cf288ac6839d2ffb1",
-    "excerptChars": 10362,
-    "excerptNote": "Sections 4 and 5 verbatim (GPO IS text). Sections 1-3 (short title, findings, definitions) are not operative and are not in the excerpt.",
-    "retrieved": "2026-09-13"
+    "textSha256": "2246b861236f63f0d98699d62799f86f6a525ad41f204cf9533b4e2acfb52562",
+    "excerptChars": 16182,
+    "excerptNote": "Sections 1 to 5 verbatim (GPO IS text): short title, findings, definitions, and the two operative sections.",
+    "retrieved": "2026-09-14"
   },
   "modelId": "training-budget",
   "modelHash": "ad0f66637da4dedf",
   "reviewStatus": "author-drafted",
   "draftedBy": {
     "kind": "agent",
-    "name": "Claude Code (Claude Opus 5), stage 5 implementation session",
-    "date": "2026-09-13"
+    "name": "Claude Code (Claude Opus 5), stage 5 implementation session; re-drafted in the review-fixes session",
+    "date": "2026-09-14"
   },
-  "notes": "Granularity: one provision per paragraph of sections 4 and 5 that does something; sub-items of the same paragraph (application contents, report items) are one provision. The model is a four-year arithmetic fixture with illustrative numbers for a single training channel, so only the bill's one dollar amount maps. Everything else is either missing a number or has no mechanism in the model, and is listed so the gap stays visible. The result is what this toy model does with $40M a year; it is not an estimate of what S. 3877 would do. Not reviewed by a person.",
+  "notes": "Granularity: one provision per paragraph of sections 4 and 5 that does something, plus the three definitions in section 3 that decide who the operative provisions reach (automation, dislocated worker, eligible partnership). Every other clause of the text is excluded by id with a kind and a reason: the short title and findings are not operative; the remaining definitions link to the provisions they interpret; application contents, reporting items and priority lead-ins are procedural or duplicate a provision that summarises them. The model is a four-year arithmetic fixture with illustrative numbers for a single training channel, so only the bill's one dollar amount maps. The result is what this toy model does with $40M a year; it is not an estimate of what S. 3877 would do. Not reviewed by a person, and completeness is not attested: the drafter is a coding agent, which cannot attest its own reading.",
   "provisions": [
     {
       "id": "sec5b2-ndwg-authorization",
@@ -192,6 +192,440 @@
       "status": "outside-model",
       "role": "constraint",
       "reason": "Legal conditions on how money is used; the model has no compliance mechanism or cost for them."
+    },
+    {
+      "id": "sec3-1-automation",
+      "quote": "The term ``automation'' means a device, process, or system that functions without continuous input from an operator",
+      "summary": "Defines automation (advanced data and digital-manufacturing technologies, robotics, autonomous vehicles and machinery), which decides which displaced workers the automation provisions reach.",
+      "status": "unresolved",
+      "role": "definition",
+      "interprets": [
+        "sec4a1-competitive-grants",
+        "sec5a-wioa-allowable-use",
+        "sec5b1-automation-trigger",
+        "sec4c2a-industry-priority"
+      ],
+      "reason": "Decides who is a worker dislocated 'as a result of automation', so it sets the reach of the section 4 grants and both section 5 amendments. The model has no cause of displacement and no count of automation-displaced workers, so the definition narrows nothing in a run; eligible_people stays the model's guess."
+    },
+    {
+      "id": "sec3-4-dislocated-worker",
+      "quote": "The term ``dislocated worker'' has the meaning given the term in section 3 of the Workforce Innovation and Opportunity Act (29 U.S.C. 3102).",
+      "summary": "Dislocated worker means what WIOA section 3 says: broadly, people laid off or notified of layoff, self-employed people out of work, and displaced homemakers.",
+      "status": "unresolved",
+      "role": "definition",
+      "interprets": [
+        "sec4a1-competitive-grants",
+        "sec5a-wioa-allowable-use",
+        "sec5b1-automation-trigger"
+      ],
+      "reason": "This is the eligibility rule behind 'dislocated workers' in sections 4 and 5. The nearest model quantity is eligible_people, but the definition imports WIOA's without a count, so there is no honest number to set."
+    },
+    {
+      "id": "sec3-5-eligible-partnership",
+      "quote": "The term ``eligible partnership'' means an industry or sector partnership, as defined in section 3 of the Workforce Innovation and Opportunity Act",
+      "summary": "Only WIOA industry or sector partnerships that also include a state or local workforce board and an economic development organization can receive section 4 grants.",
+      "status": "outside-model",
+      "role": "definition",
+      "interprets": [
+        "sec4a1-competitive-grants",
+        "sec4b-applications",
+        "sec4c1-covered-population-priority",
+        "sec4f-labor-standards"
+      ],
+      "reason": "Decides who may apply for and receive section 4 grants. The model has no grantees, partnerships or selection, so the rule has nothing to act on."
+    }
+  ],
+  "exclusions": [
+    {
+      "clauseId": "sec1",
+      "kind": "not-operative",
+      "reason": "Short title only."
+    },
+    {
+      "clauseId": "sec2",
+      "kind": "not-operative",
+      "reason": "Lead-in to the findings."
+    },
+    {
+      "clauseId": "sec2(1)",
+      "kind": "not-operative",
+      "reason": "A congressional finding: it states a reason for the Act and has no legal effect of its own. Its numbers (e.g. federal training funding, displacement forecasts) are not policy settings."
+    },
+    {
+      "clauseId": "sec2(2)",
+      "kind": "not-operative",
+      "reason": "A congressional finding: it states a reason for the Act and has no legal effect of its own. Its numbers (e.g. federal training funding, displacement forecasts) are not policy settings."
+    },
+    {
+      "clauseId": "sec2(3)",
+      "kind": "not-operative",
+      "reason": "A congressional finding: it states a reason for the Act and has no legal effect of its own. Its numbers (e.g. federal training funding, displacement forecasts) are not policy settings."
+    },
+    {
+      "clauseId": "sec2(4)",
+      "kind": "not-operative",
+      "reason": "A congressional finding: it states a reason for the Act and has no legal effect of its own. Its numbers (e.g. federal training funding, displacement forecasts) are not policy settings."
+    },
+    {
+      "clauseId": "sec2(5)",
+      "kind": "not-operative",
+      "reason": "A congressional finding: it states a reason for the Act and has no legal effect of its own. Its numbers (e.g. federal training funding, displacement forecasts) are not policy settings."
+    },
+    {
+      "clauseId": "sec2(6)",
+      "kind": "not-operative",
+      "reason": "A congressional finding: it states a reason for the Act and has no legal effect of its own. Its numbers (e.g. federal training funding, displacement forecasts) are not policy settings."
+    },
+    {
+      "clauseId": "sec2(7)",
+      "kind": "not-operative",
+      "reason": "A congressional finding: it states a reason for the Act and has no legal effect of its own. Its numbers (e.g. federal training funding, displacement forecasts) are not policy settings."
+    },
+    {
+      "clauseId": "sec3",
+      "kind": "not-operative",
+      "reason": "Lead-in to the definitions (\"In this Act:\")."
+    },
+    {
+      "clauseId": "sec3(1)(A)",
+      "kind": "definition",
+      "reason": "Part of the definition of automation; read with provision sec3-1-automation.",
+      "interprets": [
+        "sec4a1-competitive-grants",
+        "sec5a-wioa-allowable-use",
+        "sec5b1-automation-trigger",
+        "sec4c2a-industry-priority"
+      ]
+    },
+    {
+      "clauseId": "sec3(1)(A)(i)",
+      "kind": "definition",
+      "reason": "Part of the definition of automation; read with provision sec3-1-automation.",
+      "interprets": [
+        "sec4a1-competitive-grants",
+        "sec5a-wioa-allowable-use",
+        "sec5b1-automation-trigger",
+        "sec4c2a-industry-priority"
+      ]
+    },
+    {
+      "clauseId": "sec3(1)(A)(ii)",
+      "kind": "definition",
+      "reason": "Part of the definition of automation; read with provision sec3-1-automation.",
+      "interprets": [
+        "sec4a1-competitive-grants",
+        "sec5a-wioa-allowable-use",
+        "sec5b1-automation-trigger",
+        "sec4c2a-industry-priority"
+      ]
+    },
+    {
+      "clauseId": "sec3(1)(B)",
+      "kind": "definition",
+      "reason": "Part of the definition of automation; read with provision sec3-1-automation.",
+      "interprets": [
+        "sec4a1-competitive-grants",
+        "sec5a-wioa-allowable-use",
+        "sec5b1-automation-trigger",
+        "sec4c2a-industry-priority"
+      ]
+    },
+    {
+      "clauseId": "sec3(1)(C)",
+      "kind": "definition",
+      "reason": "Part of the definition of automation; read with provision sec3-1-automation.",
+      "interprets": [
+        "sec4a1-competitive-grants",
+        "sec5a-wioa-allowable-use",
+        "sec5b1-automation-trigger",
+        "sec4c2a-industry-priority"
+      ]
+    },
+    {
+      "clauseId": "sec3(1)(D)",
+      "kind": "definition",
+      "reason": "Part of the definition of automation; read with provision sec3-1-automation.",
+      "interprets": [
+        "sec4a1-competitive-grants",
+        "sec5a-wioa-allowable-use",
+        "sec5b1-automation-trigger",
+        "sec4c2a-industry-priority"
+      ]
+    },
+    {
+      "clauseId": "sec3(2)",
+      "kind": "definition",
+      "reason": "Defines covered population by WIOA's list of barriers to employment; decides whom the first grant priority favours.",
+      "interprets": [
+        "sec4c1-covered-population-priority"
+      ]
+    },
+    {
+      "clauseId": "sec3(3)",
+      "kind": "definition",
+      "reason": "Defines digital literacy, which training services may include.",
+      "interprets": [
+        "sec4d1-training-services"
+      ]
+    },
+    {
+      "clauseId": "sec3(5)(A)",
+      "kind": "definition",
+      "reason": "Part of the definition of eligible partnership (who must be in it); read with provision sec3-5-eligible-partnership.",
+      "interprets": [
+        "sec4a1-competitive-grants",
+        "sec4b-applications",
+        "sec4c1-covered-population-priority",
+        "sec4f-labor-standards"
+      ]
+    },
+    {
+      "clauseId": "sec3(5)(B)",
+      "kind": "definition",
+      "reason": "Part of the definition of eligible partnership (who must be in it); read with provision sec3-5-eligible-partnership.",
+      "interprets": [
+        "sec4a1-competitive-grants",
+        "sec4b-applications",
+        "sec4c1-covered-population-priority",
+        "sec4f-labor-standards"
+      ]
+    },
+    {
+      "clauseId": "sec3(5)(B)(i)",
+      "kind": "definition",
+      "reason": "Part of the definition of eligible partnership (who must be in it); read with provision sec3-5-eligible-partnership.",
+      "interprets": [
+        "sec4a1-competitive-grants",
+        "sec4b-applications",
+        "sec4c1-covered-population-priority",
+        "sec4f-labor-standards"
+      ]
+    },
+    {
+      "clauseId": "sec3(5)(B)(ii)",
+      "kind": "definition",
+      "reason": "Part of the definition of eligible partnership (who must be in it); read with provision sec3-5-eligible-partnership.",
+      "interprets": [
+        "sec4a1-competitive-grants",
+        "sec4b-applications",
+        "sec4c1-covered-population-priority",
+        "sec4f-labor-standards"
+      ]
+    },
+    {
+      "clauseId": "sec3(6)",
+      "kind": "definition",
+      "reason": "Defines in-demand industry sector or occupation by WIOA's meaning; decides the second-tier priority and what training may prepare workers for.",
+      "interprets": [
+        "sec4c2a-industry-priority",
+        "sec4d1-training-services"
+      ]
+    },
+    {
+      "clauseId": "sec3(7)",
+      "kind": "definition",
+      "reason": "Defines integrated education and training by WIOA section 203.",
+      "interprets": [
+        "sec4d6-integrated-education"
+      ]
+    },
+    {
+      "clauseId": "sec3(8)",
+      "kind": "definition",
+      "reason": "Defines state and local workforce development boards, which an eligible partnership must include.",
+      "interprets": [
+        "sec3-5-eligible-partnership"
+      ]
+    },
+    {
+      "clauseId": "sec3(9)",
+      "kind": "definition",
+      "reason": "The Secretary is the Secretary of Labor, who awards and receives reports on the grants.",
+      "interprets": [
+        "sec4a1-competitive-grants",
+        "sec4b-applications",
+        "sec4e-reporting"
+      ]
+    },
+    {
+      "clauseId": "sec3(10)",
+      "kind": "definition",
+      "reason": "Defines training services by WIOA section 134(c)(3)(D), including digital literacy skills; decides what the grant money may buy.",
+      "interprets": [
+        "sec4d1-training-services",
+        "sec4e-reporting"
+      ]
+    },
+    {
+      "clauseId": "sec4(b)(2)",
+      "kind": "procedural",
+      "reason": "What an application must describe (partners, training plans, technology skills, goals, covered populations). Summarised under sec4b-applications; the model has no applicants, selection or programme design.",
+      "duplicateOf": "sec4b-applications"
+    },
+    {
+      "clauseId": "sec4(b)(2)(A)",
+      "kind": "procedural",
+      "reason": "What an application must describe (partners, training plans, technology skills, goals, covered populations). Summarised under sec4b-applications; the model has no applicants, selection or programme design.",
+      "duplicateOf": "sec4b-applications"
+    },
+    {
+      "clauseId": "sec4(b)(2)(B)",
+      "kind": "procedural",
+      "reason": "What an application must describe (partners, training plans, technology skills, goals, covered populations). Summarised under sec4b-applications; the model has no applicants, selection or programme design.",
+      "duplicateOf": "sec4b-applications"
+    },
+    {
+      "clauseId": "sec4(b)(2)(B)(i)",
+      "kind": "procedural",
+      "reason": "What an application must describe (partners, training plans, technology skills, goals, covered populations). Summarised under sec4b-applications; the model has no applicants, selection or programme design.",
+      "duplicateOf": "sec4b-applications"
+    },
+    {
+      "clauseId": "sec4(b)(2)(B)(ii)",
+      "kind": "procedural",
+      "reason": "What an application must describe (partners, training plans, technology skills, goals, covered populations). Summarised under sec4b-applications; the model has no applicants, selection or programme design.",
+      "duplicateOf": "sec4b-applications"
+    },
+    {
+      "clauseId": "sec4(b)(2)(C)",
+      "kind": "procedural",
+      "reason": "What an application must describe (partners, training plans, technology skills, goals, covered populations). Summarised under sec4b-applications; the model has no applicants, selection or programme design.",
+      "duplicateOf": "sec4b-applications"
+    },
+    {
+      "clauseId": "sec4(b)(2)(D)",
+      "kind": "procedural",
+      "reason": "What an application must describe (partners, training plans, technology skills, goals, covered populations). Summarised under sec4b-applications; the model has no applicants, selection or programme design.",
+      "duplicateOf": "sec4b-applications"
+    },
+    {
+      "clauseId": "sec4(b)(2)(E)",
+      "kind": "procedural",
+      "reason": "What an application must describe (partners, training plans, technology skills, goals, covered populations). Summarised under sec4b-applications; the model has no applicants, selection or programme design.",
+      "duplicateOf": "sec4b-applications"
+    },
+    {
+      "clauseId": "sec4(c)",
+      "kind": "duplicate",
+      "reason": "Lead-in to the grant priorities; each priority is its own provision.",
+      "duplicateOf": "sec4c1-covered-population-priority"
+    },
+    {
+      "clauseId": "sec4(c)(2)",
+      "kind": "duplicate",
+      "reason": "Lead-in to the second-tier priorities (after the covered-population priority); carried by sec4c2a, sec4c2b, sec4c2c and sec4c2d.",
+      "duplicateOf": "sec4c2a-industry-priority"
+    },
+    {
+      "clauseId": "sec4(c)(2)(A)",
+      "kind": "duplicate",
+      "reason": "Lead-in to the industry-concentration priority; carried by sec4c2a-industry-priority.",
+      "duplicateOf": "sec4c2a-industry-priority"
+    },
+    {
+      "clauseId": "sec4(c)(2)(A)(ii)",
+      "kind": "duplicate",
+      "reason": "The in-demand-industry half of the same priority; its summary covers both halves.",
+      "duplicateOf": "sec4c2a-industry-priority"
+    },
+    {
+      "clauseId": "sec4(c)(2)(B)",
+      "kind": "duplicate",
+      "reason": "Part of the incumbent-worker-training priority; carried by sec4c2b-incumbent-backfill, which quotes its backfilling condition.",
+      "duplicateOf": "sec4c2b-incumbent-backfill"
+    },
+    {
+      "clauseId": "sec4(c)(2)(B)(i)",
+      "kind": "duplicate",
+      "reason": "Part of the incumbent-worker-training priority; carried by sec4c2b-incumbent-backfill, which quotes its backfilling condition.",
+      "duplicateOf": "sec4c2b-incumbent-backfill"
+    },
+    {
+      "clauseId": "sec4(c)(2)(B)(i)(I)",
+      "kind": "duplicate",
+      "reason": "Part of the incumbent-worker-training priority; carried by sec4c2b-incumbent-backfill, which quotes its backfilling condition.",
+      "duplicateOf": "sec4c2b-incumbent-backfill"
+    },
+    {
+      "clauseId": "sec4(c)(2)(B)(i)(II)",
+      "kind": "duplicate",
+      "reason": "Part of the incumbent-worker-training priority; carried by sec4c2b-incumbent-backfill, which quotes its backfilling condition.",
+      "duplicateOf": "sec4c2b-incumbent-backfill"
+    },
+    {
+      "clauseId": "sec4(d)",
+      "kind": "duplicate",
+      "reason": "Lead-in limiting grant funds to the six uses in (d)(1) to (d)(6); each use is its own provision.",
+      "duplicateOf": "sec4d1-training-services"
+    },
+    {
+      "clauseId": "sec4(e)(1)",
+      "kind": "duplicate",
+      "reason": "Part of the grantee reporting duty (timing, items, disaggregation); carried by sec4e-reporting, which changes nothing in a run.",
+      "duplicateOf": "sec4e-reporting"
+    },
+    {
+      "clauseId": "sec4(e)(1)(A)",
+      "kind": "duplicate",
+      "reason": "Part of the grantee reporting duty (timing, items, disaggregation); carried by sec4e-reporting, which changes nothing in a run.",
+      "duplicateOf": "sec4e-reporting"
+    },
+    {
+      "clauseId": "sec4(e)(1)(C)",
+      "kind": "duplicate",
+      "reason": "Part of the grantee reporting duty (timing, items, disaggregation); carried by sec4e-reporting, which changes nothing in a run.",
+      "duplicateOf": "sec4e-reporting"
+    },
+    {
+      "clauseId": "sec4(e)(1)(D)",
+      "kind": "duplicate",
+      "reason": "Part of the grantee reporting duty (timing, items, disaggregation); carried by sec4e-reporting, which changes nothing in a run.",
+      "duplicateOf": "sec4e-reporting"
+    },
+    {
+      "clauseId": "sec4(e)(1)(E)",
+      "kind": "duplicate",
+      "reason": "Part of the grantee reporting duty (timing, items, disaggregation); carried by sec4e-reporting, which changes nothing in a run.",
+      "duplicateOf": "sec4e-reporting"
+    },
+    {
+      "clauseId": "sec4(e)(1)(F)",
+      "kind": "duplicate",
+      "reason": "Part of the grantee reporting duty (timing, items, disaggregation); carried by sec4e-reporting, which changes nothing in a run.",
+      "duplicateOf": "sec4e-reporting"
+    },
+    {
+      "clauseId": "sec4(e)(1)(G)",
+      "kind": "duplicate",
+      "reason": "Part of the grantee reporting duty (timing, items, disaggregation); carried by sec4e-reporting, which changes nothing in a run.",
+      "duplicateOf": "sec4e-reporting"
+    },
+    {
+      "clauseId": "sec4(e)(2)",
+      "kind": "duplicate",
+      "reason": "Part of the grantee reporting duty (timing, items, disaggregation); carried by sec4e-reporting, which changes nothing in a run.",
+      "duplicateOf": "sec4e-reporting"
+    },
+    {
+      "clauseId": "sec5(a)",
+      "kind": "duplicate",
+      "reason": "Lead-in naming the WIOA clause amended; the substance is the new clause (xiii), provision sec5a-wioa-allowable-use.",
+      "duplicateOf": "sec5a-wioa-allowable-use"
+    },
+    {
+      "clauseId": "sec5(a)(1)",
+      "kind": "procedural",
+      "reason": "Conforming punctuation (strikes \"and\") to make room for the new clause (xiii)."
+    },
+    {
+      "clauseId": "sec5(a)(2)",
+      "kind": "procedural",
+      "reason": "Conforming punctuation (replaces a period) to make room for the new clause (xiii)."
+    },
+    {
+      "clauseId": "sec5(b)",
+      "kind": "procedural",
+      "reason": "Lead-in naming WIOA section 170 as amended; its two amendments are provisions sec5b1-automation-trigger and sec5b2-ndwg-authorization."
     }
   ]
 }
