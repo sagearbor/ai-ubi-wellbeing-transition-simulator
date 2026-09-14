@@ -17,6 +17,8 @@
     "validate:cases": "tsx scripts/policy-cases.ts",
     "hindcast:fetch": "tsx scripts/hindcast/fetch-actuals.ts",
     "hindcast": "tsx scripts/hindcast/run-hindcast.ts",
+    "provenance:fetch": "tsx scripts/provenance/fetch-country-reference.ts",
+    "provenance:countries": "tsx scripts/provenance/report.ts",
     "futures:aggregate": "tsx scripts/futures-aggregate.ts",
     "profile:default": "tsx scripts/response-profile.ts",
     "check": "npm run typecheck && npm run test && npm run validate && npm run validate:futures && npm run validate:korinek && npm run validate:core && npm run validate:cases && npm run build",
