@@ -453,9 +453,12 @@ const MotionChart: React.FC<MotionChartProps> = ({
 
       {!is3D && showPaired && (
         <p className="shrink-0 text-[10px] leading-snug text-slate-500 dark:text-slate-400">
-          Dashed grey: {PAIRED_SERIES_LABEL}. A second run from the same starting point, model, equations and
-          corporations, with every corporation's contribution rate held at 0 each month. The gap between a solid
-          and a dashed line is this model's effect of corporate UBI, nothing else.
+          Dashed grey: {PAIRED_SERIES_LABEL}.{' '}
+          <span className="hidden sm:inline">
+            A second run from the same starting point, model, equations and corporations, with every corporation's
+            contribution rate held at 0 each month. The gap between a solid and a dashed line is this model's effect
+            of corporate UBI, nothing else.
+          </span>
         </p>
       )}
 
