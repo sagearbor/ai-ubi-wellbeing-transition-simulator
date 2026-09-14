@@ -1741,7 +1741,7 @@ const App: React.FC = () => {
                             <button onClick={() => setShowStartHint(false)} className="text-blue-200 hover:text-white"><X size={14}/></button>
                         </div>
                         <div>
-                            <p className="text-[10px] leading-relaxed opacity-90 mb-3">Press <span className="font-bold text-white bg-white/20 px-1 rounded">PLAY</span> below to begin the simulation. Observe how the gradient UBI stabilizes global wellbeing.</p>
+                            <p className="text-[10px] leading-relaxed opacity-90 mb-3">Press <span className="font-bold text-white bg-white/20 px-1 rounded">PLAY</span> below to begin the simulation. Watch what adoption and transfers do to wellbeing in this model, and compare with the paired no-UBI run on the Charts tab.</p>
                             <button
                                 onClick={() => setTourStep(0)}
                                 className="w-full py-1.5 bg-white dark:bg-slate-800 text-blue-600 dark:text-blue-400 rounded-lg text-[10px] font-bold uppercase hover:bg-blue-50 dark:hover:bg-slate-700 transition-colors"
@@ -2231,8 +2231,9 @@ const App: React.FC = () => {
               <div className="text-center space-y-3">
                 <h2 className="text-3xl font-bold text-slate-900 dark:text-white">The Abundance Cycle</h2>
                 <p className="text-slate-500 dark:text-slate-400 max-w-2xl text-sm">
-                  Watch how the system creates a positive feedback loop. Corps share surplus → UBI stabilizes citizens →
-                  citizens spend → corps grow larger. The pie expands for everyone.
+                  The loop the model is built around: corporations share AI revenue → transfers reach citizens →
+                  citizens spend → corporate demand holds up. It is the model's hypothesis, not a demonstrated result;
+                  whether the loop closes, and for whom, is what the simulation and its paired no-UBI run test.
                 </p>
               </div>
 
