@@ -38,7 +38,7 @@ export const CORE_FIXTURES: FixtureEntry[] = [
   {
     model: alaskaPfd as unknown as CoreModel,
     overlays: [alaskaPfdWp as unknown as Overlay],
-    label: 'Alaska Permanent Fund Dividend: income effect vs spending effect on jobs (Jones & Marinescu 2022)',
+    label: 'Alaska Permanent Fund Dividend: income effect vs spending effect on jobs (Jones and Marinescu 2022)',
   },
 ];
 
