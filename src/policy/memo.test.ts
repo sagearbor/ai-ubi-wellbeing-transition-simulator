@@ -56,7 +56,7 @@ describe('renderMemo', () => {
   });
 
   it('lists response coefficients the draft introduced, and escapes table cells', () => {
-    const coeff: Provision = { ...budgetProvision, id: 'resp', role: 'coefficient', quote: 'a | b', mapping: { kind: 'effect', target: 'placements', op: 'multiply', expr: '1.1', evidence: { label: 'author guess', kind: 'guess' } } };
+    const coeff: Provision = { ...budgetProvision, id: 'resp', role: 'coefficient', quote: 'a | b', mapping: { kind: 'effect', target: 'potential_placements', op: 'multiply', expr: '1.1', evidence: { label: 'author guess', kind: 'guess' } } };
     const d = draftFor(training, [coeff]);
     const m = renderMemo({ model: training, overlays: [], draft: d, result: pairedRun(training, [], d, { runs: 2 }) });
     expect(m).toContain('| Year | Baseline');
@@ -66,7 +66,7 @@ describe('renderMemo', () => {
   });
 
   it('reports a draft that did not run as no results rather than numbers', () => {
-    const broken: Provision = { ...budgetProvision, role: 'coefficient', mapping: { kind: 'effect', target: 'placements', op: 'add', expr: 'ghost', unit: 'people', evidence: { label: 'x', kind: 'assumed' } } };
+    const broken: Provision = { ...budgetProvision, role: 'coefficient', mapping: { kind: 'effect', target: 'potential_placements', op: 'add', expr: 'ghost', unit: 'people', evidence: { label: 'x', kind: 'assumed' } } };
     const d = draftFor(training, [broken]);
     const m = renderMemo({ model: training, overlays: [], draft: d, result: pairedRun(training, [], d, { runs: 2 }) });
     expect(m).toContain('The run did not complete');

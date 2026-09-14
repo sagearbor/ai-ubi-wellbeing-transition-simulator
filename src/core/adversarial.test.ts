@@ -317,7 +317,7 @@ describe('a legitimate capacity plateau', () => {
     expect(s.points.map((p) => p.output)).toEqual([100, 300, 500, 700, 900, 1000, 1000, 1000]);
     expect(s.points.at(-1)!.binding).toEqual(['placements is limited by suitable_openings']);
     expect(s.bindingSummary).toEqual([
-      'placements is limited by completions * placement_rate',
+      'placements is limited by potential_placements',
       'placements is limited by suitable_openings',
     ]);
     expect(s.detail.closeSlope).toBe(0);

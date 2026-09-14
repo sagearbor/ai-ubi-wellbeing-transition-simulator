@@ -135,15 +135,15 @@ describe('validateDraft', () => {
       [{ kind: 'parameter', target: 'nope', op: 'set', value: 1, evidence: ev }, 'unknown-target'],
       [{ kind: 'parameter', target: 'placement_rate', op: 'add', value: 1, evidence: ev }, 'bad-op'],
       [{ kind: 'input', target: 'training_budget', op: 'set', evidence: ev }, 'bad-value'],
-      [{ kind: 'effect', target: 'placements', op: 'add', expr: 'ghost * 2', evidence: ev }, 'unknown-target'],
+      [{ kind: 'effect', target: 'potential_placements', op: 'add', expr: 'ghost * 2', evidence: ev }, 'unknown-target'],
       [{ kind: 'effect', target: 'missing_var', op: 'add', expr: '1', evidence: ev }, 'unknown-target'],
       [{ kind: 'input', target: 'training_budget', op: 'add', value: 1, evidence: { label: '' } }, 'missing-source'],
     ];
     for (const [mapping, code] of cases) {
       expect(codes(validateDraft(draftFor(training, [bad(mapping)]), training), 'error')).toContain(code);
     }
-    const noHook: CoreModel = { ...training, variables: training.variables.map((v) => (v.id === 'placements' ? { ...v, hook: false } : v)) };
-    const d = draftFor(noHook, [bad({ kind: 'effect', target: 'placements', op: 'add', expr: '1', evidence: ev })]);
+    const noHook: CoreModel = { ...training, variables: training.variables.map((v) => (v.id === 'potential_placements' ? { ...v, hook: false } : v)) };
+    const d = draftFor(noHook, [bad({ kind: 'effect', target: 'potential_placements', op: 'add', expr: '1', evidence: ev })]);
     expect(codes(validateDraft(d, noHook), 'error')).toContain('no-hook');
   });
 
@@ -164,7 +164,7 @@ describe('validateDraft', () => {
     const rate: Provision = { ...budgetProvision, id: 'rate', role: 'control', mapping: { kind: 'parameter', target: 'placement_rate', op: 'set', value: 60, unit: 'percent', evidence: { label: 'x', kind: 'assumed' } } };
     expect(draftToOverlay(draftFor(training, [rate]), training).parameters![0].value).toBeCloseTo(0.6, 12);
     // a multiplier with a unit is an error
-    const mult: Provision = { ...budgetProvision, id: 'mult', role: 'coefficient', mapping: { kind: 'effect', target: 'placements', op: 'multiply', expr: '1.1', unit: 'usd', evidence: { label: 'x', kind: 'assumed' } } };
+    const mult: Provision = { ...budgetProvision, id: 'mult', role: 'coefficient', mapping: { kind: 'effect', target: 'potential_placements', op: 'multiply', expr: '1.1', unit: 'usd', evidence: { label: 'x', kind: 'assumed' } } };
     expect(codes(validateDraft(draftFor(training, [mult]), training), 'error')).toContain('unit-mismatch');
   });
 
@@ -179,7 +179,7 @@ describe('validateDraft', () => {
     expect(r.point.policy._.completions[0]).toBe(3000);
     expect(r.manifest.conversions).toEqual(['fund: 20 million usd → training_budget (usd): converted to 20,000,000']);
     // an effect written in thousands of people is scaled into people
-    const eff: Provision = { ...budgetProvision, id: 'eff', role: 'coefficient', mapping: { kind: 'effect', target: 'placements', op: 'add', expr: '0.1', unit: 'thousand people', evidence: { label: 'x', kind: 'assumed' } } };
+    const eff: Provision = { ...budgetProvision, id: 'eff', role: 'coefficient', mapping: { kind: 'effect', target: 'potential_placements', op: 'add', expr: '0.1', unit: 'thousand people', evidence: { label: 'x', kind: 'assumed' } } };
     const o = draftToOverlay(draftFor(training, [eff]), training);
     expect(o.effects![0]).toMatchObject({ expr: '(0.1) * 1000', unit: 'people' });
   });
@@ -238,7 +238,7 @@ describe('validateDraft', () => {
       ...budgetProvision,
       id: 'response',
       role: 'coefficient',
-      mapping: { kind: 'effect', target: 'placements', op: 'multiply', expr: '1.2', evidence: { label: 'Test Act says training works', kind, url } },
+      mapping: { kind: 'effect', target: 'potential_placements', op: 'multiply', expr: '1.2', evidence: { label: 'Test Act says training works', kind, url } },
     });
     expect(codes(validateDraft(draftFor(training, [coefficient('causal', 'https://example.gov/test-act')]), training), 'error')).toContain('coefficient-from-source-text');
     expect(codes(validateDraft(draftFor(training, [coefficient('guess')]), training), 'warning')).toContain('coefficient-unsupported');
@@ -333,13 +333,15 @@ describe('draftToOverlay', () => {
   });
 
   it('never rewrites an equation: effects attach to hooks', () => {
-    const e: Provision = { ...budgetProvision, role: 'coefficient', mapping: { kind: 'effect', target: 'placements', op: 'add', expr: '100', unit: 'people', from: 2028, evidence: { label: 'assumed', kind: 'assumed' } } };
+    const e: Provision = { ...budgetProvision, role: 'coefficient', mapping: { kind: 'effect', target: 'potential_placements', op: 'add', expr: '100', unit: 'people', from: 2028, evidence: { label: 'assumed', kind: 'assumed' } } };
     const o = draftToOverlay(draftFor(training, [e]), training);
     expect(o.variables).toBeUndefined();
-    expect(o.effects![0]).toMatchObject({ target: 'placements', op: 'add', expr: '100', from: 2028 });
+    expect(o.effects![0]).toMatchObject({ target: 'potential_placements', op: 'add', expr: '100', from: 2028 });
     const base = runModel(training);
     const pol = runModel(training, { overlays: [o] });
-    expect(pol.series._.placements.map((v, t) => v - base.series._.placements[t])).toEqual([0, 0, 100, 100]);
+    expect(pol.series._.potential_placements.map((v, t) => v - base.series._.potential_placements[t])).toEqual([0, 0, 100, 100]);
+    // Placements stay within suitable openings: the limit applies after the effect.
+    expect(pol.series._.placements.every((v) => v <= 1000)).toBe(true);
   });
 });
 
@@ -386,12 +388,12 @@ describe('pairedRun', () => {
   it('names what binds on each side', () => {
     const r = pairedRun(training, [], threeStatusDraft(), { runs: 5 });
     // 2026: policy budget is 0, so the budget binds completions; baseline also budget-bound at $6M
-    expect(r.binding.policy._[0]).toContain('completions is limited by training_budget / cost_per_completion');
+    expect(r.binding.policy._[0]).toContain('completions is limited by funded_completions');
     expect(r.binding.baseline._[3]).toContain('completions is limited by instructor_capacity');
   });
 
   it('reports a draft that cannot run instead of numbers', () => {
-    const e: Provision = { ...budgetProvision, role: 'coefficient', mapping: { kind: 'effect', target: 'placements', op: 'add', expr: 'ghost', unit: 'people', evidence: { label: 'x', kind: 'assumed' } } };
+    const e: Provision = { ...budgetProvision, role: 'coefficient', mapping: { kind: 'effect', target: 'potential_placements', op: 'add', expr: 'ghost', unit: 'people', evidence: { label: 'x', kind: 'assumed' } } };
     const r = pairedRun(training, [], draftFor(training, [e]), { runs: 5 });
     expect(r.ok).toBe(false);
     expect(r.errors.join(' ')).toContain('unknown-target');

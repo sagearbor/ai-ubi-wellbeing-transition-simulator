@@ -144,7 +144,7 @@ describe('parsePolicyExtraction', () => {
       summary: 'Claims an effect.',
       status: 'mapped',
       role: 'control',
-      mapping: { kind: 'effect', target: 'placements', op: 'multiply', expr: '1 + unemployment_cut' },
+      mapping: { kind: 'effect', target: 'potential_placements', op: 'multiply', expr: '1 + unemployment_cut' },
     };
     const { draft, demoted } = parsePolicyExtraction(payload([unknownTarget, effect]), training, SOURCE);
     expect(demoted.map((d) => d.id)).toEqual(['fund', 'claim']);
@@ -159,7 +159,7 @@ describe('parsePolicyExtraction', () => {
       summary: 'Claims an effect.',
       status: 'mapped',
       role: 'control',
-      mapping: { kind: 'effect', target: 'placements', op: 'multiply', expr: '1.3', evidenceLabel: 'the bill says 30 percent' },
+      mapping: { kind: 'effect', target: 'potential_placements', op: 'multiply', expr: '1.3', evidenceLabel: 'the bill says 30 percent' },
     };
     const { draft } = parsePolicyExtraction(payload([effect]), training, SOURCE);
     const p = draft!.provisions[0];

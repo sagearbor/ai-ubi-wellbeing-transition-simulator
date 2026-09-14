@@ -7,7 +7,7 @@ Model files (`*.json`) and overlays (`overlays/*.json`) for the authoring core e
 | File | Structure it demonstrates | Registered? |
 | --- | --- | --- |
 | `minimal.json` (+ `overlays/tutoring.json`) | Smallest useful model: a compounding stock and a derived variable | Yes |
-| `training-budget.json` | `min()`-capped variables and the binding explanation | Yes |
+| `training-budget.json` | `min()`-capped variables and the binding explanation; effects attach only before the limits (`potential_placements`), limited and accounting outputs are not hooks, and four invariants (capacity, eligibility, openings, budget) are checked every step | Yes |
 | `pool-allocation.json` | Entity/aggregate allocation with a per-entity capacity limit (`sum()`, `min()`, an unused-remainder aggregate) | Yes |
 | `market-clearing.json` | An explicit scalar equilibrium (`solves`) block, resolved every step, driven by an exogenous input | Yes |
 | `market-no-root.json` | **Adversarial.** Same market as `market-clearing.json` but with the solve bracket deliberately set so no root exists in it (`[0, 5]` when the true price is `18`). Demonstrates that the engine fails explicitly (`solve-no-root`) instead of returning a wrong number. **Not registered** in `src/core/fixtures.ts` — it must never appear in the Lab picker — but `npm run validate:core` (the bundle validator) should still discover and run it, and requires it to fail with exactly `solve-no-root`, as listed in `negative/manifest.json`. Any other unregistered model file fails the build. Do not "fix" it. |
