@@ -37,6 +37,7 @@ const FIELD =
 const LABEL = 'block text-[11px] font-medium text-slate-600 dark:text-slate-300 mb-0.5';
 
 const AddVariableForm: React.FC<AddVariableFormProps> = ({ model, onApply, applied, onRemove }) => {
+  const unit = model.time?.stepLabel ?? "year";
   const [form, setForm] = useState<OverlayForm>(() => emptyOverlayForm(model));
   const [errors, setErrors] = useState<string[]>([]);
   const targets = hookableVariables(model);
@@ -96,11 +97,11 @@ const AddVariableForm: React.FC<AddVariableFormProps> = ({ model, onApply, appli
         <fieldset className="border border-slate-200 dark:border-slate-800 rounded-lg p-2">
           <legend className="px-1 text-[11px] font-medium text-slate-600 dark:text-slate-300">
             Curve (two points, interpolated between)
-            <Hint label="Curve" text="The path the input follows: its value at a start year and at an end year. Outside that span the end values are held." />
+            <Hint label="Curve" text={`The path the input follows: its value at a start ${unit} and at an end ${unit}. Outside that span the end values are held.`} />
           </legend>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
             <div>
-              <label className={LABEL} htmlFor="lab-new-sy">Start year</label>
+              <label className={LABEL} htmlFor="lab-new-sy">{`Start ${unit}`}</label>
               <input id="lab-new-sy" type="number" className={`${FIELD} tabular-nums`} value={form.startYear} onChange={(e) => set('startYear', Number(e.target.value))} />
             </div>
             <div>
@@ -108,7 +109,7 @@ const AddVariableForm: React.FC<AddVariableFormProps> = ({ model, onApply, appli
               <input id="lab-new-sv" type="number" step="any" className={`${FIELD} tabular-nums`} value={form.startValue} onChange={(e) => set('startValue', Number(e.target.value))} />
             </div>
             <div>
-              <label className={LABEL} htmlFor="lab-new-ey">End year</label>
+              <label className={LABEL} htmlFor="lab-new-ey">{`End ${unit}`}</label>
               <input id="lab-new-ey" type="number" className={`${FIELD} tabular-nums`} value={form.endYear} onChange={(e) => set('endYear', Number(e.target.value))} />
             </div>
             <div>

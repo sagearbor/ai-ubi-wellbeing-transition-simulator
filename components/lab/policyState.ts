@@ -131,8 +131,12 @@ export function repin(draft: PolicyDraft, model: CoreModel): PolicyDraft {
   return withEdit(draft, { ...draft, modelId: model.id, modelHash: modelHash(model) });
 }
 
-/** Parse "2026: 0, 2027: 12000000" or a JSON object into a curve. */
-export function parseCurveText(text: string): { curve: Record<string, number> | null; error: string | null } {
+/**
+ * Parse "2026: 0, 2027: 12000000" or a JSON object into a curve. Keys are calendar years unless the
+ * model counts its own unit (`calendar: false`, e.g. generations), when any number is a key.
+ */
+export function parseCurveText(text: string, opts: { calendar?: boolean } = {}): { curve: Record<string, number> | null; error: string | null } {
+  const calendar = opts.calendar ?? true;
   const t = text.trim();
   if (!t) return { curve: null, error: 'Enter at least one "year: value" pair.' };
   let pairs: Array<[string, unknown]>;
@@ -152,7 +156,7 @@ export function parseCurveText(text: string): { curve: Record<string, number> | 
   }
   const curve: Record<string, number> = {};
   for (const [k, v] of pairs) {
-    if (!/^\d{4}(\.\d+)?$/.test(k)) return { curve: null, error: `"${k}" is not a year.` };
+    if (calendar ? !/^\d{4}(\.\d+)?$/.test(k) : !/^-?\d+(\.\d+)?$/.test(k)) return { curve: null, error: `"${k}" is not a ${calendar ? 'year' : 'step value'}.` };
     if (typeof v !== 'number' || !Number.isFinite(v)) return { curve: null, error: `The value for ${k} is not a number.` };
     curve[k] = v;
   }

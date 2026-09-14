@@ -45,9 +45,32 @@
       "required": ["start", "end", "step"],
       "additionalProperties": false,
       "properties": {
-        "start": { "type": "number", "description": "First calendar year (step index 0)." },
-        "end": { "type": "number", "description": "Last calendar year (inclusive)." },
-        "step": { "enum": ["year", "month"] }
+        "start": { "type": "number", "description": "First time value (step index 0): a calendar year, or a count of stepLabel units." },
+        "end": { "type": "number", "description": "Last time value (inclusive)." },
+        "step": { "enum": ["year", "month"] },
+        "stepLabel": {
+          "type": "string",
+          "pattern": "^[a-z][a-z -]{0,39}$",
+          "description": "Name of one time unit when it is not a calendar year (e.g. \"generation\"). Then start/end, curve keys, effect from and test at count this unit, and the UI labels steps \"Generation 3\", never as calendar years."
+        },
+        "stepYears": { "type": "number", "exclusiveMinimum": 0, "description": "Real duration of one unit in years (e.g. 25 for a generation). Descriptive only; nothing is interpolated." }
+      }
+    },
+    "limitations": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "steadyStateOnly": {
+          "type": "object",
+          "required": ["outputs", "reason"],
+          "additionalProperties": false,
+          "properties": {
+            "outputs": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+            "reason": { "type": "string", "minLength": 1, "maxLength": 2000 },
+            "at": { "type": "number", "description": "Time value at which the steady state is read. Default: time.end." }
+          },
+          "description": "Outputs whose path between steady states is not a meaningful transition (e.g. welfare comparisons that mix cohorts). The UI shows their steady-state values instead of a transition chart."
+        }
       }
     },
     "entities": { "$ref": "#/definitions/Entities" },

@@ -11,11 +11,20 @@
  *
  * The baseline is the Lab's current scenario: the model, the overlays toggled above, and any value
  * edits or added variables. The "try relaxing it" hypothetical is not part of it.
+ *
+ * Paired runs and bundle re-runs go through the model runner (src/workers/client.ts): off the main
+ * thread in the browser, with progress and Cancel, and refused before they start when the draws,
+ * seed or model size are over RUN_LIMITS. A model imported into the Lab cannot travel in a link (a
+ * link names a model the app ships); its bundle carries the model and says it is experimental.
  */
 
-import React, { useMemo, useRef, useState } from 'react';
-import { Copy, Download, FileText, Link2, Play, Plus, ScrollText, Sparkles, Upload } from 'lucide-react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { Copy, Download, FileText, Link2, Play, Plus, ScrollText, Sparkles, Square, Upload } from 'lucide-react';
 import { resolveModel } from '../../src/core/engine';
+import { RUN_LIMITS, checkRunSettings } from '../../src/core/limits';
+import type { ValidationResult } from '../../src/core/validate';
+import type { Runner } from '../../src/workers/client';
+import type { PairedJob, Progress, RunOutcome } from '../../src/workers/protocol';
 import { CORE_FIXTURES, findFixture } from '../../src/core/fixtures';
 import type { CoreModel, Overlay } from '../../src/core/types';
 import {
@@ -25,11 +34,10 @@ import {
   bundleFileName,
   encodeLabLink,
   parseBundleJson,
-  reopenBundle,
   type ReopenReport,
 } from '../../src/policy/bundle';
 import { buildClauseInventory, sourceCoverage } from '../../src/policy/clauses';
-import { DEFAULT_RUNS, DEFAULT_SEED, blankDraft, blockingErrors, coverage, pairedRun, validateDraft } from '../../src/policy/draft';
+import { DEFAULT_RUNS, DEFAULT_SEED, blankDraft, blockingErrors, coverage, validateDraft } from '../../src/policy/draft';
 import { sha256Hex } from '../../src/policy/hash';
 import { POLICY_EXAMPLES, findPolicyExample } from '../../src/policy/examples';
 import { memoFileName, renderMemo } from '../../src/policy/memo';
@@ -38,6 +46,7 @@ import { extractPolicyDraft, hasPolicyApiKey } from '../../services/policyExtrac
 import { Hint } from '../futures/Hint';
 import PolicyResults from './PolicyResults';
 import ProvisionEditor from './ProvisionEditor';
+import { EXPERIMENTAL_LABEL, curatedMatch, explainValidationErrors, type ModelStatus } from './importState';
 import {
   addExclusion,
   addProvision,
@@ -70,8 +79,14 @@ export interface PolicyPanelProps {
   initialNotice?: { tone: 'ok' | 'error'; text: string } | null;
   /** Switch the Lab to another bundled model (with no overlays). */
   onRequestModel: (modelId: string) => void;
-  /** Switch the Lab to a model and a scenario (from a bundle). */
-  onOpenScenario: (modelId: string, overlays: Overlay[]) => void;
+  /** Switch the Lab to a model and a scenario (from a bundle). The model may be one the bundle carried. */
+  onOpenScenario: (model: CoreModel, overlays: Overlay[], status: ModelStatus) => void;
+  /** Runs paired comparisons and bundle re-runs (a worker in the browser, synchronous in tests). */
+  runner: Runner;
+  /** 'imported' when the Lab's model was loaded from a file: experimental — not curated. */
+  modelStatus?: ModelStatus;
+  /** Models imported this session, so bundles made on them reopen. */
+  extraModels?: CoreModel[];
 }
 
 interface StoredResult {
@@ -79,7 +94,6 @@ interface StoredResult {
   result: PairedRunResult;
 }
 
-const registry = (id: string): CoreModel | undefined => findFixture(id)?.model;
 const btn =
   'inline-flex min-h-11 items-center gap-1.5 rounded-lg border px-3 text-xs font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 disabled:cursor-not-allowed disabled:opacity-50';
 const btnPlain = `${btn} border-slate-300 text-slate-700 dark:border-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800`;
@@ -111,12 +125,13 @@ async function copyText(text: string): Promise<boolean> {
   }
 }
 
-/** pairedRun validates each draft and refuses to run one with errors; the result then lists them. */
-function runAll(model: CoreModel, overlays: Overlay[], drafts: PolicyDraft[], runs: number, seed: number, sourceText: string): Array<StoredResult | null> {
-  const text = sourceText.trim() ? sourceText : undefined;
-  return drafts.map((d) =>
-    d.modelId === model.id ? { key: runKey(model, overlays, d, runs, seed, sourceText), result: pairedRun(model, overlays, d, { runs, seed, sourceText: text }) } : null,
-  );
+/** The runner job for a paired comparison. pairedRun validates each draft and refuses to run one with errors. */
+function pairedJob(model: CoreModel, overlays: Overlay[], drafts: PolicyDraft[], runs: number, seed: number, sourceText: string): PairedJob {
+  return { kind: 'paired', model, overlays, drafts, runs, seed, sourceText };
+}
+
+function storedResults(job: PairedJob, results: Array<PairedRunResult | null>): Array<StoredResult | null> {
+  return job.drafts.map((d, i) => (results[i] ? { key: runKey(job.model, job.overlays, d, job.runs, job.seed, job.sourceText), result: results[i]! } : null));
 }
 
 const stateChip: Record<string, string> = {
@@ -137,6 +152,9 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
   initialNotice = null,
   onRequestModel,
   onOpenScenario,
+  runner,
+  modelStatus = 'curated',
+  extraModels = [],
 }) => {
   const [sourceTitle, setSourceTitle] = useState(initialSource?.title ?? '');
   const [sourceUrl, setSourceUrl] = useState(initialSource?.url ?? '');
@@ -145,9 +163,15 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
   const [active, setActive] = useState(0);
   const [runs, setRuns] = useState(initialRuns);
   const [seed, setSeed] = useState(initialSeed);
-  const [results, setResults] = useState<Array<StoredResult | null>>(() =>
-    runOnMount ? runAll(model, overlays, initialDrafts.slice(0, 2), initialRuns, initialSeed, initialSource?.text ?? '') : [],
-  );
+  // A synchronous runner (tests, SSR) runs a link's comparison while mounting; a worker runs it in an effect.
+  const [results, setResults] = useState<Array<StoredResult | null>>(() => {
+    if (!runOnMount || runner.mode !== 'sync') return [];
+    const job = pairedJob(model, overlays, initialDrafts.slice(0, 2), initialRuns, initialSeed, initialSource?.text ?? '');
+    if (checkRunSettings({ runs: job.runs, seed: job.seed, model: resolveModel(job.model, job.overlays).model }).length) return [];
+    const o = runner.runSync(job);
+    return o.status === 'done' ? storedResults(job, o.result) : [];
+  });
+  const [running, setRunning] = useState<{ progress: Progress | null; cancel: () => void; what: string } | null>(null);
   const [attestName, setAttestName] = useState('');
   const [attestStatement, setAttestStatement] = useState('I checked every clause of the source text: each is quoted by a provision or excluded with a reason.');
   const [year, setYear] = useState<number | null>(null);
@@ -158,6 +182,8 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
   const [memoCopied, setMemoCopied] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
+  const imported = modelStatus === 'imported';
+  const registryModels = useMemo(() => (imported ? [model, ...extraModels] : extraModels), [imported, model, extraModels]);
   const apiKey = hasPolicyApiKey();
   const scenarioModel = useMemo(() => resolveModel(model, overlays).model, [model, overlays]);
   const draft = drafts[active] ?? null;
@@ -187,9 +213,9 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
   const memo = useMemo(
     () =>
       draft && activeResult && activeFresh
-        ? renderMemo({ model, overlays, draft, result: activeResult.result, diagnostics: diagnostics[active], sourceText: sourceText.trim() ? sourceText : undefined })
+        ? renderMemo({ model, overlays, draft, result: activeResult.result, diagnostics: diagnostics[active], sourceText: sourceText.trim() ? sourceText : undefined, modelStatus: modelStatus as ModelStatus })
         : '',
-    [draft, activeResult, activeFresh, model, overlays, diagnostics, active, sourceText],
+    [draft, activeResult, activeFresh, model, overlays, diagnostics, active, sourceText, modelStatus],
   );
   /** Blocking validation errors per draft on this model. */
   const blocking = useMemo(() => drafts.map((d, i) => (d.modelId === model.id ? blockingErrors(diagnostics[i] ?? []) : [])), [drafts, diagnostics, model]);
@@ -260,17 +286,51 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
     }
   };
 
+  /** Start a paired run. Settings over the limits are refused before anything runs. */
+  const startRun = (job: PairedJob, onDone?: () => void) => {
+    const problems = checkRunSettings({ runs: job.runs, seed: job.seed, model: resolveModel(job.model, job.overlays).model });
+    if (problems.length) {
+      setNotice({ tone: 'error', text: `Not run: ${problems.map((p) => p.message).join('; ')}.` });
+      return;
+    }
+    const apply = (o: RunOutcome<Array<PairedRunResult | null>>) => {
+      setRunning(null);
+      if (o.status === 'done') {
+        setResults(storedResults(job, o.result));
+        onDone?.();
+      } else if (o.status !== 'superseded') {
+        setNotice({ tone: 'error', text: o.status === 'cancelled' ? 'The paired run was cancelled; nothing new is shown.' : `The paired run stopped (${o.status}): ${o.message}` });
+      }
+    };
+    if (runner.mode === 'sync') {
+      apply(runner.runSync(job));
+      return;
+    }
+    const handle = runner.run('policy', job, { onProgress: (p) => setRunning((r) => (r ? { ...r, progress: p } : r)) });
+    setRunning({ progress: null, cancel: handle.cancel, what: 'paired comparison' });
+    handle.promise.then(apply);
+  };
+
+  // A link opened in the browser: run its comparison once, in the worker.
+  const mountRun = useRef(runOnMount && runner.mode !== 'sync');
+  useEffect(() => {
+    if (!mountRun.current) return;
+    mountRun.current = false;
+    startRun(pairedJob(model, overlays, initialDrafts.slice(0, 2), initialRuns, initialSeed, initialSource?.text ?? ''));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const run = () => {
     if (blocked) return;
-    setResults(runAll(model, overlays, drafts, runs, seed, sourceText));
     setReport(null);
     setNotice(null);
+    startRun(pairedJob(model, overlays, drafts, runs, seed, sourceText));
   };
 
   // -- sharing ----------------------------------------------------------------
 
   const copyLink = async () => {
-    if (!drafts.length) return;
+    if (!drafts.length || imported) return;
     const state = linkStateFor(model, overlays, drafts.filter((d) => d.modelId === model.id), runs, seed);
     const payload = encodeLabLink(state);
     if (payload.length > MAX_LINK_PAYLOAD_CHARS) {
@@ -293,21 +353,45 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
     if (!draft || !activeResult || !activeFresh) return;
     // The source text travels only when it is the text the draft pins, so quotes can be re-checked on reopening.
     const pinned = sourceText.trim() && (!draft.source.textSha256 || sha256Hex(sourceText) === draft.source.textSha256);
-    const bundle = buildBundle(model, overlays, draft, activeResult.result, { sourceText: pinned ? sourceText : undefined });
+    const bundle = buildBundle(model, overlays, draft, activeResult.result, { sourceText: pinned ? sourceText : undefined, embedModel: imported });
     download(bundleFileName(bundle), JSON.stringify(bundle, null, 2), 'application/json');
   };
 
-  const openBundleText = (text: string) => {
+  const openBundleText = async (text: string) => {
     const parsed = parseBundleJson(text);
-    if (!parsed.ok) {
+    if (parsed.ok === false) {
       setReport(null);
-      setNotice({ tone: 'error', text: `Cannot open this bundle: ${parsed.reason}` });
+      setNotice({ tone: 'error', text: `Cannot open this bundle: ${(parsed as { reason: string }).reason}` });
       return;
     }
-    const rep = reopenBundle(parsed.value, registry);
+    const bundle = parsed.value!;
+    let models = registryModels;
+    let status: ModelStatus = 'curated';
+    if (bundle.model) {
+      // A carried model is validated like any import before anything runs, and is never curated.
+      const v = runner.mode === 'sync' ? runner.runSync({ kind: 'validate-model', json: bundle.model }) : await runner.run('bundle', { kind: 'validate-model', json: bundle.model }).promise;
+      const vr = v.status === 'done' ? (v.result as ValidationResult) : null;
+      if (!vr || !vr.ok || !vr.model) {
+        setReport(null);
+        setNotice({ tone: 'error', text: `Cannot open this bundle: the model it carries does not validate. ${vr ? explainValidationErrors(vr.errors).join(' ') : (v as { message: string }).message}` });
+        return;
+      }
+      status = curatedMatch(vr.model) ? 'curated' : 'imported';
+      models = [vr.model, ...registryModels];
+    } else if (!findFixture(bundle.manifest.modelId) && registryModels.some((m) => m.id === bundle.manifest.modelId)) {
+      status = 'imported';
+    }
+    setNotice({ tone: 'ok', text: 'Re-running the bundle to check it reproduces…' });
+    const outcome = runner.mode === 'sync' ? runner.runSync({ kind: 'reopen-bundle', bundle, models }) : await runner.run('bundle', { kind: 'reopen-bundle', bundle, models }).promise;
+    if (outcome.status !== 'done') {
+      setReport(null);
+      setNotice({ tone: 'error', text: `Cannot open this bundle: ${(outcome as { message: string }).message}` });
+      return;
+    }
+    const rep = outcome.result as ReopenReport;
     setReport(rep);
     if (rep.model && rep.draft && rep.overlays) {
-      onOpenScenario(rep.model.id, rep.overlays);
+      onOpenScenario(rep.model, rep.overlays, status);
       setDrafts([rep.draft]);
       setActive(0);
       setSourceTitle(rep.draft.source?.title ?? '');
@@ -325,7 +409,7 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
   const onFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    file.text().then(openBundleText, (err: Error) => setNotice({ tone: 'error', text: `Could not read the file: ${err.message}` }));
+    file.text().then((t) => void openBundleText(t), (err: Error) => setNotice({ tone: 'error', text: `Could not read the file: ${err.message}` }));
     e.target.value = '';
   };
 
@@ -698,7 +782,7 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
               <label className={labelCls} htmlFor="policy-runs">
                 Draws
               </label>
-              <input id="policy-runs" type="number" min={1} max={2000} className={`${field} h-11 w-24`} value={runs} onChange={(e) => setRuns(Math.max(1, Math.min(2000, Math.floor(Number(e.target.value) || 1))))} />
+              <input id="policy-runs" type="number" min={1} max={RUN_LIMITS.maxDraws} className={`${field} h-11 w-24`} value={runs} onChange={(e) => setRuns(Math.max(1, Math.min(RUN_LIMITS.maxDraws, Math.floor(Number(e.target.value) || 1))))} />
             </div>
             <div>
               <label className={labelCls} htmlFor="policy-seed">
@@ -706,10 +790,27 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
               </label>
               <input id="policy-seed" type="number" className={`${field} h-11 w-24`} value={seed} onChange={(e) => setSeed(Math.floor(Number(e.target.value) || 0))} />
             </div>
-            <button type="button" className={btnPrimary} onClick={run} disabled={!runnable || blocked} aria-describedby={blocked ? 'policy-run-blocked' : undefined}>
+            <button type="button" className={btnPrimary} onClick={run} disabled={!runnable || blocked || !!running} aria-describedby={blocked ? 'policy-run-blocked' : undefined}>
               <Play size={14} aria-hidden="true" />
               {drafts.length > 1 ? 'Run paired comparison (A and B)' : 'Run paired comparison'}
             </button>
+            {running && (
+              <div className="flex flex-wrap items-center gap-2" role="status" aria-live="polite">
+                <progress
+                  className="h-2 w-32 accent-sky-600"
+                  max={running.progress?.total ?? 1}
+                  value={running.progress?.done ?? 0}
+                  aria-label="paired run progress"
+                />
+                <span className="text-[11px] tabular-nums text-slate-600 dark:text-slate-300">
+                  {running.progress ? `${running.progress.done.toLocaleString('en-US')} / ${running.progress.total.toLocaleString('en-US')} draws` : `Running the ${running.what}…`}
+                </span>
+                <button type="button" className={btnPlain} onClick={() => { running.cancel(); setRunning(null); setNotice({ tone: 'error', text: 'The paired run was cancelled; nothing new is shown.' }); }}>
+                  <Square size={12} aria-hidden="true" />
+                  Cancel
+                </button>
+              </div>
+            )}
             {blocked && (
               <div id="policy-run-blocked" role="alert" className="basis-full rounded-lg border border-rose-300 bg-rose-50 dark:border-rose-800 dark:bg-rose-950/40 px-3 py-2 text-[11px] text-rose-800 dark:text-rose-200">
                 <p className="font-semibold">Run is disabled: fix these validation errors first.</p>
@@ -731,11 +832,12 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
             )}
             <p className="basis-full text-[11px] text-slate-500 dark:text-slate-400">
               Baseline: {model.id}
-              {overlays.length ? ` with ${overlays.map((o) => o.id).join(', ')}` : ' as bundled'}. The relax-it hypothetical is not included.
+              {imported ? ` (${EXPERIMENTAL_LABEL})` : ''}
+              {overlays.length ? ` with ${overlays.map((o) => o.id).join(', ')}` : ' as loaded'}. The relax-it hypothetical is not included. At most {RUN_LIMITS.maxDraws.toLocaleString('en-US')} draws per run.
             </p>
           </div>
 
-          {entries.length > 0 && <PolicyResults model={scenarioModel} entries={entries} active={Math.min(active, entries.length - 1)} year={year} onYear={setYear} />}
+          {entries.length > 0 && <PolicyResults model={scenarioModel} entries={entries} active={Math.min(active, entries.length - 1)} year={year} onYear={setYear} modelStatus={modelStatus} />}
 
           {draft && (
             <details className="rounded-lg bg-slate-100 dark:bg-slate-800/60 px-3 py-2 text-xs">
@@ -760,7 +862,7 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
 
           {/* 4. Share, reopen, memo */}
           <div className="flex flex-wrap items-center gap-2 border-t border-slate-100 dark:border-slate-800 pt-3">
-            <button type="button" className={btnPlain} onClick={copyLink} disabled={!runnable || blocked} title={blocked ? 'A link to a draft with validation errors would not open' : undefined}>
+            <button type="button" className={btnPlain} onClick={copyLink} disabled={!runnable || blocked || imported} title={imported ? 'A link names a model the app ships; download a bundle, which carries the imported model' : blocked ? 'A link to a draft with validation errors would not open' : undefined}>
               <Link2 size={14} aria-hidden="true" />
               Copy share link
             </button>
@@ -791,6 +893,7 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
               Download memo
             </button>
             {!activeFresh && <span className="text-[11px] text-slate-500 dark:text-slate-400">Run the comparison to enable the bundle and memo.</span>}
+            {imported && <span className="text-[11px] text-amber-700 dark:text-amber-300">{`Imported model (${EXPERIMENTAL_LABEL}): links are off; the bundle carries the model.`}</span>}
           </div>
         </div>
       )}
@@ -846,6 +949,7 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
 
       <p className="text-[11px] text-slate-500 dark:text-slate-400">
         Bundled models available to open links and bundles: {CORE_FIXTURES.map((f) => f.model.id).join(', ')}.
+        {extraModels.length > 0 && ` Imported this session (${EXPERIMENTAL_LABEL}): ${extraModels.map((m) => m.id).join(', ')}.`}
       </p>
     </section>
   );

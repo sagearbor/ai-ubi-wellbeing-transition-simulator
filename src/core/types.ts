@@ -11,9 +11,40 @@
  * `x[t-1]`. Aggregates over entities are `sum(x)`, `mean(x)`, `min(x)`, `max(x)` where x is a
  * variable; inside an entity expression they refer to all entities' values of x at the same step.
  * `t` is the step index (0 at start) and `year` the calendar year (fractional for monthly models).
+ * A model whose step is not a calendar year declares it in `time.stepLabel` (e.g. "generation"):
+ * then `year`, `time.start/end`, input curve keys, effect `from` and test `at` all count that unit.
  */
 
 export type StepUnit = 'year' | 'month';
+
+/**
+ * The model's clock. `step` sets how many engine steps make one time unit (year: 1, month: 12).
+ * `stepLabel` renames the unit when it is not a calendar year: with `stepLabel: "generation"` and
+ * `stepYears: 25`, `start: 0, end: 40` means generations 0..40 (each 25 years long), and the UI says
+ * "Generation 3", never "Year 3" or a calendar year. Nothing is interpolated between steps.
+ */
+export interface ModelTime {
+  start: number;
+  end: number;
+  step: StepUnit;
+  /** Name of one time unit when it is not a calendar year, e.g. "generation". Singular, lower case. */
+  stepLabel?: string;
+  /** Real duration of one unit in years, when known (e.g. 25 for a generation). Descriptive only. */
+  stepYears?: number;
+}
+
+/** Outputs whose path over time is not a meaningful transition (e.g. welfare that mixes cohorts). */
+export interface SteadyStateOnly {
+  outputs: string[];
+  /** Why the path between steady states is not to be read. Shown in place of the transition chart. */
+  reason: string;
+  /** Time value (in the model's own unit) at which the steady state is read. Default: time.end. */
+  at?: number;
+}
+
+export interface ModelLimitations {
+  steadyStateOnly?: SteadyStateOnly;
+}
 
 export type EvidenceKind = 'causal' | 'associational' | 'calibrated' | 'elicited' | 'assumed' | 'guess';
 
@@ -147,7 +178,9 @@ export interface CoreModel {
   scope?: string;
   license?: string;
   sources?: Source[];
-  time: { start: number; end: number; step: StepUnit };
+  time: ModelTime;
+  /** Declared limits on how results may be read; the UI enforces them (e.g. no transition chart). */
+  limitations?: ModelLimitations;
   entities?: Entities;
   parameters: Parameter[];
   inputs?: Input[];
@@ -198,6 +231,8 @@ export interface Diagnostic {
     | 'disconnected'
     | 'non-finite'
     | 'missing-source'
+    | 'limit-exceeded'
+    | 'cancelled'
     | 'parse';
   message: string;
   /** Element id the diagnostic is about. */
@@ -256,6 +291,8 @@ export interface MonteCarloResult {
   diagnostics: Diagnostic[];
   years: number[];
   runs: number;
+  /** True when no parameter declares a range: the model was run once, and the "band" is the point run. */
+  deterministic?: boolean;
   /** entity -> variable -> quantile -> series. Quantiles: p5, p25, p50, p75, p95, mean. */
   quantiles: Record<string, Record<string, Record<'p5' | 'p25' | 'p50' | 'p75' | 'p95' | 'mean', number[]>>>;
   manifest: RunManifest;

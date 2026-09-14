@@ -3,14 +3,28 @@
 A model in `data/core/*.json` is data, not code. It is parsed by `src/core/engine.ts`
 (`resolveModel` → `compileModel` → `runModel`/`runTests`) into a dependency graph and stepped
 through time. This doc explains the file format element by element, then walks three worked
-examples that each demonstrate a different mathematical structure. If you are adding a new
-fixture, also read `data/core/README.md` and register it in `src/core/fixtures.ts`.
+examples that each demonstrate a different mathematical structure.
+
+There are two ways to run a model file in the app:
+
+- **Import it into the Lab** (no code change). In the Model Lab, open "Import a model or overlay
+  (JSON)", paste the file or choose it. It is validated (`validateCoreModel`; an overlay with
+  `validateOverlay` against the model on screen) and then runs like a bundled model, through the
+  same runner and limits. It stays **experimental — not curated**: the picker, the results, policy
+  bundles and memos all say so, share links are off for it (a link names a model the app ships),
+  and a bundle made on it carries the model itself so it reopens elsewhere. "Export model +
+  overlays (JSON)" in "Advanced: model file" writes a file the importer reads back. Fields the
+  format does not have are reported as *unsupported capabilities*, not silently dropped.
+- **Make it a curated fixture** (a code change, and review). Put the file under `data/core/`,
+  make its own `tests` pass under `npm run validate:core`, read `data/core/README.md`, and register
+  it in `src/core/fixtures.ts`. Importing an unchanged copy of a curated model opens the curated one.
 
 ## The shape of a model (`CoreModel`, `src/core/types.ts`)
 
 ```
 schemaVersion, id, name, description?, scope?, license?, sources?
-time: { start, end, step: 'year' | 'month' }
+time: { start, end, step: 'year' | 'month', stepLabel?, stepYears? }
+limitations?: { steadyStateOnly?: { outputs, reason, at? } }
 entities?: { kind, ids, roles? }
 parameters: Parameter[]
 inputs?: Input[]
@@ -23,6 +37,56 @@ tests?: ModelTest[]
 
 `scope` is a plain-English sentence shown before results: say what the model can and cannot
 claim. Every registered fixture should have one.
+
+## Time: calendar years, or the model's own unit
+
+`time.start`/`time.end` are calendar years by default, and `step` says how many engine steps make
+one year (`year`: 1, `month`: 12). A model whose step is **not** a calendar period declares its
+unit instead of pretending:
+
+```json
+"time": { "start": 0, "end": 40, "step": "year", "stepLabel": "generation", "stepYears": 25 }
+```
+
+With `stepLabel`, every time value in the file counts that unit — `start`, `end`, input curve
+keys, effect `from`, test `at`, and the `year` symbol in expressions — and the app labels steps
+"Generation 3", never "Year 3" or a calendar year. `stepYears` states the real length of one unit
+for the reader; nothing is converted or interpolated with it, and no annual path is invented
+between steps. `data/core/gasteiger-prettner-2020.json` (an OLG model, one step = one 25-year
+generation) is the worked case.
+
+When some outputs are only meaningful at a steady state — Gasteiger–Prettner's consumption and
+welfare series mix two cohorts during a transition, and its welfare comparison is between steady
+states — say so:
+
+```json
+"limitations": { "steadyStateOnly": { "outputs": ["utility_prev", "cv1_pct"], "at": 40, "reason": "..." } }
+```
+
+The Lab and the policy results then show those outputs' steady-state values (at `at`, default
+`time.end`; for a model with entities, the value for every entity) and the reason, instead of a
+transition chart; the policy memo reports only the steady-state row. `at` must be a step of the
+model, and each listed id should be an output.
+
+## Execution limits
+
+The engine enforces hard limits (`src/core/limits.ts`), and the Lab and Policy panel check run
+settings against the same numbers before starting anything — including settings that arrive in a
+shared link or a bundle, which are not run if they exceed them:
+
+| limit | value | where it is enforced |
+|---|---|---|
+| steps per run | 5,000 | `compileModel`: `limit-exceeded`, nothing is allocated |
+| entities per model | 500 | `compileModel` |
+| Monte Carlo draws per request | 2,000 | `runMonteCarlo`, `pairedRun`, link/bundle checks |
+| bisection iterations a solve may declare (`maxIter`) | 1,000 | `compileModel`, and a backstop inside the solver |
+| wall clock per run request | 60 s | a `RunBudget` checked every step and bisection iteration; the worker's watchdog |
+
+In the browser, runs execute in a Web Worker (`src/workers/`): a newer change supersedes the run in
+progress, long runs show progress and a Cancel button, and a run that cannot hear a cancel (inside
+one long step) is stopped by restarting the worker. A model with no ranged parameter is
+deterministic: the Lab's uncertainty band and the paired policy run execute it **once** and say
+"deterministic: uncertainty off", rather than repeating identical draws.
 
 ## Expression rules
 

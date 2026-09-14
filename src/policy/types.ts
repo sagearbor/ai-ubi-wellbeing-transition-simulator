@@ -275,7 +275,7 @@ export interface PolicyRunManifest {
   runs: number;
   seed: number;
   /** The draws are run indices 0..runs-1 with this seed, identical on both sides. */
-  draws: { count: number; seed: number; firstIndex: 0 };
+  draws: { count: number; seed: number; firstIndex: 0; deterministic?: true };
   /** Unit conversions applied to mapped values ("20 million usd → training_budget (usd): converted to 20,000,000"). */
   conversions: string[];
   /** Engine RunManifest.hash of the point (unsampled) runs. */
@@ -297,6 +297,8 @@ export interface PairedRunResult {
   /** Outputs that exist only with the policy overlay (no baseline to difference against). */
   policyOnlyOutputs: string[];
   runs: number;
+  /** True when nothing is sampled on either side: the model ran once, and the "spread" is the point run. */
+  deterministic?: boolean;
   seed: number;
   /** Point (unsampled) series. entity -> output -> series. */
   point: { baseline: Record<string, Record<string, number[]>>; policy: Record<string, Record<string, number[]>> };

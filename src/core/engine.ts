@@ -14,6 +14,11 @@
  * runMonteCarlo : ranged parameters sampled once per run with streams keyed by (seed, parameter id,
  *                 run) so baseline and variant draws are paired; quantiles per series.
  * runTests      : the model's own reproduction tests.
+ *
+ * Execution is bounded (src/core/limits.ts): compileModel refuses a model over the step, entity or
+ * solver-iteration limits, runMonteCarlo refuses more draws than the limit, and a run given a
+ * RunBudget (directly or through withRunBudget) stops at its wall-clock deadline or when cancelled.
+ * Each refusal is an explicit `limit-exceeded` or `cancelled` diagnostic, never a hang.
  */
 
 import { create, all, type MathNode } from 'mathjs';
@@ -36,10 +41,76 @@ import type {
   TestOutcome,
   Variable,
 } from './types';
+import { effectiveLimits, stepCount, type RunLimits } from './limits';
 
 /** Bump on any change to numerical behaviour (solver acceptance, ordering, invariants); it is part of every run hash. */
 export const ENGINE_VERSION = 'core-0.2.0';
 const SINGLE = '_';
+
+// ---------------------------------------------------------------------------
+// Budgets: wall clock and cancellation
+// ---------------------------------------------------------------------------
+
+export interface RunBudget {
+  /** Absolute time (same clock as `now`) after which the run stops with `limit-exceeded`. */
+  deadline?: number;
+  /** The budget's length, for the message. */
+  wallClockMs?: number;
+  /** Clock; defaults to performance.now() (or Date.now()). */
+  now?: () => number;
+  /** Polled every step and every bisection iteration; true stops the run with `cancelled`. */
+  shouldStop?: () => boolean;
+  /** Tighter limits for this run (never looser than RUN_LIMITS). */
+  limits?: Partial<RunLimits>;
+}
+
+const defaultNow = (): number => (typeof performance !== 'undefined' ? performance.now() : Date.now());
+let ambientBudget: RunBudget | null = null;
+
+/**
+ * Run `fn` with `budget` applying to every runModel call inside it that has no budget of its own.
+ * Lets a caller bound code it does not own (validateCoreModel's smoke run, pairedRun's draws).
+ */
+export function withRunBudget<T>(budget: RunBudget | null, fn: () => T): T {
+  const prev = ambientBudget;
+  ambientBudget = budget;
+  try {
+    return fn();
+  } finally {
+    ambientBudget = prev;
+  }
+}
+
+/** A budget of `ms` from now. */
+export function budgetFor(ms: number, extra: Omit<RunBudget, 'deadline' | 'wallClockMs'> = {}): RunBudget {
+  const now = extra.now ?? defaultNow;
+  return { ...extra, now, deadline: now() + ms, wallClockMs: ms };
+}
+
+/** Why a budget says stop, or null. */
+export function budgetProblem(budget: RunBudget | null | undefined): Diagnostic | null {
+  if (!budget) return null;
+  if (budget.shouldStop?.()) return { level: 'error', code: 'cancelled', message: 'the run was cancelled before it finished' };
+  if (budget.deadline !== undefined && (budget.now ?? defaultNow)() > budget.deadline) {
+    const ms = budget.wallClockMs;
+    return {
+      level: 'error',
+      code: 'limit-exceeded',
+      message: `the run exceeded its wall-clock limit${ms !== undefined ? ` of ${(ms / 1000).toLocaleString('en-US')} s` : ''} and was stopped; use fewer draws or a smaller model`,
+    };
+  }
+  return null;
+}
+
+/** The budget in force for code that has none of its own (set by withRunBudget). */
+export function currentBudget(): RunBudget | null {
+  return ambientBudget;
+}
+
+/** True when nothing in the resolved model is sampled: no parameter declares a range. */
+export function isDeterministic(model: CoreModel): boolean {
+  return !model.parameters.some((p) => p.range);
+}
 
 // ---------------------------------------------------------------------------
 // mathjs instance with an allowlist
@@ -222,7 +293,8 @@ export interface CompiledModel {
   diagnostics: Diagnostic[];
 }
 
-function yearsOf(model: CoreModel): number[] {
+function yearsOf(model: CoreModel, maxSteps: number): number[] {
+  if (!(stepCount(model.time) <= maxSteps)) return [];
   const perYear = model.time.step === 'month' ? 12 : 1;
   const n = (model.time.end - model.time.start) * perYear;
   const out: number[] = [];
@@ -230,10 +302,31 @@ function yearsOf(model: CoreModel): number[] {
   return out;
 }
 
-export function compileModel(model: CoreModel): CompiledModel {
+export function compileModel(model: CoreModel, limitsOverride?: Partial<RunLimits>): CompiledModel {
   const diagnostics: Diagnostic[] = [];
-  const entities = model.entities?.ids?.length ? [...model.entities.ids] : [SINGLE];
-  const years = yearsOf(model);
+  const limits = effectiveLimits(limitsOverride ?? ambientBudget?.limits);
+  const steps = stepCount(model.time);
+  if (!Number.isFinite(steps) || steps < 1 || steps > limits.maxSteps) {
+    diagnostics.push({
+      level: 'error',
+      code: 'limit-exceeded',
+      message: `time ${model.time?.start} to ${model.time?.end} by ${model.time?.step} is ${Number.isFinite(steps) ? steps.toLocaleString('en-US') : 'an invalid number of'} steps; the limit is ${limits.maxSteps.toLocaleString('en-US')} steps`,
+      where: 'time',
+    });
+  }
+  const entityCount = model.entities?.ids?.length ?? 1;
+  if (entityCount > limits.maxEntities) {
+    diagnostics.push({ level: 'error', code: 'limit-exceeded', message: `${entityCount.toLocaleString('en-US')} entities; the limit is ${limits.maxEntities.toLocaleString('en-US')}`, where: 'entities' });
+  }
+  for (const s of model.solves ?? []) {
+    if ((s.maxIter ?? 100) > limits.maxSolverIterations) {
+      diagnostics.push({ level: 'error', code: 'limit-exceeded', message: `solve "${s.id}" declares maxIter ${s.maxIter}; the limit is ${limits.maxSolverIterations.toLocaleString('en-US')} iterations per solve`, where: s.id });
+    }
+  }
+  // Over a limit, nothing is expanded per entity or per step (the graph would be as large as the request).
+  const overLimit = diagnostics.length > 0;
+  const entities = overLimit ? [SINGLE] : model.entities?.ids?.length ? [...model.entities.ids] : [SINGLE];
+  const years = yearsOf(model, limits.maxSteps);
   const paramIds = new Set(model.parameters.map((p) => p.id));
   const inputIds = new Set((model.inputs ?? []).map((i) => i.id));
   const varIds = new Set(model.variables.map((v) => v.id));
@@ -437,6 +530,11 @@ export function compileModel(model: CoreModel): CompiledModel {
     }
   }
   for (const out of model.outputs) if (!varIds.has(out) && !inputIds.has(out) && !solveByUnknown.has(out)) diagnostics.push({ level: 'error', code: 'unknown-symbol', message: `output "${out}" is not a variable, input or solve unknown`, where: out });
+  const steady = model.limitations?.steadyStateOnly;
+  if (steady) {
+    for (const out of steady.outputs) if (!model.outputs.includes(out)) diagnostics.push({ level: 'warning', code: 'unknown-symbol', message: `limitations.steadyStateOnly lists "${out}", which is not an output`, where: out });
+    if (steady.at !== undefined && years.length && !years.some((y) => Math.abs(y - steady.at!) < 1e-9)) diagnostics.push({ level: 'error', code: 'parse', message: `limitations.steadyStateOnly.at ${steady.at} is not a step of this model`, where: 'limitations' });
+  }
 
   return { model, entities, years, order, variables, solves, aggregates, tests, invariants, diagnostics };
 }
@@ -531,6 +629,10 @@ export interface RunOptions {
   seed?: number | null;
   /** Monte Carlo run index; changes the draw. */
   run?: number;
+  /** Wall-clock deadline and cancellation. Defaults to the budget set by withRunBudget, if any. */
+  budget?: RunBudget;
+  /** Tighter limits for this run. */
+  limits?: Partial<RunLimits>;
 }
 
 function manifestFor(model: CoreModel, overlays: Overlay[], seed: number | null, run = 0): RunManifest {
@@ -542,12 +644,24 @@ function manifestFor(model: CoreModel, overlays: Overlay[], seed: number | null,
 export function runModel(base: CoreModel, opts: RunOptions = {}): RunResult {
   const overlays = opts.overlays ?? [];
   const seed = opts.seed ?? null;
+  const budget = opts.budget ?? ambientBudget;
   const { model, diagnostics: d0 } = resolveModel(base, overlays);
-  const cm = compileModel(model);
+  const cm = compileModel(model, opts.limits ?? budget?.limits);
   const diagnostics = [...d0, ...cm.diagnostics];
   const manifest = manifestFor(base, overlays, seed, opts.run ?? 0);
   const empty: RunResult = { ok: false, diagnostics, years: cm.years, series: {}, aggregates: {}, binding: {}, solves: {}, parameters: {}, manifest };
   if (diagnostics.some((d) => d.level === 'error')) return empty;
+  const limits = effectiveLimits(opts.limits ?? budget?.limits);
+  const stopped = (t: number): RunResult | null => {
+    const d = budgetProblem(budget);
+    if (!d) return null;
+    diagnostics.push({ ...d, step: t });
+    return { ...empty, diagnostics };
+  };
+  {
+    const early = stopped(0);
+    if (early) return early;
+  }
 
   const { entities, years, order } = cm;
   const nY = years.length;
@@ -599,6 +713,10 @@ export function runModel(base: CoreModel, opts: RunOptions = {}): RunResult {
   };
 
   for (let t = 0; t < nY; t++) {
+    if (budget && t > 0) {
+      const halt = stopped(t);
+      if (halt) return halt;
+    }
     for (const node of order) {
       if (node.kind === 'aggregate') {
         const agg = cm.aggregates.get(node.key)!;
@@ -657,7 +775,8 @@ export function runModel(base: CoreModel, opts: RunOptions = {}): RunResult {
         let fhi = Number(f(hi));
         const tol = s.def.tol ?? 1e-9;
         const residualTol = s.def.residualTol;
-        const maxIter = s.def.maxIter ?? 100;
+        // compileModel already refused a declared maxIter over the limit; this is the engine's backstop.
+        const maxIter = Math.min(s.def.maxIter ?? 100, limits.maxSolverIterations);
         if (!Number.isFinite(flo) || !Number.isFinite(fhi)) {
           return fail('no-root', 'solve-no-root', `residual is not finite at a bracket end [${lo}, ${hi}] (${flo}, ${fhi})`);
         }
@@ -677,6 +796,10 @@ export function runModel(base: CoreModel, opts: RunOptions = {}): RunResult {
           return fail('no-root', 'solve-no-root', `residual has the same sign at both ends of the bracket [${lo}, ${hi}] (${flo.toPrecision(3)}, ${fhi.toPrecision(3)})`);
         } else {
           for (; it < maxIter; it++) {
+            if (budget) {
+              const halt = stopped(t);
+              if (halt) return halt;
+            }
             const mid = (lo + hi) / 2;
             const fm = Number(f(mid));
             if (!Number.isFinite(fm)) return fail('discontinuity', 'solve-discontinuity', `residual is not finite at u = ${mid} inside the bracket: a pole or undefined region, not a root`);
@@ -761,21 +884,53 @@ function quantile(sorted: number[], q: number): number {
   return sorted[lo] + (sorted[hi] - sorted[lo]) * (pos - lo);
 }
 
-export function runMonteCarlo(base: CoreModel, opts: { overlays?: Overlay[]; runs?: number; seed?: number } = {}): MonteCarloResult {
-  const runs = opts.runs ?? 200;
+export interface MonteCarloOptions {
+  overlays?: Overlay[];
+  runs?: number;
+  seed?: number;
+  budget?: RunBudget;
+  limits?: Partial<RunLimits>;
+}
+
+/** Progress of a multi-draw computation. */
+export interface DrawProgress {
+  done: number;
+  total: number;
+}
+
+/**
+ * Monte Carlo as a generator: yields after every draw so a caller (the worker) can report progress,
+ * yield to its event loop and stop. `runMonteCarlo` drives it to completion synchronously.
+ *
+ * A deterministic model (no parameter declares a range) is run once: N identical draws would only
+ * cost N times as much. The result says `deterministic: true` and `runs: 1`.
+ */
+export function* monteCarloSteps(base: CoreModel, opts: MonteCarloOptions = {}): Generator<DrawProgress, MonteCarloResult, void> {
+  const requested = opts.runs ?? 200;
   const seed = opts.seed ?? 1;
   const overlays = opts.overlays ?? [];
-  const first = runModel(base, { overlays, seed, run: 0 });
+  const limits = effectiveLimits(opts.limits ?? opts.budget?.limits ?? ambientBudget?.limits);
+  const { model } = resolveModel(base, overlays);
+  const deterministic = isDeterministic(model);
+  if (!Number.isInteger(requested) || requested < 1 || requested > limits.maxDraws) {
+    const manifest = manifestFor(base, overlays, seed, 0);
+    const diagnostics: Diagnostic[] = [{ level: 'error', code: 'limit-exceeded', message: `${String(requested)} Monte Carlo draws requested; the limit is 1 to ${limits.maxDraws.toLocaleString('en-US')}`, where: 'runs' }];
+    return { ok: false, diagnostics, years: [], runs: 0, quantiles: {}, manifest };
+  }
+  const runs = deterministic ? 1 : requested;
+  const runOpts = { overlays, seed, budget: opts.budget, limits: opts.limits };
+  const first = runModel(base, { ...runOpts, run: 0 });
   const manifest = { ...first.manifest, seed };
-  if (!first.ok) return { ok: false, diagnostics: first.diagnostics, years: first.years, runs: 0, quantiles: {}, manifest };
+  if (!first.ok) return { ok: false, diagnostics: first.diagnostics, years: first.years, runs: 0, quantiles: {}, manifest, deterministic };
   const all: RunResult[] = [first];
+  yield { done: 1, total: runs };
   for (let r = 1; r < runs; r++) {
-    const res = runModel(base, { overlays, seed, run: r });
-    if (!res.ok) return { ok: false, diagnostics: res.diagnostics, years: res.years, runs: r, quantiles: {}, manifest };
+    const res = runModel(base, { ...runOpts, run: r });
+    if (!res.ok) return { ok: false, diagnostics: res.diagnostics, years: res.years, runs: r, quantiles: {}, manifest, deterministic };
     all.push(res);
+    yield { done: r + 1, total: runs };
   }
   const quantiles: MonteCarloResult['quantiles'] = {};
-  const { model } = resolveModel(base, overlays);
   const keys = new Set<string>([...model.outputs, ...model.variables.map((v) => v.id)]);
   for (const entity of Object.keys(first.series)) {
     quantiles[entity] = {};
@@ -791,7 +946,19 @@ export function runMonteCarlo(base: CoreModel, opts: { overlays?: Overlay[]; run
       quantiles[entity][key] = q;
     }
   }
-  return { ok: true, diagnostics: first.diagnostics, years: first.years, runs, quantiles, manifest };
+  return { ok: true, diagnostics: first.diagnostics, years: first.years, runs, quantiles, manifest, deterministic };
+}
+
+/** Drive a progress generator to its return value, synchronously. */
+export function drain<R>(gen: Generator<unknown, R, void>): R {
+  for (;;) {
+    const step = gen.next();
+    if (step.done) return step.value;
+  }
+}
+
+export function runMonteCarlo(base: CoreModel, opts: MonteCarloOptions = {}): MonteCarloResult {
+  return drain(monteCarloSteps(base, opts));
 }
 
 /** Evaluate the model's own tests against a run. */
