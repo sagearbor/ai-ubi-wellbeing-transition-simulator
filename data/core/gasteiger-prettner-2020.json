@@ -3,7 +3,7 @@
   "id": "gasteiger-prettner-2020",
   "name": "Gasteiger & Prettner (2020): automation, stagnation and a robot tax (general OLG model)",
   "description": "Two-period overlapping-generations economy with traditional capital k and automation capital p (robots), CES substitution between robots and workers, full depreciation, and a robot tax whose revenue is paid lump-sum to young workers (a UBI-like transfer). Ported from the working paper Section 4.3 (general model), Section 5 (robot tax) and Appendix B. Each entity is one robot-tax rate (tau); tau = 0 is the Section 4.3 model without the tax and is the welfare baseline. Every step solves for p from the capital-market equation k_t + p_t = s_{t-1}/(1+n), where k_t follows from the tax-distorted no-arbitrage condition. Source errata, read against the pinned PDF: (1) Appendix B.3 p.36 prints y = k^alpha [nu p + (1-nu)]^((1-alpha)/mu) without the exponent mu on p; this port uses p^mu, which is what the production function on p.15 implies. (2) Figure 4(a) p.22 is titled \"scaled by 100\" but plots unscaled p (about 2.5e-4 at tau = 0); Figures 2(a) and 3(a) really are p*100. (3) Appendix B.1 p.33 defines r = R - delta; with full depreciation (delta = 1, Section 3 p.8) the gross return 1 + r equals the rental rate R, so psi uses R directly.",
-  "scope": "Reproduces the paper's steady states and welfare comparison, not a forecast. One time step is one 25-year generation (paper p.16); the engine only offers year or month steps, so the step is labelled \"year\" and the axis values 0-40 are generation indices, NOT calendar years. The paper's transition figures come from a linearised model with unstated initial conditions; this port runs the nonlinear equations from an assumed initial income, so only steady states (step 40) are quantitative targets and the path to them is qualitative. The consumption and welfare series are reported one step late (cohort born at t-1) because c1 needs next period's return and the engine has no leads; they equal the paper's c1, c2 at a steady state and mix cohorts during a transition. The welfare-maximising tax is only located on this entity grid (the engine has no argmax), and the welfare comparison is between steady states, not a transition from an untaxed economy. Closed economy with no endogenous innovation: the paper itself (p.26) says the robot-tax result holds only for a large bloc such as the OECD taken together. Parameters are the paper's illustrative calibration; there are no uncertainty ranges because the paper states none.",
+  "scope": "Reproduces the paper's steady states and welfare comparison, not a forecast. One time step is one 25-year generation (paper p.16), declared as time.stepLabel \"generation\" with stepYears 25: the time values 0-40 are generation indices, NOT calendar years, and nothing is interpolated between generations. The paper's transition figures come from a linearised model with unstated initial conditions; this port runs the nonlinear equations from an assumed initial income, so only steady states (step 40) are quantitative targets and the path to them is qualitative. The consumption and welfare series are reported one step late (cohort born at t-1) because c1 needs next period's return and the engine has no leads; they equal the paper's c1, c2 at a steady state and mix cohorts during a transition. The welfare-maximising tax is only located on this entity grid (the engine has no argmax), and the welfare comparison is between steady states, not a transition from an untaxed economy. Closed economy with no endogenous innovation: the paper itself (p.26) says the robot-tax result holds only for a large bloc such as the OECD taken together. Parameters are the paper's illustrative calibration; there are no uncertainty ranges because the paper states none.",
   "license": "Equations and parameter values from a published working paper; this file is an independent port.",
   "sources": [
     {
@@ -19,7 +19,22 @@
   "time": {
     "start": 0,
     "end": 40,
-    "step": "year"
+    "step": "year",
+    "stepLabel": "generation",
+    "stepYears": 25
+  },
+  "limitations": {
+    "steadyStateOnly": {
+      "outputs": [
+        "c1_prev",
+        "c2_prev",
+        "utility_prev",
+        "cv1_pct",
+        "cv2_pct"
+      ],
+      "at": 40,
+      "reason": "Consumption and welfare are reported for the cohort born one generation earlier (the engine has no leads), so between steady states they mix two cohorts, and the paper's welfare comparison is between steady states, not along a transition from an untaxed economy. Only the steady-state value (generation 40) is a quantitative result; the path to it is not shown."
+    }
   },
   "entities": {
     "kind": "robotTaxRate",
