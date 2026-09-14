@@ -15,6 +15,7 @@ import {
   type LabLinkState,
   type PolicyBundle,
 } from './bundle';
+import { ENGINE_VERSION } from '../core/engine';
 import { pairedRun } from './draft';
 import { modelHash } from './hash';
 import { SOURCE_TEXT, cohort, retraining, threeStatusDraft, training } from './testDrafts';
@@ -22,8 +23,9 @@ import { SOURCE_TEXT, cohort, retraining, threeStatusDraft, training } from './t
 const registry = (id: string): CoreModel | undefined => findFixture(id)?.model;
 
 const linkState = (over: Partial<LabLinkState> = {}): LabLinkState => ({
-  v: 1,
+  v: 2,
   modelId: training.id,
+  engineVersion: ENGINE_VERSION,
   modelHash: modelHash(training),
   overlays: [],
   drafts: [threeStatusDraft()],
@@ -57,11 +59,21 @@ describe('lab share link', () => {
   });
 
   it('never throws on garbage and says what is wrong', () => {
-    const bad = ['', '!!!', 'aGVsbG8', encodeLabLink({ ...linkState(), v: 2 } as unknown as LabLinkState), encodeLabLink({ ...linkState(), drafts: [] })];
+    const bad = [
+      '',
+      '!!!',
+      'aGVsbG8',
+      encodeLabLink({ ...linkState(), v: 3 } as unknown as LabLinkState),
+      encodeLabLink({ ...linkState(), drafts: [] }),
+      encodeLabLink({ ...linkState(), v: 1 } as unknown as LabLinkState),
+      encodeLabLink({ ...linkState(), engineVersion: '' }),
+    ];
     const reasons = bad.map((p) => decodeLabLink(p)).map((r) => (r.ok ? 'ok' : r.reason));
     expect(reasons.every((r) => r !== 'ok')).toBe(true);
     expect(reasons[3]).toContain('unsupported lab link version');
     expect(reasons[4]).toContain('one or two policy drafts');
+    expect(reasons[5]).toContain('before links recorded the engine version');
+    expect(reasons[6]).toContain('engine version');
     // a truncated link
     const full = encodeLabLink(linkState());
     const cut = decodeLabLink(full.slice(0, Math.floor(full.length / 2)));
@@ -84,13 +96,34 @@ describe('lab share link', () => {
     const mismatched = openLabLink(linkState({ drafts: [{ ...threeStatusDraft(), modelId: 'cohort-flow' }] }), registry);
     expect(mismatched.ok).toBe(false);
   });
+
+  it('records the engine version and refuses a link made with another engine', () => {
+    const state = linkState();
+    expect(decodeLabLink(encodeLabLink(state)).value?.engineVersion).toBe(ENGINE_VERSION);
+    const other = openLabLink(linkState({ engineVersion: `${ENGINE_VERSION}-other` }), registry);
+    expect(other.ok).toBe(false);
+    if (!other.ok) expect(other.reason).toMatch(/engine .*not opened/);
+  });
+
+  it('does not open a link whose draft has validation errors', () => {
+    const bad = threeStatusDraft();
+    bad.provisions = [bad.provisions[0], { ...bad.provisions[0], id: 'fund-b', mapping: { ...bad.provisions[0].mapping!, curve: { '2026': 1 } } }];
+    const opened = openLabLink(linkState({ drafts: [bad] }), registry);
+    expect(opened.ok).toBe(false);
+    if (!opened.ok) expect(opened.reason).toContain('conflicting-setters');
+    // unresolved provisions are not errors
+    const omitted = { ...threeStatusDraft(), provisions: threeStatusDraft().provisions.slice(1) };
+    expect(openLabLink(linkState({ drafts: [omitted] }), registry).ok).toBe(true);
+  });
 });
 
 describe('bundle', () => {
   it('reproduces after a JSON round trip, with quotes re-checked from the bundled source', () => {
     const draft = threeStatusDraft();
-    const result = pairedRun(training, [], draft, { runs: 120, seed: 9 });
+    const result = pairedRun(training, [], draft, { runs: 120, seed: 9, sourceText: SOURCE_TEXT });
     const bundle = roundTrip(buildBundle(training, [], draft, result, { sourceText: SOURCE_TEXT }));
+    expect(bundle.manifest.coverage.source.status).toBe('complete');
+    expect(bundle.manifest).toMatchObject({ engineVersion: ENGINE_VERSION, draws: { count: 120, seed: 9, firstIndex: 0 } });
     const report = reopenBundle(bundle, registry);
     expect(report.errors).toEqual([]);
     expect(report.status).toBe('reproduced');
@@ -98,6 +131,7 @@ describe('bundle', () => {
     expect(report.maxAbsDiff).toBe(0);
     expect(report.draftDiagnostics.filter((d) => d.level === 'error')).toEqual([]);
     expect(report.draftDiagnostics.map((d) => d.code)).not.toContain('quote-unchecked');
+    expect(report.warnings).toEqual([]);
     expect(bundleFileName(bundle)).toBe(`test-draft-training-budget-${modelHash(training)}.policy.json`);
   });
 
@@ -145,10 +179,27 @@ describe('bundle', () => {
     edited.draft.provisions[0].mapping!.curve = { '2026': 99 };
     expect(reopenBundle(edited, registry).errors[0]).toContain('not the draft the results were computed from');
 
-    const old = parseBundleJson(JSON.stringify({ ...bundle, schema: 'policy-bundle/0' }));
+    const otherEngine = roundTrip({ ...bundle, manifest: { ...bundle.manifest, engineVersion: 'core-0.0.1' } });
+    const eng = reopenBundle(otherEngine, registry);
+    expect(eng.status).toBe('cannot-open');
+    expect(eng.errors[0]).toMatch(/engine "core-0.0.1".*would not be reproducible/);
+    expect(eng.rerun).toBeUndefined();
+
+    const old = parseBundleJson(JSON.stringify({ ...bundle, schema: 'policy-bundle/1' }));
     expect(old.ok).toBe(false);
     if (!old.ok) expect(old.reason).toContain('unsupported bundle schema');
     expect(parseBundleJson('{not json').ok).toBe(false);
-    expect(parseBundleJson(JSON.stringify({ ...bundle, tolerance: { absolute: -1, relative: 0 } })).ok).toBe(false);
+  });
+
+  it('does not re-run a bundle whose draft fails validation against its own source text', () => {
+    const draft = threeStatusDraft();
+    const result = pairedRun(training, [], draft, { runs: 3, seed: 1 });
+    // a bundle whose source text is not the text the draft pins (hand-built: the panel would not bundle it)
+    const tampered = roundTrip(buildBundle(training, [], draft, result, { sourceText: SOURCE_TEXT.replace('stipend', 'grant') }));
+    const rep = reopenBundle(tampered, registry);
+    expect(rep.status).toBe('cannot-open');
+    expect(rep.rerun).toBeUndefined();
+    expect(rep.errors[0]).toContain('text-hash-mismatch');
+    expect(parseBundleJson(JSON.stringify({ ...tampered, tolerance: { absolute: -1, relative: 0 } })).ok).toBe(false);
   });
 });

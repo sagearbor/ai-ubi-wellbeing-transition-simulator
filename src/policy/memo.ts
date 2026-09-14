@@ -7,7 +7,7 @@
 
 import { resolveModel } from '../core/engine';
 import type { CoreModel, EvidenceKind, Overlay } from '../core/types';
-import { coverage, normaliseWhitespace } from './draft';
+import { coverage, mappingUnits, normaliseWhitespace } from './draft';
 import type { DraftDiagnostic, PairedRunResult, PolicyDraft, Quantiles } from './types';
 
 export interface MemoInput {
@@ -16,6 +16,8 @@ export interface MemoInput {
   draft: PolicyDraft;
   result: PairedRunResult;
   diagnostics?: DraftDiagnostic[];
+  /** The source text, when available: source-clause coverage is measured against it. */
+  sourceText?: string;
   /** Years to report; defaults to every step for yearly models and each whole year for monthly ones (at most 12 rows). */
   years?: number[];
 }
@@ -62,7 +64,7 @@ function reportSteps(result: PairedRunResult, years?: number[]): number[] {
 
 export function renderMemo(input: MemoInput): string {
   const { model, overlays, draft, result } = input;
-  const cov = coverage(draft);
+  const cov = coverage(draft, input.sourceText);
   const lines: string[] = [];
   const push = (...xs: string[]) => lines.push(...xs);
   const { model: resolved } = resolveModel(model, overlays);
@@ -84,7 +86,10 @@ export function renderMemo(input: MemoInput): string {
   if (draft.reviewedBy) push(`- **Reviewed by:** ${draft.reviewedBy.name}${draft.reviewedBy.date ? ` (${draft.reviewedBy.date})` : ''}`);
   push(`- **Model:** ${model.name} (\`${model.id}\`, version ${result.manifest.modelHash})`);
   if (overlays.length) push(`- **Scenario overlays on both sides:** ${overlays.map((o) => `\`${o.id}\``).join(', ')}`);
-  push(`- **Coverage:** ${cov.text}.${cov.allAccountedFor ? ' Every provision is accounted for.' : ' NOT every provision is accounted for.'}`);
+  push(`- **Provisions listed:** ${cov.text}; ${cov.statusText}. This counts only what the draft lists.`);
+  push(`- **Source coverage:** ${cov.source.text}${cov.source.status === 'complete' || cov.source.status === 'incomplete' ? ` (clause inventory ${cov.source.inventoryVersion})` : ''}.`);
+  if (cov.source.uncovered.length) push(`  - Neither quoted nor excluded: ${cov.source.uncovered.map((id) => `\`${id}\``).join(', ')}`);
+  push(`- **Completeness:** ${cov.completeness.text}.${cov.completeness.attested && cov.completeness.attestation ? ` Statement: "${normaliseWhitespace(cov.completeness.attestation.statement)}"` : ' No person has attested that the provisions and exclusions cover the whole text.'}`);
   if (draft.notes) push(`- **Drafting notes:** ${normaliseWhitespace(draft.notes)}`);
   push('');
 
@@ -93,14 +98,30 @@ export function renderMemo(input: MemoInput): string {
   push('| # | Quote | Status | Role | Mapping | Evidence kind | Why |', '|---|---|---|---|---|---|---|');
   draft.provisions.forEach((p, i) => {
     const m = p.mapping;
+    const units = p.status === 'mapped' && m ? mappingUnits(m, resolved) : null;
     const mapping =
       p.status === 'mapped' && m
-        ? `${m.kind} \`${m.target}\` ${m.op}${m.value !== undefined ? ` ${fmtNumber(m.value)}` : ''}${m.curve ? ` curve ${JSON.stringify(m.curve)}` : ''}${m.expr ? ` \`${m.expr}\`` : ''}${m.unit ? ` ${m.unit}` : ''}`
-        : '—';
+        ? `${m.kind} \`${m.target}\` ${m.op}${m.value !== undefined ? ` ${fmtNumber(m.value)}` : ''}${m.curve ? ` curve ${JSON.stringify(m.curve)}` : ''}${m.expr ? ` \`${m.expr}\`` : ''}${m.unit ? ` ${m.unit}` : ''}${
+            units?.conversion ? ` (${units.conversion})` : ''
+          }${m.stacksOn ? ` on top of ${m.stacksOn}` : ''}`
+        : p.interprets?.length
+          ? `interprets ${p.interprets.join(', ')}`
+          : '—';
     const kind = p.status === 'mapped' && m ? m.evidence?.kind ?? 'assumed' : '—';
     const quote = normaliseWhitespace(p.quote);
     push(`| ${i + 1} | "${cell(quote.length > 220 ? `${quote.slice(0, 217)}...` : quote)}" | ${p.status} | ${p.role ?? '—'} | ${cell(mapping)} | ${kind} | ${cell(p.reason ?? p.summary)} |`);
   });
+  push('');
+
+  // -- exclusions ----------------------------------------------------------------------
+  const exclusions = Array.isArray(draft.exclusions) ? draft.exclusions : [];
+  push('## Source clauses excluded', '');
+  if (exclusions.length) {
+    push('| Clause | Kind | Why | Interprets / duplicate of |', '|---|---|---|---|');
+    for (const x of exclusions) {
+      push(`| \`${cell(x.clauseId)}\` | ${cell(x.kind)} | ${cell(x.reason)} | ${cell([...(x.interprets ?? []), ...(x.duplicateOf ? [`duplicate of ${x.duplicateOf}`] : [])].join(', ') || '—')} |`);
+    }
+  } else push('None: every clause the draft deals with has a provision.');
   push('');
 
   // -- assumptions -------------------------------------------------------------------
