@@ -2,8 +2,10 @@
  * PolicyPanel — "read a policy text against this model" (v3 stage 5).
  *
  * Paste a text (or load the worked example), list its provisions — by AI extraction when a key is
- * configured, or by hand — review each one's status, role, mapping and evidence, then run policy
- * against baseline on the same model, scenario overlays and draws. Two drafts can sit side by side
+ * configured, or by hand — review each one's status, role, mapping and evidence, account for every
+ * clause of the source (a provision quote or an explicit exclusion), then run policy against
+ * baseline on the same model, scenario overlays and draws. Run is disabled while the draft has
+ * validation errors, and the errors are listed next to it. Two drafts can sit side by side
  * on that baseline. The result can be shared as a link, downloaded as a bundle that reopens and
  * checks it reproduces, and written up as a decision memo.
  *
@@ -26,21 +28,27 @@ import {
   reopenBundle,
   type ReopenReport,
 } from '../../src/policy/bundle';
-import { DEFAULT_RUNS, DEFAULT_SEED, blankDraft, coverage, pairedRun, validateDraft } from '../../src/policy/draft';
+import { buildClauseInventory, sourceCoverage } from '../../src/policy/clauses';
+import { DEFAULT_RUNS, DEFAULT_SEED, blankDraft, blockingErrors, coverage, pairedRun, validateDraft } from '../../src/policy/draft';
+import { sha256Hex } from '../../src/policy/hash';
 import { POLICY_EXAMPLES, findPolicyExample } from '../../src/policy/examples';
 import { memoFileName, renderMemo } from '../../src/policy/memo';
-import { REVIEW_STATUSES, type PairedRunResult, type PolicyDraft, type ReviewStatus } from '../../src/policy/types';
+import { EXCLUSION_KINDS, REVIEW_STATUSES, type ExclusionKind, type PairedRunResult, type PolicyDraft, type ReviewStatus } from '../../src/policy/types';
 import { extractPolicyDraft, hasPolicyApiKey } from '../../services/policyExtract';
 import { Hint } from '../futures/Hint';
 import PolicyResults from './PolicyResults';
 import ProvisionEditor from './ProvisionEditor';
 import {
+  addExclusion,
   addProvision,
   copyAsDraftB,
   linkStateFor,
+  removeExclusion,
   removeProvision,
   repin,
+  repinSource,
   runKey,
+  updateExclusion,
   setProvisionStatus,
   updateMapping,
   updateProvision,
@@ -103,9 +111,20 @@ async function copyText(text: string): Promise<boolean> {
   }
 }
 
-function runAll(model: CoreModel, overlays: Overlay[], drafts: PolicyDraft[], runs: number, seed: number): Array<StoredResult | null> {
-  return drafts.map((d) => (d.modelId === model.id ? { key: runKey(model, overlays, d, runs, seed), result: pairedRun(model, overlays, d, { runs, seed }) } : null));
+/** pairedRun validates each draft and refuses to run one with errors; the result then lists them. */
+function runAll(model: CoreModel, overlays: Overlay[], drafts: PolicyDraft[], runs: number, seed: number, sourceText: string): Array<StoredResult | null> {
+  const text = sourceText.trim() ? sourceText : undefined;
+  return drafts.map((d) =>
+    d.modelId === model.id ? { key: runKey(model, overlays, d, runs, seed, sourceText), result: pairedRun(model, overlays, d, { runs, seed, sourceText: text }) } : null,
+  );
 }
+
+const stateChip: Record<string, string> = {
+  covered: 'bg-sky-100 text-sky-800 ring-sky-300 dark:bg-sky-900/40 dark:text-sky-200 dark:ring-sky-700',
+  'covered-and-excluded': 'bg-sky-100 text-sky-800 ring-sky-300 dark:bg-sky-900/40 dark:text-sky-200 dark:ring-sky-700',
+  excluded: 'bg-slate-200 text-slate-700 ring-slate-300 dark:bg-slate-700/60 dark:text-slate-200 dark:ring-slate-600',
+  uncovered: 'bg-amber-100 text-amber-800 ring-amber-300 dark:bg-amber-900/40 dark:text-amber-200 dark:ring-amber-700',
+};
 
 const PolicyPanel: React.FC<PolicyPanelProps> = ({
   model,
@@ -126,7 +145,11 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
   const [active, setActive] = useState(0);
   const [runs, setRuns] = useState(initialRuns);
   const [seed, setSeed] = useState(initialSeed);
-  const [results, setResults] = useState<Array<StoredResult | null>>(() => (runOnMount ? runAll(model, overlays, initialDrafts.slice(0, 2), initialRuns, initialSeed) : []));
+  const [results, setResults] = useState<Array<StoredResult | null>>(() =>
+    runOnMount ? runAll(model, overlays, initialDrafts.slice(0, 2), initialRuns, initialSeed, initialSource?.text ?? '') : [],
+  );
+  const [attestName, setAttestName] = useState('');
+  const [attestStatement, setAttestStatement] = useState('I checked every clause of the source text: each is quoted by a provision or excluded with a reason.');
   const [year, setYear] = useState<number | null>(null);
   const [notice, setNotice] = useState<{ tone: 'ok' | 'error'; text: string } | null>(initialNotice);
   const [extracting, setExtracting] = useState(false);
@@ -150,21 +173,30 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
         .map((d, i) => {
           const r = results[i];
           if (!r || d.modelId !== model.id) return null;
-          return { label: i === 0 ? 'A' : 'B', result: r.result, stale: r.key !== runKey(model, overlays, d, runs, seed) };
+          return { label: i === 0 ? 'A' : 'B', result: r.result, stale: r.key !== runKey(model, overlays, d, runs, seed, sourceText) };
         })
         .filter((e): e is { label: string; result: PairedRunResult; stale: boolean } => e !== null),
-    [drafts, results, model, overlays, runs, seed],
+    [drafts, results, model, overlays, runs, seed, sourceText],
   );
 
   const activeResult = results[active];
   const activeFresh = useMemo(
-    () => !!(draft && activeResult && activeResult.result.ok && activeResult.key === runKey(model, overlays, draft, runs, seed)),
-    [draft, activeResult, model, overlays, runs, seed],
+    () => !!(draft && activeResult && activeResult.result.ok && activeResult.key === runKey(model, overlays, draft, runs, seed, sourceText)),
+    [draft, activeResult, model, overlays, runs, seed, sourceText],
   );
   const memo = useMemo(
-    () => (draft && activeResult && activeFresh ? renderMemo({ model, overlays, draft, result: activeResult.result, diagnostics: diagnostics[active] }) : ''),
-    [draft, activeResult, activeFresh, model, overlays, diagnostics, active],
+    () =>
+      draft && activeResult && activeFresh
+        ? renderMemo({ model, overlays, draft, result: activeResult.result, diagnostics: diagnostics[active], sourceText: sourceText.trim() ? sourceText : undefined })
+        : '',
+    [draft, activeResult, activeFresh, model, overlays, diagnostics, active, sourceText],
   );
+  /** Blocking validation errors per draft on this model. */
+  const blocking = useMemo(() => drafts.map((d, i) => (d.modelId === model.id ? blockingErrors(diagnostics[i] ?? []) : [])), [drafts, diagnostics, model]);
+  const runnable = drafts.some((x) => x.modelId === model.id);
+  const blocked = blocking.some((b) => b.length > 0);
+  const clauseDetail = useMemo(() => (draft && sourceText.trim() ? sourceCoverage(draft, sourceText) : null), [draft, sourceText]);
+  const clauseText = useMemo(() => new Map(sourceText.trim() ? buildClauseInventory(sourceText).clauses.map((c) => [c.id, c.text] as const) : []), [sourceText]);
 
   // -- draft edits ----------------------------------------------------------
 
@@ -212,8 +244,12 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
         setReport(null);
         setNotice({
           tone: 'ok',
-          text: `AI draft ready: ${coverage(out.draft).text}. It is unreviewed — check every quote and mapping against the text.${
+          text: `AI draft ready: ${coverage(out.draft).text}; ${coverage(out.draft, sourceText).source.text}. It is unreviewed and its completeness is not attested — check every quote, mapping and exclusion against the text.${
             out.demoted.length ? ` ${out.demoted.length} mapping${out.demoted.length === 1 ? ' was' : 's were'} demoted to unresolved (quote not verbatim or target not in the model).` : ''
+          }${
+            out.droppedExclusions.length
+              ? ` ${out.droppedExclusions.length} proposed exclusion${out.droppedExclusions.length === 1 ? ' was' : 's were'} dropped (${out.droppedExclusions.map((x) => `${x.clauseId}: ${x.why}`).join('; ')}).`
+              : ''
           }`,
         });
       }
@@ -225,7 +261,8 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
   };
 
   const run = () => {
-    setResults(runAll(model, overlays, drafts, runs, seed));
+    if (blocked) return;
+    setResults(runAll(model, overlays, drafts, runs, seed, sourceText));
     setReport(null);
     setNotice(null);
   };
@@ -246,12 +283,17 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
     const url = buildLabShareUrl(state, origin, path);
     setLinkText(url);
     const ok = await copyText(url);
-    setNotice({ tone: 'ok', text: ok ? 'Link copied. It pins the model version, the scenario and the drafts; opening it re-runs the comparison.' : 'Copy the link below.' });
+    setNotice({
+      tone: 'ok',
+      text: `${ok ? 'Link copied.' : 'Copy the link below.'} It pins the model and engine versions, the scenario, the drafts, the draws and the seed; opening it re-runs the comparison. It does not carry the source text, so whoever opens it sees "source unavailable — coverage unknown". Download a bundle to share the text too.`,
+    });
   };
 
   const downloadBundle = () => {
     if (!draft || !activeResult || !activeFresh) return;
-    const bundle = buildBundle(model, overlays, draft, activeResult.result, { sourceText: sourceText.trim() ? sourceText : undefined });
+    // The source text travels only when it is the text the draft pins, so quotes can be re-checked on reopening.
+    const pinned = sourceText.trim() && (!draft.source.textSha256 || sha256Hex(sourceText) === draft.source.textSha256);
+    const bundle = buildBundle(model, overlays, draft, activeResult.result, { sourceText: pinned ? sourceText : undefined });
     download(bundleFileName(bundle), JSON.stringify(bundle, null, 2), 'application/json');
   };
 
@@ -273,8 +315,8 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
       setSourceText(parsed.value.sourceText ?? '');
       setRuns(parsed.value.manifest.runs);
       setSeed(parsed.value.manifest.seed);
-      setResults(rep.rerun ? [{ key: runKey(rep.model, rep.overlays, rep.draft, parsed.value.manifest.runs, parsed.value.manifest.seed), result: rep.rerun }] : []);
-      setNotice(null);
+      setResults(rep.rerun ? [{ key: runKey(rep.model, rep.overlays, rep.draft, parsed.value.manifest.runs, parsed.value.manifest.seed, parsed.value.sourceText ?? ''), result: rep.rerun }] : []);
+      setNotice(rep.status === 'cannot-open' ? { tone: 'error', text: 'The bundled draft is loaded for inspection only; it was not run. Fix the errors listed below, then run it.' } : null);
     } else {
       setNotice({ tone: 'error', text: rep.errors.join(' ') });
     }
@@ -289,7 +331,7 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
 
   // -- view -------------------------------------------------------------------
 
-  const cov = draft ? coverage(draft) : null;
+  const cov = draft ? coverage(draft, sourceText.trim() ? sourceText : undefined) : null;
   const d = draft ? diagnostics[active] ?? [] : [];
   const errors = d.filter((x) => x.level === 'error');
   const draftWarnings = d.filter((x) => x.level === 'warning' && !x.provisionId);
@@ -297,6 +339,8 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
   const draftErrors = errors.filter((x) => !x.provisionId);
   const wrongModel = draft && draft.modelId !== model.id;
   const wrongVersion = draft && !wrongModel && d.some((x) => x.code === 'model-hash-mismatch');
+  const wrongText = draft && d.some((x) => x.code === 'text-hash-mismatch');
+  const today = () => new Date().toISOString().slice(0, 10);
 
   return (
     <section className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-3 sm:p-4 space-y-3" aria-labelledby="policy-heading">
@@ -482,15 +526,134 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
             )}
           </div>
 
+          {wrongText && (
+            <div className="rounded-lg border border-amber-300 bg-amber-50 dark:border-amber-800 dark:bg-amber-950/40 px-3 py-2 text-xs text-amber-800 dark:text-amber-200">
+              The policy text above is not the text this draft pins, so its quotes and coverage cannot be checked, and it cannot run.
+              <button type="button" className={`${btnPlain} ml-2`} onClick={() => edit((x) => repinSource(x, sourceText))}>
+                Re-pin the draft to this text
+              </button>
+            </div>
+          )}
+
           {cov && (
-            <p className={`text-xs font-semibold ${cov.allAccountedFor ? 'text-slate-700 dark:text-slate-200' : 'text-amber-700 dark:text-amber-300'}`}>
-              {cov.text}
-              {cov.allAccountedFor ? ' — every provision accounted for' : ' — not every provision is accounted for yet'}
-              <Hint
-                label="coverage"
-                text="Every provision must be mapped, unresolved or outside the model. Unresolved and outside-model provisions change nothing in the run; they are listed so the missing mechanisms stay visible."
-              />
-            </p>
+            <div className="space-y-0.5 text-xs" data-testid="policy-coverage">
+              <p className={`font-semibold ${cov.allHaveStatus ? 'text-slate-700 dark:text-slate-200' : 'text-amber-700 dark:text-amber-300'}`}>
+                {`${cov.text} — ${cov.statusText}`}
+                <Hint
+                  label="provision statuses"
+                  text="Counts only the provisions this draft lists. Unresolved and outside-model provisions change nothing in the run; they are listed so the missing mechanisms stay visible. Whether the list is complete is the next line's question."
+                />
+              </p>
+              <p className={`font-semibold ${cov.source.status === 'complete' ? 'text-slate-700 dark:text-slate-200' : 'text-amber-700 dark:text-amber-300'}`}>
+                {`Source: ${cov.source.text}`}
+                <Hint
+                  label="source coverage"
+                  text="The source text is split into clauses by its own structure (sections and (a)/(1)/(A)/(i) subdivisions, or paragraphs and sentences), so the denominator does not depend on the draft. A clause counts when a provision quotes it or it is excluded with a kind and a reason."
+                />
+              </p>
+              <p className={cov.completeness.attested ? 'text-slate-700 dark:text-slate-200' : 'text-amber-700 dark:text-amber-300'}>{`Completeness: ${cov.completeness.text}`}</p>
+            </div>
+          )}
+
+          {clauseDetail && clauseDetail.clauses > 0 && (
+            <details className="rounded-lg border border-slate-200 dark:border-slate-800 px-2 py-1 text-xs">
+              <summary className="min-h-11 cursor-pointer list-none py-2 font-semibold text-slate-700 dark:text-slate-200">
+                {`Source clauses (${clauseDetail.clauses}; ${clauseDetail.uncovered.length} neither quoted nor excluded)`}
+              </summary>
+              <ul className="space-y-1 pb-2">
+                {clauseDetail.detail.map((c) => (
+                  <li key={c.id} className="rounded border border-slate-100 dark:border-slate-800 p-1.5">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ring-1 ring-inset ${stateChip[c.state]}`}>{c.state}</span>
+                      <span className="font-mono">{c.id}</span>
+                      <span className="min-w-0 flex-1 truncate text-slate-500 dark:text-slate-400">{(clauseText.get(c.id) ?? '').replace(/\s+/g, ' ').trim().slice(0, 120)}</span>
+                    </div>
+                    {c.provisions.length > 0 && <p className="mt-0.5 text-[11px] text-slate-600 dark:text-slate-300">quoted by {c.provisions.join(', ')}</p>}
+                    {c.exclusion ? (
+                      <div className="mt-1 grid grid-cols-1 sm:grid-cols-4 gap-1">
+                        <select
+                          aria-label={`exclusion kind for ${c.id}`}
+                          className={`${field} h-11`}
+                          value={c.exclusion.kind}
+                          onChange={(e) => edit((x) => updateExclusion(x, c.id, { kind: e.target.value as ExclusionKind }))}
+                        >
+                          {EXCLUSION_KINDS.map((k) => (
+                            <option key={k} value={k}>
+                              {k}
+                            </option>
+                          ))}
+                        </select>
+                        <input
+                          aria-label={`why ${c.id} is excluded`}
+                          className={`${field} h-11 sm:col-span-2`}
+                          value={c.exclusion.reason}
+                          placeholder="why this clause has no provision (required)"
+                          onChange={(e) => edit((x) => updateExclusion(x, c.id, { reason: e.target.value }))}
+                        />
+                        <button type="button" className={btnPlain} onClick={() => edit((x) => removeExclusion(x, c.id))}>
+                          Remove exclusion
+                        </button>
+                        {c.exclusion.interprets?.length ? <p className="sm:col-span-4 text-[11px] text-slate-600 dark:text-slate-300">interprets {c.exclusion.interprets.join(', ')}</p> : null}
+                      </div>
+                    ) : c.state === 'uncovered' ? (
+                      <div className="mt-1 flex flex-wrap gap-1">
+                        <button type="button" className={btnPlain} onClick={() => edit((x) => addProvision(x, (clauseText.get(c.id) ?? '').replace(/\s+/g, ' ').trim()))}>
+                          Add a provision quoting it
+                        </button>
+                        <button type="button" className={btnPlain} onClick={() => edit((x) => addExclusion(x, c.id))}>
+                          Exclude it, with a reason
+                        </button>
+                      </div>
+                    ) : null}
+                  </li>
+                ))}
+              </ul>
+            </details>
+          )}
+
+          {draft && (
+            <div className="flex flex-wrap items-end gap-2 text-xs">
+              {draft.completeness ? (
+                <>
+                  <p className="text-slate-600 dark:text-slate-300">{`Attestation on file: ${draft.completeness.name} (${draft.completeness.kind}), ${draft.completeness.date} — "${draft.completeness.statement}"`}</p>
+                  <button type="button" className={btnPlain} onClick={() => setDraft(active, { ...draft, completeness: undefined })}>
+                    Withdraw attestation
+                  </button>
+                </>
+              ) : (
+                <>
+                  <div>
+                    <label className={labelCls} htmlFor="policy-attest-name">
+                      Attest completeness: your name
+                      <Hint
+                        label="completeness attestation"
+                        text="A named person states that the provisions and exclusions cover the whole source text. It is recorded with the date and the text's SHA-256, dropped when the draft is edited, and never made by an AI extraction or a coding agent. Without it, exports say completeness is not attested."
+                      />
+                    </label>
+                    <input id="policy-attest-name" className={`${field} h-11 w-48`} value={attestName} onChange={(e) => setAttestName(e.target.value)} />
+                  </div>
+                  <div className="min-w-[12rem] flex-1">
+                    <label className={labelCls} htmlFor="policy-attest-statement">
+                      Statement
+                    </label>
+                    <input id="policy-attest-statement" className={`${field} h-11`} value={attestStatement} onChange={(e) => setAttestStatement(e.target.value)} />
+                  </div>
+                  <button
+                    type="button"
+                    className={btnPlain}
+                    disabled={!attestName.trim() || !attestStatement.trim() || !sourceText.trim() || !!wrongText}
+                    onClick={() =>
+                      setDraft(active, {
+                        ...draft,
+                        completeness: { name: attestName.trim(), kind: 'person', date: today(), statement: attestStatement.trim(), textSha256: sha256Hex(sourceText) },
+                      })
+                    }
+                  >
+                    Attest (as a person)
+                  </button>
+                </>
+              )}
+            </div>
           )}
           {(draftErrors.length > 0 || draftWarnings.length > 0 || draftInfos.length > 0) && (
             <ul className="space-y-0.5 text-[11px]">
@@ -503,7 +666,7 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
           )}
           {errors.length > 0 && (
             <p className="text-[11px] text-rose-700 dark:text-rose-300">
-              {errors.length} validation error{errors.length === 1 ? '' : 's'} in this draft. It can still run, but the memo lists them as open issues.
+              {errors.length} validation error{errors.length === 1 ? '' : 's'} in this draft. It cannot run until they are fixed; unresolved and outside-model provisions are not errors.
             </p>
           )}
 
@@ -516,6 +679,7 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
                 model={model}
                 overlays={overlays}
                 diagnostics={d.filter((x) => x.provisionId === p.id)}
+                otherIds={draft.provisions.filter((o) => o.id !== p.id).map((o) => o.id)}
                 onPatch={(patch) => edit((x) => updateProvision(x, i, patch))}
                 onStatus={(s) => edit((x) => setProvisionStatus(x, i, s, model, overlays))}
                 onMapping={(patch) => edit((x) => updateMapping(x, i, patch, model, overlays))}
@@ -542,10 +706,29 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
               </label>
               <input id="policy-seed" type="number" className={`${field} h-11 w-24`} value={seed} onChange={(e) => setSeed(Math.floor(Number(e.target.value) || 0))} />
             </div>
-            <button type="button" className={btnPrimary} onClick={run} disabled={!drafts.some((x) => x.modelId === model.id)}>
+            <button type="button" className={btnPrimary} onClick={run} disabled={!runnable || blocked} aria-describedby={blocked ? 'policy-run-blocked' : undefined}>
               <Play size={14} aria-hidden="true" />
               {drafts.length > 1 ? 'Run paired comparison (A and B)' : 'Run paired comparison'}
             </button>
+            {blocked && (
+              <div id="policy-run-blocked" role="alert" className="basis-full rounded-lg border border-rose-300 bg-rose-50 dark:border-rose-800 dark:bg-rose-950/40 px-3 py-2 text-[11px] text-rose-800 dark:text-rose-200">
+                <p className="font-semibold">Run is disabled: fix these validation errors first.</p>
+                {blocking.map((errs, i) =>
+                  errs.length ? (
+                    <div key={i} className="mt-1">
+                      {drafts.length > 1 && <p className="font-semibold">{`Draft ${i === 0 ? 'A' : 'B'}`}</p>}
+                      <ul className="list-disc pl-4">
+                        {errs.map((x, j) => (
+                          <li key={j}>
+                            <span className="font-mono">{x.code}</span>: {x.message}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : null,
+                )}
+              </div>
+            )}
             <p className="basis-full text-[11px] text-slate-500 dark:text-slate-400">
               Baseline: {model.id}
               {overlays.length ? ` with ${overlays.map((o) => o.id).join(', ')}` : ' as bundled'}. The relax-it hypothetical is not included.
@@ -559,6 +742,9 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
               <summary className="min-h-11 cursor-pointer list-none py-2 font-semibold text-slate-700 dark:text-slate-200">What this model cannot say about this text</summary>
               <p className="text-slate-600 dark:text-slate-300">
                 <span className="font-semibold">Scope:</span> {model.scope ?? 'no scope declared — treat every result as illustrative.'}
+              </p>
+              <p className="mt-1 text-slate-600 dark:text-slate-300">
+                <span className="font-semibold">Omitted from the run</span> (listed, not mapped — they change nothing):
               </p>
               <ul className="mt-1 list-disc space-y-0.5 pl-4 text-slate-600 dark:text-slate-300">
                 {draft.provisions
@@ -574,7 +760,7 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
 
           {/* 4. Share, reopen, memo */}
           <div className="flex flex-wrap items-center gap-2 border-t border-slate-100 dark:border-slate-800 pt-3">
-            <button type="button" className={btnPlain} onClick={copyLink} disabled={!drafts.some((x) => x.modelId === model.id)}>
+            <button type="button" className={btnPlain} onClick={copyLink} disabled={!runnable || blocked} title={blocked ? 'A link to a draft with validation errors would not open' : undefined}>
               <Link2 size={14} aria-hidden="true" />
               Copy share link
             </button>

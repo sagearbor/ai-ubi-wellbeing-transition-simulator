@@ -28,6 +28,8 @@ export interface ProvisionEditorProps {
   model: CoreModel;
   overlays: Overlay[];
   diagnostics: DraftDiagnostic[];
+  /** Ids of the draft's other provisions (for stacksOn and interprets). */
+  otherIds?: string[];
   onPatch: (patch: Partial<Provision>) => void;
   onStatus: (status: ProvisionStatus) => void;
   onMapping: (patch: Partial<ProvisionMapping>) => void;
@@ -39,7 +41,9 @@ const field =
 const label = 'block text-[11px] font-medium text-slate-600 dark:text-slate-300 mb-0.5';
 
 const ROLE_HINT =
-  'control: something the text sets (a rate, an eligibility rule, a date). funding: a budget or cap. constraint: a limit the text imposes. coefficient: how the world responds — the text can never supply its size.';
+  'control: something the text sets (a rate, an eligibility rule, a date). funding: a budget or cap. constraint: a limit the text imposes. coefficient: how the world responds — the text can never supply its size. definition: decides how other provisions read (link them under "interprets").';
+const UNIT_HINT =
+  'The unit the value is written in. It is converted to the target\'s unit — "20 million usd" becomes 20,000,000 for a target in usd; "percent" becomes a share — or the draft cannot run ("20 people" into usd is an error). Required when the target has a unit.';
 const STATUS_HINT =
   'mapped: sets something the model already has. unresolved: could matter but has no honest mapping (no number, or a missing response coefficient). outside-model: the model has no mechanism for it.';
 
@@ -86,7 +90,7 @@ const CurveField: React.FC<{ id: string; curve?: Record<string, number>; onCurve
   );
 };
 
-const ProvisionEditor: React.FC<ProvisionEditorProps> = ({ provision: p, index, model, overlays, diagnostics, onPatch, onStatus, onMapping, onRemove }) => {
+const ProvisionEditor: React.FC<ProvisionEditorProps> = ({ provision: p, index, model, overlays, diagnostics, otherIds = [], onPatch, onStatus, onMapping, onRemove }) => {
   const idBase = `policy-prov-${index}`;
   const m = p.mapping;
   const errors = diagnostics.filter((d) => d.level === 'error').length;
@@ -170,6 +174,24 @@ const ProvisionEditor: React.FC<ProvisionEditorProps> = ({ provision: p, index, 
           </div>
         </div>
 
+        {p.role === 'definition' && (
+          <div>
+            <label className={label} htmlFor={`${idBase}-interprets`}>
+              interprets (ids of the provisions this definition decides, comma-separated)
+            </label>
+            <input
+              id={`${idBase}-interprets`}
+              className={`${field} h-11 font-mono`}
+              value={(p.interprets ?? []).join(', ')}
+              placeholder={otherIds.slice(0, 2).join(', ')}
+              onChange={(e) => {
+                const ids = e.target.value.split(/[,\s]+/).filter(Boolean);
+                onPatch({ interprets: ids.length ? ids : undefined });
+              }}
+            />
+          </div>
+        )}
+
         {p.status === 'mapped' && m && (
           <fieldset className="rounded-lg border border-sky-200 dark:border-sky-900 bg-sky-50/50 dark:bg-sky-950/20 p-2 space-y-2">
             <legend className="px-1 text-[11px] font-semibold text-sky-800 dark:text-sky-200">
@@ -218,6 +240,7 @@ const ProvisionEditor: React.FC<ProvisionEditorProps> = ({ provision: p, index, 
               <div>
                 <label className={label} htmlFor={`${idBase}-unit`}>
                   unit
+                  <Hint label="unit" text={UNIT_HINT} align="right" />
                 </label>
                 <input id={`${idBase}-unit`} className={`${field} h-11`} value={m.unit ?? ''} onChange={(e) => onMapping({ unit: e.target.value || undefined })} />
               </div>
@@ -259,6 +282,26 @@ const ProvisionEditor: React.FC<ProvisionEditorProps> = ({ provision: p, index, 
                   />
                 </div>
                 {m.kind === 'input' && m.op === 'set' && <CurveField id={`${idBase}-curve`} curve={m.curve} onCurve={(curve) => onMapping({ curve })} />}
+                {m.kind === 'input' && m.op === 'add' && (
+                  <div>
+                    <label className={label} htmlFor={`${idBase}-stacks`}>
+                      on top of a provision that sets it (required if one does)
+                    </label>
+                    <select
+                      id={`${idBase}-stacks`}
+                      className={`${field} h-11 font-mono`}
+                      value={m.stacksOn ?? ''}
+                      onChange={(e) => onMapping({ stacksOn: e.target.value || undefined })}
+                    >
+                      <option value="">(the scenario's own curve)</option>
+                      {otherIds.map((id) => (
+                        <option key={id} value={id}>
+                          {id}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                )}
               </div>
             )}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
