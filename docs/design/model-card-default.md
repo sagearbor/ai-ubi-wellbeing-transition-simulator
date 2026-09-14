@@ -174,8 +174,15 @@ Switches (difference from base at 10 y):
   form still lands on 3.9%, now +1.0 pp off, inside the 2.5 pp band); the substantial scenario's
   headline unemployment is 4.6% (repo had 4.3%; reduced form 4.2%). The published values are for
   the start of 2030, while the reduced form is scored at end-2030, eleven months later — a timing
-  mismatch that is disclosed and not re-tuned. A faithful port of the paper's equations is the
-  stage 4 replacement for this reproduction claim.
+  mismatch that is disclosed and not re-tuned.
+- **Reproduction, faithful (stage 4):** `data/core/korinek-2026-faithful.json` implements the
+  paper's own equations (Table A.1, monthly 2024-2030, four bisection solves per month) in the
+  authoring core with no engine changes. It reproduces 169 published cells of Tables 3, 5 and 6 at
+  the paper's rounding (max error 0.049 vs tolerance 0.055), holds the accounting identities every
+  month, passes the limiting cases, and matches the authors' explorer code to ~1e-11 at 11 settings
+  including 8 non-default ones (expected values stored as numbers with URL and hash; no explorer
+  code in the repo). Mapping and departures: `docs/design/research/korinek-2026-model.md`. It is a
+  Lab model, not wired into the world engine; the world engine's macro block remains the reduced form.
 - **Historical reconstruction (2015 to 2025, 106 countries, AI off, macro on):** wellbeing-change
   correlation r = 0.485, MAE 4.48 index points (0.448 ladder points); persistence baseline
   (predict no change) MAE 4.68. The wellbeing anchor was fitted on this same span, so this is a
