@@ -106,7 +106,7 @@ export const KORINEK_SCENARIOS: KorinekScenario[] = [
 export const PRESET_MODELS: ModelParameters[] = [
   {
     id: 'organic-incentive',
-    name: 'Organic Incentive Model',
+    name: 'Organic Incentive Model (legacy, illustrative)',
     description: 'Prioritizes corporate speed. Low taxes early to drive 99% adoption, scaling dividends exponentially once the foundation is laid.',
     corporateTaxRate: 0.12,
     adoptionIncentive: 0.30,
@@ -186,8 +186,8 @@ export const PRESET_MODELS: ModelParameters[] = [
   },
   {
     id: 'evidence-anchored',
-    name: 'Evidence-Anchored (stage 4 candidate)',
-    description: 'Same corporations and adoption; wellbeing is a level model with evidence-informed assumptions: anchored on a GDP-equivalent income index and governance (World Happiness Report fit), a log2 cash-transfer effect per doubling of labour income, an unemployment effect via the Korinek-style displaced pool, and an assumed 3-year adjustment half-life. Starts from observed 2025 ladder values. Candidate, not the reviewed default.',
+    name: 'Provisional level model (default)',
+    description: 'Same corporations and adoption; wellbeing is a level model with evidence-informed assumptions: anchored on a GDP-equivalent income index and governance (World Happiness Report fit), a log2 cash-transfer effect per doubling of labour income, an unemployment effect via the Korinek-style displaced pool, and an assumed 3-year adjustment half-life. Starts from observed 2025 ladder values. Provisional default: every coefficient is an assumption informed by evidence, not a validated estimate; see the Model Card.',
     corporateTaxRate: 0.12,
     adoptionIncentive: 0.30,
     baseUBI: 200,
@@ -217,6 +217,14 @@ export const PRESET_MODELS: ModelParameters[] = [
     },
   }
 ];
+
+/**
+ * The preset the app opens with (review 2026-09-14, owner decision 4(a)): the corrected level model,
+ * presented as provisional with evidence-informed assumptions. The legacy flow model stays in
+ * PRESET_MODELS[0] for reproducibility of old scenarios and links.
+ */
+export const DEFAULT_MODEL_ID = 'evidence-anchored';
+export const DEFAULT_MODEL: ModelParameters = PRESET_MODELS.find((m) => m.id === DEFAULT_MODEL_ID)!;
 
 // Base country data - will be enriched with computed fields
 const COUNTRY_BASE_DATA = [

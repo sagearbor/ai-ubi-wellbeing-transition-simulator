@@ -1,4 +1,11 @@
-# Model card: default world model (`organic-incentive` preset on the built-in engine)
+# Model card: world model presets on the built-in engine
+
+> **Default changed 2026-09-14 (owner decision 4(a) of the independent review):** the app now opens
+> with the **provisional level model** (`evidence-anchored`, section "Candidate variant" below),
+> presented as *evidence-informed assumptions*, not as validated or reviewed. The legacy flow model
+> (`organic-incentive`, the first sections of this card) remains available as "Organic Incentive Model
+> (legacy, illustrative)" for reproducibility. Qualification of a dependable default is still open.
+
 
 Filled from `docs/design/model-card-template.md`. Numbers come from `npm run validate`,
 `npm run validate:korinek`, `npm run hindcast` and `npm run profile:default` at the version below.

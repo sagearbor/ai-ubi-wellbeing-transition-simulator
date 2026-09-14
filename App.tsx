@@ -22,7 +22,7 @@ import { InterventionImportPanel } from './components/futures/InterventionImport
 import { LOCKED_GRAPH, LOCKED_INTERVENTIONS, loadCustomInterventions, saveCustomInterventions } from './src/futures/data';
 import type { Intervention } from './src/futures/types';
 import { SimulationState, ModelParameters, HistoryPoint, CountryStats, Corporation, SavedState, SelectedEntity, ModelConfig, StoredModel } from './types';
-import { PRESET_MODELS, INITIAL_COUNTRIES, INITIAL_CORPORATIONS, SCENARIO_PRESETS, DEFAULT_MODEL_CONFIG } from './constants';
+import { PRESET_MODELS, INITIAL_COUNTRIES, INITIAL_CORPORATIONS, SCENARIO_PRESETS, DEFAULT_MODEL_CONFIG, DEFAULT_MODEL } from './constants';
 import { getRedTeamAnalysis, getSimulationSummary } from './services/geminiService';
 import { rateModel, getLeaderboard, recordRun, listModels } from './src/services/modelStorage';
 import { parseEquationSet, CompiledEquationSet, EquationError } from './src/services/equationParser';
@@ -193,7 +193,7 @@ const TourOverlay: React.FC<{ step: number, onNext: () => void, onBack: () => vo
 
 // Helper for dynamic fund formatting
 const App: React.FC = () => {
-  const [model, setModel] = useState<ModelParameters>(PRESET_MODELS[0]);
+  const [model, setModel] = useState<ModelParameters>(DEFAULT_MODEL);
   const [history, setHistory] = useState<HistoryPoint[]>([]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [speed, setSpeed] = useState(1);
@@ -312,7 +312,7 @@ const App: React.FC = () => {
   // ==========================================================================
 
   /** The month-0 run the main timeline is anchored to (rebuilt on reset / scenario apply). */
-  const [baseRun, setBaseRun] = useState<SimulationRun>(() => initialRun());
+  const [baseRun, setBaseRun] = useState<SimulationRun>(() => initialRun(undefined, undefined, initOptionsFor(DEFAULT_MODEL)));
   const [run, setRun] = useState<SimulationRun>(baseRun);
   /** The corporation roster month 0 starts from: INITIAL_CORPORATIONS, or a scenario's overrides. */
   const [baseCorporations, setBaseCorporations] = useState<Corporation[]>(INITIAL_CORPORATIONS);
@@ -337,10 +337,10 @@ const App: React.FC = () => {
   const [runRecorded, setRunRecorded] = useState(false);
 
   // Comparison simulation (P7-T5) - a second, independent run advanced in lockstep
-  const [comparisonBaseRun, setComparisonBaseRun] = useState<SimulationRun>(() => initialRun());
+  const [comparisonBaseRun, setComparisonBaseRun] = useState<SimulationRun>(() => initialRun(undefined, undefined, initOptionsFor(DEFAULT_MODEL)));
   const [comparisonRun, setComparisonRun] = useState<SimulationRun>(comparisonBaseRun);
   const [comparisonHistory, setComparisonHistory] = useState<HistoryPoint[]>([]);
-  const [comparisonModel, setComparisonModel] = useState<ModelParameters>(PRESET_MODELS[0]);
+  const [comparisonModel, setComparisonModel] = useState<ModelParameters>(DEFAULT_MODEL);
 
   const comparisonState = comparisonRun.state;
   const comparisonCorporations = comparisonRun.corporations;
@@ -570,7 +570,7 @@ const App: React.FC = () => {
     if (!scenario) return;
 
     // 1. Update comparison model with scenario's settings
-    const updatedModel = { ...PRESET_MODELS[0], ...scenario.modelParams };
+    const updatedModel = { ...DEFAULT_MODEL, ...scenario.modelParams };
     setComparisonModel(updatedModel);
 
     // 2. Apply corporation overrides to comparison corps
