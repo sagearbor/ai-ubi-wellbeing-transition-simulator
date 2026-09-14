@@ -184,6 +184,54 @@ describe('scalar equilibrium block', () => {
     expect(r.ok).toBe(false);
     expect(r.diagnostics.some((d) => d.code === 'solve-no-root')).toBe(true);
   });
+
+  describe('through: effects enter the equilibrium (v3 section 7)', () => {
+    const viaVars: CoreModel = { ...market, solves: [{ id: 'clear', unknown: 'price', residual: 'demand - supply', through: ['supply', 'demand'], bracket: [0, 1000], tol: 1e-10 }] };
+    const subsidy = { id: 'subsidy', target: 'supply', op: 'add' as const, expr: '15', unit: undefined, source: guess('g') };
+
+    it('a residual written over through variables finds the same root as the inline residual', () => {
+      const r = runModel(viaVars);
+      expect(r.ok, r.diagnostics.map((d) => d.message).join('; ')).toBe(true);
+      expect(r.series._.price[0]).toBeCloseTo(18, 8);
+      expect(r.diagnostics).toEqual([]);
+    });
+
+    it('an effect on a through variable moves the equilibrium, and reported values clear at the root', () => {
+      const r = runModel(viaVars, { overlays: [{ id: 'subsidy', effects: [subsidy] }] });
+      expect(r.ok).toBe(true);
+      // (100 - 3p) = (10 + 2p + 15) -> p = 15
+      expect(r.series._.price[0]).toBeCloseTo(15, 8);
+      expect(r.series._.supply[0]).toBeCloseTo(r.series._.demand[0], 6);
+      expect(r.series._.supply[0]).toBeCloseTo(55, 6);
+    });
+
+    it('without through the same effect is applied after the solve and a warning says so', () => {
+      const r = runModel(market, { overlays: [{ id: 'subsidy', effects: [subsidy] }] });
+      expect(r.ok).toBe(true);
+      expect(r.series._.price[0]).toBeCloseTo(18, 8); // equilibrium ignores the subsidy
+      expect(r.diagnostics.filter((d) => d.code === 'effect-after-solve')).toHaveLength(1);
+    });
+
+    it('through variables may read each other in any listed order; unknown ids and stocks are errors', () => {
+      const chained: CoreModel = {
+        ...market,
+        variables: [...market.variables, { id: 'excess', equation: 'demand - supply' }],
+        solves: [{ id: 'clear', unknown: 'price', residual: 'excess', through: ['excess', 'demand', 'supply'], bracket: [0, 1000], tol: 1e-10 }],
+      };
+      const r = runModel(chained);
+      expect(r.ok, r.diagnostics.map((d) => d.message).join('; ')).toBe(true);
+      expect(r.series._.price[0]).toBeCloseTo(18, 8);
+      expect(compileModel({ ...market, solves: [{ ...viaVars.solves![0], through: ['nope', 'supply', 'demand'] }] }).diagnostics.some((d) => d.code === 'unknown-symbol')).toBe(true);
+      const stock: CoreModel = { ...market, variables: [{ id: 'supply', equation: 'a + b * price', initial: 1 }, market.variables[1]] };
+      expect(compileModel({ ...stock, solves: viaVars.solves }).diagnostics.some((d) => /is a stock/.test(d.message))).toBe(true);
+    });
+
+    it('a residual reading a variable that depends on the unknown without through is still a cycle', () => {
+      const r = runModel({ ...market, solves: [{ id: 'clear', unknown: 'price', residual: 'demand - supply', bracket: [0, 1000] }] });
+      expect(r.ok).toBe(false);
+      expect(r.diagnostics.some((d) => d.code === 'cycle')).toBe(true);
+    });
+  });
 });
 
 describe('entities and aggregates', () => {

@@ -5,8 +5,8 @@
 node_modules
 dist
 tmp
-docs
-examples
-*.md
+/examples
+# docs/ and *.md stay in: the Model Card tab imports docs/design/model-card-default.md at build time.
+.claude
 .env
 App.tsx.backup

@@ -18,13 +18,17 @@ import React, { useMemo, useState } from 'react';
 import { FlaskConical, Timer, Waves } from 'lucide-react';
 import { resolveModel, runModel, runMonteCarlo, runTests } from '../../src/core/engine';
 import { CORE_FIXTURES, findFixture } from '../../src/core/fixtures';
-import type { Overlay } from '../../src/core/types';
+import type { CoreModel, Overlay } from '../../src/core/types';
+import { openLabLink, parseLabHash, type OpenedScenario } from '../../src/policy/bundle';
+import type { PolicyDraft } from '../../src/policy/types';
 import { Hint } from '../futures/Hint';
 import AddVariableForm from './AddVariableForm';
 import AssumptionsPanel from './AssumptionsPanel';
 import BindingPanel from './BindingPanel';
 import DiagnosticsPanel, { TestsPanel } from './DiagnosticsPanel';
 import ModelFilePanel from './ModelFilePanel';
+import PolicyPanel from './PolicyPanel';
+import { splitScenarioOverlays } from './policyState';
 import OutputChart from './OutputChart';
 import {
   describeOf,
@@ -44,6 +48,13 @@ export interface LabTabProps {
   initialCustomOverlays?: Overlay[];
   /** Start with the Monte Carlo band on. */
   initialUncertainty?: boolean;
+  /**
+   * A `#lab=` hash to open. Defaults to window.location.hash in the browser. A link that cannot be
+   * opened shows why, and the Lab stays on its default model instead of guessing a baseline.
+   */
+  initialHash?: string;
+  /** Start the Policy panel with these drafts (tests, and the worked example). */
+  initialPolicy?: { drafts: PolicyDraft[]; source?: { title?: string; url?: string; text?: string }; runs?: number; seed?: number; run?: boolean };
 }
 
 const MC_RUNS = 200;
@@ -63,10 +74,23 @@ const LabTab: React.FC<LabTabProps> = ({
   initialOverlayIds = [],
   initialCustomOverlays = [],
   initialUncertainty = false,
+  initialHash,
+  initialPolicy,
 }) => {
-  const [modelId, setModelId] = useState<string>(initialModelId ?? CORE_FIXTURES[0]?.model.id ?? '');
-  const [overlayIds, setOverlayIds] = useState<string[]>(initialOverlayIds);
-  const [customOverlays, setCustomOverlays] = useState<Overlay[]>(initialCustomOverlays);
+  // A shared link, read once at mount. It decides the starting model and scenario.
+  const [link] = useState<{ opened: OpenedScenario | null; error: string | null }>(() => {
+    const hash = initialHash ?? (typeof window !== 'undefined' ? window.location.hash : '');
+    const decoded = parseLabHash(hash);
+    if (!decoded) return { opened: null, error: null };
+    if (!decoded.ok) return { opened: null, error: decoded.reason };
+    const opened = openLabLink(decoded.value, (id): CoreModel | undefined => findFixture(id)?.model);
+    return opened.ok ? { opened: opened.value, error: null } : { opened: null, error: opened.reason };
+  });
+  const linkSplit = link.opened ? splitScenarioOverlays(findFixture(link.opened.model.id)!, link.opened.overlays) : null;
+
+  const [modelId, setModelId] = useState<string>(link.opened?.model.id ?? initialModelId ?? CORE_FIXTURES[0]?.model.id ?? '');
+  const [overlayIds, setOverlayIds] = useState<string[]>(linkSplit?.overlayIds ?? initialOverlayIds);
+  const [customOverlays, setCustomOverlays] = useState<Overlay[]>(linkSplit?.custom ?? initialCustomOverlays);
   const [edits, setEdits] = useState<Record<string, number>>({});
   const [hypothetical, setHypothetical] = useState<Hypothetical | null>(null);
   const [uncertainty, setUncertainty] = useState<boolean>(initialUncertainty);
@@ -162,6 +186,16 @@ const LabTab: React.FC<LabTabProps> = ({
     setEntityChoice(null);
   };
 
+  /** Open a model with exactly these scenario overlays (from a bundle). */
+  const applyScenario = (id: string, scenario: Overlay[]) => {
+    const f = findFixture(id);
+    if (!f) return;
+    const split = splitScenarioOverlays(f, scenario);
+    pickModel(id);
+    setOverlayIds(split.overlayIds);
+    setCustomOverlays(split.custom);
+  };
+
   const toggleOverlay = (id: string) =>
     setOverlayIds((ids) => (ids.includes(id) ? ids.filter((x) => x !== id) : [...ids, id]));
 
@@ -180,6 +214,21 @@ const LabTab: React.FC<LabTabProps> = ({
           Open a small model, see every assumption it rests on, change one, and watch what the result does — and what stops it
           moving.
         </p>
+
+        {(link.error || link.opened) && (
+          <p
+            role="status"
+            className={`mt-2 rounded-lg px-3 py-2 text-xs ${
+              link.error
+                ? 'border border-rose-300 bg-rose-50 text-rose-800 dark:border-rose-800 dark:bg-rose-950/40 dark:text-rose-200'
+                : 'border border-emerald-300 bg-emerald-50 text-emerald-800 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200'
+            }`}
+          >
+            {link.error
+              ? `Cannot open this lab link: ${link.error} The Lab opened on its default model instead; nothing from the link was applied.`
+              : 'Opened a shared policy scenario. The pinned model and scenario are loaded; see the Policy panel below for the drafts and the re-run comparison.'}
+          </p>
+        )}
 
         <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2">
           <div>
@@ -391,7 +440,30 @@ const LabTab: React.FC<LabTabProps> = ({
         onRemove={(id) => setCustomOverlays((list) => list.filter((x) => x.id !== id))}
       />
 
-      {/* 8. The files themselves. */}
+      {/* 8. Read a policy text against this model: paired run, share, reopen, memo. */}
+      <PolicyPanel
+        model={model}
+        overlays={overlays}
+        initialDrafts={link.opened?.drafts ?? initialPolicy?.drafts ?? []}
+        initialSource={initialPolicy?.source}
+        initialRuns={link.opened?.runs ?? initialPolicy?.runs}
+        initialSeed={link.opened?.seed ?? initialPolicy?.seed}
+        runOnMount={!!link.opened || !!initialPolicy?.run}
+        initialNotice={
+          link.error
+            ? { tone: 'error', text: `Cannot open this lab link: ${link.error}` }
+            : link.opened
+              ? {
+                  tone: 'ok',
+                  text: `Opened from a shared link: ${link.opened.model.id} (version ${link.opened.drafts[0]?.modelHash}), ${link.opened.drafts.length} draft${link.opened.drafts.length === 1 ? '' : 's'} (${link.opened.drafts.map((d) => d.reviewStatus).join(', ')}), ${link.opened.runs} draws, seed ${link.opened.seed}. The source text is not in links, so quotes are not re-checked here.`,
+                }
+              : null
+        }
+        onRequestModel={pickModel}
+        onOpenScenario={applyScenario}
+      />
+
+      {/* 9. The files themselves. */}
       <ModelFilePanel model={model} overlays={runOverlays} />
     </div>
   );

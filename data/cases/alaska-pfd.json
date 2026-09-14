@@ -1,0 +1,74 @@
+{
+  "id": "alaska-pfd",
+  "title": "Alaska Permanent Fund Dividend and the labour market",
+  "category": "policy-effect benchmark",
+  "extraction": "docs/design/research/alaska-pfd-case.md (every number has a page reference there; NOT VERIFIED items are listed in that file)",
+  "citation": {
+    "authors": ["Damon Jones", "Ioana Marinescu"],
+    "title": "The Labor Market Impacts of Universal and Permanent Cash Transfers: Evidence from the Alaska Permanent Fund",
+    "published": "American Economic Journal: Economic Policy 14(2): 315-340, May 2022",
+    "doi": "10.1257/pol.20190299",
+    "editionUsed": "AEJ 2022 typeset article + online appendix (May 2021); NBER w24312 rev. Jan 2020 for the superseded calibration",
+    "replication": "Bacher et al. (2022), Institute for Replication, Oslo Replication Games"
+  },
+  "treatment": {
+    "unit": "State of Alaska (one treated unit; donors: 49 other states + DC)",
+    "definition": "Introduction of the universal annual dividend (first paid 1982). On/off regime, not dose-response.",
+    "prePeriod": [1977, 1981],
+    "postPeriod": [1982, 2014],
+    "yearDefinition": "July-June twelve-month intervals",
+    "dose": {
+      "perCapitaUsd2010": 1495,
+      "householdUsdPerYear": 3962,
+      "dividendsToLabourIncome": 0.0725
+    }
+  },
+  "method": {
+    "estimator": "Synthetic control (Abadie, Diamond & Hainmueller 2010), outcome-specific weights; estimand = mean post-period gap",
+    "inference": "Permutation over 51 states x placebo years 1978-2013 (1,836 placebos; 1,734 for hours), two-tailed; 95% CI by test inversion",
+    "caution": "The authors note randomisation is unlikely to describe the data-generating process (AEJ p.322). I4R shows estimates vary with post-period length and estimator."
+  },
+  "fundingBoundary": "Permanent Fund investment earnings (oil-royalty origin); 'not explicitly financed by taxes' (AEJ p.336). No tax-side effects are in the estimate. State income tax repealed 1980; 1980 placebo null (AEJ-OA Table A.8).",
+  "outcomes": [
+    { "id": "employment_rate", "headline": true, "label": "Employment rate", "denominator": "employed / population age 16+ (monthly CPS basic)", "unit": "proportion", "estimate": 0.001, "ci95": [-0.030, 0.033], "pValue": 0.942, "preFitRmsePercentile": 0.322, "source": "AEJ Table 2 col 1, p.327", "robustnessRange": [-0.008, 0.032] },
+    { "id": "part_time_rate", "headline": true, "label": "Part-time rate", "denominator": "part-time workers / population age 16+ (not / employed)", "unit": "proportion", "estimate": 0.018, "ci95": [0.004, 0.032], "pValue": 0.020, "preFitRmsePercentile": 0.252, "source": "AEJ Table 2 col 2, p.327", "fragility": "p 0.059 with state-only placebos; +0.011 (p 0.101) with common weights; +0.009 (p 0.141) controlling for oil; I4R +0.003 to +0.011 with covariates" },
+    { "id": "labour_force_participation", "headline": false, "label": "Labour-force participation", "denominator": "labour force / population age 16+", "unit": "proportion", "estimate": 0.012, "ci95": [-0.019, 0.042], "pValue": 0.331, "preFitRmsePercentile": 0.903, "source": "AEJ Table 2 col 3, p.327" },
+    { "id": "hours_last_week", "headline": false, "label": "Hours worked last week", "denominator": "employed respondents only (CPS-MORG)", "unit": "hours/week", "estimate": -0.796, "ci95": [-1.751, 0.191], "pValue": 0.084, "preFitRmsePercentile": 0.753, "source": "AEJ Table 2 col 4, p.327" },
+    { "id": "employment_tradable", "headline": false, "label": "Employment rate, tradable sectors", "denominator": "tradable-sector employed / population 16+", "unit": "proportion", "estimate": -0.048, "ci95": [-0.072, -0.025], "pValue": 0.005, "preFitRmsePercentile": 0.997, "source": "AEJ Table 6 col 1, p.336" },
+    { "id": "employment_nontradable", "headline": false, "label": "Employment rate, non-tradable sectors", "denominator": "non-tradable-sector employed / population 16+", "unit": "proportion", "estimate": 0.002, "ci95": [-0.024, 0.027], "pValue": 0.859, "preFitRmsePercentile": 0.995, "source": "AEJ Table 6 col 3, p.336" }
+  ],
+  "mappings": [
+    {
+      "outcome": "employment_rate",
+      "target": "core-model",
+      "model": "alaska-pfd-calibration",
+      "expr": "net_effect",
+      "at": 1990,
+      "alternatives": [{ "label": "NBER w24312 (Jan 2020) calibration", "overlays": ["alaska-pfd-wp2020"] }],
+      "classification": "reproduction of the authors' own calibration, compared with their estimate",
+      "fittedToOutcome": false,
+      "independence": "Not independent: the same authors published the calibration beside the estimate and revised its inputs between editions (MPC 0.25 -> 0.5, kappa 1.2 -> 0.9, per-person -> per-household PDV). No parameter here was chosen by this repository.",
+      "applicability": "Small (7% of labour income), resource-funded, one state, not countercyclical."
+    },
+    {
+      "outcome": "employment_rate",
+      "target": "world-engine",
+      "model": "evidence-anchored",
+      "check": "transfer-moves-unemployment",
+      "classification": "structural check of the simulator's world model",
+      "note": "The world engine has no labour-supply or local-demand response to transfers; the check verifies that by running it, rather than asserting it. A zero here is a missing mechanism, not a prediction of zero."
+    },
+    { "outcome": "part_time_rate", "target": "none", "status": "outside-model", "reason": "Neither the calibration nor the world engine has an intensive margin or a part-time state." },
+    { "outcome": "labour_force_participation", "target": "none", "status": "outside-model", "reason": "No participation margin in either model; the world engine's unemployment is displacement-driven only." },
+    { "outcome": "hours_last_week", "target": "none", "status": "outside-model", "reason": "No hours variable in either model." },
+    { "outcome": "employment_tradable", "target": "none", "status": "outside-model", "reason": "No sectors. The authors' own evidence here is weak (pre-fit worse than 99% of placebos)." },
+    { "outcome": "employment_nontradable", "target": "none", "status": "outside-model", "reason": "No sectors. Pre-fit worse than 99% of placebos." }
+  ],
+  "limits": [
+    "Small transfer: the authors say the effect of UBI-sized payments (e.g. USD 1,000/month) is uncertain (AEJ p.337).",
+    "Resource-rent funded: no tax-side distortions are in the estimate.",
+    "The general-equilibrium channel is not directly tested (AEJ p.316).",
+    "Average over 33 years with a 5-year pre-period; the part-time effect is near zero in 1982-85 and grows.",
+    "Not a micro elasticity: within-Alaska designs find negative hours effects (Feinberg & Kuehn 2018); different estimand."
+  ]
+}

@@ -124,10 +124,10 @@
       "tol": 2
     },
     {
-      "name": "modest scenario, US end-2030: cognitive-worker unemployment 3.9% (korinekTests.ts tolerance 2.5pp)",
+      "name": "modest scenario, US end-2030: cognitive-worker unemployment 2.9% (Table 3 p.31; corrected 2026-09-13 from a mistranscribed 3.9) (korinekTests.ts tolerance 2.5pp)",
       "at": 2031,
       "expr": "cognitive_unemployment_pct",
-      "expected": 3.9,
+      "expected": 2.9,
       "tol": 2.5
     },
     {

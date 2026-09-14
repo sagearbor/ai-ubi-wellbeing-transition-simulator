@@ -6,8 +6,8 @@ Where a row says "assumed", the number was chosen by the author and no source ex
 
 ```
 Model:            built-in engine, simulation/pure.ts, preset organic-incentive (PRESET_MODELS[0])
-Version:          branch stage3/qualify-default, 2026-09-13 (engine after findings C2, C3, C4 of
-                  docs/design/audit-2026-09-13.md were fixed)
+Version:          main after stages 2-4, 2026-09-13 (engine after findings C2, C3, C4 of
+                  docs/design/audit-2026-09-13.md were fixed; stage 4 slice 2 additions below)
 Maintainer:       repository owner
 Reviewed:         2026-09-13, internal (Claude), against the v3 plan section 4. Not externally
                   reviewed. Status: CANDIDATE, not a reviewed default (see "Known failures").
@@ -169,13 +169,36 @@ Switches (difference from base at 10 y):
 - **Reproduction:** the macro block reproduces Korinek et al. (2026) US-2030 outputs for three
   scenarios within tolerance (KJ-1 to KJ-3) as a reduced-form approximation with an exogenous
   adoption path; it does not implement their equations. The block is off in this preset.
+  Corrections 2026-09-13 (stage 4 slice 2, read from Table 3, p. 31 of the September 2026 working
+  paper): the modest scenario's cognitive unemployment is 2.9% (the repo had 3.9%, and the reduced
+  form still lands on 3.9%, now +1.0 pp off, inside the 2.5 pp band); the substantial scenario's
+  headline unemployment is 4.6% (repo had 4.3%; reduced form 4.2%). The published values are for
+  the start of 2030, while the reduced form is scored at end-2030, eleven months later — a timing
+  mismatch that is disclosed and not re-tuned.
+- **Reproduction, faithful (stage 4):** `data/core/korinek-2026-faithful.json` implements the
+  paper's own equations (Table A.1, monthly 2024-2030, four bisection solves per month) in the
+  authoring core with no engine changes. It reproduces 169 published cells of Tables 3, 5 and 6 at
+  the paper's rounding (max error 0.049 vs tolerance 0.055), holds the accounting identities every
+  month, passes the limiting cases, and matches the authors' explorer code to ~1e-11 at 11 settings
+  including 8 non-default ones (expected values stored as numbers with URL and hash; no explorer
+  code in the repo). Mapping and departures: `docs/design/research/korinek-2026-model.md`. It is a
+  Lab model, not wired into the world engine; the world engine's macro block remains the reduced form.
 - **Historical reconstruction (2015 to 2025, 106 countries, AI off, macro on):** wellbeing-change
   correlation r = 0.485, MAE 4.48 index points (0.448 ladder points); persistence baseline
   (predict no change) MAE 4.68. The wellbeing anchor was fitted on this same span, so this is a
   reconstruction, not a forecast. GDP path: r −0.04, MAE 17% (the macro block's growth rule does
   not track country GDP). With UBI on at real units the reconstruction degrades to r 0.181 / MAE
   7.04, which is evidence against the current UBI coefficient (C5).
-- **Policy-effect benchmarks:** none. No published policy effect has been mapped onto this engine.
+- **Policy-effect benchmarks:** one case, Alaska Permanent Fund Dividend (Jones & Marinescu 2022;
+  `data/cases/alaska-pfd.json`, `npm run validate:cases`). The world engine (either wellbeing
+  mode) has **no mechanism** by which a transfer changes employment: running it with every
+  corporation contributing 0 vs 0.5 leaves US unemployment identical. That is verified by running
+  the engine, and it means the headline null (+0.1 pp, 95% CI −3.0 to +3.3) cannot be matched or
+  missed — the model is silent. The part-time (+1.8 pp), participation, hours and sector outcomes
+  are outside the model. The authors' own micro-vs-macro calibration, ported as a core model,
+  predicts −0.7 pp (published edition; −0.2 pp working-paper edition): discrepancy −0.8 pp,
+  not fitted, not independent of the authors. Dose for scale: the dividend was 7.25% of labour
+  income; the engine's transfer at a 50% contribution rate is 0.5% of US labour income.
 - **Fitting history:** wellbeing coefficients 0.20/0.12 hand-set (code comment, undated);
   wellbeing anchor OLS fitted 2026-09 on WHR 2015 to 2025; macro block tuned 2026-09 to Korinek
   2030 targets; C2 to C4 unit and aggregation fixes 2026-09-13, after which the anchor baseline
@@ -193,7 +216,13 @@ Switches (difference from base at 10 y):
 - Wellbeing accumulates monthly changes with no level anchor in this preset; a long run drifts to
   a bound by construction.
 - Five UI parameters and the Equations tab describe an engine that no longer runs (C6).
-- Country and corporation records have no source column.
+- Country and corporation records are hand-entered with no recorded source. Measured against the
+  World Bank on 2026-09-13 (`data/provenance/README.md`, `npm run provenance:countries`): population
+  is close (median gap 6%), GDP per capita is loose (median gap 36%; Guyana 0.30x), Gini within
+  1.7 points median (29 countries have no reference), governance ranks agree with WGI Government
+  Effectiveness at Spearman 0.93 with large gaps for China and Saudi Arabia. Corporation AI revenue
+  and adoption have no public reference series and are assumptions. Values are not replaced
+  (owner decision; it re-locks pinned tests).
 - AT-3 fails for a measurement reason, not a dynamics one: race-to-bottom risk is
   `(selfish − 0.4·N) / (0.6·N)` over the corporation table, which is 1.0 in the all-selfish
   starting state, but the harness only records states after a step, and in month 1 the
@@ -252,6 +281,43 @@ Response review (`npm run profile:default -- --model=evidence-anchored`):
   parameters (automationShare 0.9, reemploymentMonths 18) are one slider away and are the case to
   review next.
 - No thresholds, no crisis rule, no floor hits in the reviewed region.
+
+Stress review, stage 4 slice 2 (`profile:default -- --model=evidence-anchored`, "stress" switch;
+the model's own wellbeing coefficients, only the displacement coefficients change):
+
+| Case | US wellbeing 5 y / 10 y | US unemployment peak | US labour share 10 y | avg wellbeing 10 y | poor-8 10 y |
+|---|---|---|---|---|---|
+| base (`DEFAULT_MACRO`: automation 0.5, re-employment 12 mo) | 68.9 / 69.5 | 6.8% (yr 2) | 0.347 | 58.6 | 43.0 |
+| Korinek extreme (automation 0.9, re-employment 18 mo) | 67.7 / 68.1 | 11.3% (yr 4) | 0.347 | 58.3 | 43.0 |
+| extreme, re-employment 60 mo | 65.9 / 64.0 | 20.9% (yr 6) | 0.347 | 57.5 | 43.0 |
+| extreme, 60 mo, adoption growth ×2 | 63.4 / 62.1 | 27.7% (yr 4) | 0.287 | 57.0 | 43.0 |
+
+- The displacement channel works and is bounded by two things: the unemployment evidence
+  (0.45 index points per pp, so a 24 pp excess costs ~11 points of target) and the 3-year
+  half-life (wellbeing lags the target by ~5 points at the unemployment peak). Worst case US −7.4
+  at 10 y. A Greece-2008-scale shock (+20 pp) costing about one ladder point is the observed order.
+- The income anchor barely moves: labour income falls ~20% against the no-AI path in the
+  harshest case (GDP 128k × 0.287/0.60 = 61k vs 77k), which the log slope turns into −1.1 index
+  points. Capital income, which rises with GDP, is not in the anchor and benefits nobody in this
+  model — an omission, disclosed, not a finding about who gains.
+- Poor-8 wellbeing does not respond at all: those countries have almost no operating
+  corporations, so almost no adoption (the "countries with no operating corporation never adopt"
+  limitation above), not resilience.
+- US `aiAdoption` passes Korinek's 2030 extreme value (0.45) within 5 years in every case; this
+  engine's adoption is corporation-driven and is not the same quantity as their task share m × d.
+  No transfer-side protection is visible: US UBI stays near 12 USD/month, so `ubiEffect` ≈ 0.01.
+
+Historical reconstruction of the candidate (`npm run hindcast`, 2015-2025, 106 countries):
+
+| Run | corr ΔWB | MAE (index) | note |
+|---|---|---|---|
+| legacy + anchor, AI off | 0.485 | 4.48 | headline gate (HC-1, HC-2) |
+| anchored, AI off | 0.485 | 4.48 | identical by construction: with no adoption and no transfer both reduce to the same anchor (pinned as a limiting-case test) |
+| legacy, AI on | 0.249 | 25.55 | the flow model collapses over a decade that did not collapse |
+| anchored, AI on | 0.500 | 4.43 | AI on no longer destroys the reconstruction; mean change +1.0 vs actual +2.6 |
+
+The anchor was fitted on the same span, so none of these is a forecast; the anchored-AI-on row
+shows only that the candidate does not contradict the decade, which the legacy default does.
 
 Status: **candidate**. It is offered as a preset so the two wellbeing models can be compared side
 by side; switching the default is the owner's decision after external review.

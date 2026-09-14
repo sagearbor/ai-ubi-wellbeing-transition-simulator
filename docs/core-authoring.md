@@ -104,6 +104,23 @@ land on. Not converging within `maxIter` (default 100) is a separate explicit fa
 `solve-no-convergence`. `data/core/market-no-root.json` is a fixture built specifically to trigger
 `solve-no-root` on purpose — see `data/core/README.md`.
 
+### `through`: variables and effects inside the equilibrium
+
+A residual may not read a variable that itself depends on the unknown (that is a same-step cycle)
+unless the solve lists it in `through`. Through variables are re-evaluated **with their effects**
+at every bisection step, so an effect on one of them — a subsidy on supply, a tax multiplying a
+factor demand — moves the equilibrium instead of being applied after it:
+
+```json
+{ "id": "clear", "unknown": "price", "residual": "demand - supply", "through": ["supply", "demand"], "bracket": [0, 1000] }
+```
+
+Through variables may read each other (listed in any order), cannot be stocks, and are reported at
+the root as ordinary variables. If an effect targets a variable that depends on a solve unknown
+and the solve does not list it, the engine emits an `effect-after-solve` warning: the effect is
+applied to the reported value only, and the equilibrium does not see it. That case was found by
+the independently selected Gasteiger & Prettner port (`docs/design/capability-requests/gasteiger-prettner.md`, gap 2).
+
 ## Entities and `byEntity`
 
 `entities: { kind, ids }` turns every variable, parameter, input and effect into one instance per

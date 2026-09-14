@@ -1,0 +1,1625 @@
+{
+  "schemaVersion": 1,
+  "id": "korinek-2026-faithful",
+  "name": "Korinek et al. 2026, faithful port (paper equations), Substantial scenario",
+  "description": "A port of the model in Korinek, Jones, Sacher, Cotter & McCrory (2026), \"Economic Scenarios for Transformative AI\" (Anthropic Institute WP 2026-02), written from the paper's own equations: Table A.1 (the 44 monthly equations of panels A-D and the steady state of panel E), Proposition 1 (eqs 14-18), the labour-market block (eqs 27-39) and the ideas block (eqs 22, 42), at the Table 1 calibration. Monthly from 2024.0 (t0) to 2030.0, the date the paper's scenario values and Table 3 refer to.\n\nStructure: exogenous scenario paths m_t, d_t (logistics through the mid-2026 anchors, eq 8/8prime) and a_t (linear); the full-employment economy of Proposition 1 gives the targets; two occupation groups (cognitive C, all other N) move toward them through quits, layoffs at a sticky cognitive wage, openings, and a den Haan-Ramey-Watson matching function with a cross-group search discount; the reported economy is system (39) at realised employment; research rises with the GDP gap and feeds the ideas stock.\n\nBase file = the SUBSTANTIAL scenario. overlays/korinek-faithful-modest.json and -extreme.json set the other two scenarios' Table 1 values; -pegged-rental.json (epsilon = infinity, Table 5) and -rigid-wage.json (xi = 0.9, Table 6) are sensitivity overlays. Tests reproduce every Table 3 row for the base; the overlays carry the other columns.\n\nAuthoring workarounds, none of which changes the mathematics: the four capital-market roots are solved for the capital share rather than the rental gap so every log stays finite; epsilon enters as invEps = 1/epsilon so a pegged rental rate is invEps = 0; the unemployment pools are stocks of their deviation from the steady state (so a stock never starts from a solve result); the lagged finding rate enters as f/f-bar with history 1. Where the paper leaves a step implicit the reading follows the authors' explorer code, which was run as an oracle and not copied; see docs/design/research/korinek-2026-model.md.",
+  "scope": "US, 2024-2030, one country, two occupation groups, no policy: what GDP, factor prices, the labour share, employment and unemployment do along an assumed AI capability, diffusion and productivity path. The AI paths are inputs chosen by scenario, not predictions, and the model says nothing about which scenario is likely. It is the authors' structural model at their calibration, so its numbers inherit their assumptions (task CES with sigma = 0.5, uniform parameters across affected tasks, capital supplied along Delta ln K = epsilon Delta ln r, a lab-equipment ideas sector, search frictions calibrated to 2010-19 CPS flows). It reproduces the paper's Table 3, 5 and 6; that shows the port is faithful, not that the scenarios are right. Beyond 2030 or far outside the published parameter ranges it is the same model extrapolated, with no additional backing.",
+  "license": "Model file CC0. The model, equations and calibration are those of Korinek, Jones, Sacher, Cotter & McCrory (2026).",
+  "sources": [
+    {
+      "label": "Korinek, Jones, Sacher, Cotter & McCrory (2026), Economic Scenarios for Transformative AI, Anthropic Institute WP 2026-02",
+      "kind": "calibrated",
+      "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+      "note": "The September 2026 PDF, sha256 9fe6667ec24b8a1dce3cde7c8ae5d5e6631bb95f68dae82dbd827cbfa2410327, fetched 2026-09-13. Equations from Table A.1 (pp.42-43), Proposition 1 (p.15), Sections 2.1-2.3 and Appendices A and C; calibration from Table 1 (pp.23-24) and Table A.2 (pp.43-45); published outputs from Table 3 (p.31), Table 5 and Table 6."
+    },
+    {
+      "label": "The authors' scenario explorer (https://www.anthropic.com/institute/econ-scenarios), model chunk https://www.anthropic.com/_next/static/chunks/2bnydcp8p6u_h.js",
+      "kind": "calibrated",
+      "note": "sha256 a95300ab26134e7f4133d302aa220a987b95fb1e02788f37a6b6aff402ab506e, fetched 2026-09-13, no stated licence. Used only (1) as the source of four unrounded calibration values (wC, Ubar, sepHazardC, sepHazardN; Table 1 prints them rounded) and (2) as a numerical oracle run headless to produce data/core/korinek-2026-faithful.expected.json. No code from it is in this repository."
+    }
+  ],
+  "time": {
+    "start": 2024,
+    "end": 2030,
+    "step": "month"
+  },
+  "parameters": [
+    {
+      "id": "sigma",
+      "value": 0.5,
+      "unit": "ratio",
+      "source": {
+        "label": "Table 1 panel A (p.23): elasticity of substitution across tasks sigma = 0.5",
+        "kind": "calibrated",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "Gross complements (Acemoglu & Restrepo 2022; Humlum 2019; Jones & Tonetti 2026), as cited in Table 1."
+      }
+    },
+    {
+      "id": "sL",
+      "value": 0.6,
+      "unit": "share",
+      "source": {
+        "label": "Table 1 panel A (p.23): base-period labour share s_L,t0 = 0.60",
+        "kind": "calibrated",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "Table 1: \"conventional value for the U.S.\" A convention rather than an estimate in the paper itself."
+      }
+    },
+    {
+      "id": "wC",
+      "value": 0.6235251662150673,
+      "unit": "share",
+      "source": {
+        "label": "Table 1 panel A (p.23): cognitive share of employment s_C,t0/s_L,t0 = 0.624 (CPS 2025, SOC 11-29, 41, 43)",
+        "kind": "calibrated",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "Paper prints 0.624. Value used: 101,942 / 163,493 CPS 2025 employed, unrounded value from the authors' explorer code (https://www.anthropic.com/_next/static/chunks/2bnydcp8p6u_h.js, sha256 a95300ab26134e7f4133d302aa220a987b95fb1e02788f37a6b6aff402ab506e, fetched 2026-09-13). Also the ceiling m-bar of the affected mass (Table 1 note)."
+      }
+    },
+    {
+      "id": "invEps",
+      "value": 0.3333333333333333,
+      "unit": "ratio",
+      "source": {
+        "label": "Table 1 panel A (p.23): elasticity of capital supply epsilon = 3, entered as 1/epsilon",
+        "kind": "calibrated",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "Half the long-run wealth elasticity of Moll, Rachel & Restrepo (2022). Written as invEps = 1/epsilon so that epsilon = infinity (a pegged rental rate, Table 5) is invEps = 0; the expression language has no infinity."
+      }
+    },
+    {
+      "id": "rBar",
+      "value": 0.115,
+      "unit": "per_year",
+      "source": {
+        "label": "Table 1 panel A (p.23): no-AI gross rental rate r-bar = 0.115",
+        "kind": "calibrated",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "Moll et al. (2022); used only to report the net return r - delta."
+      }
+    },
+    {
+      "id": "delta",
+      "value": 0.05,
+      "unit": "per_year",
+      "source": {
+        "label": "Table 1 panel A (p.23): depreciation delta = 0.05",
+        "kind": "calibrated",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "Net return 6.5 percent, K/Y = 3.5; reporting only."
+      }
+    },
+    {
+      "id": "t0",
+      "value": 2024,
+      "unit": "year",
+      "source": {
+        "label": "Table 1 panel A (p.23): base period t0 = 2024",
+        "kind": "assumed",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "Start of the AI gaps and of the monthly grid (Appendix A)."
+      }
+    },
+    {
+      "id": "tAnchor",
+      "value": 2026.5,
+      "unit": "year",
+      "source": {
+        "label": "Table 1 panel A (p.23): anchor date of the paths = mid-2026",
+        "kind": "assumed",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "Read as t = 2026.5: eq (8prime) spans \"three and a half years\" to 2030.0 (footnote 11, p.26)."
+      }
+    },
+    {
+      "id": "tRead",
+      "value": 2030,
+      "unit": "year",
+      "source": {
+        "label": "Table 1 panel A (p.23): date of the scenarios' 2030 values = 2030.0",
+        "kind": "assumed",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf"
+      }
+    },
+    {
+      "id": "h",
+      "value": 0.08333333333333333,
+      "unit": "year",
+      "source": {
+        "label": "Table 1 panel A (p.23): period length h = 1 month",
+        "kind": "assumed",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "Appendix A: monthly grid; xi enters as xi^h (eq 30) and the ideas step is h (eq 42)."
+      }
+    },
+    {
+      "id": "lambda",
+      "value": 1,
+      "unit": "ratio",
+      "source": {
+        "label": "Table 1 panel A (p.23): returns to research input lambda = 1",
+        "kind": "assumed",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "Table 1: \"no duplication\"."
+      }
+    },
+    {
+      "id": "oneMinusPhi",
+      "value": 3.1,
+      "unit": "ratio",
+      "source": {
+        "label": "Table 1 panel A (p.23): fishing out 1 - phi = 3.1 (TFP units)",
+        "kind": "calibrated",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "Bloom et al. (2020). The model uses 1 - phi_R = s_L (1 - phi) + lambda = 2.86, eq (40)."
+      }
+    },
+    {
+      "id": "gA",
+      "value": 0.01,
+      "unit": "per_year",
+      "source": {
+        "label": "Table 1 panel A (p.23): no-AI measured TFP growth g_A = 0.010; ideas stock grows at g = g_A / s_L = 0.0167",
+        "kind": "calibrated",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "Postwar TFP growth."
+      }
+    },
+    {
+      "id": "n",
+      "value": 0.0033,
+      "unit": "per_year",
+      "source": {
+        "label": "Table 1 panel A (p.23): labour-force growth n = 0.0033",
+        "kind": "calibrated",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "Enters only levels (the GDP index and growth rates reported in Table 3), not the gaps."
+      }
+    },
+    {
+      "id": "mMid2026",
+      "value": 0.14,
+      "unit": "share",
+      "source": {
+        "label": "Table 1 panel B (p.23): affected mass m, mid-2026 anchor = 0.14",
+        "kind": "calibrated",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "Observed exposure (Massenkoff & McCrory 2026), common to the scenarios."
+      }
+    },
+    {
+      "id": "m2030",
+      "value": 0.3,
+      "unit": "share",
+      "source": {
+        "label": "Table 1 panel B (p.23): affected mass in 2030 = 0.3 (Substantial; Modest 0.2, Extreme 0.5)",
+        "kind": "assumed",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "Scenario assumption (Eloundou et al. 2024 feasibility range)."
+      }
+    },
+    {
+      "id": "dMid2026",
+      "value": 0.1,
+      "unit": "share",
+      "source": {
+        "label": "Table 1 panel B (p.24): diffusion share d, mid-2026 anchor = 0.10",
+        "kind": "calibrated",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "Census BTOS and its 2026 AI supplement (Bonney et al. 2026)."
+      }
+    },
+    {
+      "id": "d2030",
+      "value": 0.4,
+      "unit": "share",
+      "source": {
+        "label": "Table 1 panel B (p.24): diffusion share in 2030 = 0.4 (Substantial; Modest 0.2, Extreme 0.6)",
+        "kind": "assumed",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "Scenario assumption."
+      }
+    },
+    {
+      "id": "dBar",
+      "value": 1,
+      "unit": "share",
+      "source": {
+        "label": "Table 1 panel B (p.24): ceiling on diffusion d-bar = 1",
+        "kind": "assumed",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "Natural maximum: every instance."
+      }
+    },
+    {
+      "id": "aMid2026",
+      "value": 0.35,
+      "unit": "log_points",
+      "source": {
+        "label": "Table 1 panel B (p.24): log gain per instance a, mid-2026 anchor = 0.35 (Substantial; Modest 0.30, Extreme 0.45)",
+        "kind": "assumed",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "Scenario assumption informed by trials and frontier firms (Brynjolfsson et al. 2025; Huang et al. 2025; Demirer et al. 2026)."
+      }
+    },
+    {
+      "id": "ga",
+      "value": 0.028,
+      "unit": "per_year",
+      "source": {
+        "label": "Table 1 panel B (p.24): slope of the log gain g_a = 0.028 per year (Substantial; Modest 0, Extreme 0.10)",
+        "kind": "assumed",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "Implies a_2030 = 0.30 / 0.45 / 0.80."
+      }
+    },
+    {
+      "id": "psi",
+      "value": 0.75,
+      "unit": "share",
+      "source": {
+        "label": "Table 1 panel C (p.24): automation share psi = 0.75, held constant (Substantial; Modest 0.50, Extreme 0.90)",
+        "kind": "assumed",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "Scenario assumption (Appel et al. 2025). Table A.2 defines psi_t as a logistic; in every scenario it is constant, so it enters as a parameter."
+      }
+    },
+    {
+      "id": "rho",
+      "value": 0.25,
+      "unit": "share",
+      "source": {
+        "label": "Table 1 panel C (p.24): reinstatement ratio rho = 0.25 (Substantial; Modest 0.50, Extreme 0)",
+        "kind": "assumed",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "Scenario assumption (Acemoglu & Restrepo 2019 estimated 0.5)."
+      }
+    },
+    {
+      "id": "mu",
+      "value": 0.08,
+      "unit": "ratio",
+      "source": {
+        "label": "Table 1 panel C (p.24): search discount on the path mu = 0.08 (Substantial; Modest 0.17, Extreme 0.04)",
+        "kind": "assumed",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "Scenario assumption; enters eqs (33), (35) from t0 on (Appendix A)."
+      }
+    },
+    {
+      "id": "thetaH",
+      "value": 0.25,
+      "unit": "per_month",
+      "source": {
+        "label": "Table 1 panel C (p.24): posting speed theta^H = 0.25 per month (Substantial; Modest 0.10, Extreme 0.50)",
+        "kind": "assumed",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "Scenario assumption."
+      }
+    },
+    {
+      "id": "xi",
+      "value": 0.5,
+      "unit": "per_year",
+      "source": {
+        "label": "Table 1 panel C (p.24): rigidity of the cognitive wage xi = 0.50 per year",
+        "kind": "calibrated",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "Wage-setting evidence, Section 3.4. Enters eq (30) as xi^(1/12)."
+      }
+    },
+    {
+      "id": "Ubar",
+      "value": 0.03840656852308217,
+      "unit": "share",
+      "source": {
+        "label": "Table 1 panel D / Table A.2 D (p.44): normal search pool U-bar = 3.8 percent of L (CPS 2025)",
+        "kind": "calibrated",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "Paper prints 0.038 (and 3.84 in the text, p.26). Value used: 6,530 / 170,023 CPS 2025 unemployed over labour force, unrounded value from the authors' explorer code (https://www.anthropic.com/_next/static/chunks/2bnydcp8p6u_h.js, sha256 a95300ab26134e7f4133d302aa220a987b95fb1e02788f37a6b6aff402ab506e, fetched 2026-09-13)."
+      }
+    },
+    {
+      "id": "qBarAnnual",
+      "value": 0.11,
+      "unit": "per_year",
+      "source": {
+        "label": "Table A.2 D (p.44) and Section 3.2 (p.26): normal quit rate q-bar = 0.11 per year (0.92 percent a month)",
+        "kind": "calibrated",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "Rounded from 0.105 (CPS finding rate x pool). Monthly fraction q-bar h, converted to a continuous rate q = -ln(1 - q-hat) (Appendix A, p.40)."
+      }
+    },
+    {
+      "id": "qTshare",
+      "value": 0.5454545454545454,
+      "unit": "share",
+      "source": {
+        "label": "Table A.2 D (p.44): of q-bar = 0.11 a year, 0.06 stands for occupational moves (the finding-rate-sensitive part q^T) and 0.05 for exits",
+        "kind": "calibrated",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "Table 1 prints q^T/q-bar = 0.55 (JOLTS quits vs CPS finding-rate elasticity 0.53, Section 3.2); 0.06/0.11 = 0.5454... is the value the published digits need; the same value is used in the unrounded value from the authors' explorer code (https://www.anthropic.com/_next/static/chunks/2bnydcp8p6u_h.js, sha256 a95300ab26134e7f4133d302aa220a987b95fb1e02788f37a6b6aff402ab506e, fetched 2026-09-13)."
+      }
+    },
+    {
+      "id": "sepHazardC",
+      "value": 0.008358559570558328,
+      "unit": "per_month",
+      "source": {
+        "label": "Section 3.2 (p.26): monthly E->U hazard of cognitive workers, 0.84 percent (IPUMS-CPS 2010-19)",
+        "kind": "calibrated",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "Only the ratio of the two hazards enters (q-bar_C/q-bar = 0.69, Table 1 D). unrounded value from the authors' explorer code (https://www.anthropic.com/_next/static/chunks/2bnydcp8p6u_h.js, sha256 a95300ab26134e7f4133d302aa220a987b95fb1e02788f37a6b6aff402ab506e, fetched 2026-09-13)."
+      }
+    },
+    {
+      "id": "sepHazardN",
+      "value": 0.01837914561784245,
+      "unit": "per_month",
+      "source": {
+        "label": "Section 3.2 (p.26): monthly E->U hazard of all other workers, 1.84 percent (IPUMS-CPS 2010-19)",
+        "kind": "calibrated",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "Only the ratio enters (q-bar_N/q-bar = 1.52, Table 1 D). unrounded value from the authors' explorer code (https://www.anthropic.com/_next/static/chunks/2bnydcp8p6u_h.js, sha256 a95300ab26134e7f4133d302aa220a987b95fb1e02788f37a6b6aff402ab506e, fetched 2026-09-13)."
+      }
+    },
+    {
+      "id": "muBar",
+      "value": 0.17,
+      "unit": "ratio",
+      "source": {
+        "label": "Table 1 panel D; Section 3.2 (p.26-27): normal-times search discount mu-bar = 0.17",
+        "kind": "calibrated",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "sqrt(19/81 x 11/89) from the CPS 2010-19 corrected switching matrix (Carrillo-Tudela & Visschers 2023b method). Used only in the steady state (38)."
+      }
+    },
+    {
+      "id": "iota",
+      "value": 1.27,
+      "unit": "ratio",
+      "source": {
+        "label": "Table 1 panel D; eq (34) (p.20): matching-function curvature iota = 1.27",
+        "kind": "calibrated",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "den Haan, Ramey & Watson (2000)."
+      }
+    },
+    {
+      "id": "piBarMean",
+      "value": 0.65,
+      "unit": "per_month",
+      "source": {
+        "label": "Table 1 panel D; Section 2.3.2 (p.21): employment-weighted mean normal filling rate = 0.65 per month",
+        "kind": "calibrated",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "JOLTS 2010-19 with the Davis et al. (2013) method (footnote 9); pins chi."
+      }
+    }
+  ],
+  "variables": [
+    {
+      "id": "sK",
+      "unit": "share",
+      "equation": "1 - sL",
+      "description": "Base-period capital share s_K,t0 = 1 - s_L,t0 (Table A.2 A)."
+    },
+    {
+      "id": "sN0",
+      "unit": "share",
+      "equation": "sL * (1 - wC)",
+      "description": "Base-period wage-bill share of all other occupations s_N,t0 = s_L,t0 - s_C,t0 (Table A.2 B)."
+    },
+    {
+      "id": "g",
+      "unit": "per_year",
+      "equation": "gA / sL",
+      "description": "No-AI growth of the labour-augmenting ideas stock g = g_A / s_L,t0 (Table A.2 C)."
+    },
+    {
+      "id": "oneMinusPhiR",
+      "unit": "ratio",
+      "equation": "sL * oneMinusPhi + lambda",
+      "description": "Fishing out in the model units, 1 - phi_R = s_L (1 - phi) + lambda = 2.86 (eq 40)."
+    },
+    {
+      "id": "ellC0",
+      "unit": "share_of_L",
+      "equation": "wC * (1 - Ubar)",
+      "description": "Base employment of the cognitive group, (s_C/s_L)(L - U-bar) (Table A.2 B)."
+    },
+    {
+      "id": "ellN0",
+      "unit": "share_of_L",
+      "equation": "(1 - wC) * (1 - Ubar)",
+      "description": "Base employment of all other occupations, (s_N/s_L)(L - U-bar) (Table A.2 B)."
+    },
+    {
+      "id": "mBar",
+      "unit": "share",
+      "equation": "wC",
+      "description": "Ceiling of the affected mass m-bar = s_C,t0/s_L,t0 (Table 1 note; Table A.2 E)."
+    },
+    {
+      "id": "kappaM",
+      "unit": "per_year",
+      "equation": "log(((mBar - mMid2026) / mMid2026) * (m2030 / (mBar - m2030))) / (tRead - tAnchor)",
+      "description": "Slope of the m logistic, eq (8prime) (footnote 11, p.26). Substantial 0.33."
+    },
+    {
+      "id": "tM",
+      "unit": "year",
+      "equation": "tAnchor + log(mBar / mMid2026 - 1) / kappaM",
+      "description": "Midpoint of the m logistic: the date at which eq (8) passes through the mid-2026 anchor."
+    },
+    {
+      "id": "kappaD",
+      "unit": "per_year",
+      "equation": "log(((dBar - dMid2026) / dMid2026) * (d2030 / (dBar - d2030))) / (tRead - tAnchor)",
+      "description": "Slope of the d logistic, eq (8prime) \"and likewise for kappa_d\". Substantial 0.51."
+    },
+    {
+      "id": "tD",
+      "unit": "year",
+      "equation": "tAnchor + log(dBar / dMid2026 - 1) / kappaD",
+      "description": "Midpoint of the d logistic (through the mid-2026 anchor)."
+    },
+    {
+      "id": "a0",
+      "unit": "log_points",
+      "equation": "aMid2026 - ga * (tAnchor - t0)",
+      "description": "Level of the log gain at t0, eq (8) / Table A.2 E (the mid-2026 value less 2.5 years of slope)."
+    },
+    {
+      "id": "m",
+      "unit": "share",
+      "equation": "mBar / (1 + exp(-kappaM * (year - tM)))",
+      "description": "Affected mass m_t, eq (8)."
+    },
+    {
+      "id": "d",
+      "unit": "share",
+      "equation": "dBar / (1 + exp(-kappaD * (year - tD)))",
+      "description": "Diffusion share d_t, eq (8)."
+    },
+    {
+      "id": "a",
+      "unit": "log_points",
+      "equation": "a0 + ga * (year - t0)",
+      "description": "Log gain per AI-performed instance a_t, eq (8)."
+    },
+    {
+      "id": "md",
+      "unit": "share",
+      "equation": "m * d",
+      "description": "Share of task instances performed with AI, m_t d_t."
+    },
+    {
+      "id": "costFactor",
+      "unit": "ratio",
+      "equation": "exp(-(1 - sigma) * a)",
+      "description": "e^{-(1-sigma) a_t}, the factor in eqs (14), (15)."
+    },
+    {
+      "id": "netTaskLoss",
+      "unit": "share",
+      "equation": "md * (1 - rho * psi - (1 - psi) * costFactor)",
+      "description": "Bracket of eq (15): m d [1 - rho psi - (1 - psi) e^{-(1-sigma)a}]."
+    },
+    {
+      "id": "Bt",
+      "unit": "share",
+      "equation": "sK + sL * psi * md * (costFactor - rho)",
+      "description": "B_t, the bracket of the labour-share row, eq (14) / Table A.1 B."
+    },
+    {
+      "id": "Lam",
+      "unit": "share",
+      "equation": "wC - netTaskLoss",
+      "description": "Lambda_C,t, the surviving mass of cognitive instances (eq 39)."
+    },
+    {
+      "id": "lNtilde",
+      "unit": "log_gap",
+      "equation": "-log(1 - netTaskLoss)",
+      "description": "Shift of N demand, eq (15) (Proposition 1, exact)."
+    },
+    {
+      "id": "mNext",
+      "unit": "share",
+      "equation": "mBar / (1 + exp(-kappaM * (year + h - tM)))",
+      "description": "m at t+1 (Appendix A step 1: paths at t and t+1)."
+    },
+    {
+      "id": "dNext",
+      "unit": "share",
+      "equation": "dBar / (1 + exp(-kappaD * (year + h - tD)))",
+      "description": "d at t+1."
+    },
+    {
+      "id": "aNext",
+      "unit": "log_points",
+      "equation": "a0 + ga * (year + h - t0)",
+      "description": "a at t+1."
+    },
+    {
+      "id": "lNtildeNext",
+      "unit": "log_gap",
+      "equation": "-log(1 - mNext * dNext * (1 - rho * psi - (1 - psi) * exp(-(1 - sigma) * aNext)))",
+      "description": "Eq (15) evaluated at the date-(t+1) paths (Table A.1 notes: targets at t+1)."
+    },
+    {
+      "id": "tgtN",
+      "unit": "share_of_L",
+      "equation": "ellN0 * exp(lNtilde)",
+      "description": "Target of N, ell*_N,t = ell_N,t0 e^{lNtilde} (eq 13, Table A.1 B)."
+    },
+    {
+      "id": "tgtC",
+      "unit": "share_of_L",
+      "equation": "ellC0 + ellN0 - tgtN",
+      "description": "Target of C, ell*_C,t = ell_C,t0 + ell_N,t0 - ell*_N,t (eq 13, adding-up form)."
+    },
+    {
+      "id": "tgtNNext",
+      "unit": "share_of_L",
+      "equation": "ellN0 * exp(lNtildeNext)",
+      "description": "ell*_N,t+1."
+    },
+    {
+      "id": "tgtCNext",
+      "unit": "share_of_L",
+      "equation": "ellC0 + ellN0 - tgtNNext",
+      "description": "ell*_C,t+1."
+    },
+    {
+      "id": "xPot",
+      "unit": "log_gap",
+      "equation": "log(kPot / Bt) / (1 - sigma)",
+      "description": "Rental gap Delta ln r_t of Proposition 1 (eq 18), recovered from the solved capital share kPot = B_t e^{(1-sigma) Delta ln r} (eq 14)."
+    },
+    {
+      "id": "sLPot",
+      "unit": "share",
+      "equation": "1 - kPot",
+      "description": "Labour share s_L,t, eq (14) (the full-employment economy of Proposition 1)."
+    },
+    {
+      "id": "lnSLPot",
+      "unit": "log_gap",
+      "equation": "log(sLPot / sL)",
+      "description": "Delta ln s_L,t = ln(s_L,t / s_L,t0)."
+    },
+    {
+      "id": "lnWPot",
+      "unit": "log_gap",
+      "equation": "(lnSLPot + lNtilde) / (1 - sigma) + dlnA",
+      "description": "Common wage Delta ln w_t, eq (16) with the ideas stock (Table A.1 B, eq 44)."
+    },
+    {
+      "id": "lnYLPot",
+      "unit": "log_gap",
+      "equation": "lnWPot - lnSLPot",
+      "description": "Output per worker Delta ln(Y/L) of Proposition 1, eq (5)/(16)."
+    },
+    {
+      "id": "lnKPot",
+      "unit": "log_gap",
+      "equation": "log(kPot / sK) + lnYLPot - xPot",
+      "description": "Capital Delta ln K_t, eq (17): ln((1 - s_L,t)/s_K,t0) + Delta ln(Y/L) - Delta ln r."
+    },
+    {
+      "id": "lnTFP",
+      "unit": "log_gap",
+      "equation": "-log(sK + sL * (1 - md * (1 - costFactor)) * exp(-(1 - sigma) * dlnA)) / (1 - sigma)",
+      "description": "Measured TFP gap, eq (45) (Table A.1 B; the base-price index, the definition used in the tables).",
+      "history": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "sepMean",
+      "unit": "per_month",
+      "equation": "wC * sepHazardC + (1 - wC) * sepHazardN",
+      "description": "Employment-weighted mean E->U hazard; normalises the group relatives around q-bar (Section 3.2)."
+    },
+    {
+      "id": "qXC",
+      "unit": "per_month",
+      "equation": "(1 - qTshare) * qBarAnnual * h * sepHazardC / sepMean",
+      "description": "Exogenous quit component q^X_C (fraction per month)."
+    },
+    {
+      "id": "qTC",
+      "unit": "per_month",
+      "equation": "qTshare * qBarAnnual * h * sepHazardC / sepMean",
+      "description": "Finding-rate-sensitive quit component q^T_C (fraction per month)."
+    },
+    {
+      "id": "qXN",
+      "unit": "per_month",
+      "equation": "(1 - qTshare) * qBarAnnual * h * sepHazardN / sepMean",
+      "description": "q^X_N."
+    },
+    {
+      "id": "qTN",
+      "unit": "per_month",
+      "equation": "qTshare * qBarAnnual * h * sepHazardN / sepMean",
+      "description": "q^T_N."
+    },
+    {
+      "id": "qBarC",
+      "unit": "per_month",
+      "equation": "-log(1 - qXC - qTC)",
+      "description": "Normal quit rate of C as a continuous rate, q = -ln(1 - q-hat) (Appendix A). 0.63 percent."
+    },
+    {
+      "id": "qBarN",
+      "unit": "per_month",
+      "equation": "-log(1 - qXN - qTN)",
+      "description": "Normal quit rate of N (continuous). 1.40 percent."
+    },
+    {
+      "id": "HBarC",
+      "unit": "share_of_L",
+      "equation": "qBarC * ellC0",
+      "description": "Steady-state hires H-bar_C = q-bar_C ell_C,t0 (eq 38)."
+    },
+    {
+      "id": "HBarN",
+      "unit": "share_of_L",
+      "equation": "qBarN * ellN0",
+      "description": "H-bar_N (eq 38)."
+    },
+    {
+      "id": "UBarC",
+      "unit": "share_of_L",
+      "equation": "poolShareC * Ubar",
+      "description": "Steady-state pool of cognitive origin U-bar_C (eq 38). 1.76 percent of L."
+    },
+    {
+      "id": "UBarN",
+      "unit": "share_of_L",
+      "equation": "Ubar - UBarC",
+      "description": "U-bar_N = U-bar - U-bar_C (eq 38). 2.08 percent of L."
+    },
+    {
+      "id": "SBarC",
+      "unit": "share_of_L",
+      "equation": "UBarC + muBar * UBarN",
+      "description": "Steady-state effective search at C, eq (33) with mu-bar."
+    },
+    {
+      "id": "SBarN",
+      "unit": "share_of_L",
+      "equation": "muBar * UBarC + UBarN",
+      "description": "Steady-state effective search at N."
+    },
+    {
+      "id": "fBarC",
+      "unit": "per_month",
+      "equation": "HBarC / SBarC + muBar * HBarN / SBarN",
+      "description": "Normal finding rate by origin f-bar_C (eq 38). 0.216."
+    },
+    {
+      "id": "fBarN",
+      "unit": "per_month",
+      "equation": "muBar * HBarC / SBarC + HBarN / SBarN",
+      "description": "f-bar_N (eq 38). 0.243."
+    },
+    {
+      "id": "hirePerSearchC",
+      "unit": "per_month",
+      "equation": "HBarC / SBarC",
+      "description": "H-bar_C / S-bar_C."
+    },
+    {
+      "id": "hirePerSearchN",
+      "unit": "per_month",
+      "equation": "HBarN / SBarN",
+      "description": "H-bar_N / S-bar_N."
+    },
+    {
+      "id": "hirePerSearchMax",
+      "unit": "per_month",
+      "equation": "max(hirePerSearchC, hirePerSearchN)",
+      "description": "The larger of the two; chi must exceed it for eq (38) to have a filling rate (p.21)."
+    },
+    {
+      "id": "chiUncapped",
+      "unit": "ratio",
+      "equation": "hirePerSearchMax / chiScaledInv",
+      "description": "Matching efficiency chi solving the mean-filling-rate condition of eq (38)."
+    },
+    {
+      "id": "chi",
+      "unit": "ratio",
+      "equation": "min(1, chiUncapped)",
+      "description": "chi <= 1 (Section 2.3.2, p.20). Does not bind in the calibration: 0.757."
+    },
+    {
+      "id": "piBarC",
+      "unit": "per_month",
+      "equation": "chi * pow(1 - pow(hirePerSearchC / chi, iota), 1 / iota)",
+      "description": "Normal filling rate pi-bar_C (eq 38). 0.66."
+    },
+    {
+      "id": "piBarN",
+      "unit": "per_month",
+      "equation": "chi * pow(1 - pow(hirePerSearchN / chi, iota), 1 / iota)",
+      "description": "pi-bar_N (eq 38). 0.64."
+    },
+    {
+      "id": "fRatioC",
+      "unit": "ratio",
+      "equation": "fC / fBarC",
+      "history": [
+        1
+      ],
+      "description": "f_C,t / f-bar_C; its lag is the prospect term of eq (27). history 1 = f_C,t0-1 = f-bar_C (Table A.1 notes)."
+    },
+    {
+      "id": "fRatioN",
+      "unit": "ratio",
+      "equation": "fN / fBarN",
+      "history": [
+        1
+      ],
+      "description": "f_N,t / f-bar_N (history 1: f_N,t0-1 = f-bar_N)."
+    },
+    {
+      "id": "qC",
+      "unit": "per_month",
+      "equation": "-log(1 - qXC - qTC * fRatioC[t-1])",
+      "description": "Quit rate q_C,t = q^X + q^T f_C,t-1 / f-bar_C, eq (27), as a continuous rate (Appendix A)."
+    },
+    {
+      "id": "qN",
+      "unit": "per_month",
+      "equation": "-log(1 - qXN - qTN * fRatioN[t-1])",
+      "description": "Quit rate q_N,t, eq (27)."
+    },
+    {
+      "id": "ellC",
+      "unit": "share_of_L",
+      "equation": "(1 - qC[t-1]) * ellC[t-1] - layoffsC[t-1] + hiresC[t-1]",
+      "initial": "wC * (1 - Ubar)",
+      "description": "Cognitive employment ell_C, eq (36). Starts at ell_C,t0."
+    },
+    {
+      "id": "ellN",
+      "unit": "share_of_L",
+      "equation": "(1 - qN[t-1]) * ellN[t-1] + hiresN[t-1]",
+      "initial": "(1 - wC) * (1 - Ubar)",
+      "description": "All-other employment ell_N, eq (36) with D_N = 0. Starts at ell_N,t0."
+    },
+    {
+      "id": "poolGapC",
+      "unit": "share_of_L",
+      "equation": "poolGapC[t-1] + qC[t-1] * ellC[t-1] + layoffsC[t-1] - fC[t-1] * UC[t-1]",
+      "initial": 0,
+      "description": "U_C,t - U-bar_C: eq (37) written as the deviation from the steady-state pool so the stock starts at 0 (U_C,t0 = U-bar_C, Table A.1 notes)."
+    },
+    {
+      "id": "poolGapN",
+      "unit": "share_of_L",
+      "equation": "poolGapN[t-1] + qN[t-1] * ellN[t-1] - fN[t-1] * UN[t-1]",
+      "initial": 0,
+      "description": "U_N,t - U-bar_N, eq (37) with D_N = 0."
+    },
+    {
+      "id": "UC",
+      "unit": "share_of_L",
+      "equation": "UBarC + poolGapC",
+      "description": "Pool of cognitive origin U_C,t (eq 37)."
+    },
+    {
+      "id": "UN",
+      "unit": "share_of_L",
+      "equation": "UBarN + poolGapN",
+      "description": "Pool of other origin U_N,t (eq 37)."
+    },
+    {
+      "id": "overhangC",
+      "unit": "log_gap",
+      "equation": "max(0, log(ellC) - log(tgtCNext))",
+      "description": "Overhang G_C,t, eq (28)."
+    },
+    {
+      "id": "shortfallC",
+      "unit": "log_gap",
+      "equation": "max(0, log(tgtCNext) - log(ellC))",
+      "description": "Shortfall B_C,t, eq (28) (zero on the scenario paths)."
+    },
+    {
+      "id": "overhangN",
+      "unit": "log_gap",
+      "equation": "max(0, log(ellN) - log(tgtNNext))",
+      "description": "Overhang G_N,t, eq (28) (zero on the scenario paths)."
+    },
+    {
+      "id": "shortfallN",
+      "unit": "log_gap",
+      "equation": "max(0, log(tgtNNext) - log(ellN))",
+      "description": "Shortfall B_N,t, eq (28)."
+    },
+    {
+      "id": "attachedC",
+      "unit": "share_of_L",
+      "equation": "ellC + max(0, UC - UBarC)",
+      "description": "Attached cognitive force N_C,t, eq (29)."
+    },
+    {
+      "id": "shiftN",
+      "unit": "log_gap",
+      "equation": "-log(ellN / ellN0) / sigma",
+      "description": "Helper for system (39) at realised ell_N: -(1/sigma) ln(ell_N/ell_N,t0), so that the N demand row reads Delta ln w_N = u/sigma + shiftN."
+    },
+    {
+      "id": "clrShiftC",
+      "unit": "log_gap",
+      "equation": "(log(Lam / wC) - log(attachedC / ellC0)) / sigma",
+      "description": "Helper for system (39) evaluated at (N_C, ell_N): the C demand row gives Delta ln w_C = u/sigma + clrShiftC."
+    },
+    {
+      "id": "clrX",
+      "unit": "share",
+      "equation": "sL * Lam * exp((1 - sigma) * (clrShiftC - dlnA)) + sN0 * exp((1 - sigma) * (shiftN - dlnA))",
+      "description": "Labour terms of the price-index row of (39) at (N_C, ell_N), before the common factor e^{(1-sigma) u / sigma}."
+    },
+    {
+      "id": "clrU",
+      "unit": "log_gap",
+      "equation": "sigma / (1 - sigma) * log((1 - kClr) / clrX)",
+      "description": "u = Delta ln Y - (1-sigma) Delta ln A at (N_C, ell_N), from the price-index row of (39)."
+    },
+    {
+      "id": "lnWCClear",
+      "unit": "log_gap",
+      "equation": "clrU / sigma + clrShiftC",
+      "description": "Clearing cognitive wage Delta ln w^c_C,t: system (39) at (N_C, ell_N) (eq 30)."
+    },
+    {
+      "id": "wageGap",
+      "unit": "log_gap",
+      "equation": "pow(xi, h) * wageGap[t-1] + (1 - pow(xi, h)) * (lnWCClear - lnWPot)",
+      "history": [
+        0
+      ],
+      "description": "ln(w_C,t / w_t): eq (30), xi^(1/12) weight on last month. history: ln(w_C,t0-1/w_t0-1) = 0 (Table A.1 notes)."
+    },
+    {
+      "id": "lnWC",
+      "unit": "log_gap",
+      "equation": "lnWPot + wageGap",
+      "description": "Sticky cognitive wage Delta ln w_C,t (eq 30)."
+    },
+    {
+      "id": "demF",
+      "unit": "share",
+      "equation": "sL * Lam * exp((1 - sigma) * (lnWC - dlnA))",
+      "description": "Cognitive term of the price-index row of (39) at the sticky wage."
+    },
+    {
+      "id": "demU",
+      "unit": "log_gap",
+      "equation": "sigma * (dlnA + log((1 - demF) * (1 - zDem) / sN0) / (1 - sigma) - shiftN)",
+      "description": "u at the sticky wage: (39) solved for ell_C given w_C and ell_N."
+    },
+    {
+      "id": "demandC",
+      "unit": "share_of_L",
+      "equation": "ellC0 * (Lam / wC) * exp(demU - sigma * lnWC)",
+      "description": "Cognitive demand ell^d_C,t at w_C,t, system (39) (Table A.1 C)."
+    },
+    {
+      "id": "excessC",
+      "unit": "share_of_L",
+      "equation": "max(0, ellC - demandC)",
+      "description": "E_t = max{0, ell_C - ell^d_C} (Table A.1 C)."
+    },
+    {
+      "id": "unmetC",
+      "unit": "share_of_L",
+      "equation": "max(0, demandC - ellC)",
+      "description": "Z_t = max{0, ell^d_C - ell_C} (Table A.1 C)."
+    },
+    {
+      "id": "layoffsC",
+      "unit": "share_of_L",
+      "equation": "max(0, excessC - qC * ellC)",
+      "description": "Layoffs D_C,t, eq (31)."
+    },
+    {
+      "id": "openingsC",
+      "unit": "share_of_L",
+      "equation": "(max(0, qC * ellC - excessC) + thetaH * unmetC) / piBarC",
+      "description": "Openings v_C,t, eq (32)."
+    },
+    {
+      "id": "openingsN",
+      "unit": "share_of_L",
+      "equation": "(qN + thetaH * shortfallN) * ellN / piBarN",
+      "description": "Openings v_N,t, eq (32)."
+    },
+    {
+      "id": "searchC",
+      "unit": "share_of_L",
+      "equation": "UC + mu * UN",
+      "description": "Effective search S_C,t, eq (33)."
+    },
+    {
+      "id": "searchN",
+      "unit": "share_of_L",
+      "equation": "mu * UC + UN",
+      "description": "Effective search S_N,t, eq (33)."
+    },
+    {
+      "id": "hiresC",
+      "unit": "share_of_L",
+      "equation": "chi * searchC * openingsC / pow(pow(searchC, iota) + pow(openingsC, iota), 1 / iota)",
+      "description": "Hires H_C,t, eq (34)."
+    },
+    {
+      "id": "hiresN",
+      "unit": "share_of_L",
+      "equation": "chi * searchN * openingsN / pow(pow(searchN, iota) + pow(openingsN, iota), 1 / iota)",
+      "description": "Hires H_N,t, eq (34)."
+    },
+    {
+      "id": "fC",
+      "unit": "per_month",
+      "equation": "hiresC / searchC + mu * hiresN / searchN",
+      "description": "Finding rate by origin f_C,t, eq (35)."
+    },
+    {
+      "id": "fN",
+      "unit": "per_month",
+      "equation": "mu * hiresC / searchC + hiresN / searchN",
+      "description": "Finding rate by origin f_N,t, eq (35)."
+    },
+    {
+      "id": "actShiftC",
+      "unit": "log_gap",
+      "equation": "(log(Lam / wC) - log(ellC / ellC0)) / sigma",
+      "description": "Helper for system (39) at realised (ell_C, ell_N)."
+    },
+    {
+      "id": "actX",
+      "unit": "share",
+      "equation": "sL * Lam * exp((1 - sigma) * (actShiftC - dlnA)) + sN0 * exp((1 - sigma) * (shiftN - dlnA))",
+      "description": "Labour terms of the price-index row of (39) at realised employment."
+    },
+    {
+      "id": "actU",
+      "unit": "log_gap",
+      "equation": "sigma / (1 - sigma) * log((1 - kAct) / actX)",
+      "description": "u at realised employment."
+    },
+    {
+      "id": "lnGDPGap",
+      "unit": "log_gap",
+      "equation": "actU + (1 - sigma) * dlnA",
+      "history": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "description": "Actual GDP gap Delta ln Y_t, system (39) at realised employment (Table A.1 D). History: zero gap before t0 (used only by the 12-month growth rows before 2025)."
+    },
+    {
+      "id": "xAct",
+      "unit": "log_gap",
+      "equation": "log(kAct / Bt) / (1 - sigma)",
+      "description": "Actual rental gap Delta ln r_t (39)."
+    },
+    {
+      "id": "lnK",
+      "unit": "log_gap",
+      "equation": "log(kAct / sK) + lnGDPGap - xAct",
+      "description": "Actual capital gap; equals epsilon Delta ln r_t (39)."
+    },
+    {
+      "id": "laborShare",
+      "unit": "share",
+      "equation": "1 - kAct",
+      "description": "Actual labour share s_L,t (39)."
+    },
+    {
+      "id": "lnWN",
+      "unit": "log_gap",
+      "equation": "actU / sigma + shiftN",
+      "description": "All-other wage Delta ln w_N,t (39) at realised employment."
+    },
+    {
+      "id": "lnMPLC",
+      "unit": "log_gap",
+      "equation": "actU / sigma + actShiftC",
+      "description": "Marginal product of cognitive labour MPL_C,t at realised employment (39)."
+    },
+    {
+      "id": "lnWavg",
+      "unit": "log_gap",
+      "equation": "log((exp(lnWC) * ellC + exp(lnWN) * ellN) / (ellC + ellN))",
+      "description": "Average wage (w_C ell_C + w_N ell_N)/(ell_C + ell_N) (Table A.1 D)."
+    },
+    {
+      "id": "lnResearchGap",
+      "unit": "log_gap",
+      "equation": "lnGDPGap",
+      "description": "Research uplift Delta ln R_t = Delta ln Y_t, eq (22)."
+    },
+    {
+      "id": "growthGap",
+      "unit": "per_year",
+      "equation": "g * (exp(lambda * lnResearchGap - oneMinusPhiR * dlnA) - 1)",
+      "description": "Growth gap Delta g_t, eq (42)."
+    },
+    {
+      "id": "dlnA",
+      "unit": "log_gap",
+      "equation": "dlnA[t-1] + h * growthGap[t-1]",
+      "initial": 0,
+      "history": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "description": "Ideas stock Delta ln A_t, eq (42): Delta ln A_t+1 = Delta ln A_t + h Delta g_t; Delta ln A_t0 = 0. History: zero before t0 (12-month growth rows only)."
+    },
+    {
+      "id": "excessUnemployment",
+      "unit": "share_of_L",
+      "equation": "UC + UN - Ubar",
+      "description": "Excess unemployment u^x_t = (U_C + U_N - U-bar)/L (Table A.1 D)."
+    },
+    {
+      "id": "reallocation",
+      "unit": "share_of_L",
+      "equation": "0.5 * (abs(hiresC - qC * ellC - layoffsC) + abs(hiresN - qN * ellN))",
+      "description": "Reallocation X_t = (|ell_C,t+1 - ell_C,t| + |ell_N,t+1 - ell_N,t|)/2L, with the t+1 stocks from eq (36)."
+    },
+    {
+      "id": "aggOverhang",
+      "unit": "share_of_L",
+      "equation": "overhangC * ellC",
+      "description": "Aggregate overhang G_t = G_C,t ell_C,t / L (Table A.1 D)."
+    },
+    {
+      "id": "cogShift",
+      "unit": "log_gap",
+      "equation": "log(tgtC / ellC0)",
+      "description": "Cognitive shift lC-tilde = ln(ell*_C,t / ell_C,t0) (eq 19, Table A.1 D)."
+    },
+    {
+      "id": "ellCMid2026",
+      "unit": "share_of_L",
+      "equation": "ellCMid2026[t-1] + max(0, 1 - 24 * abs(year - tAnchor)) * (ellC - ellCMid2026[t-1])",
+      "initial": "wC * (1 - Ubar)",
+      "description": "Cognitive employment recorded at the mid-2026 step (holds ell_C,t0 before it); the base of Table 3 \"cognitive employment, pct. change since mid-2026\"."
+    },
+    {
+      "id": "gdpGapPct",
+      "unit": "pct",
+      "equation": "100 * (exp(lnGDPGap) - 1)",
+      "description": "Table 3: GDP, pct. above the no-AI path."
+    },
+    {
+      "id": "gdpIndex",
+      "unit": "index_2024_100",
+      "equation": "100 * exp((g + n) * (year - t0) + lnGDPGap)",
+      "description": "Table 3: GDP, index with 2024 = 100 (no-AI GDP grows at g + n, Section 2.1.1)."
+    },
+    {
+      "id": "gdpGrowthPct",
+      "unit": "pct_per_year",
+      "equation": "100 * (lnGDPGap - lnGDPGap[t-12] + g + n)",
+      "description": "Table 3: GDP growth, log change over the twelve months to the date (Table 3 note)."
+    },
+    {
+      "id": "avgWagePct",
+      "unit": "pct",
+      "equation": "100 * (exp(lnWavg) - 1)",
+      "description": "Table 3: average wage, pct. above the no-AI path."
+    },
+    {
+      "id": "cogWagePct",
+      "unit": "pct",
+      "equation": "100 * (exp(lnWC) - 1)",
+      "description": "Table 3: cognitive occupations wage w_C."
+    },
+    {
+      "id": "otherWagePct",
+      "unit": "pct",
+      "equation": "100 * (exp(lnWN) - 1)",
+      "description": "Table 3: all other occupations wage w_N."
+    },
+    {
+      "id": "netReturnPct",
+      "unit": "pct_per_year",
+      "equation": "100 * (rBar * exp(xAct) - delta)",
+      "description": "Table 3: net return to capital r - delta."
+    },
+    {
+      "id": "capitalPct",
+      "unit": "pct",
+      "equation": "100 * (exp(lnK) - 1)",
+      "description": "Table 3: capital stock, pct. above the no-AI path."
+    },
+    {
+      "id": "laborSharePct",
+      "unit": "pct",
+      "equation": "100 * laborShare",
+      "description": "Table 3: labour share, pct. of income."
+    },
+    {
+      "id": "capitalSharePct",
+      "unit": "pct",
+      "equation": "100 * kAct",
+      "description": "Table 3: capital share, pct. of income."
+    },
+    {
+      "id": "laborIncomePct",
+      "unit": "pct",
+      "equation": "100 * ((exp(lnWC) * ellC + exp(lnWN) * ellN) / (ellC0 + ellN0) - 1)",
+      "description": "Table 3: labour income (sum of the two wage bills), pct. above the no-AI path."
+    },
+    {
+      "id": "cogWageBillPct",
+      "unit": "pct",
+      "equation": "100 * (exp(lnWC) * ellC / ellC0 - 1)",
+      "description": "Table 3: wage bill of cognitive occupations."
+    },
+    {
+      "id": "capitalIncomePct",
+      "unit": "pct",
+      "equation": "100 * (exp(xAct + lnK) - 1)",
+      "description": "Table 3: capital income (rental rate times capital), pct. above the no-AI path."
+    },
+    {
+      "id": "cogEmpSinceMid2026Pct",
+      "unit": "pct",
+      "equation": "100 * (ellC / ellCMid2026 - 1)",
+      "description": "Table 3: cognitive employment, pct. change since mid-2026 (meaningful from mid-2026 on)."
+    },
+    {
+      "id": "uCogPct",
+      "unit": "pct",
+      "equation": "100 * UC / (ellC + UC)",
+      "description": "Table 3: unemployment rate, cognitive workers (pool of cognitive origin over the group labour force)."
+    },
+    {
+      "id": "uAllPct",
+      "unit": "pct",
+      "equation": "100 * (UC + UN)",
+      "description": "Table 3: unemployment rate, all workers (L = 1)."
+    },
+    {
+      "id": "tfpPct",
+      "unit": "pct",
+      "equation": "100 * (exp(lnTFP) - 1)",
+      "description": "Table 3: measured TFP, pct. above the no-AI path (eq 45)."
+    },
+    {
+      "id": "tfpGrowthPct",
+      "unit": "pct_per_year",
+      "equation": "100 * (lnTFP - lnTFP[t-12] + gA)",
+      "description": "Table 3: measured TFP growth (12-month log change plus g_A)."
+    },
+    {
+      "id": "ideasPct",
+      "unit": "pct",
+      "equation": "100 * (exp(dlnA) - 1)",
+      "description": "Table 3: ideas stock A_t, pct. above the no-AI path."
+    },
+    {
+      "id": "ideasGrowthPct",
+      "unit": "pct_per_year",
+      "equation": "100 * (dlnA - dlnA[t-12] + g)",
+      "description": "Table 3: growth of the ideas stock (12-month log change plus g)."
+    }
+  ],
+  "solves": [
+    {
+      "id": "capital-market-potential",
+      "unknown": "kPot",
+      "residual": "log(kPot / Bt) / (1 - sigma) - invEps * (log(kPot / sK) + (sigma * log((1 - kPot) / sL) + lNtilde) / (1 - sigma) + dlnA - log(kPot / Bt) / (1 - sigma))",
+      "bracket": [
+        1e-12,
+        0.999999999999
+      ],
+      "tol": 1e-14,
+      "maxIter": 200,
+      "unit": "share",
+      "description": "Proposition 1, eq (18): epsilon Delta ln r = Delta ln K with Delta ln K from eq (17), written as Delta ln r - (1/epsilon) Delta ln K = 0. Unknown reparametrised to the capital share k = 1 - s_L,t = B_t e^{(1-sigma) Delta ln r} (eq 14), so every log in the residual is finite on the whole open unit interval; the bracket is that interval (structural), not a chosen bound. Strictly monotone (eq 18); at invEps = 0 the root is Delta ln r = 0."
+    },
+    {
+      "id": "steady-state-pool-split",
+      "unknown": "poolShareC",
+      "residual": "(HBarC / (poolShareC * Ubar + muBar * (1 - poolShareC) * Ubar) + muBar * HBarN / (muBar * poolShareC * Ubar + (1 - poolShareC) * Ubar)) * poolShareC * Ubar - HBarC",
+      "bracket": [
+        1e-12,
+        0.999999999999
+      ],
+      "tol": 1e-15,
+      "maxIter": 200,
+      "unit": "share",
+      "description": "Steady state eq (38): U-bar_C = e U-bar splits the pool so that f-bar_C U-bar_C = H-bar_C, at mu-bar. The N condition then holds by the hires identity (37). Solved at every step but depends only on parameters, so it is the t0 steady state."
+    },
+    {
+      "id": "steady-state-matching-efficiency",
+      "unknown": "chiScaledInv",
+      "residual": "wC * (hirePerSearchMax / chiScaledInv) * pow(1 - pow(hirePerSearchC * chiScaledInv / hirePerSearchMax, iota), 1 / iota) + (1 - wC) * (hirePerSearchMax / chiScaledInv) * pow(1 - pow(hirePerSearchN * chiScaledInv / hirePerSearchMax, iota), 1 / iota) - piBarMean",
+      "bracket": [
+        1e-12,
+        0.999999999999
+      ],
+      "tol": 1e-15,
+      "maxIter": 200,
+      "unit": "ratio",
+      "description": "Eq (38) and p.21: chi such that the employment-weighted mean of pi-bar_o = chi [1 - (H-bar_o/(chi S-bar_o))^iota]^(1/iota) is 0.65. Unknown reparametrised as max_o(H-bar_o/S-bar_o) / chi in (0, 1), which keeps chi above every hire-per-searcher ratio so the filling rates exist (p.21)."
+    },
+    {
+      "id": "clearing-wage",
+      "unknown": "kClr",
+      "residual": "log(kClr / Bt) / (1 - sigma) - invEps * (log(kClr / sK) + sigma / (1 - sigma) * log((1 - kClr) / clrX) + (1 - sigma) * dlnA - log(kClr / Bt) / (1 - sigma))",
+      "bracket": [
+        1e-12,
+        0.999999999999
+      ],
+      "tol": 1e-14,
+      "maxIter": 200,
+      "unit": "share",
+      "description": "System (39) evaluated at (N_C,t, ell_N,t): gives the clearing cognitive wage w^c_C (eq 30). The two demand rows are eliminated in closed form; the one remaining unknown is the capital share k = B_t e^{(1-sigma) Delta ln r} of the price-index row, found where Delta ln r = Delta ln K / epsilon."
+    },
+    {
+      "id": "demand-at-sticky-wage",
+      "unknown": "zDem",
+      "residual": "log(zDem * (1 - demF) / Bt) / (1 - sigma) - invEps * (log(zDem * (1 - demF) / sK) + sigma * (dlnA + log((1 - demF) * (1 - zDem) / sN0) / (1 - sigma) - shiftN) + (1 - sigma) * dlnA - log(zDem * (1 - demF) / Bt) / (1 - sigma))",
+      "bracket": [
+        1e-12,
+        0.999999999999
+      ],
+      "tol": 1e-14,
+      "maxIter": 200,
+      "unit": "share",
+      "description": "System (39) solved for ell_C at the sticky wage w_C,t and realised ell_N,t (Table A.1 C, cognitive demand). Unknown z = k / (1 - F) where k is the capital share and F the cognitive term of the price-index row at w_C, so that both k and the all-other term 1 - F - k stay positive on (0, 1)."
+    },
+    {
+      "id": "actual-economy",
+      "unknown": "kAct",
+      "residual": "log(kAct / Bt) / (1 - sigma) - invEps * (log(kAct / sK) + sigma / (1 - sigma) * log((1 - kAct) / actX) + (1 - sigma) * dlnA - log(kAct / Bt) / (1 - sigma))",
+      "bracket": [
+        1e-12,
+        0.999999999999
+      ],
+      "tol": 1e-14,
+      "maxIter": 200,
+      "unit": "share",
+      "description": "System (39) at realised employment (ell_C,t, ell_N,t): the reported GDP, all-other wage, return, capital and labour share (Appendix A step 8)."
+    }
+  ],
+  "outputs": [
+    "gdpGapPct",
+    "gdpGrowthPct",
+    "avgWagePct",
+    "cogWagePct",
+    "otherWagePct",
+    "netReturnPct",
+    "capitalPct",
+    "laborSharePct",
+    "laborIncomePct",
+    "capitalIncomePct",
+    "cogEmpSinceMid2026Pct",
+    "uCogPct",
+    "uAllPct",
+    "tfpPct",
+    "ideasPct",
+    "m",
+    "d",
+    "a",
+    "layoffsC",
+    "excessUnemployment",
+    "reallocation",
+    "aggOverhang",
+    "cogShift"
+  ],
+  "tests": [
+    {
+      "name": "Table 3 (p.31), Substantial, 2030.0: GDP, pct. above no-AI path",
+      "at": 2030,
+      "expr": "gdpGapPct",
+      "expected": 8.3,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Substantial, 2030.0: GDP index, 2024 = 100",
+      "at": 2030,
+      "expr": "gdpIndex",
+      "expected": 122.1,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Substantial, 2030.0: GDP growth, pct. per year",
+      "at": 2030,
+      "expr": "gdpGrowthPct",
+      "expected": 5.4,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Substantial, 2030.0: average wage, pct. above no-AI",
+      "at": 2030,
+      "expr": "avgWagePct",
+      "expected": 2.1,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Substantial, 2030.0: cognitive wage w_C",
+      "at": 2030,
+      "expr": "cogWagePct",
+      "expected": -0.3,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Substantial, 2030.0: all-other wage w_N",
+      "at": 2030,
+      "expr": "otherWagePct",
+      "expected": 5.9,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Substantial, 2030.0: net return r - delta, pct. per year",
+      "at": 2030,
+      "expr": "netReturnPct",
+      "expected": 7,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Substantial, 2030.0: capital stock, pct. above no-AI",
+      "at": 2030,
+      "expr": "capitalPct",
+      "expected": 13.8,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Substantial, 2030.0: labour share, pct.",
+      "at": 2030,
+      "expr": "laborSharePct",
+      "expected": 56.1,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Substantial, 2030.0: capital share, pct.",
+      "at": 2030,
+      "expr": "capitalSharePct",
+      "expected": 43.9,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Substantial, 2030.0: labour income, pct. above no-AI",
+      "at": 2030,
+      "expr": "laborIncomePct",
+      "expected": 1.4,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Substantial, 2030.0: wage bill of cognitive occupations",
+      "at": 2030,
+      "expr": "cogWageBillPct",
+      "expected": -4.6,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Substantial, 2030.0: capital income, pct. above no-AI",
+      "at": 2030,
+      "expr": "capitalIncomePct",
+      "expected": 18.9,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Substantial, 2030.0: cognitive employment, pct. change since mid-2026",
+      "at": 2030,
+      "expr": "cogEmpSinceMid2026Pct",
+      "expected": -3.9,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Substantial, 2030.0: unemployment rate, cognitive workers",
+      "at": 2030,
+      "expr": "uCogPct",
+      "expected": 4.5,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Substantial, 2030.0: unemployment rate, all workers",
+      "at": 2030,
+      "expr": "uAllPct",
+      "expected": 4.6,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Substantial, 2030.0: measured TFP, pct. above no-AI",
+      "at": 2030,
+      "expr": "tfpPct",
+      "expected": 3.1,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Substantial, 2030.0: measured TFP growth, pct. per year",
+      "at": 2030,
+      "expr": "tfpGrowthPct",
+      "expected": 2.3,
+      "tol": 0.05500000000000001
+    },
+    {
+      "name": "Table 3 (p.31), Substantial, 2030.0: ideas stock A, pct. above no-AI",
+      "at": 2030,
+      "expr": "ideasPct",
+      "expected": 0.2,
+      "tol": 0.0055000000000000005
+    },
+    {
+      "name": "Table 3 (p.31), Substantial, 2030.0: growth of the ideas stock, pct. per year",
+      "at": 2030,
+      "expr": "ideasGrowthPct",
+      "expected": 1.76,
+      "tol": 0.0055000000000000005
+    },
+    {
+      "name": "Table A.2 E (p.45): kappa_m = 0.33 (Substantial)",
+      "at": 2024,
+      "expr": "kappaM",
+      "expected": 0.33,
+      "tol": 0.0055
+    },
+    {
+      "name": "Table A.2 E (p.45): kappa_d = 0.51 (Substantial)",
+      "at": 2024,
+      "expr": "kappaD",
+      "expected": 0.51,
+      "tol": 0.0055
+    },
+    {
+      "name": "Table 1 B (p.24): a_2030 = 0.45 (Substantial)",
+      "at": 2030,
+      "expr": "a",
+      "expected": 0.45,
+      "tol": 0.0055
+    },
+    {
+      "name": "Table 1 B: m reaches its 2030 value 0.3 at 2030.0",
+      "at": 2030,
+      "expr": "m",
+      "expected": 0.3,
+      "tol": 1e-9
+    },
+    {
+      "name": "Table 1 B: d passes its mid-2026 anchor 0.10 at 2026.5",
+      "at": 2026.5,
+      "expr": "d",
+      "expected": 0.1,
+      "tol": 1e-9
+    },
+    {
+      "name": "Section 2.3.2 (p.21): steady-state finding rate 0.92 x 96.2 / 3.8 = 0.23 a month",
+      "at": 2024,
+      "expr": "(HBarC + HBarN) / Ubar",
+      "expected": 0.23,
+      "tol": 0.0055
+    },
+    {
+      "name": "Section 2.3.2 (p.21): pool of cognitive origin 1.76 percent of L",
+      "at": 2024,
+      "expr": "100 * UBarC",
+      "expected": 1.76,
+      "tol": 0.0055
+    },
+    {
+      "name": "Section 2.3.2 (p.21): pool of other origin 2.08 percent of L",
+      "at": 2024,
+      "expr": "100 * UBarN",
+      "expected": 2.08,
+      "tol": 0.0055
+    },
+    {
+      "name": "Section 2.3.2 (p.21): normal filling rate of C 0.66",
+      "at": 2024,
+      "expr": "piBarC",
+      "expected": 0.66,
+      "tol": 0.0055
+    },
+    {
+      "name": "Section 2.3.2 (p.21): normal filling rate of N 0.64",
+      "at": 2024,
+      "expr": "piBarN",
+      "expected": 0.64,
+      "tol": 0.0055
+    },
+    {
+      "name": "Section 2.3.2 (p.21): matching efficiency chi 0.76",
+      "at": 2024,
+      "expr": "chi",
+      "expected": 0.76,
+      "tol": 0.0055
+    },
+    {
+      "name": "Section 2.3.2 (p.21): quit rate of cognitive workers 0.63 percent a month",
+      "at": 2024,
+      "expr": "100 * qBarC",
+      "expected": 0.63,
+      "tol": 0.0055
+    },
+    {
+      "name": "Section 2.3.2 (p.21): quit rate of all other workers 1.40 percent a month",
+      "at": 2024,
+      "expr": "100 * qBarN",
+      "expected": 1.4,
+      "tol": 0.0055
+    },
+    {
+      "name": "Proposition 1 (p.15): the capital row (17) meets supply (6), Delta ln r = Delta ln K / epsilon, at 2030.0",
+      "at": 2030,
+      "expr": "xPot - invEps * lnKPot",
+      "expected": 0,
+      "tol": 1e-10
+    },
+    {
+      "name": "Table A.1 notes (p.43): on the scenario path G_N is zero and B_C negligible (2030.0)",
+      "at": 2030,
+      "expr": "overhangN + shortfallC",
+      "expected": 0,
+      "tol": 0.001
+    },
+    {
+      "name": "Table A.1 D (p.43): cognitive firms' profit (MPL_C - w_C) ell_C is at most half a percent of GDP (2030.0), in pct",
+      "at": 2030,
+      "expr": "100 * sL * wC * (ellC / ellC0) * abs(exp(lnMPLC) - exp(lnWC)) / exp(lnGDPGap)",
+      "expected": 0,
+      "tol": 0.5
+    },
+    {
+      "name": "Accounting (p.20): ell_C + ell_N + U_C + U_N = L at 2030.0",
+      "at": 2030,
+      "expr": "ellC + ellN + UC + UN",
+      "expected": 1,
+      "tol": 1e-12
+    },
+    {
+      "name": "Section 2.1.3 (p.12): exact level-only TFP gap 0.029 in 2030 (eq 45 with Delta ln A = 0)",
+      "at": 2030,
+      "expr": "-log(sK + sL * (1 - md * (1 - costFactor))) / (1 - sigma)",
+      "expected": 0.029,
+      "tol": 0.00055
+    }
+  ]
+}

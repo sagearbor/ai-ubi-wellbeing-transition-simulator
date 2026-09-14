@@ -1,0 +1,54 @@
+{
+  "id": "korinek-faithful-pegged-rental",
+  "name": "Korinek et al. 2026 faithful port: rental rate pegged by world capital markets (epsilon = infinity)",
+  "description": "Sensitivity overlay from Table 5 (p.37): capital is supplied at the no-AI rental rate, epsilon = infinity, written invEps = 0 (the capital-market roots then sit at Delta ln r = 0 exactly). Applied to the base file it is the Substantial epsilon = infinity column of Table 5; its tests assert that column. Combine with the Modest or Extreme overlay for the other scenarios (the Extreme column is checked in src/core/korinekFaithful.test.ts).",
+  "parameters": [
+    {
+      "id": "invEps",
+      "value": 0,
+      "source": {
+        "label": "Table 5 (p.37): epsilon = infinity, \"a rental rate pegged at r-bar\"",
+        "kind": "assumed",
+        "url": "https://www-cdn.anthropic.com/files/4zrzovbb/website/cf58f84d46a4a76bf5a5b039ac695fba6b80041c.pdf",
+        "note": "Robustness setting of the paper, not its calibration (epsilon = 3)."
+      }
+    }
+  ],
+  "tests": [
+    {
+      "name": "Table 5 (p.37), Substantial, epsilon = infinity: GDP, pct. above no-AI",
+      "at": 2030,
+      "expr": "gdpGapPct",
+      "expected": 10,
+      "tol": 0.055
+    },
+    {
+      "name": "Table 5 (p.37), Substantial, epsilon = infinity: average wage",
+      "at": 2030,
+      "expr": "avgWagePct",
+      "expected": 5.6,
+      "tol": 0.055
+    },
+    {
+      "name": "Table 5 (p.37), Substantial, epsilon = infinity: net return",
+      "at": 2030,
+      "expr": "netReturnPct",
+      "expected": 6.5,
+      "tol": 0.055
+    },
+    {
+      "name": "Table 5 (p.37), Substantial, epsilon = infinity: capital stock",
+      "at": 2030,
+      "expr": "capitalPct",
+      "expected": 18.2,
+      "tol": 0.055
+    },
+    {
+      "name": "Table 5 (p.37), Substantial, epsilon = infinity: labour share",
+      "at": 2030,
+      "expr": "laborSharePct",
+      "expected": 57,
+      "tol": 0.055
+    }
+  ]
+}

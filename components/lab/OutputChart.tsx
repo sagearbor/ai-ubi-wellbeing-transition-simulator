@@ -46,6 +46,11 @@ export interface OutputChartProps {
   markYear?: number;
   selected: boolean;
   onSelect: (id: string) => void;
+  /** Legend names; default "this run" and "base model, untouched". */
+  currentLabel?: string;
+  baselineLabel?: string;
+  /** Text under the "selected / tap to explain" slot; default depends on `selected`. */
+  selectNote?: string;
 }
 
 const AXIS = { fontSize: 11, fill: 'currentColor' } as const;
@@ -62,6 +67,9 @@ const OutputChart: React.FC<OutputChartProps> = ({
   markYear,
   selected,
   onSelect,
+  currentLabel = 'this run',
+  baselineLabel = 'base model, untouched',
+  selectNote,
 }) => {
   const data = years.map((year, i) => ({
     year,
@@ -88,7 +96,7 @@ const OutputChart: React.FC<OutputChartProps> = ({
           <span className="font-mono break-all">{id}</span>
           <span className="ml-2 font-sans text-[11px] font-normal text-slate-500 dark:text-slate-400">
             {unit || 'no unit'}
-            {selected ? ' · explained below' : ' · tap to explain'}
+            {selectNote ?? (selected ? ' · explained below' : ' · tap to explain')}
           </span>
         </button>
         <span className="text-[11px] tabular-nums text-slate-500 dark:text-slate-400">
@@ -128,7 +136,7 @@ const OutputChart: React.FC<OutputChartProps> = ({
                 strokeWidth={1.5}
                 dot={false}
                 isAnimationActive={false}
-                name="base model"
+                name={baselineLabel}
               />
             )}
             <Line
@@ -138,7 +146,7 @@ const OutputChart: React.FC<OutputChartProps> = ({
               strokeWidth={2}
               dot={false}
               isAnimationActive={false}
-              name="this run"
+              name={currentLabel}
             />
           </Chart>
         </ResponsiveContainer>
@@ -146,12 +154,12 @@ const OutputChart: React.FC<OutputChartProps> = ({
       <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-[11px] text-slate-500 dark:text-slate-400">
         <span>
           <span className="inline-block w-4 border-t-2 border-sky-600 align-middle mr-1" />
-          this run
+          {currentLabel}
         </span>
         {showBaseline && (
           <span>
             <span className="inline-block w-4 border-t-2 border-dashed border-slate-400 align-middle mr-1" />
-            base model, untouched
+            {baselineLabel}
           </span>
         )}
         {band && (

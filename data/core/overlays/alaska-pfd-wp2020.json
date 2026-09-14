@@ -1,0 +1,15 @@
+{
+  "id": "alaska-pfd-wp2020",
+  "name": "Jones & Marinescu, NBER w24312 (Jan 2020) calibration",
+  "description": "Restores the working-paper edition's calibration inputs (WP Table 5 p.39; pp.22-24): MPC 0.25, kappa 1.2, per-person PDV USD 45,000. Superseded by the published edition; kept because the spread between the two editions is the only model-side uncertainty the authors report.",
+  "parameters": [
+    { "id": "mpc", "value": 0.25, "source": { "label": "NBER w24312 rev. Jan 2020, Table 5: Kueng (2018) MPC, unscaled", "kind": "calibrated" } },
+    { "id": "kappa", "value": 1.2, "source": { "label": "NBER w24312 rev. Jan 2020, Table 5", "kind": "calibrated" } },
+    { "id": "pdv_dividends", "value": 45000, "source": { "label": "NBER w24312 rev. Jan 2020, p.22 fn 16: per-person PDV of USD 1,495/yr", "kind": "calibrated" } }
+  ],
+  "tests": [
+    { "name": "WP Table 5 micro effect -0.006", "at": 1990, "expr": "micro_effect", "expected": -0.006, "tol": 0.0005 },
+    { "name": "WP Table 5 macro effect (spending) +0.005", "at": 1990, "expr": "macro_effect_spending", "expected": 0.005, "tol": 0.0005 },
+    { "name": "WP net -0.001", "at": 1990, "expr": "net_effect", "expected": -0.001, "tol": 0.001 }
+  ]
+}

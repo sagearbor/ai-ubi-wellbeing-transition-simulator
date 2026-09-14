@@ -17,6 +17,7 @@ import { ModelDetail } from './components/ModelDetail';
 import { ModelRating } from './components/ModelRating';
 import FuturesTab from './components/futures/FuturesTab';
 import LabTab from './components/lab/LabTab';
+import ModelCardTab from './components/modelcard/ModelCardTab';
 import { InterventionImportPanel } from './components/futures/InterventionImportPanel';
 import { LOCKED_GRAPH, LOCKED_INTERVENTIONS, loadCustomInterventions, saveCustomInterventions } from './src/futures/data';
 import type { Intervention } from './src/futures/types';
@@ -199,14 +200,16 @@ const App: React.FC = () => {
   const [history, setHistory] = useState<HistoryPoint[]>([]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [speed, setSpeed] = useState(1);
-  const [activeTab, setActiveTab] = useState<'map' | 'charts' | 'corporations' | 'futures' | 'lab' | 'analysis' | 'overview' | 'equations' | 'guide' | 'models' | 'leaderboard'>('map');
+  const [activeTab, setActiveTab] = useState<'map' | 'charts' | 'corporations' | 'futures' | 'lab' | 'analysis' | 'overview' | 'equations' | 'guide' | 'models' | 'leaderboard' | 'modelcard'>('map');
   const [customInterventions, setCustomInterventions] = useState<Intervention[]>(() => loadCustomInterventions());
   // Deep link: /?tab=lab opens a tab directly (shareable, and it bypasses the header menu on phones).
   useEffect(() => {
     try {
       const wanted = new URLSearchParams(window.location.search).get('tab');
-      const valid = ['map', 'charts', 'corporations', 'futures', 'lab', 'analysis', 'overview', 'equations', 'guide', 'models', 'leaderboard'];
+      const valid = ['map', 'charts', 'corporations', 'futures', 'lab', 'analysis', 'overview', 'equations', 'guide', 'models', 'leaderboard', 'modelcard'];
       if (wanted && valid.includes(wanted)) setActiveTab(wanted as any);
+      // A shared policy scenario (#lab=...) opens the Model Lab, which reads and reports on the link itself.
+      if (window.location.hash.startsWith('#lab=')) setActiveTab('lab');
     } catch { /* no window */ }
   }, []);
   const [viewMode, setViewMode] = useState<'adoption' | 'wellbeing'>('wellbeing'); // Default to wellbeing
@@ -1187,7 +1190,7 @@ const App: React.FC = () => {
             <button 
               onMouseEnter={() => setAboutDropdownOpen(true)}
               onClick={() => setAboutDropdownOpen(!aboutDropdownOpen)}
-              className={`px-3 py-1 lg:px-4 lg:py-1.5 rounded-md lg:rounded-lg text-[10px] lg:text-xs font-bold uppercase flex items-center gap-1 transition-all ${(activeTab === 'overview' || activeTab === 'equations' || activeTab === 'analysis' || activeTab === 'guide' || activeTab === 'models' || activeTab === 'leaderboard' || activeTab === 'lab') ? 'bg-slate-800 text-white dark:bg-slate-700 dark:text-white' : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'}`}
+              className={`px-3 py-1 lg:px-4 lg:py-1.5 rounded-md lg:rounded-lg text-[10px] lg:text-xs font-bold uppercase flex items-center gap-1 transition-all ${(activeTab === 'overview' || activeTab === 'equations' || activeTab === 'analysis' || activeTab === 'guide' || activeTab === 'models' || activeTab === 'leaderboard' || activeTab === 'lab' || activeTab === 'modelcard') ? 'bg-slate-800 text-white dark:bg-slate-700 dark:text-white' : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'}`}
             >
                 More <ChevronDown size={12} className={aboutDropdownOpen ? 'rotate-180' : ''} />
             </button>
@@ -1199,6 +1202,7 @@ const App: React.FC = () => {
                     <button onClick={() => { setActiveTab('guide'); setAboutDropdownOpen(false); setSelectedEntity(null); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors border-b border-slate-100 dark:border-slate-700 flex items-center gap-2"><BookOpen size={14} /> About & Guide</button>
                     <button onClick={() => { setActiveTab('overview'); setAboutDropdownOpen(false); setSelectedEntity(null); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors border-b border-slate-100 dark:border-slate-700 flex items-center gap-2"><Globe size={14} /> Overview</button>
                     <button onClick={() => { setActiveTab('equations'); setAboutDropdownOpen(false); setSelectedEntity(null); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors border-b border-slate-100 dark:border-slate-700 flex items-center gap-2"><FlaskConical size={14} /> Model Equations</button>
+                    <button onClick={() => { setActiveTab('modelcard'); setAboutDropdownOpen(false); setSelectedEntity(null); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors border-b border-slate-100 dark:border-slate-700 flex items-center gap-2"><BookOpen size={14} /> Model Card</button>
                     <button onClick={() => { setActiveTab('analysis'); setAboutDropdownOpen(false); setSelectedEntity(null); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors border-b border-slate-100 dark:border-slate-700 flex items-center gap-2"><BrainCircuit size={14} /> Analysis Hub</button>
                     <button onClick={() => { setActiveTab('models'); setAboutDropdownOpen(false); setSelectedEntity(null); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors border-b border-slate-100 dark:border-slate-700 flex items-center gap-2"><Settings size={14} /> Models</button>
                     <button onClick={() => { setActiveTab('lab'); setAboutDropdownOpen(false); setSelectedEntity(null); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors border-b border-slate-100 dark:border-slate-700 flex items-center gap-2"><FlaskConical size={14} /> Model Lab</button>
@@ -1741,6 +1745,12 @@ const App: React.FC = () => {
                     )}
                 </div>
               </div>
+            </div>
+          )}
+
+          {activeTab === 'modelcard' && (
+            <div className="h-full overflow-y-auto scrollbar-hide pb-32">
+              <ModelCardTab />
             </div>
           )}
 
@@ -2391,7 +2401,7 @@ const App: React.FC = () => {
                   <span className="font-bold">Parts of this page describe an earlier engine.</span> Formulas that use surplus tax, adoption incentive,
                   redistribution rate or market pressure are not what runs today: the built-in engine reads only growth speed, displacement rate,
                   GDP scaling and the optional macro block. The formulas as actually computed, with their evidence, are in the{' '}
-                  <a href="https://github.com/sagearbor/ai-ubi-wellbeing-transition-simulator/blob/main/docs/design/model-card-default.md" target="_blank" rel="noreferrer" className="underline underline-offset-2 font-semibold">model card</a>.
+                  <button onClick={() => setActiveTab('modelcard')} className="underline underline-offset-2 font-semibold">model card</button>.
                 </p>
               </div>
 
@@ -2900,7 +2910,7 @@ shadowWellbeing = max(1, shadowWellbeing - shadowFriction × 0.4)`}
                           every lever, what the engine actually reads, the evidence for each relationship, how outputs respond to small nudges, and the open
                           failures (the UBI-to-wellbeing coefficient is not calibrated; lost wages are permanent by assumption).
                         </p>
-                        <a href="https://github.com/sagearbor/ai-ubi-wellbeing-transition-simulator/blob/main/docs/design/model-card-default.md" target="_blank" rel="noreferrer" className="inline-block mt-3 text-sm font-bold text-amber-900 dark:text-amber-200 underline underline-offset-2">Read the model card</a>
+                        <button onClick={() => setActiveTab('modelcard')} className="inline-block mt-3 text-sm font-bold text-amber-900 dark:text-amber-200 underline underline-offset-2">Read the model card</button>
                      </div>
                      <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-8 rounded-[2rem] shadow-sm">
                         <h3 className="text-slate-900 dark:text-white text-sm font-bold uppercase tracking-widest mb-6 border-b border-slate-200 dark:border-slate-800 pb-4">Getting Started</h3>
