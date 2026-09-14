@@ -231,6 +231,23 @@ describe('runHindcast', () => {
     expect(() => runHindcast({ ...runOpts, fromYear: 2022, toYear: 2020, aiOff: true })).toThrow(/must be after/);
   });
 
+  it('limiting case: the anchored mode and legacy-with-anchor coincide when AI and transfers are off', () => {
+    // With adoption 0 and no UBI every legacy flow term is zero, and the anchored target reduces to
+    // the same WHR anchor (labour share at its base value, no transfer, no excess unemployment).
+    const base = defaultHindcastParams();
+    const anchored = { ...base, macro: { ...base.macro!, wellbeingMode: 'anchored' as const, ubiEffectPerDoubling: 4, unemploymentEffectPerPoint: 0.45 } };
+    const legacy = runHindcast({ ...runOpts, aiOff: true });
+    const anch = runHindcast({ ...runOpts, aiOff: true, params: anchored });
+    for (let i = 0; i < legacy.countries.length; i++) {
+      legacy.countries[i].predictedWellbeingSeries.forEach((w, y) =>
+        expect(anch.countries[i].predictedWellbeingSeries[y]).toBeCloseTo(w, 9));
+    }
+    // ...and they separate once transfers flow.
+    const legacyUbi = runHindcast({ ...runOpts, aiOff: true, corpContributionRate: 0.5 });
+    const anchUbi = runHindcast({ ...runOpts, aiOff: true, corpContributionRate: 0.5, params: anchored });
+    expect(anchUbi.countries.map(c => c.predictedWellbeingEnd)).not.toEqual(legacyUbi.countries.map(c => c.predictedWellbeingEnd));
+  });
+
   it('does not mutate the caller\'s corporations or country definitions', () => {
     const corpsBefore = JSON.stringify(CORPS);
     const countriesBefore = JSON.stringify(COUNTRIES);

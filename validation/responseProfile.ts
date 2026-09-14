@@ -22,7 +22,7 @@
 
 import { classifyShape, type ShapeDetail } from '../src/core/sensitivity';
 import { initialRun, advanceRun, initOptionsFor, type SimulationRun } from '../simulation/run';
-import { INITIAL_CORPORATIONS, PRESET_MODELS, DEFAULT_MACRO } from '../constants';
+import { INITIAL_CORPORATIONS, PRESET_MODELS, DEFAULT_MACRO, KORINEK_SCENARIOS } from '../constants';
 import type { Corporation, ModelParameters } from '../types';
 
 // ---------------------------------------------------------------------------
@@ -174,6 +174,41 @@ export const CATEGORICAL_SWITCHES: CategoricalSwitch[] = [
   },
 ];
 
+/** Korinek et al. (2026) "extreme" displacement coefficients (constants.ts KORINEK_SCENARIOS). */
+const KORINEK_EXTREME = KORINEK_SCENARIOS.find((k) => k.id === 'extreme')!.macro;
+const withMacro = (s: Scenario, patch: Partial<NonNullable<ModelParameters['macro']>>, growthFactor = 1): Scenario => ({
+  ...s,
+  model: { ...s.model, aiGrowthRate: s.model.aiGrowthRate * growthFactor, macro: { ...s.model.macro!, ...patch } },
+});
+
+/**
+ * Stress cases for models that carry a macro block (stage 4 review of the anchored candidate): the
+ * Korinek "extreme" displacement coefficients, then the same with slow re-employment, then with
+ * adoption also running twice as fast. They keep the model's own wellbeing coefficients, so the
+ * rows show how far the displacement channel alone can move wellbeing under this model.
+ */
+export const MACRO_STRESS_SWITCH: CategoricalSwitch = {
+  id: 'stress',
+  label: 'Displacement stress (Korinek et al. 2026 extreme coefficients)',
+  alternatives: [
+    {
+      id: 'korinek-extreme',
+      label: `extreme (automation ${KORINEK_EXTREME.automationShare}, re-employment ${KORINEK_EXTREME.reemploymentMonths} mo)`,
+      apply: (s) => withMacro(s, { automationShare: KORINEK_EXTREME.automationShare, reemploymentMonths: KORINEK_EXTREME.reemploymentMonths }),
+    },
+    {
+      id: 'korinek-extreme-slow',
+      label: `extreme, re-employment 60 mo`,
+      apply: (s) => withMacro(s, { automationShare: KORINEK_EXTREME.automationShare, reemploymentMonths: 60 }),
+    },
+    {
+      id: 'korinek-extreme-slow-fast',
+      label: `extreme, re-employment 60 mo, adoption growth x2`,
+      apply: (s) => withMacro(s, { automationShare: KORINEK_EXTREME.automationShare, reemploymentMonths: 60 }, 2),
+    },
+  ],
+};
+
 // ---------------------------------------------------------------------------
 // Running
 // ---------------------------------------------------------------------------
@@ -292,7 +327,10 @@ export function runResponseProfile(opts: { scenario?: Scenario; horizons?: numbe
     base,
     levers: leversFor(s).map((l) => profileLever(l, s, horizons, base)),
     // The macro on/off switch is meaningless for a model that already carries a macro block.
-    switches: CATEGORICAL_SWITCHES.filter((sw) => !(sw.id === 'macro' && s.model.macro)).map((sw) => profileSwitch(sw, s, horizons, base)),
+    switches: [
+      ...CATEGORICAL_SWITCHES.filter((sw) => !(sw.id === 'macro' && s.model.macro)),
+      ...(s.model.macro ? [MACRO_STRESS_SWITCH] : []),
+    ].map((sw) => profileSwitch(sw, s, horizons, base)),
   };
 }
 
@@ -336,12 +374,12 @@ export function renderMarkdown(p: ResponseProfile): string {
     }
   }
   L.push('', '### Switches (difference from base, last horizon)', '');
-  L.push('| Switch | alternative | avg wellbeing | US wellbeing | poor-8 wellbeing | crisis count | inflow bn/mo |');
-  L.push('|---|---|---|---|---|---|---|');
+  L.push('| Switch | alternative | avg wellbeing | US wellbeing | poor-8 wellbeing | US adoption | crisis count | inflow bn/mo |');
+  L.push('|---|---|---|---|---|---|---|---|');
   for (const sw of p.switches) {
     for (const alt of sw.alternatives) {
       const d = alt.delta[last];
-      L.push(`| ${sw.id} | ${alt.label} | ${signed(d.averageWellbeing)} | ${signed(d.usWellbeing)} | ${signed(d.poorWellbeing)} | ${signed(d.countriesInCrisis, 0)} | ${signed(d.monthlyInflow)} |`);
+      L.push(`| ${sw.id} | ${alt.label} | ${signed(d.averageWellbeing)} | ${signed(d.usWellbeing)} | ${signed(d.poorWellbeing)} | ${signed(d.usAdoption, 3)} | ${signed(d.countriesInCrisis, 0)} | ${signed(d.monthlyInflow)} |`);
     }
   }
   return L.join('\n');

@@ -18,7 +18,7 @@
 import { readFileSync, existsSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { INITIAL_COUNTRIES } from '../../constants';
+import { INITIAL_COUNTRIES, PRESET_MODELS } from '../../constants';
 import {
   runHindcast,
   HindcastActuals,
@@ -161,7 +161,20 @@ const aiOffUbiOn: HindcastRun = runHindcast({
 /** Default parameters, adoption free to grow from 0. */
 const aiOn: HindcastRun = runHindcast({ ...base, aiOff: false });
 
+/**
+ * Stage 4 candidate: the "evidence-anchored" preset (wellbeing is a level model relaxing toward
+ * the WHR-fitted anchor on labour income and governance, plus a log transfer effect, minus an
+ * unemployment effect). Same corporations, same initial state from actuals. The anchor was
+ * fitted on this same span, so this is a retrospective reconstruction, not a forecast.
+ */
+const anchoredPreset = PRESET_MODELS.find(m => m.id === 'evidence-anchored');
+if (!anchoredPreset) throw new Error('constants.ts PRESET_MODELS has no evidence-anchored preset');
+const anchoredOff: HindcastRun = runHindcast({ ...base, aiOff: true, params: anchoredPreset, label: 'Anchored, AI off' });
+const anchoredOn: HindcastRun = runHindcast({ ...base, aiOff: false, params: anchoredPreset, label: 'Anchored, AI on' });
+
 const tests = runHindcastTests({ actuals, fromYear: FROM_YEAR, toYear: TO_YEAR, run: aiOff });
+/** The same two anchor tests scored on the anchored AI-off run (reported, not the legacy headline). */
+const anchoredTests = runHindcastTests({ actuals, fromYear: FROM_YEAR, toYear: TO_YEAR, run: anchoredOff });
 
 /** Comparison-to-beat baselines, scored against the same AI-off run. Not part of pass/fail. */
 const baselines = {
@@ -198,9 +211,12 @@ if (AS_JSON) {
     runs: {
       'ai-off': aiOff,
       'ai-off-ubi-on': aiOffUbiOn,
-      'ai-on': aiOn
+      'ai-on': aiOn,
+      'anchored-ai-off': anchoredOff,
+      'anchored-ai-on': anchoredOn
     },
     tests,
+    anchoredTests,
     baselines
   }, null, 2));
 } else {
@@ -226,7 +242,7 @@ if (AS_JSON) {
 
   console.log('\nScores (wellbeing in 0-100 index points; ladder points x 10)');
   const header = ['run', 'corr dWB', 'MAE WB', 'MAE (ladder)', 'corr dGDP', 'MAE GDP %', 'n'];
-  const rows = [aiOff, aiOffUbiOn, aiOn].map(r => [
+  const rows = [aiOff, aiOffUbiOn, aiOn, anchoredOff, anchoredOn].map(r => [
     r.label,
     r.score.corrWellbeingChange.toFixed(3),
     r.score.maeWellbeing.toFixed(2),
@@ -241,7 +257,7 @@ if (AS_JSON) {
   console.log(line(widths.map(w => '-'.repeat(w))));
   for (const r of rows) console.log(line(r));
 
-  for (const r of [aiOff, aiOffUbiOn, aiOn]) {
+  for (const r of [aiOff, aiOffUbiOn, aiOn, anchoredOff, anchoredOn]) {
     console.log(`\n${r.label}: ${r.monthsRun} monthly steps, aiGrowthRate=${r.params.aiGrowthRate}, ` +
       `corp contributionRate=${r.corpContributionRate === null ? 'as configured in constants.ts' : r.corpContributionRate}`);
     console.log(`  mean predicted wellbeing change: ${mean(r.countries.map(c => c.predictedWellbeingChange)).toFixed(2)} index pts ` +
@@ -289,6 +305,11 @@ if (AS_JSON) {
       console.log(`       expected: ${t.details.expected}`);
       console.log(`       actual:   ${t.details.actual}`);
     }
+  }
+  console.log(`\nSame tests on the "${anchoredOff.label}" run (stage 4 candidate; reported, not the gate)`);
+  for (const t of anchoredTests) {
+    console.log(`[${t.passed ? 'PASS' : 'FAIL'}] ${t.testId} ${t.testName}`);
+    console.log(`       ${t.reason}`);
   }
   console.log(`\nThresholds: HC-1 r >= ${HC1_CORR_THRESHOLD}, HC-2 MAE <= ${HC2_MAE_THRESHOLD} index points.`);
   console.log('Caveat: a 2015-2025 hindcast cannot validate the AI displacement channel (COVID, war and');

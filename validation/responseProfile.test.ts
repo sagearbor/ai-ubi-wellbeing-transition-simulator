@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
-import { runResponseProfile, renderMarkdown, NUMERIC_LEVERS, HEADLINE_KEYS } from './responseProfile';
+import { runResponseProfile, renderMarkdown, NUMERIC_LEVERS, HEADLINE_KEYS, MACRO_STRESS_SWITCH, runScenario, defaultScenario, CATEGORICAL_SWITCHES } from './responseProfile';
+import { PRESET_MODELS } from '../constants';
 
 describe('responseProfile - stage 3 response review of the default world model', () => {
   const profile = runResponseProfile({ horizons: [12, 24] });
@@ -33,5 +34,22 @@ describe('responseProfile - stage 3 response review of the default world model',
     const md = renderMarkdown(profile);
     expect(md).toContain('| aiGrowthRate |');
     expect((md.match(/\| displacementRate \|/g) ?? []).length).toBe(2 + 2); // nudges table + other-outputs table
+  });
+});
+
+describe('responseProfile - stage 4 displacement stress of the anchored candidate', () => {
+  const anchored = { ...defaultScenario(), model: { ...PRESET_MODELS.find((m) => m.id === 'evidence-anchored')! } };
+
+  it('each harsher stress case lowers US wellbeing, and none of them is a cliff', () => {
+    const us = [anchored, ...MACRO_STRESS_SWITCH.alternatives.map((a) => a.apply(anchored))].map((s) => runScenario(s, [48])[48].usWellbeing);
+    for (let i = 1; i < us.length; i++) expect(us[i]).toBeLessThan(us[i - 1]);
+    // Bounded by the unemployment evidence and the 3-year half-life (model card, stress review).
+    expect(us[0] - us[us.length - 1]).toBeGreaterThan(2);
+    expect(us[0] - us[us.length - 1]).toBeLessThan(10);
+  });
+
+  it('is offered only to models with a macro block', () => {
+    expect(CATEGORICAL_SWITCHES.map((s) => s.id)).not.toContain('stress');
+    expect(runResponseProfile({ horizons: [1] }).switches.map((s) => s.id)).not.toContain('stress');
   });
 });

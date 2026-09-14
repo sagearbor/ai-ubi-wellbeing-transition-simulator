@@ -253,6 +253,43 @@ Response review (`npm run profile:default -- --model=evidence-anchored`):
   review next.
 - No thresholds, no crisis rule, no floor hits in the reviewed region.
 
+Stress review, stage 4 slice 2 (`profile:default -- --model=evidence-anchored`, "stress" switch;
+the model's own wellbeing coefficients, only the displacement coefficients change):
+
+| Case | US wellbeing 5 y / 10 y | US unemployment peak | US labour share 10 y | avg wellbeing 10 y | poor-8 10 y |
+|---|---|---|---|---|---|
+| base (`DEFAULT_MACRO`: automation 0.5, re-employment 12 mo) | 68.9 / 69.5 | 6.8% (yr 2) | 0.347 | 58.6 | 43.0 |
+| Korinek extreme (automation 0.9, re-employment 18 mo) | 67.7 / 68.1 | 11.3% (yr 4) | 0.347 | 58.3 | 43.0 |
+| extreme, re-employment 60 mo | 65.9 / 64.0 | 20.9% (yr 6) | 0.347 | 57.5 | 43.0 |
+| extreme, 60 mo, adoption growth ×2 | 63.4 / 62.1 | 27.7% (yr 4) | 0.287 | 57.0 | 43.0 |
+
+- The displacement channel works and is bounded by two things: the unemployment evidence
+  (0.45 index points per pp, so a 24 pp excess costs ~11 points of target) and the 3-year
+  half-life (wellbeing lags the target by ~5 points at the unemployment peak). Worst case US −7.4
+  at 10 y. A Greece-2008-scale shock (+20 pp) costing about one ladder point is the observed order.
+- The income anchor barely moves: labour income falls ~20% against the no-AI path in the
+  harshest case (GDP 128k × 0.287/0.60 = 61k vs 77k), which the log slope turns into −1.1 index
+  points. Capital income, which rises with GDP, is not in the anchor and benefits nobody in this
+  model — an omission, disclosed, not a finding about who gains.
+- Poor-8 wellbeing does not respond at all: those countries have almost no operating
+  corporations, so almost no adoption (the "countries with no operating corporation never adopt"
+  limitation above), not resilience.
+- US `aiAdoption` passes Korinek's 2030 extreme value (0.45) within 5 years in every case; this
+  engine's adoption is corporation-driven and is not the same quantity as their task share m × d.
+  No transfer-side protection is visible: US UBI stays near 12 USD/month, so `ubiEffect` ≈ 0.01.
+
+Historical reconstruction of the candidate (`npm run hindcast`, 2015-2025, 106 countries):
+
+| Run | corr ΔWB | MAE (index) | note |
+|---|---|---|---|
+| legacy + anchor, AI off | 0.485 | 4.48 | headline gate (HC-1, HC-2) |
+| anchored, AI off | 0.485 | 4.48 | identical by construction: with no adoption and no transfer both reduce to the same anchor (pinned as a limiting-case test) |
+| legacy, AI on | 0.249 | 25.55 | the flow model collapses over a decade that did not collapse |
+| anchored, AI on | 0.500 | 4.43 | AI on no longer destroys the reconstruction; mean change +1.0 vs actual +2.6 |
+
+The anchor was fitted on the same span, so none of these is a forecast; the anchored-AI-on row
+shows only that the candidate does not contradict the decade, which the legacy default does.
+
 Status: **candidate**. It is offered as a preset so the two wellbeing models can be compared side
 by side; switching the default is the owner's decision after external review.
 
