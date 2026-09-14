@@ -10,7 +10,8 @@ import { ModelConfig, ModelValidationResult } from '../types';
 import {
   ANCHOR_TESTS,
   runAnchorTest,
-  runAllAnchorTests
+  runAllAnchorTests,
+  summariseAnchors
 } from './anchorTests';
 import type { AnchorTestResult, AnchorTestSuiteResult } from './anchorTests';
 import { validateTier1, calculateComplexity } from '../src/services/modelValidator';
@@ -37,7 +38,7 @@ export interface FullValidationResult {
   };
   tier2: AnchorTestSuiteResult;
   complexity: number;
-  eligible: boolean;  // True if tier1 passed AND tier2.passed >= 4
+  eligible: boolean;  // True if tier1 passed AND every hard invariant anchor (AT-6) passes
   summary: string;
 }
 
@@ -97,7 +98,7 @@ export async function runTestsWithProgress(
     passed,
     total: ANCHOR_TESTS.length,
     results,
-    tier2Passed: passed >= 4
+    ...summariseAnchors(results)
   };
 }
 
@@ -126,7 +127,9 @@ export async function runFullValidation(
         passed: 0,
         total: ANCHOR_TESTS.length,
         results: [],
-        tier2Passed: false
+        tier2Passed: false,
+        invariants: { passed: 0, total: 0 },
+        directional: { passed: 0, total: 0 }
       },
       complexity,
       eligible: false,
@@ -151,6 +154,8 @@ export async function runFullValidation(
       passed: 0,
       total: ANCHOR_TESTS.length,
       tier2Passed: false,
+      invariants: { passed: 0, total: 0 },
+      directional: { passed: 0, total: 0 },
       results: ANCHOR_TESTS.map(test => ({
         testId: test.id,
         testName: test.name,
@@ -181,8 +186,8 @@ export async function runFullValidation(
     complexity,
     eligible,
     summary: eligible
-      ? `✅ Leaderboard-eligible (passes at least 4 of 6 anchor tests): ${tier2.passed}/${tier2.total} anchors, complexity: ${complexity}`
-      : `⚠️ Not leaderboard-eligible (needs at least 4 of 6 anchor tests): passed ${tier2.passed}/${tier2.total}`
+      ? `✅ Leaderboard-eligible: compiles and holds the accounting invariants (${tier2.invariants.passed}/${tier2.invariants.total}). Directional expectations ${tier2.directional.passed}/${tier2.directional.total} are reported, not required. Complexity: ${complexity}`
+      : `⚠️ Not leaderboard-eligible: ${tier1Passed ? `accounting invariants ${tier2.invariants.passed}/${tier2.invariants.total}` : 'the model does not compile'}`
   };
 }
 

@@ -482,7 +482,7 @@ export interface LeaderboardEntry {
   // Validation
   anchorsPassed: number;             // X/6
   anchorsTotal: number;              // 6
-  isEligible: boolean;               // anchorsPassed >= 4
+  isEligible: boolean;               // every hard-invariant anchor passed (directional anchors never gate)
 
   // Ranking score
   complexity: number;                // Lower = better = higher rank
@@ -503,7 +503,7 @@ export interface LeaderboardFilter {
   minAnchorsPassed?: number;         // e.g., 6 for "perfect only"
   author?: string;                   // Filter by author
   tags?: string[];                   // Filter by tags
-  onlyEligible?: boolean;            // Only show eligible models (4+ anchors)
+  onlyEligible?: boolean;            // Only show eligible models (invariants hold)
 }
 
 /**

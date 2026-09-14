@@ -31,7 +31,31 @@ export interface AnchorTestSuiteResult {
   passed: number;
   total: number;
   results: AnchorTestResult[];
-  tier2Passed: boolean; // True if passed >= 4/6
+  /**
+   * True when every hard invariant (category 'consistency', e.g. AT-6 money conservation) passes.
+   * The other anchor tests encode desired directional outcomes (UBI helps, defection spreads...);
+   * they are reported but never gate validity or sharing, because they can exclude a competing
+   * model rather than establish correctness (review 2026-09-14, finding 10). Name kept for callers.
+   */
+  tier2Passed: boolean;
+  /** Hard invariants passed / total, and directional expectations passed / total, reported separately. */
+  invariants: { passed: number; total: number };
+  directional: { passed: number; total: number };
+}
+
+/** Anchor tests that are implementation invariants rather than desired economic outcomes. */
+export const isInvariantAnchor = (r: Pick<AnchorTestResult, 'category'>): boolean => r.category === 'consistency';
+
+/** Split a result list into invariant and directional tallies; eligibility = all invariants pass. */
+export function summariseAnchors(results: AnchorTestResult[]): Pick<AnchorTestSuiteResult, 'tier2Passed' | 'invariants' | 'directional'> {
+  const inv = results.filter(isInvariantAnchor);
+  const dir = results.filter((r) => !isInvariantAnchor(r));
+  const invariants = { passed: inv.filter((r) => r.passed).length, total: inv.length };
+  return {
+    tier2Passed: invariants.total > 0 && invariants.passed === invariants.total,
+    invariants,
+    directional: { passed: dir.filter((r) => r.passed).length, total: dir.length },
+  };
 }
 
 /**
@@ -499,7 +523,7 @@ export function runAllAnchorTests(equations?: CompiledEquationSet): AnchorTestSu
     passed,
     total: ANCHOR_TESTS.length,
     results,
-    tier2Passed: passed >= 4
+    ...summariseAnchors(results)
   };
 }
 

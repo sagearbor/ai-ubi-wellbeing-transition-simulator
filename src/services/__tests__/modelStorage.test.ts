@@ -78,7 +78,8 @@ function createMockAnchorResults(passedCount: number): AnchorTestResult[] {
     results.push({
       testId: `test-${i}`,
       testName: `Test ${i}`,
-      category: 'causal',
+      // The last result stands in for the accounting invariant (AT-6); only it gates eligibility.
+      category: i === 5 ? 'consistency' : 'causal',
       passed: i < passedCount,
       reason: i < passedCount ? 'Passed' : 'Failed'
     });

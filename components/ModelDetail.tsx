@@ -89,7 +89,7 @@ export const ModelDetail: React.FC<ModelDetailProps> = ({
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div className="bg-gray-700/50 rounded p-3">
                   <div className="text-gray-400 text-xs">Anchors Passed</div>
-                  <div className={`text-2xl font-bold ${model.anchorTestsPassed >= 4 ? 'text-green-400' : 'text-yellow-400'}`}>
+                  <div className={`text-2xl font-bold ${model.anchorTestsPassed === 6 ? 'text-green-400' : 'text-yellow-400'}`}>
                     {model.anchorTestsPassed}/6
                   </div>
                 </div>

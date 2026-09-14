@@ -90,13 +90,12 @@ The simulator isn't just one model — it's a **platform for competing models**.
 You can upload your own economic model as a YAML or JSON config that defines
 custom equations (AI-adoption growth, surplus generation, well-being delta,
 displacement friction, UBI utility) and parameter ranges. Uploaded models are
-run through a validation harness of **six "anchor tests"** — directional causal
-invariants that any honest model must satisfy (e.g. *displacement without UBI
-must reduce well-being*, *money must be conserved*). A model is
-**leaderboard-eligible** once it passes at least 4 of 6 — an admission rule for
-the leaderboard, not a claim of scientific validity — and is scored for
-**complexity** (an Occam's-razor tiebreaker — simpler models that still pass
-rank higher) on a leaderboard.
+run through **six "anchor tests"**. One is an accounting invariant (*money must be
+conserved*, AT-6); the other five are directional expectations (e.g. *displacement without
+UBI reduces wellbeing*). A model is **leaderboard-eligible** when it compiles and holds the
+accounting invariant; the directional results are reported beside it but never gate, because
+a desired direction can exclude a competing model without showing it is wrong. Eligible models
+are scored for **complexity** (an Occam's-razor tiebreaker) on a leaderboard.
 Example configs live in [`examples/models/`](examples/models/).
 
 > **Status of custom models (preview):** uploads are parsed, schema-checked and

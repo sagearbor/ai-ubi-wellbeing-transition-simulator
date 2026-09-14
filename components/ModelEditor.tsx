@@ -171,7 +171,7 @@ export const ModelEditor: React.FC<ModelEditorProps> = ({
   }, [readyToActivate, buildConfig, onRun]);
 
   const handleShare = useCallback(() => {
-    if (!validationResult || validationResult.tier2.passed < 4) return;
+    if (!validationResult || !validationResult.eligible) return;
     const config = buildConfig();
     if (modelNameExists(config.name)) {
       setShareError('A model with this name already exists');
