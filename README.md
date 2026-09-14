@@ -162,7 +162,11 @@ npm run preview
 npm run typecheck   # tsc --noEmit
 npm test            # vitest: parser sandbox, model storage, pure engine
 npm run validate    # the six anchor tests against simulation/pure.ts (exit 1 if < 4 pass)
-npm run check       # all of the above plus a production build (what CI runs)
+npm run validate:korinek  # reduced-form Korinek reproduction (KJ-1..3)
+npm run validate:core     # every core model and overlay in data/core against its own tests
+npm run validate:cases    # policy-effect cases (data/cases), signed discrepancies, no grade
+npm run hindcast          # 2015-2025 reconstruction (report, not a gate)
+npm run check       # typecheck, tests, the validators above and a production build (what CI runs)
 ```
 
 CI (`.github/workflows/ci.yml`) runs `npm run check` on every push and pull request.
@@ -197,18 +201,23 @@ basis for a conference-panel presentation; `main` has moved on since.
 Because it's pre-1.0, expect rough edges: parameters and coefficients are still
 being tuned, the model catalog is small, and interfaces may change.
 
-Current anchor-test results for the built-in engine (`npm run validate`): 4 of 6
-pass. **AT-2 (generous UBI prevents collapse) fails** — with 40% contributions
-distributed globally and 80% displacement, average wellbeing still falls to
-about a third of its starting value over 60 months, because the per-capita UBI
-boost is small relative to displacement friction at current coefficients. **AT-3
-fails too on a clean run.** The previously reported 5 of 6 was an artefact: the
-engine mutated country objects in place, so every stored history point silently
-became the latest month and the anchor suite was order-dependent. That mutation
-was fixed on 2026-09-13 and the baseline was re-locked at the honest 4 of 6 (see
-[`docs/design/audit-2026-09-13.md`](docs/design/audit-2026-09-13.md) for the full
-audit). This is a modelling question, not a code defect, and is left visible on
-purpose.
+Current results for the built-in engine (`npm run check`, 2026-09-13): 767 tests; anchor tests
+5 of 6 (AT-3 fails for a measurement reason documented in the model card); Korinek reduced form
+3 of 3; every core model passes its own reproduction tests.
+
+**Where to start reviewing (v3 plan, stages 1-5):**
+
+| What | Where |
+|---|---|
+| Model card for the default and the evidence-anchored candidate (scope, accounting, evidence, response review, stress review, hindcast, known failures) | [`docs/design/model-card-default.md`](docs/design/model-card-default.md), also in-app: MORE → Model Card |
+| Audit of the engine and the fixes made | [`docs/design/audit-2026-09-13.md`](docs/design/audit-2026-09-13.md) |
+| Authoring core (equations, stocks, lags, entities, effects, solve blocks with `through`) | [`docs/core-authoring.md`](docs/core-authoring.md), `src/core/`, Model Lab tab |
+| Faithful port of Korinek et al. (2026), paper equations, 169 published cells reproduced | `data/core/korinek-2026-faithful.json`, [`docs/design/research/korinek-2026-model.md`](docs/design/research/korinek-2026-model.md) |
+| Independently selected model added with data only (Gasteiger & Prettner robot tax) and the capability gaps it found | `data/core/gasteiger-prettner-2020.json`, [`docs/design/capability-requests/gasteiger-prettner.md`](docs/design/capability-requests/gasteiger-prettner.md) |
+| Historical policy-effect case: Alaska Permanent Fund Dividend (Jones & Marinescu 2022) | `data/cases/alaska-pfd.json`, [`docs/design/research/alaska-pfd-case.md`](docs/design/research/alaska-pfd-case.md), `npm run validate:cases` |
+| Cash-transfer and unemployment → wellbeing evidence | [`docs/design/research/cash-transfer-wellbeing-evidence.md`](docs/design/research/cash-transfer-wellbeing-evidence.md) |
+| Country data provenance against the World Bank | [`data/provenance/README.md`](data/provenance/README.md) |
+| Policy text → provisions → overlay → paired run → share link / bundle → memo | Model Lab → Policy panel, `src/policy/`, worked example `data/policy/examples/` (S. 3877) |
 
 ### Reproducing the published outputs of Korinek et al. (2026)
 
@@ -216,14 +225,15 @@ Anthropic's economics team published *Economic Scenarios for Transformative AI*
 (Korinek, Jones, Sacher, Cotter & McCrory, Anthropic Institute WP 2026-02) with an
 [interactive explorer](https://www.anthropic.com/institute/econ-scenarios): a
 task-based US model to 2030 with three scenarios and, deliberately, no probabilities.
-This engine's optional macro block (`ModelParameters.macro`, see `simulation/pure.ts`) is
+A faithful port of their equations now lives in the Model Lab (`data/core/korinek-2026-faithful.json`,
+see the table above). Separately, this engine's optional macro block (`ModelParameters.macro`, see `simulation/pure.ts`) is
 a reduced-form approximation calibrated to match their published US 2030 outputs when
 driven by the same inputs — it is not a port of their equations — with the AI
 capability/adoption path treated as the scenario input exactly as their explorer does:
 
 | Scenario (US, 2030 vs no-AI path) | GDP boost | Labour share | Cognitive unemployment |
 |---|---|---|---|
-| Modest — paper / this engine | +1.6% / +1.6% | 59.4% / 59.2% | 3.9% / 3.9% |
+| Modest — paper / this engine | +1.6% / +1.6% | 59.4% / 59.2% | 2.9% / 3.9% |
 | Substantial — paper / this engine | +8.3% / +8.2% | 56.1% / 56.2% | 4.5% / 4.4% |
 | Extreme — paper / this engine | +32.4% / +31.3% | 45.2% / 45.4% | 17.9% / 17.8% |
 
