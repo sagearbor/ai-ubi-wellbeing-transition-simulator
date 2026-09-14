@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "id": "alaska-pfd-calibration",
+  "name": "Alaska Permanent Fund Dividend: micro vs macro employment effects (Jones & Marinescu 2022)",
+  "description": "The authors' own back-of-envelope calibration (AEJ:EP 2022, Section V.C, Table 5): a negative income effect on the employment rate from the lifetime value of the dividend, offset by a positive labour-demand effect from dividend spending. Default parameters are the published (AEJ) edition; the overlay alaska-pfd-wp2020 restores the working-paper edition. Used by the policy-effect case data/cases/alaska-pfd.json.",
+  "scope": "Alaska, 1982-2014 average, employment-to-population ratio (age 16+), extensive margin only. One static calculation per year, constant over the period because the authors use period averages. No part-time margin, no hours, no sectors, no migration, no taxes. It reproduces the authors' calibration; it is not an independent structural model and it is not fitted to their synthetic-control estimate.",
+  "license": "Numbers quoted from a published article for research use; see docs/design/research/alaska-pfd-case.md",
+  "sources": [
+    { "label": "Jones & Marinescu (2022), AEJ: Economic Policy 14(2): 315-340, Table 5 p.333 and pp.332-335", "kind": "calibrated", "url": "https://doi.org/10.1257/pol.20190299" },
+    { "label": "Extraction with page references", "kind": "calibrated", "note": "docs/design/research/alaska-pfd-case.md, section 4(a)" }
+  ],
+  "time": { "start": 1982, "end": 2014, "step": "year" },
+  "parameters": [
+    { "id": "income_effect_per_140k", "value": -0.02, "unit": "epop", "source": { "label": "Cesarini et al. (2017) lottery income effect, as used in AEJ Table 5", "kind": "causal", "note": "Change in employment rate per USD 140,000 of unearned wealth" } },
+    { "id": "pdv_dividends", "value": 119309, "unit": "usd", "source": { "label": "AEJ Table 5 p.333: PDV of lifetime household dividends (USD 3,962/yr, 79 years, 3%)", "kind": "calibrated" } },
+    { "id": "mpc", "value": 0.5, "unit": "share", "bounds": [0, 1], "source": { "label": "AEJ p.334: Kueng (2018) MPC 0.25 scaled up for durables", "kind": "calibrated" } },
+    { "id": "home_bias", "value": 0.69, "unit": "share", "bounds": [0, 1], "source": { "label": "AEJ Table 5: Nakamura & Steinsson (2014)", "kind": "calibrated" } },
+    { "id": "jobs_per_100k", "value": 1.9, "unit": "jobs", "source": { "label": "AEJ Table 5: Chodorow-Reich (2019) jobs per USD 100,000 of spending", "kind": "causal" } },
+    { "id": "pfd_per_capita", "value": 1495, "unit": "usd", "source": { "label": "AEJ Table 5: average per-capita dividend, 2010 USD, authors' calculation", "kind": "calibrated" } },
+    { "id": "multiplier", "value": 1.8, "unit": "ratio", "source": { "label": "AEJ Table 5: Chodorow-Reich (2019) output multiplier M", "kind": "causal" } },
+    { "id": "kappa", "value": 0.9, "unit": "ratio", "source": { "label": "AEJ Table 5: kappa", "kind": "calibrated" } },
+    { "id": "labour_share", "value": 0.667, "unit": "share", "bounds": [0, 1], "source": { "label": "AEJ Table 5: labour share (1 - alpha)", "kind": "calibrated" } },
+    { "id": "dividends_to_labour_income", "value": 0.0725, "unit": "ratio", "source": { "label": "AEJ Table 5 / p.334: total dividends over total labour income (BLS)", "kind": "calibrated" } },
+    { "id": "epop", "value": 0.66, "unit": "epop", "bounds": [0, 1], "source": { "label": "AEJ Table 5: employment-to-population ratio", "kind": "calibrated" } }
+  ],
+  "variables": [
+    { "id": "micro_effect", "unit": "epop", "equation": "income_effect_per_140k * pdv_dividends / 140000", "description": "Income (labour-supply) effect of the lifetime dividend value on the employment rate" },
+    { "id": "macro_effect_spending", "unit": "epop", "equation": "home_bias * mpc * jobs_per_100k * pfd_per_capita / 100000", "description": "Labour-demand effect via local spending (the authors' version 2, Chodorow-Reich 2019 jobs multiplier)" },
+    { "id": "macro_effect_open_economy", "unit": "epop", "equation": "multiplier / (1 + kappa) * labour_share * home_bias * mpc * dividends_to_labour_income * epop", "description": "Labour-demand effect, the authors' version 1 (Chodorow-Reich, Nenov & Simsek). The formula is read from a PDF whose M symbol did not extract; it reproduces the published 0.010, but the reading is inferred." },
+    { "id": "net_effect", "unit": "epop", "equation": "micro_effect + macro_effect_spending", "description": "Predicted net change in the employment rate" },
+    { "id": "net_effect_pp", "unit": "pp", "equation": "net_effect * 100", "description": "Same, in percentage points" }
+  ],
+  "outputs": ["micro_effect", "macro_effect_spending", "macro_effect_open_economy", "net_effect", "net_effect_pp"],
+  "tests": [
+    { "name": "AEJ Table 5 micro effect -0.017", "at": 1990, "expr": "micro_effect", "expected": -0.017, "tol": 0.0005 },
+    { "name": "AEJ Table 5 macro effect (spending) +0.010", "at": 1990, "expr": "macro_effect_spending", "expected": 0.010, "tol": 0.0005 },
+    { "name": "AEJ Table 5 macro effect (open economy) +0.010", "at": 1990, "expr": "macro_effect_open_economy", "expected": 0.010, "tol": 0.0005 },
+    { "name": "AEJ p.335 net -0.007", "at": 1990, "expr": "net_effect", "expected": -0.007, "tol": 0.001 }
+  ]
+}

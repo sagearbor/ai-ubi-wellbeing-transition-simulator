@@ -14,11 +14,12 @@
     "validate:futures": "tsx scripts/validate-futures.ts",
     "validate:korinek": "tsx scripts/validate-korinek.ts",
     "validate:core": "tsx scripts/validate-core.ts",
+    "validate:cases": "tsx scripts/policy-cases.ts",
     "hindcast:fetch": "tsx scripts/hindcast/fetch-actuals.ts",
     "hindcast": "tsx scripts/hindcast/run-hindcast.ts",
     "futures:aggregate": "tsx scripts/futures-aggregate.ts",
     "profile:default": "tsx scripts/response-profile.ts",
-    "check": "npm run typecheck && npm run test && npm run validate && npm run validate:futures && npm run validate:korinek && npm run validate:core && npm run build",
+    "check": "npm run typecheck && npm run test && npm run validate && npm run validate:futures && npm run validate:korinek && npm run validate:core && npm run validate:cases && npm run build",
     "deploy": "bash scripts/deploy.sh",
     "deploy:promote": "bash scripts/deploy.sh --promote"
   },

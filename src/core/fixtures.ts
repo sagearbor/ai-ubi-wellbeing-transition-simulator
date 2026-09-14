@@ -13,6 +13,8 @@ import retraining from '../../data/core/overlays/retraining.json';
 import korinek2026 from '../../data/core/korinek-2026.json';
 import korinekModest from '../../data/core/overlays/korinek-modest.json';
 import korinekExtreme from '../../data/core/overlays/korinek-extreme.json';
+import alaskaPfd from '../../data/core/alaska-pfd-calibration.json';
+import alaskaPfdWp from '../../data/core/overlays/alaska-pfd-wp2020.json';
 
 export interface FixtureEntry {
   model: CoreModel;
@@ -32,6 +34,11 @@ export const CORE_FIXTURES: FixtureEntry[] = [
     model: korinek2026 as unknown as CoreModel,
     overlays: [korinekModest as unknown as Overlay, korinekExtreme as unknown as Overlay],
     label: 'Korinek et al. 2026 scenarios, US 2030 (published model, reduced form)',
+  },
+  {
+    model: alaskaPfd as unknown as CoreModel,
+    overlays: [alaskaPfdWp as unknown as Overlay],
+    label: 'Alaska Permanent Fund Dividend: income effect vs spending effect on jobs (Jones & Marinescu 2022)',
   },
 ];
 
