@@ -9,7 +9,13 @@
  */
 
 import type { Corporation, CountryStats, HistoryPoint, SavedState, SimulationState } from '../types';
-import { INITIAL_COUNTRIES } from '../constants';
+import {
+  COUNTRY_DATASET_ID,
+  LEGACY_COUNTRY_DATASET_ID,
+  isCountryDatasetId,
+  worldPopulationMillionsFor,
+  type CountryDatasetId,
+} from '../constants';
 import {
   advanceRun,
   initialRun, initOptionsFor,
@@ -173,8 +179,8 @@ export function editCountry(
 // MAP HEADLINE STATS (review 2026-09-14, finding 13)
 // ============================================================================
 
-/** World population in millions, the denominator the engine's global pool is shared over. */
-export const WORLD_POPULATION_MILLIONS = INITIAL_COUNTRIES.reduce((a, c) => a + c.population, 0);
+/** World population in millions of the process-default dataset (the engine uses the state's dataset; see headlineStats). */
+export const WORLD_POPULATION_MILLIONS = worldPopulationMillionsFor(COUNTRY_DATASET_ID);
 
 export interface HeadlineStats {
   /** Unweighted mean of country wellbeing (0-100). */
@@ -193,7 +199,10 @@ export function headlineStats(state: SimulationState): HeadlineStats {
   const n = countries.length || 1;
   return {
     meanCountryWellbeing: state.averageWellbeing,
-    globalDividendUsd: usdPerPerson(state.globalFund, WORLD_POPULATION_MILLIONS),
+    globalDividendUsd: usdPerPerson(
+      state.globalFund,
+      worldPopulationMillionsFor(isCountryDatasetId(state.countryDataset) ? state.countryDataset : COUNTRY_DATASET_ID),
+    ),
     meanCountryAdoption: countries.reduce((a, c) => a + c.aiAdoption, 0) / n,
     globalPoolBillions: state.globalFund,
   };
@@ -224,6 +233,25 @@ export interface LoadedSave {
   /** True when the save predates the run contract and was rebuilt by replaying. */
   replayed: boolean;
   note: string;
+  /** The country dataset the save runs on ('countries-legacy-v1' for saves written before the 2026-09 migration). */
+  countryDataset: CountryDatasetId;
+}
+
+/**
+ * The country dataset a save file was made on. Saves written before the 2026-09 migration carry no
+ * dataset id anywhere and ran on the hand-entered table, so they reopen on 'countries-legacy-v1'.
+ * An id this build does not know is an error, not a silent fallback.
+ */
+export function saveCountryDataset(saved: Pick<SavedState, 'countryDataset' | 'run'>): CountryDatasetId {
+  // The run's own stamp is what the timeline was computed on; the top-level field is its copy.
+  const id = saved.run?.state?.countryDataset ?? saved.countryDataset ?? LEGACY_COUNTRY_DATASET_ID;
+  if (!isCountryDatasetId(id)) throw new Error(`save file uses country dataset "${id}", which this build does not have`);
+  return id;
+}
+
+/** A run stamped with a dataset id when it has none (pre-migration saves). */
+function withCountryDataset(run: SimulationRun, countryDataset: CountryDatasetId): SimulationRun {
+  return run.state.countryDataset ? run : { ...run, state: { ...run.state, countryDataset } };
 }
 
 /**
@@ -237,21 +265,26 @@ export interface LoadedSave {
  */
 export function historyFromSave(saved: SavedState): LoadedSave {
   const inputs: RunInputs = { model: saved.model };
+  const countryDataset = saveCountryDataset(saved);
+  const init = initOptionsFor(saved.model, countryDataset);
   if (saved.run) {
-    // Rebuild each point's `state` from its run (historyForSave drops the duplicate).
-    const history = (saved.history ?? []).map((p) => (p.run ? historyPoint(p.run) : p));
+    // Rebuild each point's `state` from its run (historyForSave drops the duplicate). Runs from
+    // pre-migration saves are stamped with the legacy dataset so replay and seek use its world
+    // population and anchor coefficients.
+    const history = (saved.history ?? []).map((p) => (p.run ? historyPoint(withCountryDataset(p.run, countryDataset)) : p));
     const partial = history.some((p) => !p.run);
     return {
-      base: nearestFullPoint(history, 0) ?? initialRun(undefined, undefined, initOptionsFor(saved.model)),
-      run: saved.run,
+      base: nearestFullPoint(history, 0) ?? initialRun(undefined, undefined, init),
+      run: withCountryDataset(saved.run, countryDataset),
       history,
       replayed: false,
       note: partial
         ? 'History points without full runs were kept for charting; seeking to them replays from month 0.'
         : '',
+      countryDataset,
     };
   }
-  const base = initialRun(undefined, undefined, initOptionsFor(saved.model));
+  const base = initialRun(undefined, undefined, init);
   const month = Math.max(0, saved.month || 0);
   const { run, history } = catchUp(base, month, inputs);
   return {
@@ -260,5 +293,6 @@ export function historyFromSave(saved: SavedState): LoadedSave {
     history,
     replayed: true,
     note: `Save file predates the simulation-run format: rebuilt months 0-${month} by replaying with the saved model.`,
+    countryDataset,
   };
 }

@@ -13,9 +13,15 @@
  * dial preset (see generateShareLink/handleCopyLink in App.tsx) - that mechanism only ever
  * encoded the numeric preset, never a model's custom equations. `#scenario=` is additive and
  * does not change that existing behavior.
+ *
+ * Country datasets (2026-09 migration, data/countries/README.md): a scenario is only reproducible
+ * on the country data it was made with, so exports and links carry `countryDataset`. Files and
+ * links without it predate the migration and are read as 'countries-legacy-v1'. The same rule
+ * applies to the `#share=` preset payload (encodeSharePayload / decodeSharePayload).
  */
 
-import { ModelConfig } from '../../types';
+import { ModelConfig, ModelParameters } from '../../types';
+import { COUNTRY_DATASET_ID, LEGACY_COUNTRY_DATASET_ID, isCountryDatasetId, type CountryDatasetId } from '../../constants';
 
 export class ScenarioParseError extends Error {
   constructor(message: string) {
@@ -37,9 +43,26 @@ function isModelConfigShape(value: unknown): value is ModelConfig {
   );
 }
 
+/**
+ * The dataset a scenario (or #share= payload) was made on: its own field, else legacy (nothing
+ * written before the migration carries one). Unknown ids are rejected rather than remapped.
+ */
+export function resolveCountryDataset(value: unknown): CountryDatasetId {
+  if (value === undefined || value === null) return LEGACY_COUNTRY_DATASET_ID;
+  if (!isCountryDatasetId(value)) {
+    throw new ScenarioParseError(`This scenario uses country dataset "${String(value)}", which this version of the app does not have.`);
+  }
+  return value;
+}
+
+/** A config with its dataset recorded: its own, else the one given (the session's). */
+function stampCountryDataset(config: ModelConfig, countryDataset: CountryDatasetId): ModelConfig {
+  return config.countryDataset ? config : { ...config, countryDataset };
+}
+
 /** Serialize a scenario to pretty-printed JSON, suitable for a file download. */
-export function exportScenarioJson(config: ModelConfig): string {
-  return JSON.stringify(config, null, 2);
+export function exportScenarioJson(config: ModelConfig, countryDataset: CountryDatasetId = COUNTRY_DATASET_ID): string {
+  return JSON.stringify(stampCountryDataset(config, countryDataset), null, 2);
 }
 
 /** Parse a scenario back from a JSON string (e.g. an uploaded file's contents). */
@@ -57,7 +80,7 @@ export function parseScenarioJson(json: string): ModelConfig {
       'This file does not look like a scenario - a scenario needs name, description, parameters, equations, and metadata.'
     );
   }
-  return parsed;
+  return { ...parsed, countryDataset: resolveCountryDataset(parsed.countryDataset) };
 }
 
 /** UTF-8-safe base64 encode (plain btoa mangles non-Latin1 characters). */
@@ -79,8 +102,8 @@ function base64ToUtf8(b64: string): string {
 const SCENARIO_HASH_PREFIX = '#scenario=';
 
 /** Encode a scenario into the base64 payload used inside a share URL's hash. */
-export function encodeScenarioForUrl(config: ModelConfig): string {
-  return utf8ToBase64(JSON.stringify(config));
+export function encodeScenarioForUrl(config: ModelConfig, countryDataset: CountryDatasetId = COUNTRY_DATASET_ID): string {
+  return utf8ToBase64(JSON.stringify(stampCountryDataset(config, countryDataset)));
 }
 
 /** Decode a scenario from the base64 payload produced by encodeScenarioForUrl. */
@@ -97,8 +120,39 @@ export function decodeScenarioFromUrl(encoded: string): ModelConfig {
 }
 
 /** Build a full, copyable share URL for a scenario. */
-export function buildScenarioShareUrl(config: ModelConfig, origin: string, pathname: string): string {
-  return `${origin}${pathname}${SCENARIO_HASH_PREFIX}${encodeScenarioForUrl(config)}`;
+export function buildScenarioShareUrl(
+  config: ModelConfig,
+  origin: string,
+  pathname: string,
+  countryDataset: CountryDatasetId = COUNTRY_DATASET_ID,
+): string {
+  return `${origin}${pathname}${SCENARIO_HASH_PREFIX}${encodeScenarioForUrl(config, countryDataset)}`;
+}
+
+// ============================================================================
+// #share= preset links (App.tsx)
+// ============================================================================
+
+/** What a `#share=` link carries: the model parameters and the country dataset they ran on. */
+export interface SharePayload {
+  model?: ModelParameters;
+  countryDataset: CountryDatasetId;
+}
+
+/** Base64 payload for a `#share=` link (ASCII-safe JSON, as the links have always been). */
+export function encodeSharePayload(model: ModelParameters, countryDataset: CountryDatasetId): string {
+  return utf8ToBase64(JSON.stringify({ model, countryDataset }));
+}
+
+/** Decode a `#share=` payload. Links made before the 2026-09 migration have no dataset id: legacy. */
+export function decodeSharePayload(encoded: string): SharePayload {
+  let parsed: { model?: ModelParameters; countryDataset?: unknown };
+  try {
+    parsed = JSON.parse(base64ToUtf8(encoded));
+  } catch (err) {
+    throw new ScenarioParseError(`Link is not valid share data: ${err instanceof Error ? err.message : String(err)}`);
+  }
+  return { model: parsed?.model, countryDataset: resolveCountryDataset(parsed?.countryDataset) };
 }
 
 /**
