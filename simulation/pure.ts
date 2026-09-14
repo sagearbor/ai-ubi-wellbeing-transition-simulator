@@ -133,9 +133,11 @@ function calculateAiRevenue(
   corp: Corporation,
   countries: Record<string, CountryStats>
 ): number {
-  // Base revenue from AI automation
-  // Formula: adoption level × market cap × 15% (industry standard for AI revenue as % of market cap)
-  const automationRevenue = corp.aiAdoptionLevel * corp.marketCap * 0.15;
+  // Base revenue from AI automation, per MONTH.
+  // Formula: adoption level × market cap × 15% / 12. The 15% is an annual revenue-to-market-cap
+  // ratio (large-cap tech runs 8-15%/yr); until stage 3 (2026-09-13, finding C4) it was applied
+  // per month, overstating AI revenue twelvefold. Assumed, not estimated.
+  const automationRevenue = corp.aiAdoptionLevel * corp.marketCap * 0.15 / 12;
 
   // Revenue depends on customer purchasing power
   // If customers are poor, they can't buy products
@@ -634,31 +636,26 @@ export function stepSimulationPure(input: SimulationInput): SimulationOutput {
   // PHASE 1: CORPORATION REVENUE GENERATION
   // ============================================================================
 
+  /** Sum and count of `aiAdoptionLevel` over the corporations operating in each country. */
+  const corpLevelByCountry: Record<string, { sum: number; n: number }> = {};
+  /** Mean corporate AI capability serving a country (0 when no corporation operates there). */
+  const meanCorpLevel = (countryId: string): number => {
+    const acc = corpLevelByCountry[countryId];
+    return acc && acc.n > 0 ? acc.sum / acc.n : 0;
+  };
+
   const updatedCorps = corporations.map(corp => {
     // Calculate AI revenue using the helper function
     const aiRevenue = calculateAiRevenue(corp, newCountryData);
 
-    // Update country AI adoption based on corporations operating there
+    // Record which corporations serve this country; adoption is updated once per country
+    // below from their MEAN capability (stage 3, finding C2: summing one increment per
+    // corporation made adoption scale with the number of rows in the corporation table -
+    // 74 corporations serve the US, so it saturated in two months).
     corp.operatingCountries.forEach(countryId => {
-      const country = newCountryData[countryId];
-      if (country) {
-        // P8-T9: a custom aiAdoptionGrowth equation replaces the hardcoded delta.
-        // DEFAULT_EQUATIONS.aiAdoptionGrowth folds the (1 - adoption) damping term in
-        // directly, so its output is the full monthly delta (matches the else branch).
-        const adoptionDelta = equations
-          ? equations.aiAdoptionGrowth.evaluate({
-              aiGrowthRate: model.aiGrowthRate,
-              gdpPerCapita: country.gdpPerCapita,
-              aiAdoptionLevel: corp.aiAdoptionLevel,
-              adoption: country.aiAdoption
-            })
-          : (() => {
-              const regionalModifier = 1 + (country.gdpPerCapita / 100000);
-              const growth = model.aiGrowthRate * regionalModifier * corp.aiAdoptionLevel * 0.1;
-              return growth * (1 - country.aiAdoption);
-            })();
-        country.aiAdoption = Math.min(0.999, country.aiAdoption + adoptionDelta);
-      }
+      const acc = corpLevelByCountry[countryId] ?? (corpLevelByCountry[countryId] = { sum: 0, n: 0 });
+      acc.sum += corp.aiAdoptionLevel;
+      acc.n += 1;
     });
 
     // Calculate customer base wellbeing
@@ -688,6 +685,30 @@ export function stepSimulationPure(input: SimulationInput): SimulationOutput {
       customerBaseWellbeing,
       projectedDemandCollapse
     };
+  });
+
+  // Country AI adoption: one logistic step per country per month, driven by the mean
+  // capability of the corporations serving it. Countries no corporation serves do not adopt.
+  Object.keys(corpLevelByCountry).forEach(countryId => {
+    const country = newCountryData[countryId];
+    if (!country) return;
+    const level = meanCorpLevel(countryId);
+    // P8-T9: a custom aiAdoptionGrowth equation replaces the hardcoded delta.
+    // DEFAULT_EQUATIONS.aiAdoptionGrowth folds the (1 - adoption) damping term in
+    // directly, so its output is the full monthly delta (matches the else branch).
+    const adoptionDelta = equations
+      ? equations.aiAdoptionGrowth.evaluate({
+          aiGrowthRate: model.aiGrowthRate,
+          gdpPerCapita: country.gdpPerCapita,
+          aiAdoptionLevel: level,
+          adoption: country.aiAdoption
+        })
+      : (() => {
+          const regionalModifier = 1 + (country.gdpPerCapita / 100000);
+          const growth = model.aiGrowthRate * regionalModifier * level * 0.1;
+          return growth * (1 - country.aiAdoption);
+        })();
+    country.aiAdoption = Math.min(0.999, country.aiAdoption + adoptionDelta);
   });
 
   // ============================================================================
@@ -748,9 +769,12 @@ export function stepSimulationPure(input: SimulationInput): SimulationOutput {
     newLedger.fundsByCountry[id] = totalUbiAmount;
     newLedger.monthlyOutflow += totalUbiAmount;
 
-    // Convert to per-capita monthly UBI for calculations
+    // Per-capita monthly UBI in USD: totalUbiAmount is billions USD, population is millions,
+    // so billions / millions = thousands of USD per person. Until stage 3 (2026-09-13, finding
+    // C3) this divided by (population x 10), understating per-capita UBI 10,000-fold, which is
+    // why no contribution rate could ever move wellbeing (anchor test AT-2).
     const totalUBI = country.population > 0
-      ? totalUbiAmount / (country.population * 10) // Scale for monthly per capita
+      ? (totalUbiAmount / country.population) * 1000
       : 0;
 
     // === 4.1. Gini Dampening (Inequality reduces UBI utility) ===
@@ -842,9 +866,10 @@ export function stepSimulationPure(input: SimulationInput): SimulationOutput {
     // RATIONALE: This counterfactual shows what happens WITHOUT a UBI system.
     // Should clearly demonstrate that intervention helps, validating the entire model.
 
-    // Slower adoption without incentives (50% speed)
+    // Slower adoption without incentives: half the main path's rate, same functional form
+    // (mean corporate capability x 0.1; stage 3 aligned this with the C2 fix above).
     const regionalModifier = 1 + (country.gdpPerCapita / 100000);
-    const shadowGrowth = model.aiGrowthRate * 0.5 * regionalModifier * (1 - shadow.aiAdoption);
+    const shadowGrowth = model.aiGrowthRate * regionalModifier * meanCorpLevel(id) * 0.1 * 0.5 * (1 - shadow.aiAdoption);
     shadow.aiAdoption = Math.min(0.999, shadow.aiAdoption + shadowGrowth);
 
     // No UBI - wages collapse dramatically with automation (90% displacement)
