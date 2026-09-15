@@ -1,6 +1,6 @@
 # Beta delivery readiness — 15 September 2026
 
-This follow-up is implemented on `codex/policy-evidence-readiness`, stacked on the unchanged PR20 candidate `a064c2c`. Final application change: `941c8c4`. It has not been merged or deployed. The public website is not evidence that these changes are live.
+This follow-up is implemented on `codex/policy-evidence-readiness`, stacked on the unchanged PR20 candidate `a064c2c`. Final application change: `84075ba`. It has not been merged or deployed. The public website is not evidence that these changes are live.
 
 **Software checks pass; the remaining live AI/deployment gate is not verified.** The intended release is a bounded research beta, not a validated policy forecasting service. Claude's concrete UI/provenance/license concerns were valid and have been addressed.
 
@@ -15,11 +15,13 @@ This follow-up is implemented on `codex/policy-evidence-readiness`, stacked on t
 | Missing license/citation/contributor path | MIT selected for broad reuse; valid CITATION.cff, third-party notices and contribution guidance added | `LICENSE`, `CITATION.cff`, `CONTRIBUTING.md`, `THIRD_PARTY_NOTICES.md` |
 | Raw provider error and unclear evidence | Safe failure preserves text; visible Google disclosure; quoted settings, response assumptions and unavailable effects remain separate | Real provider failure, manual comparison and negative UI probes |
 | Mobile navigation / accessibility | Compact primary navigation; keyboard-scrollable history tables; accurate native Draft A/B selector semantics | `cb29ab2`, `e10c831`, `941c8c4`, actual axe and keyboard checks |
+| Unsupported financial variable form | Exact financial model now explains unavailable targets and the model-file route; supported authoring/removal still work | `84075ba`, [fix report](2026-09-15-beta-authoring-fix.md), [final review](2026-09-15-beta-final-review.md), actual browser checks |
 | Known dependency vulnerabilities | Compatible production and build-tool repairs; strict numerical identity retained | `10142e8`, [dependency report](2026-09-15-beta-dependency-refresh.md) |
 
 ## Verification actually performed
 
-- Final Node 22 `npm run check`: **1,257 tests / 90 files passed**, plus all included validators, ledger checks and production build. Log retained locally at `/private/tmp/beta-final-full-check.log`.
+- Node 22 `npm run check` after the selector repair: **1,257 tests / 90 files passed**, plus all included validators, ledger checks and production build. Log retained locally at `/private/tmp/beta-final-full-check.log`. The final authoring-affordance repair subsequently passed 39 focused tests, typecheck and a fresh production build; its four new tests also passed independent re-review. Exact final-commit GitHub CI is linked in the pull request checks.
+- Final authoring browser check: the financial route exposes clear instructions, no impossible form and a working model download. The supported income model successfully creates and removes an overlay without error alerts; financial equations, hooks and source identities are untouched.
 - Final production audit: **zero vulnerabilities**. Full audit: **two moderate package flags for one development-only Vitest advisory**, not a clean whole-project audit. The standalone mock plugins are not configured here; `npm test` runs non-browser tests. A maintained Vitest line (at least 4.1.11) needs a separately verified major upgrade. See the [primary advisory](https://github.com/advisories/GHSA-82fw-gwwq-j7x9).
 - All nine frozen evaluation artifacts remain byte-identical. Full historical outputs are identical before/after the patches under the same Node runtime. Node 22 versus Node 26 has tiny last-digit differences in twelve AI-on sensitivity fields; cross-runtime bit identity is not claimed. No tolerance, cohort, target, observation or coefficient was changed to pass.
 - Fresh unchanged qualification suite: **383 cases passed**, then independent review recomputed all raw case hashes, **61 monthly identities and 7,808 country-month allocations**. `e399b4f` activates only those exact baseline source/allocation identities; macro/wellbeing remain illustrative. [Independent review and scoped activation](2026-09-15-beta-security-qualification-review.md).
@@ -54,4 +56,4 @@ The first frozen wellbeing result remains worse than persistence (0.317533 versu
 - Treat the three delivery steps as prepared until their external evidence exists. Cost: the release is gated while the authorized AI/deployment/user/expert/archive checks are outstanding; no success is fabricated.
 - Patch compatible build/dev dependencies now, despite an extra qualification run; defer only the separately verified major Vitest upgrade. Cost: one development advisory remains documented, so the whole-project audit is not called clean.
 
-The final GitHub PR and exact CI run are reported in the handoff when available.
+The final GitHub PR and exact CI run are reported in the pull request and delivery message. The [final integration review](2026-09-15-beta-final-review.md) records the original finding and the bounded fix verdict.

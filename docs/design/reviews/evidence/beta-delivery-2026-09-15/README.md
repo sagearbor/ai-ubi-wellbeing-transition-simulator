@@ -40,3 +40,9 @@ Built from `10142e8`, then accounting activation at `e399b4f`; these policy/fina
 At `941c8c4`, the draft controls use a labeled native button group with pressed states. `policy-mobile-axe-after.json` records **zero violations and zero incomplete checks** for the Policy panel at 390×844. The actual Tab/Enter/Space check selects A then B, exposes exactly one pressed button and excludes Add/Remove actions from the selector group (`draft-keyboard.json`). Reopening the actual patched policy bundle again reproduced all 288 values exactly before this selector check.
 
 Final `npm run check` on Node 22 after this code change passed **1,257 tests in 90 files**, all included validators, ledger status checks and production build. This is not a claim that all scientific targets are reproduced: the ledger retains four misses, and the known AT-3 directional failure remains visible.
+
+## Final authoring-affordance check (`84075ba`)
+
+`financial-authoring-fix.json` captures the exact financial authoring route: focused guidance, zero creation inputs and zero Apply buttons. The Equations and files route then successfully downloaded the unchanged exact model. `supported-authoring-fix.json` captures successful creation and removal of `lab-newAccess` in the income example, with no alerts. These are real browser interactions with the rebuilt candidate.
+
+`audit-context.json`, `npm-audit-production.json` and `npm-audit-all.json` preserve the recorded dependency audit and matching lockfile identity. They are not a container or comprehensive security audit.

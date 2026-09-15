@@ -14,7 +14,7 @@ The first untuned wellbeing error is worse than persistence: 0.317533 versus 0.2
 
 ## Claude's beta concerns
 
-The financial-to-policy handoff now carries exact scenario A and opens its policy section; the app-built origin label requires complete source/model identity, not uploaded metadata. This and draft retention were independently reviewed and exercised in a real browser. Fiscal periods, derived financial values, research-beta status and feedback are visible. MIT, citation metadata, contribution guidance and the three-step release/expert/publication pack are included.
+The financial-to-policy handoff now carries exact scenario A and opens its policy section; the app-built origin label requires complete source/model identity, not uploaded metadata. This and draft retention were independently reviewed and exercised in a real browser. Fiscal periods, derived financial values, research-beta status and feedback are visible. The financial model now explains its unavailable simple-form extension targets and its model-file workflow; the income example still supports adding/removing a variable. MIT, citation metadata, contribution guidance and the three-step release/expert/publication pack are included.
 
 See [the response to Claude](reviews/2026-09-15-claude-beta-follow-up.md), [financial revision review](reviews/2026-09-15-beta-financial-revision-review.md), and [three-step delivery](../release/three-step-delivery.md). The latter separates prepared materials from actions actually completed.
 

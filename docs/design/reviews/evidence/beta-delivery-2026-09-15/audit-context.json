@@ -1,0 +1,10 @@
+{
+  "checkedAtDate": "2026-09-15",
+  "packageLockSha256": "063cbb3cd22a110053f124ae276ccab323e8d19150d2966d87fcb4149198acb8",
+  "scope": "Installed locked npm dependency tree; not a comprehensive security audit or container-image scan",
+  "productionVulnerabilities": 0,
+  "allDependencies": {
+    "moderatePackageFlags": 2,
+    "uniqueAdvisories": 1
+  }
+}
