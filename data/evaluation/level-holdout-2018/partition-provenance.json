@@ -1,0 +1,120 @@
+{
+  "protocolHash": "694cc25212c42a84c873a55b7f6db7023e604fd5bbedde2ff9639d2faaaa1c3b",
+  "sourceHashes": {
+    "data/countries/wb-2026-09.json": "ec6cacc150dabd92acc168ac6efd491e32f6f311619ce8bde027198d0054aaf9",
+    "data/hindcast/wellbeing-ladder.json": "b899e7c8f0e39e4402f318ac483bcdc8efbe0bc9dab9cf5289d8deda3e153066",
+    "data/hindcast/gdp-per-capita.json": "5780ca831ed0308deaa2d5c78f6126b094cd64a0b7204e9d820401ee1a897eae",
+    "data/evaluation/level-holdout-2018/sources/provenance.json": "819e70bfa0fadbf8ea6f61eeadec940bfad192bd41075480aedc7cde01117077"
+  },
+  "rosterUse": "Only immutable IDs and names; no current numeric country features",
+  "backgroundExcluded": [
+    {
+      "id": "CUB",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "JAM",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "BLZ",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "BHS",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "TTO",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "VEN",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "GUY",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "SUR",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "TWN",
+      "reason": "Missing historical population, gini, ge, rl, cc"
+    },
+    {
+      "id": "PRK",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "SGP",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "KHM",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "BRN",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "MDV",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "UZB",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "TKM",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "SAU",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "AFG",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "SYR",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "OMN",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "QAT",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "KWT",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "BHR",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "AZE",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "AGO",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "NZL",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "PNG",
+      "reason": "Missing historical gini"
+    }
+  ]
+}

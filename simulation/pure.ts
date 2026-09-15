@@ -151,6 +151,8 @@ export function anchoredWellbeingTarget(
 
 /** Input state for a simulation step */
 export interface SimulationInput {
+  /** Explicit frozen calibration for a separately identified evaluation; omitted preserves defaults. */
+  wellbeingAnchorCoefficients?: Readonly<WellbeingAnchorCoefficients>;
   state: SimulationState;
   corporations: Corporation[];
   model: ModelParameters;
@@ -645,7 +647,10 @@ export function stepSimulationPure(input: SimulationInput): SimulationOutput {
   // subset), and the anchor uses the coefficients fitted on this dataset's governance scale.
   const countryDataset = stateCountryDataset(state);
   const worldPopulation = worldPopulationMillionsFor(countryDataset);
-  const anchorK = wellbeingAnchorCoefficientsFor(countryDataset);
+  const anchorK = input.wellbeingAnchorCoefficients ?? wellbeingAnchorCoefficientsFor(countryDataset);
+  if (![anchorK.intercept, anchorK.lnGdp, anchorK.governance].every(Number.isFinite)) {
+    throw new Error('Wellbeing anchor coefficients must be finite');
+  }
 
   // ============================================================================
   // CORPORATION-CENTRIC SIMULATION ARCHITECTURE (P5-T6)
