@@ -58,3 +58,26 @@ Actual Chrome153 on the Vite development app at4173 reproduced all61 baseline mo
 ## Activated qualification —562582a
 
 Actual Chrome153/Vite now accepts all61 exact default monthly points for conditional source/allocation accounting. Every macro/wellbeing classification remains illustrative. Independent probes for corporate money+1e-10, workforce+1e-12, importedUnverified, uploaded equations and raw derived output+0.01 each return unreviewed. The executing source hash remains950d3fb43937e507c4a2cf67599c92105430a320c337712851a5067a28f3291e. Raw browser output is preserved as evidence/overnight-2026-09-15/browser-accepted-562582a.json. This tests the runtime resolver; Task6 still owns visible active-view status integration.
+
+## Task6 fixed production build e529c73
+
+Frozen preview4176 uses index-E_4oBZ9s.js (SHA256d109dbeca8421be6a2a2c30e7670ee850459be6922a3b60fd2d4a31f1c1f7069); committed application files were clean at capture. LiveVite editing later reset drafts via development refresh, so subsequent round trips use this fixed build.
+
+- Actual S.3877 A bundle downloaded through UI:107062bytes, SHA25609a7a3128644399c40eff2ab876f7589dca14a0405212c2122c6f59f963ac026. Source16182characters retained. Reopened through actual file input:288storedvalues reproduced, largestdeviation0. Operative68unresolved now explicitly appears beside results.
+- An unrun B displays its own empty state and no A values. Two full S.3877 drafts exceed120000linkpayloadlimit (129963characters): explicit refusal directs to bundle. This is not counted as successful link sharing.
+- A small synthetic two-draft link (1695characters, policyDraft=B) reopens B, sourceLength0, explicit source/operativecoverageunknown and no-mapped-effects structuralcomparison warning. Download remains available after its new computation.
+- Real Futures link with actualagi slider1.25, ai-dividend-fund selected and2035year restores all3visiblecontrols despite conflicting?tab=lab. Invalid#futures=badshowsownererrorandwithholdsopenedresults. Empty#scenario=showsvisibleempty-share-payloaderror. Invalid#share=badshowsownererrorandzero visiblecharts.
+
+Browser evidence here verifies these concrete routes, not arbitrary sources, every race schedule or live external AI extraction. Controlled callback race tests and their independent review are separately attributed.
+
+### Final Task 6 world and link checks, fixed production build e529c73
+
+- Actual Apple monthly amount request changed to 40 billion constant-2015 USD. Browser reports available 24.3750, requested 40.0000, funded 24.3750, unfunded 15.6250 and unused 0.0000. This is a modeled source limit, not evidence of available corporate profits.
+- Corporation panel close works at desktop and 390×844 after waiting for the resulting React render. A first batch checked state before render and prematurely attempted sharing; it was repeated with state checks and passed.
+- Actual generated world share is 356,537 characters. It opened in a fresh Chromium session, retained Apple's amount request 40 and funded 24.375, and showed accounting as an unreviewed scenario point. No URL delivery through email/chat or arbitrary browsers was verified; the large link is a usability limitation and file export remains the practical fallback.
+- Invalid world share shows an explicit failure and no visible result charts. Empty equation share shows “Cannot open this equation scenario: empty share payload.” A valid equation share opened the editor with the actual “Reviewer equation scenario” name, then cleared the parsed hash. Changing the hash while already mounted to an empty equation share also produced the correct explicit error.
+- Actual Futures link uses the registered `agi` node at 1.25, `ai-dividend-fund` intervention and year 2035. Browser controls restored those values even with a conflicting `?tab=lab`. Invalid Futures input refused to open the calculation. Hidden world controls in the DOM are not evidence of a rendered Futures result.
+
+Evidence: [world limit](evidence/overnight-2026-09-15/world-limit-e529c73.json), [reopened world status](evidence/overnight-2026-09-15/world-reopened-e529c73.json), [reopened request](evidence/overnight-2026-09-15/world-reopened-request-e529c73.json). Full generated world URLs stay in temporary local evidence rather than adding a redundant 356KB payload to Git.
+
+Optional provider-backed AI extraction was not verified against a live key. Manual/example policy execution, actual bundle download/reopen and small selected-B links were verified separately above.

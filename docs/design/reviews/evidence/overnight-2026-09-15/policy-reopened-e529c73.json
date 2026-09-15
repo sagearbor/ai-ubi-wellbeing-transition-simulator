@@ -1,0 +1,12 @@
+{
+  "downloadEnabled": true,
+  "messages": [
+    "Reproduction tests",
+    "79 of 79 source clauses have explicit operative dispositions; 68 unresolved, 0 outside model — partial scenario; unsupported effects are not zero effects",
+    "warning coverage-incomplete: 79 of 79 source clauses have explicit operative dispositions; 68 unresolved, 0 outside model — partial scenario; unsupported effects are not zero effects",
+    "1 of 23 provisions mapped, 10 unresolved, 12 outside model; Quotation coverage: 79 of 79 source clauses covered or explicitly excluded (23 by a provision quote, 56 excluded); Operative disposition coverage: 79 of 79 source clauses have explicit operative dispositions; 68 unresolved, 0 outside model — partial scenario; unsupported effects are not zero effects; completeness not attested",
+    "Unresolved and outside-model provisions do not affect these curves. This is a partial model comparison, not a net welfare ranking.",
+    "Bundle reopened: all 288 stored values reproduced within the declared tolerance (largest deviation 0)."
+  ],
+  "sourceLength": 16182
+}
