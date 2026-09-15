@@ -1,0 +1,88 @@
+{
+  "schema": "forecast-protocol/1",
+  "id": "level-ai-off-2018-origin-v1",
+  "registeredAt": "2026-09-15",
+  "scope": "Retrospective temporal holdout of the existing evidence-anchored level model; AI and transfers disabled. Not the financial allocation model and not a blind or archived-as-of forecast.",
+  "modelFormChosenAfterTestPeriod": true,
+  "trainingYears": [
+    2015,
+    2016,
+    2017,
+    2018
+  ],
+  "originYear": 2018,
+  "testYears": [
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "background": {
+    "population": {
+      "indicator": "SP.POP.TOTL",
+      "year": 2015
+    },
+    "governance": {
+      "indicators": [
+        "GE.EST",
+        "RL.EST",
+        "CC.EST"
+      ],
+      "year": 2015,
+      "mapping": "clamp(0.5 + 0.2 * mean(GE.EST, RL.EST, CC.EST), 0, 1)",
+      "requireAllComponents": true
+    },
+    "gini": {
+      "indicator": "SI.POV.GINI",
+      "earliestYear": 2010,
+      "latestYear": 2015,
+      "rule": "latest observed value within this window; otherwise exclude"
+    },
+    "inactiveFields": "Explicit frozen neutral structural assumptions only when shown not to affect evaluated outcomes with AI/transfers off; no future numeric country values"
+  },
+  "outcomes": {
+    "wellbeing": "WHR Cantril ladder, 0\u201310; existing pinned 2026-vintage annual panel",
+    "gdp": "World Bank GDP per person, constant-2015 USD; existing pinned 2026-vintage annual panel"
+  },
+  "fit": "Only three existing OLS anchor coefficients: intercept, ln(GDP per person), governance; existing fitter with explicit training years; no test-era outcomes/features",
+  "structure": {
+    "wellbeingMode": "anchored",
+    "annualBaselineGdpGrowth": 0.02,
+    "monthlyAnchorAdjustment": 0.02,
+    "aiAdoption": 0,
+    "aiGrowth": 0,
+    "corporateTransfers": 0,
+    "policyOverlays": []
+  },
+  "cohort": "Existing repository country roster; frozen using valid historical background and both 2018 origin outcomes only, before test outcomes are read. Training rows use only valid background and paired training outcomes; no future-availability condition.",
+  "missingness": "No invented observations, cross-country imputation or future-to-past filling. Score each outcome independently wherever observed; list every excluded or unscored row with reason. Missing final years never remove earlier scores.",
+  "baseline": "Persistence of each country\u2019s 2018 outcome, identical scoring masks and horizons",
+  "primaryMetric": "Wellbeing MAE in ladder points, equally weighted observed country-years, plus model minus persistence MAE",
+  "secondaryMetrics": [
+    "wellbeing RMSE and signed bias",
+    "per-year and per-country wellbeing errors with denominators",
+    "GDP cumulative growth error in percentage points: MAE, RMSE and bias",
+    "coverage and exclusions per outcome/year"
+  ],
+  "emptyOrUndefinedMetrics": "null with a reason; never zero success",
+  "accuracyPassThreshold": null,
+  "integrityGates": [
+    "future outcome perturbations cannot change fit, frozen cohort or predictions",
+    "future-dated backgrounds rejected",
+    "origin/test boundary and all sources/parameters hashed",
+    "frozen coefficients supplied every monthly step",
+    "default behavior unchanged when override omitted",
+    "same score masks for model and persistence",
+    "publish performance regardless of sign"
+  ],
+  "vintageLimit": "Historical observation years from data retrieved later are not an archive of information published in 2018; revisions and publication lags remain. Model form and structural assumptions were chosen after evaluation years were known.",
+  "prohibited": [
+    "tune coefficients, split, horizon, exclusions or settings to win this test",
+    "alter existing published targets or default fitted coefficients",
+    "claim this tests disabled AI, transfer or training effects",
+    "borrow old qualification for changed source identity"
+  ]
+}
