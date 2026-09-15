@@ -51,7 +51,7 @@ describe('LabTab Policy panel (renders)', () => {
     const out = exampleHtml();
     expect(out).toContain('1 of 23 provisions mapped, 10 unresolved, 12 outside model — every listed provision has a status');
     expect(out).not.toContain('accounted for');
-    expect(out).toContain('Quotation coverage: 79 of 79 source clauses covered or explicitly excluded (23 by a provision quote, 56 excluded)');
+    expect(out).toContain('Source text quoted or excluded: 79 of 79 source clauses covered or explicitly excluded (23 by a provision quote, 56 excluded)');
     expect(out).toContain('Completeness: completeness not attested');
     expect(out).toContain('Source clauses (79; 0 neither quoted nor excluded)');
     expect(out).not.toContain('Run is disabled');
@@ -92,7 +92,7 @@ describe('LabTab Policy panel (renders)', () => {
     expect(out).toContain('deterministic: uncertainty off');
     expect(out).not.toContain('over 3 paired draws');
     // a link carries no source text: coverage is unknown, and it says so
-    expect(out).toContain('Quotation coverage: source unavailable — coverage unknown');
+    expect(out).toContain('Source text quoted or excluded: source unavailable — coverage unknown');
   });
 
   it('reports a link it cannot open instead of opening a different baseline', () => {

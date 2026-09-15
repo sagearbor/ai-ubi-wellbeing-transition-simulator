@@ -271,7 +271,7 @@ const LabTab: React.FC<LabTabProps> = ({
   const jumpTo = (kind: string) => {
     requestAnimationFrame(() => {
       const target = document.getElementById(`lab-jump-${kind}`);
-      const details = target?.querySelector('details');
+      const details = kind === 'start' ? null : target?.matches('details') ? target as HTMLDetailsElement : target?.querySelector('details');
       if (details) details.open = true;
       target?.scrollIntoView({block:'start'});
       target?.focus({preventScroll:true});

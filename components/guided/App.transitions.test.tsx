@@ -40,6 +40,8 @@ vi.mock('react', async original => {
   return {...react,...hooks,default:{...react.default,...hooks}};
 });
 import App from '../../App';
+import { buildExperiment, encodeExperiment, FINANCE_PREFIX } from '../../src/financials/share';
+import { modelHash } from '../../src/policy/hash';
 import GuidedExperience from './GuidedExperience';
 import ScenarioContext from './ScenarioContext';
 import ExploreIntro from './ExploreIntro';
@@ -88,11 +90,13 @@ beforeEach(() => {
   vi.stubGlobal('requestAnimationFrame',(fn:()=>void)=>{fn();return 1;});
 });
 afterEach(() => {host.cells.forEach(c=>c?.cleanup?.());vi.useRealTimers();vi.unstubAllGlobals();});
+function worldHome(ui: ReturnType<typeof mount>) { ui.click('Transition Engine home'); ui.action(() => nodes(ui.tree).find(n => n.props?.onWorld && n.props?.onHistory).props.onWorld()); }
+function mountWorld() { const ui = mount(); worldHome(ui); return ui; }
 const legacy=PRESET_MODELS.find(m=>m.name.startsWith('Organic Incentive'))!;
 function selectModel(ui: ReturnType<typeof mount>,name: string) {
   ui.action(()=>ui.component(GuidedExperience).props.onView('map'));
   ui.click(name);
-  ui.click('Transition Engine home');
+  worldHome(ui);
 }
 function context(ui: ReturnType<typeof mount>) {
   const p=ui.component(GuidedExperience).props;
@@ -101,22 +105,22 @@ function context(ui: ReturnType<typeof mount>) {
 
 describe('real App navigation transitions',()=>{
   it('enter -> exit comparison restores one map and preserves the actual scenario',()=>{
-    const ui=mount();const original=ui.component(GuidedExperience).props.run;
+    const ui=mountWorld();const original=ui.component(GuidedExperience).props.run;
     ui.action(()=>ui.component(GuidedExperience).props.onMapCompare());
     expect(nodes(ui.tree).filter(n=>n.type===WorldMap)).toHaveLength(2);
     ui.click('Exit map comparison');
     expect(nodes(ui.tree).filter(n=>n.type===WorldMap)).toHaveLength(1);
-    ui.click('Transition Engine home');
+    worldHome(ui);
     expect(ui.component(GuidedExperience).props.run).toBe(original);
     ui.action(()=>ui.component(GuidedExperience).props.onMapCompare());
-    ui.click('Transition Engine home');
+    worldHome(ui);
     ui.action(()=>ui.component(GuidedExperience).props.onView('map'));
     expect(nodes(ui.tree).filter(n=>n.type===WorldMap)).toHaveLength(1);
   });
   it('exit removes comparison-only equation restrictions and the main legacy run can step',()=>{
-    const ui=mount();selectModel(ui,legacy.name);
+    const ui=mountWorld();selectModel(ui,legacy.name);
     ui.action(()=>ui.component(GuidedExperience).props.onMapCompare());
-    ui.click('Transition Engine home');
+    worldHome(ui);
     ui.action(()=>ui.component(GuidedExperience).props.onView('models'));
     ui.click('Create/Edit Model');
     ui.action(()=>ui.component(ModelEditor).props.onRun(DEFAULT_MODEL_CONFIG));
@@ -127,7 +131,7 @@ describe('real App navigation transitions',()=>{
     expect(ui.component(SimulationControls).props.month).toBe(1);
   });
   it.each([legacy.name,PRESET_MODELS.find(m=>m.id==='evidence-anchored')!.name])('home preserves %s; explicit reference action initializes a working paired dividend',name=>{
-    const ui=mount();selectModel(ui,name);
+    const ui=mountWorld();selectModel(ui,name);
     const before=ui.component(GuidedExperience).props;
     expect(before.model.name).toBe(name);
     expect(before.needsDividendReference).toBe(true);
@@ -143,19 +147,19 @@ describe('real App navigation transitions',()=>{
     expect(after.needsDividendReference).toBe(false);
   });
   it('refuses incompatible comparison entry without crashing or changing the current run',()=>{
-    const ui=mount();selectModel(ui,legacy.name);
+    const ui=mountWorld();selectModel(ui,legacy.name);
     ui.action(()=>ui.component(GuidedExperience).props.onView('models'));
     ui.action(()=>ui.component(ModelUpload).props.onApply(DEFAULT_MODEL_CONFIG));
-    ui.click('Transition Engine home');
+    worldHome(ui);
     const before=ui.component(GuidedExperience).props.run;
     ui.action(()=>ui.component(GuidedExperience).props.onMapCompare());
     expect(ui.component(GuidedExperience).props.error).toContain('Map comparison unavailable');
     expect(ui.component(GuidedExperience).props.run).toBe(before);
   });
   it('clears incompatible uploaded hooks when explicitly starting the reference',()=>{
-    const ui=mount();ui.action(()=>ui.component(GuidedExperience).props.onView('models'));
+    const ui=mountWorld();ui.action(()=>ui.component(GuidedExperience).props.onView('models'));
     ui.action(()=>ui.component(ModelUpload).props.onApply({...DEFAULT_MODEL_CONFIG,name:'Uploaded hook probe'}));
-    ui.click('Transition Engine home');
+    worldHome(ui);
     expect(context(ui)).toContain('unsupported calculation');
     expect(context(ui)).not.toContain('Accounting reviewed');
     ui.action(()=>ui.component(GuidedExperience).props.onDividend());
@@ -168,18 +172,40 @@ describe('real App navigation transitions',()=>{
     expect(ui.component(SimulationControls).props.month).toBe(1);
   });
   it('exploring an already valid conditional dividend retains edited inputs and paired result',()=>{
-    const ui=mount();let p=ui.component(GuidedExperience).props;
+    const ui=mountWorld();let p=ui.component(GuidedExperience).props;
     ui.action(()=>p.onUpdate(p.run.corporations[0].id,{availableShare:.25,fundingRequest:{kind:'amount',monthlyBillions:40},distributionStrategy:'hq-local'}));
     p=ui.component(GuidedExperience).props;const before=p.run,paired=p.paired;
     ui.action(()=>p.onDividend());p=ui.component(GuidedExperience).props;
     expect(p.run).toBe(before);expect(p.paired).toBe(paired);
-    expect(context(ui)).toContain('accounting unreviewed');
+    expect(context(ui)).toContain('accounting not rechecked');
     expect(context(ui)).toContain('conditional wellbeing index');
   });
   it('US reference context states its own horizon without conditional labeling',()=>{
-    const ui=mount();selectModel(ui,PRESET_MODELS.find(m=>m.id==='us-reference-korinek')!.name);
+    const ui=mountWorld();selectModel(ui,PRESET_MODELS.find(m=>m.id==='us-reference-korinek')!.name);
     expect(context(ui)).toContain('January 2030');
     expect(context(ui)).not.toContain('conditional wellbeing index');
     expect(context(ui)).not.toContain('Accounting reviewed');
   });
+});
+
+describe('published front door and route ownership',()=>{
+  it('opens published Explore by default without mounting a world map and retains Lab',()=>{
+    const ui=mount();expect(nodes(ui.tree).filter(n=>n.type===WorldMap)).toHaveLength(0);
+    const published=()=>nodes(ui.tree).find(n=>n.props?.onWorld&&n.props?.onHistory);
+    expect(published().props.mode).toBe('explore');ui.click('Compare');expect(published().props.mode).toBe('compare');
+    ui.click('Model Lab');const lab=nodes(ui.tree).find(n=>n.props?.initialImports);expect(lab).toBeTruthy();
+    ui.click('Explore');expect(nodes(ui.tree).find(n=>n.props?.initialImports)?.type).toBe(lab.type);
+    ui.click('Check against history');expect(nodes(ui.tree).find(n=>n.type==='button'&&words(n)==='Check against history').props['aria-current']).toBe('page');
+    ui.click('Explore');expect(published().props.mode).toBe('explore');
+  });
+  it('keeps explicit history and legacy hash owners out of the new front door',()=>{
+    window.location.search='?tab=history';let ui=mount();expect(nodes(ui.tree).find(n=>n.type==='button'&&words(n)==='Check against history').props['aria-current']).toBe('page');
+  });
+  it('surfaces malformed financial hashes without calculating defaults',()=>{
+    window.location.hash='#finance=%broken';const ui=mount();const published=nodes(ui.tree).find(n=>n.props?.onWorld&&n.props?.onHistory);expect(published.props.error).toBeTruthy();expect(published.props.initial).toBeUndefined();expect(nodes(ui.tree).filter(n=>n.type===WorldMap)).toHaveLength(0);
+  });
+});
+
+it('opens the validated exact financial B model through initial imports in a fresh Lab',()=>{
+ const experiment=buildExperiment();window.location.search='?tab=lab&side=B';window.location.hash=FINANCE_PREFIX+encodeExperiment(experiment);const ui=mount();const lab=nodes(ui.tree).find(n=>n.props?.initialImports);expect(lab.props.initialImports).toHaveLength(1);expect(modelHash(lab.props.initialImports[0].model)).toBe(experiment.modelHashes.B);expect(nodes(ui.tree).filter(n=>n.type===WorldMap)).toHaveLength(0);
 });
