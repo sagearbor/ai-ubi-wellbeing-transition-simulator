@@ -46,15 +46,15 @@ Example configs live in [`examples/models/`](examples/models/).
   This is what the anchor tests and batch validation run against.
 - **Custom-model tooling:** `mathjs`-based equation parsing, `ajv` JSON-schema
   validation, and `js-yaml` for model configs.
-- **AI analysis (optional):** the Google Gemini API (`@google/genai`) powers an
-  Analysis tab that generates a plain-language simulation **summary** and a
-  hostile **"Red Team" economist** critique that hunts for fatal flaws in the run.
-  The core simulation runs fully without any API key; only these two features need one.
+- **AI assistance (optional):** the Google Gemini API (`@google/genai`) powers a
+  plain-language simulation **summary**, a hostile **"Red Team" economist** critique,
+  and policy-text extraction into a reviewable draft. The core simulation and manual
+  policy flow run fully without any API key; only these three features need one.
 
-The UI is organized into tabs: **Overview** (an animated diagram of the abundance
-cycle), **Map** (adoption / well-being / UBI-received / corporate-HQ views),
-**Corporations** (a sortable, filterable table plus a game-theory dashboard with
-a cooperation meter and contribution histogram), **Charts** (the motion chart and
+The UI is organized into tabs: **Overview** (a legacy abundance-cycle diagram, not
+operative default behavior), **Map** (adoption / well-being / UBI-received /
+corporate-HQ views), **Corporations** (a sortable, filterable table plus a legacy-only
+game-theory dashboard with a cooperation meter and contribution histogram), **Charts** (the motion chart and
 fund-accumulation graph), **Analysis** (the Gemini features), and a **Guide /
 Equations** reference. Simulations auto-save to `localStorage` and can be
 exported to / imported from a JSON snapshot.
@@ -69,9 +69,9 @@ exported to / imported from a JSON snapshot.
 # 1. Install dependencies
 npm install
 
-# 2. (Optional) enable the AI Analysis tab
+# 2. (Optional) enable Gemini-assisted features
 #    Copy .example.env to .env.local and add a Google Gemini API key.
-#    The simulator runs fine without this — only the Red Team / Summary features need it.
+#    The simulator runs without this — only Summary / Red Team / policy extraction need it.
 cp .example.env .env.local
 #    then edit .env.local and set GEMINI_API_KEY=...
 
@@ -119,9 +119,10 @@ restrict the key by HTTP referrer in Google AI Studio.
 ## Status & roadmap
 
 **Early and actively developed (pre-1.0).** The core is real and working: the
-five-phase simulation engine, ~80 corporations and 128 countries, the game-theory
-dynamics, the world map and charts, the custom-model upload/validation/leaderboard
-pipeline, and the Gemini-powered analysis are all implemented. A snapshot
+five-phase simulation engine, ~80 corporations and 128 countries, the conditional
+world map and charts, legacy game-theory/adaptive dynamics, the custom-model
+upload/validation/leaderboard pipeline, and Gemini-assisted analysis and policy
+extraction are all implemented. A snapshot
 (`release/conference-v1`, February 2026) was shared with collaborators as the
 basis for a conference-panel presentation; `main` has moved on since.
 
@@ -132,7 +133,7 @@ Historical check result for the built-in engine (2026-09-13, before this integra
 5 of 6 (AT-3 fails for a measurement reason documented in the model card); Korinek reduced form
 3 of 3; every core model passes its own reproduction tests.
 
-**Current acceptance:** the default has independent automated review for conditional source/allocation accounting at exactly 61 baseline monthly snapshots. Macro and wellbeing remain illustrative. Supported policy sharing/reopen and native Charts/Compare are implemented; final browser, whole-branch review and GitHub release checks are tracked in the [v3 acceptance record](docs/design/v3-acceptance-2026-09-15.md).
+**Current acceptance:** the default has independent automated review for conditional source/allocation accounting at exactly 61 baseline monthly snapshots. Macro and wellbeing remain illustrative. Supported policy sharing/reopen and native Charts/Compare are implemented; bounded browser evidence, whole-branch review and GitHub release checks are tracked in the [v3 acceptance record](docs/design/v3-acceptance-2026-09-15.md).
 
 **Where to start reviewing (v3 plan, stages 1-5):**
 

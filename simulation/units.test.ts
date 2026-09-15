@@ -6,8 +6,9 @@
 import { describe, it, expect } from 'vitest';
 import { formatBillionsUsd, formatUsdPerPerson, usdPerPerson } from './units';
 import { headlineStats, WORLD_POPULATION_MILLIONS } from './appState';
-import { initialRun, runMonths } from './run';
-import { INITIAL_COUNTRIES, PRESET_MODELS } from '../constants';
+import { initialRun, initOptionsFor, runMonths } from './run';
+import { DEFAULT_MODEL, INITIAL_COUNTRIES, PRESET_MODELS, WB_COUNTRY_DATASET_ID } from '../constants';
+import { decodeSharePayload, encodeSharePayload } from '../src/services/scenarioShare';
 
 describe('unit conversion shared by engine and UI', () => {
   it('billions of USD over millions of people is thousands of USD per person', () => {
@@ -40,6 +41,26 @@ describe('map headline stats (finding 13)', () => {
     // The old formula's value is 10,000 times smaller.
     const old = run.state.globalFund / (WORLD_POPULATION_MILLIONS * 10);
     expect(stats.globalDividendUsd / old).toBeCloseTo(10000, 6);
+  });
+
+  it('uses an imported conditional roster population for the global dividend', () => {
+    const imported = initialRun(undefined, undefined, initOptionsFor(DEFAULT_MODEL, WB_COUNTRY_DATASET_ID));
+    imported.state.countryData.USA.population *= 2;
+
+    const reopened = decodeSharePayload(
+      encodeSharePayload(DEFAULT_MODEL, WB_COUNTRY_DATASET_ID, imported),
+    ).run!;
+    const importedStats = headlineStats(reopened.state);
+    const usa = reopened.state.countryData.USA;
+
+    expect(reopened.state.importedUnverified).toBe(true);
+    expect(usa.population).toBe(680.0076);
+    expect(reopened.state.conditionalSummary!.populationMillions).toBeCloseTo(7783.3558, 9);
+    expect(importedStats.globalDividendUsd).toBeCloseTo(reopened.ledger.fundsPerCapita, 12);
+    expect(importedStats.globalDividendUsd).toBeCloseTo(
+      usdPerPerson(usa.ubiReceivedGlobal, usa.population),
+      12,
+    );
   });
 
   it('the pool is this month\'s global contributions, and wellbeing/adoption are unweighted country means', () => {
