@@ -1,0 +1,21 @@
+{
+  "protocolHash": "694cc25212c42a84c873a55b7f6db7023e604fd5bbedde2ff9639d2faaaa1c3b",
+  "trainHash": "979ac8d45dda418403fc59e04111b9c9dbcd2fa484e4c26aa900cd37e777bd02",
+  "coefficients": {
+    "intercept": 5.569374801665757,
+    "lnGdp": 5.2411916452159915,
+    "governance": 8.224203899441955
+  },
+  "training": {
+    "n": 399,
+    "rSquared": 0.6702101524923816,
+    "rmseIndexPoints": 5.618484241833294,
+    "years": [
+      2015,
+      2016,
+      2017,
+      2018
+    ]
+  },
+  "uncertainty": "No forecast interval estimated; repeated country rows invalidate naive independent-row uncertainty."
+}

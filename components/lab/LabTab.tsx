@@ -47,7 +47,8 @@ import type { ActiveRunView } from './activeRunView';
 import { splitScenarioOverlays } from './policyState';
 import OutputChart from './OutputChart';
 import { scenarioProvenance, type ScenarioProvenance } from '../../src/policy/provenance';
-import { EXPERIMENTAL_LABEL, curatedMatch, importKey, isImportKey, type ImportedModel, type ModelStatus } from './importState';
+import { EXPERIMENTAL_LABEL, curatedMatch, importFinancialExperiment, importKey, isImportKey, verifiedFinancialOrigin, type ImportedModel, type ModelStatus } from './importState';
+import type { FinancialExperiment } from '../../src/financials/share';
 import {
   describeOf,
   hypotheticalOverlay,
@@ -81,6 +82,8 @@ export interface LabTabProps {
   initialPolicy?: { drafts: PolicyDraft[]; source?: { title?: string; url?: string; text?: string }; runs?: number; seed?: number; run?: boolean };
   /** Models already imported (as if loaded from files); the first is opened unless initialModelId says otherwise. */
   initialImports?: Array<{ model: CoreModel; overlays?: Overlay[] }>;
+  /** Exact app-built model from a validated, pinned financial experiment. File imports use initialImports. */
+  initialFinancialExperiment?: { experiment: FinancialExperiment; side: 'A' | 'B' };
   /** The runner to use; defaults to a Web Worker in the browser and synchronous execution elsewhere. */
   runner?: Runner;
 }
@@ -111,6 +114,7 @@ const LabTab: React.FC<LabTabProps> = ({
   initialHash,
   initialPolicy,
   initialImports = [],
+  initialFinancialExperiment,
   runner: runnerProp,
   onActiveRunChange,
   onOpenResultView,
@@ -132,11 +136,20 @@ const LabTab: React.FC<LabTabProps> = ({
   });
   const linkSplit = link.opened ? splitScenarioOverlays(findFixture(link.opened.model.id)!, link.opened.overlays) : null;
 
+  const [financial] = useState(() => {
+    if (!initialFinancialExperiment) return { entry: undefined, error: undefined };
+    try {
+      return { entry: importFinancialExperiment(initialFinancialExperiment.experiment, initialFinancialExperiment.side), error: undefined };
+    } catch (error) {
+      return { entry: undefined, error: String(error) };
+    }
+  });
   const [imports, setImports] = useState<ImportedModel[]>(() =>
-    initialImports.map(({ model, overlays = [] }) => ({ key: importKey(model), model, overlays, warnings: [] })),
+    [...(financial.entry ? [financial.entry] : []),
+      ...initialImports.map(({ model, overlays = [] }) => ({ key: importKey(model), model, overlays, warnings: [] }))],
   );
   const [selection, setSelection] = useState<string>(
-    link.opened?.model.id ?? initialModelId ?? (initialImports[0] ? importKey(initialImports[0].model) : CORE_FIXTURES[0]?.model.id ?? ''),
+    link.opened?.model.id ?? initialModelId ?? financial.entry?.key ?? (initialImports[0] ? importKey(initialImports[0].model) : CORE_FIXTURES[0]?.model.id ?? ''),
   );
   const [overlayIds, setOverlayIds] = useState<string[]>(linkSplit?.overlayIds ?? initialOverlayIds);
   const [customOverlays, setCustomOverlays] = useState<Overlay[]>(linkSplit?.custom ?? initialCustomOverlays);
@@ -151,6 +164,7 @@ const LabTab: React.FC<LabTabProps> = ({
   const [entityChoice, setEntityChoice] = useState<string | null>(null);
 
   const importedEntry = isImportKey(selection) ? imports.find((i) => i.key === selection) : undefined;
+  const financialOrigin = verifiedFinancialOrigin(importedEntry);
   const fixture = importedEntry ? null : findFixture(selection) ?? CORE_FIXTURES[0];
   const model: CoreModel = importedEntry ? importedEntry.model : fixture!.model;
   const offeredOverlays: Overlay[] = importedEntry ? importedEntry.overlays : fixture!.overlays;
@@ -307,6 +321,10 @@ const LabTab: React.FC<LabTabProps> = ({
           moving.
         </p>
 
+        {financial.error && <p role="alert" className="mt-2 text-sm text-rose-700 dark:text-rose-300">
+          This financial experiment could not be opened: {financial.error} No financial scenario was applied.
+        </p>}
+
         {(link.error || link.opened) && (
           <p
             role="status"
@@ -341,9 +359,16 @@ const LabTab: React.FC<LabTabProps> = ({
                   {f.label}
                 </option>
               ))}
-              {imports.length > 0 && (
+              {imports.some(i => verifiedFinancialOrigin(i)) && (
+                <optgroup label="App-built financial scenarios (illustrative)">
+                  {imports.filter(i => verifiedFinancialOrigin(i)).map(i => (
+                    <option key={i.key} value={i.key}>{i.model.name} — app-built, illustrative</option>
+                  ))}
+                </optgroup>
+              )}
+              {imports.some(i => !verifiedFinancialOrigin(i)) && (
                 <optgroup label={`Imported (${EXPERIMENTAL_LABEL})`}>
-                  {imports.map((i) => (
+                  {imports.filter(i => !verifiedFinancialOrigin(i)).map((i) => (
                     <option key={i.key} value={i.key}>
                       {`${i.model.name} — ${EXPERIMENTAL_LABEL}`}
                     </option>
@@ -387,7 +412,17 @@ const LabTab: React.FC<LabTabProps> = ({
         />
       </div>
 
-        {status === 'imported' && (
+        {financialOrigin && (
+          <div role="note" className="mt-3 rounded-lg border border-sky-200 bg-sky-50 dark:border-sky-900 dark:bg-sky-950/30 px-3 py-2 text-xs text-slate-700 dark:text-slate-200">
+            <p className="font-semibold">Built by this app from the pinned FY{financialOrigin.fiscalYear} dataset.</p>
+            <p className="mt-0.5">Reported company observations feed an illustrative allocation model. Policy shares and training responses are assumptions; these results are not measured policy effects or forecasts.</p>
+            <details className="mt-1">
+              <summary className="min-h-11 cursor-pointer py-2 font-medium">Source and model identity</summary>
+              <p className="break-all">Dataset: {financialOrigin.collectionId}. Source hash: {financialOrigin.dataHash}. Model hash: {financialOrigin.modelHash}.</p>
+            </details>
+          </div>
+        )}
+        {status === 'imported' && !financialOrigin && (
           <div role="note" className="mt-3 rounded-lg border border-amber-300 bg-amber-50 dark:border-amber-800 dark:bg-amber-950/40 px-3 py-2 text-xs text-amber-800 dark:text-amber-200">
             <p className="font-semibold">{`Imported model: ${EXPERIMENTAL_LABEL}.`}</p>
             <p className="mt-0.5">

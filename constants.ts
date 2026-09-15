@@ -5,7 +5,7 @@ import wbCountriesJson from './data/countries/wb-2026-09.json';
 
 // Helper to determine archetype based on GDP and governance
 type Archetype = 'rich-democracy' | 'middle-stable' | 'developing-fragile' | 'authoritarian' | 'failed-state';
-const getArchetype = (gdp: number, gov: number): Archetype => {
+export const getArchetype = (gdp: number, gov: number): Archetype => {
   if (gov < 0.35) return 'failed-state';
   if (gov < 0.50 && gdp > 5000) return 'authoritarian';
   if (gdp >= 35000 && gov >= 0.80) return 'rich-democracy';

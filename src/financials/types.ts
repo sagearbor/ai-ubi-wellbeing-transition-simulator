@@ -6,6 +6,8 @@ export interface FinancialEvidence {
   lineItem: string;
   locator: string;
   reportedValue: number | null;
+  /** Inference from the cited statements, never a separately printed reported value. */
+  derivedValue?: number;
   /** Cash outflows retain their negative sign here, but use positive magnitudes in the record. */
   note?: string;
 }

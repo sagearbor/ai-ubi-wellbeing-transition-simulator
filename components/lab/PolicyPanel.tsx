@@ -1,3 +1,5 @@
+import { policyExtractionError } from '../../services/policyExtractionError';
+import { policyEvidenceInventory } from '../../src/policy/presentation';
 import { attestationBinding } from '../../src/policy/draft';
 /**
  * PolicyPanel — "read a policy text against this model" (v3 stage 5).
@@ -332,7 +334,7 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
         });
       }
     } catch (e) {
-      if (current()) setNotice({ tone: 'error', text: (e as Error).message });
+      if (current()) setNotice({ tone: 'error', text: policyExtractionError(e) });
     } finally {
       if (extractionGate.current.owns(token)) setExtracting(false);
     }
@@ -607,6 +609,7 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
         <p className="text-[11px] text-slate-500 dark:text-slate-400">{sourceText.length.toLocaleString('en-US')} characters</p>
       </div>
       <div className="flex flex-wrap items-center gap-2">
+        <p className="text-xs text-slate-500 dark:text-slate-400">AI extraction sends pasted text and model details to Google Gemini. Manual drafting works locally.</p>
         <button type="button" className={btnPlain} onClick={extract} disabled={!apiKey || extracting}>
           <Sparkles size={14} aria-hidden="true" />
           {extracting ? 'Extracting…' : 'Extract provisions with AI'}
@@ -631,20 +634,21 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
       {/* 2. Drafts */}
       {drafts.length > 0 && draft && (
         <div className="space-y-3 border-t border-slate-100 dark:border-slate-800 pt-3">
-          <div className="flex flex-wrap items-center gap-2" role="tablist" aria-label="Drafts">
-            {drafts.map((x, i) => (
-              <button
-                key={i}
-                type="button"
-                role="tab"
-                aria-selected={i === active}
-                onClick={() => setActive(i)}
-                className={`${btn} ${i === active ? 'border-sky-500 bg-sky-50 text-sky-800 dark:border-sky-600 dark:bg-sky-950/50 dark:text-sky-200' : 'border-slate-300 text-slate-700 dark:border-slate-700 dark:text-slate-200'}`}
-              >
-                {`Draft ${i === 0 ? 'A' : 'B'}`}
-                <span className="font-normal opacity-80 max-w-[12rem] truncate">{x.title}</span>
-              </button>
-            ))}
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2" role="group" aria-label="Draft selection">
+              {drafts.map((x, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  aria-pressed={i === active}
+                  onClick={() => setActive(i)}
+                  className={`${btn} ${i === active ? 'border-sky-500 bg-sky-50 text-sky-800 dark:border-sky-600 dark:bg-sky-950/50 dark:text-sky-200' : 'border-slate-300 text-slate-700 dark:border-slate-700 dark:text-slate-200'}`}
+                >
+                  {`Draft ${i === 0 ? 'A' : 'B'}`}
+                  <span className="font-normal opacity-80 max-w-[12rem] truncate">{x.title}</span>
+                </button>
+              ))}
+            </div>
             {drafts.length === 1 ? (
               <button type="button" className={btnPlain} onClick={() => { setDrafts([drafts[0], copyAsDraftB(drafts[0])]); setActive(1); }}>
                 <Plus size={14} aria-hidden="true" />
@@ -717,6 +721,12 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
                 value={draft.draftedBy?.name ?? ''}
                 onChange={(e) => edit((x) => withEdit(x, { ...x, draftedBy: { kind: x.draftedBy?.kind ?? 'person', name: e.target.value, date: x.draftedBy?.date } }))}
               />
+            </div>
+            <div><label className={labelCls} htmlFor="policy-author-kind">Author kind</label>
+              <select id="policy-author-kind" className={`${field} h-11`} value={draft.draftedBy?.kind ?? 'person'}
+                onChange={e => edit(x => withEdit(x, {...x, draftedBy: {kind: e.target.value as 'person' | 'ai' | 'agent', name: x.draftedBy?.name ?? '', date: x.draftedBy?.date}}))}>
+                <option value="person">Person</option><option value="ai">AI</option><option value="agent">Agent</option>
+              </select><p className="text-xs text-slate-500">Authorship does not attest review or completeness.</p>
             </div>
             {draft.reviewStatus === 'human-reviewed' && (
               <div>
@@ -979,6 +989,17 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
           {noMapped && <p role="note" className="text-sm font-semibold">Nothing from this proposal is represented in the calculation. Identical curves are a structural baseline comparison, not an estimated zero policy effect.</p>}
           <p className="text-xs">Unresolved and outside-model provisions do not affect these curves. This is a partial model comparison, not a net welfare ranking.</p>
           {onOpenResultView && <button className={btnPlain} onClick={onOpenResultView}>Open policy comparison in Charts</button>}
+          {activeFresh && draft && (() => {
+            const inventory = policyEvidenceInventory(scenarioModel, draft);
+            return <section aria-label="Policy evidence and assumptions" className="space-y-3 rounded-lg border border-slate-300 dark:border-slate-700 p-4 text-sm">
+              <h3 className="font-semibold">What these results assume</h3>
+              <p>These are model comparisons. A policy quotation, source URL or AI extraction does not establish how the world responds. Source classifications below are declarations, unreviewed here; even a “causal” label is not scientific acceptance.</p>
+              <p>Review: {draft.reviewStatus === 'human-reviewed' && draft.reviewedBy?.name ? `user-attested by ${draft.reviewedBy.name}; not independent scientific acceptance` : 'human review not attested'}. {cov?.completeness.text ?? 'Completeness not attested'}.</p>
+              <details><summary className="cursor-pointer font-medium">Quoted proposed settings ({inventory.settings.length})</summary><ul className="mt-2 space-y-3">{inventory.settings.map(p=><li key={p.id}><strong>{p.summary}</strong><blockquote className="border-l-2 pl-3">{p.quote}</blockquote><code className="break-all">{JSON.stringify(p.mapping)}</code></li>)}</ul><p>These set controls, funding or constraints; they are not measured policy effects.</p></details>
+              <details><summary className="cursor-pointer font-medium">Declared model inputs and response assumptions</summary><p>Inventory of the active scenario model, not a causal dependency chain. Input paths may be reported data or assumptions; their declared source alone does not resolve that distinction. Equations describe assumed relationships.</p><ul className="mt-2 space-y-2">{inventory.declarations.map((d,i)=><li key={`${d.id}-${i}`}><strong>{d.type}: {d.id}</strong> <code className="break-all">{d.value}</code><p>{d.source ? `Declared source: ${d.source.label}; declared kind: ${d.source.kind??'assumed'} — unreviewed here.` : 'No source declared — unreviewed here.'} {d.source?.url && <span className="break-all">Source URL: {d.source.url}</span>}</p></li>)}</ul><h4 className="font-medium">Draft response assumptions ({inventory.responses.length})</h4><ul>{inventory.responses.map(p=><li key={p.id}>{p.summary}: <code className="break-all">{JSON.stringify(p.mapping)}</code></li>)}</ul></details>
+              <details><summary className="cursor-pointer font-medium">Unresolved and outside-model mechanisms ({inventory.unsupported.length})</summary><p>Omitted or unsupported mechanisms do not count as zero real-world effects. {cov?.operative.text}</p><ul className="space-y-2">{inventory.unsupported.map(p=><li key={p.id}><strong>{p.status}: {p.summary}</strong><blockquote>{p.quote}</blockquote><p>{p.reason}</p></li>)}</ul><ul>{draft.clauseDispositions?.filter(c=>c.status==='unresolved'||c.status==='outside-model').map(c=><li key={c.clauseId}>{c.clauseId}: {c.status} — {c.reason}</li>)}</ul><p>Unresolved operative clause IDs: {cov?.operative.unresolved.join(', ') || 'None listed'}. Outside-model operative clause IDs: {cov?.operative.outsideModel.join(', ') || 'None listed'}.</p><p>Model scope: {scenarioModel.scope??'No scope declared'}.</p></details>
+            </section>;
+          })()}
           {activeFresh ? <PolicyResults model={scenarioModel} entries={entries} active={entries.findIndex(e => e.slot === active)} year={year} onYear={setYear} modelStatus={modelStatus} /> : results.length > 0 && <p role="status">Current comparison: {viewStatus}. {activeResult?.result.errors.join("; ")} Run again to display current results.</p>}
 
           {draft && (

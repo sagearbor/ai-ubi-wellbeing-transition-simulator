@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "collectionId": "reported-company-financials-fy2025-v2",
+  "recipientsId": "countries-wb-2026-09",
+  "dataHash": "c5dae6c07f01a214",
+  "engineVersion": "core-0.3.0",
+  "numericalHash": "0dc3f0cefbc98688",
+  "recordId": "apple-fy2025",
+  "scenarios": {
+    "A": {
+      "policyShare": 0.2,
+      "trainingShare": 0.25,
+      "recipientCountry": "USA",
+      "costPerCompletion": 5000,
+      "instructorCapacity": 100000,
+      "eligibleTrainees": 1000000,
+      "placementRate": 0.5,
+      "suitableOpenings": 50000
+    },
+    "B": {
+      "policyShare": 0.1,
+      "trainingShare": 0.2,
+      "recipientCountry": "USA",
+      "costPerCompletion": 5000,
+      "instructorCapacity": 100000,
+      "eligibleTrainees": 1000000,
+      "placementRate": 0.5,
+      "suitableOpenings": 50000
+    }
+  },
+  "view": "compare",
+  "modelHashes": {
+    "A": "42f84a4bbe8c070b",
+    "B": "4c8144d4a6e9f60e"
+  }
+}

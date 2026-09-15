@@ -40,9 +40,11 @@ vi.mock('react', async original => {
   return {...react,...hooks,default:{...react.default,...hooks}};
 });
 import App from '../../App';
-import { buildExperiment, encodeExperiment, FINANCE_PREFIX } from '../../src/financials/share';
+import { buildExperiment, decodeExperiment, encodeExperiment, exactModel, FINANCE_PREFIX } from '../../src/financials/share';
 import { modelHash } from '../../src/policy/hash';
 import GuidedExperience from './GuidedExperience';
+import LabTab from '../lab/LabTab';
+import PublishedExperience from '../published/PublishedExperience';
 import ScenarioContext from './ScenarioContext';
 import ExploreIntro from './ExploreIntro';
 import WorldMap from '../WorldMap';
@@ -61,11 +63,11 @@ function words(tree: any): string {
   if (Array.isArray(tree)) return tree.map(words).join('');
   return tree && typeof tree === 'object' ? words(tree.props?.children) : '';
 }
-function mount() {
+function mount(component = () => App({})) {
   let tree: any;
   const render = () => {
     for (let n=0;n<20;n++) {
-      host.dirty=false;host.cursor=0;tree=App({});host.effects.splice(0).forEach(fn=>fn());
+      host.dirty=false;host.cursor=0;tree=component();host.effects.splice(0).forEach(fn=>fn());
       if (!host.dirty) return;
     }
     throw new Error('App did not settle');
@@ -86,7 +88,7 @@ beforeEach(() => {
   vi.stubGlobal('localStorage',{getItem:(k:string)=>local.get(k)??null,setItem:(k:string,v:string)=>local.set(k,v),removeItem:(k:string)=>local.delete(k)});
   const document={title:'test',activeElement:null,documentElement:{classList:{add:vi.fn(),remove:vi.fn()}},getElementById:()=>null};
   vi.stubGlobal('document',document);
-  vi.stubGlobal('window',{document,location:{search:'',hash:'',pathname:'/',origin:'http://test'},history:{pushState:vi.fn()},addEventListener:vi.fn(),removeEventListener:vi.fn(),innerWidth:1440});
+  vi.stubGlobal('window',{document,location:{search:'',hash:'',pathname:'/',origin:'http://test',href:'http://test/'},history:{pushState:vi.fn()},addEventListener:vi.fn(),removeEventListener:vi.fn(),innerWidth:1440});
   vi.stubGlobal('requestAnimationFrame',(fn:()=>void)=>{fn();return 1;});
 });
 afterEach(() => {host.cells.forEach(c=>c?.cleanup?.());vi.useRealTimers();vi.unstubAllGlobals();});
@@ -193,19 +195,45 @@ describe('published front door and route ownership',()=>{
     const ui=mount();expect(nodes(ui.tree).filter(n=>n.type===WorldMap)).toHaveLength(0);
     const published=()=>nodes(ui.tree).find(n=>n.props?.onWorld&&n.props?.onHistory);
     expect(published().props.mode).toBe('explore');ui.click('Compare');expect(published().props.mode).toBe('compare');
-    ui.click('Model Lab');const lab=nodes(ui.tree).find(n=>n.props?.initialImports);expect(lab).toBeTruthy();
-    ui.click('Explore');expect(nodes(ui.tree).find(n=>n.props?.initialImports)?.type).toBe(lab.type);
-    ui.click('Check against history');expect(nodes(ui.tree).find(n=>n.type==='button'&&words(n)==='Check against history').props['aria-current']).toBe('page');
+    ui.click('Model Lab');const lab=nodes(ui.tree).find(n=>n.type===LabTab);expect(lab).toBeTruthy();
+    ui.click('Explore');expect(nodes(ui.tree).find(n=>n.type===LabTab)?.type).toBe(lab.type);
+    ui.click('History');expect(nodes(ui.tree).find(n=>n.type==='button'&&words(n)==='History').props['aria-current']).toBe('page');
     ui.click('Explore');expect(published().props.mode).toBe('explore');
   });
   it('keeps explicit history and legacy hash owners out of the new front door',()=>{
-    window.location.search='?tab=history';let ui=mount();expect(nodes(ui.tree).find(n=>n.type==='button'&&words(n)==='Check against history').props['aria-current']).toBe('page');
+    window.location.search='?tab=history';let ui=mount();expect(nodes(ui.tree).find(n=>n.type==='button'&&words(n)==='History').props['aria-current']).toBe('page');
   });
   it('surfaces malformed financial hashes without calculating defaults',()=>{
     window.location.hash='#finance=%broken';const ui=mount();const published=nodes(ui.tree).find(n=>n.props?.onWorld&&n.props?.onHistory);expect(published.props.error).toBeTruthy();expect(published.props.initial).toBeUndefined();expect(nodes(ui.tree).filter(n=>n.type===WorldMap)).toHaveLength(0);
   });
 });
 
-it('opens the validated exact financial B model through initial imports in a fresh Lab',()=>{
- const experiment=buildExperiment();window.location.search='?tab=lab&side=B';window.location.hash=FINANCE_PREFIX+encodeExperiment(experiment);const ui=mount();const lab=nodes(ui.tree).find(n=>n.props?.initialImports);expect(lab.props.initialImports).toHaveLength(1);expect(modelHash(lab.props.initialImports[0].model)).toBe(experiment.modelHashes.B);expect(nodes(ui.tree).filter(n=>n.type===WorldMap)).toHaveLength(0);
+it('opens the validated exact financial B model with its app origin in a fresh Lab',()=>{
+ const experiment=buildExperiment();window.location.search='?tab=lab&side=B';window.location.hash=FINANCE_PREFIX+encodeExperiment(experiment);
+ const ui=mount();const lab=ui.component(LabTab);
+ expect(lab.props.initialFinancialExperiment.side).toBe('B');
+ expect(modelHash(exactModel(lab.props.initialFinancialExperiment.experiment,'B'))).toBe(experiment.modelHashes.B);
+ expect(lab.props.entryRequest).toBeUndefined();
+ expect(nodes(ui.tree).filter(n=>n.type===WorldMap)).toHaveLength(0);
+});
+
+it('an edited published A action reaches the real App with exact financial pins and policy entry',()=>{
+ const published=mount(()=>PublishedExperience({mode:'compare',onMode:()=>{},onLab:()=>{},onWorld:()=>{},onHistory:()=>{},onRisk:()=>{}}));
+ published.action(()=>nodes(published.tree).find(n=>n.props?.id==='pub-company').props.onChange({target:{value:'nvidia-fy2025'}}));
+ published.action(()=>nodes(published.tree).find(n=>n.props?.side==='A').props.update({policyShare:.37,trainingShare:.12}));
+ const link=nodes(published.tree).find(n=>n.type==='a'&&words(n)==='Paste a policy');
+ expect(link).toBeTruthy();expect(link.props.target).toBe('_blank');
+ const url=new URL(link.props.href);const saved=decodeExperiment(url.hash);
+ expect(saved.recordId).toBe('nvidia-fy2025');expect(saved.scenarios.A.policyShare).toBe(.37);
+ host.cells=[];host.cursor=0;host.effects=[];host.dirty=false;
+ window.location.search=url.search;window.location.hash=url.hash;
+ const app=mount();const lab=app.component(LabTab);
+ expect(lab.props.initialFinancialExperiment.experiment).toEqual(saved);
+ expect(lab.props.initialFinancialExperiment.side).toBe('A');
+ expect(lab.props.entryRequest).toEqual({kind:'policy',sequence:1});
+ expect(modelHash(exactModel(lab.props.initialFinancialExperiment.experiment,'A'))).toBe(saved.modelHashes.A);
+ const initial=lab.props.initialFinancialExperiment;
+ app.click('Explore');app.click('Model Lab');
+ expect(app.component(LabTab).props.initialFinancialExperiment).toBe(initial);
+ expect(app.component(LabTab).key).toBe(lab.key);
 });

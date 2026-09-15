@@ -1,0 +1,6 @@
+{
+  "text": "Add a variable\n\nAdding a variable here is unavailable for this model.\n\nThis model exposes no eligible equation targets for overlay effects.\n\nUse \u201cEquations and files\u201d to reach \u201cAdvanced: model file\u201d below, then choose \u201cExport model + overlays (JSON)\u201d.\nEdit the exported model in a text editor to define your new inputs and equations, with their units and sources.\nUse \u201cImport a model or overlay (JSON)\u201d at the top of the Lab to load and validate the edited file as a new experimental model.\n\nModel-file changes need their own tests and review; they do not extend the original model\u2019s evidence.",
+  "formInputs": 0,
+  "applyButtons": 0,
+  "focus": "lab-jump-author"
+}

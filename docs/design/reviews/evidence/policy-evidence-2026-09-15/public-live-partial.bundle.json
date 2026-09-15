@@ -1,0 +1,641 @@
+{
+  "schema": "policy-bundle/2",
+  "manifest": {
+    "schema": "policy-run/2",
+    "modelId": "training-budget",
+    "modelName": "Training funding meets a jobs constraint",
+    "modelHash": "fe5fbaafa2439da8",
+    "engineVersion": "core-0.2.0",
+    "baselineOverlays": [],
+    "policyOverlayId": "policy-training-funding-and-macro-risk-policy-mapping",
+    "policyOverlayHash": "3188d40c18f52b16",
+    "draftId": "training-funding-and-macro-risk-policy-mapping",
+    "draftHash": "453eaf4855f5b5e2",
+    "reviewStatus": "ai-drafted",
+    "draftedBy": {
+      "kind": "ai",
+      "name": "gemini-3.6-flash",
+      "date": "2026-09-15"
+    },
+    "coverage": {
+      "total": 3,
+      "mapped": 1,
+      "unresolved": 0,
+      "outsideModel": 2,
+      "allHaveStatus": true,
+      "statusText": "every listed provision has a status",
+      "source": {
+        "status": "complete",
+        "inventoryVersion": "clauses/1",
+        "clauses": 2,
+        "covered": 2,
+        "excluded": 0,
+        "uncovered": 0,
+        "text": "2 of 2 source clauses covered or explicitly excluded (2 by a provision quote, 0 excluded)"
+      },
+      "completeness": "completeness not attested"
+    },
+    "exclusions": [],
+    "evidence": [
+      {
+        "provisionId": "training-funding-2026-2029",
+        "role": "funding",
+        "target": "input:training_budget",
+        "kind": "assumed",
+        "label": "AI-drafted mapping of \"Training Funding and Macro Risk Policy Mapping\": 20 million USD in training funding each year from 2026 through 2029"
+      }
+    ],
+    "runs": 200,
+    "seed": 1,
+    "draws": {
+      "count": 200,
+      "seed": 1,
+      "firstIndex": 0
+    },
+    "conversions": [
+      "training-funding-2026-2029: million usd → training_budget (usd): every curve value multiplied by 1000000"
+    ],
+    "baselineRunHash": "f1f13220",
+    "policyRunHash": "5906a54a",
+    "createdAt": "2026-09-15T18:22:45.126Z"
+  },
+  "draft": {
+    "schemaVersion": 1,
+    "id": "training-funding-and-macro-risk-policy-mapping",
+    "title": "Training Funding and Macro Risk Policy Mapping",
+    "source": {
+      "title": "Training Funding and Macro Risk Policy Mapping",
+      "textSha256": "72d6113484064a1db34fe5242f40e6b8a52ffff90ac178a208819432ef7b40fb",
+      "excerptChars": 200
+    },
+    "modelId": "training-budget",
+    "modelHash": "fe5fbaafa2439da8",
+    "provisions": [
+      {
+        "id": "training-funding-2026-2029",
+        "quote": "The programme shall provide 20 million USD in training funding each year from 2026 through 2029.",
+        "summary": "Sets annual training funding to 20 million USD per year from 2026 to 2029.",
+        "status": "mapped",
+        "role": "funding",
+        "mapping": {
+          "kind": "input",
+          "target": "training_budget",
+          "op": "set",
+          "curve": {
+            "2026": 20,
+            "2027": 20,
+            "2028": 20,
+            "2029": 20
+          },
+          "unit": "million usd",
+          "evidence": {
+            "label": "AI-drafted mapping of \"Training Funding and Macro Risk Policy Mapping\": 20 million USD in training funding each year from 2026 through 2029",
+            "kind": "assumed",
+            "note": "Extracted by an AI model and not reviewed. The source supports what the policy sets, not how the world responds."
+          }
+        }
+      },
+      {
+        "id": "reduce-national-unemployment-target",
+        "quote": "It must reduce national unemployment by 5 percentage points by 2029",
+        "summary": "Requires national unemployment to fall by 5 percentage points by 2029.",
+        "status": "outside-model",
+        "role": "constraint",
+        "reason": "The model tracks gross job placements through this specific training channel and does not simulate national unemployment rates or net macro-level labor market effects."
+      },
+      {
+        "id": "eliminate-catastrophic-ai-risk-target",
+        "quote": "eliminate catastrophic AI risk.",
+        "summary": "Mandates the total elimination of catastrophic AI risk.",
+        "status": "outside-model",
+        "role": "constraint",
+        "reason": "Catastrophic AI risk is entirely outside the scope of this workforce training simulation model."
+      }
+    ],
+    "reviewStatus": "ai-drafted",
+    "draftedBy": {
+      "kind": "ai",
+      "name": "gemini-3.6-flash",
+      "date": "2026-09-15"
+    },
+    "notes": "Maps explicit annual training funding to the model's budget input curve. Targets regarding macro unemployment and AI risk are categorized as outside model scope."
+  },
+  "sourceText": "The programme shall provide 20 million USD in training funding each year from 2026 through 2029. It must reduce national unemployment by 5 percentage points by 2029 and eliminate catastrophic AI risk.",
+  "overlays": [],
+  "policyOverlay": {
+    "id": "policy-training-funding-and-macro-risk-policy-mapping",
+    "name": "Policy: Training Funding and Macro Risk Policy Mapping",
+    "description": "Mapped provisions of \"Training Funding and Macro Risk Policy Mapping\" (ai-drafted). Only what the draft maps is here; unresolved and outside-model provisions change nothing.",
+    "parameters": [],
+    "inputs": [
+      {
+        "id": "training_budget",
+        "unit": "usd",
+        "interp": "step",
+        "curve": {
+          "2026": 20000000,
+          "2027": 20000000,
+          "2028": 20000000,
+          "2029": 20000000
+        },
+        "source": {
+          "label": "AI-drafted mapping of \"Training Funding and Macro Risk Policy Mapping\": 20 million USD in training funding each year from 2026 through 2029",
+          "kind": "assumed",
+          "note": "Extracted by an AI model and not reviewed. The source supports what the policy sets, not how the world responds. — policy provision training-funding-2026-2029: \"The programme shall provide 20 million USD in training funding each year from 2026 through 2029.\" — million usd → training_budget (usd): every curve value multiplied by 1000000"
+        }
+      }
+    ],
+    "effects": []
+  },
+  "results": {
+    "years": [
+      2026,
+      2027,
+      2028,
+      2029
+    ],
+    "entities": [
+      "_"
+    ],
+    "outputs": [
+      "completions",
+      "actual_training_spend",
+      "unspent_budget",
+      "placements"
+    ],
+    "policyOnlyOutputs": [],
+    "baseline": {
+      "_": {
+        "completions": {
+          "p5": [
+            1200,
+            1967.2195786713728,
+            1967.2195786713728,
+            1967.2195786713728
+          ],
+          "p25": [
+            1200,
+            2000,
+            2200,
+            2349.716541279728
+          ],
+          "p50": [
+            1200,
+            2000,
+            2200,
+            2920.903100994312
+          ],
+          "p75": [
+            1200,
+            2000,
+            2200,
+            3497.782764464824
+          ],
+          "p95": [
+            1200,
+            2000,
+            2200,
+            3894.292118105416
+          ],
+          "mean": [
+            1200,
+            1995.6534502448308,
+            2174.719414597377,
+            2932.9895727315707
+          ]
+        },
+        "actual_training_spend": {
+          "p5": [
+            6000000,
+            9836097.893356863,
+            9836097.893356863,
+            9836097.893356863
+          ],
+          "p25": [
+            6000000,
+            10000000,
+            11000000,
+            11748582.70639864
+          ],
+          "p50": [
+            6000000,
+            10000000,
+            11000000,
+            14604515.50497156
+          ],
+          "p75": [
+            6000000,
+            10000000,
+            11000000,
+            17488913.82232412
+          ],
+          "p95": [
+            6000000,
+            10000000,
+            11000000,
+            19471460.59052708
+          ],
+          "mean": [
+            6000000,
+            9978267.251224153,
+            10873597.072986886,
+            14664947.863657864
+          ]
+        },
+        "unspent_budget": {
+          "p5": [
+            0,
+            0,
+            0,
+            528539.4094729187
+          ],
+          "p25": [
+            0,
+            0,
+            0,
+            2511086.1776758805
+          ],
+          "p50": [
+            0,
+            0,
+            0,
+            5395484.495028439
+          ],
+          "p75": [
+            0,
+            0,
+            0,
+            8251417.29360136
+          ],
+          "p95": [
+            0,
+            163902.10664313525,
+            1163902.1066431352,
+            10163902.106643135
+          ],
+          "mean": [
+            0,
+            21732.748775846427,
+            126402.9270131141,
+            5335052.1363421455
+          ]
+        },
+        "placements": {
+          "p5": [
+            358.3107121040424,
+            574.1160185179776,
+            599.6124718276799,
+            599.6124718276799
+          ],
+          "p25": [
+            445.46176620448625,
+            676.7078790710204,
+            714.2714119128261,
+            745.5328499929955
+          ],
+          "p50": [
+            580.3480347618461,
+            834.5507042430755,
+            863.2915021711738,
+            940.7625731522473
+          ],
+          "p75": [
+            689.7593261053164,
+            1026.4785590478116,
+            1070.9252601877477,
+            1175.571163648015
+          ],
+          "p95": [
+            829.535849969834,
+            1284.6110858908253,
+            1329.5251788261035,
+            1487.0676088845355
+          ],
+          "mean": [
+            579.7706539073645,
+            863.5826808815705,
+            902.7609066257236,
+            980.800586376032
+          ]
+        }
+      }
+    },
+    "policy": {
+      "_": {
+        "completions": {
+          "p5": [
+            1967.2195786713728,
+            1967.2195786713728,
+            1967.2195786713728,
+            1967.2195786713728
+          ],
+          "p25": [
+            2349.716541279728,
+            2349.716541279728,
+            2349.716541279728,
+            2349.716541279728
+          ],
+          "p50": [
+            2920.903100994312,
+            2920.903100994312,
+            2920.903100994312,
+            2920.903100994312
+          ],
+          "p75": [
+            3497.782764464824,
+            3497.782764464824,
+            3497.782764464824,
+            3497.782764464824
+          ],
+          "p95": [
+            3894.292118105416,
+            3894.292118105416,
+            3894.292118105416,
+            3894.292118105416
+          ],
+          "mean": [
+            2932.9895727315707,
+            2932.9895727315707,
+            2932.9895727315707,
+            2932.9895727315707
+          ]
+        },
+        "actual_training_spend": {
+          "p5": [
+            9836097.893356863,
+            9836097.893356863,
+            9836097.893356863,
+            9836097.893356863
+          ],
+          "p25": [
+            11748582.70639864,
+            11748582.70639864,
+            11748582.70639864,
+            11748582.70639864
+          ],
+          "p50": [
+            14604515.50497156,
+            14604515.50497156,
+            14604515.50497156,
+            14604515.50497156
+          ],
+          "p75": [
+            17488913.82232412,
+            17488913.82232412,
+            17488913.82232412,
+            17488913.82232412
+          ],
+          "p95": [
+            19471460.59052708,
+            19471460.59052708,
+            19471460.59052708,
+            19471460.59052708
+          ],
+          "mean": [
+            14664947.863657864,
+            14664947.863657864,
+            14664947.863657864,
+            14664947.863657864
+          ]
+        },
+        "unspent_budget": {
+          "p5": [
+            528539.4094729187,
+            528539.4094729187,
+            528539.4094729187,
+            528539.4094729187
+          ],
+          "p25": [
+            2511086.1776758805,
+            2511086.1776758805,
+            2511086.1776758805,
+            2511086.1776758805
+          ],
+          "p50": [
+            5395484.495028439,
+            5395484.495028439,
+            5395484.495028439,
+            5395484.495028439
+          ],
+          "p75": [
+            8251417.29360136,
+            8251417.29360136,
+            8251417.29360136,
+            8251417.29360136
+          ],
+          "p95": [
+            10163902.106643135,
+            10163902.106643135,
+            10163902.106643135,
+            10163902.106643135
+          ],
+          "mean": [
+            5335052.1363421455,
+            5335052.1363421455,
+            5335052.1363421455,
+            5335052.1363421455
+          ]
+        },
+        "placements": {
+          "p5": [
+            599.6124718276799,
+            599.6124718276799,
+            599.6124718276799,
+            599.6124718276799
+          ],
+          "p25": [
+            745.5328499929955,
+            745.5328499929955,
+            745.5328499929955,
+            745.5328499929955
+          ],
+          "p50": [
+            940.7625731522473,
+            940.7625731522473,
+            940.7625731522473,
+            940.7625731522473
+          ],
+          "p75": [
+            1175.571163648015,
+            1175.571163648015,
+            1175.571163648015,
+            1175.571163648015
+          ],
+          "p95": [
+            1487.0676088845355,
+            1487.0676088845355,
+            1487.0676088845355,
+            1487.0676088845355
+          ],
+          "mean": [
+            980.800586376032,
+            980.800586376032,
+            980.800586376032,
+            980.800586376032
+          ]
+        }
+      }
+    },
+    "difference": {
+      "_": {
+        "completions": {
+          "p5": [
+            767.2195786713727,
+            0,
+            0,
+            0
+          ],
+          "p25": [
+            1149.716541279728,
+            349.7165412797282,
+            149.71654127972818,
+            0
+          ],
+          "p50": [
+            1720.9031009943121,
+            920.9031009943121,
+            720.9031009943121,
+            0
+          ],
+          "p75": [
+            2297.782764464824,
+            1497.782764464824,
+            1297.782764464824,
+            0
+          ],
+          "p95": [
+            2694.292118105416,
+            1894.2921181054162,
+            1694.2921181054162,
+            0
+          ],
+          "mean": [
+            1732.9895727315713,
+            937.3361224867404,
+            758.2701581341939,
+            0
+          ]
+        },
+        "actual_training_spend": {
+          "p5": [
+            3836097.893356864,
+            0,
+            0,
+            0
+          ],
+          "p25": [
+            5748582.70639864,
+            1748582.7063986403,
+            748582.7063986403,
+            0
+          ],
+          "p50": [
+            8604515.50497156,
+            4604515.504971561,
+            3604515.504971561,
+            0
+          ],
+          "p75": [
+            11488913.82232412,
+            7488913.8223241195,
+            6488913.8223241195,
+            0
+          ],
+          "p95": [
+            13471460.59052708,
+            9471460.59052708,
+            8471460.59052708,
+            0
+          ],
+          "mean": [
+            8664947.86365785,
+            4686680.612433703,
+            3791350.790670969,
+            0
+          ]
+        },
+        "unspent_budget": {
+          "p5": [
+            528539.4094729187,
+            528539.4094729187,
+            528539.4094729187,
+            0
+          ],
+          "p25": [
+            2511086.1776758805,
+            2511086.1776758805,
+            2511086.1776758805,
+            0
+          ],
+          "p50": [
+            5395484.495028439,
+            5395484.495028439,
+            5395484.495028439,
+            0
+          ],
+          "p75": [
+            8251417.29360136,
+            8251417.29360136,
+            8251417.29360136,
+            0
+          ],
+          "p95": [
+            10163902.106643135,
+            10000000,
+            9000000,
+            0
+          ],
+          "mean": [
+            5335052.1363421455,
+            5313319.387566299,
+            5208649.209329031,
+            0
+          ]
+        },
+        "placements": {
+          "p5": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "p25": [
+            215.13268896378582,
+            0,
+            0,
+            0
+          ],
+          "p50": [
+            375.0677223576026,
+            17.228983781081695,
+            0,
+            0
+          ],
+          "p75": [
+            543.1914433662008,
+            171.01409499298487,
+            83.21250788224737,
+            0
+          ],
+          "p95": [
+            838.1402628832595,
+            505.08169973941716,
+            420.47884587250235,
+            0
+          ],
+          "mean": [
+            401.02993246866777,
+            117.21790549446229,
+            78.03967975030876,
+            0
+          ]
+        }
+      }
+    }
+  },
+  "tolerance": {
+    "absolute": 1e-9,
+    "relative": 1e-9,
+    "note": "The engine is deterministic: same model version, overlays, draft, seed and runs give the same numbers. The tolerance only absorbs floating-point formatting through JSON."
+  }
+}
