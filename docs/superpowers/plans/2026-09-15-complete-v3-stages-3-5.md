@@ -97,19 +97,19 @@ Task5 completion is limited to reviewed conditional source/allocation accounting
 
 **Interfaces:** Active result identity includes model/calendar/scope/status and supported view capabilities. Selecting a Lab policy result must never silently display unrelated world outputs as that result.
 
-- [ ] Add an active-run view contract. Route compatible scalar/time-series outputs to comparison/chart views; support geography only when explicitly mapped.
-- [ ] Disable unsupported Map/Corporations/Futures views for a selected Lab result with explanation and explicit switch back to the world model. Never fabricate a country mapping or annual generation path.
-- [ ] Preserve policy model, source, scope and review identity across navigation/share/reopen. Expose the supported next action and show irrelevant controls only in their model.
-- [ ] Test worked policy flow through results, alternate view, sharing/reopening; test unsupported views and switching back. Verify browser responsiveness/cancellation. Commit.
+- [x] Add an active-run view contract. Route compatible scalar/time-series outputs to comparison/chart views; support geography only when explicitly mapped.
+- [x] Disable unsupported Map/Corporations/Futures views for a selected Lab result with explanation and explicit switch back to the world model. Never fabricate a country mapping or annual generation path.
+- [x] Preserve policy model, source, scope and review identity across navigation/share/reopen. Expose the supported next action and show irrelevant controls only in their model.
+- [x] Test worked policy flow through results, alternate view, sharing/reopening; test unsupported views and switching back. Verify browser responsiveness/cancellation. Commit.
 
 ### Task 7: Integration review and GitHub delivery
 
 **Files:** integrated branch, relevant README/model card, acceptance report, .github/workflows/ci.yml.
 
-- [ ] Make GitHub CI run the complete npm run check command, including core/reference/case/ledger validators currently absent from CI. Run npm run check; rerun original and new counterexamples against final behavior. Add a targeted regression for any integration failure before fixing it.
-- [ ] Review task diffs and final branch independently; resolve critical/high findings. Verify in browser and preserve evidence for actual final code.
-- [ ] Update acceptance table honestly against v3, with precise remaining evidence limits.
-- [ ] Create focused PR(s) with concrete behavior and validation, wait for checks, merge only after review and passing checks. Do not bypass branch protections or impersonate an approving reviewer. Confirm merged SHA in main.
+- [x] Make GitHub CI run the complete npm run check command, including core/reference/case/ledger validators currently absent from CI. Run npm run check; rerun original and new counterexamples against final behavior. Add a targeted regression for any integration failure before fixing it.
+- [x] Review task diffs and final branch independently; resolve critical/high findings. Verify in browser and preserve evidence for actual final code.
+- [x] Update acceptance table honestly against v3, with precise remaining evidence limits.
+- [x] Create focused PR(s) with concrete behavior and validation, wait for checks, merge only after review and passing checks. Do not bypass branch protections or impersonate an approving reviewer. Confirm merged SHA in main.
 
 
 ### Task 8: Guided interface on a separate comparison branch
