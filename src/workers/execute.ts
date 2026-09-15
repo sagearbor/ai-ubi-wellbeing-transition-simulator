@@ -200,6 +200,7 @@ let executionTail: Promise<void> = Promise.resolve();
 let queuedJobs = 0;
 let activeAsyncJob = false;
 export async function executeAsync<R = unknown>(job: RunJob, opts: AsyncOptions = {}): Promise<RunOutcome<R>> {
+  if (opts.isCancelled?.()) return {status: 'cancelled', message: 'Cancelled while queued.'};
   const problems = preflight(job, opts.limits);
   if (problems.length) return limitOutcome(problems);
   if (queuedJobs >= 16) return { status: 'limit-exceeded', message: 'At most 16 queued jobs per execution realm.' };
@@ -207,7 +208,16 @@ export async function executeAsync<R = unknown>(job: RunJob, opts: AsyncOptions 
   const previous = executionTail;
   let release!: () => void;
   executionTail = new Promise<void>(resolve => { release = resolve; });
-  await previous;
+  // A queued cancellation must settle within the worker client's cancellation grace, without
+  // releasing the active job's reservation or letting a later job overtake it.
+  const admitted = await new Promise<boolean>(resolve => {
+    const timer = setInterval(() => { if (opts.isCancelled?.()) { clearInterval(timer); resolve(false); } }, 25);
+    previous.then(() => { clearInterval(timer); resolve(!opts.isCancelled?.()); });
+  });
+  if (!admitted) {
+    void previous.then(() => { queuedJobs--; release(); });
+    return {status: 'cancelled', message: 'Cancelled while queued.'};
+  }
   activeAsyncJob = true;
   try { return await executeAsyncJob<R>(job, opts); }
   finally { activeAsyncJob = false; queuedJobs--; release(); }

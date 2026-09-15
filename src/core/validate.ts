@@ -1,3 +1,4 @@
+import { checkSourceSize, checkRunSettings } from './limits';
 /**
  * Authoring core — validation.
  *
@@ -294,10 +295,14 @@ function assemble(model: CoreModel | undefined, diagnostics: ValidationDiagnosti
  * should answer for, not reasons to refuse.
  */
 export function validateCoreModel(json: unknown): ValidationResult {
+  const rawLimit = checkSourceSize([json]);
+  if (rawLimit) return {ok: false, errors: [rawLimit.message], warnings: [], diagnostics: [{level: 'error', code: 'limit-exceeded', message: rawLimit.message}], evidence: emptyEvidence()};
   if (!validateModelSchema(json)) {
     return { ok: false, errors: formatAjvErrors(validateModelSchema.errors), warnings: [], diagnostics: formatAjvErrors(validateModelSchema.errors).map((m) => ({ level: 'error' as const, code: 'schema' as const, message: m })), evidence: emptyEvidence() };
   }
   const model = json as CoreModel;
+  const limits = checkRunSettings({model});
+  if (limits.length) return {ok: false, errors: limits.map(p => p.message), warnings: [], diagnostics: limits.map(p => ({level: 'error', code: p.code, message: p.message})), evidence: emptyEvidence()};
   const diagnostics: ValidationDiagnostic[] = [...duplicateIdFindings(model), ...engineFindings(model)];
   for (const p of model.parameters) {
     if (p.range) diagnostics.push(...rangeFindings(p, p.range));
@@ -316,6 +321,8 @@ export function validateCoreModel(json: unknown): ValidationResult {
  * can say how many assumptions the overlay itself adds.
  */
 export function validateOverlay(base: CoreModel, json: unknown): OverlayValidationResult {
+  const rawLimit = checkSourceSize([base, json]);
+  if (rawLimit) return {ok: false, errors: [rawLimit.message], warnings: [], diagnostics: [{level: 'error', code: 'limit-exceeded', message: rawLimit.message}], evidence: emptyEvidence()};
   if (!validateOverlaySchema(json)) {
     const errs = formatAjvErrors(validateOverlaySchema.errors);
     return { ok: false, errors: errs, warnings: [], diagnostics: errs.map((m) => ({ level: 'error' as const, code: 'schema' as const, message: m })), evidence: emptyEvidence() };

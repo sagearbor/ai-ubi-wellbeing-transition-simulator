@@ -36,7 +36,7 @@
  */
 
 import { ENGINE_VERSION, budgetFor, currentBudget, drain, explainBinding, isDeterministic, resolveModel, runModel, type DrawProgress } from '../core/engine';
-import { checkRunSettings, effectiveLimits } from '../core/limits';
+import { checkSourceSize, checkRunSettings, effectiveLimits } from '../core/limits';
 import type { CoreModel, EvidenceKind, Input, Overlay, RunResult } from '../core/types';
 import { sourceCoverage, type SourceCoverage } from './clauses';
 import { contentHash, modelHash, sha256Hex } from './hash';
@@ -686,6 +686,10 @@ export function pairedRun(model: CoreModel, overlays: Overlay[], draft: PolicyDr
 /** pairedRun as a generator: yields { done, total } after each paired draw. */
 export function* pairedRunSteps(model: CoreModel, overlays: Overlay[], draft: PolicyDraft, opts: PairedRunOptions = {}): Generator<DrawProgress, PairedRunResult, void> {
   const budget = currentBudget() ?? budgetFor(effectiveLimits().maxWallClockMs);
+  const rawLimit = checkSourceSize([model, overlays]);
+  // Replace rejected raw source before validation and content hashing can copy it.
+  if (rawLimit) { model = resolveModel(model, overlays).model; overlays = []; }
+
   const requested = Math.max(1, Math.floor(opts.runs ?? DEFAULT_RUNS));
   const overDraws = requested > effectiveLimits().maxDraws;
   let runs = overDraws ? 0 : requested;
@@ -749,6 +753,7 @@ export function* pairedRunSteps(model: CoreModel, overlays: Overlay[], draft: Po
     binding: { baseline: {}, policy: {} },
     manifest,
   };
+  if (rawLimit) return { ...empty, errors: [`[limit-exceeded] ${rawLimit.message}`] };
   if (blocked.length) {
     return { ...empty, blocked, errors: [`the draft has ${blocked.length} validation error${blocked.length === 1 ? '' : 's'} and was not run`, ...blocked.map((d) => `[${d.code}] ${d.message}`)] };
   }

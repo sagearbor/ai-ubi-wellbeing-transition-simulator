@@ -41,7 +41,7 @@ import type {
   TestOutcome,
   Variable,
 } from './types';
-import { checkRunSettings, effectiveLimits, stepCount, type RunLimits } from './limits';
+import { checkSourceSize, checkRunSettings, effectiveLimits, stepCount, type RunLimits } from './limits';
 
 /** Bump on any change to numerical behaviour (solver acceptance, ordering, invariants); it is part of every run hash. */
 export const ENGINE_VERSION = 'core-0.3.0';
@@ -159,6 +159,11 @@ interface ParsedExpr {
 const LAG_RE = /\b([A-Za-z_]\w*)\s*\[\s*t\s*-\s*(\d+)\s*\]/g;
 
 function parseExpr(source: string): ParsedExpr {
+  try { return parseExprUnsafe(source); }
+  catch (error) { return { source, rewritten: source, compiled: {evaluate: () => NaN}, symbols: new Set(), lags: new Map(), aggregates: new Map(), bindingCalls: [], error: `expression processing failed: ${String(error)}` }; }
+}
+
+function parseExprUnsafe(source: string): ParsedExpr {
   const lags = new Map<string, Set<number>>();
   const aggregates = new Map<string, { fn: string; variable: string }>();
   const symbols = new Set<string>();
@@ -224,6 +229,8 @@ function parseExpr(source: string): ParsedExpr {
 
 export function resolveModel(base: CoreModel, overlays: Overlay[] = []): { model: CoreModel; diagnostics: Diagnostic[] } {
   const diagnostics: Diagnostic[] = [];
+  const sourceProblem = checkSourceSize([base, overlays], ambientBudget?.limits);
+  if (sourceProblem) return { model: { schemaVersion: 1, id: 'rejected-source', name: 'Rejected source', time: { start: 0, end: -1, step: 'year' }, parameters: [], variables: [], outputs: [] }, diagnostics: [{level: 'error', code: sourceProblem.code, message: sourceProblem.message}] };
   const model: CoreModel = JSON.parse(JSON.stringify(base));
   model.inputs = model.inputs ?? [];
   model.effects = model.effects ?? [];
@@ -302,7 +309,8 @@ function yearsOf(model: CoreModel, maxSteps: number): number[] {
   return out;
 }
 
-export function compileModel(model: CoreModel, limitsOverride?: Partial<RunLimits>): CompiledModel {
+export function compileModel(model: CoreModel, limitsOverride?: Partial<RunLimits>, budget?: RunBudget): CompiledModel {
+  const compilationBudget = budget ?? ambientBudget ?? budgetFor(effectiveLimits(limitsOverride).maxWallClockMs);
   const diagnostics: Diagnostic[] = [];
   const limits = effectiveLimits(limitsOverride ?? ambientBudget?.limits);
   const combined = checkRunSettings({ model }, limits).filter(p => !['maxSteps', 'maxEntities', 'maxSolverIterations'].includes(p.limit));
@@ -432,6 +440,8 @@ export function compileModel(model: CoreModel, limitsOverride?: Partial<RunLimit
     }
   }
 
+  const compilationStop = budgetProblem(compilationBudget);
+  if (compilationStop) return { model, entities: [], years: [], order: [], variables: new Map(), solves: new Map(), aggregates: new Map(), tests: [], invariants: [], diagnostics: [...diagnostics, compilationStop] };
   // Build the expanded graph.
   const nodes = new Map<string, PlanNode>();
   const depsOf = (expr: ParsedExpr, entity: string): string[] => {
@@ -444,6 +454,8 @@ export function compileModel(model: CoreModel, limitsOverride?: Partial<RunLimit
     return out;
   };
   for (const entity of entities) {
+    const stop = budgetProblem(compilationBudget);
+    if (stop) return { model, entities: [], years: [], order: [], variables: new Map(), solves: new Map(), aggregates: new Map(), tests: [], invariants: [], diagnostics: [...diagnostics, stop] };
     for (const [id, v] of variables) {
       const deps = new Set(depsOf(v.expr, entity));
       for (const ef of v.effects) depsOf(ef.expr, entity).forEach((d) => deps.add(d));
@@ -639,6 +651,7 @@ export interface RunOptions {
 }
 
 function manifestFor(model: CoreModel, overlays: Overlay[], seed: number | null, run = 0): RunManifest {
+  if (checkSourceSize([model, overlays])) return { modelId: 'rejected-source', overlayIds: [], hash: 'rejected-source-limit', seed, run, engineVersion: ENGINE_VERSION, createdAt: new Date().toISOString() };
   // The draw index is part of the identity: seed 1 draw 0 and seed 1 draw 1 are different runs.
   const hash = hashString(JSON.stringify({ model, overlays, seed, run: seed === null ? 0 : run, ENGINE_VERSION })).toString(16).padStart(8, '0');
   return { modelId: model.id, overlayIds: overlays.map((o) => o.id), hash, seed, run: seed === null ? 0 : run, engineVersion: ENGINE_VERSION, createdAt: new Date().toISOString() };
@@ -649,7 +662,7 @@ export function runModel(base: CoreModel, opts: RunOptions = {}): RunResult {
   const seed = opts.seed ?? null;
   const budget = opts.budget ?? ambientBudget ?? budgetFor(effectiveLimits(opts.limits).maxWallClockMs, { limits: opts.limits });
   const { model, diagnostics: d0 } = resolveModel(base, overlays);
-  const cm = compileModel(model, opts.limits ?? budget?.limits);
+  const cm = compileModel(model, opts.limits ?? budget?.limits, budget);
   const diagnostics = [...d0, ...cm.diagnostics];
   const manifest = manifestFor(base, overlays, seed, opts.run ?? 0);
   const empty: RunResult = { ok: false, diagnostics, years: cm.years, series: {}, aggregates: {}, binding: {}, solves: {}, parameters: {}, manifest };

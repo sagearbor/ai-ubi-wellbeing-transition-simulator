@@ -7,6 +7,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { budgetFor, compileModel, runModel, runMonteCarlo, withRunBudget } from '../core/engine';
 import { findFixture } from '../core/fixtures';
+import { validateCoreModel, validateOverlay } from '../core/validate';
 import { RUN_LIMITS, checkRunSettings, effectiveLimits } from '../core/limits';
 import type { CoreModel, MonteCarloResult } from '../core/types';
 import { pairedRun } from '../policy/draft';
@@ -339,4 +340,71 @@ it('serializes asynchronous jobs before they allocate result arrays', async () =
   resume();
   expect((await first).status).toBe('done');
   expect((await second).status).toBe('done');
+});
+
+it('bounds expanded dependency edges, unary depth, and the implicit entity before compilation', () => {
+  const dense: CoreModel = { ...minimal, tests: [], time: { start: 0, end: 0, step: 'year' }, parameters: [],
+    entities: { kind: 'region', ids: Array.from({length: 500}, (_, i) => `e${i}`) },
+    variables: Array.from({length: 900}, (_, i) => ({ id: `v${i}`, equation: i < 30 ? '1' : Array.from({length: 30}, (_, j) => `v${i-j-1}`).join('+') })), outputs: ['v899'] };
+  expect(checkRunSettings({ model: dense }).some(p => p.limit === 'maxRetainedCells')).toBe(true);
+  const smaller = {...dense, entities: {...dense.entities!, ids: dense.entities!.ids.slice(0, 10)}};
+  expect(compileModel(smaller).diagnostics.filter(d => d.level === 'error')).toEqual([]);
+  const unary = { ...minimal, variables: [{id: 'x', equation: '-'.repeat(3000) + '1'}], outputs: ['x'] };
+  expect(checkRunSettings({model: unary}).length).toBeGreaterThan(0);
+  expect(() => runModel(unary)).not.toThrow();
+  const emptyEntities: CoreModel = { ...minimal, time: {start: 0, end: 4999, step: 'year'}, entities: {kind: 'region', ids: []}, variables: Array.from({length: 300}, (_, i) => ({id:`v${i}`, equation:'1'})), outputs:['v0'] };
+  expect(checkRunSettings({model: emptyEntities}).some(p => p.limit === 'maxRetainedCells')).toBe(true);
+});
+
+it('acknowledges a queued cancellation while another job retains the reservation', async () => {
+  let resume!: () => void;
+  let paused!: () => void;
+  const waiting = new Promise<void>(r => { paused = r; });
+  const first = executeAsync(mcJob(1), {sliceMs: 0, pause: () => { paused(); return new Promise<void>(r => {resume = r;}); }});
+  await waiting;
+  try {
+    const result = await Promise.race([executeAsync(mcJob(1), {isCancelled: () => true}), new Promise<null>(r => setTimeout(() => r(null), 100))]);
+    expect(result?.status).toBe('cancelled');
+  } finally { resume(); await first; }
+});
+
+it('rejects raw source without invoking serialization and bounds right-associated expressions', () => {
+  const serialized = vi.fn(() => { throw new Error('oversized source reached serialization'); });
+  const raw = { ...minimal, description: 'x'.repeat(300000), toJSON: serialized };
+  expect(runModel(raw).ok).toBe(false);
+  expect(runMonteCarlo(raw, {runs: 1}).ok).toBe(false);
+  expect(preflight(mcJob(1, raw)).length).toBeGreaterThan(0);
+  expect(validateCoreModel(raw).ok).toBe(false);
+  expect(validateOverlay(minimal, {id: 'too-large', description: 'x'.repeat(300000), toJSON: serialized}).ok).toBe(false);
+  expect(serialized).not.toHaveBeenCalled();
+  const power = { ...minimal, variables: [{id: 'x', equation: Array(300).fill('1').join('^')}], outputs: ['x'] };
+  expect(runModel(power).diagnostics.some(d => d.code === 'limit-exceeded')).toBe(true);
+});
+
+it('queued cancellation and supersession do not restart an unrelated active lane', async () => {
+  let release!: () => void;
+  let entered!: () => void;
+  let firstPause = true;
+  const waiting = new Promise<void>(r => {entered = r;});
+  const {factory, created} = fakeWorkers({sliceMs: 0, pause: () => {
+    if (!firstPause) return Promise.resolve();
+    firstPause = false; entered(); return new Promise<void>(r => {release = r;});
+  }});
+  const runner = createWorkerRunner(factory, {cancelGraceMs: 100});
+  const active = runner.run('active', mcJob(1));
+  await waiting;
+  const cancelled = runner.run('queued-cancel', mcJob(1));
+  const superseded = runner.run('queued-replace', mcJob(1));
+  await new Promise(r => setTimeout(r, 10));
+  cancelled.cancel();
+  const replacement = runner.run('queued-replace', mcJob(1));
+  expect((await cancelled.promise).status).toBe('cancelled');
+  expect((await superseded.promise).status).toBe('superseded');
+  await new Promise(r => setTimeout(r, 160));
+  expect(created).toHaveLength(1);
+  expect(created[0].terminated).toBe(false);
+  release();
+  expect((await active.promise).status).toBe('done');
+  expect((await replacement.promise).status).toBe('done');
+  runner.dispose();
 });
