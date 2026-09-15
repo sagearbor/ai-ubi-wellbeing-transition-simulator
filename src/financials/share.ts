@@ -1,6 +1,6 @@
 import { ENGINE_VERSION, NUMERICAL_CONVENTIONS } from '../core/engine';
 import { contentHash, modelHash } from '../policy/hash';
-import { financialCollection, financialRecord, financialRecords } from './catalog';
+import { financialCollection, financialCollections, financialRecord, getFinancialCollection } from './catalog';
 import { recipientCohorts } from './cohorts';
 import { createFinancialModel, defaultFinancialScenario, validateFinancialScenario } from './model';
 import type { FinancialScenario } from './types';
@@ -19,15 +19,22 @@ export interface FinancialExperiment {
   modelHashes: { A: string; B: string };
   view: 'explore' | 'compare';
 }
-export const FINANCIAL_DATA_HASH = contentHash({ financialRecords, recipientCohorts });
-const pins = { collectionId: financialCollection.id, recipientsId: recipientCohorts[0].datasetId,
-  dataHash: FINANCIAL_DATA_HASH, engineVersion: ENGINE_VERSION,
-  numericalHash: contentHash(NUMERICAL_CONVENTIONS) };
-export function buildExperiment(recordId = 'apple-fy2025', scenarios = { A: { ...defaultFinancialScenario }, B: { ...defaultFinancialScenario, trainingShare: .2 } }, view: FinancialExperiment['view'] = 'explore'): FinancialExperiment {
-  const record = financialRecord(recordId);
+const dataHashes = new Map(financialCollections.map(collection =>
+  [collection.id, contentHash({ financialRecords: collection.records, recipientCohorts })]));
+export function financialDataHash(collectionId = financialCollection.id): string {
+  return dataHashes.get(getFinancialCollection(collectionId).id)!;
+}
+export const FINANCIAL_DATA_HASH = financialDataHash();
+function experimentPins(collectionId: string) {
+  return { collectionId: getFinancialCollection(collectionId).id, recipientsId: recipientCohorts[0].datasetId,
+    dataHash: financialDataHash(collectionId), engineVersion: ENGINE_VERSION,
+    numericalHash: contentHash(NUMERICAL_CONVENTIONS) };
+}
+export function buildExperiment(recordId = 'apple-fy2025', scenarios = { A: { ...defaultFinancialScenario }, B: { ...defaultFinancialScenario, trainingShare: .2 } }, view: FinancialExperiment['view'] = 'explore', collectionId = financialCollection.id): FinancialExperiment {
+  const record = financialRecord(recordId, collectionId);
   for (const s of Object.values(scenarios)) validateFinancialScenario(s);
   if (scenarios.A.recipientCountry !== scenarios.B.recipientCountry) throw new Error('Comparison scenarios must share the recipient cohort.');
-  return { version: 1, ...pins, recordId, scenarios, view,
+  return { version: 1, ...experimentPins(collectionId), recordId, scenarios, view,
     modelHashes: { A: modelHash(createFinancialModel(record, scenarios.A)), B: modelHash(createFinancialModel(record, scenarios.B)) } };
 }
 export function validateExperiment(value: unknown): FinancialExperiment {
@@ -35,10 +42,12 @@ export function validateExperiment(value: unknown): FinancialExperiment {
   const v = value as FinancialExperiment;
   if (JSON.stringify(value).length > MAX_FINANCE_BYTES) throw new Error('Saved experiment is too large.');
   if (v.version !== 1) throw new Error('Unsupported saved experiment version.');
+  if (typeof v.collectionId !== 'string') throw new Error('Missing financial collectionId.');
+  const pins = experimentPins(v.collectionId);
   for (const key of Object.keys(pins) as (keyof typeof pins)[]) if (v[key] !== pins[key]) throw new Error(`Stale or unknown ${key}; this experiment cannot be reproduced with the current data and engine.`);
   if (v.view !== 'explore' && v.view !== 'compare') throw new Error('Unknown experiment view.');
   if (typeof v.recordId !== 'string' || !v.scenarios?.A || !v.scenarios?.B) throw new Error('Missing company or scenario inputs.');
-  const rebuilt = buildExperiment(v.recordId, v.scenarios, v.view);
+  const rebuilt = buildExperiment(v.recordId, v.scenarios, v.view, v.collectionId);
   if (contentHash(v.modelHashes) !== contentHash(rebuilt.modelHashes)) throw new Error('Model hashes do not match the saved inputs.');
   return rebuilt;
 }
@@ -66,5 +75,5 @@ export function experimentUrl(value: FinancialExperiment, base: string, side?: '
 }
 export function exactModel(value: FinancialExperiment, side: 'A' | 'B') {
   const checked = validateExperiment(value);
-  return createFinancialModel(financialRecord(checked.recordId), checked.scenarios[side]);
+  return createFinancialModel(financialRecord(checked.recordId, checked.collectionId), checked.scenarios[side]);
 }

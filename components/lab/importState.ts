@@ -12,9 +12,9 @@ import { ENGINE_VERSION, NUMERICAL_CONVENTIONS } from '../../src/core/engine';
 import { CORE_FIXTURES, type FixtureEntry } from '../../src/core/fixtures';
 import type { CoreModel, Overlay } from '../../src/core/types';
 import { contentHash, modelHash } from '../../src/policy/hash';
-import { exactModel, FINANCIAL_DATA_HASH, validateExperiment, type FinancialExperiment } from '../../src/financials/share';
-import { financialCollection, financialRecord } from '../../src/financials/catalog';
-import { reportedFinancialParameters } from '../../src/financials/presentation';
+import { exactModel, financialDataHash, validateExperiment, type FinancialExperiment } from '../../src/financials/share';
+import { financialRecord } from '../../src/financials/catalog';
+import { financialRecordForModel } from '../../src/financials/presentation';
 
 export type ModelStatus = 'curated' | 'imported';
 
@@ -43,7 +43,7 @@ export function importFinancialExperiment(experiment: FinancialExperiment, side:
     key: importKey(model), model, overlays: [], warnings: [],
     financialOrigin: {
       collectionId: checked.collectionId, dataHash: checked.dataHash, modelHash: checked.modelHashes[side],
-      fiscalYear: financialRecord(checked.recordId).fiscalYear,
+      fiscalYear: financialRecord(checked.recordId, checked.collectionId).fiscalYear,
     },
   };
 }
@@ -51,8 +51,12 @@ export function importFinancialExperiment(experiment: FinancialExperiment, side:
 /** Recheck the actual model, so a replaced or edited import cannot retain an app-origin claim. */
 export function verifiedFinancialOrigin(entry: ImportedModel | undefined): ImportedModel['financialOrigin'] {
   const origin = entry?.financialOrigin;
-  return origin && origin.collectionId === financialCollection.id && origin.dataHash === FINANCIAL_DATA_HASH && origin.modelHash === modelHash(entry.model)
-    && reportedFinancialParameters(entry.model).size > 0 ? origin : undefined;
+  if (!origin || typeof origin.collectionId !== 'string') return undefined;
+  try {
+    const record = financialRecordForModel(entry.model, origin.collectionId);
+    return origin.dataHash === financialDataHash(origin.collectionId) && origin.modelHash === modelHash(entry.model)
+      && record && record.fiscalYear === origin.fiscalYear ? origin : undefined;
+  } catch { return undefined; }
 }
 
 export interface ModelExport {

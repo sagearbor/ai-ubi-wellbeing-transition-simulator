@@ -1,0 +1,218 @@
+[
+  {
+    "version": 1,
+    "collectionId": "reported-company-financials-fy2025-v1",
+    "recipientsId": "countries-wb-2026-09",
+    "dataHash": "6cc262100734a0ba",
+    "engineVersion": "core-0.3.0",
+    "numericalHash": "df347a35887760b1",
+    "recordId": "apple-fy2025",
+    "scenarios": {
+      "A": {
+        "policyShare": 0.1,
+        "trainingShare": 0,
+        "recipientCountry": "USA",
+        "costPerCompletion": 5000,
+        "instructorCapacity": 100000,
+        "eligibleTrainees": 1000000,
+        "placementRate": 0.5,
+        "suitableOpenings": 50000
+      },
+      "B": {
+        "policyShare": 0.1,
+        "trainingShare": 0.2,
+        "recipientCountry": "USA",
+        "costPerCompletion": 5000,
+        "instructorCapacity": 100000,
+        "eligibleTrainees": 1000000,
+        "placementRate": 0.5,
+        "suitableOpenings": 50000
+      }
+    },
+    "view": "explore",
+    "modelHashes": {
+      "A": "f374142934e5f62a",
+      "B": "c19774e79224fe8d"
+    }
+  },
+  {
+    "version": 1,
+    "collectionId": "reported-company-financials-fy2025-v1",
+    "recipientsId": "countries-wb-2026-09",
+    "dataHash": "6cc262100734a0ba",
+    "engineVersion": "core-0.3.0",
+    "numericalHash": "df347a35887760b1",
+    "recordId": "microsoft-fy2025",
+    "scenarios": {
+      "A": {
+        "policyShare": 0.1,
+        "trainingShare": 0,
+        "recipientCountry": "USA",
+        "costPerCompletion": 5000,
+        "instructorCapacity": 100000,
+        "eligibleTrainees": 1000000,
+        "placementRate": 0.5,
+        "suitableOpenings": 50000
+      },
+      "B": {
+        "policyShare": 0.1,
+        "trainingShare": 0.2,
+        "recipientCountry": "USA",
+        "costPerCompletion": 5000,
+        "instructorCapacity": 100000,
+        "eligibleTrainees": 1000000,
+        "placementRate": 0.5,
+        "suitableOpenings": 50000
+      }
+    },
+    "view": "explore",
+    "modelHashes": {
+      "A": "5c999eeb5322c1b5",
+      "B": "1e8f273d32edaa91"
+    }
+  },
+  {
+    "version": 1,
+    "collectionId": "reported-company-financials-fy2025-v1",
+    "recipientsId": "countries-wb-2026-09",
+    "dataHash": "6cc262100734a0ba",
+    "engineVersion": "core-0.3.0",
+    "numericalHash": "df347a35887760b1",
+    "recordId": "alphabet-fy2025",
+    "scenarios": {
+      "A": {
+        "policyShare": 0.1,
+        "trainingShare": 0,
+        "recipientCountry": "USA",
+        "costPerCompletion": 5000,
+        "instructorCapacity": 100000,
+        "eligibleTrainees": 1000000,
+        "placementRate": 0.5,
+        "suitableOpenings": 50000
+      },
+      "B": {
+        "policyShare": 0.1,
+        "trainingShare": 0.2,
+        "recipientCountry": "USA",
+        "costPerCompletion": 5000,
+        "instructorCapacity": 100000,
+        "eligibleTrainees": 1000000,
+        "placementRate": 0.5,
+        "suitableOpenings": 50000
+      }
+    },
+    "view": "explore",
+    "modelHashes": {
+      "A": "0d2bde8049a0cda8",
+      "B": "91dffc48557c9ef7"
+    }
+  },
+  {
+    "version": 1,
+    "collectionId": "reported-company-financials-fy2025-v1",
+    "recipientsId": "countries-wb-2026-09",
+    "dataHash": "6cc262100734a0ba",
+    "engineVersion": "core-0.3.0",
+    "numericalHash": "df347a35887760b1",
+    "recordId": "amazon-fy2025",
+    "scenarios": {
+      "A": {
+        "policyShare": 0.1,
+        "trainingShare": 0,
+        "recipientCountry": "USA",
+        "costPerCompletion": 5000,
+        "instructorCapacity": 100000,
+        "eligibleTrainees": 1000000,
+        "placementRate": 0.5,
+        "suitableOpenings": 50000
+      },
+      "B": {
+        "policyShare": 0.1,
+        "trainingShare": 0.2,
+        "recipientCountry": "USA",
+        "costPerCompletion": 5000,
+        "instructorCapacity": 100000,
+        "eligibleTrainees": 1000000,
+        "placementRate": 0.5,
+        "suitableOpenings": 50000
+      }
+    },
+    "view": "explore",
+    "modelHashes": {
+      "A": "3a9c56a96e39e115",
+      "B": "2e308bb407e30be1"
+    }
+  },
+  {
+    "version": 1,
+    "collectionId": "reported-company-financials-fy2025-v1",
+    "recipientsId": "countries-wb-2026-09",
+    "dataHash": "6cc262100734a0ba",
+    "engineVersion": "core-0.3.0",
+    "numericalHash": "df347a35887760b1",
+    "recordId": "meta-fy2025",
+    "scenarios": {
+      "A": {
+        "policyShare": 0.1,
+        "trainingShare": 0,
+        "recipientCountry": "USA",
+        "costPerCompletion": 5000,
+        "instructorCapacity": 100000,
+        "eligibleTrainees": 1000000,
+        "placementRate": 0.5,
+        "suitableOpenings": 50000
+      },
+      "B": {
+        "policyShare": 0.1,
+        "trainingShare": 0.2,
+        "recipientCountry": "USA",
+        "costPerCompletion": 5000,
+        "instructorCapacity": 100000,
+        "eligibleTrainees": 1000000,
+        "placementRate": 0.5,
+        "suitableOpenings": 50000
+      }
+    },
+    "view": "explore",
+    "modelHashes": {
+      "A": "3971f5ef789a9a47",
+      "B": "10ae65f6773a45d3"
+    }
+  },
+  {
+    "version": 1,
+    "collectionId": "reported-company-financials-fy2025-v1",
+    "recipientsId": "countries-wb-2026-09",
+    "dataHash": "6cc262100734a0ba",
+    "engineVersion": "core-0.3.0",
+    "numericalHash": "df347a35887760b1",
+    "recordId": "nvidia-fy2025",
+    "scenarios": {
+      "A": {
+        "policyShare": 0.1,
+        "trainingShare": 0,
+        "recipientCountry": "USA",
+        "costPerCompletion": 5000,
+        "instructorCapacity": 100000,
+        "eligibleTrainees": 1000000,
+        "placementRate": 0.5,
+        "suitableOpenings": 50000
+      },
+      "B": {
+        "policyShare": 0.1,
+        "trainingShare": 0.2,
+        "recipientCountry": "USA",
+        "costPerCompletion": 5000,
+        "instructorCapacity": 100000,
+        "eligibleTrainees": 1000000,
+        "placementRate": 0.5,
+        "suitableOpenings": 50000
+      }
+    },
+    "view": "explore",
+    "modelHashes": {
+      "A": "e36b4d8c4f366e39",
+      "B": "95130cff432a0f32"
+    }
+  }
+]

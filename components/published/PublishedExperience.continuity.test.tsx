@@ -3,10 +3,12 @@ import { renderToString } from 'react-dom/server';
 import { describe, expect, it } from 'vitest';
 import PublishedExperience from './PublishedExperience';
 import LabTab from '../lab/LabTab';
-import { buildExperiment, decodeExperiment, exactModel } from '../../src/financials/share';
+import { buildExperiment, decodeExperiment, exactModel, financialDataHash, validateExperiment } from '../../src/financials/share';
 import { modelHash } from '../../src/policy/hash';
 import { createSyncRunner } from '../../src/workers/client';
 import { importFinancialExperiment, importKey, verifiedFinancialOrigin } from '../lab/importState';
+import originalExperiments from '../../src/financials/fixtures/v1-experiments.json';
+import { financialRecordForModel, reportedFinancialParameters } from '../../src/financials/presentation';
 
 const runner = createSyncRunner();
 const defaults = buildExperiment();
@@ -14,10 +16,10 @@ const current = buildExperiment('nvidia-fy2025', {
   A: { ...defaults.scenarios.A, recipientCountry: 'GBR', policyShare: .37, trainingShare: .12 },
   B: { ...defaults.scenarios.B, recipientCountry: 'GBR', policyShare: .61, trainingShare: .43 },
 }, 'compare');
-const published = () => renderToString(<PublishedExperience mode="compare" initial={current} runner={runner}
+const published = (experiment = current) => renderToString(<PublishedExperience mode="compare" initial={experiment} runner={runner}
   onMode={() => {}} onLab={() => {}} onWorld={() => {}} onHistory={() => {}} onRisk={() => {}} />).replace(/<!-- -->/g, '');
-function destination(text: string): URL {
-  const anchor = [...published().matchAll(/<a\b[^>]*href="([^"]+)"[^>]*>(.*?)<\/a>/g)]
+function destination(text: string, experiment = current): URL {
+  const anchor = [...published(experiment).matchAll(/<a\b[^>]*href="([^"]+)"[^>]*>(.*?)<\/a>/g)]
     .find(([, , label]) => label === text);
   expect(anchor, `A real scenario link must carry ${text}`).toBeDefined();
   return new URL(anchor![1].replace(/&amp;/g, '&'));
@@ -25,7 +27,7 @@ function destination(text: string): URL {
 const lab = (props: object) => renderToString(<LabTab initialHash="" runner={runner} {...props} />).replace(/<!-- -->/g, '');
 
 describe('published financial scenario handoff', () => {
-  it.each([['Paste a policy', 'policy'], ['Add a variable', 'author'], ['Explore uncertainty', 'uncertainty']])(
+  it.each([['Paste a policy', 'policy'], ['Add a variable', 'author'], ['Inspect uncertainty', 'uncertainty']])(
     '%s carries current A, source pins and its intended Lab tool', (label, entry) => {
       const url = destination(label);
       expect(url.searchParams.get('tab')).toBe('lab');
@@ -56,6 +58,32 @@ describe('published financial scenario handoff', () => {
 });
 
 describe('financial origin stays distinct from an uploaded claim', () => {
+  it.each(originalExperiments)('recognizes both revisions of $recordId using the complete model and collection', original => {
+    const old = validateExperiment(original);
+    const revised = buildExperiment(old.recordId, old.scenarios);
+    for (const experiment of [old, revised]) for (const side of ['A', 'B'] as const) {
+      const entry = importFinancialExperiment(experiment, side);
+      expect(verifiedFinancialOrigin(entry)).toEqual({ collectionId: experiment.collectionId, dataHash: experiment.dataHash,
+        modelHash: experiment.modelHashes[side], fiscalYear: 2025 });
+      expect(reportedFinancialParameters(entry.model).size).toBe(3);
+      expect(financialRecordForModel(entry.model, experiment.collectionId)?.id).toBe(experiment.recordId);
+    }
+  });
+  it('rejects a legacy source relabeled with the current collection and its matching data hash', () => {
+    const entry = importFinancialExperiment(validateExperiment(originalExperiments[0]), 'A');
+    entry.financialOrigin!.collectionId = current.collectionId;
+    entry.financialOrigin!.dataHash = financialDataHash(current.collectionId);
+    expect(verifiedFinancialOrigin(entry)).toBeUndefined();
+  });
+  it('rejects a rewritten fiscal year and missing model match, even with caller-rewritten hashes', () => {
+    const entry = importFinancialExperiment(current, 'A');
+    entry.financialOrigin!.fiscalYear = 2026;
+    expect(verifiedFinancialOrigin(entry)).toBeUndefined();
+    entry.model.variables[0].equation = '1';
+    entry.financialOrigin!.modelHash = modelHash(entry.model);
+    delete entry.financialOrigin!.fiscalYear;
+    expect(verifiedFinancialOrigin(entry)).toBeUndefined();
+  });
   it.each(['dataHash', 'modelHash', 'collectionId'])('rejects a stale retained origin %s', key => {
     const entry = importFinancialExperiment(current, 'A');
     entry.financialOrigin = { ...entry.financialOrigin!, [key]: 'stale' };
@@ -87,5 +115,50 @@ describe('financial origin stays distinct from an uploaded claim', () => {
     const output = lab({ initialFinancialExperiment: { experiment, side: 'A' } });
     expect(output).toContain('Model hashes do not match');
     expect(output).not.toContain('Built by this app');
+  });
+});
+
+describe('published collection source identity', () => {
+  const legacyApple = validateExperiment(originalExperiments[0]);
+  it.each([['Paste a policy', 'policy'], ['Add a variable', 'author'], ['Inspect uncertainty', 'uncertainty']])(
+    '%s preserves an opened v1 experiment and source', (label, entry) => {
+      const url = destination(label, legacyApple);
+      expect(url.searchParams.get('entry')).toBe(entry);
+      const reopened = decodeExperiment(url.hash);
+      expect(reopened).toEqual({ ...legacyApple, view: 'compare' });
+      const output = lab({ initialFinancialExperiment: { experiment: reopened, side: 'A' } });
+      expect(output).toContain('Built by this app from the pinned FY2025 dataset');
+      expect(output).toContain('apple.com/newsroom/pdfs/fy2025-q4');
+      expect(output).not.toContain('aapl-20250927.htm');
+    },
+  );
+  it('renders the original unaudited Apple source only for the original collection', () => {
+    const output = published(legacyApple);
+    expect(output).toContain('annual columns, unaudited');
+    expect(output).toContain('Report dated 2025-10-30');
+    expect(output).toContain('reported-company-financials-fy2025-v1');
+    expect(output).not.toContain('aapl-20250927.htm');
+    const updated = published(buildExperiment());
+    expect(updated).toContain('audited consolidated financial statements');
+    expect(updated).toContain('Report dated 2025-10-31');
+    expect(updated).toContain('aapl-20250927.htm');
+    expect(updated).toContain('reported-company-financials-fy2025-v2');
+    expect(updated).not.toContain('apple.com/newsroom');
+  });
+  it('labels Amazon dividends derived and distinguishes old missing values from verified zero', () => {
+    const old = published(validateExperiment(originalExperiments[3]));
+    expect(old).toContain('Shareholder dividends (not collected)');
+    expect(old).toContain('Not collected; not assumed zero');
+    const updated = published(buildExperiment('amazon-fy2025'));
+    expect(updated).toContain('Shareholder dividends (derived)');
+    expect(updated).toContain('Share repurchases (reported)');
+    expect(updated).toContain('0 million USD (derived)');
+    expect(updated).toContain('172,866 + net income 77,670 = closing retained earnings 250,536');
+    expect(updated).toContain('Note 8');
+    expect(updated).not.toContain('Not collected; not assumed zero');
+  });
+  it('explains why the financial uncertainty action cannot run ranges yet', () => {
+    expect(published()).toContain('This financial model has no uncertainty ranges; add ranges in a model file to compare uncertainty.');
+    expect(published()).toContain('Inspect uncertainty');
   });
 });

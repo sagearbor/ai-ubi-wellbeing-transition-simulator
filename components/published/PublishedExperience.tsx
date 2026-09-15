@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react';
-import { financialRecords, financialRecord, financialCollection } from '../../src/financials/catalog';
+import { financialRecord, getFinancialCollection } from '../../src/financials/catalog';
 import { recipientCohorts, recipientCohort } from '../../src/financials/cohorts';
 import { createFinancialModel, financialModelMetadata } from '../../src/financials/model';
 import {
@@ -9,7 +9,7 @@ import {
   MAX_FINANCE_BYTES,
   type FinancialExperiment,
 } from '../../src/financials/share';
-import type { FinancialRecord, FinancialScenario } from '../../src/financials/types';
+import type { FinancialField, FinancialRecord, FinancialScenario } from '../../src/financials/types';
 import { modelHash } from '../../src/policy/hash';
 import { getDefaultRunner, type Runner } from '../../src/workers/client';
 import { useRunnerJob } from '../lab/useRunnerJob';
@@ -311,15 +311,17 @@ export default function PublishedExperience({
   const [saved, setSaved] = useState(() => initial ?? buildExperiment());
   const [fileError, setFileError] = useState<string | null>(null);
   const [notice, setNotice] = useState('');
-  const record = financialRecord(saved.recordId);
+  const collection = getFinancialCollection(saved.collectionId);
+  const record = financialRecord(saved.recordId, saved.collectionId);
   const cohort = recipientCohort(saved.scenarios.A.recipientCountry);
-  const experiment = buildExperiment(saved.recordId, saved.scenarios, mode);
+  const experiment = buildExperiment(saved.recordId, saved.scenarios, mode, saved.collectionId);
   function update(side: 'A' | 'B', patch: Partial<FinancialScenario>) {
     try {
       const next = buildExperiment(
         saved.recordId,
         { ...saved.scenarios, [side]: { ...saved.scenarios[side], ...patch } },
         mode,
+        saved.collectionId,
       );
       setSaved(next);
       setFileError(null);
@@ -364,9 +366,9 @@ export default function PublishedExperience({
           <select
             id="pub-company"
             value={record.id}
-            onChange={(e) => setSaved(buildExperiment(e.target.value, saved.scenarios, mode))}
+            onChange={(e) => setSaved(buildExperiment(e.target.value, saved.scenarios, mode, saved.collectionId))}
           >
-            {financialRecords.map((r) => (
+            {collection.records.map((r) => (
               <option key={r.id} value={r.id}>
                 {r.companyName} · FY{r.fiscalYear} (ended {r.periodEnd})
               </option>
@@ -390,6 +392,7 @@ export default function PublishedExperience({
                     B: { ...saved.scenarios.B, recipientCountry: e.target.value },
                   },
                   mode,
+                  saved.collectionId,
                 ),
               )
             }
@@ -458,31 +461,32 @@ export default function PublishedExperience({
             {record.sourceTitle}. Report dated {record.reportDate}; retrieved {record.retrievedAt}.{' '}
             {record.consolidation}
           </p>
+          <p>Saved collection: {collection.id}.</p>
           <p>
             Allocation ceiling is the greater of zero and the annual cash-flow difference. A negative
             difference remains visible and funds no allocation.
           </p>
           <dl className="pub-totals">
-            {[
-              ['Revenue', record.revenue],
-              ['Net income', record.netIncome],
-              ['Shareholder dividends', record.dividends],
-              ['Share repurchases', record.repurchases],
-            ].map(([label, v]) => (
-              <div key={String(label)}>
-                <dt>{label} (reported)</dt>
-                <dd>{v === null ? 'Not collected; not assumed zero' : money(Number(v) * 1e6)}</dd>
+            {([
+              ['Revenue', 'revenue'],
+              ['Net income', 'netIncome'],
+              ['Shareholder dividends', 'dividends'],
+              ['Share repurchases', 'repurchases'],
+            ] satisfies [string, FinancialField][]).map(([label, field]) => (
+              <div key={field}>
+                <dt>{label} ({record.evidence.find(e => e.field === field)?.derivedValue !== undefined ? 'derived' : record[field] === null ? 'not collected' : 'reported'})</dt>
+                <dd>{record[field] === null ? 'Not collected; not assumed zero' : money(record[field] * 1e6)}</dd>
               </div>
             ))}
           </dl>
           <p>
             Dividends and repurchases are competing historical uses, never extra money added to the source.{' '}
-            {financialCollection.coverage}
+            {collection.coverage}
           </p>
           {record.evidence.map((e) => (
             <p key={e.field}>
               <strong>{e.lineItem}</strong>:{' '}
-              {e.reportedValue === null ? 'not collected' : `${number(e.reportedValue)} million USD`}.{' '}
+              {e.derivedValue !== undefined ? `${number(e.derivedValue)} million USD (derived)` : e.reportedValue === null ? 'not collected' : `${number(e.reportedValue)} million USD`}.{' '}
               {e.locator} {e.note}
             </p>
           ))}
@@ -596,11 +600,14 @@ export default function PublishedExperience({
             rel="noopener noreferrer"
             href={experimentUrl(experiment, currentUrl(), 'A', 'uncertainty')}
           >
-            Explore uncertainty
+            Inspect uncertainty
           </a>
           <button onClick={onWorld}>Explore change over time</button>
           <button onClick={onRisk}>AI risk</button>
         </div>
+        <p>
+          This financial model has no uncertainty ranges; add ranges in a model file to compare uncertainty.
+        </p>
         <p>
           Policy, variable and uncertainty tools open exact scenario A in a new tab, keeping this experiment
           and any existing Lab work available. World scenarios use a separate illustrative model with assumed
