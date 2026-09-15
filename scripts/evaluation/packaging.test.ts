@@ -7,6 +7,10 @@ import { assertPackageIdentities, evaluationBase, evaluationSourceHashes } from 
 
 const artifact = JSON.parse(readFileSync(evaluationBase + 'experience.json', 'utf8'));
 const protocolHash = artifact.protocolHash;
+// Hosted CI took up to 6.007s per real-command case. Leave room for runner
+// contention and fixture I/O, while killing a stuck child before the test deadline.
+const packageCommandTimeoutMs = 20_000;
+const packageTestTimeoutMs = 30_000;
 
 describe('evaluation publication boundary', () => {
     it('covers the numerical fitter and recursively follows evaluation imports', () => {
@@ -77,12 +81,18 @@ describe('evaluation publication boundary', () => {
             const result = spawnSync(process.execPath, [
                 '--import', resolve('node_modules/tsx/dist/loader.mjs'),
                 resolve('scripts/evaluation/run.ts'), 'package',
-            ], { cwd: root, encoding: 'utf8' });
+            ], {
+                cwd: root, encoding: 'utf8',
+                timeout: packageCommandTimeoutMs, killSignal: 'SIGKILL',
+            });
+            expect(result.error).toBeUndefined();
+            expect(result.signal).toBeNull();
+            expect(result.status).not.toBeNull();
             expect(result.status).not.toBe(0);
             expect(result.stderr).toContain('Package identity mismatch');
             expect(readFileSync(output)).toEqual(before);
         } finally {
             rmSync(root, { recursive: true, force: true });
         }
-    });
+    }, packageTestTimeoutMs);
 });
