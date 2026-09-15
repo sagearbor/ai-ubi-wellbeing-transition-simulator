@@ -209,14 +209,14 @@ export interface HeadlineStats {
 export function headlineStats(state: SimulationState): HeadlineStats {
   const countries = Object.values(state.countryData);
   const n = countries.length || 1;
+  const populationMillions = state.conditionalSummary
+    ? state.conditionalSummary.populationMillions
+    : worldPopulationMillionsFor(isCountryDatasetId(state.countryDataset) ? state.countryDataset : COUNTRY_DATASET_ID);
   return {
     meanCountryWellbeing: state.conditionalSummary ? state.conditionalSummary.value ?? NaN : state.averageWellbeing,
     wellbeingAvailable: !state.conditionalSummary || state.conditionalSummary.value !== null,
     wellbeingLabel: state.conditionalSummary ? 'Population-weighted conditional index' : 'Mean country wellbeing',
-    globalDividendUsd: usdPerPerson(
-      state.globalFund,
-      worldPopulationMillionsFor(isCountryDatasetId(state.countryDataset) ? state.countryDataset : COUNTRY_DATASET_ID),
-    ),
+    globalDividendUsd: usdPerPerson(state.globalFund, populationMillions),
     meanCountryAdoption: countries.reduce((a, c) => a + c.aiAdoption, 0) / n,
     globalPoolBillions: state.globalFund,
   };

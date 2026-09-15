@@ -2114,13 +2114,12 @@ const App: React.FC = () => {
 
                 {/* Honest status of the custom-model pipeline (P8-T9) */}
                 <div className="mb-6 p-4 bg-blue-50 dark:bg-blue-950/40 border border-blue-300 dark:border-blue-700 rounded-lg text-sm text-blue-900 dark:text-blue-200">
-                  <strong>Custom equations run.</strong> Applying a model compiles its five core equations
-                  (AI adoption growth, corporation contribution surplus, displacement friction, UBI-to-wellbeing
-                  utility, and the monthly wellbeing update) and uses them in place of the built-in formulas for
-                  every simulation step - the trajectory you see reflects your model. Two advanced equations
-                  (demand-collapse projection and reputation dynamics) are parsed and validated but still use
-                  the default logic. The six anchor tests now run against your model's own compiled equations
-                  too, so its anchor-test score reflects its own trajectory, not the built-in engine's.
+                  <strong>Legacy flow uploads have a limited execution scope.</strong> In a supported legacy flow,
+                  the five required hooks replace their built-in formulas on each simulation step. Conditional and
+                  anchored wellbeing modes refuse uploaded wellbeing hooks. Optional demand-collapse, reputation,
+                  and Gini-damping hooks retain their defaults; changing them is refused. The anchor tests run the
+                  supported legacy hooks. Use Model Lab for general equation, stock, flow, solve-block, and overlay
+                  authoring.
                 </div>
 
                 {/* Mode toggle */}

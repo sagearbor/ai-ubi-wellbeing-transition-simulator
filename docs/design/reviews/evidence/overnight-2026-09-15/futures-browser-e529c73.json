@@ -1,0 +1,22 @@
+{
+  "alerts": [],
+  "controls": [
+    {
+      "id": "",
+      "label": "Scrub year on the goodness chart",
+      "type": "range",
+      "value": "2035"
+    },
+    {
+      "id": "",
+      "label": "Nudge AGI-level systems exist in log-odds, -3 to 3",
+      "type": "range",
+      "value": "1.25"
+    }
+  ],
+  "pressed": [
+    "Locked",
+    "AI dividend / sovereign wealth fundfrom 2028 · cost 4/5"
+  ],
+  "url": "http://127.0.0.1:4176/?tab=lab#futures=eyJzIjp7ImFnaSI6MS4yNX0sImkiOlsiYWktZGl2aWRlbmQtZnVuZCJdLCJ5IjoyMDM1fQ"
+}
