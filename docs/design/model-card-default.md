@@ -1,6 +1,6 @@
 # Default model card: world-conditional-v1
 
-Version: conditional-assumptions-v1, 15 September 2026. Computational response evidence is generated separately from independent review. The 61 exact default monthly points (months 0–60) are **accepted for conditional source/allocation accounting after independent automated numerical/accounting review** ([review report](reviews/2026-09-15-policy-evidence-qualification-review.md)). This is not human or empirical approval, nor a claim that final product integration is complete. Macro and conditional wellbeing remain illustrative. Broad empirical default qualification is not established.
+Version: conditional-assumptions-v1, 15 September 2026. Computational response evidence is generated separately from independent review. The 61 exact default monthly points (months 0–60) are **accepted for conditional source/allocation accounting after independent automated numerical/accounting review** ([review report](reviews/2026-09-15-beta-security-qualification-review.md)). This is not human or empirical approval, nor a claim that final product integration is complete. Macro and conditional wellbeing remain illustrative. Broad empirical default qualification is not established.
 
 ## Scope and output
 
