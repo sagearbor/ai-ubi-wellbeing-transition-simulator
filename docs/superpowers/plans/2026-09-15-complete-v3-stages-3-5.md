@@ -19,7 +19,7 @@
 - New failures are reproduced before implementation; targeted tests follow each change and the full check precedes merge.
 - No production fixes in the coordinator session. Implementers own named files; reviewers independently inspect task and final diffs.
 - Keep old versions explicit; a source import under a new engine is a new run, not an asserted reproduction.
-- Public UI redesign suggestions are a separate user discussion. Required scope/active-run and control corrections belong to this implementation.
+- The user subsequently authorized an overnight interface experiment on a separate branch, with morning comparison. Tasks1–7 complete the functional fixes; Tasks8–10 build, verify and present the interface experiment without merging it. No cloud deployment is authorized.
 
 ### Task 1: Numerical, constraint, ledger and execution integrity
 
@@ -45,10 +45,10 @@
 
 **Interfaces:** unitFactor retains conversion result contract but distinguishes worker/resident/household denominator and unknown time basis. Source quotation coverage remains distinct from reviewed operative coverage.
 
-- [ ] Reproduce per-worker/per-person identity conversion and unqualified USD->monthly conversion; block or require explicit persisted assumptions, never silently infer a missing basis. Preserve correct million/annual/monthly conversions.
-- [ ] Reproduce whole-source quote covering grant, eligibility and robot-tax clauses with one budget mapping. Require explicit clause-to-provision/disposition association, preserve definitions/dependencies, expose unreviewed mechanism coverage. Partial runs remain allowed with omitted clauses visibly unresolved.
-- [ ] Enforce validation in UI, direct execution and bundle reopening. Source or mapping edits invalidate completeness attestation. Update actual worked example coverage, not its denominator to conceal omissions.
-- [ ] Run policy/worker/UI tests, then commit owned changes.
+- [x] Reproduce per-worker/per-person identity conversion and unqualified USD->monthly conversion; block or require explicit persisted assumptions, never silently infer a missing basis. Preserve correct million/annual/monthly conversions.
+- [x] Reproduce whole-source quote covering grant, eligibility and robot-tax clauses with one budget mapping. Require explicit clause-to-provision/disposition association, preserve definitions/dependencies, expose unreviewed mechanism coverage. Partial runs remain allowed with omitted clauses visibly unresolved.
+- [x] Enforce validation in UI, direct execution and bundle reopening. Source or mapping edits invalidate completeness attestation. Update actual worked example coverage, not its denominator to conceal omissions.
+- [x] Run policy/worker/UI tests, then commit owned changes.
 
 ### Task 3: Numerical identity and portable replay
 
@@ -109,3 +109,31 @@
 - [ ] Update acceptance table honestly against v3, with precise remaining evidence limits.
 - [ ] Create focused PR(s) with concrete behavior and validation, wait for checks, merge only after review and passing checks. Do not bypass branch protections or impersonate an approving reviewer. Confirm merged SHA in main.
 
+
+### Task 8: Guided interface on a separate comparison branch
+
+**Files:** separate worktree/branch codex/overnight-guided-experience after the reviewed functional fixes; App.tsx, components/guided/*, scoped CSS and necessary Lab entry affordances/tests. Design: docs/design/guided-interface-design.md.
+
+- [ ] Record the functional-fix commit and capture its unchanged interface as a matched-core comparison baseline; retain the historical live screenshot separately. Create the new branch/worktree without changing main's interface.
+- [ ] Build the accepted question-led Explore / Compare / Model Lab navigation and one source-to-funded-transfer graphic from actual diagnostics. Surface policy and retraining entry questions and the separate risk model. Preserve old URLs, authoring/import/uncertainty/equation tools, source/review status and active-run behavior.
+- [ ] Keep policy choices separate from scenario assumptions. Expose source convention, requested/funded/unfunded amounts, recipient denominator, conditional index limits and unsupported mechanisms beside results. No invented numerical claims or economic calculations in SVG layout.
+- [ ] Preserve loading/stale/error/cancel/reopen semantics. Use scoped visual tokens, quiet typography and a responsive layout; avoid a new wall of metric cards. No runtime equation, evidence, key or deployment changes.
+- [ ] Run meaningful routing/flow/accessibility-state tests and typecheck, self-critique actual screenshots, commit owned changes and write task-8-report.md.
+
+### Task 9: Independent interface review and browser refinement
+
+**Files:** interface branch, focused fixes and tests.
+
+- [ ] Independently review task8 against design and preserved capabilities; resolve important defects before presenting it.
+- [ ] Exercise real browser flows: new visitor question, request below/at/above source, assumptions, policy example and partial coverage, authoring/import/added variable, uncertainty, cancel, share/reopen, unsupported views, risk model and return. Verify identities/results do not change solely through navigation.
+- [ ] Inspect desktop/laptop/mobile and320px, light/dark, keyboard focus and reduced motion. Refine any observed confusing hierarchy, inaccessible control, overflow, hidden feature or misleading wording. Screenshots are design evidence, not proof of first-time human comprehension.
+- [ ] Run complete npm run check on the actual final UI commit and broad independent branch review. Commit fixes and preserve the report.
+
+### Task 10: Morning comparison and Claude Code handoff
+
+**Files:** comparison artifact/report, GitHub UI draft PR, local preview services.
+
+- [ ] Publish the UI experiment branch and open a clearly scoped draft PR with verified tests. Keep it unmerged for the owner's comparison. Core fixes retain earlier merge authorization.
+- [ ] Provide actual local preview URLs for core-fixed baseline and improved interface where available; distinguish them from unchanged public deployment. Capture comparable screenshots with commits, viewport, scenario/model/data/time settings.
+- [ ] Prepare a concise morning report with before/after comparison, current main versus branch state, completed work, meaningful test evidence, remaining limitations and exact instructions Claude Code needs to continue. Preserve all changes and the working handoff in durable files.
+- [ ] Around09:00Eastern on2026-09-15, report actual status even if anything remains unfinished. Do not convert a deadline into a false completion claim. Pause the overnight heartbeat after the report/work is complete.
