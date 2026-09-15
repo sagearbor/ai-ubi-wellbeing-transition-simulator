@@ -33,6 +33,7 @@ export interface EquationError {
 
 /** Compiled versions of all equations for fast evaluation */
 export interface CompiledEquationSet {
+  sourceExpressions?: EquationSet;
   aiAdoptionGrowth: CompiledEquation;
   surplusGeneration: CompiledEquation;
   wellbeingDelta: CompiledEquation;
@@ -136,7 +137,7 @@ export function parseEquationSet(equations: EquationSet): EquationSetParseResult
     valid: true,
     errors: [],
     warnings,
-    compiledEquations: compiled as CompiledEquationSet
+    compiledEquations: { ...compiled, sourceExpressions: { ...equations } } as CompiledEquationSet
   };
 }
 

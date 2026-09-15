@@ -1,0 +1,648 @@
+{
+  "version": "conditional-workforce-v1",
+  "source": "Legacy archetype-derived scenario inputs frozen at 436a16e; illustrative, not measurements",
+  "status": "assumed",
+  "year": 2026,
+  "countries": {
+    "USA": {
+      "cognitiveShare": 0.62,
+      "naturalUnemployment": 0.039,
+      "laborForcePerResident": 0.5
+    },
+    "CAN": {
+      "cognitiveShare": 0.62,
+      "naturalUnemployment": 0.039,
+      "laborForcePerResident": 0.5
+    },
+    "MEX": {
+      "cognitiveShare": 0.4,
+      "naturalUnemployment": 0.05,
+      "laborForcePerResident": 0.5
+    },
+    "GTM": {
+      "cognitiveShare": 0.3,
+      "naturalUnemployment": 0.08,
+      "laborForcePerResident": 0.5
+    },
+    "CUB": {
+      "cognitiveShare": 0.4,
+      "naturalUnemployment": 0.05,
+      "laborForcePerResident": 0.5
+    },
+    "HTI": {
+      "cognitiveShare": 0.2,
+      "naturalUnemployment": 0.15,
+      "laborForcePerResident": 0.5
+    },
+    "DOM": {
+      "cognitiveShare": 0.3,
+      "naturalUnemployment": 0.08,
+      "laborForcePerResident": 0.5
+    },
+    "HND": {
+      "cognitiveShare": 0.2,
+      "naturalUnemployment": 0.15,
+      "laborForcePerResident": 0.5
+    },
+    "NIC": {
+      "cognitiveShare": 0.2,
+      "naturalUnemployment": 0.15,
+      "laborForcePerResident": 0.5
+    },
+    "SLV": {
+      "cognitiveShare": 0.3,
+      "naturalUnemployment": 0.08,
+      "laborForcePerResident": 0.5
+    },
+    "CRI": {
+      "cognitiveShare": 0.45,
+      "naturalUnemployment": 0.06,
+      "laborForcePerResident": 0.5
+    },
+    "PAN": {
+      "cognitiveShare": 0.3,
+      "naturalUnemployment": 0.08,
+      "laborForcePerResident": 0.5
+    },
+    "JAM": {
+      "cognitiveShare": 0.3,
+      "naturalUnemployment": 0.08,
+      "laborForcePerResident": 0.5
+    },
+    "BLZ": {
+      "cognitiveShare": 0.3,
+      "naturalUnemployment": 0.08,
+      "laborForcePerResident": 0.5
+    },
+    "BHS": {
+      "cognitiveShare": 0.45,
+      "naturalUnemployment": 0.06,
+      "laborForcePerResident": 0.5
+    },
+    "TTO": {
+      "cognitiveShare": 0.3,
+      "naturalUnemployment": 0.08,
+      "laborForcePerResident": 0.5
+    },
+    "BRA": {
+      "cognitiveShare": 0.4,
+      "naturalUnemployment": 0.05,
+      "laborForcePerResident": 0.5
+    },
+    "ARG": {
+      "cognitiveShare": 0.3,
+      "naturalUnemployment": 0.08,
+      "laborForcePerResident": 0.5
+    },
+    "COL": {
+      "cognitiveShare": 0.4,
+      "naturalUnemployment": 0.05,
+      "laborForcePerResident": 0.5
+    },
+    "CHL": {
+      "cognitiveShare": 0.45,
+      "naturalUnemployment": 0.06,
+      "laborForcePerResident": 0.5
+    },
+    "PER": {
+      "cognitiveShare": 0.4,
+      "naturalUnemployment": 0.05,
+      "laborForcePerResident": 0.5
+    },
+    "VEN": {
+      "cognitiveShare": 0.2,
+      "naturalUnemployment": 0.15,
+      "laborForcePerResident": 0.5
+    },
+    "ECU": {
+      "cognitiveShare": 0.4,
+      "naturalUnemployment": 0.05,
+      "laborForcePerResident": 0.5
+    },
+    "BOL": {
+      "cognitiveShare": 0.2,
+      "naturalUnemployment": 0.15,
+      "laborForcePerResident": 0.5
+    },
+    "PRY": {
+      "cognitiveShare": 0.4,
+      "naturalUnemployment": 0.05,
+      "laborForcePerResident": 0.5
+    },
+    "URY": {
+      "cognitiveShare": 0.45,
+      "naturalUnemployment": 0.06,
+      "laborForcePerResident": 0.5
+    },
+    "GUY": {
+      "cognitiveShare": 0.3,
+      "naturalUnemployment": 0.08,
+      "laborForcePerResident": 0.5
+    },
+    "SUR": {
+      "cognitiveShare": 0.4,
+      "naturalUnemployment": 0.05,
+      "laborForcePerResident": 0.5
+    },
+    "RUS": {
+      "cognitiveShare": 0.4,
+      "naturalUnemployment": 0.05,
+      "laborForcePerResident": 0.5
+    },
+    "GBR": {
+      "cognitiveShare": 0.62,
+      "naturalUnemployment": 0.039,
+      "laborForcePerResident": 0.5
+    },
+    "FRA": {
+      "cognitiveShare": 0.62,
+      "naturalUnemployment": 0.039,
+      "laborForcePerResident": 0.5
+    },
+    "DEU": {
+      "cognitiveShare": 0.62,
+      "naturalUnemployment": 0.039,
+      "laborForcePerResident": 0.5
+    },
+    "ITA": {
+      "cognitiveShare": 0.45,
+      "naturalUnemployment": 0.06,
+      "laborForcePerResident": 0.5
+    },
+    "ESP": {
+      "cognitiveShare": 0.45,
+      "naturalUnemployment": 0.06,
+      "laborForcePerResident": 0.5
+    },
+    "NLD": {
+      "cognitiveShare": 0.62,
+      "naturalUnemployment": 0.039,
+      "laborForcePerResident": 0.5
+    },
+    "SWE": {
+      "cognitiveShare": 0.62,
+      "naturalUnemployment": 0.039,
+      "laborForcePerResident": 0.5
+    },
+    "BEL": {
+      "cognitiveShare": 0.62,
+      "naturalUnemployment": 0.039,
+      "laborForcePerResident": 0.5
+    },
+    "AUT": {
+      "cognitiveShare": 0.62,
+      "naturalUnemployment": 0.039,
+      "laborForcePerResident": 0.5
+    },
+    "POL": {
+      "cognitiveShare": 0.45,
+      "naturalUnemployment": 0.06,
+      "laborForcePerResident": 0.5
+    },
+    "NOR": {
+      "cognitiveShare": 0.62,
+      "naturalUnemployment": 0.039,
+      "laborForcePerResident": 0.5
+    },
+    "CHE": {
+      "cognitiveShare": 0.62,
+      "naturalUnemployment": 0.039,
+      "laborForcePerResident": 0.5
+    },
+    "IRL": {
+      "cognitiveShare": 0.62,
+      "naturalUnemployment": 0.039,
+      "laborForcePerResident": 0.5
+    },
+    "DNK": {
+      "cognitiveShare": 0.62,
+      "naturalUnemployment": 0.039,
+      "laborForcePerResident": 0.5
+    },
+    "FIN": {
+      "cognitiveShare": 0.62,
+      "naturalUnemployment": 0.039,
+      "laborForcePerResident": 0.5
+    },
+    "PRT": {
+      "cognitiveShare": 0.45,
+      "naturalUnemployment": 0.06,
+      "laborForcePerResident": 0.5
+    },
+    "GRC": {
+      "cognitiveShare": 0.45,
+      "naturalUnemployment": 0.06,
+      "laborForcePerResident": 0.5
+    },
+    "CZE": {
+      "cognitiveShare": 0.45,
+      "naturalUnemployment": 0.06,
+      "laborForcePerResident": 0.5
+    },
+    "HUN": {
+      "cognitiveShare": 0.45,
+      "naturalUnemployment": 0.06,
+      "laborForcePerResident": 0.5
+    },
+    "ROU": {
+      "cognitiveShare": 0.45,
+      "naturalUnemployment": 0.06,
+      "laborForcePerResident": 0.5
+    },
+    "UKR": {
+      "cognitiveShare": 0.3,
+      "naturalUnemployment": 0.08,
+      "laborForcePerResident": 0.5
+    },
+    "BLR": {
+      "cognitiveShare": 0.4,
+      "naturalUnemployment": 0.05,
+      "laborForcePerResident": 0.5
+    },
+    "SRB": {
+      "cognitiveShare": 0.3,
+      "naturalUnemployment": 0.08,
+      "laborForcePerResident": 0.5
+    },
+    "ISL": {
+      "cognitiveShare": 0.62,
+      "naturalUnemployment": 0.039,
+      "laborForcePerResident": 0.5
+    },
+    "EST": {
+      "cognitiveShare": 0.45,
+      "naturalUnemployment": 0.06,
+      "laborForcePerResident": 0.5
+    },
+    "LVA": {
+      "cognitiveShare": 0.45,
+      "naturalUnemployment": 0.06,
+      "laborForcePerResident": 0.5
+    },
+    "LTU": {
+      "cognitiveShare": 0.45,
+      "naturalUnemployment": 0.06,
+      "laborForcePerResident": 0.5
+    },
+    "SVK": {
+      "cognitiveShare": 0.45,
+      "naturalUnemployment": 0.06,
+      "laborForcePerResident": 0.5
+    },
+    "SVN": {
+      "cognitiveShare": 0.45,
+      "naturalUnemployment": 0.06,
+      "laborForcePerResident": 0.5
+    },
+    "HRV": {
+      "cognitiveShare": 0.45,
+      "naturalUnemployment": 0.06,
+      "laborForcePerResident": 0.5
+    },
+    "BIH": {
+      "cognitiveShare": 0.4,
+      "naturalUnemployment": 0.05,
+      "laborForcePerResident": 0.5
+    },
+    "MNE": {
+      "cognitiveShare": 0.3,
+      "naturalUnemployment": 0.08,
+      "laborForcePerResident": 0.5
+    },
+    "MKD": {
+      "cognitiveShare": 0.3,
+      "naturalUnemployment": 0.08,
+      "laborForcePerResident": 0.5
+    },
+    "ALB": {
+      "cognitiveShare": 0.3,
+      "naturalUnemployment": 0.08,
+      "laborForcePerResident": 0.5
+    },
+    "BGR": {
+      "cognitiveShare": 0.3,
+      "naturalUnemployment": 0.08,
+      "laborForcePerResident": 0.5
+    },
+    "MDA": {
+      "cognitiveShare": 0.3,
+      "naturalUnemployment": 0.08,
+      "laborForcePerResident": 0.5
+    },
+    "LUX": {
+      "cognitiveShare": 0.62,
+      "naturalUnemployment": 0.039,
+      "laborForcePerResident": 0.5
+    },
+    "CYP": {
+      "cognitiveShare": 0.45,
+      "naturalUnemployment": 0.06,
+      "laborForcePerResident": 0.5
+    },
+    "MLT": {
+      "cognitiveShare": 0.45,
+      "naturalUnemployment": 0.06,
+      "laborForcePerResident": 0.5
+    },
+    "CHN": {
+      "cognitiveShare": 0.3,
+      "naturalUnemployment": 0.08,
+      "laborForcePerResident": 0.5
+    },
+    "JPN": {
+      "cognitiveShare": 0.62,
+      "naturalUnemployment": 0.039,
+      "laborForcePerResident": 0.5
+    },
+    "KOR": {
+      "cognitiveShare": 0.62,
+      "naturalUnemployment": 0.039,
+      "laborForcePerResident": 0.5
+    },
+    "TWN": {
+      "cognitiveShare": 0.45,
+      "naturalUnemployment": 0.06,
+      "laborForcePerResident": 0.5
+    },
+    "MNG": {
+      "cognitiveShare": 0.3,
+      "naturalUnemployment": 0.08,
+      "laborForcePerResident": 0.5
+    },
+    "PRK": {
+      "cognitiveShare": 0.2,
+      "naturalUnemployment": 0.15,
+      "laborForcePerResident": 0.5
+    },
+    "VNM": {
+      "cognitiveShare": 0.3,
+      "naturalUnemployment": 0.08,
+      "laborForcePerResident": 0.5
+    },
+    "IDN": {
+      "cognitiveShare": 0.3,
+      "naturalUnemployment": 0.08,
+      "laborForcePerResident": 0.5
+    },
+    "PHL": {
+      "cognitiveShare": 0.3,
+      "naturalUnemployment": 0.08,
+      "laborForcePerResident": 0.5
+    },
+    "THA": {
+      "cognitiveShare": 0.3,
+      "naturalUnemployment": 0.08,
+      "laborForcePerResident": 0.5
+    },
+    "MYS": {
+      "cognitiveShare": 0.45,
+      "naturalUnemployment": 0.06,
+      "laborForcePerResident": 0.5
+    },
+    "SGP": {
+      "cognitiveShare": 0.62,
+      "naturalUnemployment": 0.039,
+      "laborForcePerResident": 0.5
+    },
+    "MMR": {
+      "cognitiveShare": 0.2,
+      "naturalUnemployment": 0.15,
+      "laborForcePerResident": 0.5
+    },
+    "KHM": {
+      "cognitiveShare": 0.3,
+      "naturalUnemployment": 0.08,
+      "laborForcePerResident": 0.5
+    },
+    "LAO": {
+      "cognitiveShare": 0.3,
+      "naturalUnemployment": 0.08,
+      "laborForcePerResident": 0.5
+    },
+    "BRN": {
+      "cognitiveShare": 0.45,
+      "naturalUnemployment": 0.06,
+      "laborForcePerResident": 0.5
+    },
+    "TLS": {
+      "cognitiveShare": 0.3,
+      "naturalUnemployment": 0.08,
+      "laborForcePerResident": 0.5
+    },
+    "IND": {
+      "cognitiveShare": 0.3,
+      "naturalUnemployment": 0.08,
+      "laborForcePerResident": 0.5
+    },
+    "PAK": {
+      "cognitiveShare": 0.3,
+      "naturalUnemployment": 0.08,
+      "laborForcePerResident": 0.5
+    },
+    "BGD": {
+      "cognitiveShare": 0.3,
+      "naturalUnemployment": 0.08,
+      "laborForcePerResident": 0.5
+    },
+    "LKA": {
+      "cognitiveShare": 0.3,
+      "naturalUnemployment": 0.08,
+      "laborForcePerResident": 0.5
+    },
+    "NPL": {
+      "cognitiveShare": 0.3,
+      "naturalUnemployment": 0.08,
+      "laborForcePerResident": 0.5
+    },
+    "BTN": {
+      "cognitiveShare": 0.3,
+      "naturalUnemployment": 0.08,
+      "laborForcePerResident": 0.5
+    },
+    "MDV": {
+      "cognitiveShare": 0.3,
+      "naturalUnemployment": 0.08,
+      "laborForcePerResident": 0.5
+    },
+    "KAZ": {
+      "cognitiveShare": 0.3,
+      "naturalUnemployment": 0.08,
+      "laborForcePerResident": 0.5
+    },
+    "UZB": {
+      "cognitiveShare": 0.3,
+      "naturalUnemployment": 0.08,
+      "laborForcePerResident": 0.5
+    },
+    "TKM": {
+      "cognitiveShare": 0.2,
+      "naturalUnemployment": 0.15,
+      "laborForcePerResident": 0.5
+    },
+    "KGZ": {
+      "cognitiveShare": 0.2,
+      "naturalUnemployment": 0.15,
+      "laborForcePerResident": 0.5
+    },
+    "TJK": {
+      "cognitiveShare": 0.2,
+      "naturalUnemployment": 0.15,
+      "laborForcePerResident": 0.5
+    },
+    "TUR": {
+      "cognitiveShare": 0.4,
+      "naturalUnemployment": 0.05,
+      "laborForcePerResident": 0.5
+    },
+    "SAU": {
+      "cognitiveShare": 0.45,
+      "naturalUnemployment": 0.06,
+      "laborForcePerResident": 0.5
+    },
+    "IRN": {
+      "cognitiveShare": 0.2,
+      "naturalUnemployment": 0.15,
+      "laborForcePerResident": 0.5
+    },
+    "IRQ": {
+      "cognitiveShare": 0.2,
+      "naturalUnemployment": 0.15,
+      "laborForcePerResident": 0.5
+    },
+    "AFG": {
+      "cognitiveShare": 0.2,
+      "naturalUnemployment": 0.15,
+      "laborForcePerResident": 0.5
+    },
+    "ARE": {
+      "cognitiveShare": 0.45,
+      "naturalUnemployment": 0.06,
+      "laborForcePerResident": 0.5
+    },
+    "ISR": {
+      "cognitiveShare": 0.45,
+      "naturalUnemployment": 0.06,
+      "laborForcePerResident": 0.5
+    },
+    "JOR": {
+      "cognitiveShare": 0.3,
+      "naturalUnemployment": 0.08,
+      "laborForcePerResident": 0.5
+    },
+    "LBN": {
+      "cognitiveShare": 0.2,
+      "naturalUnemployment": 0.15,
+      "laborForcePerResident": 0.5
+    },
+    "SYR": {
+      "cognitiveShare": 0.2,
+      "naturalUnemployment": 0.15,
+      "laborForcePerResident": 0.5
+    },
+    "YEM": {
+      "cognitiveShare": 0.2,
+      "naturalUnemployment": 0.15,
+      "laborForcePerResident": 0.5
+    },
+    "OMN": {
+      "cognitiveShare": 0.45,
+      "naturalUnemployment": 0.06,
+      "laborForcePerResident": 0.5
+    },
+    "QAT": {
+      "cognitiveShare": 0.45,
+      "naturalUnemployment": 0.06,
+      "laborForcePerResident": 0.5
+    },
+    "KWT": {
+      "cognitiveShare": 0.45,
+      "naturalUnemployment": 0.06,
+      "laborForcePerResident": 0.5
+    },
+    "BHR": {
+      "cognitiveShare": 0.45,
+      "naturalUnemployment": 0.06,
+      "laborForcePerResident": 0.5
+    },
+    "AZE": {
+      "cognitiveShare": 0.4,
+      "naturalUnemployment": 0.05,
+      "laborForcePerResident": 0.5
+    },
+    "GEO": {
+      "cognitiveShare": 0.3,
+      "naturalUnemployment": 0.08,
+      "laborForcePerResident": 0.5
+    },
+    "ARM": {
+      "cognitiveShare": 0.3,
+      "naturalUnemployment": 0.08,
+      "laborForcePerResident": 0.5
+    },
+    "PSE": {
+      "cognitiveShare": 0.3,
+      "naturalUnemployment": 0.08,
+      "laborForcePerResident": 0.5
+    },
+    "NGA": {
+      "cognitiveShare": 0.2,
+      "naturalUnemployment": 0.15,
+      "laborForcePerResident": 0.5
+    },
+    "ZAF": {
+      "cognitiveShare": 0.3,
+      "naturalUnemployment": 0.08,
+      "laborForcePerResident": 0.5
+    },
+    "EGY": {
+      "cognitiveShare": 0.3,
+      "naturalUnemployment": 0.08,
+      "laborForcePerResident": 0.5
+    },
+    "ETH": {
+      "cognitiveShare": 0.3,
+      "naturalUnemployment": 0.08,
+      "laborForcePerResident": 0.5
+    },
+    "KEN": {
+      "cognitiveShare": 0.3,
+      "naturalUnemployment": 0.08,
+      "laborForcePerResident": 0.5
+    },
+    "COD": {
+      "cognitiveShare": 0.2,
+      "naturalUnemployment": 0.15,
+      "laborForcePerResident": 0.5
+    },
+    "MAR": {
+      "cognitiveShare": 0.3,
+      "naturalUnemployment": 0.08,
+      "laborForcePerResident": 0.5
+    },
+    "DZA": {
+      "cognitiveShare": 0.3,
+      "naturalUnemployment": 0.08,
+      "laborForcePerResident": 0.5
+    },
+    "AGO": {
+      "cognitiveShare": 0.3,
+      "naturalUnemployment": 0.08,
+      "laborForcePerResident": 0.5
+    },
+    "AUS": {
+      "cognitiveShare": 0.62,
+      "naturalUnemployment": 0.039,
+      "laborForcePerResident": 0.5
+    },
+    "NZL": {
+      "cognitiveShare": 0.62,
+      "naturalUnemployment": 0.039,
+      "laborForcePerResident": 0.5
+    },
+    "PNG": {
+      "cognitiveShare": 0.3,
+      "naturalUnemployment": 0.08,
+      "laborForcePerResident": 0.5
+    }
+  }
+}

@@ -1,7 +1,24 @@
 import type { SimulationRun } from './simulation/run';
 
 
+export interface MonetaryBasis {
+  currency: 'USD'; priceYear: number | null; observationYear: number | null;
+  status: 'observed' | 'dated-assumption' | 'legacy-unsourced'; source: string;
+}
+export interface ConditionalWellbeing {
+  raw: number; income: number; transfer: number; nonIncomeUnemployment: number;
+  transferRatio: number; incomeDenominatorAnnual: number;
+  valid: boolean; status: 'illustrative' | 'outside-mapping-scale';
+}
+export interface SourceBudget {
+  name: 'modeled-source-pool'; unit: 'billion-constant-2015-USD/month';
+  source: number; reservedForOtherUses: number; requested: number; available: number;
+  actual: number; slack: number; unfunded: number; assumptionId: string;
+}
 export interface ModelParameters {
+  executionMode?: 'world-conditional-v1'; // absent preserves historical equations
+  conditional?: { version: 'conditional-assumptions-v1'; nonIncomeLossPerAdditionalUnemployedPerson: number; transferEffectPerDoubling: number; incomeDenominatorMultiplier: number };
+
   id: string;
   name: string;
   description: string;
@@ -94,6 +111,12 @@ export interface MacroParameters {
 }
 
 export interface SimulationState {
+  conditionalSummary?: { rawPopulationWeighted: number; value: number | null; populationMillions: number; countryCount: number; invalidCountryCount: number; validPopulationMillions: number; assumedGdpCountryCount: number; assumedGdpPopulationMillions: number };
+  executionMode?: 'world-conditional-v1';
+  sourceAccounting?: { source: number; available: number; requested: number; actual: number; unfunded: number; unused: number; reserved: number; receipts: number; residual: number };
+  importedUnverified?: boolean;
+  outputDefinition?: { version: string; flowConvention: 'monthly-flow-at-month'; monetaryBasis: MonetaryBasis; limitations: string[] };
+
   month: number;
   /** This month's contributions routed to the global pool, billions USD. Paid out the same month, not accumulated. */
   globalFund: number;
@@ -128,6 +151,14 @@ export interface SimulationState {
 }
 
 export interface CountryStats {
+  conditionalWellbeing?: ConditionalWellbeing;
+  observedInitialLadder?: { value: number; year: number };
+  laborForcePerResident?: number;
+  workforceAssumption?: { version: string; source: string; status: 'assumed'; year: number };
+  monetaryBasis?: MonetaryBasis;
+  printedLaborShare?: number;
+  macroDiagnostics?: { rawUnemployment: number; rawCognitiveUnemployment: number; unemploymentCapActive: boolean; cognitiveUnemploymentCapActive: boolean };
+
   id: string;
   name: string;
   population: number;
@@ -190,6 +221,11 @@ export interface HistoryPoint {
 }
 
 export interface Corporation {
+  monetaryBasis?: MonetaryBasis;
+  availableShare?: number;
+  fundingRequest?: { kind: 'share' } | { kind: 'amount'; monthlyBillions: number };
+  sourceBudget?: SourceBudget;
+
   id: string;
   name: string;
   headquartersCountry: string;      // ISO code where HQ is located
@@ -276,6 +312,7 @@ export interface GameTheoryState {
  * Stores all state needed to restore a simulation to a specific point in time.
  */
 export interface SavedState {
+  baseRun?: SimulationRun;
   version: string;                   // Save file version for future compatibility
   timestamp: number;                 // Unix timestamp when saved
   month: number;                     // Current simulation month

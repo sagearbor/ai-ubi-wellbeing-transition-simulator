@@ -1,3 +1,5 @@
+import { assertRunSupported } from './capabilities';
+import { conditionalWorld } from './conditionalWorld';
 /**
  * Pure simulation engine for UBI wellbeing transition model.
  *
@@ -101,6 +103,7 @@ export function applyMacroDynamics(country: CountryStats, macro: MacroParameters
   country.displacedPool = country.displacedPool * (1 - outflowRate) + inflow;
   country.lastAiAdoption = country.aiAdoption;
 
+  country.macroDiagnostics = {rawUnemployment:country.naturalUnemployment+country.displacedPool,rawCognitiveUnemployment:country.naturalUnemployment+country.displacedPool/country.cognitiveShare,unemploymentCapActive:country.naturalUnemployment+country.displacedPool>0.6,cognitiveUnemploymentCapActive:country.naturalUnemployment+country.displacedPool/country.cognitiveShare>0.9};
   country.unemployment = Math.min(0.6, country.naturalUnemployment + country.displacedPool);
   country.cognitiveUnemployment = Math.min(0.9, country.naturalUnemployment + country.displacedPool / country.cognitiveShare);
 
@@ -610,6 +613,8 @@ function euCorpAdaptation(corp: Corporation, countries: Record<string, CountrySt
 export function stepSimulationPure(input: SimulationInput): SimulationOutput {
   const { state, corporations, model, equations } = input;
 
+  assertRunSupported(model, state.month + 1, equations);
+  if (model.executionMode === 'world-conditional-v1') return conditionalWorld(input);
   const nextMonth = state.month + 1;
   // Clone every country record, not just the map. The phases below mutate country objects in
   // place (wellbeing, adoption, UBI fields, wellbeingTrend); with a shallow map copy those

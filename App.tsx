@@ -1,3 +1,6 @@
+import { assertRunSupported, resolveRunCapabilities } from './simulation/capabilities';
+import { conditionalWorld } from './simulation/conditionalWorld';
+import { initializeConditionalOutputs, noCorporateUbiInputs } from './simulation/run';
 
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { AreaChart, Area, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ScatterChart, Scatter, ZAxis, ReferenceLine } from 'recharts';
@@ -333,7 +336,7 @@ const App: React.FC = () => {
    * (`baseRun`), model, equations and corporation edits as the main run, with every contribution
    * rate held at 0. Stepped, sought, reset and rebuilt together with `run`; Charts draws it.
    */
-  const [pairedRun, setPairedRun] = useState<SimulationRun>(baseRun);
+  const [pairedRun, setPairedRun] = useState<SimulationRun>(() => initializeConditionalOutputs(baseRun,noCorporateUbiInputs({model:DEFAULT_MODEL})));
   const [pairedHistory, setPairedHistory] = useState<HistoryPoint[]>([]);
 
   const state = run.state;
@@ -373,7 +376,10 @@ const App: React.FC = () => {
   // A model whose source ends at a date (the US reference ends January 2030) stops there: later
   // months are not modelled, so the clock does not run past them (review 2026-09-14, decision 4(c)).
   const referenceEnded = (!!model.macro?.usReference && state.month >= US_REFERENCE_LAST_WORLD_MONTH) || (state.outOfScope?.length ?? 0) > 0;
-  const canStep = equationErrors.length === 0 && !referenceEnded;
+  const capabilities = resolveRunCapabilities(model,compiledEquations);
+  const comparisonCapabilities = resolveRunCapabilities(comparisonModel,compiledEquations);
+  const comparisonEnded = comparisonMode && comparisonCapabilities.lastMonth !== null && comparisonRun.state.month >= comparisonCapabilities.lastMonth;
+  const canStep = equationErrors.length === 0 && !capabilities.equationIssue && (!comparisonMode || !comparisonCapabilities.equationIssue) && !referenceEnded && !comparisonEnded;
 
   const runInputs: RunInputs = useMemo(
     () => ({ model, equations: compiledEquations }),
@@ -406,10 +412,11 @@ const App: React.FC = () => {
             // We consciously do not load history to keep URL small and reliable
             // User starts fresh with the shared parameters, on the link's country dataset
             setCountryDataset(decoded.countryDataset);
-            const fresh = initialRun(INITIAL_CORPORATIONS, undefined, initOptionsFor(decoded.model, decoded.countryDataset));
+            const fresh = decoded.run ?? initialRun(INITIAL_CORPORATIONS, undefined, initOptionsFor(decoded.model, decoded.countryDataset));
+            setBaseCorporations(fresh.corporations);
             setBaseRun(fresh);
             setRun(fresh);
-            setPairedRun(fresh);
+            setPairedRun(decoded.model.executionMode ? initializeConditionalOutputs(fresh,noCorporateUbiInputs({model:decoded.model})) : fresh);
             setHistory([]);
             setPairedHistory([]);
             const freshB = initialRun(INITIAL_CORPORATIONS, undefined, initOptionsFor(DEFAULT_MODEL, decoded.countryDataset));
@@ -445,7 +452,7 @@ const App: React.FC = () => {
     try {
         // STRATEGY: Only share parameters (model). 
         // This ensures URL is tiny and robust.
-        const base64 = encodeSharePayload(model, countryDataset);
+        const base64 = encodeSharePayload(model, countryDataset, model.executionMode ? run : undefined);
         const url = `${window.location.origin}${window.location.pathname}#share=${base64}`;
         setShareUrl(url);
     } catch (err) {
@@ -477,7 +484,7 @@ const App: React.FC = () => {
     setBaseRun(freshA);
     setRun(freshA);
     setHistory([]);
-    setPairedRun(freshA);
+    setPairedRun(init.model?.executionMode ? initializeConditionalOutputs(freshA,noCorporateUbiInputs({model:init.model})) : freshA);
     setPairedHistory([]);
 
     // The comparison panel is reset with its own roster so both start at month 0 together.
@@ -530,10 +537,10 @@ const App: React.FC = () => {
   // ============================================================================
 
   const updateCorporation = useCallback((id: string, updates: Partial<Corporation>) => {
-    setRun(r => editCorporation(r, id, updates));
+    setRun(r => { const edited=editCorporation(r,id,updates); return model.executionMode ? conditionalWorld({state:edited.state,corporations:edited.corporations,model},false,true) : edited; });
     // The counterfactual gets the same edit, except its contribution rate stays at 0.
-    setPairedRun(r => editCorporation(r, id, corporationEditForCounterfactual(updates)));
-  }, []);
+    setPairedRun(r => { const edited=editCorporation(r,id,{...corporationEditForCounterfactual(updates),...(model.executionMode ? {contributionRate:0,fundingRequest:{kind:'share' as const}} : {})}); return model.executionMode ? conditionalWorld({state:edited.state,corporations:edited.corporations,model},false,true) : edited; });
+  }, [model]);
 
   // ============================================================================
   // UPDATE COUNTRY (P7-T2)
@@ -661,6 +668,7 @@ const App: React.FC = () => {
         globalLedger,
         gameTheoryState,
         model,
+        baseRun,
         history: historyForSave(history),
         activeModelConfig,
         countryDataset,
@@ -691,6 +699,9 @@ const App: React.FC = () => {
   /** Restore a saved state (file or autosave) as the whole run, replaying old formats. */
   const restoreSavedState = useCallback((saved: SavedState & { activeModelConfig?: ModelConfig | null }) => {
     if (!saved.version) console.warn('Loading a save with no version field. It will be replayed from month 0.');
+    const upload = saved.activeModelConfig ? parseEquationSet(saved.activeModelConfig.equations) : null;
+    if(upload && !upload.valid) throw new Error('Saved equations do not compile');
+    assertRunSupported(saved.model,saved.run?.state.month ?? saved.month,upload?.compiledEquations);
     const loaded = historyFromSave(saved);
     // Saves from before the 2026-09 country-data migration reopen on 'countries-legacy-v1'.
     setCountryDataset(loaded.countryDataset);
@@ -784,6 +795,8 @@ const App: React.FC = () => {
    * recorded by this build carry their run; older ones are reproduced with replayTo.
    */
   const handleSeek = (m: number) => {
+    if(m < baseRun.state.month || (comparisonMode && m < comparisonBaseRun.state.month)) return;
+    try { assertRunSupported(model,m,compiledEquations); if(comparisonMode) assertRunSupported(comparisonModel,m,compiledEquations); } catch { return; }
     setIsPlaying(false);
     // Equation errors block every seek but a reset; the end of a reference only blocks moving past it.
     if (equationErrors.length > 0 && m !== 0) return;
@@ -848,14 +861,12 @@ const App: React.FC = () => {
 
   // Contribution rates are the counterfactual's one difference, so this edits the main run only.
   const handleBulkUpdateContribution = (newRate: number) => {
-    setRun(r => ({
-      ...r,
-      corporations: r.corporations.map(corp =>
-        selectedCorpIds.has(corp.id)
-          ? { ...corp, contributionRate: newRate }
-          : corp
-      )
-    }));
+    setRun(r => {
+      const edited = {...r, corporations:r.corporations.map(corp => selectedCorpIds.has(corp.id)
+        ? {...corp,contributionRate:newRate,...(model.executionMode ? {fundingRequest:{kind:'share' as const}} : {})}
+        : corp)};
+      return model.executionMode ? conditionalWorld({state:edited.state,corporations:edited.corporations,model},false,true) : edited;
+    });
   };
 
   // ESC key handler for deselection
@@ -1002,7 +1013,7 @@ const App: React.FC = () => {
           // globalFund is already billions USD (the global pool this month).
           fund: point.state.globalFund
       };
-      data['Wellbeing_Global'] = point.state.averageWellbeing;
+      data['Wellbeing_Global'] = point.state.conditionalSummary ? point.state.conditionalSummary.value : point.state.averageWellbeing;
       const globalAdoption = (Object.values(point.state.countryData) as CountryStats[]).reduce((acc, curr) => acc + curr.aiAdoption, 0) / INITIAL_COUNTRIES.length * 100;
       data['Adoption_Global'] = globalAdoption;
 
@@ -1010,7 +1021,7 @@ const App: React.FC = () => {
       data['DisplacementGap_Global'] = millionsToBillionsUsd(point.state.globalDisplacementGap); // USD/person x millions of people -> billions
 
       Object.keys(point.state.countryData).forEach(id => {
-        data[`Wellbeing_${id}`] = point.state.countryData[id].wellbeing;
+        data[`Wellbeing_${id}`] = point.state.countryData[id].conditionalWellbeing?.raw ?? point.state.countryData[id].wellbeing;
         data[`Adoption_${id}`] = point.state.countryData[id].aiAdoption * 100;
         data[`DisplacementGap_${id}`] = (point.state.countryData[id].displacementGap || 0) / 1000; // Convert to thousands
       });
@@ -1048,7 +1059,8 @@ const App: React.FC = () => {
         // Full runs per point make the timeline seekable after a restore. They are also the
         // bulk of the payload, so if localStorage refuses the write we drop them and keep the
         // chartable states; seeking then replays from month 0 instead.
-        history: withRuns ? historyForSave(history) : historyForPrompt(history),
+        baseRun,
+        history: model.executionMode ? historyForSave(history) : withRuns ? historyForSave(history) : historyForPrompt(history),
         activeModelConfig,  // P8-T9: Include custom model config
         countryDataset,
       });
@@ -1185,7 +1197,7 @@ const App: React.FC = () => {
                             <Info className="text-blue-600 dark:text-blue-400 shrink-0" size={20} />
                             <div className="space-y-1">
                                 <h4 className="text-blue-700 dark:text-blue-400 text-xs font-bold uppercase tracking-wide">Sharing Info</h4>
-                                <p className="text-slate-600 dark:text-slate-300 text-xs leading-relaxed">This will generate a link containing your current tax rates, incentives, and model settings. The recipient will start a fresh simulation with these parameters.</p>
+                                <p className="text-slate-600 dark:text-slate-300 text-xs leading-relaxed">Conditional links preserve the current corporate requests and economic inputs at the displayed month. Accounting is recomputed on opening; earlier history and macro inputs are not independently verified. Legacy links share settings only.</p>
                             </div>
                         </div>
                         <button 
@@ -1354,7 +1366,7 @@ const App: React.FC = () => {
                       setModel({ ...m, isCustom: false });
                       // A preset that starts from a different wellbeing scale (anchored: observed ladder
                       // values) cannot continue the current run; restart at month 0 with it.
-                      if (initOptionsFor(m).initialWellbeing !== initOptionsFor(model).initialWellbeing) resetAll(undefined, m);
+                      if (m.executionMode !== model.executionMode || initOptionsFor(m).initialWellbeing !== initOptionsFor(model).initialWellbeing) resetAll(undefined, m);
                       if(window.innerWidth < 1024) setIsSidebarOpen(false);
                     }}
                     className={`w-full text-left p-3 rounded-xl border text-xs font-bold transition-all ${model.id === m.id ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-500 text-blue-700 dark:text-blue-400 shadow-sm' : 'bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-slate-400 dark:hover:border-slate-500'}`}
@@ -1427,7 +1439,7 @@ const App: React.FC = () => {
                     { label: 'Adoption Incentive', key: 'adoptionIncentive', unit: '', step: 0.01, min: 0, max: 1.0, multiplier: 1, engine: false },
                     { label: 'Growth Speed', key: 'aiGrowthRate', unit: '%', step: 0.01, min: 0.01, max: 0.4, multiplier: 100, engine: true },
                     { label: 'GDP Scaling', key: 'gdpScaling', unit: '', step: 0.05, min: 0, max: 1.0, multiplier: 1, engine: true },
-                ].map(p => (
+                ].filter(p => capabilities.supportedControls.includes(p.key)).map(p => (
                     <div key={p.key}>
                     <div className="flex justify-between text-[10px] mb-2 font-mono text-slate-500 dark:text-slate-400"><span>{p.label}{!p.engine && <span title="The built-in engine does not read this parameter; see docs/design/model-card-default.md" className="ml-1 px-1 rounded bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 font-sans normal-case">not used by engine</span>}</span><span className="text-slate-900 dark:text-white">{(model as any)[p.key] * p.multiplier}{p.unit}</span></div>
                     <input type="range" min={p.min} max={p.max} step={p.step} value={(model as any)[p.key]} onChange={(e) => setModel({ ...model, [p.key]: parseFloat(e.target.value) })} className="w-full h-1 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-blue-600" />
@@ -1441,7 +1453,7 @@ const App: React.FC = () => {
                 <div className="space-y-6">
                 {[
                     { label: 'Displacement Rate', key: 'displacementRate', unit: '%', step: 0.05, min: 0.5, max: 0.95, multiplier: 100, tooltip: 'How much labor income is displaced at 100% AI adoption.' },
-                ].map(p => (
+                ].filter(p => capabilities.supportedControls.includes(p.key)).map(p => (
                     <div key={p.key}>
                     <div className="flex justify-between text-[10px] mb-2 font-mono text-slate-500 dark:text-slate-400">
                       <span className="flex items-center">{p.label}<InfoTooltip text={p.tooltip} /></span>
@@ -1461,6 +1473,7 @@ const App: React.FC = () => {
                       <span className="flex items-center">Default Corp Policy<InfoTooltip text="Initial policy stance for all corporations at simulation start." /></span>
                     </div>
                     <select
+                      disabled={capabilities.conditional}
                       value={model.defaultCorpPolicy}
                       onChange={(e) => setModel({ ...model, defaultCorpPolicy: e.target.value as any })}
                       className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-bold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -1482,6 +1495,7 @@ const App: React.FC = () => {
                       min={0}
                       max={1}
                       step={0.1}
+                      disabled={capabilities.conditional}
                       value={model.marketPressure}
                       onChange={(e) => setModel({ ...model, marketPressure: parseFloat(e.target.value) })}
                       className="w-full h-1 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-purple-600"
@@ -1535,7 +1549,7 @@ const App: React.FC = () => {
                 {/* Review 2026-09-14 finding 13: values come from headlineStats (simulation/appState.ts),
                     which converts units with the same helper the engine uses. */}
                 {(() => { const hs = headlineStats(state); return [
-                  { label: 'Wellbeing', val: hs.meanCountryWellbeing.toFixed(1), color: 'text-emerald-600 dark:text-emerald-400', desc: "Mean of country wellbeing indices (0-100), unweighted: every country counts once regardless of population. Not the average person's wellbeing." },
+                  { label: hs.wellbeingLabel, val: hs.wellbeingAvailable ? hs.meanCountryWellbeing.toFixed(1) : 'Unavailable', color: 'text-emerald-600 dark:text-emerald-400', desc: capabilities.conditional ? "Population-weighted illustrative conditional index across the complete modeled roster. Unavailable if any country is outside the mapping scale." : "Mean of country wellbeing indices (0-100), unweighted: every country counts once regardless of population. Not the average person's wellbeing." },
                   { label: 'Dividend', val: formatUsdPerPerson(hs.globalDividendUsd), color: 'text-amber-600 dark:text-amber-400', desc: "Global dividend this month: USD per person from the global pool, paid equally per capita worldwide. Customer-weighted and HQ-local payments come on top and vary by country." },
                   { label: 'Adoption', val: `${(hs.meanCountryAdoption * 100).toFixed(0)}%`, color: 'text-blue-600 dark:text-blue-400', desc: "Mean of country AI adoption, unweighted: every country counts once regardless of population." },
                   { label: 'Pool', val: formatBillionsUsd(hs.globalPoolBillions), color: 'text-slate-900 dark:text-white', desc: "Global pool this month: contributions routed to equal per-capita distribution. Paid out the same month, not accumulated. Excludes customer-weighted and HQ-local contributions." }
@@ -1668,7 +1682,7 @@ const App: React.FC = () => {
                           <div className="text-xs font-bold text-blue-100 bg-blue-700/50 px-2 py-1 rounded-md">Month {state.month}</div>
                         </div>
                         <div className="text-xs text-blue-50 flex items-center gap-4">
-                          <span>Avg Wellbeing: <span className="font-bold text-white">{state.averageWellbeing.toFixed(1)}</span></span>
+                          <span>Avg Wellbeing: <span className="font-bold text-white">{(state.conditionalSummary ? state.conditionalSummary.value?.toFixed(1) ?? 'Unavailable' : state.averageWellbeing.toFixed(1))}</span></span>
                           <span>Adoption: <span className="font-bold text-white">{(averageAdoption(state) * 100).toFixed(1)}%</span></span>
                         </div>
                       </div>
@@ -1698,7 +1712,7 @@ const App: React.FC = () => {
                           <div className="text-xs font-bold text-purple-100 bg-purple-700/50 px-2 py-1 rounded-md">Month {comparisonState.month}</div>
                         </div>
                         <div className="text-xs text-purple-50 flex items-center gap-4">
-                          <span>Avg Wellbeing: <span className="font-bold text-white">{comparisonState.averageWellbeing.toFixed(1)}</span></span>
+                          <span>Avg Wellbeing: <span className="font-bold text-white">{(comparisonState.conditionalSummary ? comparisonState.conditionalSummary.value?.toFixed(1) ?? 'Unavailable' : comparisonState.averageWellbeing.toFixed(1))}</span></span>
                           <span>Adoption: <span className="font-bold text-white">{(averageAdoption(comparisonState) * 100).toFixed(1)}%</span></span>
                         </div>
                       </div>
@@ -2027,10 +2041,10 @@ const App: React.FC = () => {
                   </div>
                 )}
                 {/* Game Theory Visualization Section */}
-                <GameTheoryVisualization
+                {!capabilities.conditional && <GameTheoryVisualization
                   gameTheoryState={gameTheoryState}
                   corporations={corporations}
-                />
+                />}
 
                 {/* Corporation List Section */}
                 <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm">
@@ -3021,6 +3035,8 @@ effect(t)      = wellbeing_main(t) - wellbeing_paired(t)`}
             <button type="button" onClick={discardAutosave} className="min-h-9 rounded-md border border-amber-400 px-3 py-1 font-bold uppercase hover:bg-amber-100 dark:hover:bg-amber-900/40">Discard</button>
           </div>
         )}
+        {capabilities.conditional && <p className="p-3 text-sm">Conditional wellbeing index: model-implied level under this month’s scenario conditions. Adaptation timing, transfer-to-macro feedback, game theory and net welfare are unestimated. Transfers use a hypothetical constant-2015 USD modeled source pool; expenses and ownership effects are unestimated.</p>}
+        {capabilities.equationIssue && <p role="alert">{capabilities.equationIssue}</p>}
         {referenceEnded && (
           <div role="status" className="mx-4 lg:mx-6 mb-2 rounded-lg border border-sky-300 bg-sky-50 px-3 py-2 text-xs text-sky-900 dark:border-sky-700 dark:bg-sky-950/40 dark:text-sky-100">
             <span className="font-semibold">End of the US reference (January 2030).</span> The United States follows the faithful port of Korinek et al. (2026) only to its reporting date; nothing after it is modelled, so the run stops here. Choose another preset to run longer.
@@ -3031,7 +3047,7 @@ effect(t)      = wellbeing_main(t) - wellbeing_paired(t)`}
           errors={equationErrors}
           onClear={clearModelConfig}
         />
-        <SimulationControls isPlaying={isPlaying} onPlay={() => setIsPlaying(true)} onPause={() => setIsPlaying(false)} onReset={handleReset} onStep={stepSimulation} speed={speed} setSpeed={setSpeed} month={state.month} maxMonth={history.length > 0 ? Math.max(...history.map(h => h.month)) : state.month} onSeek={handleSeek} disabled={!canStep} disabledReason={referenceEnded ? 'The US reference path (Korinek et al. 2026) ends in January 2030; later months are not modelled.' : `Custom model "${activeModelConfig?.name || ''}" has ${equationErrors.length} equation errors`} />
+        <SimulationControls isPlaying={isPlaying} onPlay={() => setIsPlaying(true)} onPause={() => setIsPlaying(false)} onReset={handleReset} onStep={stepSimulation} speed={speed} setSpeed={setSpeed} month={state.month} maxMonth={history.length > 0 ? Math.max(...history.map(h => h.month)) : state.month} onSeek={handleSeek} disabled={!canStep} disabledReason={capabilities.equationIssue || comparisonCapabilities.equationIssue || (comparisonEnded ? 'Comparison reference ends at month 60.' : undefined) || (referenceEnded ? 'The US reference path (Korinek et al. 2026) ends in January 2030; later months are not modelled.' : `Custom model "${activeModelConfig?.name || ''}" has ${equationErrors.length} equation errors`)} />
       </footer>
 
       {/* Corporation Detail Panel (P5-T10) */}

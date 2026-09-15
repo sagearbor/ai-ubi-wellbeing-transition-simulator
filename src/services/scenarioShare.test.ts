@@ -1,3 +1,4 @@
+import { initialRun, initOptionsFor } from '../../simulation/run';
 /**
  * Round-trip tests for scenario export/import and share-link encode/decode (P9-T8).
  */
@@ -133,7 +134,7 @@ describe('scenarioShare: country datasets (2026-09 migration)', () => {
     const old = decodeSharePayload(Buffer.from(JSON.stringify({ model: { id: 'organic-incentive' } }), 'latin1').toString('base64'));
     expect(old.countryDataset).toBe(LEGACY_COUNTRY_DATASET_ID);
     expect(old.model?.id).toBe('organic-incentive');
-    const fresh = decodeSharePayload(encodeSharePayload(DEFAULT_MODEL, WB_COUNTRY_DATASET_ID));
+    const fresh = decodeSharePayload(encodeSharePayload(DEFAULT_MODEL, WB_COUNTRY_DATASET_ID, initialRun(undefined,undefined,initOptionsFor(DEFAULT_MODEL,WB_COUNTRY_DATASET_ID))));
     expect(fresh.countryDataset).toBe(WB_COUNTRY_DATASET_ID);
     expect(fresh.model).toEqual(DEFAULT_MODEL);
     expect(() => decodeSharePayload('not base64 !!')).toThrow(ScenarioParseError);

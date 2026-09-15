@@ -23,7 +23,7 @@ describe('US reference adapter (faithful Korinek et al. 2026)', () => {
   });
 
   it('in the world run the US follows the port exactly (no reduced-form pool on top), then stops at January 2030', () => {
-    const runs = runMonths(initialRun(undefined, undefined, initOptionsFor(preset)), US_REFERENCE_LAST_WORLD_MONTH + 1, { model: preset });
+    const runs = runMonths(initialRun(undefined, undefined, initOptionsFor(preset)), US_REFERENCE_LAST_WORLD_MONTH, { model: preset });
     const path = usReferencePath('substantial');
     for (const m of [1, 18, 36, US_REFERENCE_LAST_WORLD_MONTH]) {
       const us = runs[m].state.countryData.USA;
@@ -34,10 +34,7 @@ describe('US reference adapter (faithful Korinek et al. 2026)', () => {
       expect((us.gdpPerCapita * (us.laborShare! / BASE_LABOR_SHARE_FOR_TESTS)) / us.gdpNoAi! - 1).toBeCloseTo(p.laborIncomeGap, 12);
       expect(runs[m].state.outOfScope).toBeUndefined();
     }
-    const after = runs[US_REFERENCE_LAST_WORLD_MONTH + 1].state;
-    expect(after.outOfScope?.[0]).toMatch(/ends January 2030/);
-    // Nothing is extrapolated: the US macro values are the January 2030 ones.
-    expect(after.countryData.USA.unemployment).toBe(runs[US_REFERENCE_LAST_WORLD_MONTH].state.countryData.USA.unemployment);
+    expect(() => runMonths(runs[US_REFERENCE_LAST_WORLD_MONTH],1,{model:preset})).toThrow(/outside supported scope/);
   });
 
   it('other countries keep the reduced-form block; the US calibration is not applied to them', () => {

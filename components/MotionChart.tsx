@@ -35,17 +35,17 @@ export function buildMotionChartData(history: HistoryPoint[], pairedHistory: His
     const ids = Object.keys(state.countryData);
     const data: Record<string, number> = { month: point.month };
     // "Global" is the unweighted mean over countries, as state.averageWellbeing is.
-    data['Wellbeing_Global'] = state.averageWellbeing;
+    data['Wellbeing_Global'] = state.conditionalSummary ? state.conditionalSummary.value : state.averageWellbeing;
     data['Adoption_Global'] = ids.length
       ? ((Object.values(state.countryData) as CountryStats[]).reduce((acc, c) => acc + c.aiAdoption, 0) / ids.length) * 100
       : 0;
     const paired = pairedByMonth.get(point.month);
-    if (paired) data['Paired_Global'] = paired.averageWellbeing;
+    if (paired) data['Paired_Global'] = paired.conditionalSummary ? paired.conditionalSummary.value : paired.averageWellbeing;
     for (const id of ids) {
-      data[`Wellbeing_${id}`] = state.countryData[id].wellbeing;
+      data[`Wellbeing_${id}`] = state.countryData[id].conditionalWellbeing?.raw ?? state.countryData[id].wellbeing;
       data[`Adoption_${id}`] = state.countryData[id].aiAdoption * 100;
       const pc = paired?.countryData[id];
-      if (pc) data[`Paired_${id}`] = pc.wellbeing;
+      if (pc) data[`Paired_${id}`] = pc.conditionalWellbeing?.raw ?? pc.wellbeing;
     }
     return data;
   });

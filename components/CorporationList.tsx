@@ -111,7 +111,7 @@ const CorporationList: React.FC<CorporationListProps> = ({
   // Calculate aggregate stats
   const stats = useMemo(() => {
     const totalContribution = corporations.reduce((sum, corp) =>
-      sum + (corp.aiRevenue * corp.contributionRate), 0
+      sum + ((corp.sourceBudget?.actual ?? corp.aiRevenue * corp.contributionRate)), 0
     );
 
     const strategyCounts = {
@@ -245,7 +245,7 @@ const CorporationList: React.FC<CorporationListProps> = ({
                   {idx + 1}. {corp.name}
                 </span>
                 <span className="font-semibold text-slate-900 dark:text-white ml-2">
-                  {formatCurrency(corp.aiRevenue * corp.contributionRate)}
+                  {formatCurrency((corp.sourceBudget?.actual ?? corp.aiRevenue * corp.contributionRate))}
                 </span>
               </div>
             ))}
@@ -363,7 +363,7 @@ const CorporationList: React.FC<CorporationListProps> = ({
                 <input
                   type="range"
                   min="0"
-                  max="0.5"
+                  max={corporations.some(c=>c.sourceBudget) ? 1 : 0.5}
                   step="0.05"
                   value={bulkContributionRate}
                   onChange={(e) => setBulkContributionRate(parseFloat(e.target.value))}

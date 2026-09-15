@@ -1,3 +1,5 @@
+import { conditionalWorld } from './conditionalWorld';
+import { assertRunSupported } from './capabilities';
 /**
  * Pure helpers that App.tsx's React layer delegates to.
  *
@@ -18,7 +20,7 @@ import {
 } from '../constants';
 import {
   advanceRun,
-  initialRun, initOptionsFor,
+  initialRun, initOptionsFor, initializeConditionalOutputs,
   noCorporateUbiInputs,
   replayTo,
   runMonths,
@@ -64,6 +66,7 @@ export function seekInHistory(
   inputs: RunInputs,
   base: SimulationRun,
 ): SimulationRun {
+  assertRunSupported(inputs.model,month,inputs.equations);
   const target = Math.max(0, month);
   if (target === 0) return base;
   const exact = history.find((p) => p.month === target);
@@ -80,6 +83,8 @@ export function stepBoth(
   b: SimulationRun,
   inputsB: RunInputs,
 ): { a: SimulationRun; b: SimulationRun } {
+  assertRunSupported(inputsA.model,a.state.month+1,inputsA.equations);
+  assertRunSupported(inputsB.model,b.state.month+1,inputsB.equations);
   return { a: advanceRun(a, inputsA), b: advanceRun(b, inputsB) };
 }
 
@@ -92,9 +97,12 @@ export function catchUp(
   month: number,
   inputs: RunInputs,
 ): { run: SimulationRun; history: HistoryPoint[] } {
+  assertRunSupported(inputs.model,month,inputs.equations);
   const target = Math.max(0, month);
-  const runs = runMonths(base, target, inputs);
-  return { run: runs[target], history: runs.slice(1).map(historyPoint) };
+  const elapsed=target-base.state.month;
+  if(elapsed<0) throw new Error('Requested month precedes the available scenario snapshot');
+  const runs = runMonths(base, elapsed, inputs);
+  return { run: runs[elapsed], history: runs.slice(1).map(historyPoint) };
 }
 
 // ============================================================================
@@ -126,7 +134,7 @@ export function seekWithCounterfactual(
 ): RunPair {
   return {
     run: seekInHistory(history, month, inputs, base),
-    paired: seekInHistory(pairedHistory, month, noCorporateUbiInputs(inputs), base),
+    paired: seekInHistory(pairedHistory, month, noCorporateUbiInputs(inputs), inputs.model.executionMode === 'world-conditional-v1' ? initializeConditionalOutputs(base,noCorporateUbiInputs(inputs)) : base),
   };
 }
 
@@ -142,8 +150,9 @@ export function rebuildCounterfactual(
   inputs: RunInputs,
 ): { paired: SimulationRun; pairedHistory: HistoryPoint[] } {
   const last = Math.max(month, 0, ...history.map((p) => p.month));
-  const caught = catchUp(base, last, noCorporateUbiInputs(inputs));
-  const at = caught.history.find((p) => p.month === month)?.run ?? base;
+  const pairedBase = inputs.model.executionMode === 'world-conditional-v1' ? initializeConditionalOutputs(base,noCorporateUbiInputs(inputs)) : base;
+  const caught = catchUp(pairedBase, last, noCorporateUbiInputs(inputs));
+  const at = caught.history.find((p) => p.month === month)?.run ?? pairedBase;
   return { paired: at, pairedHistory: caught.history };
 }
 
@@ -185,6 +194,8 @@ export const WORLD_POPULATION_MILLIONS = worldPopulationMillionsFor(COUNTRY_DATA
 export interface HeadlineStats {
   /** Unweighted mean of country wellbeing (0-100). */
   meanCountryWellbeing: number;
+  wellbeingAvailable: boolean;
+  wellbeingLabel: string;
   /** USD per person this month from the global pool (equal per capita; excludes customer-weighted and HQ-local payments). */
   globalDividendUsd: number;
   /** Unweighted mean of country AI adoption (0-1). */
@@ -198,7 +209,9 @@ export function headlineStats(state: SimulationState): HeadlineStats {
   const countries = Object.values(state.countryData);
   const n = countries.length || 1;
   return {
-    meanCountryWellbeing: state.averageWellbeing,
+    meanCountryWellbeing: state.conditionalSummary ? state.conditionalSummary.value ?? NaN : state.averageWellbeing,
+    wellbeingAvailable: !state.conditionalSummary || state.conditionalSummary.value !== null,
+    wellbeingLabel: state.conditionalSummary ? 'Population-weighted conditional index' : 'Mean country wellbeing',
     globalDividendUsd: usdPerPerson(
       state.globalFund,
       worldPopulationMillionsFor(isCountryDatasetId(state.countryDataset) ? state.countryDataset : COUNTRY_DATASET_ID),
@@ -267,6 +280,18 @@ export function historyFromSave(saved: SavedState): LoadedSave {
   const inputs: RunInputs = { model: saved.model };
   const countryDataset = saveCountryDataset(saved);
   const init = initOptionsFor(saved.model, countryDataset);
+  assertRunSupported(saved.model,saved.run?.state.month ?? saved.month);
+  if (saved.model.executionMode === 'world-conditional-v1') {
+    if (!saved.run || !saved.baseRun) throw new Error('Conditional save requires complete current and initial run inputs');
+    const refresh = (r: SimulationRun): SimulationRun => {
+      assertRunSupported(saved.model,r.state.month);
+      const out=conditionalWorld({state:r.state,corporations:r.corporations,model:saved.model},false,true);
+      return {...out,state:{...out.state,importedUnverified:true}};
+    };
+    const base=refresh(saved.baseRun), run=refresh(saved.run);
+    const history=(saved.history??[]).map(p=>{if(!p.run) throw new Error('Conditional save needs complete history inputs');return historyPoint(refresh(p.run));});
+    return {base,run,history,replayed:false,note:'Conditional accounting and mapping recomputed from imported economic inputs. Macro/input history is unverified; this snapshot is not a verified replay.',countryDataset};
+  }
   if (saved.run) {
     // Rebuild each point's `state` from its run (historyForSave drops the duplicate). Runs from
     // pre-migration saves are stamped with the legacy dataset so replay and seek use its world

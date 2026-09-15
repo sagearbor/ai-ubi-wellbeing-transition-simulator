@@ -189,7 +189,7 @@ const WorldMap: React.FC<WorldMapProps> = ({
         if (viewMode === 'adoption') {
           baseColor = d3.interpolateBlues(stats.aiAdoption);
         } else if (viewMode === 'wellbeing') {
-          baseColor = d3.interpolateRdYlGn(stats.wellbeing / 100);
+          baseColor = d3.interpolateRdYlGn((stats.conditionalWellbeing?.raw ?? stats.wellbeing) / 100);
         } else if (viewMode === 'ubi-received') {
           // Color by UBI per capita (normalize to reasonable range 0-500/month)
           const ubiPerCapita = stats.totalUbiReceived / stats.population;
@@ -302,7 +302,7 @@ const WorldMap: React.FC<WorldMapProps> = ({
 
                     <div className="flex justify-between items-center text-xs mt-2">
                         <span className="text-slate-400">Wellbeing</span>
-                        <span className={`font-mono font-bold ${hoveredStats.wellbeing > 50 ? 'text-emerald-400' : 'text-rose-400'}`}>{hoveredStats.wellbeing.toFixed(0)}</span>
+                        <span className={`font-mono font-bold ${hoveredStats.wellbeing > 50 ? 'text-emerald-400' : 'text-rose-400'}`}>{(hoveredStats.conditionalWellbeing?.raw ?? hoveredStats.wellbeing).toFixed(0)}</span>
                     </div>
                      <div className="w-full bg-slate-800 h-1.5 rounded-full overflow-hidden">
                         <div className="h-full bg-gradient-to-r from-rose-500 via-yellow-500 to-emerald-500" style={{ width: `${hoveredStats.wellbeing}%` }}></div>

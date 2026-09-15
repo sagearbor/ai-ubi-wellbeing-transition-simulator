@@ -212,10 +212,10 @@ const CountryDetailPanel: React.FC<CountryDetailPanelProps> = ({
             </span>
             <div className="flex items-center gap-1">
               <span className={`text-2xl font-bold ${wellbeingColor}`}>
-                {country.wellbeing.toFixed(0)}
+                {(country.conditionalWellbeing?.raw ?? country.wellbeing).toFixed(0)}
               </span>
               <span className="text-xs text-slate-500 dark:text-slate-400">
-                wellbeing
+                {country.conditionalWellbeing ? 'conditional wellbeing index' : 'wellbeing'}
               </span>
               {wellbeingTrend.direction !== 'stable' && (
                 wellbeingTrend.direction === 'up' ?
@@ -372,7 +372,7 @@ const CountryDetailPanel: React.FC<CountryDetailPanelProps> = ({
           <div className="bg-gradient-to-br from-purple-50 to-blue-50 dark:from-slate-800 dark:to-slate-900 rounded-lg p-4 space-y-4 border border-purple-200 dark:border-slate-700">
             <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wide flex items-center gap-2">
               <Globe2 size={16} />
-              Nation-Level Controls
+              Scenario Conditions
             </h3>
 
             {/* AI Adoption Slider */}
@@ -399,13 +399,13 @@ const CountryDetailPanel: React.FC<CountryDetailPanelProps> = ({
                 <span>100%</span>
               </div>
               <div className="text-xs text-slate-500 dark:text-slate-400 mt-2">
-                Direct intervention: set how much AI is deployed in this country
+                Scenario assumption: set how much AI is deployed in this country
               </div>
             </div>
           </div>
 
           {/* LIMITED POLICY CONTROLS */}
-          {country.nationalPolicy && (
+          {country.nationalPolicy && !country.conditionalWellbeing && (
             <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-slate-800 dark:to-slate-900 rounded-lg p-4 space-y-4 border border-blue-200 dark:border-slate-700">
               <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wide flex items-center gap-2">
                 <ShieldCheck size={16} />

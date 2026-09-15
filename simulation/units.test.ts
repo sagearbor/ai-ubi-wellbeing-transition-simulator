@@ -69,3 +69,14 @@ describe('global displacement gap units', () => {
     expect(formatBillionsUsd(millionsToBillionsUsd(s.globalDisplacementGap))).not.toBe('$0');
   });
 });
+
+import { convertDatedAmount } from './units';
+it('dated conversion requires a pinned matching index; identity and round trip preserve denomination',()=>{
+  const index={id:'hand-example',currency:'USD',values:{2015:100,2024:125},source:'Explicit hypothetical arithmetic fixture'};
+  const old={currency:'USD',priceYear:2015},recent={currency:'USD',priceYear:2024};
+  expect(convertDatedAmount(10,old,old,index)).toBe(10);
+  expect(convertDatedAmount(10,old,recent,index)).toBe(12.5);
+  expect(convertDatedAmount(12.5,recent,old,index)).toBe(10);
+  expect(()=>convertDatedAmount(10,{...old,priceYear:null},recent,index)).toThrow();
+  expect(()=>convertDatedAmount(10,{...old,currency:'EUR'},recent,index)).toThrow();
+});

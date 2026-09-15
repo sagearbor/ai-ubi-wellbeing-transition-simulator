@@ -126,7 +126,7 @@ export const WellbeingScatterPlot: React.FC<WellbeingScatterPlotProps> = ({
       id: country.id,
       name: country.name,
       aiAdoption: country.aiAdoption * 100, // Convert to percentage
-      wellbeing: country.wellbeing,
+      wellbeing: country.conditionalWellbeing?.raw ?? country.wellbeing,
       archetype: country.archetype,
       population: country.population,
       ubiReceived: country.totalUbiReceived || 0
@@ -163,10 +163,10 @@ export const WellbeingScatterPlot: React.FC<WellbeingScatterPlotProps> = ({
       return { status: 'weak', color: 'text-yellow-500', message: 'Weak correlation - model may need tuning' };
     }
     if (regression.slope < 0) {
-      return { status: 'inverse', color: 'text-red-500', message: 'Inverse relationship - AI adoption hurting wellbeing!' };
+      return { status: 'inverse', color: 'text-red-500', message: 'Negative association across modeled countries; not a causal effect' };
     }
     if (regression.slope > 0 && regression.rSquared > 0.3) {
-      return { status: 'healthy', color: 'text-green-500', message: 'Positive relationship - AI benefiting wellbeing' };
+      return { status: 'healthy', color: 'text-green-500', message: 'Positive association across modeled countries; not a causal effect' };
     }
     return { status: 'moderate', color: 'text-blue-500', message: 'Moderate positive relationship' };
   }, [regression]);
@@ -202,7 +202,7 @@ export const WellbeingScatterPlot: React.FC<WellbeingScatterPlotProps> = ({
       <div className="flex justify-between items-start mb-4">
         <div>
           <h3 className="text-lg font-bold text-white">AI Adoption vs Wellbeing</h3>
-          <p className="text-sm text-gray-400">Month {month} - Does AI investment improve wellbeing?</p>
+          <p className="text-sm text-gray-400">Month {month} - Scenario association; not evidence of an AI effect</p>
         </div>
         <div className="text-right">
           <div className="font-mono text-sm">

@@ -188,7 +188,7 @@ export const PRESET_MODELS: ModelParameters[] = [
   },
   {
     id: 'evidence-anchored',
-    name: 'Provisional level model (default)',
+    name: 'Legacy assumed-timing level model',
     description: 'Same corporations and adoption; wellbeing is a level model with evidence-informed assumptions: anchored on a GDP-equivalent income index and governance (World Happiness Report fit), a log2 cash-transfer effect per doubling of labour income, an unemployment effect via the Korinek-style displaced pool, and an assumed 3-year adjustment half-life. Starts from observed 2025 ladder values. Provisional default: every coefficient is an assumption informed by evidence, not a validated estimate; see the Model Card.',
     corporateTaxRate: 0.12,
     adoptionIncentive: 0.30,
@@ -238,7 +238,15 @@ PRESET_MODELS.push({
  * presented as provisional with evidence-informed assumptions. The legacy flow model stays in
  * PRESET_MODELS[0] for reproducibility of old scenarios and links.
  */
-export const DEFAULT_MODEL_ID = 'evidence-anchored';
+PRESET_MODELS.push({
+  ...PRESET_MODELS.find(m => m.id === 'evidence-anchored')!,
+  id: 'world-conditional-v1', executionMode: 'world-conditional-v1',
+  macro: {...PRESET_MODELS.find(m => m.id === 'evidence-anchored')!.macro!, wellbeingAnchorRate: 0, unemploymentEffectPerPoint: undefined, ubiEffectPerDoubling: undefined},
+  name: 'Conditional world reference',
+  description: 'Compare funded transfers under stated corporate and macro assumptions; wellbeing is an illustrative conditional index. Corporate response inputs are fixed; transfer-to-macro feedback and realized wellbeing timing are unestimated.',
+  conditional: { version: 'conditional-assumptions-v1', nonIncomeLossPerAdditionalUnemployedPerson: 5, transferEffectPerDoubling: 2.8, incomeDenominatorMultiplier: 1 },
+});
+export const DEFAULT_MODEL_ID = 'world-conditional-v1';
 export const DEFAULT_MODEL: ModelParameters = PRESET_MODELS.find((m) => m.id === DEFAULT_MODEL_ID)!;
 
 // ============================================================================
