@@ -56,10 +56,10 @@
 
 **Interfaces:** Versioned engine/RNG/sampler/correlation/solver identifiers and unique ensemble identity. Existing seed/draw fields retained; source imports distinguish rerun from replay.
 
-- [ ] Reproduce two-versus-three draw same-hash collision; include requested/effective draws and versioned numerical settings in ensemble identity.
-- [ ] Validate package hashes and engine versions; reject mismatch for replay, allow explicit experimental source import as a new run.
-- [ ] Persist models, source, status, basis and scope metadata on supported sharing routes; preserve limited-link warnings.
-- [ ] Reopen complete bundles and reject corrupted results/version/settings. Run targeted tests; commit owned changes.
+- [x] Reproduce two-versus-three draw same-hash collision; include requested/effective draws and versioned numerical settings in ensemble identity.
+- [x] Validate package hashes and engine versions; reject mismatch for replay, allow explicit experimental source import as a new run.
+- [x] Persist models, source, status, basis and scope metadata on supported sharing routes; preserve limited-link warnings.
+- [x] Reopen complete bundles and reject corrupted results/version/settings. Run targeted tests; commit owned changes.
 
 ### Task 4: World model correctness and explicit scope
 
