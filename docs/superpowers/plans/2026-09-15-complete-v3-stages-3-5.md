@@ -67,12 +67,12 @@
 
 **Interfaces:** Shared run capability/horizon/equation-support resolver used by direct stepping, replay and both UI comparisons. Explicit country workforce assumptions detached from governance, with versioned legacy compatibility.
 
-- [ ] Reproduce uploaded wellbeing 0/-50 regression under actual default. Execute supported hook or explicitly reject unsupported hook; no silent discard or fallback.
-- [ ] Reproduce month61 US reference continuation and comparison guard asymmetry. Stop unsupported run before mutation at every entry, preserving month60.
-- [ ] Add explicit country cognitive share/natural unemployment assumptions with provenance, preserving old dataset behavior. Governance threshold probes cannot select workforce fields in the new version.
-- [ ] Define monetary basis and input status; author any hypothetical constant-2015 corporate amounts explicitly as assumptions, never claim a conversion from an unknown vintage. Preserve fallback coverage and unsupported empirical status.
-- [ ] Distinguish effective wage-bill share and paper printed share. Resolve meaningful controls centrally and label absent mechanisms unsupported.
-- [ ] Run simulation/replay/upload/adapter/migration tests; commit.
+- [x] Reproduce uploaded wellbeing 0/-50 regression under actual default. Execute supported hook or explicitly reject unsupported hook; no silent discard or fallback.
+- [x] Reproduce month61 US reference continuation and comparison guard asymmetry. Stop unsupported run before mutation at every entry, preserving month60.
+- [x] Add explicit country cognitive share/natural unemployment assumptions with provenance, preserving old dataset behavior. Governance threshold probes cannot select workforce fields in the new version.
+- [x] Define monetary basis and input status; author any hypothetical constant-2015 corporate amounts explicitly as assumptions, never claim a conversion from an unknown vintage. Preserve fallback coverage and unsupported empirical status.
+- [x] Distinguish effective wage-bill share and paper printed share. Resolve meaningful controls centrally and label absent mechanisms unsupported.
+- [x] Run simulation/replay/upload/adapter/migration tests; commit.
 
 ### Task 5: Default qualification and response evidence
 
@@ -80,14 +80,16 @@
 
 **Interfaces:** An actual-input fingerprint binds a reviewed conditional capability record. Inventories, UI, exported status and scripts consume the same contract. Review numerical validity, conditional response and empirical support separately.
 
-- [ ] Implement an explicit world-default contract covering controls, geography, monetary assumptions, evidence, limits and unsupported mechanisms. Changing unreviewed inputs cannot inherit a reviewed badge by model ID.
-- [ ] Record monthly raw target and realized wellbeing, separate income/transfer/unemployment terms, GDP/employment and constraints. Show bounds and extrapolation instead of hiding target response.
-- [ ] Test fixed-target dynamics analytically with target+(initial-target)*(1-rate)^t. Treat rate0/rate1 as stated scenario assumptions, not empirical evidence.
-- [ ] Extend actual/relative nudges, full ranges, threshold neighbors and joint feasible scenarios, with sample identity and missing/failure counts. Review all existing material discontinuities and disconnected controls.
-- [ ] Choose a non-double-counted explicitly conditional unemployment channel; explain population conversion and study limitations. Evaluate timing/dose jointly. Do not invent evidence or claim historical fit validates policy effects.
-- [ ] Preserve held published targets and compare historical scores against same baselines. Correct 335-observation/120-country fit versus 106-country hindcast description.
-- [ ] Produce a frozen qualification report with evidence-backed verdict by capability and unresolved limitations. If scientific evidence prevents broad stage3 acceptance, retain that gap explicitly rather than manufacture completion.
-- [ ] Run qualification/profile/scenario tests and record reviewed outputs; commit.
+- [x] Implement an explicit world-default contract covering controls, geography, monetary assumptions, evidence, limits and unsupported mechanisms. Changing unreviewed inputs cannot inherit a reviewed badge by model ID.
+- [x] Record monthly raw conditional wellbeing, separate income/transfer/unemployment terms, GDP/employment and constraints; explicitly mark realized wellbeing and its timing unestimated. Show bounds and extrapolation instead of hiding raw response.
+- [x] Test fixed-target dynamics analytically with target+(initial-target)*(1-rate)^t. Treat rate0/rate1 as stated scenario assumptions, not empirical evidence.
+- [x] Extend actual/relative nudges, full ranges, threshold neighbors and joint feasible scenarios, with sample identity and missing/failure counts. Review all existing material discontinuities and disconnected controls.
+- [x] Declare the conditional unemployment channel as an assumed non-income decomposition; keep its arithmetic separate from income and disclose that empirical independence is unestablished. Explain population conversion and study limitations. Probe dose/population assumptions jointly and test the archived timing law separately; do not invent realized-timing evidence or claim historical fit validates policy effects.
+- [x] Preserve held published targets and compare historical scores against same baselines. Correct 335-observation/120-country fit versus 106-country hindcast description.
+- [x] Produce a frozen qualification report with evidence-backed verdict by capability and unresolved limitations. If scientific evidence prevents broad stage3 acceptance, retain that gap explicitly rather than manufacture completion.
+- [x] Run qualification/profile/scenario tests and record reviewed outputs; commit.
+
+Task5 completion is limited to reviewed conditional source/allocation accounting at61exactdefaultmonthlypoints; macro, wellbeing and realized timing remain illustrative or unsupported. See the independent qualification re-review and activated browser checks. Active-view presentation integration remains Task6.
 
 ### Task 6: Active results and a coherent policy journey
 
