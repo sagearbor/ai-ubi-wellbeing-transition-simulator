@@ -33,3 +33,14 @@ Exact pinned values retained: 106/128 countries, 2015–2025; headline wellbeing
 - No fitting, target repinning, source observation edits, qualification changes, push, merge or deployment.
 
 Commit: recorded in completion message; this report is included in the implementation commit.
+
+## Review fix round 1
+
+Accepted the review's correction: the common-GDP-growth explanation was too broad. The selected-run text now applies it only when `run.aiOff` is true. AI-on selections instead state that sensitivity reconstruction does not establish predictive or causal validity. GDP correlation remains omitted for every selection. The research note now distinguishes AI-off common growth from potentially heterogeneous AI-on growth. No model, observation or artifact changes.
+
+Commands run in `/private/tmp/alignment-published-data`:
+
+- `npm exec vitest run src/history/history.test.ts` — passed, 6 tests, 1 file (includes authoritative artifact freshness rerun).
+- `npm run typecheck` — passed.
+
+Fix commit: recorded in completion message; this report accompanies the fix.
