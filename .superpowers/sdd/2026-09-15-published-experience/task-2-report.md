@@ -44,3 +44,21 @@ Commands run in `/private/tmp/alignment-published-data`:
 - `npm run typecheck` — passed.
 
 Fix commit: recorded in completion message; this report accompanies the fix.
+
+## Post-publication clean-machine CI fix
+
+Investigated GitHub Ubuntu/Node 22 run `35002901225` failure rather than regenerating outputs. Isolated Node 22.23.2 binary at `/private/tmp/history-node22/package/bin/node` reproduced twelve numeric differences from Node 26.8.2, all AI-on Thailand/India modeled wellbeing; maximum absolute difference 1.4210854715202004e-14. Exact path evidence: `/private/tmp/history-runtime-differences.json`. Math-function diagnostic evidence: `/private/tmp/history-math-diff.json`. Only `Math.pow` results differed; substituting its captured Node 26 results into the temporary Node 22 diagnostic process made the complete CLI report identical. Engine code was never edited.
+
+Implemented the controller-approved 8-epsilon-scaled comparison solely for four modeled/derived country wellbeing fields. All observation values, GDP, aggregates, baseline targets, source hashes and remaining fields remain exact; differences include path and values. Stored artifact report is preserved exactly; its exporter source hash is the only metadata change. Added regression coverage for the twelve observed runtime differences and mutations to observation values at floating-point scale, modeled values, country errors, GDP and scores.
+
+Exact verification from `/private/tmp/alignment-published-data`:
+
+- Before the fix, `npm exec vitest run src/history/history.test.ts` — 7 passed, 1 failed: new actual-Node-22-difference regression failed as expected.
+- After the fix, `npm exec vitest run src/history/history.test.ts` — 8 passed under Node 26.8.2.
+- `/private/tmp/history-node22/package/bin/node node_modules/vitest/vitest.mjs run src/history/history.test.ts` — 8 passed under Node 22.23.2.
+- `npm run typecheck` — passed.
+- `node --import tsx scripts/hindcast/export-experience.ts --check` — passed under Node 26.
+- `/private/tmp/history-node22/package/bin/node --import tsx scripts/hindcast/export-experience.ts --check` — passed under Node 22.
+- Compared `HEAD:data/hindcast/experience.json` with the updated file using Node: `reportIdentical: true`; only changed hash key `scripts/hindcast/export-experience.ts`.
+
+No dependencies/lockfile, economic engine, observations, targets or qualification changes. No push performed. Root owns push and fresh Ubuntu CI confirmation. Commit recorded in completion message.

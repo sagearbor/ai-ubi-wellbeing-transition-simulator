@@ -88,10 +88,37 @@ export function validateArtifact(artifact: HistoryArtifact): void {
     !base.aiOff || base.corpContributionRate !== 0) throw new Error('Published baseline changed; do not repin targets');
 }
 
+/** Only these derived wellbeing leaves accumulate the confirmed Node 22/26 Math.pow rounding.
+ * Observations, GDP, aggregates, parameters, baseline targets and all other fields stay exact.
+ */
+const ROUNDED_WELLBEING_PATH = /^report\.runs\.[^.]+\.countries\.\d+\.(?:predictedWellbeingEnd|predictedWellbeingChange|wellbeingError|predictedWellbeingSeries\.\d+)$/;
+
+function firstResultDifference(stored: unknown, fresh: unknown, path = ''): string | undefined {
+  if (stored === fresh) return;
+  if (typeof stored === 'number' && typeof fresh === 'number' &&
+    Number.isFinite(stored) && Number.isFinite(fresh) && ROUNDED_WELLBEING_PATH.test(path)) {
+    const tolerance = 8 * Number.EPSILON * Math.max(1, Math.abs(stored), Math.abs(fresh));
+    if (Math.abs(stored - fresh) <= tolerance) return;
+  }
+  if (stored !== null && fresh !== null && typeof stored === 'object' && typeof fresh === 'object') {
+    const storedKeys = Object.keys(stored);
+    const freshKeys = Object.keys(fresh);
+    if (Array.isArray(stored) !== Array.isArray(fresh) || storedKeys.length !== freshKeys.length ||
+      storedKeys.some(key => !Object.hasOwn(fresh, key))) return `${path}: object/array shape differs`;
+    for (const key of storedKeys) {
+      const difference = firstResultDifference(stored[key], fresh[key], path ? `${path}.${key}` : key);
+      if (difference) return difference;
+    }
+    return;
+  }
+  return `${path}: stored=${JSON.stringify(stored)}, fresh=${JSON.stringify(fresh)}`;
+}
+
 export function checkArtifact(stored: HistoryArtifact, fresh: HistoryArtifact): void {
   validateArtifact(stored);
   if (JSON.stringify(stored.sourceHashes) !== JSON.stringify(fresh.sourceHashes)) throw new Error('Stale historical source hashes; regenerate artifact');
-  if (JSON.stringify(stored) !== JSON.stringify(fresh)) throw new Error('Stale or edited historical results; regenerate artifact');
+  const difference = firstResultDifference(stored, fresh);
+  if (difference) throw new Error(`Stale or edited historical results at ${difference}; regenerate artifact`);
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {

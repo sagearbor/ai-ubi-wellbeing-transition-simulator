@@ -60,3 +60,32 @@ describe('historical reconstruction artifact', () => {
     expect(stored.report.sources.wellbeingLadder.retrievedAt).toBe('2026-09-10');
   });
 });
+
+// Captured Node 22.23.2 vs 26.8.2 differences: only modeled wellbeing output rounding.
+const node22WellbeingDifferences = [{"path":["report","runs","ai-on","countries","69","predictedWellbeingSeries","5"],"value":30.511406215375384},{"path":["report","runs","ai-on","countries","69","predictedWellbeingSeries","6"],"value":23.416355518168224},{"path":["report","runs","ai-on","countries","69","predictedWellbeingSeries","7"],"value":16.010574848041134},{"path":["report","runs","ai-on","countries","75","predictedWellbeingEnd"],"value":29.469945898689378},{"path":["report","runs","ai-on","countries","75","predictedWellbeingChange"],"value":-14.570054101310621},{"path":["report","runs","ai-on","countries","75","wellbeingError"],"value":-15.890054101310621},{"path":["report","runs","ai-on","countries","75","predictedWellbeingSeries","5"],"value":62.476803694583985},{"path":["report","runs","ai-on","countries","75","predictedWellbeingSeries","6"],"value":67.9287883100379},{"path":["report","runs","ai-on","countries","75","predictedWellbeingSeries","7"],"value":64.03252737582605},{"path":["report","runs","ai-on","countries","75","predictedWellbeingSeries","8"],"value":55.07552356358416},{"path":["report","runs","ai-on","countries","75","predictedWellbeingSeries","9"],"value":20.569045907074873},{"path":["report","runs","ai-on","countries","75","predictedWellbeingSeries","10"],"value":29.469945898689378}];
+
+describe('runtime numeric portability', () => {
+  it('accepts the twelve observed Node 22 Math.pow propagation differences', () => {
+    const node22 = structuredClone(fresh);
+    for (const { path, value } of node22WellbeingDifferences) {
+      let cursor: any = node22;
+      for (const key of path.slice(0, -1)) cursor = cursor[key];
+      cursor[path[path.length - 1]] = value;
+    }
+    expect(() => checkArtifact(fresh, node22)).not.toThrow();
+  });
+  it('still rejects edited observations, modeled values, country errors and aggregate scores', () => {
+    const mutations = [
+      (a: HistoryArtifact) => { a.report.runs['ai-on'].countries[75].actualWellbeingSeries[5]! *= 1 + Number.EPSILON; },
+      (a: HistoryArtifact) => { a.report.runs['ai-on'].countries[75].predictedWellbeingSeries[5] += 1e-10; },
+      (a: HistoryArtifact) => { a.report.runs['ai-on'].countries[75].wellbeingError += 1e-10; },
+      (a: HistoryArtifact) => { a.report.runs['ai-on'].score.maeWellbeing += 1e-12; },
+      (a: HistoryArtifact) => { a.report.runs['ai-on'].countries[75].predictedGdpSeries[5] += 1e-10; },
+    ];
+    for (const mutate of mutations) {
+      const edited = structuredClone(fresh);
+      mutate(edited);
+      expect(() => checkArtifact(edited, fresh)).toThrow(/Stale or edited historical results at report\.runs\.ai-on\..*: stored=.+, fresh=.+/);
+    }
+  });
+});
