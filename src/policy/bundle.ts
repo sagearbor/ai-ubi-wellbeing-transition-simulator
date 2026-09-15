@@ -18,6 +18,7 @@
  * the link does not open and the bundle reports "cannot open", each with the errors.
  */
 
+import { scenarioProvenance, validProvenance, type ScenarioProvenance } from './provenance';
 import { ENGINE_VERSION, NUMERICAL_CONVENTIONS } from '../core/engine';
 import type { CoreModel, Overlay } from '../core/types';
 import { contentHash, modelHash, sha256Hex } from './hash';
@@ -69,6 +70,7 @@ export interface LabLinkState {
   /** The numerical engine the link was made with (src/core/engine.ts ENGINE_VERSION). */
   engineVersion: string;
   numerical?: Record<string, string>;
+  provenance?: ScenarioProvenance;
   /** Scenario overlays both sides share, in order. */
   overlays: Overlay[];
   /** Draft A, and optionally draft B, both on the same baseline. */
@@ -119,7 +121,7 @@ export function decodeLabLink(payload: string): Decoded<LabLinkState> {
   if (!Number.isInteger(seed)) return { ok: false, reason: 'the link has an invalid seed' };
   return {
     ok: true,
-    value: { v: 2, modelId: parsed.modelId, modelHash: parsed.modelHash, engineVersion: parsed.engineVersion, ...(isObject(parsed.numerical) ? { numerical: parsed.numerical as Record<string, string> } : {}), overlays: parsed.overlays as Overlay[], drafts: parsed.drafts as unknown as PolicyDraft[], runs, seed },
+    value: { v: 2, modelId: parsed.modelId, modelHash: parsed.modelHash, engineVersion: parsed.engineVersion, ...(validProvenance(parsed.provenance) ? {provenance: parsed.provenance} : {}), ...(isObject(parsed.numerical) ? { numerical: parsed.numerical as Record<string, string> } : {}), overlays: parsed.overlays as Overlay[], drafts: parsed.drafts as unknown as PolicyDraft[], runs, seed },
   };
 }
 
@@ -139,6 +141,7 @@ export interface OpenedScenario {
   seed: number;
   /** Validation of each draft against the model (quotes unchecked and coverage unknown: links carry no source text). */
   diagnostics: DraftDiagnostic[][];
+  provenance?: ScenarioProvenance;
 }
 
 function engineProblem(recorded: unknown): string | null {
@@ -179,7 +182,7 @@ export function openLabLink(state: LabLinkState, registry: ModelRegistry): Decod
       reason: `draft ${broken + 1} ("${String(state.drafts[broken]?.id)}") has ${errs.length} validation error${errs.length === 1 ? '' : 's'}, so it cannot run: ${errs.map((x) => `[${x.code}] ${x.message}`).join('; ')}`,
     };
   }
-  return { ok: true, value: { model: m.model, overlays: state.overlays, drafts: state.drafts, runs: state.runs, seed: state.seed, diagnostics } };
+  return { ok: true, value: { model: m.model, overlays: state.overlays, drafts: state.drafts, runs: state.runs, seed: state.seed, diagnostics, provenance: scenarioProvenance(m.model, state.overlays, state.provenance) } };
 }
 
 // ---------------------------------------------------------------------------
@@ -219,6 +222,7 @@ export interface PolicyBundle {
   /** Present with `model`: an embedded model is never curated. */
   modelStatus?: typeof EXPERIMENTAL_MODEL_STATUS;
   importWarnings?: string[];
+  provenance?: ScenarioProvenance;
   draft: PolicyDraft;
   /** Present when the bundle was made with the source text, so quotes can be re-checked. */
   sourceText?: string;
@@ -233,7 +237,7 @@ export function buildBundle(
   overlays: Overlay[],
   draft: PolicyDraft,
   result: PairedRunResult,
-  opts: { sourceText?: string; tolerance?: Tolerance; embedModel?: boolean; importWarnings?: string[] } = {},
+  opts: { sourceText?: string; tolerance?: Tolerance; embedModel?: boolean; importWarnings?: string[]; provenance?: ScenarioProvenance } = {},
 ): PolicyBundle {
   if (!result.ok || !result.manifest.hash) throw new Error('Only a completed successful run can be exported as a replay bundle.');
   if (modelHash(model) !== result.manifest.modelHash || contentHash(draft) !== result.manifest.draftHash ||
@@ -246,6 +250,7 @@ export function buildBundle(
     manifest: result.manifest,
     model,
     modelStatus: EXPERIMENTAL_MODEL_STATUS,
+    provenance: scenarioProvenance(model, overlays, opts.provenance),
     ...(opts.importWarnings?.length ? { importWarnings: opts.importWarnings } : {}),
     draft,
     ...(opts.sourceText ? { sourceText: opts.sourceText } : {}),
@@ -291,6 +296,7 @@ export function parseBundleJson(text: string): Decoded<PolicyBundle> {
   if (parsed.sourceText !== undefined && typeof parsed.sourceText !== 'string') return { ok: false, reason: 'the source text is malformed' };
   if (parsed.importWarnings !== undefined && (!Array.isArray(parsed.importWarnings) || !parsed.importWarnings.every((w) => typeof w === 'string'))) return { ok: false, reason: 'the import provenance is malformed' };
   if (parsed.model !== undefined && !isObject(parsed.model)) return { ok: false, reason: 'the bundle\'s embedded "model" is not an object' };
+  if (parsed.provenance !== undefined && !validProvenance(parsed.provenance)) return { ok: false, reason: 'the scenario provenance is malformed' };
   const tol = parsed.tolerance as Record<string, unknown>;
   if (!(typeof tol.absolute === 'number' && Number.isFinite(tol.absolute) && tol.absolute >= 0 && tol.absolute <= DEFAULT_TOLERANCE.absolute) || !(typeof tol.relative === 'number' && Number.isFinite(tol.relative) && tol.relative >= 0 && tol.relative <= DEFAULT_TOLERANCE.relative)) {
     return { ok: false, reason: 'the bundle must declare finite tolerances from 0 to 1e-9; larger tolerances cannot certify reproduction' };

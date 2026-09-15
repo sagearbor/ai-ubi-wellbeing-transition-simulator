@@ -7,6 +7,7 @@
  * listed, with fields the format does not support called out as unsupported capabilities.
  */
 
+import type { ScenarioProvenance } from '../../src/policy/provenance';
 import React, { useRef, useState } from 'react';
 import { ChevronRight, FileUp } from 'lucide-react';
 import type { CoreModel, Overlay } from '../../src/core/types';
@@ -20,7 +21,7 @@ export interface ModelImportPanelProps {
   runner: Runner;
   /** The model an imported overlay is applied to. */
   currentModel: CoreModel;
-  onImportModel: (model: CoreModel, overlays: Overlay[], warnings: string[]) => void;
+  onImportModel: (model: CoreModel, overlays: Overlay[], warnings: string[], provenance?: ScenarioProvenance) => void;
   onImportOverlay: (overlay: Overlay, warnings: string[]) => void;
   /** The file is an exact copy of a bundled model: open that instead. */
   onSelectCurated: (id: string) => void;
@@ -93,12 +94,13 @@ const ModelImportPanel: React.FC<ModelImportPanelProps> = ({ runner, currentMode
         }
         if (problems.length) return setErrors(problems);
       }
+      const provenance: ScenarioProvenance | undefined = c.kind === 'incompatible-package' ? {kind: 'source-import', reason: c.reason} : c.kind === 'package' ? c.provenance : undefined;
       const curated = curatedMatch(model);
-      if (curated && overlays.length === 0 && c.kind !== 'incompatible-package' && !warnings.some((w) => w.includes('NEW experimental'))) {
+      if (curated && overlays.length === 0 && c.kind !== 'incompatible-package' && (!provenance || provenance.kind === 'fixture')) {
         onSelectCurated(curated.model.id);
         setNotice(`This file is the bundled model "${curated.model.id}" exactly (same version), so the curated copy is open.`);
       } else {
-        onImportModel(model, overlays, warnings);
+        onImportModel(model, overlays, warnings, provenance);
         setNotice(`Loaded "${model.name}" (${EXPERIMENTAL_LABEL})${overlays.length ? ` with ${overlays.length} overlay${overlays.length === 1 ? '' : 's'}` : ''}. ${warnings.length} validation warning${warnings.length === 1 ? '' : 's'}.`);
       }
       setText('');

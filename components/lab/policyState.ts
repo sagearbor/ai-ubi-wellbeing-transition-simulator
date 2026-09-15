@@ -7,6 +7,7 @@
  * completeness attestation: it attested the old provisions and exclusions.
  */
 
+import type { ScenarioProvenance } from '../../src/policy/provenance';
 import { NUMERICAL_CONVENTIONS, ENGINE_VERSION, resolveModel } from '../../src/core/engine';
 import type { CoreModel, Overlay } from '../../src/core/types';
 import type { FixtureEntry } from '../../src/core/fixtures';
@@ -182,8 +183,8 @@ export function splitScenarioOverlays(fixture: FixtureEntry, overlays: Overlay[]
   return { overlayIds, custom };
 }
 
-export function linkStateFor(model: CoreModel, overlays: Overlay[], drafts: PolicyDraft[], runs: number, seed: number): LabLinkState {
-  return { v: 2, modelId: model.id, modelHash: modelHash(model), engineVersion: ENGINE_VERSION, numerical: NUMERICAL_CONVENTIONS, overlays, drafts, runs, seed };
+export function linkStateFor(model: CoreModel, overlays: Overlay[], drafts: PolicyDraft[], runs: number, seed: number, provenance?: ScenarioProvenance): LabLinkState {
+  return { v: 2, modelId: model.id, modelHash: modelHash(model), engineVersion: ENGINE_VERSION, numerical: NUMERICAL_CONVENTIONS, overlays, drafts, runs, seed, ...(provenance ? {provenance} : {}) };
 }
 
 /** Identity of a run's inputs: a result is stale when this changes. */

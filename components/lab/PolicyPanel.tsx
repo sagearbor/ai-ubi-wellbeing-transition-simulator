@@ -19,6 +19,7 @@ import { attestationBinding } from '../../src/policy/draft';
  * link names a model the app ships); its bundle carries the model and says it is experimental.
  */
 
+import { scenarioProvenance, type ScenarioProvenance } from '../../src/policy/provenance';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Copy, Download, FileText, Link2, Play, Plus, ScrollText, Sparkles, Square, Upload } from 'lucide-react';
 import { resolveModel } from '../../src/core/engine';
@@ -81,12 +82,13 @@ export interface PolicyPanelProps {
   /** Switch the Lab to another bundled model (with no overlays). */
   onRequestModel: (modelId: string) => void;
   /** Switch the Lab to a model and a scenario (from a bundle). The model may be one the bundle carried. */
-  onOpenScenario: (model: CoreModel, overlays: Overlay[], status: ModelStatus, warnings?: string[]) => void;
+  onOpenScenario: (model: CoreModel, overlays: Overlay[], status: ModelStatus, warnings?: string[], provenance?: ScenarioProvenance) => void;
   /** Runs paired comparisons and bundle re-runs (a worker in the browser, synchronous in tests). */
   runner: Runner;
   /** 'imported' when the Lab's model was loaded from a file: experimental — not curated. */
   modelStatus?: ModelStatus;
   importWarnings?: string[];
+  provenance?: ScenarioProvenance;
   /** Models imported this session, so bundles made on them reopen. */
   extraModels?: CoreModel[];
 }
@@ -157,6 +159,7 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
   runner,
   modelStatus = 'curated',
   importWarnings = [],
+  provenance,
   extraModels = [],
 }) => {
   const [sourceCandidate, setSourceCandidate] = useState<{ model: CoreModel; overlays: Overlay[]; draft: PolicyDraft; sourceText?: string; reason: string } | null>(null);
@@ -186,7 +189,7 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
   const [memoCopied, setMemoCopied] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
-  const imported = modelStatus === 'imported';
+  const imported = modelStatus === 'imported' || provenance?.kind === 'source-import';
   const registryModels = useMemo(() => (imported ? [model, ...extraModels] : extraModels), [imported, model, extraModels]);
   const apiKey = hasPolicyApiKey();
   const scenarioModel = useMemo(() => resolveModel(model, overlays).model, [model, overlays]);
@@ -335,7 +338,7 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
 
   const copyLink = async () => {
     if (!drafts.length || imported) return;
-    const state = linkStateFor(model, overlays, drafts.filter((d) => d.modelId === model.id), runs, seed);
+    const state = linkStateFor(model, overlays, drafts.filter((d) => d.modelId === model.id), runs, seed, provenance);
     const payload = encodeLabLink(state);
     if (payload.length > MAX_LINK_PAYLOAD_CHARS) {
       setLinkText(null);
@@ -358,7 +361,7 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
     // The source text travels only when it is the text the draft pins, so quotes can be re-checked on reopening.
     const pinned = sourceText.trim() && (!draft.source.textSha256 || sha256Hex(sourceText) === draft.source.textSha256);
     try {
-      const bundle = buildBundle(model, overlays, draft, activeResult.result, { sourceText: pinned ? sourceText : undefined, embedModel: imported, importWarnings });
+      const bundle = buildBundle(model, overlays, draft, activeResult.result, { sourceText: pinned ? sourceText : undefined, embedModel: imported, importWarnings, provenance });
       download(bundleFileName(bundle), JSON.stringify(bundle, null, 2), 'application/json');
     } catch (e) { setNotice({ tone: 'error', text: (e as Error).message }); }
   };
@@ -417,7 +420,7 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
     setReport(rep);
     if (rep.status !== 'reproduced' && bundle.model && sourceDraftSupported(bundle.draft, bundle.model, bundle.overlays)) setSourceCandidate({model: bundle.model, overlays: bundle.overlays, draft: bundle.draft, sourceText: bundle.sourceText, reason: rep.errors.join(' ')});
     if (rep.status === 'reproduced' && rep.model && rep.draft && rep.overlays) {
-      onOpenScenario(rep.model, rep.overlays, bundle.importWarnings?.some((w) => w.includes('NEW experimental')) ? 'imported' : status, bundle.importWarnings);
+      onOpenScenario(rep.model, rep.overlays, status, bundle.importWarnings, scenarioProvenance(rep.model, rep.overlays, bundle.provenance));
       setDrafts([rep.draft]);
       setActive(0);
       setSourceTitle(rep.draft.source?.title ?? '');
@@ -467,10 +470,11 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
         </p>
       </header>
 
+      {provenance && provenance.kind !== 'fixture' && <p role="note" className="text-xs text-amber-700 dark:text-amber-300">Experimental scenario — not curated. Base model: {modelStatus === 'curated' ? 'known fixture' : 'imported'}.{provenance.reason ? ` Source import reason: ${provenance.reason}` : ''}</p>}
       {sourceCandidate && <button type="button" className={btnPlain} onClick={() => {
         const c = sourceCandidate;
         const importedDraft: PolicyDraft = { ...c.draft, modelId: c.model.id, modelHash: modelHash(c.model), reviewStatus: 'author-drafted', reviewedBy: undefined, completeness: undefined };
-        onOpenScenario(c.model, c.overlays, 'imported', [`NEW experimental source import; not replay: ${c.reason}`]);
+        onOpenScenario(c.model, c.overlays, curatedMatch(c.model) ? 'curated' : 'imported', [`NEW experimental source import; not replay: ${c.reason}`], {kind: 'source-import', reason: c.reason});
         setDrafts([importedDraft]); setActive(0); setResults([]); setReport(null);
         setSourceTitle(importedDraft.source?.title ?? ''); setSourceUrl(importedDraft.source?.url ?? ''); setSourceText(c.sourceText ?? '');
         setSourceCandidate(null); setNotice({tone: 'ok', text: `Source imported for a NEW experimental run. Recorded results were not reproduced: ${c.reason}. Inspect the draft and run explicitly.`});

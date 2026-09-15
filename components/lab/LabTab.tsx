@@ -45,6 +45,7 @@ import ModelImportPanel from './ModelImportPanel';
 import PolicyPanel from './PolicyPanel';
 import { splitScenarioOverlays } from './policyState';
 import OutputChart from './OutputChart';
+import { scenarioProvenance, type ScenarioProvenance } from '../../src/policy/provenance';
 import { EXPERIMENTAL_LABEL, curatedMatch, importKey, isImportKey, type ImportedModel, type ModelStatus } from './importState';
 import {
   describeOf,
@@ -63,6 +64,7 @@ export interface LabTabProps {
   initialOverlayIds?: string[];
   /** Overlays to start with, as if the "add a variable" form had produced them. */
   initialCustomOverlays?: Overlay[];
+  initialProvenance?: ScenarioProvenance;
   /** Start with the Monte Carlo band on. */
   initialUncertainty?: boolean;
   /**
@@ -98,6 +100,7 @@ const LabTab: React.FC<LabTabProps> = ({
   initialModelId,
   initialOverlayIds = [],
   initialCustomOverlays = [],
+  initialProvenance,
   initialUncertainty = false,
   initialHash,
   initialPolicy,
@@ -130,6 +133,8 @@ const LabTab: React.FC<LabTabProps> = ({
   const [overlayIds, setOverlayIds] = useState<string[]>(linkSplit?.overlayIds ?? initialOverlayIds);
   const [customOverlays, setCustomOverlays] = useState<Overlay[]>(linkSplit?.custom ?? initialCustomOverlays);
   const [importedOverlayIds, setImportedOverlayIds] = useState<string[]>([]);
+  const [recordedProvenance, setRecordedProvenance] = useState<ScenarioProvenance | undefined>(link.opened?.provenance ?? initialProvenance);
+  const [scenarioWarnings, setScenarioWarnings] = useState<string[]>([]);
   const [edits, setEdits] = useState<Record<string, number>>({});
   const [hypothetical, setHypothetical] = useState<Hypothetical | null>(null);
   const [uncertainty, setUncertainty] = useState<boolean>(initialUncertainty);
@@ -142,7 +147,7 @@ const LabTab: React.FC<LabTabProps> = ({
   const model: CoreModel = importedEntry ? importedEntry.model : fixture!.model;
   const offeredOverlays: Overlay[] = importedEntry ? importedEntry.overlays : fixture!.overlays;
   const status: ModelStatus = importedEntry ? 'imported' : 'curated';
-  const experimental = status === 'imported' || importedOverlayIds.some((id) => customOverlays.some((o) => o.id === id));
+
 
   // -- overlays -------------------------------------------------------------
 
@@ -159,6 +164,10 @@ const LabTab: React.FC<LabTabProps> = ({
   }, [fixtureOverlays, customOverlays, edits, resolvedModel]);
 
   const runOverlays = useMemo(() => (hypothetical ? [...overlays, hypotheticalOverlay(hypothetical)] : overlays), [overlays, hypothetical]);
+
+  const provenance = scenarioProvenance(model, runOverlays, recordedProvenance ?? importedEntry?.provenance ?? (status === 'imported' ? {kind: 'experimental'} : undefined));
+  const experimental = provenance.kind !== 'fixture';
+  const importWarnings = [...(importedEntry?.warnings ?? []), ...scenarioWarnings];
 
   // -- runs -----------------------------------------------------------------
 
@@ -218,6 +227,8 @@ const LabTab: React.FC<LabTabProps> = ({
     setOverlayIds([]);
     setCustomOverlays([]);
     setImportedOverlayIds([]);
+    setRecordedProvenance(undefined);
+    setScenarioWarnings([]);
     setEdits({});
     setHypothetical(null);
     setOutputChoice(null);
@@ -225,23 +236,26 @@ const LabTab: React.FC<LabTabProps> = ({
     setEntityChoice(null);
   };
 
-  const addImport = (m: CoreModel, withOverlays: Overlay[], warnings: string[]): string => {
+  const addImport = (m: CoreModel, withOverlays: Overlay[], warnings: string[], provenance?: ScenarioProvenance): string => {
     const key = importKey(m);
-    setImports((list) => [...list.filter((x) => x.key !== key), { key, model: m, overlays: withOverlays, warnings }]);
+    setImports((list) => [...list.filter((x) => x.key !== key), { key, model: m, overlays: withOverlays, warnings, provenance }]);
     return key;
   };
 
   /** Open a model with exactly these scenario overlays (from a bundle). */
-  const applyScenario = (m: CoreModel, scenario: Overlay[], st: ModelStatus, warnings: string[] = []) => {
+  const applyScenario = (m: CoreModel, scenario: Overlay[], st: ModelStatus, warnings: string[] = [], provenance?: ScenarioProvenance) => {
     const curated = curatedMatch(m);
     if (st === 'curated' && curated) {
       const split = splitScenarioOverlays(curated, scenario);
       pickModel(curated.model.id);
       setOverlayIds(split.overlayIds);
       setCustomOverlays(split.custom);
+      setImportedOverlayIds(split.custom.map((o) => o.id));
+      setRecordedProvenance(scenarioProvenance(m, scenario, provenance));
+      setScenarioWarnings(warnings);
       return;
     }
-    const key = addImport(m, [], warnings);
+    const key = addImport(m, [], warnings, provenance);
     pickModel(key);
     setCustomOverlays(scenario);
   };
@@ -338,10 +352,11 @@ const LabTab: React.FC<LabTabProps> = ({
         <ModelImportPanel
           runner={runner}
           currentModel={model}
-          onImportModel={(m, withOverlays, warnings) => pickModel(addImport(m, withOverlays, warnings))}
-          onImportOverlay={(o) => {
+          onImportModel={(m, withOverlays, warnings, provenance) => applyScenario(m, withOverlays, curatedMatch(m) ? 'curated' : 'imported', warnings, provenance)}
+          onImportOverlay={(o, warnings) => {
             setCustomOverlays((list) => [...list.filter((x) => x.id !== o.id), o]);
             setImportedOverlayIds((ids) => [...ids.filter((x) => x !== o.id), o.id]);
+            setScenarioWarnings((old) => [...old, ...warnings]);
           }}
           onSelectCurated={pickModel}
         />
@@ -627,7 +642,7 @@ const LabTab: React.FC<LabTabProps> = ({
         overlays={overlays}
         runner={runner}
         modelStatus={status}
-        importWarnings={importedEntry?.warnings}
+        importWarnings={importWarnings} provenance={provenance}
         extraModels={imports.map((i) => i.model)}
         initialDrafts={link.opened?.drafts ?? initialPolicy?.drafts ?? []}
         initialSource={initialPolicy?.source}
@@ -649,7 +664,7 @@ const LabTab: React.FC<LabTabProps> = ({
       />
 
       {/* 9. The files themselves. */}
-      <ModelFilePanel model={model} overlays={runOverlays} status={status} importWarnings={importedEntry?.warnings} />
+      <ModelFilePanel model={model} overlays={runOverlays} status={status} importWarnings={importWarnings} provenance={provenance} />
     </div>
   );
 };

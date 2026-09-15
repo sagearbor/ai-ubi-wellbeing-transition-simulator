@@ -7,6 +7,7 @@
  * experimental, not curated, model. Becoming a curated fixture is a separate, reviewed step.
  */
 
+import type { ScenarioProvenance } from '../../src/policy/provenance';
 import React, { useState } from 'react';
 import { ChevronRight, Copy, Download } from 'lucide-react';
 import type { CoreModel, Overlay } from '../../src/core/types';
@@ -18,6 +19,7 @@ export interface ModelFilePanelProps {
   overlays: Overlay[];
   status?: ModelStatus;
   importWarnings?: string[];
+  provenance?: ScenarioProvenance;
 }
 
 function download(filename: string, text: string): void {
@@ -71,7 +73,7 @@ const JsonBlock: React.FC<{ title: string; note?: string; value: unknown; rows: 
   );
 };
 
-const ModelFilePanel: React.FC<ModelFilePanelProps> = ({ model, overlays, status = 'curated', importWarnings = [] }) => {
+const ModelFilePanel: React.FC<ModelFilePanelProps> = ({ model, overlays, status = 'curated', importWarnings = [], provenance }) => {
   const [error, setError] = React.useState<string | null>(null);
   return (
   <details className="group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-3 sm:p-4">
@@ -87,14 +89,14 @@ const ModelFilePanel: React.FC<ModelFilePanelProps> = ({ model, overlays, status
     <div className="mt-1 flex flex-wrap items-center gap-2">
       <button
         type="button"
-        onClick={() => { try { download(exportFileName(model), JSON.stringify(buildModelExport(model, overlays, status as ModelStatus, undefined, importWarnings), null, 2)); setError(null); } catch (e) { setError((e as Error).message); } }}
+        onClick={() => { try { download(exportFileName(model), JSON.stringify(buildModelExport(model, overlays, status as ModelStatus, undefined, importWarnings, provenance), null, 2)); setError(null); } catch (e) { setError((e as Error).message); } }}
         className="inline-flex min-h-11 items-center gap-1.5 rounded-lg border border-slate-300 dark:border-slate-700 px-3 text-xs font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
       >
         <Download size={13} aria-hidden="true" />
         Export model + overlays (JSON)
       </button>
       <span className="text-[11px] text-slate-500 dark:text-slate-400">
-        {status === 'imported' ? `Exports carry the status "${EXPERIMENTAL_LABEL}".` : 'Re-importing an unchanged bundled model opens the curated copy; any change makes it experimental.'}
+        {provenance && provenance.kind !== 'fixture' ? 'Exports preserve experimental scenario provenance independently of the base model.' : status === 'imported' ? `Exports carry the status "${EXPERIMENTAL_LABEL}".` : 'Re-importing an unchanged bundled model opens the curated copy; any change makes it experimental.'}
       </span>
     </div>
     <JsonBlock

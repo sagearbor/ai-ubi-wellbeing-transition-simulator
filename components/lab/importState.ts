@@ -7,6 +7,7 @@
  * byte-for-byte a bundled model (same id, same version hash) is simply that bundled model.
  */
 
+import { scenarioProvenance, validProvenance, type ScenarioProvenance } from '../../src/policy/provenance';
 import { ENGINE_VERSION, NUMERICAL_CONVENTIONS } from '../../src/core/engine';
 import { CORE_FIXTURES, type FixtureEntry } from '../../src/core/fixtures';
 import type { CoreModel, Overlay } from '../../src/core/types';
@@ -25,6 +26,7 @@ export interface ImportedModel {
   overlays: Overlay[];
   /** Validation warnings shown with it. */
   warnings: string[];
+  provenance?: ScenarioProvenance;
 }
 
 export interface ModelExport {
@@ -35,6 +37,7 @@ export interface ModelExport {
   numerical: Record<string, string>;
   overlaysHash: string;
   importWarnings?: string[];
+  provenance?: ScenarioProvenance;
   modelHash: string;
   exportedAt: string;
   model: CoreModel;
@@ -55,11 +58,13 @@ export function curatedMatch(model: CoreModel): FixtureEntry | undefined {
   return f && modelHash(f.model) === modelHash(model) ? f : undefined;
 }
 
-export function buildModelExport(model: CoreModel, overlays: Overlay[], status: ModelStatus, now: () => string = () => new Date().toISOString(), importWarnings: string[] = []): ModelExport {
+export function buildModelExport(model: CoreModel, overlays: Overlay[], status: ModelStatus, now: () => string = () => new Date().toISOString(), importWarnings: string[] = [], provenance?: ScenarioProvenance): ModelExport {
+  const actual = scenarioProvenance(model, overlays, provenance ?? (status === 'imported' ? {kind: 'experimental'} : undefined));
   const result: ModelExport = {
+    provenance: actual,
     schema: EXPORT_SCHEMA,
     importWarnings,
-    status: status === 'curated' && curatedMatch(model) ? 'curated' : EXPERIMENTAL_LABEL,
+    status: status === 'curated' && actual.kind === 'fixture' ? 'curated' : EXPERIMENTAL_LABEL,
     engineVersion: ENGINE_VERSION,
     numerical: NUMERICAL_CONVENTIONS,
     overlaysHash: contentHash(overlays),
@@ -79,8 +84,8 @@ export function exportFileName(model: CoreModel): string {
 
 export type Classified =
   | { kind: 'model'; model: unknown }
-  | { kind: 'package'; model: unknown; overlays: unknown[]; warnings?: string[] }
-  | { kind: 'incompatible-package'; model: unknown; overlays: unknown[]; warnings?: string[]; reason: string }
+  | { kind: 'package'; model: unknown; overlays: unknown[]; warnings?: string[]; provenance?: ScenarioProvenance }
+  | { kind: 'incompatible-package'; model: unknown; overlays: unknown[]; warnings?: string[]; provenance?: ScenarioProvenance; reason: string }
   | { kind: 'overlay'; overlay: unknown }
   | { kind: 'policy-bundle' }
   | { kind: 'unknown'; reason: string };
@@ -114,9 +119,10 @@ function classifyChecked(json: unknown): Classified {
     if (contentHash(json.numerical) !== contentHash(NUMERICAL_CONVENTIONS)) reasons.push('numerical conventions are missing or incompatible');
     if (!Array.isArray(json.overlays) || contentHash(json.overlays) !== json.overlaysHash) reasons.push('overlay settings do not match their hash');
     const overlays = Array.isArray(json.overlays) ? json.overlays : [];
+    const provenance = scenarioProvenance(json.model as unknown as CoreModel, overlays as Overlay[], validProvenance(json.provenance) ? json.provenance : json.status === EXPERIMENTAL_LABEL ? {kind: 'experimental'} : undefined);
     const warnings = Array.isArray(json.importWarnings) ? json.importWarnings.filter((x): x is string => typeof x === 'string') : [];
-    if (reasons.length) return { kind: 'incompatible-package', model: json.model, overlays, warnings, reason: reasons.join('; ') };
-    return { kind: 'package', model: json.model, overlays, warnings };
+    if (reasons.length) return { kind: 'incompatible-package', model: json.model, overlays, warnings, provenance, reason: reasons.join('; ') };
+    return { kind: 'package', model: json.model, overlays, warnings, provenance };
   }
   if (typeof json.schema === 'string' && json.schema.startsWith('policy-bundle/')) return { kind: 'policy-bundle' };
   if ('schemaVersion' in json || 'time' in json || 'variables' in json && 'outputs' in json && 'parameters' in json && 'name' in json) {
