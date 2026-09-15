@@ -81,3 +81,14 @@ Browser evidence here verifies these concrete routes, not arbitrary sources, eve
 Evidence: [world limit](evidence/overnight-2026-09-15/world-limit-e529c73.json), [reopened world status](evidence/overnight-2026-09-15/world-reopened-e529c73.json), [reopened request](evidence/overnight-2026-09-15/world-reopened-request-e529c73.json). Full generated world URLs stay in temporary local evidence rather than adding a redundant 356KB payload to Git.
 
 Optional provider-backed AI extraction was not verified against a live key. Manual/example policy execution, actual bundle download/reopen and small selected-B links were verified separately above.
+
+### Final bounded corrections: production build eb80fbf
+
+Fixed local production build: `/assets/index-D3WWcq0i.js`, SHA256 `2a884b419ffdc359892fb7a5b72465701df1fed85e560a3703a19b9ffa91d2f3`, clean source commit `eb80fbf6fb19088e6188698646933e16aa82b5e0`. No deployment is implied.
+
+- USA detail panel now renders **340.0 million**. A selector click at the bounding-box center of the multipolygon hit a neighboring polygon; the repeat used a DOM-verified visible USA point and an actual pointer click. This is a panel-rendering check, not proof that every map country has keyboard access.
+- A real share encode/decode with USA population doubled was opened in fresh Chromium. Expected global-only dividend was `0.24307317416993857` USD/person/month; the actual map displayed **$0.24**, retaining “Accounting: unreviewed scenario point (not a computation failure).” The old static-denominator result would display $0.25. Independent tests/re-review verify full-precision equality with ledger and recipient allocation.
+- Actual `?tab=models` prose now confines required uploaded hooks to supported legacy flows, states refusal in conditional/anchored modes and of changed optional hooks, and directs general authoring to Model Lab.
+- Default month-zero in this build still displays independently reviewed accounting with illustrative macro/wellbeing. The unchanged numerical/source graph retains the separately verified 61-point browser gate; this final rendering check did not repeat every point.
+
+Evidence: [country panel](evidence/overnight-2026-09-15/core-final-country-eb80fbf.json), [imported population headline](evidence/overnight-2026-09-15/core-final-population-eb80fbf.json), [Models introduction](evidence/overnight-2026-09-15/core-final-models-eb80fbf.json).

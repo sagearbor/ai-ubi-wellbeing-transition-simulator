@@ -1,6 +1,6 @@
 # v3 acceptance — stages 3–5 integration, 2026-09-15
 
-This record describes the implementation branch `codex/complete-v3-stages-3-5`, including Task 6 corrections at `e529c73`. It is not a deployment or merged-main claim. Recorded automated browser evidence is limited to the builds and flows named below; independent whole-branch review and GitHub checks/merge remain coordinator-owned and pending in this record.
+This record describes the functional fixes merged in [PR #17](https://github.com/sagearbor/ai-ubi-wellbeing-transition-simulator/pull/17) on 2026-09-15 at 11:14:16 UTC. Main merge commit: `6ff6c51ba08ce7c936db7b1692a83cc6d2a16fbd`; reviewed head: `c01527550f77fd843baaaf29a8f9e467d92be140`. Independent whole-branch review, its correction re-review, and the complete GitHub check passed. Recorded automated browser evidence is limited to the builds and flows named below. This is not a cloud-deployment claim. The separate guided-interface experiment is not included in PR #17.
 
 | v3 stage | Accepted implementation scope | Evidence and remaining limits |
 |---|---|---|
@@ -56,12 +56,14 @@ The Alaska case uses the published outcome denominator, period and inference; re
 
 The complete local check passed on 2026-09-15. Anchor results remain 5 of 6: accounting passes; the documented AT-3 directional/equilibrium expectation remains a reported failure, not a required accounting gate. The ledger retains 312 live targets, 311 computed, with 4 misses, 13 not-checked, 2 not-verified and 6 outside-model. No targets or tolerances were changed to obtain a pass. Existing Node deprecation, server-rendering chart and large-bundle warnings remain.
 
-## Release gates still requiring coordinator completion
+## Release gates
 
 | Gate | State |
 |---|---|
 | Complete local `npm run check` on integrated branch | Passed: 73 files / 1,054 tests, all required validators, live ledger and build; initial sandbox IPC restriction resolved by approved rerun |
 | Final production-browser supported flows and accepted default status | Passed within the recorded automated scope: Chrome/Vite `562582a` accepted all 61 default accounting points; fixed production build `e529c73` covered supported policy, Futures and world flows, bundle/link reopen and invalid-owner refusal. No live Gemini request, arbitrary-source/browser delivery, human usability study or accessibility certification. |
-| Independent whole-branch review and resolution of blocking findings | Pending coordinator review |
-| Fresh GitHub CI, pull request and merge SHA | Pending; no main/release claim |
+| Independent whole-branch review and resolution of blocking findings | Passed: all three P2 findings addressed at eb80fbf; [scoped re-review](reviews/2026-09-15-stage35-final-branch-rereview.md) |
+| Fresh GitHub CI, pull request and merge SHA | Passed: [complete GitHub check](https://github.com/sagearbor/ai-ubi-wellbeing-transition-simulator/actions/runs/34961604095/job/104356247100) on `c015275`; PR #17 merged as `6ff6c51` after passing checks and independent automated review. No self-approval or protection bypass. |
 | Cloud deployment and live demo update | Not performed by this work |
+
+Final bounded rendering corrections were also verified in production build `eb80fbf`: actual USA population label, imported-roster dividend headline and supported-upload wording. See the final section of the [browser evidence report](reviews/2026-09-15-stage35-browser-checks.md).
