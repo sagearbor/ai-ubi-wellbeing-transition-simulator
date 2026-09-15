@@ -1,0 +1,2 @@
+Reference ledger: 312 live targets (reproduced 253, reproduced-with-caveat 35, missed 3, not-checked 13, not-verified 2, outside-model 6); 310 computed.
+Ledger check OK.

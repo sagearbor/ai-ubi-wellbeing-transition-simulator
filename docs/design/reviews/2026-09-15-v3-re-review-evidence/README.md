@@ -4,15 +4,15 @@ Reviewed 15 September 2026. These are reviewer-authored probes and actual logs, 
 
 ## Files
 
-- `alignment-review-check-436a16e-unrestricted.log`: complete configured check; 901 tests / 53 files, all validators, ledger check, build.
-- `reviewer-original-probes.ts`, `review-original-436a16e.log`: the previous review's counterexamples rerun.
-- `reviewer-new-probes.ts`, `reviewer-new-probes-436a16e.log`: solver acceptance, training invariants, policy units/coverage, zero transfers, reference horizon and US scenarios.
-- `reviewer-integrity-probes.ts`, `reviewer-integrity-436a16e.log`: ledger mutation, allocation preflight (no large allocation), Monte Carlo identity, independent matrix OLS and clustered uncertainty, governance transformation/threshold, dividend, import identity.
-- `reviewer-ledger-full-probe.ts`, `reviewer-ledger-full-436a16e.log`: the complete repository ledger CLI with one in-memory known-miss mutation. Fresh computation and normal discovery/checks retained. Exit 0; only stderr warning: the Markdown rendering is stale. No repository ledger file was edited.
-- `reviewer-final-probes.ts`, `reviewer-final-436a16e.log`: uploaded-equation regression, ledger mutation with the actual existing test source, exact dependency values, complete-source bundle reproduction and deliberate stored-result corruption.
+- `alignment-review-check-436a16e-unrestricted.log.txt`: complete configured check; 901 tests / 53 files, all validators, ledger check, build.
+- `reviewer-original-probes.ts`, `review-original-436a16e.log.txt`: the previous review's counterexamples rerun.
+- `reviewer-new-probes.ts`, `reviewer-new-probes-436a16e.log.txt`: solver acceptance, training invariants, policy units/coverage, zero transfers, reference horizon and US scenarios.
+- `reviewer-integrity-probes.ts`, `reviewer-integrity-436a16e.log.txt`: ledger mutation, allocation preflight (no large allocation), Monte Carlo identity, independent matrix OLS and clustered uncertainty, governance transformation/threshold, dividend, import identity.
+- `reviewer-ledger-full-probe.ts`, `reviewer-ledger-full-436a16e.log.txt`: the complete repository ledger CLI with one in-memory known-miss mutation. Fresh computation and normal discovery/checks retained. Exit 0; only stderr warning: the Markdown rendering is stale. No repository ledger file was edited.
+- `reviewer-final-probes.ts`, `reviewer-final-436a16e.log.txt`: uploaded-equation regression, ledger mutation with the actual existing test source, exact dependency values, complete-source bundle reproduction and deliberate stored-result corruption.
 - `reviewer-legacy-probe.ts`, `legacy-before-bb85a92.json.gz`, `legacy-after-436a16e.json.gz`, `legacy-comparison.txt`: full states from independently executed pre/post-migration checkouts; both models, months 0–120. Only the new dataset-ID field is excluded. The normalized JSON outputs match exactly.
-- `reviewer-oracle.cjs`, `review-oracle-436a16e.log`: checksum-gated extraction/execution of the authors' explorer kernel; 7,150 reference values compared.
-- `review-migration-436a16e.log`, `review-profile-436a16e.log`, `review-hindcast-436a16e.log`: rerun reports.
+- `reviewer-oracle.cjs`, `review-oracle-436a16e.log.txt`: checksum-gated extraction/execution of the authors' explorer kernel; 7,150 reference values compared.
+- `review-migration-436a16e.log.txt`, `review-profile-436a16e.log.txt`, `review-hindcast-436a16e.log.txt`: rerun reports.
 
 ## Reproduce
 

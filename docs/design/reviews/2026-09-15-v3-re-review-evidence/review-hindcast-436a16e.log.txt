@@ -1,0 +1,92 @@
+Hindcast 2015 -> 2025 against simulation/pure.ts
+
+Data
+  wellbeing  World Happiness Report / Gallup World Poll, via Our World in Data
+             Cantril ladder, 0 (worst possible life) to 10 (best possible life), retrieved 2026-09-10, 2089 rows / 164 countries
+  gdp        World Bank World Development Indicators (NY.GDP.PCAP.KD)
+             constant 2015 US$ per person per year, retrieved 2026-09-10, 3308 rows / 213 countries
+  unemp      World Bank World Development Indicators (SL.UEM.TOTL.ZS) (fetched, not scored - the engine has no unemployment state)
+
+Coverage
+  106 of 128 repo countries scored (need both a 2015 and a 2025 observation in both series)
+  dropped at 2015: 10 -> CUB (no ladder 2015), BHS (no ladder 2015), GUY (no ladder 2015), TWN (no gdpPerCapita 2015), PRK (no ladder 2015 and gdpPerCapita 2015), BRN (no ladder 2015), TLS (no ladder 2015), MDV (no ladder 2015), OMN (no ladder 2015), PNG (no ladder 2015)
+  dropped at 2025:   12 -> HTI (no ladder 2025), SUR (no ladder 2025), BLR (no ladder 2025), BTN (no ladder 2025), TKM (no ladder 2025), AFG (no gdpPerCapita 2025), ARE (no gdpPerCapita 2025), LBN (no gdpPerCapita 2025), SYR (no ladder 2025 and gdpPerCapita 2025), YEM (no gdpPerCapita 2025), QAT (no ladder 2025), AGO (no ladder 2025)
+  repo ids with NO row at all in the ladder series: BHS, PRK, BRN, TLS, PNG
+  repo ids with NO row at all in the gdp series:    TWN, PRK
+
+Scores (wellbeing in 0-100 index points; ladder points x 10)
+  run               corr dWB  MAE WB  MAE (ladder)  corr dGDP  MAE GDP %  n  
+  ----------------  --------  ------  ------------  ---------  ---------  ---
+  AI off            0.473     4.53    0.453         -0.038     17.33      106
+  AI off, UBI on    0.175     7.03    0.703         -0.038     17.33      106
+  AI on             0.244     25.35   2.535         -0.141     27.73      106
+  Anchored, AI off  0.473     4.53    0.453         -0.038     17.33      106
+  Anchored, AI on   0.488     4.48    0.448         -0.140     28.64      106
+
+AI off: 120 monthly steps, aiGrowthRate=0, corp contributionRate=0
+  mean predicted wellbeing change: 1.20 index pts (actual 2.64)
+  variance of predicted wellbeing change across countries: 2.89e+1
+  mean predicted AI adoption at 2025: 0.0%
+  predicted GDP per capita is static: false (mean actual growth over the span +21.8%)
+
+AI off, UBI on: 120 monthly steps, aiGrowthRate=0, corp contributionRate=as configured in constants.ts
+  mean predicted wellbeing change: 5.78 index pts (actual 2.64)
+  variance of predicted wellbeing change across countries: 9.52e+1
+  mean predicted AI adoption at 2025: 0.0%
+  predicted GDP per capita is static: false (mean actual growth over the span +21.8%)
+
+AI on: 120 monthly steps, aiGrowthRate=0.08, corp contributionRate=as configured in constants.ts
+  mean predicted wellbeing change: -20.56 index pts (actual 2.64)
+  variance of predicted wellbeing change across countries: 9.52e+2
+  mean predicted AI adoption at 2025: 20.7%
+  predicted GDP per capita is static: false (mean actual growth over the span +21.8%)
+
+Anchored, AI off: 120 monthly steps, aiGrowthRate=0, corp contributionRate=0
+  mean predicted wellbeing change: 1.20 index pts (actual 2.64)
+  variance of predicted wellbeing change across countries: 2.89e+1
+  mean predicted AI adoption at 2025: 0.0%
+  predicted GDP per capita is static: false (mean actual growth over the span +21.8%)
+
+Anchored, AI on: 120 monthly steps, aiGrowthRate=0.09, corp contributionRate=as configured in constants.ts
+  mean predicted wellbeing change: 1.00 index pts (actual 2.64)
+  variance of predicted wellbeing change across countries: 2.91e+1
+  mean predicted AI adoption at 2025: 22.2%
+  predicted GDP per capita is static: false (mean actual growth over the span +21.8%)
+
+Worst 10 wellbeing errors (AI off run)
+  id   country                    actual 2015  actual 2025  predicted 2025   error
+  KGZ  Kyrgyzstan                       51.8         60.5            46.8  -13.7
+  EGY  Egypt                            43.6         38.6            52.2  +13.6
+  LKA  Sri Lanka                        44.1         40.1            53.5  +13.3
+  VNM  Vietnam                          50.6         64.3            51.6  -12.7
+  CRI  Costa Rica                       70.9         74.4            61.9  -12.4
+  NIC  Nicaragua                        59.9         63.0            50.8  -12.2
+  SLV  El Salvador                      60.7         65.8            54.5  -11.3
+  SRB  Serbia                           51.8         66.9            56.2  -10.8
+  GTM  Guatemala                        63.2         65.3            54.7  -10.6
+  HND  Honduras                         48.7         61.0            50.4  -10.5
+
+Baselines (comparison to beat; scored on the "AI off" run; not part of pass/fail)
+  persistence (predict no change):      corr 0.000  MAE 4.68 index pts (0.468 ladder) across 106 countries
+  trend continuation (pre-2015 rate, extrapolated): corr -0.058  MAE 9.61 index pts (0.961 ladder) across 106 countries
+
+Hindcast anchor tests (scored on the "AI off" run; thresholds are design-doc placeholders)
+[PASS] HC-1 Hindcast wellbeing-change correlation (2015-2025, AI off)
+       Predicted vs actual wellbeing change correlates at r=0.473 across 106 countries - a retrospective reconstruction (the wellbeing anchor was fitted on this 2015-2025 span), not a forecast; the persistence baseline (predicting no change) is the comparison to beat
+       expected: >= 0.4
+       actual:   r = 0.4725
+[PASS] HC-2 Hindcast wellbeing MAE (2015-2025, AI off)
+       Mean absolute wellbeing error 4.53 index points (0.453 ladder points) across 106 countries - a retrospective reconstruction (the wellbeing anchor was fitted on this 2015-2025 span), not a forecast; the persistence baseline (predicting no change) is the comparison to beat
+       expected: <= 5 index points (0.5 ladder points)
+       actual:   4.5320 index points (0.4532 ladder points)
+
+Same tests on the "Anchored, AI off" run (stage 4 candidate; reported, not the gate)
+[PASS] HC-1 Hindcast wellbeing-change correlation (2015-2025, Anchored, AI off)
+       Predicted vs actual wellbeing change correlates at r=0.473 across 106 countries - a retrospective reconstruction (the wellbeing anchor was fitted on this 2015-2025 span), not a forecast; the persistence baseline (predicting no change) is the comparison to beat
+[PASS] HC-2 Hindcast wellbeing MAE (2015-2025, Anchored, AI off)
+       Mean absolute wellbeing error 4.53 index points (0.453 ladder points) across 106 countries - a retrospective reconstruction (the wellbeing anchor was fitted on this 2015-2025 span), not a forecast; the persistence baseline (predicting no change) is the comparison to beat
+
+Thresholds: HC-1 r >= 0.4, HC-2 MAE <= 5 index points.
+Caveat: this is an in-sample retrospective reconstruction, not validation. The wellbeing anchor was
+fitted on this span, the gated run switches off AI and UBI, and COVID, war and inflation dominate the
+decade. Read the scores next to the persistence baseline; no predictive or causal claim follows.

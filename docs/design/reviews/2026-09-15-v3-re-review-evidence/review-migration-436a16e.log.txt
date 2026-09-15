@@ -1,0 +1,109 @@
+## Coverage of countries-wb-2026-09
+
+| field | observed | legacy-unsourced | missing | legacy-unsourced ids | observation years |
+|---|---|---|---|---|---|
+| population | 127 | 1 | 0 | TWN | 2024: 127 |
+| gdpPerCapita | 126 | 2 | 0 | TWN, PRK | 2024: 124, 2022: 1, 2018: 1 |
+| gini | 105 | 23 | 0 | CUB, HTI, BHS, TTO, VEN, GUY, TWN, PRK, SGP, KHM, BRN, TKM, SAU, AFG, JOR, OMN, KWT, BHR, AZE, MAR, DZA, NZL, PNG | 2024: 24, 2023: 35, 2022: 17, 2021: 10, 2020: 6, 2019: 4, 2018: 3, 2017: 3, 2014: 3 |
+| governance | 128 | 0 | 0 | — | 2024: 128 |
+
+## Archetype changes (21 of 128; same rule, new inputs)
+
+| id | before | after | GDP pc before → after | governance before → after |
+|---|---|---|---|---|
+| MEX | developing-fragile | authoritarian | 8300 → 10284 | 0.55 → 0.392 |
+| HND | developing-fragile | failed-state | 2400 → 2575 | 0.38 → 0.337 |
+| PAN | middle-stable | developing-fragile | 15000 → 17123 | 0.65 → 0.524 |
+| TTO | middle-stable | developing-fragile | 15000 → 16312 | 0.62 → 0.521 |
+| BRA | developing-fragile | authoritarian | 6700 → 9567 | 0.52 → 0.485 |
+| COL | developing-fragile | authoritarian | 5300 → 6865 | 0.55 → 0.494 |
+| PER | developing-fragile | authoritarian | 6100 → 6732 | 0.50 → 0.459 |
+| BOL | developing-fragile | failed-state | 3100 → 3046 | 0.45 → 0.350 |
+| PRY | developing-fragile | authoritarian | 5400 → 6671 | 0.50 → 0.419 |
+| SUR | developing-fragile | authoritarian | 4700 → 7246 | 0.52 → 0.488 |
+| BLR | failed-state | authoritarian | 6400 → 6814 | 0.28 → 0.377 |
+| BGR | middle-stable | developing-fragile | 10000 → 10127 | 0.62 → 0.549 |
+| CHN | authoritarian | developing-fragile | 12500 → 13119 | 0.45 → 0.597 |
+| KOR | middle-stable | rich-democracy | 31000 → 37048 | 0.85 → 0.827 |
+| KAZ | authoritarian | developing-fragile | 9000 → 11873 | 0.48 → 0.544 |
+| KGZ | developing-fragile | failed-state | 1100 → 1424 | 0.45 → 0.343 |
+| SAU | authoritarian | middle-stable | 20000 → 25123 | 0.48 → 0.699 |
+| ISR | rich-democracy | middle-stable | 43000 → 41882 | 0.82 → 0.765 |
+| BHR | developing-fragile | middle-stable | 23000 → 25886 | 0.58 → 0.644 |
+| AZE | developing-fragile | authoritarian | 4200 → 5876 | 0.38 → 0.484 |
+| AGO | failed-state | developing-fragile | 1800 → 2799 | 0.28 → 0.372 |
+
+Counts before: authoritarian 8, developing-fragile 51, failed-state 17, middle-stable 31, rich-democracy 21. After: authoritarian 13, developing-fragile 46, failed-state 18, middle-stable 30, rich-democracy 21.
+
+## Base paths
+
+| preset | dataset | month | avg wellbeing | US wellbeing | poor-8 wellbeing | US adoption | countries in crisis | inflow bn/mo |
+|---|---|---|---|---|---|---|---|---|
+| evidence-anchored | legacy-v1 | 0 | 58.8 | 68.2 | 36.8 | 0.010 | 0 | 0.0 |
+| evidence-anchored | legacy-v1 | 60 | 58.4 | 69.0 | 41.3 | 0.501 | 0 | 64.4 |
+| evidence-anchored | legacy-v1 | 120 | 58.6 | 69.5 | 43.0 | 0.773 | 0 | 58.3 |
+| evidence-anchored | wb-2026-09 | 0 | 58.8 | 68.2 | 36.8 | 0.010 | 0 | 0.0 |
+| evidence-anchored | wb-2026-09 | 60 | 58.9 | 69.6 | 41.7 | 0.510 | 0 | 64.4 |
+| evidence-anchored | wb-2026-09 | 120 | 59.3 | 70.3 | 43.5 | 0.784 | 0 | 58.3 |
+| organic-incentive | legacy-v1 | 0 | 54.1 | 92.5 | 40.7 | 0.010 | 0 | 0.0 |
+| organic-incentive | legacy-v1 | 60 | 45.0 | 57.2 | 36.2 | 0.469 | 15 | 101.3 |
+| organic-incentive | legacy-v1 | 120 | 31.3 | 1.0 | 29.5 | 0.715 | 40 | 125.1 |
+| organic-incentive | wb-2026-09 | 0 | 55.2 | 95.7 | 40.7 | 0.010 | 0 | 0.0 |
+| organic-incentive | wb-2026-09 | 60 | 45.4 | 52.4 | 36.8 | 0.477 | 15 | 104.2 |
+| organic-incentive | wb-2026-09 | 120 | 31.7 | 1.0 | 30.4 | 0.724 | 40 | 124.8 |
+
+## Stress review of evidence-anchored
+
+| case | dataset | US wellbeing 5 y / 10 y | US unemployment peak (year) | US labour share 10 y | avg wellbeing 10 y | poor-8 10 y |
+|---|---|---|---|---|---|---|
+| base (DEFAULT_MACRO) | legacy-v1 | 69.0 / 69.5 | 6.9% (yr 3) | 0.347 | 58.6 | 43.0 |
+| base (DEFAULT_MACRO) | wb-2026-09 | 69.6 / 70.3 | 7.0% (yr 3) | 0.343 | 59.3 | 43.5 |
+| extreme (automation 0.9, re-employment 18 mo) | legacy-v1 | 67.7 / 68.1 | 11.4% (yr 4) | 0.347 | 58.3 | 43.0 |
+| extreme (automation 0.9, re-employment 18 mo) | wb-2026-09 | 68.3 / 68.9 | 11.5% (yr 4) | 0.343 | 59.0 | 43.5 |
+| extreme, re-employment 60 mo | legacy-v1 | 65.9 / 64.0 | 21.0% (yr 7) | 0.347 | 57.5 | 43.0 |
+| extreme, re-employment 60 mo | wb-2026-09 | 66.5 / 64.7 | 21.2% (yr 7) | 0.343 | 58.2 | 43.5 |
+| extreme, re-employment 60 mo, adoption growth x2 | legacy-v1 | 63.4 / 62.1 | 27.9% (yr 5) | 0.287 | 57.0 | 43.0 |
+| extreme, re-employment 60 mo, adoption growth x2 | wb-2026-09 | 63.9 / 62.8 | 28.2% (yr 5) | 0.285 | 57.7 | 43.5 |
+
+## 10 countries whose 10-year wellbeing moves most: evidence-anchored
+
+| id | country | before (legacy-v1) | after (wb-2026-09) | change | archetype before → after |
+|---|---|---|---|---|---|
+| GUY | Guyana | 58.7 | 66.3 | +7.6 | developing-fragile |
+| UZB | Uzbekistan | 50.3 | 55.6 | +5.3 | developing-fragile |
+| TUR | Turkey | 57.2 | 61.1 | +3.9 | authoritarian |
+| AGO | Angola | 47.6 | 50.7 | +3.1 | failed-state → developing-fragile |
+| SAU | Saudi Arabia | 62.5 | 65.5 | +2.9 | authoritarian → middle-stable |
+| UKR | Ukraine | 53.1 | 50.3 | -2.8 | developing-fragile |
+| TKM | Turkmenistan | 55.1 | 57.9 | +2.8 | failed-state |
+| TJK | Tajikistan | 46.0 | 48.8 | +2.8 | failed-state |
+| LBN | Lebanon | 51.4 | 54.1 | +2.7 | failed-state |
+| AZE | Azerbaijan | 53.3 | 56.0 | +2.7 | developing-fragile → authoritarian |
+
+Mean absolute change over 128 countries: 1.07 index points.
+
+## 10 countries whose 10-year wellbeing moves most: organic-incentive
+
+| id | country | before (legacy-v1) | after (wb-2026-09) | change | archetype before → after |
+|---|---|---|---|---|---|
+| GUY | Guyana | 42.2 | 60.7 | +18.5 | developing-fragile |
+| CYP | Cyprus | 60.7 | 65.2 | +4.5 | middle-stable |
+| BHS | Bahamas | 62.1 | 66.1 | +4.0 | middle-stable |
+| PRK | North Korea | 27.3 | 30.9 | +3.6 | failed-state |
+| BHR | Bahrain | 54.4 | 57.9 | +3.5 | developing-fragile → middle-stable |
+| KAZ | Kazakhstan | 42.2 | 45.4 | +3.2 | authoritarian → developing-fragile |
+| TKM | Turkmenistan | 32.5 | 35.7 | +3.2 | failed-state |
+| AZE | Azerbaijan | 36.9 | 40.1 | +3.2 | developing-fragile → authoritarian |
+| FIN | Finland | 81.4 | 78.3 | -3.1 | rich-democracy |
+| UZB | Uzbekistan | 35.0 | 37.9 | +2.9 | developing-fragile |
+
+Mean absolute change over 128 countries: 1.08 index points.
+
+## US archetype margin (Korinek US calibration attaches through it)
+
+| dataset | GDP pc | governance | archetype | cognitive share | margin to 0.80 |
+|---|---|---|---|---|---|
+| legacy-v1 | 63000 | 0.8200 | rich-democracy | 0.62 | +0.0200 |
+| wb-2026-09 | 66857 | 0.8240 | rich-democracy | 0.62 | +0.0240 |
+(node:50610) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
