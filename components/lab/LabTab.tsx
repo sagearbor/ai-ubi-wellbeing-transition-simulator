@@ -59,6 +59,8 @@ import {
 import { useRunnerJob } from './useRunnerJob';
 
 export interface LabTabProps {
+  /** Explicit user entry action; preserves the mounted workspace and existing policy drafts. */
+  entryRequest?: { kind: 'policy' | 'training' | 'import' | 'author' | 'uncertainty'; sequence: number };
   onActiveRunChange?: (view: ActiveRunView) => void;
   onOpenResultView?: () => void;
   /** Fixture to open on. Defaults to the first entry of CORE_FIXTURES. */
@@ -100,6 +102,7 @@ function keyOf(job: object | null): string {
 }
 
 const LabTab: React.FC<LabTabProps> = ({
+  entryRequest,
   initialModelId,
   initialOverlayIds = [],
   initialCustomOverlays = [],
@@ -265,6 +268,21 @@ const LabTab: React.FC<LabTabProps> = ({
     setCustomOverlays(scenario);
   };
 
+  const jumpTo = (kind: string) => {
+    requestAnimationFrame(() => {
+      const target = document.getElementById(`lab-jump-${kind}`);
+      const details = target?.querySelector('details');
+      if (details) details.open = true;
+      target?.scrollIntoView({block:'start'});
+      target?.focus({preventScroll:true});
+    });
+  };
+  React.useEffect(() => {
+    if (!entryRequest) return;
+    if (entryRequest.kind === 'training') pickModel('training-budget');
+    jumpTo(entryRequest.kind === 'training' ? 'start' : entryRequest.kind);
+  }, [entryRequest]);
+
   const toggleOverlay = (id: string) => setOverlayIds((ids) => (ids.includes(id) ? ids.filter((x) => x !== id) : [...ids, id]));
 
   const chipBase =
@@ -279,7 +297,7 @@ const LabTab: React.FC<LabTabProps> = ({
   return (
     <div className="mx-auto w-full max-w-6xl overflow-x-hidden p-3 sm:p-4 space-y-4 text-slate-800 dark:text-slate-100">
       {/* 1. What this is, and what the chosen model can and cannot say. */}
-      <header className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-3 sm:p-4">
+      <header id="lab-jump-start" tabIndex={-1} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-3 sm:p-4">
         <h2 className="flex items-center gap-2 text-lg font-bold text-slate-900 dark:text-white">
           <FlaskConical size={20} className="text-sky-600 dark:text-sky-400" aria-hidden="true" />
           Model Lab
@@ -306,6 +324,7 @@ const LabTab: React.FC<LabTabProps> = ({
           </p>
         )}
 
+        <nav className="guided-lab-shortcuts" aria-label="Model Lab tools">{([['import','Import'],['assumptions','Assumptions'],['author','Add a variable'],['uncertainty','Uncertainty'],['policy','Policy text and A/B'],['files','Equations and files']] as const).map(([id,label])=><button key={id} onClick={()=>jumpTo(id)}>{label}</button>)}</nav>
         <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 gap-2">
           <div>
             <label className="block text-[11px] font-medium text-slate-600 dark:text-slate-300 mb-0.5" htmlFor="lab-fixture">
@@ -354,7 +373,8 @@ const LabTab: React.FC<LabTabProps> = ({
           )}
         </div>
 
-        <ModelImportPanel
+        <div id="lab-jump-import" tabIndex={-1}>
+      <ModelImportPanel
           runner={runner}
           currentModel={model}
           onImportModel={(m, withOverlays, warnings, provenance) => applyScenario(m, withOverlays, curatedMatch(m) ? 'curated' : 'imported', warnings, provenance)}
@@ -365,6 +385,7 @@ const LabTab: React.FC<LabTabProps> = ({
           }}
           onSelectCurated={pickModel}
         />
+      </div>
 
         {status === 'imported' && (
           <div role="note" className="mt-3 rounded-lg border border-amber-300 bg-amber-50 dark:border-amber-800 dark:bg-amber-950/40 px-3 py-2 text-xs text-amber-800 dark:text-amber-200">
@@ -512,6 +533,7 @@ const LabTab: React.FC<LabTabProps> = ({
           {mc && !mc.ok && <span className="text-[11px] text-rose-700 dark:text-rose-300">{`Uncertainty run failed: ${mc.diagnostics.filter((d) => d.level === 'error').map((d) => `[${d.code}] ${d.message}`).join('; ')}`}</span>}
           <button
             type="button"
+            id="lab-jump-uncertainty"
             aria-pressed={uncertainty && !deterministic}
             disabled={deterministic}
             title={deterministic ? 'No parameter declares a range, so every draw would be identical: the model runs once.' : undefined}
@@ -535,6 +557,7 @@ const LabTab: React.FC<LabTabProps> = ({
       </div>
 
       {/* 2. Assumptions, before results. */}
+      <div id="lab-jump-assumptions" tabIndex={-1}>
       <AssumptionsPanel
         model={resolvedModel}
         values={paramValues}
@@ -547,6 +570,7 @@ const LabTab: React.FC<LabTabProps> = ({
         inputSeries={result?.series?.[entity] ?? {}}
         years={years}
       />
+      </div>
 
       {/* 4. Results. */}
       {result?.ok ? (
@@ -633,6 +657,7 @@ const LabTab: React.FC<LabTabProps> = ({
       </div>
 
       {/* 7. Author something of your own. */}
+      <div id="lab-jump-author" tabIndex={-1}>
       <AddVariableForm
         key={`${selection}-${overlayIds.join(',')}`}
         model={resolvedModel}
@@ -640,8 +665,10 @@ const LabTab: React.FC<LabTabProps> = ({
         onApply={(o) => setCustomOverlays((list) => [...list.filter((x) => x.id !== o.id), o])}
         onRemove={(id) => setCustomOverlays((list) => list.filter((x) => x.id !== id))}
       />
+      </div>
 
       {/* 8. Read a policy text against this model: paired run, share, reopen, memo. */}
+      <div id="lab-jump-policy" tabIndex={-1}>
       <PolicyPanel
         onActiveRunChange={onActiveRunChange}
         onOpenResultView={onOpenResultView}
@@ -669,9 +696,12 @@ const LabTab: React.FC<LabTabProps> = ({
         onRequestModel={pickModel}
         onOpenScenario={applyScenario}
       />
+      </div>
 
       {/* 9. The files themselves. */}
+      <div id="lab-jump-files" tabIndex={-1}>
       <ModelFilePanel model={model} overlays={runOverlays} status={status} importWarnings={importWarnings} provenance={provenance} />
+      </div>
     </div>
   );
 };

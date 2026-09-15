@@ -1,0 +1,4 @@
+import React from 'react';
+export default function ExploreIntro({ onDividend, onPolicy, onTraining, onBuild, onRisk }: {onDividend:()=>void; onPolicy:()=>void; onTraining:()=>void;onBuild:()=>void;onRisk:()=>void}) {
+  return <section className="guided-intro"><h1>Where could the gains<br className="guided-desktop-break" /> from AI go?</h1><p>Change a contribution, follow the funds, and inspect the assumptions.</p><div className="guided-questions" role="group" aria-label="Choose a question"><button className="guided-primary" onClick={onDividend}>Explore a dividend</button><button onClick={onPolicy}>Try a policy idea</button><button onClick={onTraining}>Explore retraining</button><button className="guided-entry-link" onClick={onBuild}>Build or import a model</button><button className="guided-entry-link" onClick={onRisk}>Explore AI risks</button></div></section>;
+}

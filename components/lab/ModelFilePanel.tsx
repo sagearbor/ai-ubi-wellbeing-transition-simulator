@@ -80,11 +80,12 @@ const ModelFilePanel: React.FC<ModelFilePanelProps> = ({ model, overlays, status
     <summary className="flex min-h-11 cursor-pointer list-none items-center gap-1.5 text-sm font-semibold text-slate-800 dark:text-white">
       <ChevronRight size={16} className="transition-transform group-open:rotate-90" aria-hidden="true" />
       Advanced: model file
+
+    </summary>
       <Hint
         label="Model file"
         text="The model and your overlays as data. Export them as one JSON file and load it again with Import (top of the Lab) — it then runs as experimental, not curated. Making it a bundled option still needs a code change: registering the file in src/core/fixtures.ts after its own tests pass under npm run validate:core, and review."
       />
-    </summary>
     {error && <p role="alert">{error}</p>}
     <div className="mt-1 flex flex-wrap items-center gap-2">
       <button
