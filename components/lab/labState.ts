@@ -87,8 +87,8 @@ export function sourceStyle(source?: Source): SourceStyle {
   return SOURCE_STYLES[sourceKind(source)];
 }
 
-export function countAssumptions(parameters: Parameter[]): { assumptions: number; total: number; text: string } {
-  const assumptions = parameters.filter((p) => sourceStyle(p.source).assumption).length;
+export function countAssumptions(parameters: Parameter[], reported: ReadonlySet<string> = new Set()): { assumptions: number; total: number; text: string } {
+  const assumptions = parameters.filter((p) => !reported.has(p.id) && sourceStyle(p.source).assumption).length;
   const total = parameters.length;
   return { assumptions, total, text: `${assumptions} of ${total} parameters are assumptions` };
 }

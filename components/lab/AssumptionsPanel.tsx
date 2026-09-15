@@ -9,6 +9,7 @@
  */
 
 import React from 'react';
+import { reportedFinancialParameters } from '../../src/financials/presentation';
 import { RotateCcw } from 'lucide-react';
 import type { CoreModel, Input, Parameter } from '../../src/core/types';
 import { Hint, HintedLabel } from '../futures/Hint';
@@ -27,7 +28,8 @@ export interface AssumptionsPanelProps {
   years: number[];
 }
 
-const SourceChip: React.FC<{ parameter: Parameter }> = ({ parameter }) => {
+const SourceChip: React.FC<{ parameter: Parameter; reported: boolean }> = ({ parameter, reported }) => {
+  if (reported) return <span className="inline-flex items-center gap-2 text-xs text-slate-700 dark:text-slate-200"><span className="rounded-full bg-slate-100 dark:bg-slate-800 px-2 py-0.5 ring-1 ring-slate-300 dark:ring-slate-600">Reported observation</span><a className="underline text-sky-700 dark:text-sky-300" href={parameter.source!.url} target="_blank" rel="noreferrer">Source</a><Hint label="Reported observation" text="Pinned to the published financial report or sourced resident count. This is an observation, not a scenario choice or a causal-effect estimate." /></span>;
   const style = sourceStyle(parameter.source);
   return (
     <span className="inline-flex items-center gap-1">
@@ -44,8 +46,9 @@ const ParameterRow: React.FC<{
   parameter: Parameter;
   value: number;
   isEdited: boolean;
+  reported: boolean;
   onEdit: (id: string, value: number) => void;
-}> = ({ parameter, value, isEdited, onEdit }) => {
+}> = ({ parameter, value, isEdited, reported, onEdit }) => {
   const bounds = sliderBounds(parameter, value);
   const inputId = `lab-param-${parameter.id}`;
   return (
@@ -59,7 +62,7 @@ const ParameterRow: React.FC<{
             parameter.range ? ` Declared range p5-p95: ${fmtCompact(parameter.range.p5)} to ${fmtCompact(parameter.range.p95)} (${parameter.range.dist}).` : ''
           }`}
         />
-        <SourceChip parameter={parameter} />
+        <SourceChip parameter={parameter} reported={reported} />
       </div>
       <div className="mt-1.5 flex flex-wrap items-center gap-2">
         <input
@@ -68,14 +71,17 @@ const ParameterRow: React.FC<{
           className="h-11 w-32 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 px-2 text-sm tabular-nums text-slate-900 dark:text-slate-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
           value={Number.isFinite(value) ? value : ''}
           step="any"
-          onChange={(e) => onEdit(parameter.id, Number(e.target.value))}
+          readOnly={reported}
+          aria-describedby={reported ? `${inputId}-pinned` : undefined}
+          onChange={reported ? undefined : (e) => onEdit(parameter.id, Number(e.target.value))}
         />
         <span className="text-[11px] text-slate-500 dark:text-slate-400">{parameter.unit || 'no unit'}</span>
         {isEdited && (
           <span className="text-[11px] font-medium text-sky-700 dark:text-sky-300">edited · yours</span>
         )}
       </div>
-      {bounds && (
+      {reported && <p id={`${inputId}-pinned`} className="mt-1 text-xs text-slate-600 dark:text-slate-300">Read-only: pinned published observation. A revised observation requires a new model and source provenance.</p>}
+      {!reported && bounds && (
         <div className="mt-1.5 flex items-center gap-2">
           <span className="text-[11px] tabular-nums text-slate-600 dark:text-slate-300 w-12 shrink-0 text-right">
             {fmtCompact(parameter.range!.p5)}
@@ -157,7 +163,8 @@ const AssumptionsPanel: React.FC<AssumptionsPanelProps> = ({
   inputSeries,
   years,
 }) => {
-  const count = countAssumptions(model.parameters);
+  const reported = reportedFinancialParameters(model, values);
+  const count = countAssumptions(model.parameters, reported);
   const inputs = model.inputs ?? [];
   return (
     <section className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-3 sm:p-4">
@@ -193,6 +200,7 @@ const AssumptionsPanel: React.FC<AssumptionsPanelProps> = ({
             parameter={p}
             value={values[p.id] ?? p.value}
             isEdited={edited.has(p.id)}
+            reported={reported.has(p.id)}
             onEdit={onEdit}
           />
         ))}
