@@ -17,7 +17,7 @@ import {
 } from './bundle';
 import { NUMERICAL_CONVENTIONS, ENGINE_VERSION } from '../core/engine';
 import { pairedRun } from './draft';
-import { modelHash } from './hash';
+import { contentHash, modelHash } from './hash';
 import { SOURCE_TEXT, cohort, retraining, threeStatusDraft, training } from './testDrafts';
 
 const registry = (id: string): CoreModel | undefined => findFixture(id)?.model;
@@ -189,6 +189,22 @@ describe('bundle', () => {
     expect(old.ok).toBe(false);
     if (!old.ok) expect(old.reason).toContain('unsupported bundle schema');
     expect(parseBundleJson('{not json').ok).toBe(false);
+  });
+
+  it('refuses a self-consistent bundle recorded under the pre-patch math runtime and never re-runs it (review 2026-09-15)', () => {
+    const draft = threeStatusDraft();
+    const result = pairedRun(training, [], draft, { runs: 3, seed: 1 });
+    const bundle = roundTrip(buildBundle(training, [], draft, result));
+    // Rebuild the manifest as the pre-patch build would have written it: its own hash is valid, only the
+    // recorded expression runtime differs (mathjs 15.1.0, before the security update).
+    const { hash: _hash, createdAt, ...identity } = bundle.manifest;
+    const prepatchIdentity = { ...identity, numerical: { ...identity.numerical, expression: 'mathjs/15.1.0' } };
+    const prepatch = roundTrip({ ...bundle, manifest: { ...prepatchIdentity, createdAt, hash: contentHash(prepatchIdentity) } });
+    expect(prepatch.manifest.numerical.expression).not.toBe(NUMERICAL_CONVENTIONS.expression);
+    const report = reopenBundle(prepatch, registry);
+    expect(report.status).toBe('cannot-open');
+    expect(report.rerun).toBeUndefined();
+    expect(report.errors[0]).toMatch(/numerical/i);
   });
 
   it('does not re-run a bundle whose draft fails validation against its own source text', () => {

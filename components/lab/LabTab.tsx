@@ -711,6 +711,7 @@ const LabTab: React.FC<LabTabProps> = ({
         overlays={overlays}
         runner={runner}
         modelStatus={status}
+        appBuilt={!!financialOrigin}
         importWarnings={importWarnings} provenance={provenance}
         extraModels={imports.map((i) => i.model)}
         initialDrafts={link.opened?.drafts ?? initialPolicy?.drafts ?? []}
