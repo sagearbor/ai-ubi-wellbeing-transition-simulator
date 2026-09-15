@@ -38,3 +38,19 @@ These checks do not accept the numerical/import issues independently found in th
 ## Task4 fix round1 browser check — 4bee00c
 
 Charts at month0 renders the conditional-index point (13 chart dots in DOM across charts); no displacement-gap/crisis panel or waiting overlay appears. Caption states same economic conditions and zero funded transfers, and that the difference is not net welfare. Remaining scatter wording (correlation "may need tuning", unlabeled unweighted mean) is assigned to Task6.
+
+Frozen build served locally on4175 avoids Vite reloads during source changes. Apple explicit amount36.5625 shows available24.3750/funded24.3750/unfunded12.1875/unused0.0000; dormant percent slider is absent, directory shows active amount and ranks Apple first by24.4B funded. Escape dismisses detail. Mouse close is obstructed by main header at1280px; assigned Task6. Share generation/copy works and states snapshot/history limits. Full copied link could not be read through browser clipboard permission, so browser reopen not verified in this check (direct round-trip tests remain separate evidence).
+
+## Task5 browser/runtime identity probe —05cbcd1
+
+Imported the actual Vite-served constants, run and qualification modules into HeadlessChrome153, constructed the same default as the offline harness, and compared every month0–60 with the committed baseline identities. Only15/61 matched. A complete Node-versus-browser recursive comparison found165 numeric differences, all in derived illustrative wellbeing:80income,80raw,3transfer,1population-weighted raw and1headline value. Maximum absolute difference1.4210854715202004e-14. No actual input, macro, accounting, or nonnumeric field differed. At month0 Hungary raw was62.18932324044608 in Node and62.18932324044607 in Chrome. This exposes an exact-hash qualification design defect; it does not indicate a meaningful economic result difference. Assigned Task5 fix round after independent review.
+
+### Frozen-build attribution correction
+
+The4175 frozen copy was initially labeled4bee00c from the nearby build/commit report. A later Charts check exposes an older literal caption absent from4bee00c source, so that frozen build's exact source SHA is **not verified**. Treat its funding/navigation/accessibility observations as an intermediate Task4 build, not final-commit proof. Earlier Vite checks and source/test review remain separately attributed. Final comparison previews must be rebuilt from clean, recorded commits after functional integration.
+
+In that intermediate build, loading/running S.3877 then visiting Charts displays the unrelated world chart (explicit world label), and returning via More→Model Lab loses the source/draft/result: policy textarea length0 and no Download bundle action. Task6 addresses this concrete navigation failure.
+
+## Qualification input identity — fix41ca252
+
+Actual Chrome153 on the Vite development app at4173 reproduced all61 baseline month identities in the regenerated evidence manifest. No derived-output checks failed. Executing-source hash was950d3fb43937e507c4a2cf67599c92105430a320c337712851a5067a28f3291e. This resolves the earlier46 browser identity misses without rounding actual inputs. The local record is still pending independent re-review, and the resolver correctly remains unreviewed for the pending-record reasons; this is not yet a positive accepted-badge browser test.
