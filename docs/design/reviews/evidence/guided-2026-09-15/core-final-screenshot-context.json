@@ -1,0 +1,10 @@
+{
+  "body": "Transition Engine\n\nABUNDANCE CYCLE V0.14\n\nMAP\nCHARTS\nCORPORATIONS\nFUTURES\nMORE\nCOMPARE MAPS\nBASELINE MODELS\nConditional world reference\nOrganic Incentive Model (legacy, illustrative)\nSocial Stability Model\nHyper-Surplus Engine\nDirect Democracy Model\nNation-State Focused\nLegacy assumed-timing level model\nProvisional level model + US reference (Korinek et al. 2026, to Jan 2030)\nLEGACY SCENARIO PRESETS\nCORE PARAMETERS\nGrowth Speed\n9%\nECONOMIC CONSTANTS\nCORPORATION-CENTRIC MODEL\n\nRequests and allocation routes are fixed scenario inputs. Contributions are limited to the modeled source pool. Customer demand, reputation reactions and national adaptation are not modeled.\n\nSHARE MODEL\n\nWorld simulation · Conditional world reference · month 0. The Model Lab and the AI Futures Map are separate models and do not feed this view. Accounting: independently reviewed at this exact default point. Macro and wellbeing: illustrative. Money: constant-2015 USD; residents: modeled roster.\n\nModeled source accounting (constant-2015 USD billions/month): source 250.1326 · funded 25.7423 · receipts 25.7423 · retained / unused 224.3904 · reserved 0.0000 · unfunded 0.0000. Transfer-to-macro effects are unestimated; equal macro curves do not measure zero effect.\n\nPOPULATION-WEIGHTED CONDITIONAL INDEX\n56.3\nGLOBA",
+  "theme": "light",
+  "title": "Wellbeing Transition Simulator",
+  "url": "http://127.0.0.1:4180/",
+  "viewport": [
+    1440,
+    900
+  ]
+}

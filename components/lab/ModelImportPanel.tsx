@@ -128,11 +128,12 @@ const ModelImportPanel: React.FC<ModelImportPanelProps> = ({ runner, currentMode
       <summary className="flex min-h-11 cursor-pointer list-none items-center gap-1.5 text-xs font-semibold text-slate-700 dark:text-slate-200">
         <ChevronRight size={14} className="transition-transform group-open:rotate-90" aria-hidden="true" />
         Import a model or overlay (JSON)
-        <Hint
+
+      </summary>
+      <Hint
           label="Import"
           text="Load a core model file (docs/core-authoring.md), a model exported from this Lab, or an overlay for the model above. It is validated first and runs on this device only. Imported models are experimental — not curated: nobody has reviewed them for this app."
         />
-      </summary>
       <div className="space-y-2 pb-2">
         <textarea
           aria-label="Model or overlay JSON"

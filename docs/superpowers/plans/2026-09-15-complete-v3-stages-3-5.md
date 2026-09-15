@@ -116,26 +116,26 @@ Task5 completion is limited to reviewed conditional source/allocation accounting
 
 **Files:** separate worktree/branch codex/overnight-guided-experience after the reviewed functional fixes; App.tsx, components/guided/*, scoped CSS and necessary Lab entry affordances/tests. Design: docs/design/guided-interface-design.md.
 
-- [ ] Record the functional-fix commit and capture its unchanged interface as a matched-core comparison baseline; retain the historical live screenshot separately. Create the new branch/worktree without changing main's interface.
-- [ ] Build the accepted question-led Explore / Compare / Model Lab navigation and one source-to-funded-transfer graphic from actual diagnostics. Surface policy and retraining entry questions and the separate risk model. Preserve old URLs, authoring/import/uncertainty/equation tools, source/review status and active-run behavior.
-- [ ] Keep policy choices separate from scenario assumptions. Expose source convention, requested/funded/unfunded amounts, recipient denominator, conditional index limits and unsupported mechanisms beside results. No invented numerical claims or economic calculations in SVG layout.
-- [ ] Preserve loading/stale/error/cancel/reopen semantics. Use scoped visual tokens, quiet typography and a responsive layout; avoid a new wall of metric cards. No runtime equation, evidence, key or deployment changes.
-- [ ] Run meaningful routing/flow/accessibility-state tests and typecheck, self-critique actual screenshots, commit owned changes and write task-8-report.md.
+- [x] Record the functional-fix commit and capture its unchanged interface as a matched-core comparison baseline; retain the historical live screenshot separately. Create the new branch/worktree without changing main's interface.
+- [x] Build the accepted question-led Explore / Compare / Model Lab navigation and one source-to-funded-transfer graphic from actual diagnostics. Surface policy and retraining entry questions and the separate risk model. Preserve old URLs, authoring/import/uncertainty/equation tools, source/review status and active-run behavior.
+- [x] Keep policy choices separate from scenario assumptions. Expose source convention, requested/funded/unfunded amounts, recipient denominator, conditional index limits and unsupported mechanisms beside results. No invented numerical claims or economic calculations in SVG layout.
+- [x] Preserve loading/stale/error/cancel/reopen semantics. Use scoped visual tokens, quiet typography and a responsive layout; avoid a new wall of metric cards. No runtime equation, evidence, key or deployment changes.
+- [x] Run meaningful routing/flow/accessibility-state tests and typecheck, self-critique actual screenshots, commit owned changes and write task-8-report.md.
 
 ### Task 9: Independent interface review and browser refinement
 
 **Files:** interface branch, focused fixes and tests.
 
-- [ ] Independently review task8 against design and preserved capabilities; resolve important defects before presenting it.
-- [ ] Exercise real browser flows: new visitor question, request below/at/above source, assumptions, policy example and partial coverage, authoring/import/added variable, uncertainty, cancel, share/reopen, unsupported views, risk model and return. Verify identities/results do not change solely through navigation.
-- [ ] Inspect desktop/laptop/mobile and320px, light/dark, keyboard focus and reduced motion. Refine any observed confusing hierarchy, inaccessible control, overflow, hidden feature or misleading wording. Screenshots are design evidence, not proof of first-time human comprehension.
-- [ ] Run complete npm run check on the actual final UI commit and broad independent branch review. Commit fixes and preserve the report.
+- [x] Independently review task8 against design and preserved capabilities; resolve important defects before presenting it.
+- [x] Exercise real browser flows: new visitor question, request below/at/above source, assumptions, policy example and partial coverage, authoring/import/added variable, uncertainty, cancel, share/reopen, unsupported views, risk model and return. Verify identities/results do not change solely through navigation.
+- [x] Inspect desktop/laptop/mobile and320px, light/dark, keyboard focus and reduced motion. Refine any observed confusing hierarchy, inaccessible control, overflow, hidden feature or misleading wording. Screenshots are design evidence, not proof of first-time human comprehension.
+- [x] Run complete npm run check on the actual final UI commit and broad independent branch review. Commit fixes and preserve the report.
 
 ### Task 10: Morning comparison and Claude Code handoff
 
 **Files:** comparison artifact/report, GitHub UI draft PR, local preview services.
 
-- [ ] Publish the UI experiment branch and open a clearly scoped draft PR with verified tests. Keep it unmerged for the owner's comparison. Core fixes retain earlier merge authorization.
-- [ ] Provide actual local preview URLs for core-fixed baseline and improved interface where available; distinguish them from unchanged public deployment. Capture comparable screenshots with commits, viewport, scenario/model/data/time settings.
-- [ ] Prepare a concise morning report with before/after comparison, current main versus branch state, completed work, meaningful test evidence, remaining limitations and exact instructions Claude Code needs to continue. Preserve all changes and the working handoff in durable files.
-- [ ] Around09:00Eastern on2026-09-15, report actual status even if anything remains unfinished. Do not convert a deadline into a false completion claim. Pause the overnight heartbeat after the report/work is complete.
+- [x] Publish the UI experiment branch and open a clearly scoped draft PR with verified tests. Keep it unmerged for the owner's comparison. Core fixes retain earlier merge authorization.
+- [x] Provide actual local preview URLs for core-fixed baseline and improved interface where available; distinguish them from unchanged public deployment. Capture comparable screenshots with commits, viewport, scenario/model/data/time settings.
+- [x] Prepare a concise morning report with before/after comparison, current main versus branch state, completed work, meaningful test evidence, remaining limitations and exact instructions Claude Code needs to continue. Preserve all changes and the working handoff in durable files.
+- [x] Around09:00Eastern on2026-09-15, report actual status even if anything remains unfinished. Do not convert a deadline into a false completion claim. Pause the overnight heartbeat after the report/work is complete.

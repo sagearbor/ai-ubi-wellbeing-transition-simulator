@@ -1,0 +1,185 @@
+/** Stateful host for the real App, using its rendered handlers and real simulation code.
+ * No DOM package is present in this repository. This follows PolicyPanel.lifecycle.test.tsx:
+ * hooks/effects/rerenders are hosted here, while production transitions are never mocked.
+ */
+import React from 'react';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+const host = vi.hoisted(() => ({ cells: [] as any[], cursor: 0, effects: [] as Array<() => void>, dirty: false }));
+vi.mock('react', async original => {
+  const react = await original<typeof import('react')>();
+  const changed = (a: any[] | undefined, b: any[] | undefined) => !a || !b || a.length !== b.length || a.some((v,i) => !Object.is(v,b[i]));
+  const memo = (fn: () => any, deps?: any[]) => {
+    const i = host.cursor++;
+    if (!host.cells[i] || changed(host.cells[i].deps, deps)) host.cells[i] = { deps, value: fn() };
+    return host.cells[i].value;
+  };
+  const hooks = {
+    useState(initial: any) {
+      const i = host.cursor++;
+      if (!(i in host.cells)) {
+        host.cells[i] = { value: typeof initial === 'function' ? initial() : initial };
+        host.cells[i].set = (next: any) => {
+          const value = typeof next === 'function' ? next(host.cells[i].value) : next;
+          if (!Object.is(value,host.cells[i].value)) {host.cells[i].value = value;host.dirty = true;}
+        };
+      }
+      return [host.cells[i].value,host.cells[i].set];
+    },
+    useRef(initial: any) { const i=host.cursor++; return host.cells[i] ??= {current:initial}; },
+    useMemo: memo,
+    useCallback: (fn: any, deps?: any[]) => memo(() => fn,deps),
+    useEffect(fn: () => any, deps?: any[]) {
+      const i=host.cursor++;
+      if (!host.cells[i] || changed(host.cells[i].deps,deps)) {
+        const previous=host.cells[i];
+        host.cells[i]={deps};
+        host.effects.push(() => {previous?.cleanup?.();host.cells[i].cleanup=fn();});
+      }
+    },
+  };
+  return {...react,...hooks,default:{...react.default,...hooks}};
+});
+import App from '../../App';
+import GuidedExperience from './GuidedExperience';
+import ScenarioContext from './ScenarioContext';
+import ExploreIntro from './ExploreIntro';
+import WorldMap from '../WorldMap';
+import SimulationControls from '../SimulationControls';
+import { ModelEditor } from '../ModelEditor';
+import { ModelUpload } from '../ModelUpload';
+import { DEFAULT_MODEL, DEFAULT_MODEL_CONFIG, PRESET_MODELS } from '../../constants';
+
+function nodes(tree: any): any[] {
+  if (!tree || typeof tree !== 'object') return [];
+  if (Array.isArray(tree)) return tree.flatMap(nodes);
+  return [tree,...nodes(tree.props?.children)];
+}
+function words(tree: any): string {
+  if (typeof tree === 'string' || typeof tree === 'number') return String(tree);
+  if (Array.isArray(tree)) return tree.map(words).join('');
+  return tree && typeof tree === 'object' ? words(tree.props?.children) : '';
+}
+function mount() {
+  let tree: any;
+  const render = () => {
+    for (let n=0;n<20;n++) {
+      host.dirty=false;host.cursor=0;tree=App({});host.effects.splice(0).forEach(fn=>fn());
+      if (!host.dirty) return;
+    }
+    throw new Error('App did not settle');
+  };
+  render();
+  return {
+    render,
+    get tree() {return tree;},
+    component(type: any) {const node=nodes(tree).find(n=>n.type===type);expect(node,`component ${type.name}`).toBeTruthy();return node;},
+    click(name: string) {const button=nodes(tree).find(n=>n.type==='button'&&(words(n)===name||n.props['aria-label']===name));expect(button,`button ${name}`).toBeTruthy();button.props.onClick();render();},
+    action(fn: () => void) {fn();render();},
+  };
+}
+beforeEach(() => {
+  host.cells=[];host.cursor=0;host.effects=[];host.dirty=false;
+  vi.useFakeTimers();
+  const local = new Map<string,string>();
+  vi.stubGlobal('localStorage',{getItem:(k:string)=>local.get(k)??null,setItem:(k:string,v:string)=>local.set(k,v),removeItem:(k:string)=>local.delete(k)});
+  const document={title:'test',activeElement:null,documentElement:{classList:{add:vi.fn(),remove:vi.fn()}},getElementById:()=>null};
+  vi.stubGlobal('document',document);
+  vi.stubGlobal('window',{document,location:{search:'',hash:'',pathname:'/',origin:'http://test'},history:{pushState:vi.fn()},addEventListener:vi.fn(),removeEventListener:vi.fn(),innerWidth:1440});
+  vi.stubGlobal('requestAnimationFrame',(fn:()=>void)=>{fn();return 1;});
+});
+afterEach(() => {host.cells.forEach(c=>c?.cleanup?.());vi.useRealTimers();vi.unstubAllGlobals();});
+const legacy=PRESET_MODELS.find(m=>m.name.startsWith('Organic Incentive'))!;
+function selectModel(ui: ReturnType<typeof mount>,name: string) {
+  ui.action(()=>ui.component(GuidedExperience).props.onView('map'));
+  ui.click(name);
+  ui.click('Transition Engine home');
+}
+function context(ui: ReturnType<typeof mount>) {
+  const p=ui.component(GuidedExperience).props;
+  return words(ScenarioContext({model:p.model,state:p.run.state,qualification:p.qualification,uploadedModelName:p.uploadedModelName,equationIssue:p.equationIssue}));
+}
+
+describe('real App navigation transitions',()=>{
+  it('enter -> exit comparison restores one map and preserves the actual scenario',()=>{
+    const ui=mount();const original=ui.component(GuidedExperience).props.run;
+    ui.action(()=>ui.component(GuidedExperience).props.onMapCompare());
+    expect(nodes(ui.tree).filter(n=>n.type===WorldMap)).toHaveLength(2);
+    ui.click('Exit map comparison');
+    expect(nodes(ui.tree).filter(n=>n.type===WorldMap)).toHaveLength(1);
+    ui.click('Transition Engine home');
+    expect(ui.component(GuidedExperience).props.run).toBe(original);
+    ui.action(()=>ui.component(GuidedExperience).props.onMapCompare());
+    ui.click('Transition Engine home');
+    ui.action(()=>ui.component(GuidedExperience).props.onView('map'));
+    expect(nodes(ui.tree).filter(n=>n.type===WorldMap)).toHaveLength(1);
+  });
+  it('exit removes comparison-only equation restrictions and the main legacy run can step',()=>{
+    const ui=mount();selectModel(ui,legacy.name);
+    ui.action(()=>ui.component(GuidedExperience).props.onMapCompare());
+    ui.click('Transition Engine home');
+    ui.action(()=>ui.component(GuidedExperience).props.onView('models'));
+    ui.click('Create/Edit Model');
+    ui.action(()=>ui.component(ModelEditor).props.onRun(DEFAULT_MODEL_CONFIG));
+    expect(ui.component(SimulationControls).props.disabled).toBe(true);
+    ui.click('Exit map comparison');
+    expect(ui.component(SimulationControls).props.disabled).toBe(false);
+    ui.action(()=>ui.component(SimulationControls).props.onStep());
+    expect(ui.component(SimulationControls).props.month).toBe(1);
+  });
+  it.each([legacy.name,PRESET_MODELS.find(m=>m.id==='evidence-anchored')!.name])('home preserves %s; explicit reference action initializes a working paired dividend',name=>{
+    const ui=mount();selectModel(ui,name);
+    const before=ui.component(GuidedExperience).props;
+    expect(before.model.name).toBe(name);
+    expect(before.needsDividendReference).toBe(true);
+    expect(context(ui)).not.toContain('monthly-flow snapshot');
+    expect(context(ui)).not.toContain('conditional wellbeing index');
+    expect(words(ExploreIntro({onDividend:before.onDividend,onPolicy:()=>{},onTraining:()=>{},onBuild:()=>{},onRisk:()=>{},startsReference:true}))).toContain('new month-zero scenario');
+    ui.action(()=>before.onDividend());
+    const after=ui.component(GuidedExperience).props;
+    expect(after.model.id).toBe(DEFAULT_MODEL.id);
+    expect(after.run.state.sourceAccounting.actual).toBeGreaterThan(0);
+    expect(after.paired.state.sourceAccounting.actual).toBe(0);
+    expect(after.run.state.month).toBe(0);
+    expect(after.needsDividendReference).toBe(false);
+  });
+  it('refuses incompatible comparison entry without crashing or changing the current run',()=>{
+    const ui=mount();selectModel(ui,legacy.name);
+    ui.action(()=>ui.component(GuidedExperience).props.onView('models'));
+    ui.action(()=>ui.component(ModelUpload).props.onApply(DEFAULT_MODEL_CONFIG));
+    ui.click('Transition Engine home');
+    const before=ui.component(GuidedExperience).props.run;
+    ui.action(()=>ui.component(GuidedExperience).props.onMapCompare());
+    expect(ui.component(GuidedExperience).props.error).toContain('Map comparison unavailable');
+    expect(ui.component(GuidedExperience).props.run).toBe(before);
+  });
+  it('clears incompatible uploaded hooks when explicitly starting the reference',()=>{
+    const ui=mount();ui.action(()=>ui.component(GuidedExperience).props.onView('models'));
+    ui.action(()=>ui.component(ModelUpload).props.onApply({...DEFAULT_MODEL_CONFIG,name:'Uploaded hook probe'}));
+    ui.click('Transition Engine home');
+    expect(context(ui)).toContain('unsupported calculation');
+    expect(context(ui)).not.toContain('Accounting reviewed');
+    ui.action(()=>ui.component(GuidedExperience).props.onDividend());
+    const p=ui.component(GuidedExperience).props;
+    expect(p.uploadedModelName).toBeUndefined();expect(p.equationIssue).toBeUndefined();
+    expect(p.needsDividendReference).toBe(false);
+    ui.action(()=>p.onView('map'));
+    expect(ui.component(SimulationControls).props.disabled).toBe(false);
+    ui.action(()=>ui.component(SimulationControls).props.onStep());
+    expect(ui.component(SimulationControls).props.month).toBe(1);
+  });
+  it('exploring an already valid conditional dividend retains edited inputs and paired result',()=>{
+    const ui=mount();let p=ui.component(GuidedExperience).props;
+    ui.action(()=>p.onUpdate(p.run.corporations[0].id,{availableShare:.25,fundingRequest:{kind:'amount',monthlyBillions:40},distributionStrategy:'hq-local'}));
+    p=ui.component(GuidedExperience).props;const before=p.run,paired=p.paired;
+    ui.action(()=>p.onDividend());p=ui.component(GuidedExperience).props;
+    expect(p.run).toBe(before);expect(p.paired).toBe(paired);
+    expect(context(ui)).toContain('accounting unreviewed');
+    expect(context(ui)).toContain('conditional wellbeing index');
+  });
+  it('US reference context states its own horizon without conditional labeling',()=>{
+    const ui=mount();selectModel(ui,PRESET_MODELS.find(m=>m.id==='us-reference-korinek')!.name);
+    expect(context(ui)).toContain('January 2030');
+    expect(context(ui)).not.toContain('conditional wellbeing index');
+    expect(context(ui)).not.toContain('Accounting reviewed');
+  });
+});
