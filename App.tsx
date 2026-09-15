@@ -216,7 +216,6 @@ const App: React.FC = () => {
   const [labEntry, setLabEntry] = useState<{ kind: LabEntry; sequence: number } | undefined>();
   const openLab = (kind?: LabEntry) => { setActiveTab('lab'); setSelectedEntity(null); if (kind) setLabEntry(old => ({kind, sequence:(old?.sequence ?? 0)+1})); };
   const openGuided = (mode: 'explore' | 'compare') => { if (shareError) { setGuidedMode(null); setRawActiveTab('map'); return; } setRawActiveTab('map'); setGuidedMode(mode); setIsPlaying(false); setSelectedEntity(null); setAboutDropdownOpen(false); };
-  const openDividend = () => { setResultFamily('world'); setShareError(null); openGuided('explore'); requestAnimationFrame(() => document.getElementById('guided-corporation')?.focus()); };
   const [labVisited, setLabVisited] = useState(false);
   const [activePolicy, setActivePolicy] = useState<ActiveRunView | null>(null);
   const [resultFamily, setResultFamily] = useState<'world' | 'lab-policy'>(initialRoute.policy ? 'lab-policy' : 'world');
@@ -404,6 +403,9 @@ const App: React.FC = () => {
   // months are not modelled, so the clock does not run past them (review 2026-09-14, decision 4(c)).
   const referenceEnded = (!!model.macro?.usReference && state.month >= US_REFERENCE_LAST_WORLD_MONTH) || (state.outOfScope?.length ?? 0) > 0;
   const capabilities = resolveRunCapabilities(model,compiledEquations);
+  const needsDividendReference = !capabilities.conditional
+    || run.state.executionMode !== 'world-conditional-v1'
+    || activeModelConfig !== null;
   const qualification = useMemo(() => resolveQualification(model, run, compiledEquations), [model, run, compiledEquations]);
   const comparisonCapabilities = resolveRunCapabilities(comparisonModel,compiledEquations);
   const comparisonEnded = comparisonMode && comparisonCapabilities.lastMonth !== null && comparisonRun.state.month >= comparisonCapabilities.lastMonth;
@@ -551,10 +553,65 @@ const App: React.FC = () => {
   }, [resetAll]);
 
   // Clear custom model and revert to default
-  const clearModelConfig = useCallback(() => {
+  const clearModelConfig = useCallback((reference?: {
+    model: ModelParameters; corporations: Corporation[]; dataset: CountryDatasetId;
+  }) => {
     setActiveModelConfig(null);
-    handleReset();
-  }, [handleReset]);
+    if (reference) {
+      setModel(reference.model);
+      setCountryDataset(reference.dataset);
+      setBaseCorporations(reference.corporations);
+      resetAll(reference.corporations, reference.model, reference.dataset);
+    } else {
+      handleReset();
+    }
+  }, [handleReset, resetAll]);
+
+  // Only this explicitly labeled action can replace a legacy/uploaded scenario.
+  // Home and ordinary Explore navigation deliberately never call it.
+  const openDividend = () => {
+    if (needsDividendReference) {
+      clearModelConfig({
+        model: DEFAULT_MODEL,
+        corporations: INITIAL_CORPORATIONS,
+        dataset: COUNTRY_DATASET_ID,
+      });
+      setComparisonMode(false);
+      setGuidedError(null);
+    }
+    setResultFamily('world');
+    setShareError(null);
+    setRawActiveTab('map');
+    setGuidedMode('explore');
+    setIsPlaying(false);
+    setSelectedEntity(null);
+    requestAnimationFrame(() => document.getElementById('guided-corporation')?.focus());
+  };
+
+  const openSingleWorldView = (tab: AppTab) => {
+    if (['map', 'charts', 'corporations'].includes(tab)) setComparisonMode(false);
+    if (tab === 'futures') setResultFamily('world');
+    setActiveTab(tab);
+  };
+
+  const enterMapComparison = () => {
+    const scenario = SCENARIO_PRESETS.find(item => item.id === comparisonScenarioId);
+    const nextComparisonModel = { ...DEFAULT_MODEL, ...scenario?.modelParams };
+    const issue = equationErrors.length ? 'Uploaded equations do not compile.'
+      : resolveRunCapabilities(nextComparisonModel, compiledEquations).equationIssue;
+    if (issue) {
+      setGuidedError(`Map comparison unavailable: ${issue}`);
+      return;
+    }
+    setGuidedError(null);
+    setComparisonMode(true);
+    setActiveTab('map');
+  };
+
+  const exitMapComparison = () => {
+    setComparisonMode(false);
+    setActiveTab('map');
+  };
 
   // Check if using custom model
   const isUsingCustomModel = activeModelConfig !== null;
@@ -1467,12 +1524,26 @@ const App: React.FC = () => {
         {/* Main Content Area */}
         <section id="main-content" className={`guided-main flex-1 overflow-y-auto relative h-full ${guidedMode ? '' : 'p-4 lg:p-6 bg-slate-50 dark:bg-slate-950'}`}>
           {guidedMode && pendingAutosave && <div className="guided-recovery" role="status"><span>A saved scenario from {new Date(pendingAutosave.timestamp).toLocaleString()} is available (month {pendingAutosave.month}).</span><button onClick={restoreAutosave}>Restore saved scenario</button><button onClick={discardAutosave}>Discard saved scenario</button></div>}
-          {guidedMode && <GuidedExperience mode={guidedMode} model={model} run={run} paired={pairedRun} qualification={qualification} equationIssue={capabilities.equationIssue} error={guidedError} activePolicy={resultFamily === 'lab-policy'}
-            onUpdate={(id,patch)=>{try { evaluateConditionalSnapshot(editCorporation(run,id,patch),{model}); updateCorporation(id,patch);setGuidedError(null); }catch(e){setGuidedError(`Changes were not applied: ${String(e)}`);} }} onModel={next => { try {const a=evaluateConditionalSnapshot(run,{model:next});const b=evaluateConditionalSnapshot(pairedRun,noCorporateUbiInputs({model:next}));setModel(next);setRun(a);setPairedRun(b);setGuidedError(null);}catch(e){setGuidedError(`Changes were not applied: ${String(e)}`);} }} onLab={openLab} onView={tab => { if(tab==='futures') setResultFamily('world'); setActiveTab(tab); }}
-            onDividend={openDividend} onCompare={()=>openGuided('compare')} onMapCompare={()=>{setComparisonMode(true);setActiveTab('map');}}
+          {guidedMode && <GuidedExperience mode={guidedMode} model={model} run={run} paired={pairedRun} qualification={qualification} needsDividendReference={needsDividendReference} uploadedModelName={activeModelConfig?.name} equationIssue={capabilities.equationIssue ?? (equationErrors.length ? 'Uploaded equations do not compile.' : undefined)} error={guidedError} activePolicy={resultFamily === 'lab-policy'}
+            onUpdate={(id,patch)=>{try { evaluateConditionalSnapshot(editCorporation(run,id,patch),{model}); updateCorporation(id,patch);setGuidedError(null); }catch(e){setGuidedError(`Changes were not applied: ${String(e)}`);} }} onModel={next => { try {const a=evaluateConditionalSnapshot(run,{model:next});const b=evaluateConditionalSnapshot(pairedRun,noCorporateUbiInputs({model:next}));setModel(next);setRun(a);setPairedRun(b);setGuidedError(null);}catch(e){setGuidedError(`Changes were not applied: ${String(e)}`);} }} onLab={openLab} onView={openSingleWorldView}
+            onDividend={openDividend} onCompare={()=>openGuided('compare')} onMapCompare={enterMapComparison}
             onPolicyCompare={openPolicyCharts} onShare={()=>{setShareUrl(null);setShowShareModal(true);}} onSave={saveToFile}/>}
           <div hidden={!!guidedMode} className="guided-existing-content">
-          {!guidedMode && showWorldControls && <nav className="guided-view-nav" aria-label="World views"><button onClick={()=>setIsSidebarOpen(!isSidebarOpen)}>World settings</button>{(['map','charts','corporations'] as const).map(tab=><button key={tab} aria-current={activeTab===tab?'page':undefined} onClick={()=>setActiveTab(tab)}>{tab==='map'?'Map':tab==='charts'?'Charts':'Corporations'}</button>)}<button onClick={()=>{setShareUrl(null);setShowShareModal(true);}}>Share scenario</button><button onClick={saveToFile}>Save scenario</button><label>Load scenario<input type="file" accept=".json" onChange={loadFromFile}/></label></nav>}
+          {!guidedMode && showWorldControls && (
+            <nav className="guided-view-nav" aria-label="World views">
+              <button onClick={() => setIsSidebarOpen(!isSidebarOpen)}>World settings</button>
+              {(['map', 'charts', 'corporations'] as const).map(tab => (
+                <button key={tab} aria-current={activeTab === tab ? 'page' : undefined}
+                  onClick={() => openSingleWorldView(tab)}>
+                  {tab === 'map' ? 'Map' : tab === 'charts' ? 'Charts' : 'Corporations'}
+                </button>
+              ))}
+              {comparisonMode && <button onClick={exitMapComparison}>Exit map comparison</button>}
+              <button onClick={() => { setShareUrl(null); setShowShareModal(true); }}>Share scenario</button>
+              <button onClick={saveToFile}>Save scenario</button>
+              <label>Load scenario<input type="file" accept=".json" onChange={loadFromFile}/></label>
+            </nav>
+          )}
 
           {shareError && <div role="alert" className="p-4 border border-red-500 rounded-lg"><p>{shareError}</p><p>The shared result was not opened.</p><button className="underline min-h-11" onClick={switchToWorld}>Start a new world scenario</button></div>}
           {resultFamily === 'lab-policy' && activeTab === 'charts' && <ActivePolicyResultView view={activePolicy} onAuthor={() => setActiveTab('lab')} onWorld={switchToWorld} />}
@@ -2101,7 +2172,7 @@ const App: React.FC = () => {
                         <span className="text-slate-600 dark:text-slate-600 ml-2">by {activeModelConfig.metadata.author}</span>
                       </div>
                       <button
-                        onClick={clearModelConfig}
+                        onClick={() => clearModelConfig()}
                         className="px-3 py-1 bg-red-600 hover:bg-red-700 text-white text-sm rounded font-medium transition-colors"
                       >
                         Clear & Use Default
@@ -2998,7 +3069,7 @@ effect(t)      = wellbeing_main(t) - wellbeing_paired(t)`}
         <EquationErrorBanner
           modelName={activeModelConfig?.name || 'custom model'}
           errors={equationErrors}
-          onClear={clearModelConfig}
+          onClear={() => clearModelConfig()}
         />
         <SimulationControls isPlaying={isPlaying} onPlay={() => setIsPlaying(true)} onPause={() => setIsPlaying(false)} onReset={handleReset} onStep={stepSimulation} speed={speed} setSpeed={setSpeed} month={state.month} maxMonth={history.length > 0 ? Math.max(...history.map(h => h.month)) : state.month} onSeek={handleSeek} disabled={!canStep} disabledReason={capabilities.equationIssue || comparisonCapabilities.equationIssue || (comparisonEnded ? 'Comparison reference ends at month 60.' : undefined) || (referenceEnded ? 'The US reference path (Korinek et al. 2026) ends in January 2030; later months are not modelled.' : `Custom model "${activeModelConfig?.name || ''}" has ${equationErrors.length} equation errors`)} />
       </footer>
