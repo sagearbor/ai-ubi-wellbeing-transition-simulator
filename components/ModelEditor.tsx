@@ -86,7 +86,7 @@ export const ModelEditor: React.FC<ModelEditorProps> = ({
   const [shared, setShared] = useState(false);
   const [shareError, setShareError] = useState<string | null>(null);
 
-  const [importError, setImportError] = useState<string | null>(null);
+  const [importError, setImportError] = useState<string | null>(() => typeof window !== 'undefined' && window.location.hash.startsWith('#scenario=') && !extractScenarioHashParam(window.location.hash) ? 'Cannot open this equation scenario: empty share payload.' : null);
   const [importNotice, setImportNotice] = useState<string | null>(null);
   const [shareUrl, setShareUrl] = useState<string | null>(null);
   const [copyFeedback, setCopyFeedback] = useState<string | null>(null);
@@ -107,7 +107,10 @@ export const ModelEditor: React.FC<ModelEditorProps> = ({
   // so re-opening this tab (or switching Upload/Edit) doesn't silently reapply it again.
   useEffect(() => {
     const param = extractScenarioHashParam(window.location.hash);
-    if (!param) return;
+    if (!param) {
+      if (window.location.hash.startsWith('#scenario=')) setImportError('Cannot open this equation scenario: empty share payload.');
+      return;
+    }
     try {
       const config = decodeScenarioFromUrl(param);
       const merged = initEquationsForEditor(config);

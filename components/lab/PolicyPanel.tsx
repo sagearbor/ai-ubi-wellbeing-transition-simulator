@@ -26,7 +26,7 @@ import { resolveModel } from '../../src/core/engine';
 import { RUN_LIMITS, checkRunSettings } from '../../src/core/limits';
 import type { ValidationResult } from '../../src/core/validate';
 import type { Runner } from '../../src/workers/client';
-import type { PairedJob, Progress, RunOutcome } from '../../src/workers/protocol';
+import type { PairedJob, Progress, RunOutcome, RunJob } from '../../src/workers/protocol';
 import { CORE_FIXTURES, findFixture } from '../../src/core/fixtures';
 import type { CoreModel, Overlay } from '../../src/core/types';
 import {
@@ -247,7 +247,7 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
   const activeKey = draft ? runKey(model, overlays, draft, runs, seed, sourceText) : '';
   const viewStatus = activeFresh ? 'ready' : attempt === 'ready' && activeResult && !activeResult.result.ok ? 'failed' : attempt === 'running' || attempt === 'failed' || attempt === 'cancelled' ? attempt : activeResult ? 'stale' : 'empty';
   const cov = draft ? coverage(draft, sourceText.trim() ? sourceText : undefined) : null;
-  const coverageText = cov ? `${cov.text}; ${cov.source.text}; ${cov.completeness.text}` : 'No policy draft selected.';
+  const coverageText = cov ? `${cov.text}; Quotation coverage: ${cov.source.text}; Operative disposition coverage: ${cov.operative.text}; ${cov.completeness.text}` : 'No policy draft selected.';
   const noMapped = !draft?.provisions.some(p => p.status === 'mapped' && p.mapping);
   const origin = `${provenance?.kind ?? modelStatus}${provenance?.reason ? `: ${provenance.reason}` : ''}${importWarnings.length ? `; ${importWarnings.join('; ')}` : ''}`;
   useEffect(() => {
@@ -428,10 +428,14 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
     catch { return false; }
   };
 
-  const openBundleText = async (text: string) => {
-    const token = gate.current.begin();
-    const context = operationContext.current;
-    const current = () => ownsContext(gate.current, token, context, operationContext.current);
+  const openBundleText = async (text: string, current: () => boolean, token: number) => {
+    if (!current()) return;
+    const runOwned = <J extends RunJob>(job: J) => {
+      if (runner.mode === 'sync') return Promise.resolve(runner.runSync(job));
+      const handle = runner.run('bundle', job);
+      gate.current.attach(token, handle.cancel);
+      return handle.promise;
+    };
     setRunning(null);
     setAttempt('failed');
     setSourceCandidate(null);
@@ -445,7 +449,7 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
         try {
           const source = JSON.parse(text);
           if (typeof source?.schema === 'string' && source.schema.startsWith('policy-bundle/') && source.model && source.draft?.source && Array.isArray(source.draft.provisions) && Array.isArray(source.overlays)) {
-            const checked = await runner.run('bundle-source', {kind: 'validate-model', json: source.model}).promise;
+            const checked = await runOwned({kind: 'validate-model', json: source.model});
             if (!current()) return;
             if (checked.status === 'done' && (checked.result as ValidationResult).ok && sourceDraftSupported(source.draft, (checked.result as ValidationResult).model!, source.overlays)) {
               setSourceCandidate({model: (checked.result as ValidationResult).model!, overlays: source.overlays, draft: source.draft, sourceText: typeof source.sourceText === 'string' ? source.sourceText : undefined, reason: parsed.reason});
@@ -460,7 +464,7 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
     let status: ModelStatus = 'curated';
     if (bundle.model) {
       // A carried model is validated like any import before anything runs, and is never curated.
-      const v = runner.mode === 'sync' ? runner.runSync({ kind: 'validate-model', json: bundle.model }) : await runner.run('bundle', { kind: 'validate-model', json: bundle.model }).promise;
+      const v = await runOwned({ kind: 'validate-model', json: bundle.model });
       if (!current()) return;
       const vr = v.status === 'done' ? (v.result as ValidationResult) : null;
       if (!vr || !vr.ok || !vr.model) {
@@ -474,7 +478,7 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
       status = 'imported';
     }
     setNotice({ tone: 'ok', text: 'Re-running the bundle to check it reproduces…' });
-    const outcome = runner.mode === 'sync' ? runner.runSync({ kind: 'reopen-bundle', bundle, models }) : await runner.run('bundle', { kind: 'reopen-bundle', bundle, models }).promise;
+    const outcome = await runOwned({ kind: 'reopen-bundle', bundle, models });
     if (!current()) return;
     if (outcome.status !== 'done') {
       setReport(null);
@@ -505,9 +509,23 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
   const onFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    if (file.size > 5_000_000) { setNotice({tone: 'error', text: 'The bundle exceeds the 5 MB reopen limit.'}); e.target.value = ''; return; }
-    file.text().then((t) => void openBundleText(t), (err: Error) => setNotice({ tone: 'error', text: `Could not read the file: ${err.message}` }));
+    const token = gate.current.begin();
+    const context = operationContext.current;
+    const current = () => ownsContext(gate.current, token, context, operationContext.current);
+    setRunning(null);
+    setAttempt('failed');
+    setSourceCandidate(null);
     e.target.value = '';
+    if (file.size > 5_000_000) { setNotice({tone: 'error', text: 'The bundle exceeds the 5 MB reopen limit.'}); return; }
+    void (async () => {
+      try {
+        const text = await file.text();
+        if (!current()) return;
+        await openBundleText(text, current, token);
+      } catch (error) {
+        if (current()) { setReport(null); setAttempt('failed'); setNotice({tone:'error',text:`Cannot open this bundle: ${error instanceof Error ? error.message : String(error)}`}); }
+      }
+    })();
   };
 
   // -- view -------------------------------------------------------------------
