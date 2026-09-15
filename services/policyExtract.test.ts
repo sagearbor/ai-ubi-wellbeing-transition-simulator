@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { findFixture } from '../src/core/fixtures';
 import type { CoreModel } from '../src/core/types';
-import { coverage, validateDraft } from '../src/policy/draft';
+import { coverage, pairedRun, validateDraft } from '../src/policy/draft';
 import { modelHash, sha256Hex } from '../src/policy/hash';
 import {
   PolicyNoApiKeyError,
@@ -231,4 +231,23 @@ describe('extractPolicyDraft with a mocked client', () => {
     for (let i = 0; i < 10; i++) await extractPolicyDraft(training, SOURCE);
     await expect(extractPolicyDraft(training, SOURCE)).rejects.toBeInstanceOf(PolicyRateLimitError);
   });
+});
+
+it('preserves proposed time assumptions and operative links without claiming review', () => {
+  const proposed = { ...fund, mapping: { ...fund.mapping, timeAssumption: { basis: 'year', reason: 'Explicit hypothetical annual funding' } } };
+  const out = parsePolicyExtraction(payload([proposed], { clauseDispositions: [{ clauseId: 'sec2(a)', status: 'linked', reason: 'Funding only; no child care or response coefficient covered', provisionIds: ['fund'] }] }), training, SOURCE);
+  expect(out.errors).toEqual([]);
+  expect(out.draft?.provisions[0].mapping?.timeAssumption).toEqual(proposed.mapping.timeAssumption);
+  expect(out.draft?.clauseDispositions?.[0].provisionIds).toEqual(['fund']);
+  expect(out.draft?.reviewStatus).toBe('ai-drafted');
+  expect(out.draft?.completeness).toBeUndefined();
+  expect(coverage(out.draft!, SOURCE).operative.unresolved).toEqual(['sec2(b)', 'sec2(c)']);
+});
+
+it('preserves unknown operative mechanism links for blocking validation', () => {
+  const out = parsePolicyExtraction(payload([fund], { clauseDispositions: [{ clauseId: 'sec2(a)', status: 'linked', reason: 'Funding and eligibility', provisionIds: ['fund', 'missing-eligibility'] }] }), training, SOURCE);
+  expect(out.draft?.clauseDispositions?.[0].provisionIds).toEqual(['fund', 'missing-eligibility']);
+  expect(validateDraft(out.draft!, training, { sourceText: SOURCE }).some(d => d.level === 'error' && d.code === 'unknown-interprets')).toBe(true);
+  expect(coverage(out.draft!, SOURCE).operative.unresolved).toContain('sec2(a)');
+  expect(pairedRun(training, [], out.draft!, { sourceText: SOURCE, runs: 1 }).ok).toBe(false);
 });

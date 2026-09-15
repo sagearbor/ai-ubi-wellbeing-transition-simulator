@@ -1,3 +1,7 @@
+import { historyThroughCurrent, writeRecoverySnapshot } from './simulation/appState';
+import { assertRunSupported, resolveRunCapabilities } from './simulation/capabilities';
+import { conditionalWorld } from './simulation/conditionalWorld';
+import { evaluateConditionalSnapshot, noCorporateUbiInputs } from './simulation/run';
 
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { AreaChart, Area, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ScatterChart, Scatter, ZAxis, ReferenceLine } from 'recharts';
@@ -17,6 +21,10 @@ import { ModelDetail } from './components/ModelDetail';
 import { ModelRating } from './components/ModelRating';
 import FuturesTab from './components/futures/FuturesTab';
 import LabTab from './components/lab/LabTab';
+import ActivePolicyResultView from './components/lab/ActivePolicyResultView';
+import { sharedRoute, recognizedShareHash, type AppTab } from './components/lab/navigation';
+import { resolveQualification } from './simulation/qualification';
+import { unsupportedPolicyView, type ActiveRunView } from './components/lab/activeRunView';
 import ModelCardTab from './components/modelcard/ModelCardTab';
 import { InterventionImportPanel } from './components/futures/InterventionImportPanel';
 import { LOCKED_GRAPH, LOCKED_INTERVENTIONS, loadCustomInterventions, saveCustomInterventions } from './src/futures/data';
@@ -199,17 +207,23 @@ const App: React.FC = () => {
   const [history, setHistory] = useState<HistoryPoint[]>([]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [speed, setSpeed] = useState(1);
-  const [activeTab, setActiveTab] = useState<'map' | 'charts' | 'corporations' | 'futures' | 'lab' | 'analysis' | 'overview' | 'equations' | 'guide' | 'models' | 'leaderboard' | 'modelcard'>('map');
+  const [initialRoute] = useState(() => typeof window === 'undefined' ? sharedRoute('', '') : sharedRoute(window.location.search, window.location.hash));
+  const [activeTab, setActiveTab] = useState<AppTab>(initialRoute.tab);
+  const [labVisited, setLabVisited] = useState(false);
+  const [activePolicy, setActivePolicy] = useState<ActiveRunView | null>(null);
+  const [resultFamily, setResultFamily] = useState<'world' | 'lab-policy'>(initialRoute.policy ? 'lab-policy' : 'world');
+  const [shareError, setShareError] = useState<string | null>(null);
+  useEffect(() => { if (activeTab === 'lab') setLabVisited(true); }, [activeTab]);
+  const publishPolicy = React.useCallback((view: ActiveRunView) => { setActivePolicy(view); if (activeTab === 'lab' && view.status !== 'empty') setResultFamily('lab-policy'); }, [activeTab]);
+  const openPolicyCharts = () => { setResultFamily('lab-policy'); setActiveTab('charts'); setSelectedEntity(null); };
+  const switchToWorld = () => { setResultFamily('world'); setShareError(null); setActiveTab('map'); };
   const [customInterventions, setCustomInterventions] = useState<Intervention[]>(() => loadCustomInterventions());
-  // Deep link: /?tab=lab opens a tab directly (shareable, and it bypasses the header menu on phones).
+  // Mount-only payload parsers must be re-entered for a newly opened share hash.
+  // Ordinary tabs preserve the Lab; explicit share links intentionally open a new scenario.
   useEffect(() => {
-    try {
-      const wanted = new URLSearchParams(window.location.search).get('tab');
-      const valid = ['map', 'charts', 'corporations', 'futures', 'lab', 'analysis', 'overview', 'equations', 'guide', 'models', 'leaderboard', 'modelcard'];
-      if (wanted && valid.includes(wanted)) setActiveTab(wanted as any);
-      // A shared policy scenario (#lab=...) opens the Model Lab, which reads and reports on the link itself.
-      if (window.location.hash.startsWith('#lab=')) setActiveTab('lab');
-    } catch { /* no window */ }
+    const openHash = () => { if (recognizedShareHash(window.location.hash)) window.location.reload(); };
+    window.addEventListener('hashchange', openHash);
+    return () => window.removeEventListener('hashchange', openHash);
   }, []);
   const [viewMode, setViewMode] = useState<'adoption' | 'wellbeing'>('wellbeing'); // Default to wellbeing
   const [equationViewMode, setEquationViewMode] = useState<'simple' | 'detailed'>('simple');
@@ -220,7 +234,7 @@ const App: React.FC = () => {
   const [comparisonScenarioId, setComparisonScenarioId] = useState<string>('free-market-optimism');
 
   // Models tab mode state (P8-T13)
-  const [modelMode, setModelMode] = useState<'upload' | 'edit'>('upload');
+  const [modelMode, setModelMode] = useState<'upload' | 'edit'>(initialRoute.edit ? 'edit' : 'upload');
 
   // Initialize default selected countries
   const [selectedCountries, setSelectedCountries] = useState<string[]>(() => {
@@ -250,7 +264,7 @@ const App: React.FC = () => {
    * with their own calendars, so those controls are hidden there rather than shown next to an
    * unrelated model (review 2026-09-14, stage 5 gap "Other tabs still use unrelated world state").
    */
-  const showWorldControls = activeTab !== 'lab' && activeTab !== 'modelcard';
+  const showWorldControls = resultFamily === 'world' && !shareError && !['lab', 'modelcard', 'models', 'futures'].includes(activeTab);
   const [showStartHint, setShowStartHint] = useState(true);
   const [showShareModal, setShowShareModal] = useState(false);
   const [shareUrl, setShareUrl] = useState<string | null>(null);
@@ -333,7 +347,7 @@ const App: React.FC = () => {
    * (`baseRun`), model, equations and corporation edits as the main run, with every contribution
    * rate held at 0. Stepped, sought, reset and rebuilt together with `run`; Charts draws it.
    */
-  const [pairedRun, setPairedRun] = useState<SimulationRun>(baseRun);
+  const [pairedRun, setPairedRun] = useState<SimulationRun>(() => evaluateConditionalSnapshot(baseRun,noCorporateUbiInputs({model:DEFAULT_MODEL})));
   const [pairedHistory, setPairedHistory] = useState<HistoryPoint[]>([]);
 
   const state = run.state;
@@ -373,7 +387,11 @@ const App: React.FC = () => {
   // A model whose source ends at a date (the US reference ends January 2030) stops there: later
   // months are not modelled, so the clock does not run past them (review 2026-09-14, decision 4(c)).
   const referenceEnded = (!!model.macro?.usReference && state.month >= US_REFERENCE_LAST_WORLD_MONTH) || (state.outOfScope?.length ?? 0) > 0;
-  const canStep = equationErrors.length === 0 && !referenceEnded;
+  const capabilities = resolveRunCapabilities(model,compiledEquations);
+  const qualification = useMemo(() => resolveQualification(model, run, compiledEquations), [model, run, compiledEquations]);
+  const comparisonCapabilities = resolveRunCapabilities(comparisonModel,compiledEquations);
+  const comparisonEnded = comparisonMode && comparisonCapabilities.lastMonth !== null && comparisonRun.state.month >= comparisonCapabilities.lastMonth;
+  const canStep = equationErrors.length === 0 && !capabilities.equationIssue && (!comparisonMode || !comparisonCapabilities.equationIssue) && !referenceEnded && !comparisonEnded;
 
   const runInputs: RunInputs = useMemo(
     () => ({ model, equations: compiledEquations }),
@@ -406,10 +424,11 @@ const App: React.FC = () => {
             // We consciously do not load history to keep URL small and reliable
             // User starts fresh with the shared parameters, on the link's country dataset
             setCountryDataset(decoded.countryDataset);
-            const fresh = initialRun(INITIAL_CORPORATIONS, undefined, initOptionsFor(decoded.model, decoded.countryDataset));
+            const fresh = decoded.run ?? initialRun(INITIAL_CORPORATIONS, undefined, initOptionsFor(decoded.model, decoded.countryDataset));
+            setBaseCorporations(fresh.corporations);
             setBaseRun(fresh);
             setRun(fresh);
-            setPairedRun(fresh);
+            setPairedRun(decoded.model.executionMode ? evaluateConditionalSnapshot(fresh,noCorporateUbiInputs({model:decoded.model})) : fresh);
             setHistory([]);
             setPairedHistory([]);
             const freshB = initialRun(INITIAL_CORPORATIONS, undefined, initOptionsFor(DEFAULT_MODEL, decoded.countryDataset));
@@ -418,7 +437,7 @@ const App: React.FC = () => {
             setComparisonHistory([]);
         }
       } catch (e) {
-        console.error("Failed to decode shared state", e);
+        setShareError(`Cannot open this shared scenario: ${e instanceof Error ? e.message : String(e)}`);
       }
     }
   }, []);
@@ -429,6 +448,7 @@ const App: React.FC = () => {
     if (!showWorldControls) {
       setIsPlaying(false);
       setIsSidebarOpen(false);
+      setSelectedEntity(null);
     }
   }, [showWorldControls]);
 
@@ -445,7 +465,7 @@ const App: React.FC = () => {
     try {
         // STRATEGY: Only share parameters (model). 
         // This ensures URL is tiny and robust.
-        const base64 = encodeSharePayload(model, countryDataset);
+        const base64 = encodeSharePayload(model, countryDataset, model.executionMode ? run : undefined);
         const url = `${window.location.origin}${window.location.pathname}#share=${base64}`;
         setShareUrl(url);
     } catch (err) {
@@ -456,8 +476,8 @@ const App: React.FC = () => {
 
   const handleCopyLink = async () => {
     if (shareUrl) {
-        await navigator.clipboard.writeText(shareUrl);
-        alert("Link copied to clipboard!");
+        try { await navigator.clipboard.writeText(shareUrl); alert("Link copied to clipboard!"); }
+        catch { alert("Clipboard unavailable. Select and copy the full link, or use Open shared scenario."); }
     }
   };
 
@@ -477,7 +497,7 @@ const App: React.FC = () => {
     setBaseRun(freshA);
     setRun(freshA);
     setHistory([]);
-    setPairedRun(freshA);
+    setPairedRun(init.model?.executionMode ? evaluateConditionalSnapshot(freshA,noCorporateUbiInputs({model:init.model})) : freshA);
     setPairedHistory([]);
 
     // The comparison panel is reset with its own roster so both start at month 0 together.
@@ -530,10 +550,10 @@ const App: React.FC = () => {
   // ============================================================================
 
   const updateCorporation = useCallback((id: string, updates: Partial<Corporation>) => {
-    setRun(r => editCorporation(r, id, updates));
+    setRun(r => { const edited=editCorporation(r,id,updates); return model.executionMode ? conditionalWorld({state:edited.state,corporations:edited.corporations,model},false,true) : edited; });
     // The counterfactual gets the same edit, except its contribution rate stays at 0.
-    setPairedRun(r => editCorporation(r, id, corporationEditForCounterfactual(updates)));
-  }, []);
+    setPairedRun(r => { const edited=editCorporation(r,id,{...corporationEditForCounterfactual(updates),...(model.executionMode ? {contributionRate:0,fundingRequest:{kind:'share' as const}} : {})}); return model.executionMode ? conditionalWorld({state:edited.state,corporations:edited.corporations,model},false,true) : edited; });
+  }, [model]);
 
   // ============================================================================
   // UPDATE COUNTRY (P7-T2)
@@ -661,6 +681,7 @@ const App: React.FC = () => {
         globalLedger,
         gameTheoryState,
         model,
+        baseRun,
         history: historyForSave(history),
         activeModelConfig,
         countryDataset,
@@ -682,7 +703,7 @@ const App: React.FC = () => {
       console.error("Failed to save simulation:", err);
       alert("Failed to save simulation. Check console for details.");
     }
-  }, [state, run, corporations, globalLedger, gameTheoryState, model, history, activeModelConfig, countryDataset]);
+  }, [state, run, corporations, globalLedger, gameTheoryState, model, history, activeModelConfig, countryDataset, baseRun]);
 
   /**
    * Load simulation state from a JSON file
@@ -691,6 +712,9 @@ const App: React.FC = () => {
   /** Restore a saved state (file or autosave) as the whole run, replaying old formats. */
   const restoreSavedState = useCallback((saved: SavedState & { activeModelConfig?: ModelConfig | null }) => {
     if (!saved.version) console.warn('Loading a save with no version field. It will be replayed from month 0.');
+    const upload = saved.activeModelConfig ? parseEquationSet(saved.activeModelConfig.equations) : null;
+    if(upload && !upload.valid) throw new Error('Saved equations do not compile');
+    assertRunSupported(saved.model,saved.run?.state.month ?? saved.month,upload?.compiledEquations);
     const loaded = historyFromSave(saved);
     // Saves from before the 2026-09 country-data migration reopen on 'countries-legacy-v1'.
     setCountryDataset(loaded.countryDataset);
@@ -784,6 +808,8 @@ const App: React.FC = () => {
    * recorded by this build carry their run; older ones are reproduced with replayTo.
    */
   const handleSeek = (m: number) => {
+    if(m < baseRun.state.month || (comparisonMode && m < comparisonBaseRun.state.month)) return;
+    try { assertRunSupported(model,m,compiledEquations); if(comparisonMode) assertRunSupported(comparisonModel,m,compiledEquations); } catch { return; }
     setIsPlaying(false);
     // Equation errors block every seek but a reset; the end of a reference only blocks moving past it.
     if (equationErrors.length > 0 && m !== 0) return;
@@ -848,14 +874,12 @@ const App: React.FC = () => {
 
   // Contribution rates are the counterfactual's one difference, so this edits the main run only.
   const handleBulkUpdateContribution = (newRate: number) => {
-    setRun(r => ({
-      ...r,
-      corporations: r.corporations.map(corp =>
-        selectedCorpIds.has(corp.id)
-          ? { ...corp, contributionRate: newRate }
-          : corp
-      )
-    }));
+    setRun(r => {
+      const edited = {...r, corporations:r.corporations.map(corp => selectedCorpIds.has(corp.id)
+        ? {...corp,contributionRate:newRate,...(model.executionMode ? {fundingRequest:{kind:'share' as const}} : {})}
+        : corp)};
+      return model.executionMode ? conditionalWorld({state:edited.state,corporations:edited.corporations,model},false,true) : edited;
+    });
   };
 
   // ESC key handler for deselection
@@ -994,29 +1018,36 @@ const App: React.FC = () => {
     return `M ${start.x} ${start.y} C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${end.x} ${end.y}`;
   };
 
+  const visibleChartHistory = useMemo(() => capabilities.conditional
+    ? historyThroughCurrent(history, baseRun, run)
+    : history.filter(point => point.month <= state.month), [capabilities.conditional, history, baseRun, run, state.month]);
+  const visiblePairedHistory = useMemo(() => capabilities.conditional
+    ? historyThroughCurrent(pairedHistory, evaluateConditionalSnapshot(baseRun, noCorporateUbiInputs({model})), pairedRun)
+    : pairedHistory, [capabilities.conditional, pairedHistory, baseRun, model, pairedRun]);
+
   const chartData = useMemo(() => {
-    return history.map(point => {
+    return visibleChartHistory.map(point => {
       const data: any = {
           month: point.month,
           date: formatMonthDate(point.month),
           // globalFund is already billions USD (the global pool this month).
           fund: point.state.globalFund
       };
-      data['Wellbeing_Global'] = point.state.averageWellbeing;
+      data['Wellbeing_Global'] = point.state.conditionalSummary ? point.state.conditionalSummary.value : point.state.averageWellbeing;
       const globalAdoption = (Object.values(point.state.countryData) as CountryStats[]).reduce((acc, curr) => acc + curr.aiAdoption, 0) / INITIAL_COUNTRIES.length * 100;
       data['Adoption_Global'] = globalAdoption;
 
       // Global displacement gap
-      data['DisplacementGap_Global'] = millionsToBillionsUsd(point.state.globalDisplacementGap); // USD/person x millions of people -> billions
+      if (!capabilities.conditional) data['DisplacementGap_Global'] = millionsToBillionsUsd(point.state.globalDisplacementGap); // USD/person x millions of people -> billions
 
       Object.keys(point.state.countryData).forEach(id => {
-        data[`Wellbeing_${id}`] = point.state.countryData[id].wellbeing;
+        data[`Wellbeing_${id}`] = point.state.countryData[id].conditionalWellbeing?.raw ?? point.state.countryData[id].wellbeing;
         data[`Adoption_${id}`] = point.state.countryData[id].aiAdoption * 100;
-        data[`DisplacementGap_${id}`] = (point.state.countryData[id].displacementGap || 0) / 1000; // Convert to thousands
+        if (!capabilities.conditional) data[`DisplacementGap_${id}`] = (point.state.countryData[id].displacementGap || 0) / 1000; // Convert to thousands
       });
       return data;
     });
-  }, [history]);
+  }, [visibleChartHistory, capabilities.conditional]);
 
   useEffect(() => {
     let interval: any;
@@ -1046,32 +1077,24 @@ const App: React.FC = () => {
         gameTheoryState,
         model,
         // Full runs per point make the timeline seekable after a restore. They are also the
-        // bulk of the payload, so if localStorage refuses the write we drop them and keep the
-        // chartable states; seeking then replays from month 0 instead.
-        history: withRuns ? historyForSave(history) : historyForPrompt(history),
+        // bulk of the payload. Only legacy saves can fall back to chartable states; conditional
+        // saves need their complete snapshot history. Failed writes preserve the prior recovery.
+        baseRun,
+        history: model.executionMode ? historyForSave(history) : withRuns ? historyForSave(history) : historyForPrompt(history),
         activeModelConfig,  // P8-T9: Include custom model config
         countryDataset,
       });
-      try {
-        localStorage.setItem('ubi-sim-autosave', JSON.stringify(build(true)));
-        console.log(`Auto-saved at ${new Date().toLocaleTimeString()}`);
-      } catch (err) {
-        if (err instanceof DOMException && err.name === 'QuotaExceededError') {
-          try {
-            localStorage.setItem('ubi-sim-autosave', JSON.stringify(build(false)));
-            console.warn('Auto-save: storage full, saved without per-month runs (seek will replay).');
-          } catch (err2) {
-            console.error("Auto-save failed:", err2);
-            localStorage.removeItem('ubi-sim-autosave');
-          }
-        } else {
-          console.error("Auto-save failed:", err);
-        }
+      const result = writeRecoverySnapshot(localStorage, build(true), model.executionMode ? undefined : () => build(false));
+      if (result.saved) {
+        console.log(result.reduced ? 'Auto-save: saved reduced legacy history; seek will replay.' : `Auto-saved at ${new Date().toLocaleTimeString()}`);
+      } else {
+        console.error('Auto-save failed; the last successful recovery was preserved.', result.error);
       }
+
     }, 5 * 60 * 1000); // 5 minutes
 
     return () => clearInterval(interval);
-  }, [state, run, corporations, globalLedger, gameTheoryState, model, history, activeModelConfig, countryDataset]);
+  }, [state, run, corporations, globalLedger, gameTheoryState, model, history, activeModelConfig, countryDataset, baseRun]);
 
   // Autosave found on mount: offer to restore it in-page. A native confirm() dialog blocked the
   // whole page (and any automation) until dismissed, so it is a banner with two buttons instead.
@@ -1185,7 +1208,7 @@ const App: React.FC = () => {
                             <Info className="text-blue-600 dark:text-blue-400 shrink-0" size={20} />
                             <div className="space-y-1">
                                 <h4 className="text-blue-700 dark:text-blue-400 text-xs font-bold uppercase tracking-wide">Sharing Info</h4>
-                                <p className="text-slate-600 dark:text-slate-300 text-xs leading-relaxed">This will generate a link containing your current tax rates, incentives, and model settings. The recipient will start a fresh simulation with these parameters.</p>
+                                <p className="text-slate-600 dark:text-slate-300 text-xs leading-relaxed">Conditional links preserve the current corporate requests and economic inputs at the displayed month. Accounting is recomputed on opening; earlier history and macro inputs are not independently verified. Legacy links share settings only.</p>
                             </div>
                         </div>
                         <button 
@@ -1198,7 +1221,8 @@ const App: React.FC = () => {
                 ) : (
                     <div className="space-y-4">
                          <div className="p-3 bg-slate-100 dark:bg-slate-950 rounded-lg border border-slate-200 dark:border-slate-800 break-all text-xs font-mono text-slate-600 dark:text-slate-400">
-                            {shareUrl.substring(0, 50)}...
+                            <input aria-label="Full shared scenario link" readOnly value={shareUrl} className="w-full bg-transparent" />
+                            <a href={shareUrl} target="_blank" rel="noreferrer" className="underline">Open shared scenario</a>
                          </div>
                          <button 
                             onClick={handleCopyLink}
@@ -1278,19 +1302,21 @@ const App: React.FC = () => {
           {/* Compare Mode Toggle (P7-T5) */}
           <button
              onClick={() => {
+               if (resultFamily === 'lab-policy' || activeTab === 'lab') { openPolicyCharts(); return; }
                setComparisonMode(!comparisonMode);
                if (!comparisonMode) setActiveTab('map'); // Switch to map tab when enabling comparison
              }}
              className={`px-2 py-1.5 rounded-lg text-[10px] font-bold uppercase transition-all ${comparisonMode ? 'bg-purple-600 text-white shadow-md' : 'text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-700'}`}
              title="Compare two scenarios side-by-side on Map tab"
           >
-            Compare{comparisonMode ? '' : ' Maps'}
+            Compare{resultFamily === 'lab-policy' || activeTab === 'lab' ? ' Policy' : comparisonMode ? '' : ' Maps'}
           </button>
 
           <div className="w-px h-6 bg-slate-300 dark:bg-slate-700 mx-1"></div>
 
           {/* Save/Load Buttons */}
           <button
+             hidden={!showWorldControls}
              onClick={saveToFile}
              className="p-1.5 rounded-lg text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
              title="Save Scenario to File"
@@ -1300,6 +1326,7 @@ const App: React.FC = () => {
 
           <label
              className="p-1.5 rounded-lg text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors cursor-pointer"
+             hidden={!showWorldControls}
              title="Load Scenario from File"
           >
             <Upload size={16} />
@@ -1347,14 +1374,14 @@ const App: React.FC = () => {
             <div>
                 <h2 className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-4">Baseline Models</h2>
                 <div className="grid grid-cols-1 gap-2">
-                {PRESET_MODELS.map(m => (
+                {[DEFAULT_MODEL, ...PRESET_MODELS.filter(m => m.id !== DEFAULT_MODEL.id)].map(m => (
                     <button
                     key={m.id}
                     onClick={() => {
                       setModel({ ...m, isCustom: false });
                       // A preset that starts from a different wellbeing scale (anchored: observed ladder
                       // values) cannot continue the current run; restart at month 0 with it.
-                      if (initOptionsFor(m).initialWellbeing !== initOptionsFor(model).initialWellbeing) resetAll(undefined, m);
+                      if (m.executionMode !== model.executionMode || initOptionsFor(m).initialWellbeing !== initOptionsFor(model).initialWellbeing) resetAll(undefined, m);
                       if(window.innerWidth < 1024) setIsSidebarOpen(false);
                     }}
                     className={`w-full text-left p-3 rounded-xl border text-xs font-bold transition-all ${model.id === m.id ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-500 text-blue-700 dark:text-blue-400 shadow-sm' : 'bg-slate-50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-400 hover:border-slate-400 dark:hover:border-slate-500'}`}
@@ -1367,11 +1394,11 @@ const App: React.FC = () => {
 
             <div>
                 <h2 className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
-                  Scenario Presets
+                  Legacy Scenario Presets
                   <InfoTooltip text="Pre-configured scenarios demonstrating different game theory outcomes: cooperation, defection, protectionism, etc." />
                 </h2>
                 <div className="space-y-2">
-                {SCENARIO_PRESETS.map(scenario => (
+                {!capabilities.conditional && SCENARIO_PRESETS.map(scenario => (
                     <div key={scenario.id} className="border border-slate-200 dark:border-slate-700 rounded-xl p-3 bg-slate-50 dark:bg-slate-800/50">
                       <div className="flex justify-between items-start mb-2">
                         <h3 className="text-xs font-bold text-slate-700 dark:text-slate-200">{scenario.name}</h3>
@@ -1399,7 +1426,7 @@ const App: React.FC = () => {
                   <InfoTooltip text="Select a different scenario to compare against your current setup (Scenario A)." />
                 </h2>
                 <div className="space-y-2">
-                  {SCENARIO_PRESETS.map(scenario => (
+                  {!capabilities.conditional && SCENARIO_PRESETS.map(scenario => (
                     <button
                       key={scenario.id}
                       onClick={() => setComparisonScenarioId(scenario.id)}
@@ -1427,7 +1454,7 @@ const App: React.FC = () => {
                     { label: 'Adoption Incentive', key: 'adoptionIncentive', unit: '', step: 0.01, min: 0, max: 1.0, multiplier: 1, engine: false },
                     { label: 'Growth Speed', key: 'aiGrowthRate', unit: '%', step: 0.01, min: 0.01, max: 0.4, multiplier: 100, engine: true },
                     { label: 'GDP Scaling', key: 'gdpScaling', unit: '', step: 0.05, min: 0, max: 1.0, multiplier: 1, engine: true },
-                ].map(p => (
+                ].filter(p => capabilities.supportedControls.includes(p.key)).map(p => (
                     <div key={p.key}>
                     <div className="flex justify-between text-[10px] mb-2 font-mono text-slate-500 dark:text-slate-400"><span>{p.label}{!p.engine && <span title="The built-in engine does not read this parameter; see docs/design/model-card-default.md" className="ml-1 px-1 rounded bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300 font-sans normal-case">not used by engine</span>}</span><span className="text-slate-900 dark:text-white">{(model as any)[p.key] * p.multiplier}{p.unit}</span></div>
                     <input type="range" min={p.min} max={p.max} step={p.step} value={(model as any)[p.key]} onChange={(e) => setModel({ ...model, [p.key]: parseFloat(e.target.value) })} className="w-full h-1 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-blue-600" />
@@ -1441,7 +1468,7 @@ const App: React.FC = () => {
                 <div className="space-y-6">
                 {[
                     { label: 'Displacement Rate', key: 'displacementRate', unit: '%', step: 0.05, min: 0.5, max: 0.95, multiplier: 100, tooltip: 'How much labor income is displaced at 100% AI adoption.' },
-                ].map(p => (
+                ].filter(p => capabilities.supportedControls.includes(p.key)).map(p => (
                     <div key={p.key}>
                     <div className="flex justify-between text-[10px] mb-2 font-mono text-slate-500 dark:text-slate-400">
                       <span className="flex items-center">{p.label}<InfoTooltip text={p.tooltip} /></span>
@@ -1453,6 +1480,7 @@ const App: React.FC = () => {
                 </div>
             </div>
 
+{!capabilities.conditional && <>
             <div>
                 <h2 className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-4">Corporation Policy</h2>
                 <div className="space-y-6">
@@ -1461,6 +1489,7 @@ const App: React.FC = () => {
                       <span className="flex items-center">Default Corp Policy<InfoTooltip text="Initial policy stance for all corporations at simulation start." /></span>
                     </div>
                     <select
+                      disabled={capabilities.conditional}
                       value={model.defaultCorpPolicy}
                       onChange={(e) => setModel({ ...model, defaultCorpPolicy: e.target.value as any })}
                       className="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg text-xs font-bold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -1482,6 +1511,7 @@ const App: React.FC = () => {
                       min={0}
                       max={1}
                       step={0.1}
+                      disabled={capabilities.conditional}
                       value={model.marketPressure}
                       onChange={(e) => setModel({ ...model, marketPressure: parseFloat(e.target.value) })}
                       className="w-full h-1 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-purple-600"
@@ -1489,6 +1519,8 @@ const App: React.FC = () => {
                   </div>
                 </div>
             </div>
+
+</>}
 
             <div className="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl">
               <div className="flex items-start gap-2">
@@ -1500,7 +1532,7 @@ const App: React.FC = () => {
                 <div className="flex-1">
                   <h3 className="text-[10px] font-bold text-blue-900 dark:text-blue-300 uppercase tracking-widest mb-2">Corporation-Centric Model</h3>
                   <p className="text-[10px] text-blue-800 dark:text-blue-400 leading-relaxed">
-                    In this model, UBI contributions are made voluntarily by AI corporations based on their self-interest (customer preservation) and reputation concerns. Nation states cannot mandate participation.
+                    {capabilities.conditional ? 'Requests and allocation routes are fixed scenario inputs. Contributions are limited to the modeled source pool. Customer demand, reputation reactions and national adaptation are not modeled.' : 'In the legacy model, UBI contributions change under assumed customer-preservation and reputation rules.'}
                   </p>
                 </div>
               </div>
@@ -1519,24 +1551,28 @@ const App: React.FC = () => {
 
         {/* Main Content Area */}
         <section className="flex-1 overflow-y-auto p-4 lg:p-6 bg-slate-50 dark:bg-slate-950 relative h-full scrollbar-hide">
+          {shareError && <div role="alert" className="p-4 border border-red-500 rounded-lg"><p>{shareError}</p><p>The shared result was not opened.</p><button className="underline min-h-11" onClick={switchToWorld}>Start a new world scenario</button></div>}
+          {resultFamily === 'lab-policy' && activeTab === 'charts' && <ActivePolicyResultView view={activePolicy} onAuthor={() => setActiveTab('lab')} onWorld={switchToWorld} />}
+          {resultFamily === 'lab-policy' && !['lab', 'charts', 'models', 'guide', 'modelcard'].includes(activeTab) && <div className="space-y-4"><h2 className="font-bold">This view does not support the selected Lab policy result</h2><p>{unsupportedPolicyView}</p><button className="underline min-h-11 mr-4" onClick={openPolicyCharts}>View policy Charts</button><button className="underline min-h-11" onClick={() => { setResultFamily('world'); setSelectedEntity(null); }}>Switch to {activeTab === 'futures' ? 'the separate Futures model' : 'world model'}</button></div>}
           {/* Active run identity (review 2026-09-14, stage-5 gap 3): every view says which model its numbers come from. */}
-          {(activeTab === 'map' || activeTab === 'charts' || activeTab === 'corporations') && (
+          {resultFamily === 'world' && !shareError && (activeTab === 'map' || activeTab === 'charts' || activeTab === 'corporations') && (
             <p data-testid="active-model" className="mb-2 text-[11px] text-slate-500 dark:text-slate-400">
-              World simulation · <span className="font-semibold text-slate-700 dark:text-slate-200">{activeModelConfig ? `${activeModelConfig.name} (uploaded equations)` : model.name}</span> · month {state.month}. The Model Lab and the AI Futures Map are separate models and do not feed this view.
+              World simulation · <span className="font-semibold text-slate-700 dark:text-slate-200">{activeModelConfig ? `${activeModelConfig.name} (uploaded equations)` : model.name}</span> · month {state.month}. The Model Lab and the AI Futures Map are separate models and do not feed this view. {capabilities.conditional && <span>Accounting: {qualification.accounting === 'reviewed-conditional' ? 'independently reviewed at this exact default point' : 'unreviewed scenario point (not a computation failure)'}. Macro and wellbeing: illustrative. Money: constant-2015 USD; residents: modeled roster.</span>}
             </p>
           )}
-          {activeTab === 'futures' && (
+          {showWorldControls && state.sourceAccounting && ['map','charts','corporations'].includes(activeTab) && <p className="mb-3 text-xs" data-testid="source-accounting">Modeled source accounting (constant-2015 USD billions/month): source {state.sourceAccounting.source.toFixed(4)} · funded {state.sourceAccounting.actual.toFixed(4)} · receipts {state.sourceAccounting.receipts.toFixed(4)} · retained / unused {state.sourceAccounting.unused.toFixed(4)} · reserved {state.sourceAccounting.reserved.toFixed(4)} · unfunded {state.sourceAccounting.unfunded.toFixed(4)}. Transfer-to-macro effects are unestimated; equal macro curves do not measure zero effect.</p>}
+          {resultFamily === 'world' && !shareError && activeTab === 'futures' && (
             <p className="mb-2 text-[11px] text-slate-500 dark:text-slate-400">AI Futures Map · a separate influence model with its own assumptions; it does not read or drive the world simulation.</p>
           )}
-          {activeTab === 'map' && (
+          {resultFamily === 'world' && !shareError && activeTab === 'map' && (
             <div className="h-full flex flex-col gap-2">
               {/* Compact Stats Row - Primary */}
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 shrink-0">
                 {/* Review 2026-09-14 finding 13: values come from headlineStats (simulation/appState.ts),
                     which converts units with the same helper the engine uses. */}
                 {(() => { const hs = headlineStats(state); return [
-                  { label: 'Wellbeing', val: hs.meanCountryWellbeing.toFixed(1), color: 'text-emerald-600 dark:text-emerald-400', desc: "Mean of country wellbeing indices (0-100), unweighted: every country counts once regardless of population. Not the average person's wellbeing." },
-                  { label: 'Dividend', val: formatUsdPerPerson(hs.globalDividendUsd), color: 'text-amber-600 dark:text-amber-400', desc: "Global dividend this month: USD per person from the global pool, paid equally per capita worldwide. Customer-weighted and HQ-local payments come on top and vary by country." },
+                  { label: hs.wellbeingLabel, val: hs.wellbeingAvailable ? hs.meanCountryWellbeing.toFixed(1) : 'Unavailable', color: 'text-emerald-600 dark:text-emerald-400', desc: capabilities.conditional ? "Population-weighted illustrative conditional index across the complete modeled roster. Unavailable if any country is outside the mapping scale." : "Mean of country wellbeing indices (0-100), unweighted: every country counts once regardless of population. Not the average person's wellbeing." },
+                  { label: 'Global dividend', val: formatUsdPerPerson(hs.globalDividendUsd), color: 'text-amber-600 dark:text-amber-400', desc: "Global dividend this month: USD per person from the global pool, paid equally per capita to all modeled residents. Customer-weighted and HQ-local payments come on top and vary by country." },
                   { label: 'Adoption', val: `${(hs.meanCountryAdoption * 100).toFixed(0)}%`, color: 'text-blue-600 dark:text-blue-400', desc: "Mean of country AI adoption, unweighted: every country counts once regardless of population." },
                   { label: 'Pool', val: formatBillionsUsd(hs.globalPoolBillions), color: 'text-slate-900 dark:text-white', desc: "Global pool this month: contributions routed to equal per-capita distribution. Paid out the same month, not accumulated. Excludes customer-weighted and HQ-local contributions." }
                 ]; })().map((stat, i) => (
@@ -1550,6 +1586,7 @@ const App: React.FC = () => {
                 ))}
               </div>
 
+{!capabilities.conditional && <>
               {/* Secondary Stats Row - Crisis Indicators */}
               <div className="grid grid-cols-3 gap-2 shrink-0">
                 <div className={`bg-white dark:bg-slate-900 border px-3 py-2 rounded-lg flex justify-between items-center shadow-sm ${state.countriesInCrisis > 0 ? 'border-rose-400 dark:border-rose-600' : 'border-slate-200 dark:border-slate-800'}`}>
@@ -1581,6 +1618,9 @@ const App: React.FC = () => {
                 </div>
               </div>
 
+
+</>}
+{!capabilities.conditional && <>
               {/* Game Theory Indicator - P6-T4 */}
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 shrink-0">
                 <div className={`bg-white dark:bg-slate-900 border px-3 py-2 rounded-lg flex justify-between items-center shadow-sm ${
@@ -1641,8 +1681,10 @@ const App: React.FC = () => {
                 </div>
               </div>
 
+
+</>}
               {/* Prisoner's Dilemma Warning */}
-              {gameTheoryState.isInPrisonersDilemma && (
+              {!capabilities.conditional && gameTheoryState.isInPrisonersDilemma && (
                 <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-400 dark:border-amber-600 px-4 py-2 rounded-lg">
                   <div className="flex items-center gap-2">
                     <div className="text-amber-600 dark:text-amber-400 font-bold text-xs uppercase">Warning: Prisoner's Dilemma Detected</div>
@@ -1668,7 +1710,7 @@ const App: React.FC = () => {
                           <div className="text-xs font-bold text-blue-100 bg-blue-700/50 px-2 py-1 rounded-md">Month {state.month}</div>
                         </div>
                         <div className="text-xs text-blue-50 flex items-center gap-4">
-                          <span>Avg Wellbeing: <span className="font-bold text-white">{state.averageWellbeing.toFixed(1)}</span></span>
+                          <span>Avg Wellbeing: <span className="font-bold text-white">{(state.conditionalSummary ? state.conditionalSummary.value?.toFixed(1) ?? 'Unavailable' : state.averageWellbeing.toFixed(1))}</span></span>
                           <span>Adoption: <span className="font-bold text-white">{(averageAdoption(state) * 100).toFixed(1)}%</span></span>
                         </div>
                       </div>
@@ -1681,7 +1723,7 @@ const App: React.FC = () => {
                           selectedCountryId={selectedEntity?.type === 'country' ? selectedEntity.id : null}
                           corporations={corporations}
                           selectedCorpId={selectedEntity?.type === 'corporation' ? selectedEntity.id : null}
-                          selectedArchetype={selectedArchetype}
+                          selectedArchetype={capabilities.conditional ? null : selectedArchetype}
                         />
                       </div>
                     </div>
@@ -1698,7 +1740,7 @@ const App: React.FC = () => {
                           <div className="text-xs font-bold text-purple-100 bg-purple-700/50 px-2 py-1 rounded-md">Month {comparisonState.month}</div>
                         </div>
                         <div className="text-xs text-purple-50 flex items-center gap-4">
-                          <span>Avg Wellbeing: <span className="font-bold text-white">{comparisonState.averageWellbeing.toFixed(1)}</span></span>
+                          <span>Avg Wellbeing: <span className="font-bold text-white">{(comparisonState.conditionalSummary ? comparisonState.conditionalSummary.value?.toFixed(1) ?? 'Unavailable' : comparisonState.averageWellbeing.toFixed(1))}</span></span>
                           <span>Adoption: <span className="font-bold text-white">{(averageAdoption(comparisonState) * 100).toFixed(1)}%</span></span>
                         </div>
                       </div>
@@ -1711,7 +1753,7 @@ const App: React.FC = () => {
                           selectedCountryId={null}
                           corporations={comparisonCorporations}
                           selectedCorpId={null}
-                          selectedArchetype={selectedArchetype}
+                          selectedArchetype={capabilities.conditional ? null : selectedArchetype}
                         />
                       </div>
                     </div>
@@ -1726,7 +1768,7 @@ const App: React.FC = () => {
                     selectedCountryId={selectedEntity?.type === 'country' ? selectedEntity.id : null}
                     corporations={corporations}
                     selectedCorpId={selectedEntity?.type === 'corporation' ? selectedEntity.id : null}
-                    selectedArchetype={selectedArchetype}
+                    selectedArchetype={capabilities.conditional ? null : selectedArchetype}
                   />
                 )}
 
@@ -1754,7 +1796,7 @@ const App: React.FC = () => {
               </div>
 
               {/* Archetype Filter */}
-              <div className="flex justify-center shrink-0 mt-2">
+              <div hidden={capabilities.conditional} className="flex justify-center shrink-0 mt-2">
                 <div className="flex flex-wrap gap-1.5 p-2 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 shadow-sm max-w-xl">
                   <div className="text-[9px] text-slate-500 dark:text-slate-400 uppercase font-bold tracking-widest w-full mb-1">Filter by Archetype:</div>
                   <button
@@ -1826,13 +1868,13 @@ const App: React.FC = () => {
             </div>
           )}
 
-          {activeTab === 'lab' && (
-            <div className="h-full overflow-y-auto scrollbar-hide pb-32">
-              <LabTab />
+          {(labVisited || activeTab === 'lab') && (
+            <div hidden={activeTab !== 'lab'} className="h-full overflow-y-auto scrollbar-hide pb-32">
+              <LabTab onActiveRunChange={publishPolicy} onOpenResultView={openPolicyCharts} />
             </div>
           )}
 
-          {activeTab === 'futures' && (
+          {resultFamily === 'world' && !shareError && activeTab === 'futures' && (
             <div className="h-full overflow-y-auto scrollbar-hide pb-32">
               <FuturesTab
                 graph={LOCKED_GRAPH}
@@ -1851,7 +1893,7 @@ const App: React.FC = () => {
             </div>
           )}
 
-          {activeTab === 'charts' && (
+          {resultFamily === 'world' && !shareError && activeTab === 'charts' && (
             <div className="flex flex-col gap-6 lg:gap-8 h-full overflow-y-auto scrollbar-hide pb-32 relative">
               {/* Comparison Mode Info Banner */}
               {comparisonMode && (
@@ -1885,7 +1927,7 @@ const App: React.FC = () => {
               
               {/* Charts Container with Conditional Overlay */}
               <div className="relative flex flex-col gap-6 lg:gap-8">
-                  {history.length === 0 && (
+                  {visibleChartHistory.length === 0 && (
                       <div className="absolute inset-0 z-20 flex items-center justify-center backdrop-blur-sm bg-white/30 dark:bg-slate-900/30 rounded-[2rem]">
                           <div className="bg-white/90 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 p-8 rounded-2xl shadow-2xl max-w-sm text-center animate-in fade-in zoom-in duration-300">
                               <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -1900,9 +1942,9 @@ const App: React.FC = () => {
                   <div className="h-[400px] shrink-0">
                     <MotionChart 
                         // Up to the displayed month (history[0] is month 1, so slice(0, month + 1) showed one month too many after a seek).
-                        history={history.filter(h => h.month <= state.month)}
-                        pairedHistory={pairedHistory}
-                        maxMonth={Math.max(...history.map(h => h.month), 10)}
+                        history={visibleChartHistory}
+                        pairedHistory={visiblePairedHistory}
+                        maxMonth={Math.max(state.month, ...history.map(h => h.month), 10)}
                         selectedCountries={selectedCountries} 
                         allCountries={['Global', ...INITIAL_COUNTRIES.map(c => c.id)].map(id => ({ id, name: id }))}
                         onToggleCountry={(id) => setSelectedCountries(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id])}
@@ -1934,6 +1976,7 @@ const App: React.FC = () => {
                      </ResponsiveContainer>
                   </div>
 
+                  {!capabilities.conditional && <>
                   <div className="h-[350px] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-sm relative overflow-hidden">
                      <div className="flex items-start justify-between mb-4">
                        <div>
@@ -2001,6 +2044,7 @@ const App: React.FC = () => {
                      </div>
                   </div>
 
+                  </>}
                   {/* AI Adoption vs Wellbeing Scatter Plot */}
                   <WellbeingScatterPlot
                     key={`scatter-${state.month}`}
@@ -2011,7 +2055,7 @@ const App: React.FC = () => {
             </div>
           )}
 
-          {activeTab === 'corporations' && (
+          {resultFamily === 'world' && !shareError && activeTab === 'corporations' && (
             <div className="h-full overflow-y-auto">
               <div className="max-w-7xl mx-auto p-6 space-y-6">
                 {/* Comparison Mode Info Banner */}
@@ -2027,10 +2071,10 @@ const App: React.FC = () => {
                   </div>
                 )}
                 {/* Game Theory Visualization Section */}
-                <GameTheoryVisualization
+                {!capabilities.conditional && <GameTheoryVisualization
                   gameTheoryState={gameTheoryState}
                   corporations={corporations}
-                />
+                />}
 
                 {/* Corporation List Section */}
                 <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-sm">
@@ -2049,7 +2093,7 @@ const App: React.FC = () => {
             </div>
           )}
 
-          {activeTab === 'analysis' && (
+          {resultFamily === 'world' && !shareError && activeTab === 'analysis' && (
              <div className="max-w-6xl mx-auto py-6 lg:py-12 flex flex-col lg:flex-row gap-6 lg:gap-8 h-full">
                 
                 {/* Control Panel */}
@@ -2147,13 +2191,12 @@ const App: React.FC = () => {
 
                 {/* Honest status of the custom-model pipeline (P8-T9) */}
                 <div className="mb-6 p-4 bg-blue-50 dark:bg-blue-950/40 border border-blue-300 dark:border-blue-700 rounded-lg text-sm text-blue-900 dark:text-blue-200">
-                  <strong>Custom equations run.</strong> Applying a model compiles its five core equations
-                  (AI adoption growth, corporation contribution surplus, displacement friction, UBI-to-wellbeing
-                  utility, and the monthly wellbeing update) and uses them in place of the built-in formulas for
-                  every simulation step - the trajectory you see reflects your model. Two advanced equations
-                  (demand-collapse projection and reputation dynamics) are parsed and validated but still use
-                  the default logic. The six anchor tests now run against your model's own compiled equations
-                  too, so its anchor-test score reflects its own trajectory, not the built-in engine's.
+                  <strong>Legacy flow uploads have a limited execution scope.</strong> In a supported legacy flow,
+                  the five required hooks replace their built-in formulas on each simulation step. Conditional and
+                  anchored wellbeing modes refuse uploaded wellbeing hooks. Optional demand-collapse, reputation,
+                  and Gini-damping hooks retain their defaults; changing them is refused. The anchor tests run the
+                  supported legacy hooks. Use Model Lab for general equation, stock, flow, solve-block, and overlay
+                  authoring.
                 </div>
 
                 {/* Mode toggle */}
@@ -2212,7 +2255,7 @@ const App: React.FC = () => {
             </div>
           )}
 
-          {activeTab === 'leaderboard' && (
+          {resultFamily === 'world' && !shareError && activeTab === 'leaderboard' && (
             <div className="p-6">
               <Leaderboard
                 onApplyModel={(model) => {
@@ -2226,7 +2269,7 @@ const App: React.FC = () => {
             </div>
           )}
 
-          {activeTab === 'overview' && (
+          {resultFamily === 'world' && !shareError && activeTab === 'overview' && (
             <div className="max-w-6xl mx-auto py-8 lg:py-12 flex flex-col items-center justify-center h-full gap-8">
               <div className="text-center space-y-3">
                 <h2 className="text-3xl font-bold text-slate-900 dark:text-white">The Abundance Cycle</h2>
@@ -2463,7 +2506,7 @@ const App: React.FC = () => {
             </div>
           )}
 
-          {activeTab === 'equations' && (
+          {resultFamily === 'world' && !shareError && activeTab === 'equations' && (
             <div className="max-w-4xl mx-auto py-8 lg:py-12 space-y-8">
               <div className="text-center space-y-4">
                 <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Model Equations</h2>
@@ -3021,6 +3064,8 @@ effect(t)      = wellbeing_main(t) - wellbeing_paired(t)`}
             <button type="button" onClick={discardAutosave} className="min-h-9 rounded-md border border-amber-400 px-3 py-1 font-bold uppercase hover:bg-amber-100 dark:hover:bg-amber-900/40">Discard</button>
           </div>
         )}
+        {capabilities.conditional && <p className="p-3 text-sm">Conditional wellbeing index: model-implied level under this month’s scenario conditions. Adaptation timing, transfer-to-macro feedback, game theory and net welfare are unestimated. Transfers use a hypothetical constant-2015 USD modeled source pool; expenses and ownership effects are unestimated.</p>}
+        {capabilities.equationIssue && <p role="alert">{capabilities.equationIssue}</p>}
         {referenceEnded && (
           <div role="status" className="mx-4 lg:mx-6 mb-2 rounded-lg border border-sky-300 bg-sky-50 px-3 py-2 text-xs text-sky-900 dark:border-sky-700 dark:bg-sky-950/40 dark:text-sky-100">
             <span className="font-semibold">End of the US reference (January 2030).</span> The United States follows the faithful port of Korinek et al. (2026) only to its reporting date; nothing after it is modelled, so the run stops here. Choose another preset to run longer.
@@ -3031,7 +3076,7 @@ effect(t)      = wellbeing_main(t) - wellbeing_paired(t)`}
           errors={equationErrors}
           onClear={clearModelConfig}
         />
-        <SimulationControls isPlaying={isPlaying} onPlay={() => setIsPlaying(true)} onPause={() => setIsPlaying(false)} onReset={handleReset} onStep={stepSimulation} speed={speed} setSpeed={setSpeed} month={state.month} maxMonth={history.length > 0 ? Math.max(...history.map(h => h.month)) : state.month} onSeek={handleSeek} disabled={!canStep} disabledReason={referenceEnded ? 'The US reference path (Korinek et al. 2026) ends in January 2030; later months are not modelled.' : `Custom model "${activeModelConfig?.name || ''}" has ${equationErrors.length} equation errors`} />
+        <SimulationControls isPlaying={isPlaying} onPlay={() => setIsPlaying(true)} onPause={() => setIsPlaying(false)} onReset={handleReset} onStep={stepSimulation} speed={speed} setSpeed={setSpeed} month={state.month} maxMonth={history.length > 0 ? Math.max(...history.map(h => h.month)) : state.month} onSeek={handleSeek} disabled={!canStep} disabledReason={capabilities.equationIssue || comparisonCapabilities.equationIssue || (comparisonEnded ? 'Comparison reference ends at month 60.' : undefined) || (referenceEnded ? 'The US reference path (Korinek et al. 2026) ends in January 2030; later months are not modelled.' : `Custom model "${activeModelConfig?.name || ''}" has ${equationErrors.length} equation errors`)} />
       </footer>
 
       {/* Corporation Detail Panel (P5-T10) */}

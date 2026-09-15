@@ -1,0 +1,11 @@
+{
+  "downloadEnabled": true,
+  "messages": [
+    "Quotation coverage: source unavailable — coverage unknown",
+    "Operative coverage unknown — source unavailable or mismatched",
+    "No provisions yet; Quotation coverage: source unavailable — coverage unknown; Operative disposition coverage: Operative coverage unknown — source unavailable or mismatched; completeness not attested",
+    "Nothing from this proposal is represented in the calculation. Identical curves are a structural baseline comparison, not an estimated zero policy effect."
+  ],
+  "selected": "Draft BManual policy draft (variant B)",
+  "sourceLength": 0
+}

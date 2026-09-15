@@ -7,6 +7,7 @@
  * experimental, not curated, model. Becoming a curated fixture is a separate, reviewed step.
  */
 
+import type { ScenarioProvenance } from '../../src/policy/provenance';
 import React, { useState } from 'react';
 import { ChevronRight, Copy, Download } from 'lucide-react';
 import type { CoreModel, Overlay } from '../../src/core/types';
@@ -17,6 +18,8 @@ export interface ModelFilePanelProps {
   model: CoreModel;
   overlays: Overlay[];
   status?: ModelStatus;
+  importWarnings?: string[];
+  provenance?: ScenarioProvenance;
 }
 
 function download(filename: string, text: string): void {
@@ -49,7 +52,7 @@ const JsonBlock: React.FC<{ title: string; note?: string; value: unknown; rows: 
     <div className="mt-2">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <span className="text-xs font-semibold text-slate-700 dark:text-slate-200 break-all">{title}</span>
-        <button
+      <button
           type="button"
           onClick={copy}
           className="inline-flex min-h-11 items-center gap-1.5 rounded-lg border border-slate-300 dark:border-slate-700 px-3 text-xs font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
@@ -70,7 +73,9 @@ const JsonBlock: React.FC<{ title: string; note?: string; value: unknown; rows: 
   );
 };
 
-const ModelFilePanel: React.FC<ModelFilePanelProps> = ({ model, overlays, status = 'curated' }) => (
+const ModelFilePanel: React.FC<ModelFilePanelProps> = ({ model, overlays, status = 'curated', importWarnings = [], provenance }) => {
+  const [error, setError] = React.useState<string | null>(null);
+  return (
   <details className="group bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-3 sm:p-4">
     <summary className="flex min-h-11 cursor-pointer list-none items-center gap-1.5 text-sm font-semibold text-slate-800 dark:text-white">
       <ChevronRight size={16} className="transition-transform group-open:rotate-90" aria-hidden="true" />
@@ -80,17 +85,18 @@ const ModelFilePanel: React.FC<ModelFilePanelProps> = ({ model, overlays, status
         text="The model and your overlays as data. Export them as one JSON file and load it again with Import (top of the Lab) — it then runs as experimental, not curated. Making it a bundled option still needs a code change: registering the file in src/core/fixtures.ts after its own tests pass under npm run validate:core, and review."
       />
     </summary>
+    {error && <p role="alert">{error}</p>}
     <div className="mt-1 flex flex-wrap items-center gap-2">
       <button
         type="button"
-        onClick={() => download(exportFileName(model), JSON.stringify(buildModelExport(model, overlays, status as ModelStatus), null, 2))}
+        onClick={() => { try { download(exportFileName(model), JSON.stringify(buildModelExport(model, overlays, status as ModelStatus, undefined, importWarnings, provenance), null, 2)); setError(null); } catch (e) { setError((e as Error).message); } }}
         className="inline-flex min-h-11 items-center gap-1.5 rounded-lg border border-slate-300 dark:border-slate-700 px-3 text-xs font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500"
       >
         <Download size={13} aria-hidden="true" />
         Export model + overlays (JSON)
       </button>
       <span className="text-[11px] text-slate-500 dark:text-slate-400">
-        {status === 'imported' ? `Exports carry the status "${EXPERIMENTAL_LABEL}".` : 'Re-importing an unchanged bundled model opens the curated copy; any change makes it experimental.'}
+        {provenance && provenance.kind !== 'fixture' ? 'Exports preserve experimental scenario provenance independently of the base model.' : status === 'imported' ? `Exports carry the status "${EXPERIMENTAL_LABEL}".` : 'Re-importing an unchanged bundled model opens the curated copy; any change makes it experimental.'}
       </span>
     </div>
     <JsonBlock
@@ -107,5 +113,6 @@ const ModelFilePanel: React.FC<ModelFilePanelProps> = ({ model, overlays, status
     )}
   </details>
 );
+};
 
 export default ModelFilePanel;

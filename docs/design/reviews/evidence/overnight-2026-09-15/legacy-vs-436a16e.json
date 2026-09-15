@@ -1,0 +1,92 @@
+{
+  "baseline": "/private/tmp/alignment-review-436a16e",
+  "current": "/private/tmp/alignment-stage35",
+  "scenarios": [
+    {
+      "id": "organic-incentive",
+      "states": 121
+    },
+    {
+      "id": "evidence-anchored",
+      "states": 121
+    },
+    {
+      "id": "us-reference-korinek",
+      "states": 61
+    }
+  ],
+  "checkedExistingLeaves": 1806103,
+  "stats": {
+    "organic-incentive": {
+      "different": 0,
+      "structural": 0,
+      "maxAbs": 0,
+      "maxRelative": 0,
+      "maxScaledDifference": 0,
+      "maxAbsPath": ""
+    },
+    "evidence-anchored": {
+      "different": 0,
+      "structural": 0,
+      "maxAbs": 0,
+      "maxRelative": 0,
+      "maxScaledDifference": 0,
+      "maxAbsPath": ""
+    },
+    "us-reference-korinek": {
+      "different": 1479,
+      "structural": 0,
+      "maxAbs": 1.964508555829525e-9,
+      "maxRelative": 1.7248202801528315e-11,
+      "maxScaledDifference": 2.904620988175566e-14,
+      "maxAbsPath": "us-reference-korinek/48/state/countryData/USA/gdpPerCapita"
+    }
+  },
+  "differences": [
+    {
+      "path": "us-reference-korinek/1/state/countryData/USA/gdpPerCapita",
+      "before": 67128.85793055959,
+      "after": 67128.857930559
+    },
+    {
+      "path": "us-reference-korinek/1/state/countryData/USA/laborShare",
+      "before": 0.5983677615099723,
+      "after": 0.5983677615099714
+    },
+    {
+      "path": "us-reference-korinek/1/state/countryData/USA/unemployment",
+      "before": 0.039061048288402726,
+      "after": 0.03906104828841124
+    },
+    {
+      "path": "us-reference-korinek/1/state/countryData/USA/cognitiveUnemployment",
+      "before": 0.029585636158688415,
+      "after": 0.029585636158701432
+    },
+    {
+      "path": "us-reference-korinek/1/state/countryData/USA/displacedPool",
+      "before": 0.0006544797653205564,
+      "after": 0.0006544797653290704
+    },
+    {
+      "path": "us-reference-korinek/2/state/countryData/USA/gdpPerCapita",
+      "before": 67253.8335593888,
+      "after": 67253.83355938853
+    },
+    {
+      "path": "us-reference-korinek/2/state/countryData/USA/wellbeingTrend/1",
+      "before": 68.27042050498852,
+      "after": 68.27042050498851
+    },
+    {
+      "path": "us-reference-korinek/2/state/countryData/USA/aiAdoption",
+      "before": 0.0308484182027232,
+      "after": 0.03084841820272316
+    }
+  ],
+  "newMetadataKeys": [
+    "observedInitialLadder",
+    "macroDiagnostics",
+    "printedLaborShare"
+  ]
+}

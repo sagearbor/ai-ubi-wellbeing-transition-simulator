@@ -244,6 +244,13 @@ const ProvisionEditor: React.FC<ProvisionEditorProps> = ({ provision: p, index, 
                   <Hint label="unit" text={UNIT_HINT} align="right" />
                 </label>
                 <input id={`${idBase}-unit`} className={`${field} h-11`} value={m.unit ?? ''} onChange={(e) => onMapping({ unit: e.target.value || undefined })} />
+                <label className={label}>Missing source time basis (explicit assumption)
+                  <select aria-label="assumed source time basis" className={field} value={m.timeAssumption?.basis ?? ''} onChange={e => onMapping({ timeAssumption: e.target.value ? { basis: e.target.value as 'year' | 'month' | 'one-off' | 'generation', reason: m.timeAssumption?.reason ?? '' } : undefined })}>
+                    <option value="">No assumption</option>{['year', 'month', 'one-off', 'generation'].map(b => <option key={b}>{b}</option>)}
+                  </select>
+                </label>
+                {m.timeAssumption && <input aria-label="time assumption reason" className={field} placeholder="Why this source amount has this time basis" value={m.timeAssumption.reason} onChange={e => onMapping({ timeAssumption: { ...m.timeAssumption!, reason: e.target.value } })} />}
+
               </div>
             </div>
             {m.kind === 'effect' ? (

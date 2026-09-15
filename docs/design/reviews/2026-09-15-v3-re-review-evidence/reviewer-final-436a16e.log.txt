@@ -1,0 +1,9 @@
+{"probe":"uploaded-equation","model":"evidence-anchored","formula":"0","usa":68.21665211448189}
+{"probe":"uploaded-equation","model":"evidence-anchored","formula":"-50","usa":68.21665211448189}
+{"probe":"uploaded-equation","model":"organic-incentive","formula":"0","usa":95.71375833333333}
+{"probe":"uploaded-equation","model":"organic-incentive","formula":"-50","usa":45.71375833333333}
+{"probe":"known-miss-real-test-source","result":{"failures":[],"warnings":[]}}
+{"probe":"dependency-values","ok":true,"series":{"_":{"x":[1],"y":[0.5],"u":[0.5]}},"diagnostics":[]}
+{"probe":"dependency-values","ok":true,"series":{"_":{"s":[2],"later":[2]}},"diagnostics":[]}
+{"probe":"bundle-reopen","corrupt":false,"sourceChars":16182,"status":"reproduced","compared":288,"maxAbsDiff":0,"errors":[]}
+{"probe":"bundle-reopen","corrupt":true,"sourceChars":16182,"status":"not-reproduced","compared":288,"maxAbsDiff":100,"errors":["1 of 288 values are outside the declared tolerance (absolute 1e-9, relative 1e-9); the largest is policy completions p50 in 2026: stored 3085.4294991948536, re-run 2985.4294991948536"]}

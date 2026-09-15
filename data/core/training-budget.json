@@ -175,6 +175,16 @@
       "id": "budget-not-overspent",
       "expr": "unspent_budget >= -1e-6",
       "description": "Spending never exceeds the budget (accounting)"
+    },
+    {
+      "id": "nonnegative-final-values",
+      "expr": "completions >= 0 and actual_training_spend >= 0 and unspent_budget >= -1e-6 and potential_placements >= 0 and placements >= 0",
+      "description": "Final people and spending amounts cannot be negative"
+    },
+    {
+      "id": "placements-within-completions",
+      "expr": "placements <= completions",
+      "description": "People placed cannot exceed people completing training"
     }
   ]
 }

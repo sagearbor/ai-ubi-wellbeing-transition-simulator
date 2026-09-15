@@ -38,9 +38,11 @@ import WhatMovedList from './WhatMovedList';
 import EquationsPanel from './EquationsPanel';
 import { TierOverlayContext, type TierOverlayValue } from './VotePanel';
 import { createStore, isCloudConfigured, type Identity } from '../../src/futures/store';
+import { parseFuturesHash, extractFuturesHashParam, type FuturesShareState } from '../../src/futures/share';
 import { Hint } from './Hint';
 
 export interface FuturesTabProps {
+  initialHash?: string;
   graph: FuturesGraph;
   interventions: Intervention[];
   /** Package D's paste-a-bill panel, rendered inside the intervention panel. */
@@ -68,10 +70,29 @@ const TIER_HINT =
 const byNodeId = <T extends { nodeId: string }>(rows: T[]): Map<string, T> =>
   new Map(rows.map((r) => [r.nodeId, r]));
 
-const FuturesTab: React.FC<FuturesTabProps> = ({ graph, interventions, importPanel, interventionMetrics }) => {
-  const [sliders, setSliders] = useState<Record<string, number>>({});
-  const [activeInterventionIds, setActiveInterventionIds] = useState<Set<string>>(() => new Set<string>());
-  const [scrubYear, setScrubYear] = useState<number>(graph.endYear);
+const FuturesTab: React.FC<FuturesTabProps> = ({ graph, interventions, importPanel, interventionMetrics, initialHash }) => {
+  const [opened] = useState<{state: FuturesShareState | null; error: string | null}>(() => {
+    const hash = initialHash ?? (typeof window === 'undefined' ? '' : window.location.hash);
+    if (!hash.startsWith('#futures=')) return {state:null,error:null};
+    try {
+      const payload = extractFuturesHashParam(hash);
+      const state = parseFuturesHash(hash);
+      if (!payload || !state) throw new Error('Empty or malformed payload.');
+      const wire = JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(payload.replace(/-/g, '+').replace(/_/g, '/')), c => c.charCodeAt(0))));
+      if ((wire.s !== undefined && (!wire.s || typeof wire.s !== 'object' || Array.isArray(wire.s) || Object.values(wire.s).some(v => typeof v !== 'number' || !Number.isFinite(v) || Math.abs(v) > 3))) ||
+          (wire.i !== undefined && (!Array.isArray(wire.i) || wire.i.some((id: unknown) => typeof id !== 'string'))) ||
+          (wire.y !== undefined && (typeof wire.y !== 'number' || !Number.isFinite(wire.y)))) throw new Error('Invalid slider, intervention or year fields.');
+      const unknownNodes = Object.keys(wire.s ?? {}).filter(id => !graph.nodes.some(node => node.id === id));
+      const unknownInterventions = state.interventions.filter(id => !interventions.some(iv => iv.id === id));
+      if (unknownNodes.length || unknownInterventions.length) throw new Error(`Unknown model identities: ${[...unknownNodes, ...unknownInterventions].join(', ')}.`);
+      if (state.year !== undefined && (state.year < graph.startYear || state.year > graph.endYear)) throw new Error('Year outside this graph calendar.');
+      return {state,error:null};
+    } catch (error) { return {state:null,error:`Cannot open this Futures scenario: ${error instanceof Error ? error.message : String(error)}`}; }
+  });
+  const [linkError, setLinkError] = useState(opened.error);
+  const [sliders, setSliders] = useState<Record<string, number>>(opened.state?.sliders ?? {});
+  const [activeInterventionIds, setActiveInterventionIds] = useState<Set<string>>(() => new Set(opened.state?.interventions ?? []));
+  const [scrubYear, setScrubYear] = useState<number>(opened.state?.year ?? graph.endYear);
   const [tier, setTier] = useState<Tier>('locked');
 
   const nY = graph.endYear - graph.startYear + 1;
@@ -263,6 +284,8 @@ const FuturesTab: React.FC<FuturesTabProps> = ({ graph, interventions, importPan
   }, [graph.endYear]);
 
   const dirty = activeInterventionIds.size > 0 || Object.values(sliders).some((v) => v !== 0);
+
+  if (linkError) return <div role="alert" className="p-4 space-y-3"><p>{linkError}</p><p>The shared calculation was not opened.</p><button className="underline min-h-11" onClick={() => { reset(); setLinkError(null); }}>Start a new Futures scenario</button></div>;
 
   return (
     <TierOverlayContext.Provider value={tierOverlay}>

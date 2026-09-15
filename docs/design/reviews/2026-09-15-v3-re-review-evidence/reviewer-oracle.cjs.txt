@@ -1,0 +1,39 @@
+const fs = require('node:fs');
+const vm = require('node:vm');
+const crypto = require('node:crypto');
+const parser = require('@babel/parser');
+const generate = require('@babel/generator').default;
+const sourcePath = process.argv[2] || '/private/tmp/alignment-review-authors-explorer.js';
+const source = fs.readFileSync(sourcePath, 'utf8');
+const expectedSha = 'a95300ab26134e7f4133d302aa220a987b95fb1e02788f37a6b6aff402ab506e';
+if (crypto.createHash('sha256').update(source).digest('hex') !== expectedSha) throw new Error('Author code checksum mismatch; review before running a new version');
+const registration = { globalThis: { TURBOPACK: [] } };
+vm.runInNewContext(source, registration);
+const modules = registration.globalThis.TURBOPACK[0];
+const moduleIndex = modules.indexOf(303412);
+const formatted = generate(parser.parse(String(modules[moduleIndex + 1]))).code;
+const start = formatted.indexOf('  var E = function');
+const end = formatted.indexOf('  function ex(');
+if (start < 0 || end < start) throw new Error('Author kernel extraction markers missing');
+const context = {};
+vm.runInNewContext(formatted.slice(start, end) + ';globalThis.oracle={er,eg};', context);
+const expected = JSON.parse(fs.readFileSync('data/core/korinek-2026-faithful.expected.json','utf8'));
+const mappings={
+ gdpGapPct:(r,x)=>100*Math.expm1(r.lnY_act),laborSharePct:(r,x)=>100*x.p.note.sL*Math.exp(r.lnSL_act),
+ netReturnPct:r=>100*r.netReturn_act,capitalPct:r=>100*Math.expm1(r.lnK_act),avgWagePct:r=>100*Math.expm1(r.wavg_act),
+ cogWagePct:r=>100*Math.expm1(r.wC_act),otherWagePct:r=>100*Math.expm1(r.wN_act),
+ uCogPct:r=>100*r.U[0]/(r.ell[0]+r.U[0]),uAllPct:r=>100*(r.U[0]+r.U[1]),ellC:r=>r.ell[0],ellN:r=>r.ell[1],UC:r=>r.U[0],UN:r=>r.U[1],
+ qC:r=>r.q[0],layoffsC:r=>r.D[0],openingsC:r=>r.v[0],openingsN:r=>r.v[1],hiresC:r=>r.H[0],hiresN:r=>r.H[1],demandC:r=>r.ellD,
+ lnWCClear:r=>r.wcClear_act,wageGap:r=>r.g,xPot:r=>r.xr,lnWPot:r=>r.lnW,lnTFP:r=>r.lnTFP,dlnA:r=>r.dlnA
+};
+let n=0,fail=0,max=0,worst;
+for(const s of expected.settings){
+ const x=context.oracle.eg({...context.oracle.er(s.kernelSettings.preset),...s.kernelSettings.overrides});
+ let localMax=0;
+ for(const [id,values] of Object.entries(s.series))for(let i=0;i<s.years.length;i++){
+  const r=x.rows.find(r=>Math.abs(r.t-s.years[i])<1e-8),value=mappings[id](r,x),error=Math.abs(value-values[i]);
+  n++;if(error>1e-10)fail++;if(error>max){max=error;worst={setting:s.id,id,year:s.years[i],expected:values[i],actual:value};}localMax=Math.max(localMax,error);
+ }
+ console.log(JSON.stringify({setting:s.id,rows:x.rows.length,maxAbsError:localMax,guards:x.diag}));
+}
+console.log(JSON.stringify({compared:n,failuresAbove1eMinus10:fail,maxAbsError:max,worst}));

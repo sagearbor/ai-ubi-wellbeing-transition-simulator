@@ -1,3 +1,5 @@
+import type { CoreModel } from './types';
+
 /**
  * Hard execution limits for the authoring core.
  *
@@ -16,6 +18,12 @@
  */
 
 export interface RunLimits {
+  /** Declaration/source/retention bounds applied before expression compilation. */
+  maxVariables: number;
+  maxSourceChars: number;
+  maxExpressionChars: number;
+  maxRetainedCells: number;
+  maxWorkUnits: number;
   /** Steps per run (time.end - time.start in engine steps, inclusive). */
   maxSteps: number;
   /** Entities per model. */
@@ -29,6 +37,15 @@ export interface RunLimits {
 }
 
 export const RUN_LIMITS: Readonly<RunLimits> = Object.freeze({
+  // A retained cell is budgeted at 64 bytes (numbers, arrays, binding records and overhead).
+  // 4M cells = 256 MB per request. Work includes solve iterations and expression complexity.
+  maxVariables: 1_000,
+  maxSourceChars: 250_000,
+  maxExpressionChars: 2_000,
+  maxRetainedCells: 4_000_000,
+  // Character-weighted scalar work, deliberately conservative; the wall-clock limit also applies.
+  // This accommodates the existing GP fine grids and faithful Korinek fixtures without exceptions.
+  maxWorkUnits: 20_000_000_000,
   maxSteps: 5_000,
   maxEntities: 500,
   maxDraws: 2_000,
@@ -61,13 +78,38 @@ export interface LimitProblem {
   message: string;
 }
 
+/** Incremental raw-source bound, before cloning or hashing any caller-supplied model/overlay. */
+export function checkSourceSize(values: unknown[], override?: Partial<RunLimits>): LimitProblem | null {
+  const limits = effectiveLimits(override);
+  let size = 0;
+  const pending = [...values];
+  // Count repeated references each time: JSON serialization expands aliases rather than sharing.
+  // Cycles also exhaust this finite visit allowance without invoking JSON.stringify.
+  while (pending.length && size <= limits.maxSourceChars) {
+    const value = pending.pop();
+    if (typeof value === 'string') size += value.length + 2;
+    else if (value && typeof value === 'object') {
+      // JSON emits null for every array hole. Charge every slot before enumerating properties,
+      // so a sparse array cannot expand into an unbounded null-filled clone or manifest.
+      size += 2 + (Array.isArray(value) ? value.length * 5 : 0);
+      if (size > limits.maxSourceChars) break;
+      for (const key in value) {
+        size += key.length + 4;
+        if (size > limits.maxSourceChars) break;
+        pending.push((value as Record<string, unknown>)[key]);
+      }
+    } else size += 16;
+  }
+  return size > limits.maxSourceChars ? {code: 'limit-exceeded', limit: 'maxSourceChars', message: `model and overlay source exceeds ${limits.maxSourceChars} conservative characters`} : null;
+}
+
 /**
  * Check run settings against the limits BEFORE executing: the draw count, the seed, and the size of
  * the model (steps, entities, declared solver iterations). Used for shared links and bundles, whose
  * settings come from outside the app, and for the Run buttons.
  */
 export function checkRunSettings(
-  settings: { runs?: number; seed?: number; model?: { time?: { start: number; end: number; step: string }; entities?: { ids?: string[] }; solves?: Array<{ id: string; maxIter?: number }> } },
+  settings: { runs?: number; seed?: number; model?: Partial<CoreModel>; sides?: number; retainedJobs?: number; ensemble?: boolean },
   override?: Partial<RunLimits>,
 ): LimitProblem[] {
   const limits = effectiveLimits(override);
@@ -84,10 +126,51 @@ export function checkRunSettings(
     if (!Number.isFinite(steps) || steps < 1 || steps > limits.maxSteps) {
       out.push({ code: 'limit-exceeded', limit: 'maxSteps', message: `the model asks for ${Number.isFinite(steps) ? steps.toLocaleString('en-US') : 'an invalid number of'} steps; the limit is ${limits.maxSteps.toLocaleString('en-US')}` });
     }
-    const entities = model.entities?.ids?.length ?? 1;
+    const entities = Math.max(1, model.entities?.ids?.length ?? 1);
     if (entities > limits.maxEntities) {
       out.push({ code: 'limit-exceeded', limit: 'maxEntities', message: `the model has ${entities.toLocaleString('en-US')} entities; the limit is ${limits.maxEntities.toLocaleString('en-US')}` });
     }
+    if (out.length) return out;
+    const variables = model.variables?.length ?? 0;
+    if (variables > limits.maxVariables) out.push({ code: 'limit-exceeded', limit: 'maxVariables', message: `${variables} variables; limit is ${limits.maxVariables}` });
+    if (out.length) return out;
+    const sourceProblem = checkSourceSize([model], limits);
+    if (sourceProblem) return [...out, sourceProblem];
+    // Count source before parsing any expression; character count also bounds possible AST nodes.
+    const expressions = [ ...(model.variables ?? []).flatMap(v => [v.equation, v.initial]),
+      ...(model.effects ?? []).map(e => e.expr), ...(model.solves ?? []).map(s => s.residual),
+      ...(model.tests ?? []).map(t => t.expr), ...(model.invariants ?? []).map(i => i.expr) ].filter((x): x is string => typeof x === 'string');
+    let sourceChars = 0;
+    for (const expression of expressions) {
+      sourceChars += expression.length;
+      let depth = 0, maxDepth = 0;
+      for (const c of expression) { if (c === '(' || c === '[') maxDepth = Math.max(maxDepth, ++depth); else if (c === ')' || c === ']') depth--; }
+      if (expression.length > limits.maxExpressionChars || maxDepth > 64 || (expression.match(/[A-Za-z_]\w*|(?:\d*\.)?\d+(?:e[+-]?\d+)?|[^\s]/gi)?.length ?? 0) > 256) {
+        out.push({ code: 'limit-exceeded', limit: 'maxExpressionChars', message: `expression exceeds ${limits.maxExpressionChars} characters, 256 tokens or 64 nesting levels` }); break;
+      }
+    }
+    if (sourceChars > limits.maxSourceChars) out.push({ code: 'limit-exceeded', limit: 'maxSourceChars', message: `expression source exceeds ${limits.maxSourceChars} characters` });
+    const draws = model.parameters?.some(p => p.range) ? (runs ?? 1) : 1;
+    const sides = settings.sides ?? 1;
+    const jobs = settings.retainedJobs ?? 1;
+    // Include inputs, all intermediate variables, solve records, aggregate/binding upper bounds,
+    // point runs, and six quantile arrays per output (even when only one output is shown).
+    const bindingCalls = expressions.reduce((n, e) => n + (e.match(/\b(?:min|max|sum|mean)\s*\(/g)?.length ?? 0), 0);
+    const width = 1 + variables * 3 + bindingCalls + (model.parameters?.length ?? 0) + (model.inputs?.length ?? 0) + (model.solves?.length ?? 0) * 4;
+    // Every identifier token conservatively represents a dependency edge per entity, including
+    // solver-through fan-in. Nodes and edges coexist with all retained numerical arrays.
+    const identifierRefs = expressions.reduce((n, e) => n + (e.match(/[A-Za-z_]\w*/g)?.length ?? 0), 0);
+    const solveFanIn = (model.solves ?? []).reduce((n, solve) => n + (solve.through ?? []).reduce((a, id) => a + ((model.variables?.find(v => v.id === id)?.equation.match(/[A-Za-z_]\w*/g)?.length ?? 0) + (model.effects ?? []).filter(e => e.target === id).reduce((n, e) => n + (e.expr.match(/[A-Za-z_]\w*/g)?.length ?? 0), 0)), 0), 0);
+    const longestEntity = (model.entities?.ids ?? []).reduce((n, id) => Math.max(n, id.length), 1);
+    const longestNode = [...(model.variables ?? []), ...(model.solves ?? [])].reduce((n, node) => Math.max(n, node.id.length), 1);
+    // String keys are UTF-16, so long author-supplied identifiers also cost retained memory.
+    const graphCellWeight = 4 + Math.ceil(2 * (longestEntity + longestNode + 16) / 64);
+    const graphCells = entities * (variables + identifierRefs + solveFanIn) * graphCellWeight;
+    const cells = graphCells + steps * entities * width * (draws + (settings.ensemble ? 7 : 0)) * sides * jobs;
+    if (cells > limits.maxRetainedCells) out.push({ code: 'limit-exceeded', limit: 'maxRetainedCells', message: `${cells} conservative retained cells exceed ${limits.maxRetainedCells} (64 bytes per cell)` });
+    const solveWork = (model.solves ?? []).reduce((n, s) => n + (s.maxIter ?? 100) * (s.residual.length + (s.through ?? []).reduce((a, id) => a + (model.variables?.find(v => v.id === id)?.equation.length ?? 0), 0)), 0);
+    const work = steps * entities * (variables + sourceChars + solveWork) * draws * sides * jobs;
+    if (work > limits.maxWorkUnits) out.push({ code: 'limit-exceeded', limit: 'maxWorkUnits', message: `${work} conservative work units exceed ${limits.maxWorkUnits}` });
     for (const s of model.solves ?? []) {
       if ((s.maxIter ?? 100) > limits.maxSolverIterations) {
         out.push({ code: 'limit-exceeded', limit: 'maxSolverIterations', message: `solve "${s.id}" declares maxIter ${s.maxIter}; the limit is ${limits.maxSolverIterations.toLocaleString('en-US')} iterations per solve` });

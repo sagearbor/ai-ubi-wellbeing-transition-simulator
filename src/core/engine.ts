@@ -21,7 +21,7 @@
  * Each refusal is an explicit `limit-exceeded` or `cancelled` diagnostic, never a hang.
  */
 
-import { create, all, type MathNode } from 'mathjs';
+import { create, all, version as mathjsVersion, type MathNode } from 'mathjs';
 import type {
   BindingRecord,
   CoreModel,
@@ -41,10 +41,21 @@ import type {
   TestOutcome,
   Variable,
 } from './types';
-import { effectiveLimits, stepCount, type RunLimits } from './limits';
+import { contentHash } from '../policy/hash';
+import { checkSourceSize, checkRunSettings, effectiveLimits, stepCount, type RunLimits } from './limits';
 
 /** Bump on any change to numerical behaviour (solver acceptance, ordering, invariants); it is part of every run hash. */
-export const ENGINE_VERSION = 'core-0.2.0';
+export const ENGINE_VERSION = 'core-0.3.0';
+/** Maintained numerical conventions: bump each identifier when its behavior changes. */
+export const NUMERICAL_CONVENTIONS = Object.freeze({
+  engine: ENGINE_VERSION,
+  generator: 'mulberry32-fnv1a-parameter-seed-draw/1',
+  sampler: 'p5-p95-uniform-box-muller-lognormal-clamped/1',
+  correlation: 'parameter-independent-entity-shared-ratio-paired-sides/1',
+  solver: 'bisection-absolute-residual-floating-midpoint/2',
+  quantiles: 'sorted-linear-interpolation/1',
+  expression: `mathjs/${mathjsVersion}`,
+});
 const SINGLE = '_';
 
 // ---------------------------------------------------------------------------
@@ -159,6 +170,11 @@ interface ParsedExpr {
 const LAG_RE = /\b([A-Za-z_]\w*)\s*\[\s*t\s*-\s*(\d+)\s*\]/g;
 
 function parseExpr(source: string): ParsedExpr {
+  try { return parseExprUnsafe(source); }
+  catch (error) { return { source, rewritten: source, compiled: {evaluate: () => NaN}, symbols: new Set(), lags: new Map(), aggregates: new Map(), bindingCalls: [], error: `expression processing failed: ${String(error)}` }; }
+}
+
+function parseExprUnsafe(source: string): ParsedExpr {
   const lags = new Map<string, Set<number>>();
   const aggregates = new Map<string, { fn: string; variable: string }>();
   const symbols = new Set<string>();
@@ -224,6 +240,8 @@ function parseExpr(source: string): ParsedExpr {
 
 export function resolveModel(base: CoreModel, overlays: Overlay[] = []): { model: CoreModel; diagnostics: Diagnostic[] } {
   const diagnostics: Diagnostic[] = [];
+  const sourceProblem = checkSourceSize([base, overlays], ambientBudget?.limits);
+  if (sourceProblem) return { model: { schemaVersion: 1, id: 'rejected-source', name: 'Rejected source', time: { start: 0, end: -1, step: 'year' }, parameters: [], variables: [], outputs: [] }, diagnostics: [{level: 'error', code: sourceProblem.code, message: sourceProblem.message}] };
   const model: CoreModel = JSON.parse(JSON.stringify(base));
   model.inputs = model.inputs ?? [];
   model.effects = model.effects ?? [];
@@ -302,9 +320,12 @@ function yearsOf(model: CoreModel, maxSteps: number): number[] {
   return out;
 }
 
-export function compileModel(model: CoreModel, limitsOverride?: Partial<RunLimits>): CompiledModel {
+export function compileModel(model: CoreModel, limitsOverride?: Partial<RunLimits>, budget?: RunBudget): CompiledModel {
+  const compilationBudget = budget ?? ambientBudget ?? budgetFor(effectiveLimits(limitsOverride).maxWallClockMs);
   const diagnostics: Diagnostic[] = [];
   const limits = effectiveLimits(limitsOverride ?? ambientBudget?.limits);
+  const combined = checkRunSettings({ model }, limits).filter(p => !['maxSteps', 'maxEntities', 'maxSolverIterations'].includes(p.limit));
+  if (combined.length) return { model, entities: [], years: [], order: [], variables: new Map(), solves: new Map(), aggregates: new Map(), tests: [], invariants: [], diagnostics: combined.map(p => ({ level: 'error', code: p.code, message: p.message })) };
   const steps = stepCount(model.time);
   if (!Number.isFinite(steps) || steps < 1 || steps > limits.maxSteps) {
     diagnostics.push({
@@ -324,6 +345,7 @@ export function compileModel(model: CoreModel, limitsOverride?: Partial<RunLimit
     }
   }
   // Over a limit, nothing is expanded per entity or per step (the graph would be as large as the request).
+  if (diagnostics.length) return { model, entities: [], years: [], order: [], variables: new Map(), solves: new Map(), aggregates: new Map(), tests: [], invariants: [], diagnostics };
   const overLimit = diagnostics.length > 0;
   const entities = overLimit ? [SINGLE] : model.entities?.ids?.length ? [...model.entities.ids] : [SINGLE];
   const years = yearsOf(model, limits.maxSteps);
@@ -429,6 +451,8 @@ export function compileModel(model: CoreModel, limitsOverride?: Partial<RunLimit
     }
   }
 
+  const compilationStop = budgetProblem(compilationBudget);
+  if (compilationStop) return { model, entities: [], years: [], order: [], variables: new Map(), solves: new Map(), aggregates: new Map(), tests: [], invariants: [], diagnostics: [...diagnostics, compilationStop] };
   // Build the expanded graph.
   const nodes = new Map<string, PlanNode>();
   const depsOf = (expr: ParsedExpr, entity: string): string[] => {
@@ -441,6 +465,8 @@ export function compileModel(model: CoreModel, limitsOverride?: Partial<RunLimit
     return out;
   };
   for (const entity of entities) {
+    const stop = budgetProblem(compilationBudget);
+    if (stop) return { model, entities: [], years: [], order: [], variables: new Map(), solves: new Map(), aggregates: new Map(), tests: [], invariants: [], diagnostics: [...diagnostics, stop] };
     for (const [id, v] of variables) {
       const deps = new Set(depsOf(v.expr, entity));
       for (const ef of v.effects) depsOf(ef.expr, entity).forEach((d) => deps.add(d));
@@ -635,18 +661,19 @@ export interface RunOptions {
   limits?: Partial<RunLimits>;
 }
 
-function manifestFor(model: CoreModel, overlays: Overlay[], seed: number | null, run = 0): RunManifest {
+function manifestFor(model: CoreModel, overlays: Overlay[], seed: number | null, run = 0, ensemble?: { requestedRuns: number; effectiveRuns: number }): RunManifest {
+  if (checkSourceSize([model, overlays])) return { modelId: 'rejected-source', overlayIds: [], hash: 'rejected-source-limit', seed, run, engineVersion: ENGINE_VERSION, numerical: NUMERICAL_CONVENTIONS, ...ensemble, createdAt: new Date().toISOString() };
   // The draw index is part of the identity: seed 1 draw 0 and seed 1 draw 1 are different runs.
-  const hash = hashString(JSON.stringify({ model, overlays, seed, run: seed === null ? 0 : run, ENGINE_VERSION })).toString(16).padStart(8, '0');
-  return { modelId: model.id, overlayIds: overlays.map((o) => o.id), hash, seed, run: seed === null ? 0 : run, engineVersion: ENGINE_VERSION, createdAt: new Date().toISOString() };
+  const hash = contentHash({ model, overlays, seed, run: seed === null ? 0 : run, numerical: NUMERICAL_CONVENTIONS, ...ensemble });
+  return { modelId: model.id, overlayIds: overlays.map((o) => o.id), hash, seed, run: seed === null ? 0 : run, engineVersion: ENGINE_VERSION, numerical: NUMERICAL_CONVENTIONS, ...ensemble, createdAt: new Date().toISOString() };
 }
 
 export function runModel(base: CoreModel, opts: RunOptions = {}): RunResult {
   const overlays = opts.overlays ?? [];
   const seed = opts.seed ?? null;
-  const budget = opts.budget ?? ambientBudget;
+  const budget = opts.budget ?? ambientBudget ?? budgetFor(effectiveLimits(opts.limits).maxWallClockMs, { limits: opts.limits });
   const { model, diagnostics: d0 } = resolveModel(base, overlays);
-  const cm = compileModel(model, opts.limits ?? budget?.limits);
+  const cm = compileModel(model, opts.limits ?? budget?.limits, budget);
   const diagnostics = [...d0, ...cm.diagnostics];
   const manifest = manifestFor(base, overlays, seed, opts.run ?? 0);
   const empty: RunResult = { ok: false, diagnostics, years: cm.years, series: {}, aggregates: {}, binding: {}, solves: {}, parameters: {}, manifest };
@@ -780,19 +807,14 @@ export function runModel(base: CoreModel, opts: RunOptions = {}): RunResult {
         if (!Number.isFinite(flo) || !Number.isFinite(fhi)) {
           return fail('no-root', 'solve-no-root', `residual is not finite at a bracket end [${lo}, ${hi}] (${flo}, ${fhi})`);
         }
-        const scale0 = Math.max(Math.abs(flo), Math.abs(fhi));
-        // A root is accepted on its residual, never on bracket width alone. Either the residual is
-        // (absolutely) zero to within `exactTol`, or the bracket is narrow by `tol` AND the residual has
-        // shrunk to `acceptTol` (default: one billionth of its magnitude at the bracket ends). A jump or
-        // a pole narrows the bracket without shrinking the residual, and is rejected.
+        // Absolute residual tolerance is independent of the bracket endpoint magnitudes.
         const exactTol = residualTol ?? tol;
-        const acceptTol = residualTol ?? Math.max(tol, 1e-9 * scale0);
         let root: number | null = null;
         let it = 0;
         // Endpoint roots first: bisection never evaluates the ends again.
         if (Math.abs(flo) <= exactTol) root = lo;
         else if (Math.abs(fhi) <= exactTol) root = hi;
-        else if (flo * fhi > 0) {
+        else if (Math.sign(flo) === Math.sign(fhi)) {
           return fail('no-root', 'solve-no-root', `residual has the same sign at both ends of the bracket [${lo}, ${hi}] (${flo.toPrecision(3)}, ${fhi.toPrecision(3)})`);
         } else {
           for (; it < maxIter; it++) {
@@ -800,17 +822,13 @@ export function runModel(base: CoreModel, opts: RunOptions = {}): RunResult {
               const halt = stopped(t);
               if (halt) return halt;
             }
-            const mid = (lo + hi) / 2;
+            const mid = lo / 2 + hi / 2;
+            if (mid === lo || mid === hi) return fail('no-convergence', 'solve-no-convergence', `floating-point bracket stagnation without reaching residual tolerance ${exactTol}`);
             const fm = Number(f(mid));
             if (!Number.isFinite(fm)) return fail('discontinuity', 'solve-discontinuity', `residual is not finite at u = ${mid} inside the bracket: a pole or undefined region, not a root`);
             if (Math.abs(fm) <= exactTol) { root = mid; break; }
-            if (flo * fm < 0) { hi = mid; fhi = fm; } else { lo = mid; flo = fm; }
-            if (hi - lo <= tol * Math.max(1, Math.abs(mid)) && Math.abs(fm) <= acceptTol) { root = mid; break; }
-            // Narrowing to machine precision without the residual reaching zero means the sign change
-            // is a jump or a pole (or the residual tolerance is below what the arithmetic can reach).
-            if (hi - lo <= 4 * Number.EPSILON * Math.max(1, Math.abs(mid))) {
-              return fail('discontinuity', 'solve-discontinuity', `the residual changes sign at u ≈ ${mid} but does not reach |residual| <= ${acceptTol.toPrecision(3)} there (${flo.toPrecision(3)} to ${fhi.toPrecision(3)}): a discontinuity or pole, not a root. If the residual is continuous, set a larger residualTol.`);
-            }
+            if (Math.sign(flo) !== Math.sign(fm)) { hi = mid; fhi = fm; } else { lo = mid; flo = fm; }
+
           }
           if (root === null) return fail('no-convergence', 'solve-no-convergence', `did not converge in ${maxIter} iterations (bracket [${lo}, ${hi}], residual ${flo.toPrecision(3)} to ${fhi.toPrecision(3)})`);
         }
@@ -913,14 +931,17 @@ export function* monteCarloSteps(base: CoreModel, opts: MonteCarloOptions = {}):
   const { model } = resolveModel(base, overlays);
   const deterministic = isDeterministic(model);
   if (!Number.isInteger(requested) || requested < 1 || requested > limits.maxDraws) {
-    const manifest = manifestFor(base, overlays, seed, 0);
+    const manifest = manifestFor(base, overlays, seed, 0, { requestedRuns: requested, effectiveRuns: 0 });
     const diagnostics: Diagnostic[] = [{ level: 'error', code: 'limit-exceeded', message: `${String(requested)} Monte Carlo draws requested; the limit is 1 to ${limits.maxDraws.toLocaleString('en-US')}`, where: 'runs' }];
     return { ok: false, diagnostics, years: [], runs: 0, quantiles: {}, manifest };
   }
+  const problems = checkRunSettings({ model, runs: requested, seed, ensemble: true }, limits);
+  if (problems.length) return { ok: false, diagnostics: problems.map(p => ({ level: 'error', code: p.code, message: p.message })), years: [], runs: 0, quantiles: {}, manifest: manifestFor(base, overlays, seed, 0, { requestedRuns: requested, effectiveRuns: 0 }) };
   const runs = deterministic ? 1 : requested;
-  const runOpts = { overlays, seed, budget: opts.budget, limits: opts.limits };
+  const budget = opts.budget ?? ambientBudget ?? budgetFor(limits.maxWallClockMs, { limits: opts.limits });
+  const runOpts = { overlays, seed, budget, limits: opts.limits };
   const first = runModel(base, { ...runOpts, run: 0 });
-  const manifest = { ...first.manifest, seed };
+  const manifest = manifestFor(base, overlays, seed, 0, { requestedRuns: requested, effectiveRuns: runs });
   if (!first.ok) return { ok: false, diagnostics: first.diagnostics, years: first.years, runs: 0, quantiles: {}, manifest, deterministic };
   const all: RunResult[] = [first];
   yield { done: 1, total: runs };

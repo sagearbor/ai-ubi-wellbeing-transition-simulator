@@ -163,17 +163,33 @@ anything that depends on it is evaluated that step:
 `residual` must reference `unknown` (compile error if it doesn't — a solve that can't move its own
 unknown isn't a solve).
 
-**How a root is accepted.** A root is accepted on its residual, never on bracket width alone: either
-`|residual| <= residualTol` (default `tol`), including at either end of the bracket, or the bracket has
-narrowed to `tol` *and* the residual has shrunk to `residualTol` (default one billionth of its size at
-the bracket ends). A sign change that narrows without the residual shrinking is a jump or a pole, and
-the run fails with `solve-discontinuity`; a non-finite residual inside the bracket fails the same way.
-Set `residualTol` explicitly when the residual's scale makes the default too strict or too loose. At runtime the engine checks the residual's sign at both ends of
-`bracket`; same sign on both ends means no guaranteed root, and the run stops with an explicit
-`solve-no-root` diagnostic and `ok: false` rather than returning whatever bisection happened to
-land on. Not converging within `maxIter` (default 100) is a separate explicit failure,
-`solve-no-convergence`. `data/core/market-no-root.json` is a fixture built specifically to trigger
-`solve-no-root` on purpose — see `data/core/README.md`.
+**How a root is accepted.** The absolute residual must satisfy
+`|residual| <= residualTol` (default `tol`), including at bracket endpoints. The threshold never
+scales with endpoint residuals, and bracket width alone cannot certify a solution. Authors should
+normalize the residual or choose an explicit tolerance in its declared units. A numerical residual
+check is not a mathematical proof that a discontinuous function has a root.
+
+A non-finite evaluated residual inside the bracket fails with `solve-discontinuity`. A finite
+bracket that cannot produce a distinct floating-point midpoint fails with `solve-no-convergence`,
+as does exhausting `maxIter` (default 100). Neither condition proves a discontinuity. Same-sign
+endpoints, unless one already meets the residual tolerance, fail with `solve-no-root`: the declared
+bracket does not provide the sign change this method requires. The result is `ok: false`; the engine
+never substitutes an unconverged midpoint. `data/core/market-no-root.json` demonstrates that failure.
+
+### Execution budgets
+
+The direct core, paired policy and worker entry points enforce combined source, graph, retained-result
+and work limits before allocating the calculation. The current limits are defined in
+`src/core/limits.ts`: 250,000 source characters, 1,000 variables, 2,000 characters and 256 lexical
+tokens per expression, 64 bracket levels, and a conservative 4,000,000 retained-cell allowance
+(estimated at 64 bytes per cell). Graph dependencies, entities, steps, draws, paired sides and retained
+jobs contribute to the budget. These estimates are conservative limits, not measured browser heap
+guarantees. Oversized source is refused before cloning or hashing it.
+
+Worker jobs share one active allocation reservation per execution realm and a bounded queue. Queued
+jobs can be cancelled without waiting for the active job; completing or cancelling a job releases
+its reservation. Independent workers and results retained by external callers remain outside that
+reservation's accounting. A budget failure is an execution diagnostic, not an economic constraint.
 
 ### `through`: variables and effects inside the equilibrium
 

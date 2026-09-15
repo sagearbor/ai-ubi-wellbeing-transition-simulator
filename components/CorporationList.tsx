@@ -1,3 +1,4 @@
+import { actualContribution, activeRequestSortValue, topContributors } from '../simulation/presentation';
 
 import React, { useState, useMemo } from 'react';
 import { ArrowUpDown, Search, Filter, TrendingUp, Building2, Globe2, CheckSquare, Square } from 'lucide-react';
@@ -33,6 +34,8 @@ const CorporationList: React.FC<CorporationListProps> = ({
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
   const [bulkContributionRate, setBulkContributionRate] = useState(0.3);
 
+  const conditional = corporations.some(c => c.sourceBudget);
+
   // Get unique countries
   const uniqueCountries = useMemo(() => {
     const countries = new Set(corporations.map(c => c.headquartersCountry));
@@ -55,7 +58,7 @@ const CorporationList: React.FC<CorporationListProps> = ({
         return false;
       }
       // Stance filter
-      if (filterStance !== 'all' && corp.policyStance !== filterStance) {
+      if (!conditional && filterStance !== 'all' && corp.policyStance !== filterStance) {
         return false;
       }
       return true;
@@ -79,8 +82,8 @@ const CorporationList: React.FC<CorporationListProps> = ({
           bVal = b.aiRevenue;
           break;
         case 'contributionRate':
-          aVal = a.contributionRate;
-          bVal = b.contributionRate;
+          aVal = activeRequestSortValue(a);
+          bVal = activeRequestSortValue(b);
           break;
         case 'strategy':
           aVal = a.distributionStrategy;
@@ -111,7 +114,7 @@ const CorporationList: React.FC<CorporationListProps> = ({
   // Calculate aggregate stats
   const stats = useMemo(() => {
     const totalContribution = corporations.reduce((sum, corp) =>
-      sum + (corp.aiRevenue * corp.contributionRate), 0
+      sum + actualContribution(corp), 0
     );
 
     const strategyCounts = {
@@ -132,14 +135,12 @@ const CorporationList: React.FC<CorporationListProps> = ({
     };
 
     // Top 5 contributors
-    const topContributors = [...corporations]
-      .sort((a, b) => (b.aiRevenue * b.contributionRate) - (a.aiRevenue * a.contributionRate))
-      .slice(0, 5);
+    const leaders = topContributors(corporations);
 
     return {
       totalContribution,
       strategyPercentages,
-      topContributors
+      topContributors: leaders
     };
   }, [corporations]);
 
@@ -245,7 +246,7 @@ const CorporationList: React.FC<CorporationListProps> = ({
                   {idx + 1}. {corp.name}
                 </span>
                 <span className="font-semibold text-slate-900 dark:text-white ml-2">
-                  {formatCurrency(corp.aiRevenue * corp.contributionRate)}
+                  {formatCurrency(actualContribution(corp))}
                 </span>
               </div>
             ))}
@@ -296,7 +297,7 @@ const CorporationList: React.FC<CorporationListProps> = ({
           </select>
 
           {/* Stance Filter */}
-          <select
+          <select hidden={conditional}
             value={filterStance}
             onChange={(e) => setFilterStance(e.target.value)}
             className="w-full px-3 py-2 text-sm border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
@@ -363,7 +364,7 @@ const CorporationList: React.FC<CorporationListProps> = ({
                 <input
                   type="range"
                   min="0"
-                  max="0.5"
+                  max={corporations.some(c=>c.sourceBudget) ? 1 : 0.5}
                   step="0.05"
                   value={bulkContributionRate}
                   onChange={(e) => setBulkContributionRate(parseFloat(e.target.value))}
@@ -380,7 +381,7 @@ const CorporationList: React.FC<CorporationListProps> = ({
                 }}
                 className="px-4 py-1.5 text-xs font-bold bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
               >
-                Apply to Selected
+                {conditional ? 'Switch selected to this share request' : 'Apply to Selected'}
               </button>
             </div>
           )}
@@ -424,7 +425,7 @@ const CorporationList: React.FC<CorporationListProps> = ({
                 onClick={() => handleSort('aiRevenue')}
               >
                 <div className="flex items-center justify-end gap-1">
-                  AI Revenue
+                  {conditional ? 'Modeled source ($B, 2015 USD/month)' : 'AI Revenue'}
                   <ArrowUpDown size={12} className={sortField === 'aiRevenue' ? 'text-blue-500' : 'text-slate-400'} />
                 </div>
               </th>
@@ -433,7 +434,7 @@ const CorporationList: React.FC<CorporationListProps> = ({
                 onClick={() => handleSort('contributionRate')}
               >
                 <div className="flex items-center justify-end gap-1">
-                  Contribution Rate
+                  {conditional ? 'Active request / funded ($B per month)' : 'Contribution Rate'}
                   <ArrowUpDown size={12} className={sortField === 'contributionRate' ? 'text-blue-500' : 'text-slate-400'} />
                 </div>
               </th>
@@ -448,6 +449,7 @@ const CorporationList: React.FC<CorporationListProps> = ({
               </th>
               <th
                 className="px-4 py-3 text-left text-xs font-semibold text-slate-700 dark:text-slate-300 cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700"
+                hidden={conditional}
                 onClick={() => handleSort('stance')}
               >
                 <div className="flex items-center gap-1">
@@ -473,7 +475,7 @@ const CorporationList: React.FC<CorporationListProps> = ({
                   }}
                   className={`
                     border-b border-slate-100 dark:border-slate-800 border-l-4
-                    ${getStanceBorderColor(corp.policyStance)}
+                    ${conditional ? '' : getStanceBorderColor(corp.policyStance)}
                     ${isSelected
                       ? 'bg-blue-100 dark:bg-blue-900/30'
                       : selectedCorpId === corp.id
@@ -508,14 +510,17 @@ const CorporationList: React.FC<CorporationListProps> = ({
                   {formatCurrency(corp.aiRevenue)}
                 </td>
                 <td className="px-4 py-3 text-sm text-right text-slate-900 dark:text-white">
-                  {(corp.contributionRate * 100).toFixed(0)}%
+                  {corp.sourceBudget ? <>
+                    <div>{corp.fundingRequest?.kind === 'amount' ? 'Amount' : `Share ${(corp.contributionRate * 100).toFixed(0)}%`}: {formatCurrency(corp.sourceBudget.requested)} requested</div>
+                    <div>{formatCurrency(actualContribution(corp))} funded</div>
+                  </> : `${(corp.contributionRate * 100).toFixed(0)}%`}
                 </td>
                 <td className="px-4 py-3 text-sm text-slate-600 dark:text-slate-400">
                   <span className="capitalize">
                     {corp.distributionStrategy.replace('-', ' ')}
                   </span>
                 </td>
-                <td className="px-4 py-3">
+                <td hidden={conditional} className="px-4 py-3">
                   <span className={`inline-block px-2 py-1 rounded text-xs font-semibold capitalize ${getStanceColor(corp.policyStance)}`}>
                     {corp.policyStance}
                   </span>

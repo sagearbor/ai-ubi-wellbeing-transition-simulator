@@ -1,0 +1,12 @@
+import {writeFileSync} from 'node:fs';
+import {PRESET_MODELS} from './constants';
+import {initialRun,initOptionsFor,runMonths} from './simulation/run';
+const results:any[]=[];
+for(const id of ['organic-incentive','evidence-anchored']){
+ const model=PRESET_MODELS.find(m=>m.id===id)!;
+ if(!model)throw Error('Missing '+id);
+ const opts:any={...initOptionsFor(model),countryDataset:'countries-legacy-v1'};
+ const rows=runMonths(initialRun(undefined,undefined,opts),120,{model});
+ results.push({id,rows:rows.map(r=>{const state={...r.state};delete (state as any).countryDataset;return {...r,state}})});
+}
+writeFileSync(process.argv[2],JSON.stringify(results));

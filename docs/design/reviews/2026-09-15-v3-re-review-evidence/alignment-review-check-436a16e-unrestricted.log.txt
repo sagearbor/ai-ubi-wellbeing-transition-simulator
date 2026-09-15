@@ -1,0 +1,955 @@
+
+> wellbeing-transition-simulator@0.0.0 check
+> npm run typecheck && npm run test && npm run validate && npm run validate:futures && npm run validate:korinek && npm run validate:core && npm run validate:cases && npm run ledger -- --check && npm run build
+
+
+> wellbeing-transition-simulator@0.0.0 typecheck
+> tsc --noEmit
+
+
+> wellbeing-transition-simulator@0.0.0 test
+> vitest run
+
+(node:47602) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+
+ RUN  v3.2.7 /private/tmp/alignment-review-436a16e
+
+ ✓ src/core/korinek.test.ts (13 tests) 113ms
+ ✓ simulation/appState.test.ts (24 tests) 146ms
+ ✓ validation/korinek.test.ts (7 tests) 150ms
+ ✓ src/policy/bundle.test.ts (11 tests) 169ms
+ ✓ simulation/usReference.test.ts (4 tests) 227ms
+ ✓ src/policy/draft.test.ts (30 tests) 263ms
+ ✓ src/policy/examples.test.ts (8 tests) 511ms
+ ✓ components/futures/FuturesTab.test.tsx (7 tests) 66ms
+ ✓ validation/anchorTests.test.ts (5 tests) 677ms
+ ✓ src/workers/runner.test.ts (19 tests) 551ms
+   ✓ runner protocol (fake worker) > cancel settles at once, the worker confirms, and no restart is needed  307ms
+ ✓ src/core/calendar.test.ts (4 tests) 601ms
+   ✓ calendar labels > declaring the calendar changes no number: every embedded test still passes  592ms
+stderr | components/lab/LabTab.policy.test.tsx > LabTab Policy panel (renders) > is on the page with honest framing, and extraction is optional
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+stderr | components/lab/LabTab.test.tsx > LabTab (renders) > renders the picker over every bundled fixture
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+ ✓ simulation/counterfactual.test.ts (8 tests) 192ms
+stderr | components/lab/LabTab.import.test.tsx > Lab with an imported model > flags it experimental in the picker, the header and the results, and still runs it
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+stderr | components/lab/LabTab.test.tsx > LabTab (renders) > shows the training fixture scope before any result
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+stderr | components/lab/LabTab.test.tsx > LabTab (renders) > names the constraint that binds in 2029
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+stderr | components/lab/LabTab.import.test.tsx > Lab with an imported model > curated fixtures stay curated: no experimental label without an import
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+stderr | components/lab/LabTab.test.tsx > LabTab (renders) > labels guessed parameters as assumptions and counts them
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+stderr | components/lab/LabTab.test.tsx > LabTab (renders) > shows the outputs, the tests and the model file expander
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+stderr | components/lab/LabTab.test.tsx > LabTab (renders) > renders the uncertainty band without pretending it is a forecast
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+ ✓ components/lab/LabTab.test.tsx (19 tests) 119ms
+ ✓ src/futures/engine.test.ts (22 tests) 44ms
+ ✓ components/modelcard/ModelCardTab.test.tsx (2 tests) 34ms
+ ✓ src/futures/validateGraph.test.ts (30 tests) 42ms
+stderr | components/lab/LabTab.policy.test.tsx > LabTab Policy panel (renders) > shows the worked example: coverage, review status, provisions and evidence
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+ ✓ src/core/engine.test.ts (35 tests) 46ms
+ ✓ simulation/anchored.test.ts (7 tests) 63ms
+ ✓ simulation/run.test.ts (5 tests) 68ms
+stderr | components/lab/LabTab.import.test.tsx > Lab with an imported model > a policy run on an imported model is labelled experimental, links are off, and its bundle carries the model and reopens
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+ ✓ src/core/adversarial.test.ts (21 tests) 61ms
+stderr | components/lab/LabTab.policy.test.tsx > LabTab Policy panel (renders) > runs the paired comparison and explains what limits it
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+stderr | components/lab/LabTab.policy.test.tsx > LabTab Policy panel (renders) > opens a #lab= link on its pinned model and scenario, and re-runs it
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+stderr | components/lab/LabTab.policy.test.tsx > LabTab Policy panel (renders) > reports a link it cannot open instead of opening a different baseline
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+stderr | components/lab/LabTab.policy.test.tsx > LabTab Policy panel (renders) > refuses a link whose draft has validation errors, and never runs it
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+ ✓ src/policy/units.test.ts (7 tests) 16ms
+stderr | components/lab/LabTab.policy.test.tsx > LabTab Policy panel (renders) > disables Run and lists the blocking errors when a loaded draft is invalid
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+ ✓ components/lab/LabTab.policy.test.tsx (7 tests) 675ms
+ ✓ validation/responseProfile.test.ts (6 tests) 76ms
+ ✓ simulation/units.test.ts (5 tests) 44ms
+ ✓ simulation/appEngineParity.test.ts (3 tests) 24ms
+ ✓ src/core/sensitivity.test.ts (25 tests) 30ms
+ ✓ scripts/countries/countryDatasets.test.ts (7 tests) 23ms
+ ✓ src/core/validate.test.ts (27 tests) 28ms
+ ✓ services/policyExtract.test.ts (15 tests) 27ms
+ ✓ src/futures/aggregate.test.ts (27 tests) 6ms
+ ✓ src/futures/store.test.ts (19 tests) 8ms
+stderr | components/lab/LabTab.import.test.tsx > Lab calendars and steady-state outputs > labels the Gasteiger-Prettner model in generations and shows no transition chart for welfare
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+stderr | components/lab/LabTab.import.test.tsx > Lab calendars and steady-state outputs > calendar models keep calendar years
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+ ✓ validation/ledger.test.ts (22 tests) 13ms
+ ✓ components/lab/policyState.test.ts (10 tests) 14ms
+ ✓ src/futures/interventions.test.ts (24 tests) 7ms
+ ✓ validation/policyCases.test.ts (5 tests) 24ms
+stderr | components/lab/LabTab.import.test.tsx > Lab calendars and steady-state outputs > Korinek faithful is deterministic: uncertainty runs once instead of 200 times
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+stderr | components/lab/LabTab.import.test.tsx > links are checked against the limits before anything runs > a link asking for more draws than the limit opens for inspection but is not run
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+ ✓ simulation/pure.test.ts (15 tests) 11ms
+stderr | components/lab/LabTab.import.test.tsx > links are checked against the limits before anything runs > a link within the limits still runs on opening
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+The width(-1) and height(-1) of chart should be greater than 0,
+       please check the style of container, or the props width(100%) and height(100%),
+       or add a minWidth(0) or minHeight(undefined) or use aspect(undefined) to control the
+       height and width.
+
+ ✓ components/lab/LabTab.import.test.tsx (12 tests) 1669ms
+   ✓ Lab with an imported model > a policy run on an imported model is labelled experimental, links are off, and its bundle carries the model and reopens  397ms
+   ✓ Lab calendars and steady-state outputs > labels the Gasteiger-Prettner model in generations and shows no transition chart for welfare  834ms
+ ✓ src/services/__tests__/modelStorage.test.ts (20 tests) 14ms
+ ✓ services/futuresExtract.test.ts (14 tests) 5ms
+ ✓ src/futures/share.test.ts (21 tests) 4ms
+ ✓ src/policy/clauses.test.ts (6 tests) 3ms
+ ✓ src/services/scenarioShare.test.ts (17 tests) 5ms
+ ✓ src/policy/memo.test.ts (9 tests) 16ms
+ ✓ components/futures/InterventionImportPanel.test.tsx (2 tests) 6ms
+ ✓ validation/countryProvenance.test.ts (11 tests) 4ms
+ ✓ validation/hindcast.test.ts (25 tests) 11ms
+ ✓ src/core/fixtures.test.ts (42 tests) 2714ms
+   ✓ registered core fixtures > gasteiger-prettner-2020 — Gasteiger and Prettner 2020: robots, stagnation and a robot tax paid to workers (OLG, one step = one generation) > runs with no error diagnostics  364ms
+ ✓ src/services/modelEditorState.test.ts (17 tests) 8ms
+ ✓ src/services/equationParser.test.ts (20 tests) 7ms
+stderr | src/services/mathParser.test.ts > compileEquation / evaluateEquation > returns null for equations that fail to compile
+Failed to compile equation: Function 'evilFunc' is not allowed. Allowed functions: sin, cos, tan, exp, log, log10, log2, sqrt, abs, ceil, floor, round, min, max, pow, sign, add, subtract, multiply, divide
+Failed to evaluate equation: Variable 'hackerVar' is not allowed. Allowed variables: adoption, wellbeing, gdp, gdpPerCapita, population, gini, governance, contributionRate, displacementRate, fundSize, month, aiGrowthRate, aiAdoption, ubiReceived, marketPressure, reputationScore, customerBaseWellbeing, projectedDemandCollapse, aiRevenue, ubi, ubiBoost, displacementFriction, baseFriction, utilityScale, aiAdoptionLevel, avgContributionRate
+
+ ✓ src/services/mathParser.test.ts (22 tests) 9ms
+ ✓ components/ModelUpload.test.tsx (8 tests) 5ms
+ ✓ src/core/korinekFaithful.test.ts (129 tests) 3600ms
+ ✓ src/core/gasteigerPrettner.test.ts (21 tests) 5289ms
+   ✓ gasteiger-prettner-2020: welfare-maximising robot tax on a 0.001 grid (p.24) > mu = 0.5 (baseline): utility-maximising tau* within 0.01 of the published 0.55; CV minimisers within 0.005 of it  1272ms
+   ✓ gasteiger-prettner-2020: welfare-maximising robot tax on a 0.001 grid (p.24) > mu = 0.4: utility-maximising tau* within 0.01 of the published 0.57; CV minimisers within 0.005 of it  1233ms
+   ✓ gasteiger-prettner-2020: welfare-maximising robot tax on a 0.001 grid (p.24) > mu = 0.6: utility-maximising tau* within 0.01 of the published 0.54; CV minimisers within 0.005 of it  882ms
+   ✓ gasteiger-prettner-2020: Figure 4 and 5 turning points on fine grids > runs  1535ms
+
+ Test Files  53 passed (53)
+      Tests  901 passed (901)
+   Start at  23:51:36
+   Duration  6.97s (transform 1.52s, setup 0ms, collect 39.89s, tests 18.54s, environment 4ms, prepare 2.55s)
+
+
+> wellbeing-transition-simulator@0.0.0 validate
+> tsx scripts/run-anchor-tests.ts
+
+Anchor tests against simulation/pure.ts
+
+[PASS] AT-1 Displacement Without UBI (Dystopia Test) (causal)
+       Wellbeing changed by -20.64 (expected < -5)
+       expected: < -5
+       actual:   Wellbeing delta: -20.64
+[PASS] AT-2 Generous UBI Prevents Collapse (causal)
+       Wellbeing maintained at 102.7% of initial
+       expected: >= 0.8
+       actual:   Final/Initial ratio: 1.027
+[FAIL] AT-3 Prisoner's Dilemma Dynamics (equilibrium)
+       Race-to-bottom risk only reached 57.8% (expected > 60%)
+       expected: > 0.6
+       actual:   Max race-to-bottom risk: 0.578
+[PASS] AT-4 Demand Collapse Triggers Adaptation (causal)
+       Contribution rate increased from 10.0% to 25.2%
+       expected: > 0
+       actual:   Contribution rate: 0.100 → 0.252
+[PASS] AT-5 Global Distribution Helps Poor Countries (equilibrium)
+       Poor countries' wellbeing higher with global (45.7) vs HQ-local (5.4)
+       expected: Global > HQ-local for poor countries
+       actual:   Global: 45.75, HQ-local: 5.44
+[PASS] AT-6 Money Conservation (Accounting Sanity) (consistency)
+       Money conserved within 0.00% tolerance
+       expected: within undefined
+       actual:   Inflow: 26.85, Outflow: 26.85, Diff: 0.00%
+
+5/6 passed: accounting invariants 1/1 (required); directional expectations 4/5 (reported, not required)
+
+> wellbeing-transition-simulator@0.0.0 validate:futures
+> tsx scripts/validate-futures.ts
+
+AI Futures Map validation
+
+[PASS] data/futures/graph.json
+[PASS] data/futures/interventions/ai-dividend-fund.json
+[PASS] data/futures/interventions/compute-treaty.json
+[PASS] data/futures/interventions/resilience-enclaves.json
+[PASS] data/futures/interventions/frontier-evals-mandate.json
+[PASS] src/futures/golden.json
+
+Sensitivity report (edges whose removal shifts an endYear state marginal by > 0.05 under a +1 probe on the parent):
+  redistribution -> broad-flourishing (requires, strength 0.8): flourishing shifts by 0.1337
+  oligarchic-capture -> redistribution (dampens, strength -0.5): stratified shifts by 0.1314
+  broad-flourishing -> flourishing (amplifies, strength 0.9): flourishing shifts by 0.1244
+  labor-displacement -> oligarchic-capture (amplifies, strength 0.5): stratified shifts by 0.1130
+  agi -> abundance (enables, strength 0.6): flourishing shifts by 0.1117
+  oligarchic-capture -> stratified (amplifies, strength 0.6): stratified shifts by 0.1095
+  agi -> rsi (requires, strength 0.9): existential shifts by 0.0860
+  surveillance-lockin -> broad-flourishing (prevents, strength -0.7): flourishing shifts by 0.0836
+  agi -> misaligned-takeover (requires, strength 0.8): existential shifts by 0.0820
+  abundance -> broad-flourishing (requires, strength 0.8): flourishing shifts by 0.0818
+  misaligned-takeover -> existential (amplifies, strength 0.9): existential shifts by 0.0807
+  abundance -> redistribution (enables, strength 0.4): flourishing shifts by 0.0803
+  agi -> labor-displacement (amplifies, strength 0.7): stratified shifts by 0.0801
+  great-power-war -> catastrophe (amplifies, strength 0.7): catastrophe shifts by 0.0767
+  redistribution -> oligarchic-capture (dampens, strength -0.5): flourishing shifts by 0.0755
+  unemployment-no-net -> stratified (amplifies, strength 0.5): stratified shifts by 0.0673
+  bio-cyber -> catastrophe (amplifies, strength 0.6): catastrophe shifts by 0.0644
+  labor-displacement -> unemployment-no-net (requires, strength 0.9): stratified shifts by 0.0620
+  gradual-disempowerment -> existential (amplifies, strength 0.7): existential shifts by 0.0594
+  surveillance-lockin -> catastrophe (amplifies, strength 0.5): catastrophe shifts by 0.0576
+  agi -> gradual-disempowerment (requires, strength 0.7): existential shifts by 0.0566
+  race-dynamics -> alignment-adequate (dampens, strength -0.5): existential shifts by 0.0543
+  rsi -> misaligned-takeover (amplifies, strength 0.6): existential shifts by 0.0515
+
+OK
+
+> wellbeing-transition-simulator@0.0.0 validate:korinek
+> tsx scripts/validate-korinek.ts
+
+Korinek, Jones, Sacher, Cotter & McCrory (2026) — REDUCED-FORM approximation of the US 2030 outputs (illustrative legacy; the faithful port in data/core/korinek-2026-faithful.json is the reference)
+
+[PASS] KJ-1 Korinek et al. 2026 modest scenario, US 2030
+       Matches published outputs within tolerance. gdpBoostPct: 1.6 (target 1.6); laborSharePct: 59.2 (target 59.4); cognitiveUnemploymentPct: 3.9 (target 2.9)
+[PASS] KJ-2 Korinek et al. 2026 substantial scenario, US 2030
+       Matches published outputs within tolerance. gdpBoostPct: 8.2 (target 8.3); laborSharePct: 56.2 (target 56.1); cognitiveUnemploymentPct: 4.4 (target 4.5)
+[PASS] KJ-3 Korinek et al. 2026 extreme scenario, US 2030
+       Matches published outputs within tolerance. gdpBoostPct: 31.3 (target 32.4); laborSharePct: 45.4 (target 45.2); cognitiveUnemploymentPct: 17.8 (target 17.9)
+
+ scenario     adoption  GDP boost  growth/yr  labour share  unemp  cognitive unemp
+ modest          0.023       1.6%       2.4%         59.2%   3.9%             3.9%
+ substantial     0.118       8.2%       3.8%         56.2%   4.2%             4.4%
+ extreme         0.450      31.3%       8.4%         45.4%  12.5%            17.8%
+
+3/3 reproduced within tolerance
+
+> wellbeing-transition-simulator@0.0.0 validate:core
+> tsx scripts/validate-core.ts
+
+Authoring core validation
+
+        FILE                                                    KIND     TESTS    WARNINGS  ASSUMPTIONS
+[PASS]  data/core/alaska-pfd-calibration.json                   model    4/4      0         0 of 11
+[PASS]  data/core/cohort-flow.json                              model    3/3      0         3 of 3
+[PASS]  data/core/gasteiger-prettner-2020.json                  model    46/46    0         8 of 9
+[PASS]  data/core/korinek-2026-faithful.json                    model    38/38    0         14 of 34
+[PASS]  data/core/korinek-2026.json                             model    6/6      0         5 of 11
+[PASS]  data/core/market-clearing.json                          model    4/4      0         4 of 4
+[XFAIL] data/core/market-no-root.json                           model    -        0         4 of 4
+[PASS]  data/core/minimal.json                                  model    1/1      0         1 of 2
+[PASS]  data/core/pool-allocation.json                          model    6/6      0         4 of 4
+[PASS]  data/core/training-budget.json                          model    2/2      0         5 of 5
+[PASS]  data/core/overlays/alaska-pfd-wp2020.json               overlay  3/3      0         0 of 3
+[PASS]  data/core/overlays/gasteiger-prettner-mu04.json         overlay  3/3      0         1 of 1
+[PASS]  data/core/overlays/gasteiger-prettner-mu06.json         overlay  3/3      0         1 of 1
+[PASS]  data/core/overlays/korinek-extreme.json                 overlay  5/5      0         1 of 2
+[PASS]  data/core/overlays/korinek-faithful-extreme.json        overlay  23/23    0         8 of 8
+[PASS]  data/core/overlays/korinek-faithful-modest.json         overlay  23/23    0         8 of 8
+[PASS]  data/core/overlays/korinek-faithful-pegged-rental.json  overlay  5/5      0         1 of 1
+[PASS]  data/core/overlays/korinek-faithful-rigid-wage.json     overlay  7/7      0         1 of 1
+[PASS]  data/core/overlays/korinek-modest.json                  overlay  5/5      0         1 of 2
+[PASS]  data/core/overlays/retraining.json                      overlay  1/1      0         2 of 2
+[PASS]  data/core/overlays/tutoring.json                        overlay  -        0         2 of 2
+
+data/core/market-no-root.json
+       EXPECTED solve-no-root: solve "clear" (_, step 0): residual has the same sign at both ends of the bracket [0, 5] (90.0, 65.0)
+       NOTE    reviewed negative fixture: failed with solve-no-root as documented (Solve bracket [0, 5] deliberately excludes the true clearing price 18; the engine must refuse, not return a number.)
+
+Evidence summary (what the numbers in each file are)
+  alaska-pfd-calibration   0 of 11 parameters guessed or assumed (causal 3, calibrated 8)
+  cohort-flow              3 of 3 parameters guessed or assumed (guess 3)
+                           workforce [guess], reemploymentRateBase [guess], naturalUnemployment [guess]
+                           no range declared on: workforce, reemploymentRateBase, naturalUnemployment (a guess shown as an exact number)
+  gasteiger-prettner-2020  8 of 9 parameters guessed or assumed (calibrated 1, assumed 8)
+                           alpha [assumed], beta [assumed], mu [assumed], nu [assumed], theta [assumed], tau [assumed], isBaseline [assumed], w_init [assumed]
+                           no range declared on: alpha, beta, mu, nu, theta, tau, isBaseline, w_init (a guess shown as an exact number)
+  korinek-2026-faithful    14 of 34 parameters guessed or assumed (calibrated 20, assumed 14)
+                           t0 [assumed], tAnchor [assumed], tRead [assumed], h [assumed], lambda [assumed], m2030 [assumed], d2030 [assumed], dBar [assumed], aMid2026 [assumed], ga [assumed], psi [assumed], rho [assumed], mu [assumed], thetaH [assumed]
+                           no range declared on: t0, tAnchor, tRead, h, lambda, m2030, d2030, dBar, aMid2026, ga, psi, rho, mu, thetaH (a guess shown as an exact number)
+  korinek-2026             5 of 11 parameters guessed or assumed (associational 3, calibrated 3, assumed 5)
+                           baseLaborShare [assumed], baselineGrowth [assumed], reemploymentMonths [assumed], unemploymentCap [assumed], cognitiveUnemploymentCap [assumed]
+                           no range declared on: baseLaborShare, unemploymentCap, cognitiveUnemploymentCap (a guess shown as an exact number)
+  market-clearing          4 of 4 parameters guessed or assumed (guess 4)
+                           supply_intercept [guess], supply_slope [guess], demand_intercept [guess], demand_slope [guess]
+                           no range declared on: supply_intercept, supply_slope, demand_intercept, demand_slope (a guess shown as an exact number)
+  market-no-root           4 of 4 parameters guessed or assumed (guess 4)
+                           supply_intercept [guess], supply_slope [guess], demand_intercept [guess], demand_slope [guess]
+                           no range declared on: supply_intercept, supply_slope, demand_intercept, demand_slope (a guess shown as an exact number)
+  minimal                  1 of 2 parameters guessed or assumed (associational 1, guess 1)
+                           growth [guess]
+  pool-allocation          4 of 4 parameters guessed or assumed (guess 4)
+                           income [guess], contributionRate [guess], share [guess], capacity [guess]
+                           no range declared on: income, contributionRate, share, capacity (a guess shown as an exact number)
+  training-budget          5 of 5 parameters guessed or assumed (guess 5)
+                           cost_per_completion [guess], instructor_capacity [guess], eligible_people [guess], placement_rate [guess], suitable_openings [guess]
+                           no range declared on: cost_per_completion, eligible_people (a guess shown as an exact number)
+  alaska-pfd-wp2020        0 of 3 parameters guessed or assumed (calibrated 3)
+  gasteiger-prettner-mu04  1 of 1 parameters guessed or assumed (assumed 1)
+                           mu [assumed]
+                           no range declared on: mu (a guess shown as an exact number)
+  gasteiger-prettner-mu06  1 of 1 parameters guessed or assumed (assumed 1)
+                           mu [assumed]
+                           no range declared on: mu (a guess shown as an exact number)
+  korinek-extreme          1 of 2 parameters guessed or assumed (calibrated 1, assumed 1)
+                           reemploymentMonths [assumed]
+  korinek-faithful-extreme 8 of 8 parameters guessed or assumed (assumed 8)
+                           m2030 [assumed], d2030 [assumed], aMid2026 [assumed], ga [assumed], psi [assumed], rho [assumed], mu [assumed], thetaH [assumed]
+                           no range declared on: m2030, d2030, aMid2026, ga, psi, rho, mu, thetaH (a guess shown as an exact number)
+  korinek-faithful-modest  8 of 8 parameters guessed or assumed (assumed 8)
+                           m2030 [assumed], d2030 [assumed], aMid2026 [assumed], ga [assumed], psi [assumed], rho [assumed], mu [assumed], thetaH [assumed]
+                           no range declared on: m2030, d2030, aMid2026, ga, psi, rho, mu, thetaH (a guess shown as an exact number)
+  korinek-faithful-pegged-rental 1 of 1 parameters guessed or assumed (assumed 1)
+                           invEps [assumed]
+                           no range declared on: invEps (a guess shown as an exact number)
+  korinek-faithful-rigid-wage 1 of 1 parameters guessed or assumed (assumed 1)
+                           xi [assumed]
+                           no range declared on: xi (a guess shown as an exact number)
+  korinek-modest           1 of 2 parameters guessed or assumed (calibrated 1, assumed 1)
+                           reemploymentMonths [assumed]
+  retraining               2 of 2 parameters guessed or assumed (guess 2)
+                           retrainingReemploymentEffect [guess], retrainingCostPerParticipant [guess]
+                           no range declared on: retrainingReemploymentEffect, retrainingCostPerParticipant (a guess shown as an exact number)
+  tutoring                 2 of 2 parameters guessed or assumed (guess 2)
+                           tutoringIncomeEffect [guess], tutoringWellbeingEffect [guess]
+
+OK
+
+> wellbeing-transition-simulator@0.0.0 validate:cases
+> tsx scripts/policy-cases.ts
+
+## Alaska Permanent Fund Dividend and the labour market (`alaska-pfd`, policy-effect benchmark)
+
+Funding boundary: Permanent Fund investment earnings (oil-royalty origin); 'not explicitly financed by taxes' (AEJ p.336). No tax-side effects are in the estimate. State income tax repealed 1980; 1980 placebo null (AEJ-OA Table A.8).
+
+| Outcome | study estimate (95% CI, p) | status | model value | discrepancy (model − study) | model spread across declared alternatives |
+|---|---|---|---|---|---|
+| Employment rate **(headline)** | +0.1 pp [-3.0 pp, +3.3 pp], p 0.942 | mapped: `alaska-pfd-calibration` | -0.7 pp | -0.8 pp | -0.7 pp to -0.2 pp |
+| Employment rate **(headline)** | +0.1 pp [-3.0 pp, +3.3 pp], p 0.942 | mechanism-absent in world engine `evidence-anchored` (USA, 24 mo: unemployment 6.91% without vs 6.91% with transfers) | not a prediction | — | — |
+| Part-time rate **(headline)** | +1.8 pp [+0.4 pp, +3.2 pp], p 0.02 | outside model: Neither the calibration nor the world engine has an intensive margin or a part-time state. | — | — | — |
+| Labour-force participation | +1.2 pp [-1.9 pp, +4.2 pp], p 0.331 | outside model: No participation margin in either model; the world engine's unemployment is displacement-driven only. | — | — | — |
+| Hours worked last week | -0.796 hours/week [-1.751 hours/week, +0.191 hours/week], p 0.084 | outside model: No hours variable in either model. | — | — | — |
+| Employment rate, tradable sectors | -4.8 pp [-7.2 pp, -2.5 pp], p 0.005 | outside model: No sectors. The authors' own evidence here is weak (pre-fit worse than 99% of placebos). | — | — | — |
+| Employment rate, non-tradable sectors | +0.2 pp [-2.4 pp, +2.7 pp], p 0.859 | outside model: No sectors. Pre-fit worse than 99% of placebos. | — | — | — |
+
+**employment_rate → `alaska-pfd-calibration`.** reproduction of the authors' own calibration, compared with their estimate. Fitted to this outcome: no.
+Independence: Not independent: the same authors published the calibration beside the estimate and revised its inputs between editions (MPC 0.25 -> 0.5, kappa 1.2 -> 0.9, per-person -> per-household PDV). No parameter here was chosen by this repository.
+Applicability: Small (7% of labour income), resource-funded, one state, not countercyclical.
+Alternatives: default -0.7 pp; NBER w24312 (Jan 2020) calibration -0.2 pp.
+
+**employment_rate → world engine `evidence-anchored`: mechanism-absent.** The world engine has no labour-supply or local-demand response to transfers; the check verifies that by running it, rather than asserting it. A zero here is a missing mechanism, not a prediction of zero. Transfer in the check run: 0.79% of labour income (the case's dose: 7.25%).
+
+Limits:
+- Small transfer: the authors say the effect of UBI-sized payments (e.g. USD 1,000/month) is uncertain (AEJ p.337).
+- Resource-rent funded: no tax-side distortions are in the estimate.
+- The general-equilibrium channel is not directly tested (AEJ p.316).
+- Average over 33 years with a 5-year pre-period; the part-time effect is near zero in 1982-85 and grows.
+- Not a micro elasticity: within-Alaska designs find negative hours effects (Feinberg & Kuehn 2018); different estimand. 
+
+
+> wellbeing-transition-simulator@0.0.0 ledger
+> tsx scripts/ledger.ts --check
+
+Reference ledger: 312 live targets (reproduced 253, reproduced-with-caveat 34, missed 4, not-checked 13, not-verified 2, outside-model 6); 311 computed.
+Ledger check OK.
+
+> wellbeing-transition-simulator@0.0.0 build
+> vite build
+
+vite v6.4.1 building for production...
+(node:48168) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+transforming...
+✓ 4061 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                              2.81 kB │ gzip:   1.11 kB
+dist/assets/runner.worker-wffp_pv9.js      996.05 kB
+dist/assets/index-BjnN8RkI.css              97.70 kB │ gzip:  14.97 kB
+dist/assets/index.esm-eCLUn7nZ.js            1.13 kB │ gzip:   0.67 kB
+dist/assets/firestoreStore-DDVD4XIB.js       6.06 kB │ gzip:   2.52 kB
+dist/assets/index.esm2017-C3YJmjCo.js       47.84 kB │ gzip:  11.93 kB
+dist/assets/vendor-d3-WA3H__q7.js          126.37 kB │ gzip:  41.96 kB
+dist/assets/index.esm-s6tdZ5aM.js          197.37 kB │ gzip:  39.46 kB
+dist/assets/vendor-recharts-C_iF28X8.js    326.82 kB │ gzip:  94.40 kB
+dist/assets/index.esm-B8lyycSQ.js          450.99 kB │ gzip: 111.92 kB
+dist/assets/vendor-mathjs-DaC5Xklm.js      679.50 kB │ gzip: 195.24 kB
+dist/assets/index-BhRYN_Qm.js            1,712.61 kB │ gzip: 453.44 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 4.04s

@@ -5,7 +5,8 @@
  * Lanes: each job runs in a named lane ("lab-point", "lab-mc", "policy", ...). A run arriving in a
  * lane supersedes the lane's previous run: that run is flagged, stops at its next draw or step, and
  * reports `superseded` instead of a result. A cancel message does the same with `cancelled`. Runs in
- * different lanes interleave at slice boundaries.
+ * different lanes reserve execution memory one at a time; queued cancellation is acknowledged
+ * without waiting for the active lane to finish.
  */
 
 import type { RunLimits } from '../core/limits';

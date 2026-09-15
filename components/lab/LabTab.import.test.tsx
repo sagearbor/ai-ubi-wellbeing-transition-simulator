@@ -7,7 +7,7 @@ import { describe, expect, it } from 'vitest';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import LabTab from './LabTab';
-import { ENGINE_VERSION } from '../../src/core/engine';
+import { NUMERICAL_CONVENTIONS, ENGINE_VERSION } from '../../src/core/engine';
 import { findFixture } from '../../src/core/fixtures';
 import type { CoreModel } from '../../src/core/types';
 import { validateCoreModel } from '../../src/core/validate';
@@ -108,7 +108,7 @@ describe('Lab with an imported model', () => {
       initialPolicy: { drafts: [draft], source: { title: example.source.title, url: example.source.url, text: example.source.text }, runs: 20, seed: 1, run: true },
     });
     expect(out).toContain('paired difference A');
-    expect(out).toContain('Experimental — not curated: these results come from a model imported into the Lab');
+    expect(out).toContain('Experimental imported model: validation does not independently establish scientific validity.');
     expect(out).toContain('links are off; the bundle carries the model');
 
     const result = pairedRun(authored, [], draft, { runs: 20, seed: 1, sourceText: example.source.text });
@@ -162,7 +162,7 @@ describe('Lab calendars and steady-state outputs', () => {
 describe('links are checked against the limits before anything runs', () => {
   it('a link asking for more draws than the limit opens for inspection but is not run', () => {
     const example = findPolicyExample('s3877-itwa-2026')!;
-    const hash = `${LAB_HASH_PREFIX}${encodeLabLink({ v: 2, modelId: 'training-budget', modelHash: modelHash(training), engineVersion: ENGINE_VERSION, overlays: [], drafts: [example.draft], runs: 9_999, seed: 1 })}`;
+    const hash = `${LAB_HASH_PREFIX}${encodeLabLink({ v: 2, modelId: 'training-budget', modelHash: modelHash(training), engineVersion: ENGINE_VERSION, numerical: NUMERICAL_CONVENTIONS, overlays: [], drafts: [example.draft], runs: 9_999, seed: 1 })}`;
     const out = html({ initialHash: hash });
     expect(out).toContain('did not run it');
     expect(out).toContain('9999 draws requested; the limit is 1 to 2,000 draws per run');
@@ -171,7 +171,7 @@ describe('links are checked against the limits before anything runs', () => {
 
   it('a link within the limits still runs on opening', () => {
     const example = findPolicyExample('s3877-itwa-2026')!;
-    const hash = `${LAB_HASH_PREFIX}${encodeLabLink({ v: 2, modelId: 'training-budget', modelHash: modelHash(training), engineVersion: ENGINE_VERSION, overlays: [], drafts: [example.draft], runs: 10, seed: 1 })}`;
+    const hash = `${LAB_HASH_PREFIX}${encodeLabLink({ v: 2, modelId: 'training-budget', modelHash: modelHash(training), engineVersion: ENGINE_VERSION, numerical: NUMERICAL_CONVENTIONS, overlays: [], drafts: [example.draft], runs: 10, seed: 1 })}`;
     const out = html({ initialHash: hash });
     expect(out).toContain('paired difference A');
   });

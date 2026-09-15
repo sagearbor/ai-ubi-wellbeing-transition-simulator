@@ -1,0 +1,77 @@
+Response profile of `evidence-anchored` (built-in engine, shipped initial state).
+
+| Horizon | avg wellbeing | US wellbeing | poor-8 wellbeing | US adoption | countries in crisis | inflow bn/mo |
+|---|---|---|---|---|---|---|
+| 5 y | 58.9 | 69.6 | 41.7 | 0.510 | 0 | 64.4 |
+| 10 y | 59.3 | 70.3 | 43.5 | 0.784 | 0 | 58.3 |
+
+### Small nudges (change in average wellbeing, index points)
+
+| Lever | base | horizon | −10% | −1% | +1% | +10% | amplification | sweep shape (0.5x–1.5x) |
+|---|---|---|---|---|---|---|---|---|
+| aiGrowthRate | 0.090 | 5 y | +0.0 | +0.00 | -0.00 | -0.0 | 1.01 |  |
+| aiGrowthRate | 0.090 | 10 y | +0.0 | +0.00 | -0.00 | -0.0 | 1.03 | linear (span 0.2) |
+| displacementRate | 0.750 | 5 y | +0.0 | +0.00 | +0.00 | +0.0 | n/a |  |
+| displacementRate | 0.750 | 10 y | +0.0 | +0.00 | +0.00 | +0.0 | n/a | flat (span 0.0) |
+| gdpScaling | 0.400 | 5 y | +0.0 | +0.00 | +0.00 | +0.0 | n/a |  |
+| gdpScaling | 0.400 | 10 y | +0.0 | +0.00 | +0.00 | +0.0 | n/a | flat (span 0.0) |
+| contributionRate | 0.103 | 5 y | -0.0 | +0.00 | +0.00 | +0.0 | 0.19 |  |
+| contributionRate | 0.103 | 10 y | +0.0 | +0.00 | +0.00 | +0.0 | 0.19 | flat (span 0.0) |
+| automationShare | 0.500 | 5 y | +0.0 | +0.00 | -0.00 | -0.0 | 1.00 |  |
+| automationShare | 0.500 | 10 y | +0.0 | +0.00 | -0.00 | -0.0 | 1.00 | linear (span 0.2) |
+| reemploymentMonths | 12.000 | 5 y | +0.0 | +0.00 | -0.00 | -0.0 | 1.02 |  |
+| reemploymentMonths | 12.000 | 10 y | +0.0 | +0.00 | -0.00 | -0.0 | 1.00 | linear (span 0.2) |
+| laborShareSensitivity | 0.880 | 5 y | +0.0 | +0.00 | -0.00 | -0.0 | 1.01 |  |
+| laborShareSensitivity | 0.880 | 10 y | +0.0 | +0.01 | -0.01 | -0.1 | 1.02 | linear (span 0.5) |
+| productivityGain | 1.130 | 5 y | -0.0 | -0.00 | +0.00 | +0.0 | 1.01 |  |
+| productivityGain | 1.130 | 10 y | -0.0 | -0.00 | +0.00 | +0.0 | 1.01 | linear (span 0.3) |
+| ubiEffectPerDoubling | 2.800 | 5 y | -0.0 | -0.00 | +0.00 | +0.0 | 1.00 |  |
+| ubiEffectPerDoubling | 2.800 | 10 y | -0.0 | -0.00 | +0.00 | +0.0 | 1.00 | flat (span 0.0) |
+| unemploymentEffectPerPoint | 0.450 | 5 y | +0.0 | +0.00 | -0.00 | -0.0 | 1.00 |  |
+| unemploymentEffectPerPoint | 0.450 | 10 y | +0.0 | +0.00 | -0.00 | -0.0 | 1.00 | linear (span 0.2) |
+| wellbeingAnchorRate | 0.020 | 5 y | -0.0 | -0.00 | +0.00 | +0.0 | 1.00 |  |
+| wellbeingAnchorRate | 0.020 | 10 y | -0.0 | -0.00 | +0.00 | +0.0 | 1.05 | linear (span 0.3) |
+
+Amplification = |10% response| / (10 × |1% response|); 1.0 is proportional, well above 1 means a threshold is near, well below 1 means a cap.
+
+### Same nudges, other outputs (10% arms only, last horizon)
+
+| Lever | arm | US wellbeing | poor-8 wellbeing | US adoption | crisis count | inflow bn/mo |
+|---|---|---|---|---|---|---|
+| aiGrowthRate | −10% | +0.1 | +0.0 | -0.039 | +0 | +0.0 |
+| aiGrowthRate | +10% | -0.1 | +0.0 | +0.033 | +0 | +0.0 |
+| displacementRate | −10% | +0.0 | +0.0 | +0.000 | +0 | +0.0 |
+| displacementRate | +10% | +0.0 | +0.0 | +0.000 | +0 | +0.0 |
+| gdpScaling | −10% | +0.0 | +0.0 | +0.000 | +0 | +0.0 |
+| gdpScaling | +10% | +0.0 | +0.0 | +0.000 | +0 | +0.0 |
+| contributionRate | −10% | +0.0 | +0.0 | +0.000 | +0 | +7.6 |
+| contributionRate | +10% | +0.0 | +0.0 | +0.000 | +0 | +0.4 |
+| automationShare | −10% | +0.1 | +0.0 | +0.000 | +0 | +0.0 |
+| automationShare | +10% | -0.1 | +0.0 | +0.000 | +0 | +0.0 |
+| reemploymentMonths | −10% | +0.1 | +0.0 | +0.000 | +0 | +0.0 |
+| reemploymentMonths | +10% | -0.1 | +0.0 | +0.000 | +0 | +0.0 |
+| laborShareSensitivity | −10% | +0.3 | +0.0 | +0.000 | +0 | +0.0 |
+| laborShareSensitivity | +10% | -0.3 | -0.0 | +0.000 | +0 | +0.0 |
+| productivityGain | −10% | -0.1 | -0.0 | -0.004 | +0 | +0.0 |
+| productivityGain | +10% | +0.1 | +0.0 | +0.004 | +0 | +0.0 |
+| ubiEffectPerDoubling | −10% | -0.0 | -0.0 | +0.000 | +0 | +0.0 |
+| ubiEffectPerDoubling | +10% | +0.0 | +0.0 | +0.000 | +0 | +0.0 |
+| unemploymentEffectPerPoint | −10% | +0.1 | +0.0 | +0.000 | +0 | +0.0 |
+| unemploymentEffectPerPoint | +10% | -0.1 | +0.0 | +0.000 | +0 | +0.0 |
+| wellbeingAnchorRate | −10% | -0.1 | -0.2 | +0.000 | +0 | +0.0 |
+| wellbeingAnchorRate | +10% | +0.1 | +0.2 | +0.000 | +0 | +0.0 |
+
+### Switches (difference from base, last horizon)
+
+| Switch | alternative | avg wellbeing | US wellbeing | poor-8 wellbeing | US adoption | crisis count | inflow bn/mo |
+|---|---|---|---|---|---|---|---|
+| distributionStrategy | all global | +0.1 | -0.0 | +0.6 | +0.000 | +0 | +0.0 |
+| distributionStrategy | all customer-weighted | -0.0 | -0.0 | -0.0 | +0.000 | +0 | +0.0 |
+| distributionStrategy | all HQ-local | -0.0 | +0.0 | -0.0 | +0.000 | +0 | +0.0 |
+| stress | extreme (automation 0.9, re-employment 18 mo) | -0.3 | -1.4 | +0.0 | +0.000 | +0 | +0.0 |
+| stress | extreme, re-employment 60 mo | -1.1 | -5.6 | -0.0 | +0.000 | +0 | -0.3 |
+| stress | extreme, re-employment 60 mo, adoption growth x2 | -1.6 | -7.5 | +0.0 | +0.177 | +0 | +3.6 |
+
+_11 levers x 13 runs + 6 switches, 2.6 s._
+(node:50623) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)

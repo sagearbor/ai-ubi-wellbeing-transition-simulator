@@ -103,7 +103,7 @@ const CorporationDetailPanel: React.FC<CorporationDetailPanelProps> = ({
   // Handle contribution rate change
   const handleContributionRateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newRate = parseFloat(e.target.value) / 100; // Convert from percentage
-    onUpdateCorp(corporation.id, { contributionRate: newRate });
+    onUpdateCorp(corporation.id, { contributionRate: newRate, ...(corporation.sourceBudget ? {fundingRequest:{kind:'share'}} : {}) });
   };
 
   // Handle distribution strategy change
@@ -126,13 +126,13 @@ const CorporationDetailPanel: React.FC<CorporationDetailPanelProps> = ({
     <>
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/20 dark:bg-black/40 z-40 transition-opacity"
+        className="fixed inset-0 bg-black/20 dark:bg-black/40 z-[140] transition-opacity"
         onClick={onClose}
       />
 
       {/* Panel */}
       <div
-        className="fixed right-0 top-0 h-full w-full sm:w-96 bg-white dark:bg-slate-900 shadow-2xl z-50 overflow-y-auto transform transition-transform"
+        className="fixed right-0 top-0 h-full w-full sm:w-96 bg-white dark:bg-slate-900 shadow-2xl z-[150] overflow-y-auto transform transition-transform"
         style={{ animation: 'slideInRight 0.3s ease-out' }}
       >
         {/* HEADER */}
@@ -160,8 +160,8 @@ const CorporationDetailPanel: React.FC<CorporationDetailPanelProps> = ({
             </button>
           </div>
 
-          {/* Policy Stance Badge */}
-          <div className="mt-3">
+          {/* Legacy authored policy stance */}
+          <div hidden={!!corporation.sourceBudget} className="mt-3">
             <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold uppercase ${stanceColor}`}>
               {corporation.policyStance}
             </span>
@@ -178,7 +178,7 @@ const CorporationDetailPanel: React.FC<CorporationDetailPanelProps> = ({
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <div className="text-xs text-slate-500 dark:text-slate-400 mb-1">AI Revenue</div>
+                <div className="text-xs text-slate-500 dark:text-slate-400 mb-1">{corporation.sourceBudget ? 'Modeled source (constant-2015 USD/month)' : 'AI Revenue'}</div>
                 <div className="text-lg font-bold text-slate-900 dark:text-white">
                   {formatBillions(corporation.aiRevenue)}
                 </div>
@@ -201,7 +201,7 @@ const CorporationDetailPanel: React.FC<CorporationDetailPanelProps> = ({
               <div>
                 <div className="text-xs text-slate-500 dark:text-slate-400 mb-1">Reputation</div>
                 <div className={`text-lg font-bold ${reputationColor}`}>
-                  {corporation.reputationScore.toFixed(0)}/100
+                  {corporation.sourceBudget ? 'Unsupported feedback' : `${corporation.reputationScore.toFixed(0)}/100`}
                 </div>
               </div>
             </div>
@@ -227,14 +227,14 @@ const CorporationDetailPanel: React.FC<CorporationDetailPanelProps> = ({
               <div>
                 <div className="text-xs text-slate-500 dark:text-slate-400 mb-1 flex items-center gap-1">
                   Projected Demand Collapse
-                  {(corporation.projectedDemandCollapse || 0) > 0.15 && (
+                  {!corporation.sourceBudget && (corporation.projectedDemandCollapse || 0) > 0.15 && (
                     <AlertTriangle size={12} className="text-red-500" />
                   )}
                 </div>
                 <div className={`text-lg font-bold ${demandCollapseColor}`}>
-                  {formatPercent(corporation.projectedDemandCollapse || 0)}
+                  {corporation.sourceBudget ? 'Not modeled' : formatPercent(corporation.projectedDemandCollapse || 0)}
                 </div>
-                {(corporation.projectedDemandCollapse || 0) > 0.15 && (
+                {!corporation.sourceBudget && (corporation.projectedDemandCollapse || 0) > 0.15 && (
                   <div className="text-xs text-red-600 dark:text-red-400 mt-1 flex items-center gap-1">
                     <AlertTriangle size={10} />
                     Warning: Customer purchasing power declining
@@ -244,6 +244,14 @@ const CorporationDetailPanel: React.FC<CorporationDetailPanelProps> = ({
             </div>
           </div>
 
+          {corporation.sourceBudget && <div className="p-4 space-y-2 border rounded">
+            <h3>Modeled source pool — constant-2015 USD billions/month</h3>
+            <p>Hypothetical gross source; expenses, ownership and competing uses unestimated.</p>
+            <p>Available: {corporation.sourceBudget.available.toFixed(4)} · Requested: {corporation.sourceBudget.requested.toFixed(4)} · Funded: {corporation.sourceBudget.actual.toFixed(4)}</p>
+            <p>Unfunded: {corporation.sourceBudget.unfunded.toFixed(4)} · Retained / unused available funding: {corporation.sourceBudget.slack.toFixed(4)}</p>
+            <label>Request type <select value={corporation.fundingRequest?.kind ?? 'share'} onChange={e=>onUpdateCorp(corporation.id,{fundingRequest:e.target.value==='amount'?{kind:'amount',monthlyBillions:corporation.sourceBudget!.requested}:{kind:'share'}})}><option value="share">Share of source</option><option value="amount">Monthly amount</option></select></label>
+            {corporation.fundingRequest?.kind==='amount' && <label>Requested billions/month <input aria-label="Requested billions per month" type="number" min="0" step="0.001" value={corporation.fundingRequest.monthlyBillions} onChange={e=>{const value=Number(e.target.value);if(Number.isFinite(value)&&value>=0)onUpdateCorp(corporation.id,{fundingRequest:{kind:'amount',monthlyBillions:value}});}} /></label>}
+          </div>}
           {/* POLICY CONTROLS */}
           <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-slate-800 dark:to-slate-900 rounded-lg p-4 space-y-4 border border-blue-200 dark:border-slate-700">
             <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wide flex items-center gap-2">
@@ -251,6 +259,7 @@ const CorporationDetailPanel: React.FC<CorporationDetailPanelProps> = ({
               Policy Controls
             </h3>
 
+            {(!corporation.sourceBudget || corporation.fundingRequest?.kind !== 'amount') && <>
             {/* Contribution Rate Slider */}
             <div>
               <div className="flex items-center justify-between mb-2">
@@ -263,19 +272,20 @@ const CorporationDetailPanel: React.FC<CorporationDetailPanelProps> = ({
               </div>
               <input
                 type="range"
-                min="5"
-                max="50"
+                min={corporation.sourceBudget ? 0 : 5}
+                max={corporation.sourceBudget ? 100 : 50}
                 step="1"
                 value={corporation.contributionRate * 100}
                 onChange={handleContributionRateChange}
                 className="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer slider"
               />
               <div className="flex justify-between text-xs text-slate-500 dark:text-slate-400 mt-1">
-                <span>5%</span>
-                <span>50%</span>
+                <span>{corporation.sourceBudget ? '0%' : '5%'}</span>
+                <span>{corporation.sourceBudget ? '100%' : '50%'}</span>
               </div>
             </div>
 
+            </>}
             {/* Distribution Strategy Dropdown */}
             <div>
               <label className="text-xs font-medium text-slate-700 dark:text-slate-300 block mb-2">
@@ -292,9 +302,9 @@ const CorporationDetailPanel: React.FC<CorporationDetailPanelProps> = ({
               </select>
               <div className="text-xs text-slate-500 dark:text-slate-400 mt-2">
                 {corporation.distributionStrategy === 'global' &&
-                  'Funds distributed equally per person worldwide'}
+                  'Funds distributed equally to all modeled residents'}
                 {corporation.distributionStrategy === 'customer-weighted' &&
-                  'Funds distributed proportionally to customer countries'}
+                  'Funds distributed to residents of operating countries, weighted by population'}
                 {corporation.distributionStrategy === 'hq-local' &&
                   'Funds go only to headquarters country'}
               </div>
@@ -309,7 +319,7 @@ const CorporationDetailPanel: React.FC<CorporationDetailPanelProps> = ({
                 <div className="flex justify-between">
                   <span>Monthly Contribution:</span>
                   <span className="font-medium text-slate-900 dark:text-white">
-                    {formatBillions(corporation.aiRevenue * corporation.contributionRate)}
+                    {formatBillions((corporation.sourceBudget?.actual ?? corporation.aiRevenue * corporation.contributionRate))}
                   </span>
                 </div>
                 <div className="flex justify-between">

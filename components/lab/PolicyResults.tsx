@@ -16,6 +16,7 @@ import OutputChart from './OutputChart';
 import { fmtCompact, stepForYear, unitOf } from './labState';
 
 export interface PolicyResultEntry {
+  slot?: number;
   label: string;
   result: PairedRunResult;
   stale: boolean;
@@ -44,11 +45,11 @@ const signed = (q: Quantiles | undefined, t: number): string => {
 };
 
 const PolicyResults: React.FC<PolicyResultsProps> = ({ model, entries, active, year, onYear, modelStatus = 'curated' }) => {
-  const first = entries.find((e) => e.result.ok);
+  const first = entries[active]?.result.ok && !entries[active].stale ? entries[active] : undefined;
   if (!first) {
     return (
       <div className="rounded-lg border border-rose-300 bg-rose-50 dark:border-rose-800 dark:bg-rose-950/40 px-3 py-2 text-xs text-rose-800 dark:text-rose-200">
-        <p className="font-semibold">The paired run did not complete, so there are no results.</p>
+        <p className="font-semibold">The selected draft has no current successful result. Run this draft; another draft is not substituted.</p>
         <ul className="mt-1 list-disc pl-4">
           {entries.flatMap((e) => e.result.errors.map((err, i) => <li key={`${e.label}-${i}`}>{`${e.label}: ${err}`}</li>))}
         </ul>
@@ -58,7 +59,7 @@ const PolicyResults: React.FC<PolicyResultsProps> = ({ model, entries, active, y
   const { years, entities, outputs } = first.result;
   const entity = entities[0];
   const t = year === null ? years.length - 1 : stepForYear(years, year);
-  const shown = entries[active]?.result.ok ? entries[active] : first;
+  const shown = first;
   const unitName = timeUnitName(model.time);
   const steady = steadyStateOf(model);
   const steadyIndex = steady ? years.findIndex((y) => Math.abs(y - steady.at) < 1e-9) : -1;
@@ -68,7 +69,7 @@ const PolicyResults: React.FC<PolicyResultsProps> = ({ model, entries, active, y
     <div className="space-y-3">
       {modelStatus === 'imported' && (
         <p className="rounded-lg border border-amber-300 bg-amber-50 dark:border-amber-800 dark:bg-amber-950/40 px-3 py-2 text-xs font-semibold text-amber-800 dark:text-amber-200">
-          Experimental — not curated: these results come from a model imported into the Lab, not one of the app's reviewed models.
+          Experimental imported model: validation does not independently establish scientific validity. Bundled examples also carry only their stated evidence status.
         </p>
       )}
       {entries.some((e) => e.stale) && (
@@ -142,8 +143,8 @@ const PolicyResults: React.FC<PolicyResultsProps> = ({ model, entries, active, y
                 <td className="px-2 py-1.5 whitespace-nowrap">{bandText(first.result.baseline[entity]?.[o], tFor(o))}</td>
                 {entries.map((e) => (
                   <React.Fragment key={e.label}>
-                    <td className="px-2 py-1.5 whitespace-nowrap">{e.result.ok ? bandText(e.result.policy[entity]?.[o], tFor(o)) : '—'}</td>
-                    <td className="px-2 py-1.5 whitespace-nowrap font-semibold">{e.result.ok ? signed(e.result.difference[entity]?.[o], tFor(o)) : '—'}</td>
+                    <td className="px-2 py-1.5 whitespace-nowrap">{e.result.ok && !e.stale ? bandText(e.result.policy[entity]?.[o], tFor(o)) : '—'}</td>
+                    <td className="px-2 py-1.5 whitespace-nowrap font-semibold">{e.result.ok && !e.stale ? signed(e.result.difference[entity]?.[o], tFor(o)) : '—'}</td>
                   </React.Fragment>
                 ))}
               </tr>
@@ -159,7 +160,7 @@ const PolicyResults: React.FC<PolicyResultsProps> = ({ model, entries, active, y
             <span className="font-medium">baseline:</span> {(first.result.binding.baseline[entity]?.[t] ?? []).join('; ') || 'no min()/max() limit recorded'}
           </li>
           {entries.map((e) =>
-            e.result.ok ? (
+            e.result.ok && !e.stale ? (
               <li key={e.label}>
                 <span className="font-medium">{`policy ${e.label}:`}</span> {(e.result.binding.policy[entity]?.[t] ?? []).join('; ') || 'no min()/max() limit recorded'}
               </li>

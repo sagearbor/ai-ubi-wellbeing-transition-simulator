@@ -22,7 +22,7 @@
 
 import { classifyShape, type ShapeDetail } from '../src/core/sensitivity';
 import { initialRun, advanceRun, initOptionsFor, type SimulationRun } from '../simulation/run';
-import { INITIAL_CORPORATIONS, PRESET_MODELS, DEFAULT_MACRO, KORINEK_SCENARIOS } from '../constants';
+import { INITIAL_CORPORATIONS, PRESET_MODELS, DEFAULT_MODEL, DEFAULT_MACRO, KORINEK_SCENARIOS } from '../constants';
 import type { Corporation, ModelParameters } from '../types';
 
 // ---------------------------------------------------------------------------
@@ -125,7 +125,7 @@ export const NUMERIC_LEVERS: NumericLever[] = [
     set: (s, v) => {
       const b = s.corporations.reduce((a, c) => a + c.contributionRate, 0) / s.corporations.length;
       const k = b > 0 ? v / b : 0;
-      return { ...s, corporations: s.corporations.map((c) => ({ ...c, contributionRate: clampRate(c.contributionRate * k) })) };
+      return { ...s, corporations: s.corporations.map((c) => ({ ...c, contributionRate: clampRate(b > 0 ? c.contributionRate * k : v) })) };
     },
   },
 ];
@@ -215,7 +215,7 @@ export const MACRO_STRESS_SWITCH: CategoricalSwitch = {
 // ---------------------------------------------------------------------------
 
 export function defaultScenario(): Scenario {
-  return { model: { ...PRESET_MODELS[0] }, corporations: INITIAL_CORPORATIONS.map((c) => ({ ...c })) };
+  return { model: structuredClone(DEFAULT_MODEL), corporations: INITIAL_CORPORATIONS.map((c) => ({ ...c })) };
 }
 
 /** Run a scenario and return the headline at each requested month. */
@@ -320,6 +320,7 @@ export function profileSwitch(sw: CategoricalSwitch, s: Scenario, horizons: numb
 
 export function runResponseProfile(opts: { scenario?: Scenario; horizons?: number[] } = {}): ResponseProfile {
   const s = opts.scenario ?? defaultScenario();
+  if (s.model.executionMode) throw new Error("Use runConditionalProfile for conditional outputs; legacy headlines are not this model’s output.");
   const horizons = opts.horizons ?? DEFAULT_HORIZONS;
   const base = runScenario(s, horizons);
   return {

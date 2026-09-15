@@ -1,0 +1,2941 @@
+{
+  "counts": {
+    "cases": 383,
+    "months": 23363,
+    "corporationRows": 1845677,
+    "countryRows": 2990464,
+    "invalidRows": 8945
+  },
+  "compressedHash": "6983c38b06153d079d1dbd28118f4e4c714861cd84d68faf3ac7da884c52d50b",
+  "selected": {
+    "base": [
+      {
+        "month": 0,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 56.312219861882014,
+        "invalid": 0,
+        "us": 70.9314667730624,
+        "macro": null,
+        "adoption": null
+      },
+      {
+        "month": 1,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 56.32235233812927,
+        "invalid": 0,
+        "us": 70.94215581948171,
+        "macro": {
+          "rawUnemployment": 0.04224605026622223,
+          "rawCognitiveUnemployment": 0.04423556494551973,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.020471129891039455,
+          "actual": 0.020471129891039455,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 12,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 56.438685840290084,
+        "invalid": 0,
+        "us": 71.0620197624527,
+        "macro": {
+          "rawUnemployment": 0.06308014549224672,
+          "rawCognitiveUnemployment": 0.07783894434233343,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.13077699165540513,
+          "actual": 0.13077699165540513,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 24,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 56.56660553706756,
+        "invalid": 0,
+        "us": 71.17287746864736,
+        "macro": {
+          "rawUnemployment": 0.06941393613372442,
+          "rawCognitiveUnemployment": 0.08805473569955552,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.24088816642176952,
+          "actual": 0.24088816642176952,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 60,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 56.92026128445949,
+        "invalid": 0,
+        "us": 71.32735791435437,
+        "macro": {
+          "rawUnemployment": 0.06485358444408677,
+          "rawCognitiveUnemployment": 0.08069932974852706,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.5093064920562864,
+          "actual": 0.5093064920562864,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      }
+    ],
+    "relative-contributionRate--0.1": [
+      {
+        "month": 0,
+        "source": 250.13262500000005,
+        "funded": 23.168030625,
+        "unfunded": 0,
+        "raw": 56.30775896930414,
+        "invalid": 0,
+        "us": 70.92972096361876,
+        "macro": null,
+        "adoption": null
+      },
+      {
+        "month": 1,
+        "source": 250.13262500000005,
+        "funded": 23.168030625,
+        "unfunded": 0,
+        "raw": 56.31790064280396,
+        "invalid": 0,
+        "us": 70.9404154745624,
+        "macro": {
+          "rawUnemployment": 0.04224605026622223,
+          "rawCognitiveUnemployment": 0.04423556494551973,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.020471129891039455,
+          "actual": 0.020471129891039455,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 12,
+        "source": 250.13262500000005,
+        "funded": 23.168030625,
+        "unfunded": 0,
+        "raw": 56.4343307782158,
+        "invalid": 0,
+        "us": 71.06032860056825,
+        "macro": {
+          "rawUnemployment": 0.06308014549224672,
+          "rawCognitiveUnemployment": 0.07783894434233343,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.13077699165540513,
+          "actual": 0.13077699165540513,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 24,
+        "source": 250.13262500000005,
+        "funded": 23.168030625,
+        "unfunded": 0,
+        "raw": 56.56234767256058,
+        "invalid": 0,
+        "us": 71.17122165428717,
+        "macro": {
+          "rawUnemployment": 0.06941393613372442,
+          "rawCognitiveUnemployment": 0.08805473569955552,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.24088816642176952,
+          "actual": 0.24088816642176952,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 60,
+        "source": 250.13262500000005,
+        "funded": 23.168030625,
+        "unfunded": 0,
+        "raw": 56.91625800444441,
+        "invalid": 0,
+        "us": 71.32574113310608,
+        "macro": {
+          "rawUnemployment": 0.06485358444408677,
+          "rawCognitiveUnemployment": 0.08069932974852706,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.5093064920562864,
+          "actual": 0.5093064920562864,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      }
+    ],
+    "relative-contributionRate--0.01": [
+      {
+        "month": 0,
+        "source": 250.13262500000005,
+        "funded": 25.484833687500004,
+        "unfunded": 0,
+        "raw": 56.3117743249347,
+        "invalid": 0,
+        "us": 70.93129222606677,
+        "macro": null,
+        "adoption": null
+      },
+      {
+        "month": 1,
+        "source": 250.13262500000005,
+        "funded": 25.484833687500004,
+        "unfunded": 0,
+        "raw": 56.32190771866432,
+        "invalid": 0,
+        "us": 70.94198181872633,
+        "macro": {
+          "rawUnemployment": 0.04224605026622223,
+          "rawCognitiveUnemployment": 0.04423556494551973,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.020471129891039455,
+          "actual": 0.020471129891039455,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 12,
+        "source": 250.13262500000005,
+        "funded": 25.484833687500004,
+        "unfunded": 0,
+        "raw": 56.43825086072144,
+        "invalid": 0,
+        "us": 71.06185067812103,
+        "macro": {
+          "rawUnemployment": 0.06308014549224672,
+          "rawCognitiveUnemployment": 0.07783894434233343,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.13077699165540513,
+          "actual": 0.13077699165540513,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 24,
+        "source": 250.13262500000005,
+        "funded": 25.484833687500004,
+        "unfunded": 0,
+        "raw": 56.56618025397211,
+        "invalid": 0,
+        "us": 71.1727119177504,
+        "macro": {
+          "rawUnemployment": 0.06941393613372442,
+          "rawCognitiveUnemployment": 0.08805473569955552,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.24088816642176952,
+          "actual": 0.24088816642176952,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 60,
+        "source": 250.13262500000005,
+        "funded": 25.484833687500004,
+        "unfunded": 0,
+        "raw": 56.91986140050905,
+        "invalid": 0,
+        "us": 71.32719626534583,
+        "macro": {
+          "rawUnemployment": 0.06485358444408677,
+          "rawCognitiveUnemployment": 0.08069932974852706,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.5093064920562864,
+          "actual": 0.5093064920562864,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      }
+    ],
+    "relative-contributionRate-0.01": [
+      {
+        "month": 0,
+        "source": 250.13262500000005,
+        "funded": 25.999678812500008,
+        "unfunded": 0,
+        "raw": 56.312665276411124,
+        "invalid": 0,
+        "us": 70.93164131251626,
+        "macro": null,
+        "adoption": null
+      },
+      {
+        "month": 1,
+        "source": 250.13262500000005,
+        "funded": 25.999678812500008,
+        "unfunded": 0,
+        "raw": 56.3227968356725,
+        "invalid": 0,
+        "us": 70.94232981274244,
+        "macro": {
+          "rawUnemployment": 0.04224605026622223,
+          "rawCognitiveUnemployment": 0.04423556494551973,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.020471129891039455,
+          "actual": 0.020471129891039455,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 12,
+        "source": 250.13262500000005,
+        "funded": 25.999678812500008,
+        "unfunded": 0,
+        "raw": 56.43912070312345,
+        "invalid": 0,
+        "us": 71.06218883970726,
+        "macro": {
+          "rawUnemployment": 0.06308014549224672,
+          "rawCognitiveUnemployment": 0.07783894434233343,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.13077699165540513,
+          "actual": 0.13077699165540513,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 24,
+        "source": 250.13262500000005,
+        "funded": 25.999678812500008,
+        "unfunded": 0,
+        "raw": 56.56703070858244,
+        "invalid": 0,
+        "us": 71.17304301275989,
+        "macro": {
+          "rawUnemployment": 0.06941393613372442,
+          "rawCognitiveUnemployment": 0.08805473569955552,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.24088816642176952,
+          "actual": 0.24088816642176952,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 60,
+        "source": 250.13262500000005,
+        "funded": 25.999678812500008,
+        "unfunded": 0,
+        "raw": 56.920661069960744,
+        "invalid": 0,
+        "us": 71.3275195568945,
+        "macro": {
+          "rawUnemployment": 0.06485358444408677,
+          "rawCognitiveUnemployment": 0.08069932974852706,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.5093064920562864,
+          "actual": 0.5093064920562864,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      }
+    ],
+    "relative-contributionRate-0.1": [
+      {
+        "month": 0,
+        "source": 250.13262500000005,
+        "funded": 28.316481875,
+        "unfunded": 0,
+        "raw": 56.31666851255658,
+        "invalid": 0,
+        "us": 70.93321182832874,
+        "macro": null,
+        "adoption": null
+      },
+      {
+        "month": 1,
+        "source": 250.13262500000005,
+        "funded": 28.316481875,
+        "unfunded": 0,
+        "raw": 56.32679184120158,
+        "invalid": 0,
+        "us": 70.94389541493658,
+        "macro": {
+          "rawUnemployment": 0.04224605026622223,
+          "rawCognitiveUnemployment": 0.04423556494551973,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.020471129891039455,
+          "actual": 0.020471129891039455,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 12,
+        "source": 250.13262500000005,
+        "funded": 28.316481875,
+        "unfunded": 0,
+        "raw": 56.44302922876759,
+        "invalid": 0,
+        "us": 71.06371021662603,
+        "macro": {
+          "rawUnemployment": 0.06308014549224672,
+          "rawCognitiveUnemployment": 0.07783894434233343,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.13077699165540513,
+          "actual": 0.13077699165540513,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 24,
+        "source": 250.13262500000005,
+        "funded": 28.316481875,
+        "unfunded": 0,
+        "raw": 56.57085224345836,
+        "invalid": 0,
+        "us": 71.17453260456553,
+        "macro": {
+          "rawUnemployment": 0.06941393613372442,
+          "rawCognitiveUnemployment": 0.08805473569955552,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.24088816642176952,
+          "actual": 0.24088816642176952,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 60,
+        "source": 250.13262500000005,
+        "funded": 28.316481875,
+        "unfunded": 0,
+        "raw": 56.92425471950301,
+        "invalid": 0,
+        "us": 71.32897404876368,
+        "macro": {
+          "rawUnemployment": 0.06485358444408677,
+          "rawCognitiveUnemployment": 0.08069932974852706,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.5093064920562864,
+          "actual": 0.5093064920562864,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      }
+    ],
+    "range-contributionRate-0": [
+      {
+        "month": 0,
+        "source": 250.13262500000005,
+        "funded": 0,
+        "unfunded": 0,
+        "raw": 56.267045396720874,
+        "invalid": 0,
+        "us": 70.91397463276053,
+        "macro": null,
+        "adoption": null
+      },
+      {
+        "month": 1,
+        "source": 250.13262500000005,
+        "funded": 0,
+        "unfunded": 0,
+        "raw": 56.277272169381895,
+        "invalid": 0,
+        "us": 70.92471853751309,
+        "macro": {
+          "rawUnemployment": 0.04224605026622223,
+          "rawCognitiveUnemployment": 0.04423556494551973,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.020471129891039455,
+          "actual": 0.020471129891039455,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 12,
+        "source": 250.13262500000005,
+        "funded": 0,
+        "unfunded": 0,
+        "raw": 56.394596269465644,
+        "invalid": 0,
+        "us": 71.0450761985465,
+        "macro": {
+          "rawUnemployment": 0.06308014549224672,
+          "rawCognitiveUnemployment": 0.07783894434233343,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.13077699165540513,
+          "actual": 0.13077699165540513,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 24,
+        "source": 250.13262500000005,
+        "funded": 0,
+        "unfunded": 0,
+        "raw": 56.5235120394611,
+        "invalid": 0,
+        "us": 71.15628870311893,
+        "macro": {
+          "rawUnemployment": 0.06941393613372442,
+          "rawCognitiveUnemployment": 0.08805473569955552,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.24088816642176952,
+          "actual": 0.24088816642176952,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 60,
+        "source": 250.13262500000005,
+        "funded": 0,
+        "unfunded": 0,
+        "raw": 56.879774925954806,
+        "invalid": 0,
+        "us": 71.31116090844417,
+        "macro": {
+          "rawUnemployment": 0.06485358444408677,
+          "rawCognitiveUnemployment": 0.08069932974852706,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.5093064920562864,
+          "actual": 0.5093064920562864,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      }
+    ],
+    "range-contributionRate-0.25": [
+      {
+        "month": 0,
+        "source": 250.13262500000005,
+        "funded": 62.53315625000001,
+        "unfunded": 0,
+        "raw": 56.366008568219584,
+        "invalid": 0,
+        "us": 70.96304968995429,
+        "macro": null,
+        "adoption": null
+      },
+      {
+        "month": 1,
+        "source": 250.13262500000005,
+        "funded": 62.53315625000001,
+        "unfunded": 0,
+        "raw": 56.37603067458952,
+        "invalid": 0,
+        "us": 70.97364028475633,
+        "macro": {
+          "rawUnemployment": 0.04224605026622223,
+          "rawCognitiveUnemployment": 0.04423556494551973,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.020471129891039455,
+          "actual": 0.020471129891039455,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 12,
+        "source": 250.13262500000005,
+        "funded": 62.53315625000001,
+        "unfunded": 0,
+        "raw": 56.49120774179959,
+        "invalid": 0,
+        "us": 71.09261800745169,
+        "macro": {
+          "rawUnemployment": 0.06308014549224672,
+          "rawCognitiveUnemployment": 0.07783894434233343,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.13077699165540513,
+          "actual": 0.13077699165540513,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 24,
+        "source": 250.13262500000005,
+        "funded": 62.53315625000001,
+        "unfunded": 0,
+        "raw": 56.61796978516658,
+        "invalid": 0,
+        "us": 71.20283866618722,
+        "macro": {
+          "rawUnemployment": 0.06941393613372442,
+          "rawCognitiveUnemployment": 0.08805473569955552,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.24088816642176952,
+          "actual": 0.24088816642176952,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 60,
+        "source": 250.13262500000005,
+        "funded": 62.53315625000001,
+        "unfunded": 0,
+        "raw": 56.96861459141514,
+        "invalid": 0,
+        "us": 71.35661551805468,
+        "macro": {
+          "rawUnemployment": 0.06485358444408677,
+          "rawCognitiveUnemployment": 0.08069932974852706,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.5093064920562864,
+          "actual": 0.5093064920562864,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      }
+    ],
+    "range-contributionRate-0.5": [
+      {
+        "month": 0,
+        "source": 250.13262500000005,
+        "funded": 125.06631250000002,
+        "unfunded": 0,
+        "raw": 56.45938949702816,
+        "invalid": 0,
+        "us": 71.01153570011932,
+        "macro": null,
+        "adoption": null
+      },
+      {
+        "month": 1,
+        "source": 250.13262500000005,
+        "funded": 125.06631250000002,
+        "unfunded": 0,
+        "raw": 56.46922880079555,
+        "invalid": 0,
+        "us": 71.02197663766826,
+        "macro": {
+          "rawUnemployment": 0.04224605026622223,
+          "rawCognitiveUnemployment": 0.04423556494551973,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.020471129891039455,
+          "actual": 0.020471129891039455,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 12,
+        "source": 250.13262500000005,
+        "funded": 125.06631250000002,
+        "unfunded": 0,
+        "raw": 56.582487327487,
+        "invalid": 0,
+        "us": 71.13960679446893,
+        "macro": {
+          "rawUnemployment": 0.06308014549224672,
+          "rawCognitiveUnemployment": 0.07783894434233343,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.13077699165540513,
+          "actual": 0.13077699165540513,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 24,
+        "source": 250.13262500000005,
+        "funded": 125.06631250000002,
+        "unfunded": 0,
+        "raw": 56.70732295564076,
+        "invalid": 0,
+        "us": 71.24885831316494,
+        "macro": {
+          "rawUnemployment": 0.06941393613372442,
+          "rawCognitiveUnemployment": 0.08805473569955552,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.24088816642176952,
+          "actual": 0.24088816642176952,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 60,
+        "source": 250.13262500000005,
+        "funded": 125.06631250000002,
+        "unfunded": 0,
+        "raw": 57.05293010804012,
+        "invalid": 0,
+        "us": 71.40156434003077,
+        "macro": {
+          "rawUnemployment": 0.06485358444408677,
+          "rawCognitiveUnemployment": 0.08069932974852706,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.5093064920562864,
+          "actual": 0.5093064920562864,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      }
+    ],
+    "range-contributionRate-0.75": [
+      {
+        "month": 0,
+        "source": 250.13262500000005,
+        "funded": 187.59946875,
+        "unfunded": 0,
+        "raw": 56.54792670138785,
+        "invalid": 0,
+        "us": 71.05944663634446,
+        "macro": null,
+        "adoption": null
+      },
+      {
+        "month": 1,
+        "source": 250.13262500000005,
+        "funded": 187.59946875,
+        "unfunded": 0,
+        "raw": 56.5576009139782,
+        "invalid": 0,
+        "us": 71.06974144033298,
+        "macro": {
+          "rawUnemployment": 0.04224605026622223,
+          "rawCognitiveUnemployment": 0.04423556494551973,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.020471129891039455,
+          "actual": 0.020471129891039455,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 12,
+        "source": 250.13262500000005,
+        "funded": 187.59946875,
+        "unfunded": 0,
+        "raw": 56.66912634658672,
+        "invalid": 0,
+        "us": 71.18605527766265,
+        "macro": {
+          "rawUnemployment": 0.06308014549224672,
+          "rawCognitiveUnemployment": 0.07783894434233343,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.13077699165540513,
+          "actual": 0.13077699165540513,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 24,
+        "source": 250.13262500000005,
+        "funded": 187.59946875,
+        "unfunded": 0,
+        "raw": 56.7922207088092,
+        "invalid": 0,
+        "us": 71.29435959122551,
+        "macro": {
+          "rawUnemployment": 0.06941393613372442,
+          "rawCognitiveUnemployment": 0.08805473569955552,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.24088816642176952,
+          "actual": 0.24088816642176952,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 60,
+        "source": 250.13262500000005,
+        "funded": 187.59946875,
+        "unfunded": 0,
+        "raw": 57.133266274488214,
+        "invalid": 0,
+        "us": 71.44601850672672,
+        "macro": {
+          "rawUnemployment": 0.06485358444408677,
+          "rawCognitiveUnemployment": 0.08069932974852706,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.5093064920562864,
+          "actual": 0.5093064920562864,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      }
+    ],
+    "absolute-zero-contributionRate-plus": [
+      {
+        "month": 0,
+        "source": 250.13262500000005,
+        "funded": 0.25013262500000005,
+        "unfunded": 0,
+        "raw": 56.26745353013222,
+        "invalid": 0,
+        "us": 70.91417212539689,
+        "macro": null,
+        "adoption": null
+      },
+      {
+        "month": 1,
+        "source": 250.13262500000005,
+        "funded": 0.25013262500000005,
+        "unfunded": 0,
+        "raw": 56.27767943367929,
+        "invalid": 0,
+        "us": 70.92491540945625,
+        "macro": {
+          "rawUnemployment": 0.04224605026622223,
+          "rawCognitiveUnemployment": 0.04423556494551973,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.020471129891039455,
+          "actual": 0.020471129891039455,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 12,
+        "source": 250.13262500000005,
+        "funded": 0.25013262500000005,
+        "unfunded": 0,
+        "raw": 56.394994419150436,
+        "invalid": 0,
+        "us": 71.04526748470433,
+        "macro": {
+          "rawUnemployment": 0.06308014549224672,
+          "rawCognitiveUnemployment": 0.07783894434233343,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.13077699165540513,
+          "actual": 0.13077699165540513,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 24,
+        "source": 250.13262500000005,
+        "funded": 0.25013262500000005,
+        "unfunded": 0,
+        "raw": 56.523901051882305,
+        "invalid": 0,
+        "us": 71.15647597560591,
+        "macro": {
+          "rawUnemployment": 0.06941393613372442,
+          "rawCognitiveUnemployment": 0.08805473569955552,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.24088816642176952,
+          "actual": 0.24088816642176952,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 60,
+        "source": 250.13262500000005,
+        "funded": 0.25013262500000005,
+        "unfunded": 0,
+        "raw": 56.880140139088574,
+        "invalid": 0,
+        "us": 71.31134374953966,
+        "macro": {
+          "rawUnemployment": 0.06485358444408677,
+          "rawCognitiveUnemployment": 0.08069932974852706,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.5093064920562864,
+          "actual": 0.5093064920562864,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      }
+    ],
+    "funding-exhaustion-0.999": [
+      {
+        "month": 0,
+        "source": 250.13262500000005,
+        "funded": 124.9412461875,
+        "unfunded": 0,
+        "raw": 56.459207788456375,
+        "invalid": 0,
+        "us": 71.01143930659708,
+        "macro": null,
+        "adoption": null
+      },
+      {
+        "month": 1,
+        "source": 250.13262500000005,
+        "funded": 124.9412461875,
+        "unfunded": 0,
+        "raw": 56.469047438968325,
+        "invalid": 0,
+        "us": 71.0218805399019,
+        "macro": {
+          "rawUnemployment": 0.04224605026622223,
+          "rawCognitiveUnemployment": 0.04423556494551973,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.020471129891039455,
+          "actual": 0.020471129891039455,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 12,
+        "source": 250.13262500000005,
+        "funded": 124.9412461875,
+        "unfunded": 0,
+        "raw": 56.582309605363875,
+        "invalid": 0,
+        "us": 71.1395133602839,
+        "macro": {
+          "rawUnemployment": 0.06308014549224672,
+          "rawCognitiveUnemployment": 0.07783894434233343,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.13077699165540513,
+          "actual": 0.13077699165540513,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 24,
+        "source": 250.13262500000005,
+        "funded": 124.9412461875,
+        "unfunded": 0,
+        "raw": 56.70714888948263,
+        "invalid": 0,
+        "us": 71.24876679511787,
+        "macro": {
+          "rawUnemployment": 0.06941393613372442,
+          "rawCognitiveUnemployment": 0.08805473569955552,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.24088816642176952,
+          "actual": 0.24088816642176952,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 60,
+        "source": 250.13262500000005,
+        "funded": 124.9412461875,
+        "unfunded": 0,
+        "raw": 57.0527656119849,
+        "invalid": 0,
+        "us": 71.40147493970196,
+        "macro": {
+          "rawUnemployment": 0.06485358444408677,
+          "rawCognitiveUnemployment": 0.08069932974852706,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.5093064920562864,
+          "actual": 0.5093064920562864,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      }
+    ],
+    "funding-exhaustion-1": [
+      {
+        "month": 0,
+        "source": 250.13262500000005,
+        "funded": 125.06631250000002,
+        "unfunded": 0,
+        "raw": 56.45938949702816,
+        "invalid": 0,
+        "us": 71.01153570011932,
+        "macro": null,
+        "adoption": null
+      },
+      {
+        "month": 1,
+        "source": 250.13262500000005,
+        "funded": 125.06631250000002,
+        "unfunded": 0,
+        "raw": 56.46922880079555,
+        "invalid": 0,
+        "us": 71.02197663766826,
+        "macro": {
+          "rawUnemployment": 0.04224605026622223,
+          "rawCognitiveUnemployment": 0.04423556494551973,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.020471129891039455,
+          "actual": 0.020471129891039455,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 12,
+        "source": 250.13262500000005,
+        "funded": 125.06631250000002,
+        "unfunded": 0,
+        "raw": 56.582487327487,
+        "invalid": 0,
+        "us": 71.13960679446893,
+        "macro": {
+          "rawUnemployment": 0.06308014549224672,
+          "rawCognitiveUnemployment": 0.07783894434233343,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.13077699165540513,
+          "actual": 0.13077699165540513,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 24,
+        "source": 250.13262500000005,
+        "funded": 125.06631250000002,
+        "unfunded": 0,
+        "raw": 56.70732295564076,
+        "invalid": 0,
+        "us": 71.24885831316494,
+        "macro": {
+          "rawUnemployment": 0.06941393613372442,
+          "rawCognitiveUnemployment": 0.08805473569955552,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.24088816642176952,
+          "actual": 0.24088816642176952,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 60,
+        "source": 250.13262500000005,
+        "funded": 125.06631250000002,
+        "unfunded": 0,
+        "raw": 57.05293010804012,
+        "invalid": 0,
+        "us": 71.40156434003077,
+        "macro": {
+          "rawUnemployment": 0.06485358444408677,
+          "rawCognitiveUnemployment": 0.08069932974852706,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.5093064920562864,
+          "actual": 0.5093064920562864,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      }
+    ],
+    "funding-exhaustion-1.001": [
+      {
+        "month": 0,
+        "source": 250.13262500000005,
+        "funded": 125.06631250000002,
+        "unfunded": 0.1250663124999864,
+        "raw": 56.45938949702816,
+        "invalid": 0,
+        "us": 71.01153570011932,
+        "macro": null,
+        "adoption": null
+      },
+      {
+        "month": 1,
+        "source": 250.13262500000005,
+        "funded": 125.06631250000002,
+        "unfunded": 0.1250663124999864,
+        "raw": 56.46922880079555,
+        "invalid": 0,
+        "us": 71.02197663766826,
+        "macro": {
+          "rawUnemployment": 0.04224605026622223,
+          "rawCognitiveUnemployment": 0.04423556494551973,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.020471129891039455,
+          "actual": 0.020471129891039455,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 12,
+        "source": 250.13262500000005,
+        "funded": 125.06631250000002,
+        "unfunded": 0.1250663124999864,
+        "raw": 56.582487327487,
+        "invalid": 0,
+        "us": 71.13960679446893,
+        "macro": {
+          "rawUnemployment": 0.06308014549224672,
+          "rawCognitiveUnemployment": 0.07783894434233343,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.13077699165540513,
+          "actual": 0.13077699165540513,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 24,
+        "source": 250.13262500000005,
+        "funded": 125.06631250000002,
+        "unfunded": 0.1250663124999864,
+        "raw": 56.70732295564076,
+        "invalid": 0,
+        "us": 71.24885831316494,
+        "macro": {
+          "rawUnemployment": 0.06941393613372442,
+          "rawCognitiveUnemployment": 0.08805473569955552,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.24088816642176952,
+          "actual": 0.24088816642176952,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 60,
+        "source": 250.13262500000005,
+        "funded": 125.06631250000002,
+        "unfunded": 0.1250663124999864,
+        "raw": 57.05293010804012,
+        "invalid": 0,
+        "us": 71.40156434003077,
+        "macro": {
+          "rawUnemployment": 0.06485358444408677,
+          "rawCognitiveUnemployment": 0.08069932974852706,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.5093064920562864,
+          "actual": 0.5093064920562864,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      }
+    ],
+    "funding-exhaustion-2": [
+      {
+        "month": 0,
+        "source": 250.13262500000005,
+        "funded": 125.06631250000002,
+        "unfunded": 125.06631250000002,
+        "raw": 56.45938949702816,
+        "invalid": 0,
+        "us": 71.01153570011932,
+        "macro": null,
+        "adoption": null
+      },
+      {
+        "month": 1,
+        "source": 250.13262500000005,
+        "funded": 125.06631250000002,
+        "unfunded": 125.06631250000002,
+        "raw": 56.46922880079555,
+        "invalid": 0,
+        "us": 71.02197663766826,
+        "macro": {
+          "rawUnemployment": 0.04224605026622223,
+          "rawCognitiveUnemployment": 0.04423556494551973,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.020471129891039455,
+          "actual": 0.020471129891039455,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 12,
+        "source": 250.13262500000005,
+        "funded": 125.06631250000002,
+        "unfunded": 125.06631250000002,
+        "raw": 56.582487327487,
+        "invalid": 0,
+        "us": 71.13960679446893,
+        "macro": {
+          "rawUnemployment": 0.06308014549224672,
+          "rawCognitiveUnemployment": 0.07783894434233343,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.13077699165540513,
+          "actual": 0.13077699165540513,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 24,
+        "source": 250.13262500000005,
+        "funded": 125.06631250000002,
+        "unfunded": 125.06631250000002,
+        "raw": 56.70732295564076,
+        "invalid": 0,
+        "us": 71.24885831316494,
+        "macro": {
+          "rawUnemployment": 0.06941393613372442,
+          "rawCognitiveUnemployment": 0.08805473569955552,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.24088816642176952,
+          "actual": 0.24088816642176952,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 60,
+        "source": 250.13262500000005,
+        "funded": 125.06631250000002,
+        "unfunded": 125.06631250000002,
+        "raw": 57.05293010804012,
+        "invalid": 0,
+        "us": 71.40156434003077,
+        "macro": {
+          "rawUnemployment": 0.06485358444408677,
+          "rawCognitiveUnemployment": 0.08069932974852706,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.5093064920562864,
+          "actual": 0.5093064920562864,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      }
+    ],
+    "adoption-cap-neighbor--0.000001": [
+      {
+        "month": 0,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 56.312219861882014,
+        "invalid": 0,
+        "us": 70.9314667730624,
+        "macro": null,
+        "adoption": null
+      },
+      {
+        "month": 1,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 55.97328924088444,
+        "invalid": 0,
+        "us": 68.63120032239753,
+        "macro": {
+          "rawUnemployment": 0.34558996393277486,
+          "rawCognitiveUnemployment": 0.5334999418270563,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.9989998836541125,
+          "actual": 0.9989998836541125,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 12,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 56.031911139796584,
+        "invalid": 0,
+        "us": 69.21169757276778,
+        "macro": {
+          "rawUnemployment": 0.15672909899671755,
+          "rawCognitiveUnemployment": 0.22888564354309285,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 1.0002867876397092,
+          "actual": 0.999,
+          "cap": 0.999,
+          "capActive": true,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 24,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 56.23450665246196,
+        "invalid": 0,
+        "us": 69.52062350610264,
+        "macro": {
+          "rawUnemployment": 0.0804401281368881,
+          "rawCognitiveUnemployment": 0.10583891634981951,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 1.0003005491545012,
+          "actual": 0.999,
+          "cap": 0.999,
+          "capActive": true,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 60,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 56.63195535911038,
+        "invalid": 0,
+        "us": 69.97436620480615,
+        "macro": {
+          "rawUnemployment": 0.040807311023780504,
+          "rawCognitiveUnemployment": 0.04191501778029113,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 1.0003435072091684,
+          "actual": 0.999,
+          "cap": 0.999,
+          "capActive": true,
+          "kind": "numerical-cap"
+        }
+      }
+    ],
+    "adoption-cap-neighbor-0": [
+      {
+        "month": 0,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 56.312219861882014,
+        "invalid": 0,
+        "us": 70.9314667730624,
+        "macro": null,
+        "adoption": null
+      },
+      {
+        "month": 1,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 55.97328915007225,
+        "invalid": 0,
+        "us": 68.6311996856471,
+        "macro": {
+          "rawUnemployment": 0.34558999999999995,
+          "rawCognitiveUnemployment": 0.5335,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.9990000000000002,
+          "actual": 0.999,
+          "cap": 0.999,
+          "capActive": true,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 12,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 56.03191114184289,
+        "invalid": 0,
+        "us": 69.21169757591542,
+        "macro": {
+          "rawUnemployment": 0.15672909773765917,
+          "rawCognitiveUnemployment": 0.22888564151235352,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 1.0002867877910868,
+          "actual": 0.999,
+          "cap": 0.999,
+          "capActive": true,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 24,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 56.23450665318224,
+        "invalid": 0,
+        "us": 69.5206235072106,
+        "macro": {
+          "rawUnemployment": 0.08044012769370504,
+          "rawCognitiveUnemployment": 0.10583891563500814,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 1.000300549307498,
+          "actual": 0.999,
+          "cap": 0.999,
+          "capActive": true,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 60,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 56.63195535914177,
+        "invalid": 0,
+        "us": 69.97436620485448,
+        "macro": {
+          "rawUnemployment": 0.040807311004452146,
+          "rawCognitiveUnemployment": 0.04191501774911636,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 1.0003435073672184,
+          "actual": 0.999,
+          "cap": 0.999,
+          "capActive": true,
+          "kind": "numerical-cap"
+        }
+      }
+    ],
+    "adoption-cap-neighbor-0.000001": [
+      {
+        "month": 0,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 56.312219861882014,
+        "invalid": 0,
+        "us": 70.9314667730624,
+        "macro": null,
+        "adoption": null
+      },
+      {
+        "month": 1,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 55.973289088346064,
+        "invalid": 0,
+        "us": 68.6311996856471,
+        "macro": {
+          "rawUnemployment": 0.34558999999999995,
+          "rawCognitiveUnemployment": 0.5335,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.9990001163458876,
+          "actual": 0.999,
+          "cap": 0.999,
+          "capActive": true,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 12,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 56.031911143745404,
+        "invalid": 0,
+        "us": 69.21169757591542,
+        "macro": {
+          "rawUnemployment": 0.15672909773765917,
+          "rawCognitiveUnemployment": 0.22888564151235352,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 1.0002867879424644,
+          "actual": 0.999,
+          "cap": 0.999,
+          "capActive": true,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 24,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 56.234506653851916,
+        "invalid": 0,
+        "us": 69.5206235072106,
+        "macro": {
+          "rawUnemployment": 0.08044012769370504,
+          "rawCognitiveUnemployment": 0.10583891563500814,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 1.0003005494604944,
+          "actual": 0.999,
+          "cap": 0.999,
+          "capActive": true,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 60,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 56.631955359170966,
+        "invalid": 0,
+        "us": 69.97436620485448,
+        "macro": {
+          "rawUnemployment": 0.040807311004452146,
+          "rawCognitiveUnemployment": 0.04191501774911636,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 1.0003435075252687,
+          "actual": 0.999,
+          "cap": 0.999,
+          "capActive": true,
+          "kind": "numerical-cap"
+        }
+      }
+    ],
+    "mapping-floor-neighbor--0.000001": [
+      {
+        "month": 0,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 56.312219861882014,
+        "invalid": 0,
+        "us": 70.9314667730624,
+        "macro": null,
+        "adoption": null
+      },
+      {
+        "month": 1,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 34.84610246992524,
+        "invalid": 2,
+        "us": 1.6230217170232208e-09,
+        "macro": {
+          "rawUnemployment": 0.04224605026622223,
+          "rawCognitiveUnemployment": 0.04423556494551973,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.020471129891039455,
+          "actual": 0.020471129891039455,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 12,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": -103.54773737258272,
+        "invalid": 40,
+        "us": -455.2075366285513,
+        "macro": {
+          "rawUnemployment": 0.06308014549224672,
+          "rawCognitiveUnemployment": 0.07783894434233343,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.13077699165540513,
+          "actual": 0.13077699165540513,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 24,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": -147.25038820452215,
+        "invalid": 40,
+        "us": -593.5211411930353,
+        "macro": {
+          "rawUnemployment": 0.06941393613372442,
+          "rawCognitiveUnemployment": 0.08805473569955552,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.24088816642176952,
+          "actual": 0.24088816642176952,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 60,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": -126.59909752517288,
+        "invalid": 40,
+        "us": -493.7005577553299,
+        "macro": {
+          "rawUnemployment": 0.06485358444408677,
+          "rawCognitiveUnemployment": 0.08069932974852706,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.5093064920562864,
+          "actual": 0.5093064920562864,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      }
+    ],
+    "mapping-ceiling-neighbor--0.000001": [
+      {
+        "month": 0,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 131.38339003329384,
+        "invalid": 6,
+        "us": 99.9999999937528,
+        "macro": null,
+        "adoption": null
+      },
+      {
+        "month": 1,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 131.23682021985528,
+        "invalid": 6,
+        "us": 99.91952516570734,
+        "macro": {
+          "rawUnemployment": 0.04224605026622223,
+          "rawCognitiveUnemployment": 0.04423556494551973,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.020471129891039455,
+          "actual": 0.020471129891039455,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 12,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 129.70697274390378,
+        "invalid": 6,
+        "us": 99.2189257662163,
+        "macro": {
+          "rawUnemployment": 0.06308014549224672,
+          "rawCognitiveUnemployment": 0.07783894434233343,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.13077699165540513,
+          "actual": 0.13077699165540513,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 24,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 128.17961258773207,
+        "invalid": 6,
+        "us": 98.74017761210793,
+        "macro": {
+          "rawUnemployment": 0.06941393613372442,
+          "rawCognitiveUnemployment": 0.08805473569955552,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.24088816642176952,
+          "actual": 0.24088816642176952,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 60,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 124.20071049584516,
+        "invalid": 5,
+        "us": 98.24362980852581,
+        "macro": {
+          "rawUnemployment": 0.06485358444408677,
+          "rawCognitiveUnemployment": 0.08069932974852706,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.5093064920562864,
+          "actual": 0.5093064920562864,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      }
+    ],
+    "mapping-floor-neighbor-0": [
+      {
+        "month": 0,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 56.312219861882014,
+        "invalid": 0,
+        "us": 70.9314667730624,
+        "macro": null,
+        "adoption": null
+      },
+      {
+        "month": 1,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 34.8461024694339,
+        "invalid": 2,
+        "us": 0,
+        "macro": {
+          "rawUnemployment": 0.04224605026622223,
+          "rawCognitiveUnemployment": 0.04423556494551973,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.020471129891039455,
+          "actual": 0.020471129891039455,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 12,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": -103.5477373762429,
+        "invalid": 40,
+        "us": -455.2075366405913,
+        "macro": {
+          "rawUnemployment": 0.06308014549224672,
+          "rawCognitiveUnemployment": 0.07783894434233343,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.13077699165540513,
+          "actual": 0.13077699165540513,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 24,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": -147.25038820918508,
+        "invalid": 40,
+        "us": -593.5211412082423,
+        "macro": {
+          "rawUnemployment": 0.06941393613372442,
+          "rawCognitiveUnemployment": 0.08805473569955552,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.24088816642176952,
+          "actual": 0.24088816642176952,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 60,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": -126.59909752937149,
+        "invalid": 40,
+        "us": -493.70055776825666,
+        "macro": {
+          "rawUnemployment": 0.06485358444408677,
+          "rawCognitiveUnemployment": 0.08069932974852706,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.5093064920562864,
+          "actual": 0.5093064920562864,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      }
+    ],
+    "mapping-ceiling-neighbor-0": [
+      {
+        "month": 0,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 131.38339004942762,
+        "invalid": 6,
+        "us": 100,
+        "macro": null,
+        "adoption": null
+      },
+      {
+        "month": 1,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 131.23682023595543,
+        "invalid": 6,
+        "us": 99.91952517193494,
+        "macro": {
+          "rawUnemployment": 0.04224605026622223,
+          "rawCognitiveUnemployment": 0.04423556494551973,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.020471129891039455,
+          "actual": 0.020471129891039455,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 12,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 129.70697275965009,
+        "invalid": 6,
+        "us": 99.21892577226757,
+        "macro": {
+          "rawUnemployment": 0.06308014549224672,
+          "rawCognitiveUnemployment": 0.07783894434233343,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.13077699165540513,
+          "actual": 0.13077699165540513,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 24,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 128.17961260312256,
+        "invalid": 6,
+        "us": 98.74017761803249,
+        "macro": {
+          "rawUnemployment": 0.06941393613372442,
+          "rawCognitiveUnemployment": 0.08805473569955552,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.24088816642176952,
+          "actual": 0.24088816642176952,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 60,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 124.20071051030457,
+        "invalid": 5,
+        "us": 98.24362981431045,
+        "macro": {
+          "rawUnemployment": 0.06485358444408677,
+          "rawCognitiveUnemployment": 0.08069932974852706,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.5093064920562864,
+          "actual": 0.5093064920562864,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      }
+    ],
+    "mapping-floor-neighbor-0.000001": [
+      {
+        "month": 0,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 56.312219861882014,
+        "invalid": 0,
+        "us": 70.9314667730624,
+        "macro": null,
+        "adoption": null
+      },
+      {
+        "month": 1,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 34.846102468942576,
+        "invalid": 3,
+        "us": -1.623035927877936e-09,
+        "macro": {
+          "rawUnemployment": 0.04224605026622223,
+          "rawCognitiveUnemployment": 0.04423556494551973,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.020471129891039455,
+          "actual": 0.020471129891039455,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 12,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": -103.54773737990308,
+        "invalid": 40,
+        "us": -455.2075366526314,
+        "macro": {
+          "rawUnemployment": 0.06308014549224672,
+          "rawCognitiveUnemployment": 0.07783894434233343,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.13077699165540513,
+          "actual": 0.13077699165540513,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 24,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": -147.25038821384808,
+        "invalid": 40,
+        "us": -593.5211412234493,
+        "macro": {
+          "rawUnemployment": 0.06941393613372442,
+          "rawCognitiveUnemployment": 0.08805473569955552,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.24088816642176952,
+          "actual": 0.24088816642176952,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 60,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": -126.59909753357007,
+        "invalid": 40,
+        "us": -493.70055778118353,
+        "macro": {
+          "rawUnemployment": 0.06485358444408677,
+          "rawCognitiveUnemployment": 0.08069932974852706,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.5093064920562864,
+          "actual": 0.5093064920562864,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      }
+    ],
+    "mapping-ceiling-neighbor-0.000001": [
+      {
+        "month": 0,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 131.3833900655614,
+        "invalid": 7,
+        "us": 100.00000000624719,
+        "macro": null,
+        "adoption": null
+      },
+      {
+        "month": 1,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 131.23682025205545,
+        "invalid": 6,
+        "us": 99.91952517816254,
+        "macro": {
+          "rawUnemployment": 0.04224605026622223,
+          "rawCognitiveUnemployment": 0.04423556494551973,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.020471129891039455,
+          "actual": 0.020471129891039455,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 12,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 129.7069727753963,
+        "invalid": 6,
+        "us": 99.21892577831885,
+        "macro": {
+          "rawUnemployment": 0.06308014549224672,
+          "rawCognitiveUnemployment": 0.07783894434233343,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.13077699165540513,
+          "actual": 0.13077699165540513,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 24,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 128.17961261851303,
+        "invalid": 6,
+        "us": 98.74017762395705,
+        "macro": {
+          "rawUnemployment": 0.06941393613372442,
+          "rawCognitiveUnemployment": 0.08805473569955552,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.24088816642176952,
+          "actual": 0.24088816642176952,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 60,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 124.20071052476403,
+        "invalid": 5,
+        "us": 98.2436298200951,
+        "macro": {
+          "rawUnemployment": 0.06485358444408677,
+          "rawCognitiveUnemployment": 0.08069932974852706,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 0.5093064920562864,
+          "actual": 0.5093064920562864,
+          "cap": 0.999,
+          "capActive": false,
+          "kind": "numerical-cap"
+        }
+      }
+    ],
+    "unemployment-cap-neighbor--0.000001": [
+      {
+        "month": 0,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 56.312219861882014,
+        "invalid": 0,
+        "us": 70.9314667730624,
+        "macro": null,
+        "adoption": null
+      },
+      {
+        "month": 1,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 55.72790800234842,
+        "invalid": 0,
+        "us": 68.6311996856471,
+        "macro": {
+          "rawUnemployment": 0.599999,
+          "rawCognitiveUnemployment": 0.787909,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 11.644588767821618,
+          "actual": 0.999,
+          "cap": 0.999,
+          "capActive": true,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 12,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 56.03726766795383,
+        "invalid": 0,
+        "us": 69.21169757591542,
+        "macro": {
+          "rawUnemployment": 0.4111380977376592,
+          "rawCognitiveUnemployment": 0.4832946415123536,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 1.0141377621645586,
+          "actual": 0.999,
+          "cap": 0.999,
+          "capActive": true,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 24,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 56.236392126954634,
+        "invalid": 0,
+        "us": 69.5206235072106,
+        "macro": {
+          "rawUnemployment": 0.33484912769370506,
+          "rawCognitiveUnemployment": 0.36024791563500813,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 1.014299652542985,
+          "actual": 0.999,
+          "cap": 0.999,
+          "capActive": true,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 60,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 56.632037589522994,
+        "invalid": 0,
+        "us": 69.97436620485448,
+        "macro": {
+          "rawUnemployment": 0.29521631100445217,
+          "rawCognitiveUnemployment": 0.2963240177491164,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 1.0148050108434035,
+          "actual": 0.999,
+          "cap": 0.999,
+          "capActive": true,
+          "kind": "numerical-cap"
+        }
+      }
+    ],
+    "unemployment-cap-neighbor-0": [
+      {
+        "month": 0,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 56.312219861882014,
+        "invalid": 0,
+        "us": 70.9314667730624,
+        "macro": null,
+        "adoption": null
+      },
+      {
+        "month": 1,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 55.72790800234842,
+        "invalid": 0,
+        "us": 68.6311996856471,
+        "macro": {
+          "rawUnemployment": 0.6,
+          "rawCognitiveUnemployment": 0.7879099999999999,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 11.644588767821618,
+          "actual": 0.999,
+          "cap": 0.999,
+          "capActive": true,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 12,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 56.03726766795383,
+        "invalid": 0,
+        "us": 69.21169757591542,
+        "macro": {
+          "rawUnemployment": 0.41113909773765916,
+          "rawCognitiveUnemployment": 0.4832956415123535,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 1.0141377621645586,
+          "actual": 0.999,
+          "cap": 0.999,
+          "capActive": true,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 24,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 56.236392126954634,
+        "invalid": 0,
+        "us": 69.5206235072106,
+        "macro": {
+          "rawUnemployment": 0.33485012769370504,
+          "rawCognitiveUnemployment": 0.36024891563500816,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 1.014299652542985,
+          "actual": 0.999,
+          "cap": 0.999,
+          "capActive": true,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 60,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 56.632037589522994,
+        "invalid": 0,
+        "us": 69.97436620485448,
+        "macro": {
+          "rawUnemployment": 0.29521731100445214,
+          "rawCognitiveUnemployment": 0.29632501774911635,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 1.0148050108434035,
+          "actual": 0.999,
+          "cap": 0.999,
+          "capActive": true,
+          "kind": "numerical-cap"
+        }
+      }
+    ],
+    "unemployment-cap-neighbor-0.000001": [
+      {
+        "month": 0,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 56.312219861882014,
+        "invalid": 0,
+        "us": 70.9314667730624,
+        "macro": null,
+        "adoption": null
+      },
+      {
+        "month": 1,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 55.727908116545564,
+        "invalid": 0,
+        "us": 68.6312021856471,
+        "macro": {
+          "rawUnemployment": 0.600001,
+          "rawCognitiveUnemployment": 0.7879109999999999,
+          "unemploymentCapActive": true,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 11.644588767821618,
+          "actual": 0.999,
+          "cap": 0.999,
+          "capActive": true,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 12,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 56.03726766795383,
+        "invalid": 0,
+        "us": 69.21169757591542,
+        "macro": {
+          "rawUnemployment": 0.41114009773765914,
+          "rawCognitiveUnemployment": 0.4832966415123535,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 1.0141377621645586,
+          "actual": 0.999,
+          "cap": 0.999,
+          "capActive": true,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 24,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 56.236392126954634,
+        "invalid": 0,
+        "us": 69.5206235072106,
+        "macro": {
+          "rawUnemployment": 0.334851127693705,
+          "rawCognitiveUnemployment": 0.3602499156350081,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 1.014299652542985,
+          "actual": 0.999,
+          "cap": 0.999,
+          "capActive": true,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 60,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 56.632037589522994,
+        "invalid": 0,
+        "us": 69.97436620485448,
+        "macro": {
+          "rawUnemployment": 0.2952183110044521,
+          "rawCognitiveUnemployment": 0.2963260177491163,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 1.0148050108434035,
+          "actual": 0.999,
+          "cap": 0.999,
+          "capActive": true,
+          "kind": "numerical-cap"
+        }
+      }
+    ],
+    "cognitive-unemployment-cap-neighbor--0.000001": [
+      {
+        "month": 0,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 56.312219861882014,
+        "invalid": 0,
+        "us": 70.9314667730624,
+        "macro": null,
+        "adoption": null
+      },
+      {
+        "month": 1,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 55.74070824541707,
+        "invalid": 0,
+        "us": 68.9114221856471,
+        "macro": {
+          "rawUnemployment": 0.7120890000000001,
+          "rawCognitiveUnemployment": 0.899999,
+          "unemploymentCapActive": true,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 11.644588767821618,
+          "actual": 0.999,
+          "cap": 0.999,
+          "capActive": true,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 12,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 56.03726766795383,
+        "invalid": 0,
+        "us": 69.21169757591542,
+        "macro": {
+          "rawUnemployment": 0.5232280977376593,
+          "rawCognitiveUnemployment": 0.5953846415123536,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 1.0141377621645586,
+          "actual": 0.999,
+          "cap": 0.999,
+          "capActive": true,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 24,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 56.236392126954634,
+        "invalid": 0,
+        "us": 69.5206235072106,
+        "macro": {
+          "rawUnemployment": 0.44693912769370514,
+          "rawCognitiveUnemployment": 0.47233791563500827,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 1.014299652542985,
+          "actual": 0.999,
+          "cap": 0.999,
+          "capActive": true,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 60,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 56.632037589522994,
+        "invalid": 0,
+        "us": 69.97436620485448,
+        "macro": {
+          "rawUnemployment": 0.40730631100445225,
+          "rawCognitiveUnemployment": 0.40841401774911645,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 1.0148050108434035,
+          "actual": 0.999,
+          "cap": 0.999,
+          "capActive": true,
+          "kind": "numerical-cap"
+        }
+      }
+    ],
+    "cognitive-unemployment-cap-neighbor-0": [
+      {
+        "month": 0,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 56.312219861882014,
+        "invalid": 0,
+        "us": 70.9314667730624,
+        "macro": null,
+        "adoption": null
+      },
+      {
+        "month": 1,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 55.74070835961421,
+        "invalid": 0,
+        "us": 68.9114246856471,
+        "macro": {
+          "rawUnemployment": 0.7120900000000001,
+          "rawCognitiveUnemployment": 0.9,
+          "unemploymentCapActive": true,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 11.644588767821618,
+          "actual": 0.999,
+          "cap": 0.999,
+          "capActive": true,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 12,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 56.03726766795383,
+        "invalid": 0,
+        "us": 69.21169757591542,
+        "macro": {
+          "rawUnemployment": 0.5232290977376592,
+          "rawCognitiveUnemployment": 0.5953856415123536,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 1.0141377621645586,
+          "actual": 0.999,
+          "cap": 0.999,
+          "capActive": true,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 24,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 56.236392126954634,
+        "invalid": 0,
+        "us": 69.5206235072106,
+        "macro": {
+          "rawUnemployment": 0.4469401276937051,
+          "rawCognitiveUnemployment": 0.4723389156350082,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 1.014299652542985,
+          "actual": 0.999,
+          "cap": 0.999,
+          "capActive": true,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 60,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 56.632037589522994,
+        "invalid": 0,
+        "us": 69.97436620485448,
+        "macro": {
+          "rawUnemployment": 0.4073073110044522,
+          "rawCognitiveUnemployment": 0.4084150177491164,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 1.0148050108434035,
+          "actual": 0.999,
+          "cap": 0.999,
+          "capActive": true,
+          "kind": "numerical-cap"
+        }
+      }
+    ],
+    "cognitive-unemployment-cap-neighbor-0.000001": [
+      {
+        "month": 0,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 56.312219861882014,
+        "invalid": 0,
+        "us": 70.9314667730624,
+        "macro": null,
+        "adoption": null
+      },
+      {
+        "month": 1,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 55.740708473811345,
+        "invalid": 0,
+        "us": 68.9114271856471,
+        "macro": {
+          "rawUnemployment": 0.712091,
+          "rawCognitiveUnemployment": 0.900001,
+          "unemploymentCapActive": true,
+          "cognitiveUnemploymentCapActive": true
+        },
+        "adoption": {
+          "raw": 11.644588767821618,
+          "actual": 0.999,
+          "cap": 0.999,
+          "capActive": true,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 12,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 56.03726766795383,
+        "invalid": 0,
+        "us": 69.21169757591542,
+        "macro": {
+          "rawUnemployment": 0.5232300977376593,
+          "rawCognitiveUnemployment": 0.5953866415123535,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 1.0141377621645586,
+          "actual": 0.999,
+          "cap": 0.999,
+          "capActive": true,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 24,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 56.236392126954634,
+        "invalid": 0,
+        "us": 69.5206235072106,
+        "macro": {
+          "rawUnemployment": 0.4469411276937051,
+          "rawCognitiveUnemployment": 0.4723399156350082,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 1.014299652542985,
+          "actual": 0.999,
+          "cap": 0.999,
+          "capActive": true,
+          "kind": "numerical-cap"
+        }
+      },
+      {
+        "month": 60,
+        "source": 250.13262500000005,
+        "funded": 25.742256250000004,
+        "unfunded": 0,
+        "raw": 56.632037589522994,
+        "invalid": 0,
+        "us": 69.97436620485448,
+        "macro": {
+          "rawUnemployment": 0.4073083110044522,
+          "rawCognitiveUnemployment": 0.4084160177491164,
+          "unemploymentCapActive": false,
+          "cognitiveUnemploymentCapActive": false
+        },
+        "adoption": {
+          "raw": 1.0148050108434035,
+          "actual": 0.999,
+          "cap": 0.999,
+          "capActive": true,
+          "kind": "numerical-cap"
+        }
+      }
+    ]
+  }
+}

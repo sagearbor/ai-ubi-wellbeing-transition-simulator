@@ -36,3 +36,19 @@ export function formatUsdPerPerson(usd: number): string {
   if (!Number.isFinite(usd)) return '$0';
   return usd < 10 ? `$${usd.toFixed(2)}` : `$${usd.toFixed(0)}`;
 }
+
+/** A pinned price index is an authored input, never inferred from an undated corporation. */
+export interface PinnedPriceIndex {
+  id: string;
+  currency: string;
+  values: Record<number, number>;
+  source: string;
+}
+/** Convert a genuinely dated amount; denomination and annual/monthly frequency stay unchanged. */
+export function convertDatedAmount(amount: number, from: { currency: string; priceYear: number | null }, to: { currency: string; priceYear: number | null }, index: PinnedPriceIndex): number {
+  if (!Number.isFinite(amount) || from.priceYear === null || to.priceYear === null) throw new Error('Dated conversion requires finite money and known price years');
+  if (from.currency !== to.currency || index.currency !== from.currency) throw new Error('Price index cannot convert currencies');
+  const a=index.values[from.priceYear], b=index.values[to.priceYear];
+  if (!(a>0 && b>0 && Number.isFinite(a) && Number.isFinite(b))) throw new Error('Pinned index does not cover both price years');
+  return amount*b/a;
+}

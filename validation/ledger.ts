@@ -143,6 +143,8 @@ const EPS = 1e-12;
 export function withinTolerance(value: number, published: number | null, tol: Tolerance): boolean | null {
   if (!Number.isFinite(value)) return false;
   if (tol.kind === 'none' || published === null) return null;
+  if (!Number.isFinite(published)) return false;
+  if ((tol.kind === 'abs' || tol.kind === 'relative') && (!Number.isFinite(tol.value) || tol.value < 0)) return false;
   switch (tol.kind) {
     case 'abs':
       return Math.abs(value - published) <= tol.value + EPS;
@@ -596,6 +598,10 @@ export function checkLedger(input: CheckInput): CheckReport {
   }
   for (const prev of input.previous ?? []) {
     for (const p of prev.entries) {
+      const next = byId.get(p.id);
+      if (p.compute && next && !next.compute && !next.retired && !['not-checked', 'not-verified', 'outside-model'].includes(next.status)) {
+        failures.push({ rule: 'a', id: p.id, message: 'computation removed without deliberate downgrade to an unchecked classification or retirement' });
+      }
       if (!byId.has(p.id)) failures.push({ rule: 'a', id: p.id, message: `target "${p.id}" was removed from the ledger; mark it retired with a reason instead` });
     }
   }
@@ -614,6 +620,12 @@ export function checkLedger(input: CheckInput): CheckReport {
   for (const e of current.entries) {
     if (e.retired) continue;
     const r = input.computed.get(e.id);
+    const success = e.status === 'reproduced' || e.status === 'reproduced-with-caveat';
+    if (success && (!e.compute || !r || r.error || r.skipped || r.value === null ||
+      !Number.isFinite(r.value) || withinTolerance(r.value, e.published.value, e.tolerance) !== true)) {
+      failures.push({ rule: 'b', id: e.id, message: 'success requires fresh finite computation within the declared tolerance; downgrade or retire deliberately when evidence is removed' });
+      continue;
+    }
     if (e.compute && !r) {
       failures.push({ rule: 'b', id: e.id, message: 'has a compute spec but was not computed' });
       continue;
@@ -647,7 +659,7 @@ export function checkLedger(input: CheckInput): CheckReport {
     if (text === undefined || !pin.pattern.test(text)) continue;
     const e = byId.get(pin.entryId);
     if (!e || e.retired) failures.push({ rule: 'c', id: pin.entryId, message: `${pin.file} pins a known miss (${pin.what}) but the ledger has no live entry "${pin.entryId}"` });
-    else if (e.status === 'reproduced') failures.push({ rule: 'c', id: pin.entryId, message: `${pin.file} pins a known miss (${pin.what}) but the ledger records it as reproduced` });
+    else if (e.status === 'reproduced' || e.status === 'reproduced-with-caveat') failures.push({ rule: 'c', id: pin.entryId, message: `${pin.file} pins a known miss (${pin.what}) but the ledger records it as reproduced` });
   }
   const referenced = new Set(current.entries.flatMap((e) => e.checkedBy.map((r) => r.split(':')[0])));
   const exempt = new Set(current.scanExemptions.map((x) => x.file));

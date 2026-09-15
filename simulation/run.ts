@@ -1,3 +1,5 @@
+import { assertRunSupported } from './capabilities';
+import { conditionalWorld } from './conditionalWorld';
 /**
  * A complete, replayable simulation run.
  *
@@ -94,6 +96,7 @@ export function latestLadderIndex(id: string): number | undefined {
 }
 
 export interface InitOptions {
+  model?: ModelParameters;
   /**
    * 'formula' (default, legacy): wellbeing = clamp(gdpPerCapita / 1200 + 40, 10, 100), an
    * unsourced rule (US 92.5). 'ladder': the latest World Happiness Report Cantril ladder × 10
@@ -111,8 +114,9 @@ export interface InitOptions {
 }
 
 /** Which initialisation a model asks for (anchored models start from observed ladder values). */
-export function initOptionsFor(model?: Pick<ModelParameters, 'macro'> | null, countryDataset?: CountryDatasetId): InitOptions {
+export function initOptionsFor(model?: ModelParameters | null, countryDataset?: CountryDatasetId): InitOptions {
   return {
+    ...(model ? {model} : {}),
     initialWellbeing: model?.macro?.wellbeingMode === 'anchored' ? 'ladder' : 'formula',
     ...(countryDataset ? { countryDataset } : {}),
   };
@@ -128,6 +132,7 @@ export function initialCountryData(countries?: readonly CountryBase[], opts: Ini
       ...c,
       aiAdoption: 0.01,
       wellbeing: ladder ?? formula,
+      ...(ladder !== undefined ? { observedInitialLadder: { value:ladder, year:Math.max(...Object.keys(LADDER_DATA[c.id]).map(Number)) } } : {}),
       companiesJoined: 0,
       displacementGap: 0,
       headquarteredCorps: [],
@@ -169,19 +174,43 @@ export function initialRun(
   countries?: readonly CountryBase[],
   opts: InitOptions = {},
 ): SimulationRun {
-  return {
+  const run = {
     state: initialState(countries, corporations, opts),
     corporations: corporations.map((c) => ({ ...c })),
     ledger: { ...EMPTY_LEDGER, fundsByCountry: {}, contributorBreakdown: {}, distributionBreakdown: {} },
     gameTheory: { ...EMPTY_GAME_THEORY },
   };
+  return opts.model?.executionMode === 'world-conditional-v1' ? initializeConditionalOutputs(run,{model:opts.model}) : run;
+}
+/** Only for a newly constructed month-zero run. */
+export function initializeConditionalOutputs(run: SimulationRun, inputs: RunInputs): SimulationRun {
+  if (run.state.month !== 0) throw new Error('Conditional initialization requires month zero; evaluate an existing snapshot instead');
+  return conditionalWorld(conditionalInput(run, inputs), true);
+}
+
+/** Reprice the same economic snapshot without resetting displacement, baseline or adoption. */
+export function evaluateConditionalSnapshot(run: SimulationRun, inputs: RunInputs): SimulationRun {
+  return conditionalWorld(conditionalInput(run, inputs), false, true);
+}
+
+function conditionalInput(run: SimulationRun, inputs: RunInputs) {
+  assertRunSupported(inputs.model, run.state.month, inputs.equations);
+  const corporations = inputs.contributionRateOverride === undefined
+    ? run.corporations
+    : run.corporations.map(c => ({
+        ...c,
+        contributionRate: inputs.contributionRateOverride!,
+        fundingRequest: { kind: 'share' as const },
+      }));
+  return { state: run.state, corporations, model: inputs.model, equations: inputs.equations };
 }
 
 /** Advance one month. Pure: the input run is not modified (the engine clones countries; corporations are re-mapped). */
 export function advanceRun(run: SimulationRun, inputs: RunInputs): SimulationRun {
+  assertRunSupported(inputs.model,run.state.month+1,inputs.equations);
   const pin = inputs.contributionRateOverride;
   const hold = (corps: Corporation[]): Corporation[] =>
-    pin === undefined ? corps : corps.map((c) => (c.contributionRate === pin ? c : { ...c, contributionRate: pin }));
+    pin === undefined ? corps : corps.map((c) => ({ ...c, contributionRate: pin, ...(inputs.model.executionMode === 'world-conditional-v1' ? {fundingRequest:{kind:'share' as const}} : {}) }));
   const out = stepSimulationPure({
     state: run.state,
     corporations: hold(run.corporations),
@@ -193,6 +222,7 @@ export function advanceRun(run: SimulationRun, inputs: RunInputs): SimulationRun
 
 /** Advance `months` times, returning every intermediate run (index 0 = the input). */
 export function runMonths(run: SimulationRun, months: number, inputs: RunInputs): SimulationRun[] {
+  assertRunSupported(inputs.model,run.state.month+months,inputs.equations);
   const out: SimulationRun[] = [run];
   let cur = run;
   for (let i = 0; i < months; i++) {
@@ -207,6 +237,8 @@ export function runMonths(run: SimulationRun, months: number, inputs: RunInputs)
  * incomplete (older save files) and by tests that assert seek reproduces stepping.
  */
 export function replayTo(base: SimulationRun, month: number, inputs: RunInputs): SimulationRun {
+  assertRunSupported(inputs.model,month,inputs.equations);
+  if(month < base.state.month) throw new Error('Requested month precedes the available scenario snapshot');
   let cur = base;
   while (cur.state.month < month) cur = advanceRun(cur, inputs);
   return cur;

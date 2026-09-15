@@ -1,3 +1,4 @@
+import { attestationBinding } from '../../src/policy/draft';
 /**
  * PolicyPanel — "read a policy text against this model" (v3 stage 5).
  *
@@ -18,13 +19,14 @@
  * link names a model the app ships); its bundle carries the model and says it is experimental.
  */
 
+import { scenarioProvenance, type ScenarioProvenance } from '../../src/policy/provenance';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Copy, Download, FileText, Link2, Play, Plus, ScrollText, Sparkles, Square, Upload } from 'lucide-react';
 import { resolveModel } from '../../src/core/engine';
 import { RUN_LIMITS, checkRunSettings } from '../../src/core/limits';
 import type { ValidationResult } from '../../src/core/validate';
 import type { Runner } from '../../src/workers/client';
-import type { PairedJob, Progress, RunOutcome } from '../../src/workers/protocol';
+import type { PairedJob, Progress, RunOutcome, RunJob } from '../../src/workers/protocol';
 import { CORE_FIXTURES, findFixture } from '../../src/core/fixtures';
 import type { CoreModel, Overlay } from '../../src/core/types';
 import {
@@ -38,13 +40,14 @@ import {
 } from '../../src/policy/bundle';
 import { buildClauseInventory, sourceCoverage } from '../../src/policy/clauses';
 import { DEFAULT_RUNS, DEFAULT_SEED, blankDraft, blockingErrors, coverage, validateDraft } from '../../src/policy/draft';
-import { sha256Hex } from '../../src/policy/hash';
+import { modelHash, sha256Hex } from '../../src/policy/hash';
 import { POLICY_EXAMPLES, findPolicyExample } from '../../src/policy/examples';
 import { memoFileName, renderMemo } from '../../src/policy/memo';
 import { EXCLUSION_KINDS, REVIEW_STATUSES, type ExclusionKind, type PairedRunResult, type PolicyDraft, type ReviewStatus } from '../../src/policy/types';
 import { extractPolicyDraft, hasPolicyApiKey } from '../../services/policyExtract';
 import { Hint } from '../futures/Hint';
 import PolicyResults from './PolicyResults';
+import { createAttemptGate, observeAttempt, ownsContext, POLICY_VIEW_CAPABILITIES, type ActiveRunView, type AttemptStatus } from './activeRunView';
 import ProvisionEditor from './ProvisionEditor';
 import { EXPERIMENTAL_LABEL, curatedMatch, explainValidationErrors, type ModelStatus } from './importState';
 import {
@@ -65,6 +68,8 @@ import {
 } from './policyState';
 
 export interface PolicyPanelProps {
+  onActiveRunChange?: (view: ActiveRunView) => void;
+  onOpenResultView?: () => void;
   /** The Lab's base model. */
   model: CoreModel;
   /** Scenario overlays shared by both sides (the Lab's overlays and edits, no hypothetical). */
@@ -80,11 +85,13 @@ export interface PolicyPanelProps {
   /** Switch the Lab to another bundled model (with no overlays). */
   onRequestModel: (modelId: string) => void;
   /** Switch the Lab to a model and a scenario (from a bundle). The model may be one the bundle carried. */
-  onOpenScenario: (model: CoreModel, overlays: Overlay[], status: ModelStatus) => void;
+  onOpenScenario: (model: CoreModel, overlays: Overlay[], status: ModelStatus, warnings?: string[], provenance?: ScenarioProvenance) => void;
   /** Runs paired comparisons and bundle re-runs (a worker in the browser, synchronous in tests). */
   runner: Runner;
   /** 'imported' when the Lab's model was loaded from a file: experimental — not curated. */
   modelStatus?: ModelStatus;
+  importWarnings?: string[];
+  provenance?: ScenarioProvenance;
   /** Models imported this session, so bundles made on them reopen. */
   extraModels?: CoreModel[];
 }
@@ -154,13 +161,18 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
   onOpenScenario,
   runner,
   modelStatus = 'curated',
+  importWarnings = [],
+  provenance,
   extraModels = [],
+  onActiveRunChange,
+  onOpenResultView,
 }) => {
+  const [sourceCandidate, setSourceCandidate] = useState<{ model: CoreModel; overlays: Overlay[]; draft: PolicyDraft; sourceText?: string; reason: string } | null>(null);
   const [sourceTitle, setSourceTitle] = useState(initialSource?.title ?? '');
   const [sourceUrl, setSourceUrl] = useState(initialSource?.url ?? '');
   const [sourceText, setSourceText] = useState(initialSource?.text ?? '');
   const [drafts, setDrafts] = useState<PolicyDraft[]>(initialDrafts.slice(0, 2));
-  const [active, setActive] = useState(0);
+  const [active, setActive] = useState(() => typeof window !== 'undefined' && window.location.hash.startsWith('#lab=') && new URLSearchParams(window.location.search).get('policyDraft') === 'B' && initialDrafts.length > 1 ? 1 : 0);
   const [runs, setRuns] = useState(initialRuns);
   const [seed, setSeed] = useState(initialSeed);
   // A synchronous runner (tests, SSR) runs a link's comparison while mounting; a worker runs it in an effect.
@@ -172,8 +184,11 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
     return o.status === 'done' ? storedResults(job, o.result) : [];
   });
   const [running, setRunning] = useState<{ progress: Progress | null; cancel: () => void; what: string } | null>(null);
+  const gate = useRef(createAttemptGate());
+  const [attempt, setAttempt] = useState<AttemptStatus>(results.length ? results.some(r => r?.result.ok) ? 'ready' : 'failed' : 'empty');
+  useEffect(() => () => gate.current.revoke(), []);
   const [attestName, setAttestName] = useState('');
-  const [attestStatement, setAttestStatement] = useState('I checked every clause of the source text: each is quoted by a provision or excluded with a reason.');
+  const [attestStatement, setAttestStatement] = useState('I reviewed every operative clause, its mapping or unresolved/outside-model disposition, and all exclusions. This is my content-bound review, not independent legal certification.');
   const [year, setYear] = useState<number | null>(null);
   const [notice, setNotice] = useState<{ tone: 'ok' | 'error'; text: string } | null>(initialNotice);
   const [extracting, setExtracting] = useState(false);
@@ -182,7 +197,12 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
   const [memoCopied, setMemoCopied] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
-  const imported = modelStatus === 'imported';
+  const operationContext = useRef('');
+  operationContext.current = JSON.stringify([model, overlays, drafts, sourceText, sourceTitle, sourceUrl, runs, seed]);
+  const extractionGate = useRef(createAttemptGate());
+  useEffect(() => () => extractionGate.current.revoke(), []);
+
+  const imported = modelStatus === 'imported' || provenance?.kind === 'source-import';
   const registryModels = useMemo(() => (imported ? [model, ...extraModels] : extraModels), [imported, model, extraModels]);
   const apiKey = hasPolicyApiKey();
   const scenarioModel = useMemo(() => resolveModel(model, overlays).model, [model, overlays]);
@@ -199,16 +219,16 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
         .map((d, i) => {
           const r = results[i];
           if (!r || d.modelId !== model.id) return null;
-          return { label: i === 0 ? 'A' : 'B', result: r.result, stale: r.key !== runKey(model, overlays, d, runs, seed, sourceText) };
+          return { slot: i, label: i === 0 ? 'A' : 'B', result: r.result, stale: r.key !== runKey(model, overlays, d, runs, seed, sourceText) };
         })
-        .filter((e): e is { label: string; result: PairedRunResult; stale: boolean } => e !== null),
+        .filter((e): e is { slot: number; label: string; result: PairedRunResult; stale: boolean } => e !== null),
     [drafts, results, model, overlays, runs, seed, sourceText],
   );
 
   const activeResult = results[active];
   const activeFresh = useMemo(
-    () => !!(draft && activeResult && activeResult.result.ok && activeResult.key === runKey(model, overlays, draft, runs, seed, sourceText)),
-    [draft, activeResult, model, overlays, runs, seed, sourceText],
+    () => !!(attempt === 'ready' && draft && activeResult && activeResult.result.ok && activeResult.key === runKey(model, overlays, draft, runs, seed, sourceText)),
+    [attempt, draft, activeResult, model, overlays, runs, seed, sourceText],
   );
   const memo = useMemo(
     () =>
@@ -224,6 +244,25 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
   const clauseDetail = useMemo(() => (draft && sourceText.trim() ? sourceCoverage(draft, sourceText) : null), [draft, sourceText]);
   const clauseText = useMemo(() => new Map(sourceText.trim() ? buildClauseInventory(sourceText).clauses.map((c) => [c.id, c.text] as const) : []), [sourceText]);
 
+  const activeKey = draft ? runKey(model, overlays, draft, runs, seed, sourceText) : '';
+  const viewStatus = activeFresh ? 'ready' : attempt === 'ready' && activeResult && !activeResult.result.ok ? 'failed' : attempt === 'running' || attempt === 'failed' || attempt === 'cancelled' ? attempt : activeResult ? 'stale' : 'empty';
+  const cov = draft ? coverage(draft, sourceText.trim() ? sourceText : undefined) : null;
+  const coverageText = cov ? `${cov.text}; Quotation coverage: ${cov.source.text}; Operative disposition coverage: ${cov.operative.text}; ${cov.completeness.text}` : 'No policy draft selected.';
+  const noMapped = !draft?.provisions.some(p => p.status === 'mapped' && p.mapping);
+  const origin = `${provenance?.kind ?? modelStatus}${provenance?.reason ? `: ${provenance.reason}` : ''}${importWarnings.length ? `; ${importWarnings.join('; ')}` : ''}`;
+  useEffect(() => {
+    onActiveRunChange?.({ capabilities: POLICY_VIEW_CAPABILITIES, origin, family: 'lab-policy', key: activeKey, slot: active, status: viewStatus,
+      model: scenarioModel, modelStatus, source: draft?.source ?? null, review: draft?.reviewStatus ?? 'unreviewed',
+      scope: scenarioModel.scope ?? 'No scope declared; illustrative only.', coverage: coverageText, entries,
+      limitations: [
+        ...(activeResult && !activeResult.result.ok ? activeResult.result.errors : []),
+        'Bundled examples are not universally independently reviewed models. These outputs depend on the stated equations and assumptions.',
+        ...(noMapped ? ['Nothing from this proposal is represented in the calculation. Identical curves are a structural baseline comparison, not an estimated zero policy effect.'] : []),
+        'Partial coverage: unresolved and outside-model provisions do not affect these curves. Outcome differences cannot establish net welfare winners.',
+      ],
+    });
+  }, [onActiveRunChange, activeKey, active, viewStatus, scenarioModel, modelStatus, draft, coverageText, entries, noMapped, activeResult, origin]);
+
   // -- draft edits ----------------------------------------------------------
 
   const setDraft = (i: number, next: PolicyDraft) => setDrafts((ds) => ds.map((d, j) => (j === i ? next : d)));
@@ -233,6 +272,9 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
     const d = blankDraft(model, { title: sourceTitle, url: sourceUrl || undefined, text: sourceText }, { kind: 'person', name: '' });
     setDrafts([d]);
     setActive(0);
+    gate.current.revoke();
+    setRunning(null);
+    setAttempt('empty');
     setResults([]);
     setReport(null);
     setNotice({ tone: 'ok', text: 'Blank manual draft started. Add a provision for each operative part of the text, quoting it verbatim.' });
@@ -247,6 +289,9 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
     setSourceText(ex.source.text);
     setDrafts([ex.draft]);
     setActive(0);
+    gate.current.revoke();
+    setRunning(null);
+    setAttempt('empty');
     setResults([]);
     setReport(null);
     setNotice({ tone: 'ok', text: `Loaded the worked example (${ex.draft.reviewStatus}, drafted by ${ex.draft.draftedBy?.name ?? 'unknown'}). Run it to see the paired comparison.` });
@@ -257,16 +302,23 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
       setNotice({ tone: 'error', text: 'Paste the policy text first.' });
       return;
     }
+    const token = extractionGate.current.begin();
+    const context = operationContext.current;
+    const current = () => ownsContext(extractionGate.current, token, context, operationContext.current);
     setExtracting(true);
     setNotice(null);
     try {
       const out = await extractPolicyDraft(model, sourceText, { title: sourceTitle || undefined, url: sourceUrl || undefined, overlays });
+      if (!current()) return;
       if (!out.draft) {
         setNotice({ tone: 'error', text: `The extraction could not be used: ${out.errors.join('; ')}` });
       } else {
         setDrafts([out.draft]);
         setActive(0);
-        setResults([]);
+        gate.current.revoke();
+    setRunning(null);
+    setAttempt('empty');
+    setResults([]);
         setReport(null);
         setNotice({
           tone: 'ok',
@@ -280,21 +332,27 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
         });
       }
     } catch (e) {
-      setNotice({ tone: 'error', text: (e as Error).message });
+      if (current()) setNotice({ tone: 'error', text: (e as Error).message });
     } finally {
-      setExtracting(false);
+      if (extractionGate.current.owns(token)) setExtracting(false);
     }
   };
 
   /** Start a paired run. Settings over the limits are refused before anything runs. */
   const startRun = (job: PairedJob, onDone?: () => void) => {
+    const token = gate.current.begin();
+    setAttempt('running');
+    setRunning(null);
     const problems = checkRunSettings({ runs: job.runs, seed: job.seed, model: resolveModel(job.model, job.overlays).model });
     if (problems.length) {
+      setAttempt('failed');
       setNotice({ tone: 'error', text: `Not run: ${problems.map((p) => p.message).join('; ')}.` });
       return;
     }
     const apply = (o: RunOutcome<Array<PairedRunResult | null>>) => {
+      if (!gate.current.owns(token)) return;
       setRunning(null);
+      setAttempt(o.status === 'done' ? 'ready' : o.status === 'cancelled' ? 'cancelled' : 'failed');
       if (o.status === 'done') {
         setResults(storedResults(job, o.result));
         onDone?.();
@@ -306,9 +364,13 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
       apply(runner.runSync(job));
       return;
     }
-    const handle = runner.run('policy', job, { onProgress: (p) => setRunning((r) => (r ? { ...r, progress: p } : r)) });
-    setRunning({ progress: null, cancel: handle.cancel, what: 'paired comparison' });
-    handle.promise.then(apply);
+    observeAttempt(gate.current, token,
+      progress => runner.run('policy', job, { onProgress: progress }), {
+        progress: value => setRunning(r => r ? { ...r, progress: value as Progress } : r),
+        complete: apply,
+        error: error => { setRunning(null); setAttempt('failed'); setNotice({ tone: 'error', text: `The paired run failed: ${String(error)}` }); },
+      });
+    setRunning({ progress: null, cancel: () => { gate.current.revoke(); setRunning(null); setAttempt('cancelled'); }, what: 'paired comparison' });
   };
 
   // A link opened in the browser: run its comparison once, in the worker.
@@ -331,7 +393,7 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
 
   const copyLink = async () => {
     if (!drafts.length || imported) return;
-    const state = linkStateFor(model, overlays, drafts.filter((d) => d.modelId === model.id), runs, seed);
+    const state = linkStateFor(model, overlays, drafts.filter((d) => d.modelId === model.id), runs, seed, provenance);
     const payload = encodeLabLink(state);
     if (payload.length > MAX_LINK_PAYLOAD_CHARS) {
       setLinkText(null);
@@ -339,7 +401,9 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
       return;
     }
     const origin = typeof window !== 'undefined' ? window.location.origin : '';
-    const path = typeof window !== 'undefined' ? `${window.location.pathname}${window.location.search}` : '/';
+    const query = new URLSearchParams(typeof window !== 'undefined' ? window.location.search : '');
+    query.set('policyDraft', active === 1 ? 'B' : 'A');
+    const path = `${typeof window !== 'undefined' ? window.location.pathname : '/'}?${query.toString()}`;
     const url = buildLabShareUrl(state, origin, path);
     setLinkText(url);
     const ok = await copyText(url);
@@ -353,15 +417,46 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
     if (!draft || !activeResult || !activeFresh) return;
     // The source text travels only when it is the text the draft pins, so quotes can be re-checked on reopening.
     const pinned = sourceText.trim() && (!draft.source.textSha256 || sha256Hex(sourceText) === draft.source.textSha256);
-    const bundle = buildBundle(model, overlays, draft, activeResult.result, { sourceText: pinned ? sourceText : undefined, embedModel: imported });
-    download(bundleFileName(bundle), JSON.stringify(bundle, null, 2), 'application/json');
+    try {
+      const bundle = buildBundle(model, overlays, draft, activeResult.result, { sourceText: pinned ? sourceText : undefined, embedModel: imported, importWarnings, provenance });
+      download(bundleFileName(bundle), JSON.stringify(bundle, null, 2), 'application/json');
+    } catch (e) { setNotice({ tone: 'error', text: (e as Error).message }); }
   };
 
-  const openBundleText = async (text: string) => {
+  const sourceDraftSupported = (draft: PolicyDraft, model: CoreModel, overlays: Overlay[]) => {
+    try { return !validateDraft(draft, model, {overlays}).some((d) => d.code === 'schema'); }
+    catch { return false; }
+  };
+
+  const openBundleText = async (text: string, current: () => boolean, token: number) => {
+    if (!current()) return;
+    const runOwned = <J extends RunJob>(job: J) => {
+      if (runner.mode === 'sync') return Promise.resolve(runner.runSync(job));
+      const handle = runner.run('bundle', job);
+      gate.current.attach(token, handle.cancel);
+      return handle.promise;
+    };
+    setRunning(null);
+    setAttempt('failed');
+    setSourceCandidate(null);
     const parsed = parseBundleJson(text);
     if (parsed.ok === false) {
       setReport(null);
       setNotice({ tone: 'error', text: `Cannot open this bundle: ${(parsed as { reason: string }).reason}` });
+      // Unknown schema has no replay contract. A bounded, validated embedded source can
+      // still be offered explicitly; no recorded results or certification are adopted.
+      if (text.length <= 5_000_000) {
+        try {
+          const source = JSON.parse(text);
+          if (typeof source?.schema === 'string' && source.schema.startsWith('policy-bundle/') && source.model && source.draft?.source && Array.isArray(source.draft.provisions) && Array.isArray(source.overlays)) {
+            const checked = await runOwned({kind: 'validate-model', json: source.model});
+            if (!current()) return;
+            if (checked.status === 'done' && (checked.result as ValidationResult).ok && sourceDraftSupported(source.draft, (checked.result as ValidationResult).model!, source.overlays)) {
+              setSourceCandidate({model: (checked.result as ValidationResult).model!, overlays: source.overlays, draft: source.draft, sourceText: typeof source.sourceText === 'string' ? source.sourceText : undefined, reason: parsed.reason});
+            }
+          }
+        } catch { /* The original parse error remains visible. */ }
+      }
       return;
     }
     const bundle = parsed.value!;
@@ -369,7 +464,8 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
     let status: ModelStatus = 'curated';
     if (bundle.model) {
       // A carried model is validated like any import before anything runs, and is never curated.
-      const v = runner.mode === 'sync' ? runner.runSync({ kind: 'validate-model', json: bundle.model }) : await runner.run('bundle', { kind: 'validate-model', json: bundle.model }).promise;
+      const v = await runOwned({ kind: 'validate-model', json: bundle.model });
+      if (!current()) return;
       const vr = v.status === 'done' ? (v.result as ValidationResult) : null;
       if (!vr || !vr.ok || !vr.model) {
         setReport(null);
@@ -382,7 +478,8 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
       status = 'imported';
     }
     setNotice({ tone: 'ok', text: 'Re-running the bundle to check it reproduces…' });
-    const outcome = runner.mode === 'sync' ? runner.runSync({ kind: 'reopen-bundle', bundle, models }) : await runner.run('bundle', { kind: 'reopen-bundle', bundle, models }).promise;
+    const outcome = await runOwned({ kind: 'reopen-bundle', bundle, models });
+    if (!current()) return;
     if (outcome.status !== 'done') {
       setReport(null);
       setNotice({ tone: 'error', text: `Cannot open this bundle: ${(outcome as { message: string }).message}` });
@@ -390,8 +487,9 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
     }
     const rep = outcome.result as ReopenReport;
     setReport(rep);
-    if (rep.model && rep.draft && rep.overlays) {
-      onOpenScenario(rep.model, rep.overlays, status);
+    if (rep.status !== 'reproduced' && bundle.model && sourceDraftSupported(bundle.draft, bundle.model, bundle.overlays)) setSourceCandidate({model: bundle.model, overlays: bundle.overlays, draft: bundle.draft, sourceText: bundle.sourceText, reason: rep.errors.join(' ')});
+    if (rep.status === 'reproduced' && rep.model && rep.draft && rep.overlays) {
+      onOpenScenario(rep.model, rep.overlays, status, bundle.importWarnings, scenarioProvenance(rep.model, rep.overlays, bundle.provenance));
       setDrafts([rep.draft]);
       setActive(0);
       setSourceTitle(rep.draft.source?.title ?? '');
@@ -400,8 +498,10 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
       setRuns(parsed.value.manifest.runs);
       setSeed(parsed.value.manifest.seed);
       setResults(rep.rerun ? [{ key: runKey(rep.model, rep.overlays, rep.draft, parsed.value.manifest.runs, parsed.value.manifest.seed, parsed.value.sourceText ?? ''), result: rep.rerun }] : []);
-      setNotice(rep.status === 'cannot-open' ? { tone: 'error', text: 'The bundled draft is loaded for inspection only; it was not run. Fix the errors listed below, then run it.' } : null);
+      setAttempt(rep.rerun ? 'ready' : 'empty');
+      setNotice(null);
     } else {
+      setAttempt('failed');
       setNotice({ tone: 'error', text: rep.errors.join(' ') });
     }
   };
@@ -409,13 +509,27 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
   const onFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    file.text().then((t) => void openBundleText(t), (err: Error) => setNotice({ tone: 'error', text: `Could not read the file: ${err.message}` }));
+    const token = gate.current.begin();
+    const context = operationContext.current;
+    const current = () => ownsContext(gate.current, token, context, operationContext.current);
+    setRunning(null);
+    setAttempt('failed');
+    setSourceCandidate(null);
     e.target.value = '';
+    if (file.size > 5_000_000) { setNotice({tone: 'error', text: 'The bundle exceeds the 5 MB reopen limit.'}); return; }
+    void (async () => {
+      try {
+        const text = await file.text();
+        if (!current()) return;
+        await openBundleText(text, current, token);
+      } catch (error) {
+        if (current()) { setReport(null); setAttempt('failed'); setNotice({tone:'error',text:`Cannot open this bundle: ${error instanceof Error ? error.message : String(error)}`}); }
+      }
+    })();
   };
 
   // -- view -------------------------------------------------------------------
 
-  const cov = draft ? coverage(draft, sourceText.trim() ? sourceText : undefined) : null;
   const d = draft ? diagnostics[active] ?? [] : [];
   const errors = d.filter((x) => x.level === 'error');
   const draftWarnings = d.filter((x) => x.level === 'warning' && !x.provisionId);
@@ -440,6 +554,15 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
         </p>
       </header>
 
+      {provenance && provenance.kind !== 'fixture' && <p role="note" className="text-xs text-amber-700 dark:text-amber-300">Experimental scenario — not curated. Base model: {modelStatus === 'curated' ? 'known fixture' : 'imported'}.{provenance.reason ? ` Source import reason: ${provenance.reason}` : ''}</p>}
+      {sourceCandidate && <button type="button" className={btnPlain} onClick={() => {
+        const c = sourceCandidate;
+        const importedDraft: PolicyDraft = { ...c.draft, modelId: c.model.id, modelHash: modelHash(c.model), reviewStatus: 'author-drafted', reviewedBy: undefined, completeness: undefined };
+        onOpenScenario(c.model, c.overlays, curatedMatch(c.model) ? 'curated' : 'imported', [`NEW experimental source import; not replay: ${c.reason}`], {kind: 'source-import', reason: c.reason});
+        setDrafts([importedDraft]); setActive(0); setResults([]); setReport(null);
+        setSourceTitle(importedDraft.source?.title ?? ''); setSourceUrl(importedDraft.source?.url ?? ''); setSourceText(c.sourceText ?? '');
+        setSourceCandidate(null); setNotice({tone: 'ok', text: `Source imported for a NEW experimental run. Recorded results were not reproduced: ${c.reason}. Inspect the draft and run explicitly.`});
+      }}>Import bundle source for a NEW experimental run (not replay)</button>}
       {notice && (
         <p
           role="status"
@@ -629,12 +752,13 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
                 />
               </p>
               <p className={`font-semibold ${cov.source.status === 'complete' ? 'text-slate-700 dark:text-slate-200' : 'text-amber-700 dark:text-amber-300'}`}>
-                {`Source: ${cov.source.text}`}
+                {`Quotation coverage: ${cov.source.text}`}
                 <Hint
                   label="source coverage"
                   text="The source text is split into clauses by its own structure (sections and (a)/(1)/(A)/(i) subdivisions, or paragraphs and sentences), so the denominator does not depend on the draft. A clause counts when a provision quotes it or it is excluded with a kind and a reason."
                 />
               </p>
+              <p className="text-amber-700 dark:text-amber-300">{cov.operative.text}</p>
               <p className={cov.completeness.attested ? 'text-slate-700 dark:text-slate-200' : 'text-amber-700 dark:text-amber-300'}>{`Completeness: ${cov.completeness.text}`}</p>
             </div>
           )}
@@ -653,6 +777,20 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
                       <span className="min-w-0 flex-1 truncate text-slate-500 dark:text-slate-400">{(clauseText.get(c.id) ?? '').replace(/\s+/g, ' ').trim().slice(0, 120)}</span>
                     </div>
                     {c.provisions.length > 0 && <p className="mt-0.5 text-[11px] text-slate-600 dark:text-slate-300">quoted by {c.provisions.join(', ')}</p>}
+                    <div className="mt-2 space-y-1">
+                      <p>{clauseText.get(c.id)}</p>
+                      <label>Operative disposition
+                        <select aria-label={`operative disposition for ${c.id}`} className={`${field} h-11`} value={draft?.clauseDispositions?.find(d => d.clauseId === c.id)?.status ?? 'unresolved'} onChange={e => edit(x => ({ ...x, clauseDispositions: [...(x.clauseDispositions ?? []).filter(d => d.clauseId !== c.id), { ...(x.clauseDispositions?.find(d => d.clauseId === c.id) ?? { clauseId: c.id, reason: '' }), status: e.target.value as 'linked' | 'unresolved' | 'outside-model' | 'not-operative' }] }))}>
+                          {['unresolved', 'linked', 'outside-model', 'not-operative'].map(s => <option key={s}>{s}</option>)}
+                        </select>
+                      </label>
+                      <input aria-label={`operative reason for ${c.id}`} className={field} placeholder="Explain all mechanisms and restrictions in this clause" value={draft?.clauseDispositions?.find(d => d.clauseId === c.id)?.reason ?? ''} onChange={e => edit(x => ({ ...x, clauseDispositions: [...(x.clauseDispositions ?? []).filter(d => d.clauseId !== c.id), { ...(x.clauseDispositions?.find(d => d.clauseId === c.id) ?? { clauseId: c.id, status: 'unresolved' as const }), reason: e.target.value }] }))} />
+                      <label>Linked provisions (select every applicable mechanism)
+                        <select multiple aria-label={`operative provision ids for ${c.id}`} className={field} value={draft?.clauseDispositions?.find(d => d.clauseId === c.id)?.provisionIds ?? []} onChange={e => { const provisionIds = Array.from(e.currentTarget.selectedOptions as HTMLCollectionOf<HTMLOptionElement>, option => option.value); edit(x => ({ ...x, clauseDispositions: [...(x.clauseDispositions ?? []).filter(d => d.clauseId !== c.id), { ...(x.clauseDispositions?.find(d => d.clauseId === c.id) ?? { clauseId: c.id, status: 'unresolved' as const, reason: '' }), provisionIds }] })); }}>
+                          {draft?.provisions.map(p => <option key={p.id} value={p.id}>{p.id} — {p.summary}</option>)}
+                        </select>
+                      </label>
+                    </div>
                     {c.exclusion ? (
                       <div className="mt-1 grid grid-cols-1 sm:grid-cols-4 gap-1">
                         <select
@@ -711,7 +849,7 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
                       Attest completeness: your name
                       <Hint
                         label="completeness attestation"
-                        text="A named person states that the provisions and exclusions cover the whole source text. It is recorded with the date and the text's SHA-256, dropped when the draft is edited, and never made by an AI extraction or a coding agent. Without it, exports say completeness is not attested."
+                        text="A named person reviews every operative clause, including its mapping or unresolved/outside-model disposition and exclusions. The statement binds the source and current draft content, expires on edits, and is not independent legal certification. Quotation coverage alone is insufficient."
                       />
                     </label>
                     <input id="policy-attest-name" className={`${field} h-11 w-48`} value={attestName} onChange={(e) => setAttestName(e.target.value)} />
@@ -729,7 +867,7 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
                     onClick={() =>
                       setDraft(active, {
                         ...draft,
-                        completeness: { name: attestName.trim(), kind: 'person', date: today(), statement: attestStatement.trim(), textSha256: sha256Hex(sourceText) },
+                        completeness: { name: attestName.trim(), kind: 'person', date: today(), statement: attestStatement.trim(), textSha256: sha256Hex(sourceText), contentBinding: attestationBinding(draft) },
                       })
                     }
                   >
@@ -837,7 +975,11 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
             </p>
           </div>
 
-          {entries.length > 0 && <PolicyResults model={scenarioModel} entries={entries} active={Math.min(active, entries.length - 1)} year={year} onYear={setYear} modelStatus={modelStatus} />}
+          <p className="text-xs">{coverageText}</p>
+          {noMapped && <p role="note" className="text-sm font-semibold">Nothing from this proposal is represented in the calculation. Identical curves are a structural baseline comparison, not an estimated zero policy effect.</p>}
+          <p className="text-xs">Unresolved and outside-model provisions do not affect these curves. This is a partial model comparison, not a net welfare ranking.</p>
+          {onOpenResultView && <button className={btnPlain} onClick={onOpenResultView}>Open policy comparison in Charts</button>}
+          {activeFresh ? <PolicyResults model={scenarioModel} entries={entries} active={entries.findIndex(e => e.slot === active)} year={year} onYear={setYear} modelStatus={modelStatus} /> : results.length > 0 && <p role="status">Current comparison: {viewStatus}. {activeResult?.result.errors.join("; ")} Run again to display current results.</p>}
 
           {draft && (
             <details className="rounded-lg bg-slate-100 dark:bg-slate-800/60 px-3 py-2 text-xs">

@@ -30,7 +30,7 @@ describe('parseUnit', () => {
     expect(parseUnit('%')).toMatchObject({ dimension: 'share', scale: 0.01 });
     expect(parseUnit('share_of_L')).toMatchObject({ dimension: 'share', kind: 'l' });
     expect(parseUnit('share_per_month')).toMatchObject({ dimension: 'share', time: 'month' });
-    expect(parseUnit('thousand workers')).toMatchObject({ dimension: 'count', kind: 'people', scale: 1e3 });
+    expect(parseUnit('thousand workers')).toMatchObject({ dimension: 'count', kind: 'worker', scale: 1e3 });
     expect(parseUnit('jobs')).toMatchObject({ dimension: 'count', kind: 'jobs' });
     expect(parseUnit('per_year')).toMatchObject({ dimension: 'dimensionless', time: 'year' });
     expect(parseUnit('log_gap')).toMatchObject({ dimension: 'opaque' });

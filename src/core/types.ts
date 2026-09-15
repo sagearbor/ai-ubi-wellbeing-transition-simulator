@@ -124,7 +124,7 @@ export interface SolveBlock {
   bracket: [number, number];
   /** Absolute floor for residual acceptance when residualTol is not given. Default 1e-9. */
   tol?: number;
-  /** A candidate is accepted as a root only if |residual| <= residualTol (default: max(tol, 1e-9 x |residual at the bracket ends|)). */
+  /** A candidate is accepted as a root only if |residual| <= residualTol (default: residualTol ?? tol ?? 1e-9, absolute and independent of bracket endpoint magnitude). */
   residualTol?: number;
   maxIter?: number;
   unit?: string;
@@ -283,6 +283,9 @@ export interface RunManifest {
   /** Monte Carlo draw index (0 for a deterministic run). */
   run: number;
   engineVersion: string;
+  numerical: Record<string, string>;
+  requestedRuns?: number;
+  effectiveRuns?: number;
   createdAt: string;
 }
 

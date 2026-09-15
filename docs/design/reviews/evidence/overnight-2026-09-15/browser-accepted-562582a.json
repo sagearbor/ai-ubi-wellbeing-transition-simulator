@@ -1,0 +1,15 @@
+{
+  "accepted": 61,
+  "adversarial": {
+    "derived": "unreviewed",
+    "equations": "unreviewed",
+    "import": "unreviewed",
+    "money": "unreviewed",
+    "workforce": "unreviewed"
+  },
+  "checked": 61,
+  "commit": "562582a",
+  "failed": [],
+  "reviewerScope": "Conditional source/allocation accounting only",
+  "source": "950d3fb43937e507c4a2cf67599c92105430a320c337712851a5067a28f3291e"
+}

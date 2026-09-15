@@ -1,3 +1,6 @@
+import type { SimulationRun } from '../../simulation/run';
+import { conditionalWorld } from '../../simulation/conditionalWorld';
+import { assertRunSupported } from '../../simulation/capabilities';
 /**
  * Scenario Share/Export Service (P9-T8)
  *
@@ -135,24 +138,33 @@ export function buildScenarioShareUrl(
 
 /** What a `#share=` link carries: the model parameters and the country dataset they ran on. */
 export interface SharePayload {
+  run?: SimulationRun;
   model?: ModelParameters;
   countryDataset: CountryDatasetId;
 }
 
 /** Base64 payload for a `#share=` link (ASCII-safe JSON, as the links have always been). */
-export function encodeSharePayload(model: ModelParameters, countryDataset: CountryDatasetId): string {
-  return utf8ToBase64(JSON.stringify({ model, countryDataset }));
+export function encodeSharePayload(model: ModelParameters, countryDataset: CountryDatasetId, run?: SimulationRun): string {
+  return utf8ToBase64(JSON.stringify({ model, countryDataset, ...(run ? {version: 2, run} : {}) }));
 }
 
 /** Decode a `#share=` payload. Links made before the 2026-09 migration have no dataset id: legacy. */
 export function decodeSharePayload(encoded: string): SharePayload {
-  let parsed: { model?: ModelParameters; countryDataset?: unknown };
+  let parsed: { model?: ModelParameters; countryDataset?: unknown; run?: SimulationRun; version?: number };
   try {
     parsed = JSON.parse(base64ToUtf8(encoded));
   } catch (err) {
     throw new ScenarioParseError(`Link is not valid share data: ${err instanceof Error ? err.message : String(err)}`);
   }
-  return { model: parsed?.model, countryDataset: resolveCountryDataset(parsed?.countryDataset) };
+  const countryDataset=resolveCountryDataset(parsed?.countryDataset);
+  let run: SimulationRun | undefined;
+  if(parsed.model?.executionMode) {
+    if(parsed.version!==2 || !parsed.run || parsed.run.state.countryDataset!==countryDataset) throw new ScenarioParseError('Conditional share needs its complete economic inputs and matching dataset');
+    assertRunSupported(parsed.model,parsed.run.state.month);
+    run=conditionalWorld({state:parsed.run.state,corporations:parsed.run.corporations,model:parsed.model},false,true);
+    run.state.importedUnverified=true;
+  }
+  return { model: parsed?.model, countryDataset, ...(run?{run}:{}) };
 }
 
 /**

@@ -89,6 +89,7 @@ export interface ProvisionMapping {
    * ("in addition to" versus "instead of").
    */
   stacksOn?: string;
+  timeAssumption?: import('./units').ConversionContext['timeAssumption'];
   /** Where the mapped number comes from, and what kind of claim it is. */
   evidence: Source;
 }
@@ -131,7 +132,25 @@ export interface ClauseExclusion {
  * it, every export says "completeness not attested". An AI or a coding agent cannot attest — least of
  * all its own extraction.
  */
+export interface ClauseDisposition {
+  clauseId: string;
+  status: 'linked' | 'unresolved' | 'outside-model' | 'not-operative';
+  /** Explain all operative mechanisms, including restrictions in the same clause. */
+  reason: string;
+  provisionIds?: string[];
+}
+
+export interface OperativeCoverage {
+  clauses: number;
+  accounted: number;
+  outsideModel: string[];
+  unresolved: string[];
+  text: string;
+}
+
 export interface CompletenessAttestation {
+  /** Binds source, provisions, mappings, exclusions and operative dispositions. */
+  contentBinding?: string;
   name: string;
   kind: 'person' | 'agent' | 'ai';
   date: string;
@@ -160,6 +179,7 @@ export interface PolicyDraft {
   /** Clauses of the source deliberately not given a provision, each with a kind and a reason. */
   exclusions?: ClauseExclusion[];
   completeness?: CompletenessAttestation;
+  clauseDispositions?: ClauseDisposition[];
   notes?: string;
 }
 
@@ -226,6 +246,7 @@ export interface Coverage {
   statusText: string;
   /** Coverage of the source text's clauses: the denominator comes from the text, not the draft. */
   source: SourceCoverageSummary;
+  operative: OperativeCoverage;
   completeness: CompletenessSummary;
 }
 
@@ -255,6 +276,10 @@ export interface PolicyRunManifest {
   modelName: string;
   modelHash: string;
   engineVersion: string;
+  numerical: Record<string, string>;
+  /** Identity of numerical inputs and source; excludes creation time. */
+  hash: string;
+  sourceHash: string | null;
   /** Scenario overlays both sides share (the baseline), in order, with content hashes. */
   baselineOverlays: Array<{ id: string; hash: string }>;
   policyOverlayId: string;
@@ -264,7 +289,7 @@ export interface PolicyRunManifest {
   reviewStatus: ReviewStatus;
   draftedBy?: DraftedBy;
   reviewedBy?: { name: string; date?: string };
-  coverage: Pick<Coverage, 'total' | 'mapped' | 'unresolved' | 'outsideModel' | 'allHaveStatus' | 'statusText'> & {
+  coverage: Pick<Coverage, 'total' | 'mapped' | 'unresolved' | 'outsideModel' | 'allHaveStatus' | 'statusText' | 'operative'> & {
     source: Omit<SourceCoverageSummary, 'uncovered'> & { uncovered: number };
     completeness: string;
   };

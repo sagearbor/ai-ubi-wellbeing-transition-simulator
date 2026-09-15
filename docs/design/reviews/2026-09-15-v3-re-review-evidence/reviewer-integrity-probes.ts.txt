@@ -1,0 +1,39 @@
+import { readFileSync } from 'node:fs';
+import {inv,multiply,transpose} from 'mathjs';
+import {checkLedger} from './validation/ledger';
+import {preflight} from './src/workers/execute';
+import {runMonteCarlo, runModel} from './src/core/engine';
+import {initialRun,initOptionsFor,runMonths} from './simulation/run';
+import {DEFAULT_MODEL,PRESET_MODELS,countriesForDataset,wellbeingAnchorCoefficientsFor} from './constants';
+import {headlineStats} from './simulation/appState';
+import {classifyImport} from './components/lab/importState';
+import {unitFactor} from './src/policy/units';
+import training from './data/core/training-budget.json';
+const read=(p:string)=>JSON.parse(readFileSync(p,'utf8')); const out=(label:string,value:unknown)=>console.log(JSON.stringify({label,value}));
+const ledger=read('data/ledger/reference-targets.json');
+const pin=structuredClone(ledger.entries.find((e:any)=>e.id==='gp-fig3a-p100-tau0.5'));
+delete pin.compute;pin.status='reproduced-with-caveat';pin.caveat='Review probe: known miss presented as caveated success';
+out('miss-with-compute-deleted',checkLedger({current:{...ledger,entries:[pin]},previous:[{...ledger,entries:[ledger.entries.find((e:any)=>e.id===pin.id)]}],computed:new Map(),testFiles:{'src/core/gasteigerPrettner.test.ts':'it("pins a miss",()=>{})'},targetKeys:[]}));
+const large:any={...training,time:{start:0,end:4999,step:'year'},entities:{ids:Array.from({length:500},(_,i)=>'e'+i)},parameters:[],inputs:[],invariants:[],tests:[],variables:Array.from({length:250},(_,i)=>({id:'v'+i,equation:'1'})),outputs:['v0']};
+out('large-run-preflight-no-allocation',{errors:preflight({kind:'monte-carlo',model:large,overlays:[],runs:2000,seed:1}),valuesPerDraw:500*5000*250,minimumNumericBytesPerDraw:500*5000*250*8,jsonBytes:JSON.stringify(large).length});
+for(const runs of [2,3]){const r=runMonteCarlo(training as any,{runs,seed:1});out('MC-identity-'+runs,{ok:r.ok,hash:r.manifest.hash,runs:r.runs,completions:r.quantiles._?.completions});}
+for(const dataset of ['countries-legacy-v1','countries-wb-2026-09'] as const){
+ const file=read(dataset==='countries-legacy-v1'?'data/countries/legacy-hand-entered.json':'data/countries/wb-2026-09.json');const ladder=read('data/hindcast/wellbeing-ladder.json').data;const gdp=read('data/hindcast/gdp-per-capita.json').data;
+ const X:number[][]=[],Y:number[]=[],ids:string[]=[];
+ for(const c of file.countries)for(const y of [2015,2020,2025])if(typeof ladder[c.id]?.[y]==='number' && gdp[c.id]?.[y]>0){X.push([1,Math.log(gdp[c.id][y]),c.governance.value]);Y.push(ladder[c.id][y]*10);ids.push(c.id);}
+ const xt=transpose(X), bread=inv(multiply(xt,X) as any) as any,beta=multiply(multiply(bread,xt),Y) as unknown as number[];
+ const residual=Y.map((y,i)=>y-X[i].reduce((s,v,j)=>s+v*beta[j],0));const sse=residual.reduce((s,v)=>s+v*v,0);const sigma2=sse/(Y.length-3);
+ const clustered=new Map<string,number[]>();ids.forEach((id,i)=>{const u=clustered.get(id)??[0,0,0];X[i].forEach((x,j)=>u[j]+=x*residual[i]);clustered.set(id,u)});
+ const meat=Array.from({length:3},()=>[0,0,0]);for(const u of clustered.values())for(let i=0;i<3;i++)for(let j=0;j<3;j++)meat[i][j]+=u[i]*u[j];
+ const cov=multiply(multiply(bread,meat),bread) as unknown as number[][];const G=clustered.size; const adj=G/(G-1)*(Y.length-1)/(Y.length-3);
+ out('independent-OLS-'+dataset,{n:Y.length,countries:G,beta,ordinarySE:[0,1,2].map(i=>Math.sqrt(sigma2*bread[i][i])),clusterSE:[0,1,2].map(i=>Math.sqrt(cov[i][i]*adj)),stored:file.wellbeingAnchor});
+}
+const old=read('data/countries/legacy-hand-entered.json'),fresh=read('data/countries/wb-2026-09.json');const x=fresh.countries.map((c:any)=>(c.governance.components.GE+c.governance.components.RL+c.governance.components.CC)/3);const y=fresh.countries.map((c:any)=>old.countries.find((d:any)=>c.id===d.id).governance.value);
+const mean=(a:number[])=>a.reduce((s,v)=>s+v,0)/a.length;const sd=(a:number[])=>Math.sqrt(mean(a.map(v=>(v-mean(a))**2)));const slope=sd(y)/sd(x);out('independent-governance-match',{intercept:mean(y)-slope*mean(x),slope,clipped:fresh.countries.filter((c:any)=>c.governance.value===1).map((c:any)=>c.id)});
+for(const g of [.7999,.8001]){
+ const countries=countriesForDataset('countries-wb-2026-09').map(c=>c.id==='USA'?{...c,governance:g,archetype:g<.8?'middle-stable':'rich-democracy',cognitiveShare:undefined,naturalUnemployment:undefined}:c) as any;
+ const r=runMonths(initialRun(undefined,countries,initOptionsFor(DEFAULT_MODEL,'countries-wb-2026-09')),60,{model:DEFAULT_MODEL})[60];const c=r.state.countryData.USA;
+ out('threshold-'+g,{cognitiveShare:c.cognitiveShare,gdpGap:c.gdpPerCapita/c.gdpNoAi!-1,wellbeing:c.wellbeing});
+}
+const world=runMonths(initialRun(undefined,undefined,initOptionsFor(DEFAULT_MODEL,'countries-wb-2026-09')),1,{model:DEFAULT_MODEL})[1];out('map-dividend',{headline:headlineStats(world.state),globalPool:world.state.globalFund,population:countriesForDataset('countries-wb-2026-09').reduce((s,c)=>s+c.population,0)});
+out('stale-model-package',classifyImport({schema:'core-model-export/1',engineVersion:'core-0.1.0',modelHash:'wrong',model:training,overlays:[]}));

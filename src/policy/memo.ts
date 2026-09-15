@@ -94,6 +94,7 @@ export function renderMemo(input: MemoInput): string {
   push(`- **Provisions listed:** ${cov.text}; ${cov.statusText}. This counts only what the draft lists.`);
   push(`- **Source coverage:** ${cov.source.text}${cov.source.status === 'complete' || cov.source.status === 'incomplete' ? ` (clause inventory ${cov.source.inventoryVersion})` : ''}.`);
   if (cov.source.uncovered.length) push(`  - Neither quoted nor excluded: ${cov.source.uncovered.map((id) => `\`${id}\``).join(', ')}`);
+  push(`- **Operative coverage:** ${cov.operative.text}.`);
   push(`- **Completeness:** ${cov.completeness.text}.${cov.completeness.attested && cov.completeness.attestation ? ` Statement: "${normaliseWhitespace(cov.completeness.attestation.statement)}"` : ' No person has attested that the provisions and exclusions cover the whole text.'}`);
   if (draft.notes) push(`- **Drafting notes:** ${normaliseWhitespace(draft.notes)}`);
   push('');

@@ -115,6 +115,7 @@ export function applyUsReference(country: CountryStats, worldMonth: number, scen
   // GDP gap x that share differs from its labour-income series by up to 0.7 pp (extreme, 2030), so
   // the engine's labour share is set to the value that reproduces the labour-income series exactly:
   // GDP per capita x laborShare / 0.60 = no-AI GDP x (1 + labour-income gap).
+  country.printedLaborShare = p.laborShare;
   country.laborShare = BASE_LABOR_SHARE * (1 + p.laborIncomeGap) / (1 + p.gdpGap);
   country.naturalUnemployment = path.naturalUnemployment;
   country.unemployment = p.unemployment;

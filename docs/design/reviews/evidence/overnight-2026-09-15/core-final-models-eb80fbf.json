@@ -1,0 +1,4 @@
+{
+  "body": "Transition Engine\n\nABUNDANCE CYCLE V0.14\n\nMAP\nCHARTS\nCORPORATIONS\nFUTURES\nMORE\nCOMPARE MAPS\nActive Model\nUsing default model (hardcoded equations)\nLegacy flow uploads have a limited execution scope. In a supported legacy flow, the five required hooks replace their built-in formulas on each simulation step. Conditional and anchored wellbeing modes refuse uploaded wellbeing hooks. Optional demand-collapse, reputation, and Gini-damping hooks retain their defaults; changing them is refused. The anchor tests run the supported legacy hooks. Use Model Lab for general equation, stock, flow, solve-block, and overlay authoring.\nUpload Model\nCreate/Edit Model\nUpload Model Configuration\n\nDrop model file here\n\nor click to browse (JSON/YAML)\n\nCancel\nApply Model",
+  "text": "l"
+}

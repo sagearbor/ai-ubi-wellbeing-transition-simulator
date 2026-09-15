@@ -1,0 +1,37 @@
+import {writeFileSync,readFileSync} from 'node:fs';
+import {DEFAULT_MODEL,PRESET_MODELS,DEFAULT_EQUATIONS} from './constants';
+import {getCompiledEquationSet} from './src/services/equationParser';
+import {initialRun,initOptionsFor,advanceRun,runMonths} from './simulation/run';
+import {checkLedger} from './validation/ledger';
+import {runModel} from './src/core/engine';
+for(const model of [DEFAULT_MODEL,PRESET_MODELS[0]]){
+ const initial=initialRun(undefined,undefined,initOptionsFor(model,'countries-wb-2026-09'));
+ for(const formula of ['0','-50']){
+  const equations=getCompiledEquationSet({...DEFAULT_EQUATIONS,wellbeingDelta:formula});
+  const next=advanceRun(initial,{model,equations});
+  console.log(JSON.stringify({probe:'uploaded-equation',model:model.id,formula,usa:next.state.countryData.USA.wellbeing}));
+ }
+}
+const ledger=JSON.parse(readFileSync('data/ledger/reference-targets.json','utf8'));
+const original=ledger.entries.find((e:any)=>e.id==='gp-fig3a-p100-tau0.5');
+const pin={...original,status:'reproduced-with-caveat',caveat:'Review probe: known miss presented as caveated success'};delete pin.compute;
+console.log(JSON.stringify({probe:'known-miss-real-test-source',result:checkLedger({current:{...ledger,entries:[pin]},previous:[{...ledger,entries:[original]}],computed:new Map(),testFiles:{'src/core/gasteigerPrettner.test.ts':readFileSync('src/core/gasteigerPrettner.test.ts','utf8')},targetKeys:[]})}));
+const base:any={schemaVersion:1,id:'order',name:'order',time:{start:2026,end:2026,step:'year'},parameters:[],variables:[],outputs:[]};
+for(const extra of [
+ {variables:[{id:'x',equation:'u'},{id:'y',equation:'u'}],effects:[{id:'add',target:'x',op:'add',expr:'y',source:{label:'review',kind:'assumed'}}],solves:[{id:'root',unknown:'u',residual:'x-1',bracket:[0,2],through:['x','y']}],outputs:['u','x','y']},
+ {variables:[{id:'s',initial:'later',equation:'s[t-1]'},{id:'later',equation:'2'}],outputs:['s','later']}
+]){const r=runModel({...base,...extra});console.log(JSON.stringify({probe:'dependency-values',ok:r.ok,series:r.series,diagnostics:r.diagnostics}));}
+
+import training from './data/core/training-budget.json';
+import worked from './data/policy/examples/s3877-itwa-2026.draft.json';
+import source from './data/policy/examples/s3877-itwa-2026.source.json';
+import {pairedRun} from './src/policy/draft';
+import {buildBundle,reopenBundle} from './src/policy/bundle';
+const sourceText=(source as any).text;
+const paired=pairedRun(training as any,[],worked as any,{sourceText,runs:3,seed:1});
+const bundle=buildBundle(training as any,[],worked as any,paired,{sourceText,embedModel:true});
+for(const corrupt of [false,true]){
+ const b=structuredClone(bundle);if(corrupt)b.results.policy._.completions.p50[0]+=100;
+ const reopened=reopenBundle(b,()=>training as any);
+ console.log(JSON.stringify({probe:'bundle-reopen',corrupt,sourceChars:sourceText?.length,status:reopened.status,compared:reopened.compared,maxAbsDiff:reopened.maxAbsDiff,errors:reopened.errors}));
+}

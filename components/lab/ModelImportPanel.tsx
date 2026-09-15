@@ -7,6 +7,7 @@
  * listed, with fields the format does not support called out as unsupported capabilities.
  */
 
+import type { ScenarioProvenance } from '../../src/policy/provenance';
 import React, { useRef, useState } from 'react';
 import { ChevronRight, FileUp } from 'lucide-react';
 import type { CoreModel, Overlay } from '../../src/core/types';
@@ -20,7 +21,7 @@ export interface ModelImportPanelProps {
   runner: Runner;
   /** The model an imported overlay is applied to. */
   currentModel: CoreModel;
-  onImportModel: (model: CoreModel, overlays: Overlay[], warnings: string[]) => void;
+  onImportModel: (model: CoreModel, overlays: Overlay[], warnings: string[], provenance?: ScenarioProvenance) => void;
   onImportOverlay: (overlay: Overlay, warnings: string[]) => void;
   /** The file is an exact copy of a bundled model: open that instead. */
   onSelectCurated: (id: string) => void;
@@ -37,6 +38,7 @@ async function validated<T extends ValidationResult>(p: Promise<RunOutcome<T>>):
 
 const ModelImportPanel: React.FC<ModelImportPanelProps> = ({ runner, currentModel, onImportModel, onImportOverlay, onSelectCurated }) => {
   const [text, setText] = useState('');
+  const [sourceImport, setSourceImport] = useState(false);
   const [busy, setBusy] = useState(false);
   const [errors, setErrors] = useState<string[]>([]);
   const [notice, setNotice] = useState<string | null>(null);
@@ -59,6 +61,9 @@ const ModelImportPanel: React.FC<ModelImportPanelProps> = ({ runner, currentMode
       setErrors(['This is a policy bundle, not a model file. Open it with "Open a bundle" in the Policy panel below; a bundle that carries its model opens that model too.']);
       return;
     }
+    if (c.kind === 'incompatible-package' && !sourceImport) {
+      setErrors([`This package cannot replay: ${c.reason}. Choose explicit source import below to start a NEW experimental run.`]); return;
+    }
     setBusy(true);
     try {
       if (c.kind === 'overlay') {
@@ -75,8 +80,8 @@ const ModelImportPanel: React.FC<ModelImportPanelProps> = ({ runner, currentMode
       if (!vm.value.ok || !vm.value.model) return setErrors(explainValidationErrors(vm.value.errors));
       const model = vm.value.model;
       const overlays: Overlay[] = [];
-      const warnings = [...vm.value.warnings];
-      if (c.kind === 'package') {
+      const warnings = [...vm.value.warnings, ...('warnings' in c ? c.warnings ?? [] : []), ...(c.kind === 'incompatible-package' ? [`NEW experimental source import; not replay: ${c.reason}`] : [])];
+      if (c.kind === 'package' || c.kind === 'incompatible-package') {
         const problems: string[] = [];
         for (const [i, o] of c.overlays.entries()) {
           const vo = await validated<OverlayValidationResult>(runner.run('import', { kind: 'validate-overlay', base: model, json: o }).promise);
@@ -89,12 +94,13 @@ const ModelImportPanel: React.FC<ModelImportPanelProps> = ({ runner, currentMode
         }
         if (problems.length) return setErrors(problems);
       }
+      const provenance: ScenarioProvenance | undefined = c.kind === 'incompatible-package' ? {kind: 'source-import', reason: c.reason} : c.kind === 'package' ? c.provenance : undefined;
       const curated = curatedMatch(model);
-      if (curated && overlays.length === 0) {
+      if (curated && overlays.length === 0 && c.kind !== 'incompatible-package' && (!provenance || provenance.kind === 'fixture')) {
         onSelectCurated(curated.model.id);
         setNotice(`This file is the bundled model "${curated.model.id}" exactly (same version), so the curated copy is open.`);
       } else {
-        onImportModel(model, overlays, warnings);
+        onImportModel(model, overlays, warnings, provenance);
         setNotice(`Loaded "${model.name}" (${EXPERIMENTAL_LABEL})${overlays.length ? ` with ${overlays.length} overlay${overlays.length === 1 ? '' : 's'}` : ''}. ${warnings.length} validation warning${warnings.length === 1 ? '' : 's'}.`);
       }
       setText('');
@@ -106,6 +112,7 @@ const ModelImportPanel: React.FC<ModelImportPanelProps> = ({ runner, currentMode
   const onFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    if (file.size > 5_000_000) { setErrors(['The file exceeds the 5 MB import limit.']); e.target.value = ''; return; }
     file.text().then(
       (t) => {
         setText(t);
@@ -135,6 +142,7 @@ const ModelImportPanel: React.FC<ModelImportPanelProps> = ({ runner, currentMode
           placeholder='{"schemaVersion": 1, "id": "my-model", "time": {...}, ...}'
           className="w-full rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-950 p-2 font-mono text-[11px] text-slate-800 dark:text-slate-100"
         />
+        <label className="flex items-center gap-2 text-xs"><input type="checkbox" checked={sourceImport} onChange={(e) => setSourceImport(e.target.checked)} />Import incompatible package as source for a NEW experimental run (not replay)</label>
         <div className="flex flex-wrap items-center gap-2">
           <button type="button" className={`${btn} border-sky-600 bg-sky-600 text-white hover:bg-sky-700`} disabled={busy || !text.trim()} onClick={() => void load(text)}>
             {busy ? 'Validating…' : 'Validate and load'}

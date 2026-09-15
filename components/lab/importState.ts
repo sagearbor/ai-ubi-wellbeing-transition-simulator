@@ -7,10 +7,11 @@
  * byte-for-byte a bundled model (same id, same version hash) is simply that bundled model.
  */
 
-import { ENGINE_VERSION } from '../../src/core/engine';
+import { packageProvenance, scenarioProvenance, type ScenarioProvenance } from '../../src/policy/provenance';
+import { ENGINE_VERSION, NUMERICAL_CONVENTIONS } from '../../src/core/engine';
 import { CORE_FIXTURES, type FixtureEntry } from '../../src/core/fixtures';
 import type { CoreModel, Overlay } from '../../src/core/types';
-import { modelHash } from '../../src/policy/hash';
+import { contentHash, modelHash } from '../../src/policy/hash';
 
 export type ModelStatus = 'curated' | 'imported';
 
@@ -25,6 +26,7 @@ export interface ImportedModel {
   overlays: Overlay[];
   /** Validation warnings shown with it. */
   warnings: string[];
+  provenance?: ScenarioProvenance;
 }
 
 export interface ModelExport {
@@ -32,6 +34,10 @@ export interface ModelExport {
   /** "curated" for a bundled model; "experimental — not curated" for anything imported. */
   status: 'curated' | typeof EXPERIMENTAL_LABEL;
   engineVersion: string;
+  numerical: Record<string, string>;
+  overlaysHash: string;
+  importWarnings?: string[];
+  provenance?: ScenarioProvenance;
   modelHash: string;
   exportedAt: string;
   model: CoreModel;
@@ -52,16 +58,23 @@ export function curatedMatch(model: CoreModel): FixtureEntry | undefined {
   return f && modelHash(f.model) === modelHash(model) ? f : undefined;
 }
 
-export function buildModelExport(model: CoreModel, overlays: Overlay[], status: ModelStatus, now: () => string = () => new Date().toISOString()): ModelExport {
-  return {
+export function buildModelExport(model: CoreModel, overlays: Overlay[], status: ModelStatus, now: () => string = () => new Date().toISOString(), importWarnings: string[] = [], provenance?: ScenarioProvenance): ModelExport {
+  const actual = scenarioProvenance(model, overlays, provenance ?? (status === 'imported' ? {kind: 'experimental'} : undefined));
+  const result: ModelExport = {
+    provenance: actual,
     schema: EXPORT_SCHEMA,
-    status: status === 'curated' ? 'curated' : EXPERIMENTAL_LABEL,
+    importWarnings,
+    status: status === 'curated' && actual.kind === 'fixture' ? 'curated' : EXPERIMENTAL_LABEL,
     engineVersion: ENGINE_VERSION,
+    numerical: NUMERICAL_CONVENTIONS,
+    overlaysHash: contentHash(overlays),
     modelHash: modelHash(model),
     exportedAt: now(),
     model,
     overlays,
   };
+  if (new TextEncoder().encode(JSON.stringify(result, null, 2)).length > 5_000_000) throw new Error('The model package exceeds the 5 MB import limit.');
+  return result;
 }
 
 export function exportFileName(model: CoreModel): string {
@@ -71,7 +84,8 @@ export function exportFileName(model: CoreModel): string {
 
 export type Classified =
   | { kind: 'model'; model: unknown }
-  | { kind: 'package'; model: unknown; overlays: unknown[] }
+  | { kind: 'package'; model: unknown; overlays: unknown[]; warnings?: string[]; provenance?: ScenarioProvenance }
+  | { kind: 'incompatible-package'; model: unknown; overlays: unknown[]; warnings?: string[]; provenance?: ScenarioProvenance; reason: string }
   | { kind: 'overlay'; overlay: unknown }
   | { kind: 'policy-bundle' }
   | { kind: 'unknown'; reason: string };
@@ -81,7 +95,7 @@ const isObject = (x: unknown): x is Record<string, unknown> => typeof x === 'obj
 /** Parse pasted or uploaded text. Never throws. */
 export function parseImportText(text: string): { ok: true; json: unknown } | { ok: false; reason: string } {
   if (typeof text !== 'string' || !text.trim()) return { ok: false, reason: 'Nothing to import: paste JSON or choose a file.' };
-  if (text.length > 5_000_000) return { ok: false, reason: 'The file is larger than 5 MB; a core model file is far smaller than that.' };
+  if (text.length > 5_000_000 || new TextEncoder().encode(text).length > 5_000_000) return { ok: false, reason: 'The file is larger than 5 MB; a core model file is far smaller than that.' };
   try {
     return { ok: true, json: JSON.parse(text) };
   } catch (e) {
@@ -91,10 +105,24 @@ export function parseImportText(text: string): { ok: true; json: unknown } | { o
 
 /** What kind of file this is: a model, an exported model + overlays, an overlay, or a policy bundle. */
 export function classifyImport(json: unknown): Classified {
+  try { return classifyChecked(json); } catch { return { kind: 'unknown', reason: 'The package structure is too deeply nested or malformed.' }; }
+}
+
+function classifyChecked(json: unknown): Classified {
   if (!isObject(json)) return { kind: 'unknown', reason: 'The file is not a JSON object.' };
-  if (json.schema === EXPORT_SCHEMA) {
+  if (typeof json.schema === 'string' && json.schema.startsWith('core-model-export/')) {
     if (!isObject(json.model)) return { kind: 'unknown', reason: `A ${EXPORT_SCHEMA} file must contain "model".` };
-    return { kind: 'package', model: json.model, overlays: Array.isArray(json.overlays) ? json.overlays : [] };
+    const reasons: string[] = [];
+    if (json.schema !== EXPORT_SCHEMA) reasons.push(`unsupported package schema ${json.schema}`);
+    if (json.modelHash !== modelHash(json.model as unknown as CoreModel)) reasons.push('the declared model hash does not match the actual model');
+    if (json.engineVersion !== ENGINE_VERSION) reasons.push(`engine ${String(json.engineVersion)} is incompatible with ${ENGINE_VERSION}`);
+    if (contentHash(json.numerical) !== contentHash(NUMERICAL_CONVENTIONS)) reasons.push('numerical conventions are missing or incompatible');
+    if (!Array.isArray(json.overlays) || contentHash(json.overlays) !== json.overlaysHash) reasons.push('overlay settings do not match their hash');
+    const overlays = Array.isArray(json.overlays) ? json.overlays : [];
+    const provenance = scenarioProvenance(json.model as unknown as CoreModel, overlays as Overlay[], packageProvenance(json.provenance, json.importWarnings) ?? (json.status === EXPERIMENTAL_LABEL ? {kind: 'experimental'} : undefined));
+    const warnings = Array.isArray(json.importWarnings) ? json.importWarnings.filter((x): x is string => typeof x === 'string') : [];
+    if (reasons.length) return { kind: 'incompatible-package', model: json.model, overlays, warnings, provenance, reason: reasons.join('; ') };
+    return { kind: 'package', model: json.model, overlays, warnings, provenance };
   }
   if (typeof json.schema === 'string' && json.schema.startsWith('policy-bundle/')) return { kind: 'policy-bundle' };
   if ('schemaVersion' in json || 'time' in json || 'variables' in json && 'outputs' in json && 'parameters' in json && 'name' in json) {

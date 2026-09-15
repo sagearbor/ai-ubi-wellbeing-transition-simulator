@@ -1,0 +1,18 @@
+import { runModel, explainBinding } from './src/core/engine';
+import { pairedRun, validateDraft, coverage } from './src/policy/draft';
+import { modelHash } from './src/policy/hash';
+import training from './data/core/training-budget.json';
+import { readFileSync } from 'node:fs';
+const base:any={schemaVersion:1,id:'review-probe',name:'Reviewer probe',time:{start:2026,end:2026,step:'year'},parameters:[],variables:[],outputs:['u'],solves:[{id:'root',unknown:'u',residual:'u',bracket:[0,1]}]};
+for(const [label,residual,bracket] of [['endpoint','u',[0,1]],['discontinuity','floor(u) - 0.5',[0,2]],['pole','1/(u-0.3)',[0,1]]] as const){
+ const m=structuredClone(base);m.solves[0].residual=residual;m.solves[0].bracket=bracket;const r=runModel(m); console.log(JSON.stringify({label,ok:r.ok,value:r.series._?.u,solve:r.solves,diagnostics:r.diagnostics}));
+}
+const t:any=training;
+const tr=runModel(t,{overlays:[{id:'boost',effects:[{id:'boost',target:'completions',op:'multiply',expr:'1.025',source:{label:'review probe',kind:'assumed'}}]}]});
+console.log(JSON.stringify({label:'capacity bypass',ok:tr.ok,completions:tr.series._?.completions,spend:tr.series._?.actual_training_spend,unspent:tr.series._?.unspent_budget,binding:explainBinding(tr,'_','completions',3),diagnostics:tr.diagnostics}));
+const a=runModel(t,{seed:1,run:0}),b=runModel(t,{seed:1,run:1});console.log(JSON.stringify({label:'draw identity',hashes:[a.manifest.hash,b.manifest.hash],capacity:[a.parameters._?.instructor_capacity,b.parameters._?.instructor_capacity]}));
+const draft:any={schemaVersion:1,id:'bad-draft',title:'review probe',source:{title:'Test bill',excerptChars:36},modelId:t.id,modelHash:modelHash(t),reviewStatus:'ai-drafted',provisions:[{id:'budget',quote:'Provide 20 million dollars annually.',summary:'Set budget',status:'mapped',role:'funding',mapping:{kind:'input',target:'training_budget',op:'set',value:20,unit:'million usd',evidence:{label:'Test bill',kind:'assumed'}}},{id:'duplicate',quote:'Second clause',summary:'Conflicting second budget',status:'mapped',role:'funding',mapping:{kind:'input',target:'training_budget',op:'set',value:10000000,unit:'usd',evidence:{label:'Test bill',kind:'assumed'}}}]};
+const pr=pairedRun(t,[],draft,{runs:1});console.log(JSON.stringify({label:'invalid policy runs',validation:validateDraft(draft,t,{sourceText:'Provide 20 million dollars annually.'}),ok:pr.ok,errors:pr.errors,coverage:coverage(draft),policy:pr.point.policy._?.completions}));
+draft.provisions.pop();const unitPr=pairedRun(t,[],draft,{runs:1});console.log(JSON.stringify({label:'unit mismatch runs',ok:unitPr.ok,completions:unitPr.point.policy._?.completions}));
+const through=structuredClone(base);through.variables=[{id:'x',equation:'u'},{id:'y',equation:'u'}];through.effects=[{id:'effect',target:'x',op:'add',expr:'y',source:{label:'review',kind:'assumed'}}];through.solves=[{id:'root',unknown:'u',residual:'x-1',bracket:[0,2],through:['x','y']}];const rt=runModel(through);console.log(JSON.stringify({label:'through effect dependency',ok:rt.ok,diagnostics:rt.diagnostics}));
+const ini:any={...base,solves:[],outputs:['stock'],variables:[{id:'stock',equation:'stock[t-1]',initial:'later'},{id:'later',equation:'2'}]};const ri=runModel(ini);console.log(JSON.stringify({label:'initial dependency',ok:ri.ok,diagnostics:ri.diagnostics}));
