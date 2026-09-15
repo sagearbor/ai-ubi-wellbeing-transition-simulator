@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: >-
+  If you use this software, cite this repository and the exact commit or release
+  you ran. Cite the original model papers and data sources separately. No
+  archived release DOI has been assigned in this metadata.
+type: software
+title: "Transition Engine: AI Transition and Wellbeing Simulator"
+authors:
+  - name: "Transition Engine contributors"
+repository-code: "https://github.com/sagearbor/ai-ubi-wellbeing-transition-simulator"
+url: "https://github.com/sagearbor/ai-ubi-wellbeing-transition-simulator"
+license: MIT
+abstract: >-
+  Research software for transparent financial allocation scenarios, extensible
+  economic models, retrospective historical evaluation, and AI-assisted policy
+  mapping. Policy responses are conditional on declared assumptions; software
+  correctness and accounting checks do not establish causal policy effects.
+keywords:
+  - economic modelling
+  - AI transition
+  - wellbeing
+  - policy scenarios
+  - reproducibility

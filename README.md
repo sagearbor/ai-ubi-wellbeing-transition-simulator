@@ -4,7 +4,7 @@
 
 This comparison branch opens with **reported company cash flow → an editable allocation → visible limits**. Select Apple, Microsoft, Alphabet, Amazon, Meta or NVIDIA, compare two policies, and reopen the exact experiment in Model Lab. Reported observations, derived amounts and scenario assumptions are labeled separately.
 
-**Check against history** shows observed values, the existing world model reconstruction and a persistence baseline, including the misses. It discloses same-span fitting and does not claim forecast validation. See the [published-experience handoff](docs/design/published-experience-handoff.md) for the comparison, evidence and remaining limits.
+**Check against history** separates a frozen temporal holdout from the older same-span reconstruction. The held-out level model fits only 2015–2018 and scores 2019–2025: wellbeing error is **0.318 ladder points versus 0.290 for predicting no change**. It performs worse on that measure. This retrospective test uses revised data and does not establish causal policy effects or validate the financial calculator. See the [policy-evidence follow-up](docs/design/policy-evidence-handoff.md) and the [published-experience comparison](docs/design/published-experience-handoff.md).
 
 This branch has not been deployed or merged into main. The public app may show a different version.
 
@@ -97,6 +97,8 @@ npm run validate:korinek  # reduced-form Korinek reproduction (KJ-1..3)
 npm run validate:core     # every core model and overlay in data/core against its own tests
 npm run validate:cases    # policy-effect cases (data/cases), signed discrepancies, no grade
 npm run hindcast          # 2015-2025 reconstruction (report, not a gate)
+node --import tsx scripts/evaluation/run.ts all  # reproduce frozen 2018-origin holdout
+npx vitest run scripts/evaluation/holdout.test.ts scripts/evaluation/packaging.test.ts  # integrity, not an accuracy threshold
 npm run check       # all tests, anchor/Futures/Korinek/core/case validators, ledger, production build
 ```
 
@@ -116,7 +118,10 @@ npm run deploy:promote   # new revision receives 100% of traffic
 
 The Gemini key is read from `GEMINI_API_KEY` or `.env.local` at build time and
 is embedded in the client bundle (the browser calls Gemini directly), so
-restrict the key by HTTP referrer in Google AI Studio.
+restrict the key by HTTP referrer in Google AI Studio. A development or preview
+address must also be authorized by that key; a working production address does
+not establish that localhost is permitted. Manual policy drafts remain available
+when AI extraction is unavailable.
 
 ---
 
@@ -130,8 +135,9 @@ extraction are all implemented. A snapshot
 (`release/conference-v1`, February 2026) was shared with collaborators as the
 basis for a conference-panel presentation; `main` has moved on since.
 
-Because it's pre-1.0, expect rough edges: parameters and coefficients are still
-being tuned, the model catalog is small, and interfaces may change.
+Because it's pre-1.0, the model catalog is small and interfaces may change.
+Model research continues, but the registered holdout protocol and its first
+untuned result remain frozen; a passing software check is not forecast evidence.
 
 Historical check result for the built-in engine (2026-09-13, before this integration): 767 tests; anchor tests
 5 of 6 (AT-3 fails for a measurement reason documented in the model card); Korinek reduced form
@@ -141,12 +147,14 @@ Historical check result for the built-in engine (2026-09-13, before this integra
 
 **Where to start reviewing (v3 plan, stages 1-5):**
 
-Start with the [new published-data comparison and Claude Code handoff](docs/design/published-experience-handoff.md). The [earlier guided-interface handoff](docs/design/overnight-2026-09-15-handoff.md) records its separate baseline.
+Start with the [policy-evidence follow-up and current verification](docs/design/policy-evidence-handoff.md), then the [published-data comparison and Claude Code handoff](docs/design/published-experience-handoff.md). The [earlier guided-interface handoff](docs/design/overnight-2026-09-15-handoff.md) records its separate baseline.
 
 | What | Where |
 |---|---|
 | New front door, exact financial model, A/B and file/link replay | `components/published/`, `src/financials/`, `data/financials/fy2025-v1.json` |
 | Six official company reports and precise cash-investment definitions | [`docs/design/research/reported-company-financials.md`](docs/design/research/reported-company-financials.md) |
+| Frozen temporal holdout, historical backgrounds, first untuned scores and separate fit/predict/score artifacts | `data/evaluation/level-holdout-2018/`, `scripts/evaluation/`, [research disclosure](docs/research/2026-09-15-level-temporal-holdout.md), [independent review](docs/design/reviews/2026-09-15-level-holdout-independent-review.md) |
+| Live AI probes, candidate origin restriction and policy evidence boundaries | [readiness evidence](docs/design/reviews/2026-09-15-policy-evidence-readiness.md), `docs/design/reviews/evidence/policy-evidence-2026-09-15/` |
 | Observed/model/persistence graph, full cohort and reproducible artifact | `?tab=history`, `components/history/`, [`docs/design/research/historical-experience.md`](docs/design/research/historical-experience.md) |
 | Conditional default model card and archived legacy evidence (scope, accounting, response review and limitations) | [`docs/design/model-card-default.md`](docs/design/model-card-default.md), also in-app: About → World model card |
 | Audit of the engine and the fixes made | [`docs/design/audit-2026-09-13.md`](docs/design/audit-2026-09-13.md) |
@@ -228,3 +236,7 @@ as an oracle.
 ### Qualification source freshness
 
 `npm run build` requires the committed qualification source/evidence metadata to match the current local import graph and dependency lock. Direct Vite builds use the same guard. `npm run qualification:source-check` performs this small clean-checkout check without the large local response artifact. Development remains available for unreviewed edits: source changes invalidate its qualification marker and reload open pages. Refreshing manifests alone does not supply independent acceptance.
+
+## License and contributing
+
+Original project code and documentation are available under the [MIT license](LICENSE), subject to the [third-party notices](THIRD_PARTY_NOTICES.md). Use [CITATION.cff](CITATION.cff) to cite the software and cite original papers/data separately. See [contributing guidance](CONTRIBUTING.md) and the [three-step delivery checklist](docs/release/three-step-delivery.md). A release DOI, human author list and expert endorsement are not implied.
