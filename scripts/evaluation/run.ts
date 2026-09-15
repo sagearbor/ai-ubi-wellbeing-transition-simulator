@@ -63,9 +63,11 @@ else if (stage === 'score') {
     });
 }
 else if (stage === 'package') {
+    const { assertPackageIdentities, evaluationSourceHashes } = await import('./integrity');
+    assertPackageIdentities(protocolHash);
     const { sourceHashes } = await import('../hindcast/export-experience');
     const { evaluationModel } = await import('./predict');
-    const sources = sourceHashes();
+    const sources = { ...sourceHashes(), ...evaluationSourceHashes() };
     for (const p of ['scripts/evaluation/partition.ts', 'scripts/evaluation/fit.ts', 'scripts/evaluation/predict.ts', 'scripts/evaluation/score.ts', 'scripts/evaluation/run.ts', base + 'sources/wgi-indicator-catalog.json', base + 'sources/catalog-provenance.json', ...Object.values(read(base + 'sources/provenance.json')).map((x: any) => x.path)])
         sources[p] = hash(p);
     const artifactHashes = Object.fromEntries(['protocol.json', 'train.json', 'origin.json', 'frozen-fit.json', 'predictions.json', 'test-outcomes.json', 'scores.json', 'partition-provenance.json', 'sources/provenance.json'].map(p => [p, hash(base + p)]));

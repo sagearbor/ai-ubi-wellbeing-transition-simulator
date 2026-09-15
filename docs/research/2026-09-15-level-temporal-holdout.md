@@ -39,7 +39,7 @@ From the repository root after installing its existing locked dependencies:
 
 ```sh
 node --import tsx scripts/evaluation/run.ts all
-npx vitest run scripts/evaluation/holdout.test.ts simulation/pure.test.ts simulation/appEngineParity.test.ts
+npx vitest run scripts/evaluation/holdout.test.ts scripts/evaluation/packaging.test.ts simulation/pure.test.ts simulation/appEngineParity.test.ts
 npm run typecheck
 node --import tsx scripts/hindcast/export-experience.ts --check
 ```
@@ -49,3 +49,9 @@ The CLI runs `prepare`, `fit`, `predict`, `score`, `package` as distinct process
 Before changing `simulation/pure.ts`, six representative dataset/model combinations were captured over twelve months using full-output SHA-256 hashes. Both omitted override and explicit current coefficients reproduce every pre-edit hash. Existing historical `experience.json.report` remains exactly unchanged; only source hashes were refreshed. The historic export's authoritative reconstruction check passes.
 
 The source change invalidates the prior qualification manifest even though default arithmetic is unchanged. Fresh source-bound qualification is a separate required task; the old certificate is not reused. This evaluation does not test disabled AI, transfer, training, migration or other policy effects and cannot support evidence labels for them.
+
+## Publication integrity follow-up
+
+The independent review found two provenance gaps, now repaired without refitting or rescoring. Source identity recursively follows the evaluation entry point's local imports, including the numerical fitter `scripts/countries/anchorFit.ts`. The package stage validates protocol identities, calibration-to-training, predictions-to-calibration/origin, scores-to-predictions/test, partition-to-sources and background/catalog source hashes before writing its output. Missing required provenance entries fail closed.
+
+Thirteen packaging tests include eleven actual CLI subprocesses with deliberately stale inputs; each rejects publication and leaves the prior artifact bytes untouched. A separate nested-import test proves dependency traversal rather than checking only an enumerated fitter filename. All 40 targeted tests and the historical reconstruction checker pass on both Node 22 and Node 26; typecheck passes. Only combined-artifact source hashes changed during this repair. Frozen fit, cohort, predictions, first scores, protocol, default arithmetic and qualification remain unchanged.
