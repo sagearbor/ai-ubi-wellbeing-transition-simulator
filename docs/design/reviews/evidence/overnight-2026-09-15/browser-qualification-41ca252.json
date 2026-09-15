@@ -1,0 +1,13 @@
+{
+  "kind": "recorded root browser probe result",
+  "commit": "41ca252",
+  "runtime": "Chrome153 with supported Vite dev pipeline",
+  "url": "http://127.0.0.1:4173/",
+  "checkedMonths": 61,
+  "identityMatches": 61,
+  "identityDifferences": [],
+  "derivedCheckFailures": [],
+  "executingSourceHash": "950d3fb43937e507c4a2cf67599c92105430a320c337712851a5067a28f3291e",
+  "accounting": "unreviewed",
+  "reason": "independent local acceptance record still pending at probe time"
+}

@@ -54,3 +54,7 @@ In that intermediate build, loading/running S.3877 then visiting Charts displays
 ## Qualification input identity — fix41ca252
 
 Actual Chrome153 on the Vite development app at4173 reproduced all61 baseline month identities in the regenerated evidence manifest. No derived-output checks failed. Executing-source hash was950d3fb43937e507c4a2cf67599c92105430a320c337712851a5067a28f3291e. This resolves the earlier46 browser identity misses without rounding actual inputs. The local record is still pending independent re-review, and the resolver correctly remains unreviewed for the pending-record reasons; this is not yet a positive accepted-badge browser test.
+
+## Activated qualification —562582a
+
+Actual Chrome153/Vite now accepts all61 exact default monthly points for conditional source/allocation accounting. Every macro/wellbeing classification remains illustrative. Independent probes for corporate money+1e-10, workforce+1e-12, importedUnverified, uploaded equations and raw derived output+0.01 each return unreviewed. The executing source hash remains950d3fb43937e507c4a2cf67599c92105430a320c337712851a5067a28f3291e. Raw browser output is preserved as evidence/overnight-2026-09-15/browser-accepted-562582a.json. This tests the runtime resolver; Task6 still owns visible active-view status integration.

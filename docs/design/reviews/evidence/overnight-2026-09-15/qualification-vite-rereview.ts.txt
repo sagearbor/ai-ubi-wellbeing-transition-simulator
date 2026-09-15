@@ -1,0 +1,25 @@
+import {mkdtempSync,mkdirSync,copyFileSync,readFileSync,writeFileSync,rmSync,realpathSync} from 'node:fs';
+import {join,dirname} from 'node:path';
+import {tmpdir} from 'node:os';
+import {createServer,build} from '/private/tmp/alignment-stage35/node_modules/vite/dist/node/index.js';
+import {qualificationSourcePlugin} from '/private/tmp/alignment-stage35/build/qualificationSourcePlugin.ts';
+import {sourceManifest,currentSourceStatus} from '/private/tmp/alignment-stage35/build/qualificationSources.ts';
+async function main(){
+const original='/private/tmp/alignment-stage35';const root=realpathSync(mkdtempSync(join(tmpdir(),'qualification-real-vite-')));let server;
+try{
+ const pin=sourceManifest(original);
+ for(const file of [...Object.keys(pin.sources),'data/qualification/world-conditional-v1.json','data/qualification/world-conditional-v1-evidence.json','data/qualification/world-conditional-v1-structure.json']){mkdirSync(dirname(join(root,file)),{recursive:true});copyFileSync(join(original,file),join(root,file));}
+ const opts={root,configFile:false,logLevel:'silent' as const,plugins:[qualificationSourcePlugin()]};
+ await build({...opts,build:{write:false,minify:false,rollupOptions:{input:join(root,'simulation/sourceFreshness.ts')}}});
+ server=await createServer({...opts,server:{middlewareMode:true,fs:{strict:false,allow:[root]},watch:{usePolling:true,interval:50}}});
+ 
+ let reloaded=0;server.ws.send=(...args:any[])=>{if(args[0]?.type==='full-reload')reloaded++};
+ const before=await server.transformRequest('/simulation/sourceFreshness.ts');if(!before?.code.includes(pin.hash))throw Error('initial marker mismatch');
+ const file=join(root,'simulation/conditionalWorld.ts');const old=readFileSync(file,'utf8');writeFileSync(file,old+'\n// Independent neutral edit\n');
+ await new Promise(r=>setTimeout(r,1200));
+ const status=currentSourceStatus(root); const after=await server.transformRequest('/simulation/sourceFreshness.ts');
+ if(status.hash!==null||status.actualHash===pin.hash||!after?.code.includes(status.actualHash!)||!reloaded)throw Error(JSON.stringify({status,reloaded,after:after?.code}));
+ let refused=false;try{await build({...opts,build:{write:false,rollupOptions:{input:join(root,'simulation/sourceFreshness.ts')}}})}catch(e){refused=String(e).includes('stale')};if(!refused)throw Error('stale build accepted');
+ console.log(JSON.stringify({realViteBuildPass:true,realDevReloads:reloaded,realDevMarkerChanged:true,staleBuildRefused:true,rawArtifactPresent:false}));
+}finally{await server?.close();rmSync(root,{recursive:true,force:true})}}
+main();
