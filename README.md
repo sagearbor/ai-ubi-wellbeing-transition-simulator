@@ -137,6 +137,8 @@ Historical check result for the built-in engine (2026-09-13, before this integra
 
 **Where to start reviewing (v3 plan, stages 1-5):**
 
+The separate guided-interface branch has a [morning comparison and Claude Code handoff](docs/design/overnight-2026-09-15-handoff.md), with exact build and browser evidence.
+
 | What | Where |
 |---|---|
 | Conditional default model card and archived legacy evidence (scope, accounting, response review and limitations) | [`docs/design/model-card-default.md`](docs/design/model-card-default.md), also in-app: MORE → Model Card |

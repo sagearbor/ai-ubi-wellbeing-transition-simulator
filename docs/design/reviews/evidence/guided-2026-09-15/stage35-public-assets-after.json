@@ -1,0 +1,13 @@
+{
+  "url": "https://wellbeing-transition-simulator-6icr7acugq-uw.a.run.app/",
+  "checkedAt": "2026-09-15T11:22:33.840555+00:00",
+  "assets": [
+    "/assets/index-Bxzce09y.js",
+    "/assets/vendor-mathjs-DaC5Xklm.js",
+    "/assets/vendor-d3-WA3H__q7.js",
+    "/assets/vendor-recharts-C_iF28X8.js",
+    "/assets/index-BjnN8RkI.css"
+  ],
+  "deployedCommit": "not verified",
+  "deploymentPerformed": false
+}
