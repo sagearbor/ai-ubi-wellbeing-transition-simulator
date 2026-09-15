@@ -4,7 +4,7 @@ import { expect, it } from 'vitest';
 import LabTab from './LabTab';
 import { buildModelExport, curatedMatch } from './importState';
 import { buildBundle, reopenBundle } from '../../src/policy/bundle';
-import { scenarioProvenance } from '../../src/policy/provenance';
+import { packageProvenance, scenarioProvenance } from '../../src/policy/provenance';
 import { findFixture } from '../../src/core/fixtures';
 import { splitScenarioOverlays } from './policyState';
 import { pairedRun } from '../../src/policy/draft';
@@ -47,4 +47,33 @@ it('keeps structured source provenance without interpreting English warnings', (
   const reopened = JSON.parse(JSON.stringify(bundle));
   expect(reopenBundle(reopened, () => training).status).toBe('reproduced');
   expect(reopened.provenance).toEqual(provenance);
+});
+
+it('conservatively migrates e622b10 bundle and model-package import provenance', async () => {
+  const {parseBundleJson} = await import('../../src/policy/bundle');
+  const {classifyImport} = await import('./importState');
+  const draft = threeStatusDraft();
+  const legacy = buildBundle(training, [], draft, pairedRun(training, [], draft, {runs: 2}));
+  delete legacy.provenance;
+  legacy.importWarnings = ['NEW experimental source import; not replay: engine core-0.1.0'];
+  const parsed = parseBundleJson(JSON.stringify(legacy));
+  expect(parsed.ok).toBe(true);
+  if (!parsed.ok) return;
+  expect(reopenBundle(parsed.value, () => training).status).toBe('reproduced');
+  const restored = scenarioProvenance(training, [], parsed.value.provenance);
+  expect(restored.kind).toBe('experimental');
+  const next = buildBundle(training, [], draft, pairedRun(training, [], draft, {runs: 2}), {provenance: restored, importWarnings: parsed.value.importWarnings});
+  expect(next.provenance?.kind).toBe('experimental');
+  expect(next.importWarnings).toEqual(legacy.importWarnings);
+  const modelPackage = buildModelExport(training, [], 'imported', undefined, legacy.importWarnings);
+  delete modelPackage.provenance;
+  const classified = classifyImport(JSON.parse(JSON.stringify(modelPackage)));
+  expect(classified.kind).toBe('package');
+  if (classified.kind === 'package') expect(classified.provenance?.kind).toBe('experimental');
+});
+
+it('does not interpret legacy warning text when modern provenance is explicit', () => {
+  expect(packageProvenance({kind: 'fixture'}, ['NEW experimental source import'])).toEqual({kind: 'fixture'});
+  expect(packageProvenance(undefined, ['Untranslated legacy import notice'])).toEqual({kind: 'experimental'});
+  expect(packageProvenance(undefined, [])).toBeUndefined();
 });

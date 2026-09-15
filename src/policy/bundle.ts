@@ -18,7 +18,7 @@
  * the link does not open and the bundle reports "cannot open", each with the errors.
  */
 
-import { scenarioProvenance, validProvenance, type ScenarioProvenance } from './provenance';
+import { packageProvenance, scenarioProvenance, validProvenance, type ScenarioProvenance } from './provenance';
 import { ENGINE_VERSION, NUMERICAL_CONVENTIONS } from '../core/engine';
 import type { CoreModel, Overlay } from '../core/types';
 import { contentHash, modelHash, sha256Hex } from './hash';
@@ -301,7 +301,8 @@ export function parseBundleJson(text: string): Decoded<PolicyBundle> {
   if (!(typeof tol.absolute === 'number' && Number.isFinite(tol.absolute) && tol.absolute >= 0 && tol.absolute <= DEFAULT_TOLERANCE.absolute) || !(typeof tol.relative === 'number' && Number.isFinite(tol.relative) && tol.relative >= 0 && tol.relative <= DEFAULT_TOLERANCE.relative)) {
     return { ok: false, reason: 'the bundle must declare finite tolerances from 0 to 1e-9; larger tolerances cannot certify reproduction' };
   }
-  return { ok: true, value: parsed as unknown as PolicyBundle };
+  const provenance = packageProvenance(parsed.provenance, parsed.importWarnings);
+  return { ok: true, value: { ...parsed, ...(provenance ? {provenance} : {}) } as unknown as PolicyBundle };
 }
 
 export interface ReopenReport {

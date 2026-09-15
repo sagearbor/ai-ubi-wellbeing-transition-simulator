@@ -7,7 +7,7 @@
  * byte-for-byte a bundled model (same id, same version hash) is simply that bundled model.
  */
 
-import { scenarioProvenance, validProvenance, type ScenarioProvenance } from '../../src/policy/provenance';
+import { packageProvenance, scenarioProvenance, type ScenarioProvenance } from '../../src/policy/provenance';
 import { ENGINE_VERSION, NUMERICAL_CONVENTIONS } from '../../src/core/engine';
 import { CORE_FIXTURES, type FixtureEntry } from '../../src/core/fixtures';
 import type { CoreModel, Overlay } from '../../src/core/types';
@@ -119,7 +119,7 @@ function classifyChecked(json: unknown): Classified {
     if (contentHash(json.numerical) !== contentHash(NUMERICAL_CONVENTIONS)) reasons.push('numerical conventions are missing or incompatible');
     if (!Array.isArray(json.overlays) || contentHash(json.overlays) !== json.overlaysHash) reasons.push('overlay settings do not match their hash');
     const overlays = Array.isArray(json.overlays) ? json.overlays : [];
-    const provenance = scenarioProvenance(json.model as unknown as CoreModel, overlays as Overlay[], validProvenance(json.provenance) ? json.provenance : json.status === EXPERIMENTAL_LABEL ? {kind: 'experimental'} : undefined);
+    const provenance = scenarioProvenance(json.model as unknown as CoreModel, overlays as Overlay[], packageProvenance(json.provenance, json.importWarnings) ?? (json.status === EXPERIMENTAL_LABEL ? {kind: 'experimental'} : undefined));
     const warnings = Array.isArray(json.importWarnings) ? json.importWarnings.filter((x): x is string => typeof x === 'string') : [];
     if (reasons.length) return { kind: 'incompatible-package', model: json.model, overlays, warnings, provenance, reason: reasons.join('; ') };
     return { kind: 'package', model: json.model, overlays, warnings, provenance };

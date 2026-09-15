@@ -24,3 +24,16 @@ export function scenarioProvenance(model: CoreModel, overlays: Overlay[], record
   const known = fixture && overlays.every((o) => fixture.overlays.some((f) => f.id === o.id && contentHash(f) === contentHash(o)));
   return {kind: known ? 'fixture' : 'experimental'};
 }
+
+/** Compatibility for packages written before structured provenance (through e622b10).
+ * Nonempty legacy warnings conservatively retain experimental status. No English
+ * marker is interpreted, and an explicit modern provenance field takes precedence.
+ * The original reasons remain in the package's importWarnings array.
+ */
+export function packageProvenance(recorded: unknown, legacyWarnings: unknown): ScenarioProvenance | undefined {
+  if (validProvenance(recorded)) return recorded;
+  if (recorded === undefined && Array.isArray(legacyWarnings) && legacyWarnings.some((w) => typeof w === 'string' && w.trim())) {
+    return {kind: 'experimental'};
+  }
+  return undefined;
+}
