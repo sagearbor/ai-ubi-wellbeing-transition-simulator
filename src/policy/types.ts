@@ -276,6 +276,10 @@ export interface PolicyRunManifest {
   modelName: string;
   modelHash: string;
   engineVersion: string;
+  numerical: Record<string, string>;
+  /** Identity of numerical inputs and source; excludes creation time. */
+  hash: string;
+  sourceHash: string | null;
   /** Scenario overlays both sides share (the baseline), in order, with content hashes. */
   baselineOverlays: Array<{ id: string; hash: string }>;
   policyOverlayId: string;

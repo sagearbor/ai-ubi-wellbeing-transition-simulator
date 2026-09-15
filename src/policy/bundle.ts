@@ -10,8 +10,7 @@
  * Bundle (downloaded JSON): manifest (engine version, model hash, draws, seed, coverage and
  *        completeness status), draft, optional source text, scenario overlays, the derived policy
  *        overlay, the results and the tolerance they must reproduce within. reopenBundle re-runs it
- *        and says whether it reproduced, and if not, where and by how much. A bundle made on a model
- *        the app does not ship (one imported into the Lab) carries the model itself in `model`, with
+ *        and says whether it reproduced, and if not, where and by how much. Every complete bundle carries the model itself in `model`, with
  *        `modelStatus: "experimental — not curated"`, so it reopens anywhere; the opener validates
  *        that model and passes it to reopenBundle through the registry.
  *
@@ -19,9 +18,9 @@
  * the link does not open and the bundle reports "cannot open", each with the errors.
  */
 
-import { ENGINE_VERSION } from '../core/engine';
+import { ENGINE_VERSION, NUMERICAL_CONVENTIONS } from '../core/engine';
 import type { CoreModel, Overlay } from '../core/types';
-import { contentHash, modelHash } from './hash';
+import { contentHash, modelHash, sha256Hex } from './hash';
 import { blockingErrors, draftToOverlay, pairedRun, QUANTILE_KEYS, validateDraft } from './draft';
 import type { DraftDiagnostic, PairedRunResult, PolicyDraft, PolicyRunManifest, Quantiles } from './types';
 
@@ -31,6 +30,8 @@ export const BUNDLE_SCHEMA = 'policy-bundle/2';
 export const RUN_MANIFEST_SCHEMA = 'policy-run/2';
 /** Links longer than this are refused by the encoder's caller: download a bundle instead. */
 export const MAX_LINK_PAYLOAD_CHARS = 120_000;
+/** UTF-8 byte limit; also used as a cheap character-count precheck. */
+export const MAX_BUNDLE_CHARS = 5_000_000;
 
 /** Models the app can open, by id. */
 export type ModelRegistry = (id: string) => CoreModel | undefined;
@@ -67,6 +68,7 @@ export interface LabLinkState {
   modelHash: string;
   /** The numerical engine the link was made with (src/core/engine.ts ENGINE_VERSION). */
   engineVersion: string;
+  numerical?: Record<string, string>;
   /** Scenario overlays both sides share, in order. */
   overlays: Overlay[];
   /** Draft A, and optionally draft B, both on the same baseline. */
@@ -117,7 +119,7 @@ export function decodeLabLink(payload: string): Decoded<LabLinkState> {
   if (!Number.isInteger(seed)) return { ok: false, reason: 'the link has an invalid seed' };
   return {
     ok: true,
-    value: { v: 2, modelId: parsed.modelId, modelHash: parsed.modelHash, engineVersion: parsed.engineVersion, overlays: parsed.overlays as Overlay[], drafts: parsed.drafts as unknown as PolicyDraft[], runs, seed },
+    value: { v: 2, modelId: parsed.modelId, modelHash: parsed.modelHash, engineVersion: parsed.engineVersion, ...(isObject(parsed.numerical) ? { numerical: parsed.numerical as Record<string, string> } : {}), overlays: parsed.overlays as Overlay[], drafts: parsed.drafts as unknown as PolicyDraft[], runs, seed },
   };
 }
 
@@ -160,6 +162,7 @@ function modelProblem(modelId: string, pinned: string, registry: ModelRegistry):
 export function openLabLink(state: LabLinkState, registry: ModelRegistry): Decoded<OpenedScenario> {
   const engine = engineProblem(state.engineVersion);
   if (engine) return { ok: false, reason: engine };
+  if (contentHash(state.numerical) !== contentHash(NUMERICAL_CONVENTIONS)) return { ok: false, reason: 'The link lacks compatible numerical conventions. Use a current complete bundle; this link cannot replay.' };
   const m = modelProblem(state.modelId, state.modelHash, registry);
   if ('reason' in m) return { ok: false, reason: m.reason };
   for (const d of state.drafts) {
@@ -211,10 +214,11 @@ export const EXPERIMENTAL_MODEL_STATUS = 'experimental — not curated';
 export interface PolicyBundle {
   schema: typeof BUNDLE_SCHEMA;
   manifest: PolicyRunManifest;
-  /** The model itself, when it is not one the app ships (an imported model). Its hash is manifest.modelHash. */
+  /** Full model source. Optional only for older bundles; its hash is manifest.modelHash. */
   model?: CoreModel;
   /** Present with `model`: an embedded model is never curated. */
   modelStatus?: typeof EXPERIMENTAL_MODEL_STATUS;
+  importWarnings?: string[];
   draft: PolicyDraft;
   /** Present when the bundle was made with the source text, so quotes can be re-checked. */
   sourceText?: string;
@@ -229,12 +233,20 @@ export function buildBundle(
   overlays: Overlay[],
   draft: PolicyDraft,
   result: PairedRunResult,
-  opts: { sourceText?: string; tolerance?: Tolerance; embedModel?: boolean } = {},
+  opts: { sourceText?: string; tolerance?: Tolerance; embedModel?: boolean; importWarnings?: string[] } = {},
 ): PolicyBundle {
-  return {
+  if (!result.ok || !result.manifest.hash) throw new Error('Only a completed successful run can be exported as a replay bundle.');
+  if (modelHash(model) !== result.manifest.modelHash || contentHash(draft) !== result.manifest.draftHash ||
+      contentHash(overlays.map(o => ({id: o.id, hash: contentHash(o)}))) !== contentHash(result.manifest.baselineOverlays) ||
+      (opts.sourceText ? sha256Hex(opts.sourceText) : null) !== result.manifest.sourceHash) {
+    throw new Error('The export source, model, draft or scenario differs from the completed run. Run these inputs before exporting.');
+  }
+  const bundle: PolicyBundle = {
     schema: BUNDLE_SCHEMA,
     manifest: result.manifest,
-    ...(opts.embedModel ? { model, modelStatus: EXPERIMENTAL_MODEL_STATUS } : {}),
+    model,
+    modelStatus: EXPERIMENTAL_MODEL_STATUS,
+    ...(opts.importWarnings?.length ? { importWarnings: opts.importWarnings } : {}),
     draft,
     ...(opts.sourceText ? { sourceText: opts.sourceText } : {}),
     overlays,
@@ -250,6 +262,10 @@ export function buildBundle(
     },
     tolerance: opts.tolerance ?? DEFAULT_TOLERANCE,
   };
+  if (new TextEncoder().encode(JSON.stringify(bundle, null, 2)).length > MAX_BUNDLE_CHARS) throw new Error('This complete bundle exceeds the 5 MB reopen limit. Reduce the model, time range or outputs before exporting.');
+  const checked = parseBundleJson(JSON.stringify(bundle));
+  if (!checked.ok) throw new Error(checked.reason);
+  return bundle;
 }
 
 export function bundleFileName(bundle: Pick<PolicyBundle, 'draft' | 'manifest'>): string {
@@ -259,6 +275,7 @@ export function bundleFileName(bundle: Pick<PolicyBundle, 'draft' | 'manifest'>)
 
 /** Parse an uploaded bundle file. Never throws. */
 export function parseBundleJson(text: string): Decoded<PolicyBundle> {
+  if (typeof text !== 'string' || text.length > MAX_BUNDLE_CHARS || new TextEncoder().encode(text).length > MAX_BUNDLE_CHARS) return { ok: false, reason: 'The bundle exceeds the 5 MB reopen limit.' };
   let parsed: unknown;
   try {
     parsed = JSON.parse(text);
@@ -271,10 +288,12 @@ export function parseBundleJson(text: string): Decoded<PolicyBundle> {
     if (!isObject(parsed[key])) return { ok: false, reason: `the bundle is missing "${key}"` };
   }
   if (!Array.isArray(parsed.overlays)) return { ok: false, reason: 'the bundle is missing "overlays"' };
+  if (parsed.sourceText !== undefined && typeof parsed.sourceText !== 'string') return { ok: false, reason: 'the source text is malformed' };
+  if (parsed.importWarnings !== undefined && (!Array.isArray(parsed.importWarnings) || !parsed.importWarnings.every((w) => typeof w === 'string'))) return { ok: false, reason: 'the import provenance is malformed' };
   if (parsed.model !== undefined && !isObject(parsed.model)) return { ok: false, reason: 'the bundle\'s embedded "model" is not an object' };
   const tol = parsed.tolerance as Record<string, unknown>;
-  if (!(typeof tol.absolute === 'number' && tol.absolute >= 0) || !(typeof tol.relative === 'number' && tol.relative >= 0)) {
-    return { ok: false, reason: 'the bundle does not declare a valid tolerance' };
+  if (!(typeof tol.absolute === 'number' && Number.isFinite(tol.absolute) && tol.absolute >= 0 && tol.absolute <= DEFAULT_TOLERANCE.absolute) || !(typeof tol.relative === 'number' && Number.isFinite(tol.relative) && tol.relative >= 0 && tol.relative <= DEFAULT_TOLERANCE.relative)) {
+    return { ok: false, reason: 'the bundle must declare finite tolerances from 0 to 1e-9; larger tolerances cannot certify reproduction' };
   }
   return { ok: true, value: parsed as unknown as PolicyBundle };
 }
@@ -301,6 +320,11 @@ const asNumber = (x: unknown): number => (typeof x === 'number' ? x : NaN);
 
 /** Re-run a bundle and check it reproduces within its declared tolerance. */
 export function reopenBundle(bundle: PolicyBundle, registry: ModelRegistry): ReopenReport {
+  try { return reopenChecked(bundle, registry); }
+  catch (error) { return { status: 'cannot-open', errors: [`Malformed or unsupported bundle: ${(error as Error).message}`], warnings: [], draftDiagnostics: [], compared: 0, maxAbsDiff: 0 }; }
+}
+
+function reopenChecked(bundle: PolicyBundle, registry: ModelRegistry): ReopenReport {
   const report: ReopenReport = { status: 'cannot-open', errors: [], warnings: [], draftDiagnostics: [], compared: 0, maxAbsDiff: 0 };
   if (!isObject(bundle) || bundle.schema !== BUNDLE_SCHEMA) {
     report.errors.push(`unsupported bundle schema ${JSON.stringify((bundle as { schema?: unknown })?.schema ?? null)}; this app reads ${BUNDLE_SCHEMA}`);
@@ -311,16 +335,28 @@ export function reopenBundle(bundle: PolicyBundle, registry: ModelRegistry): Reo
     report.errors.push(`unsupported run manifest ${JSON.stringify((manifest as { schema?: unknown })?.schema ?? null)}`);
     return report;
   }
+  const engine = engineProblem(manifest.engineVersion);
+  if (engine) { report.errors.push(`Cannot open: ${engine}`); return report; }
+  const parsed = parseBundleJson(JSON.stringify(bundle));
+  if (!parsed.ok) { report.errors.push(parsed.reason); return report; }
+  const { hash, createdAt: _createdAt, ...identity } = manifest;
+  if (!hash || contentHash(identity) !== hash || contentHash(manifest.numerical) !== contentHash(NUMERICAL_CONVENTIONS)) {
+    report.errors.push('The numerical identity/settings or manifest hash differs from the supported recorded run. Import source explicitly to start a new experimental run.');
+    return report;
+  }
+  if ((typeof bundle.sourceText === 'string' && bundle.sourceText ? sha256Hex(bundle.sourceText) : null) !== manifest.sourceHash) {
+    report.errors.push('text-hash-mismatch: The bundled source text differs from the recorded run.'); return report;
+  }
+  if (bundle.model && modelHash(bundle.model) !== manifest.modelHash) {
+    report.errors.push('The embedded model hash differs from the recorded run.'); return report;
+  }
+  report.warnings.push('Review and completeness names in the draft are supplied provenance, not independently verified certification.');
   const m = modelProblem(manifest.modelId, manifest.modelHash, registry);
   if ('reason' in m) {
     report.errors.push(`Cannot open: ${m.reason}`);
     return report;
   }
-  const engine = engineProblem(manifest.engineVersion);
-  if (engine) {
-    report.errors.push(`Cannot open: ${engine}`);
-    return report;
-  }
+
   const model = m.model;
   report.model = model;
   report.tolerance = bundle.tolerance;
@@ -362,13 +398,31 @@ export function reopenBundle(bundle: PolicyBundle, registry: ModelRegistry): Reo
     return report;
   }
 
+  const { hash: rerunHash, createdAt: _rerunTime, ...rerunIdentity } = rerun.manifest;
+  if (contentHash(rerunIdentity) !== hash || rerunHash !== hash) {
+    report.errors.push('The run settings, draw indices/counts or derived identity do not reproduce.'); return report;
+  }
+  // Preserve the original creation provenance after the identity has reproduced.
+  rerun.manifest = manifest;
   const expected = bundle.results;
+  for (const key of ['entities', 'outputs', 'policyOnlyOutputs'] as const) {
+    if (contentHash(expected[key]) !== contentHash(rerun[key])) {
+      report.status = 'not-reproduced'; report.errors.push(`The stored ${key} scope differs from the run.`); return report;
+    }
+  }
+  // Reject added/missing keys and changed series lengths, including unused corrupt data.
+  const shape = (value: unknown): unknown => Array.isArray(value) ? value.map(() => 'number') : isObject(value) ? Object.fromEntries(Object.entries(value).map(([key, child]) => [key, shape(child)])) : typeof value;
+  for (const side of ['baseline', 'policy', 'difference'] as const) {
+    if (contentHash(shape(expected[side])) !== contentHash(shape(rerun[side]))) {
+      report.status = 'not-reproduced'; report.errors.push(`The stored ${side} result shape differs from the run.`); return report;
+    }
+  }
   const tol = bundle.tolerance;
   const within = (a: number, b: number) => {
-    if (!Number.isFinite(a) && !Number.isFinite(b)) return true;
+    if (!Number.isFinite(a) || !Number.isFinite(b)) return false;
     return Math.abs(a - b) <= tol.absolute + tol.relative * Math.max(Math.abs(a), Math.abs(b));
   };
-  if (canonicalYears(expected?.years) !== canonicalYears(rerun.years)) {
+  if (contentHash(expected?.years) !== contentHash(rerun.years)) {
     report.status = 'not-reproduced';
     report.errors.push('the time steps differ from the bundled results');
     return report;
@@ -406,7 +460,8 @@ export function reopenBundle(bundle: PolicyBundle, registry: ModelRegistry): Reo
   }
   if (failures > 0) {
     report.status = 'not-reproduced';
-    const w = report.worst!;
+    const w = report.worst;
+    if (!w) { report.errors.push('Stored results contain invalid non-finite values.'); return report; }
     report.errors.push(
       `${failures} of ${report.compared} values are outside the declared tolerance (absolute ${tol.absolute}, relative ${tol.relative}); the largest is ${w.side} ${w.output} ${w.quantile} in ${w.year}: stored ${w.expected}, re-run ${w.actual}`,
     );
@@ -417,8 +472,4 @@ export function reopenBundle(bundle: PolicyBundle, registry: ModelRegistry): Reo
   }
   report.status = 'reproduced';
   return report;
-}
-
-function canonicalYears(years: unknown): string {
-  return Array.isArray(years) ? years.map((y) => (typeof y === 'number' ? y.toFixed(6) : 'x')).join(',') : '';
 }

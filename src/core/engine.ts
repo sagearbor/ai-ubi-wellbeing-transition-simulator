@@ -21,7 +21,7 @@
  * Each refusal is an explicit `limit-exceeded` or `cancelled` diagnostic, never a hang.
  */
 
-import { create, all, type MathNode } from 'mathjs';
+import { create, all, version as mathjsVersion, type MathNode } from 'mathjs';
 import type {
   BindingRecord,
   CoreModel,
@@ -41,10 +41,21 @@ import type {
   TestOutcome,
   Variable,
 } from './types';
+import { contentHash } from '../policy/hash';
 import { checkSourceSize, checkRunSettings, effectiveLimits, stepCount, type RunLimits } from './limits';
 
 /** Bump on any change to numerical behaviour (solver acceptance, ordering, invariants); it is part of every run hash. */
 export const ENGINE_VERSION = 'core-0.3.0';
+/** Maintained numerical conventions: bump each identifier when its behavior changes. */
+export const NUMERICAL_CONVENTIONS = Object.freeze({
+  engine: ENGINE_VERSION,
+  generator: 'mulberry32-fnv1a-parameter-seed-draw/1',
+  sampler: 'p5-p95-uniform-box-muller-lognormal-clamped/1',
+  correlation: 'parameter-independent-entity-shared-ratio-paired-sides/1',
+  solver: 'bisection-absolute-residual-floating-midpoint/2',
+  quantiles: 'sorted-linear-interpolation/1',
+  expression: `mathjs/${mathjsVersion}`,
+});
 const SINGLE = '_';
 
 // ---------------------------------------------------------------------------
@@ -650,11 +661,11 @@ export interface RunOptions {
   limits?: Partial<RunLimits>;
 }
 
-function manifestFor(model: CoreModel, overlays: Overlay[], seed: number | null, run = 0): RunManifest {
-  if (checkSourceSize([model, overlays])) return { modelId: 'rejected-source', overlayIds: [], hash: 'rejected-source-limit', seed, run, engineVersion: ENGINE_VERSION, createdAt: new Date().toISOString() };
+function manifestFor(model: CoreModel, overlays: Overlay[], seed: number | null, run = 0, ensemble?: { requestedRuns: number; effectiveRuns: number }): RunManifest {
+  if (checkSourceSize([model, overlays])) return { modelId: 'rejected-source', overlayIds: [], hash: 'rejected-source-limit', seed, run, engineVersion: ENGINE_VERSION, numerical: NUMERICAL_CONVENTIONS, ...ensemble, createdAt: new Date().toISOString() };
   // The draw index is part of the identity: seed 1 draw 0 and seed 1 draw 1 are different runs.
-  const hash = hashString(JSON.stringify({ model, overlays, seed, run: seed === null ? 0 : run, ENGINE_VERSION })).toString(16).padStart(8, '0');
-  return { modelId: model.id, overlayIds: overlays.map((o) => o.id), hash, seed, run: seed === null ? 0 : run, engineVersion: ENGINE_VERSION, createdAt: new Date().toISOString() };
+  const hash = contentHash({ model, overlays, seed, run: seed === null ? 0 : run, numerical: NUMERICAL_CONVENTIONS, ...ensemble });
+  return { modelId: model.id, overlayIds: overlays.map((o) => o.id), hash, seed, run: seed === null ? 0 : run, engineVersion: ENGINE_VERSION, numerical: NUMERICAL_CONVENTIONS, ...ensemble, createdAt: new Date().toISOString() };
 }
 
 export function runModel(base: CoreModel, opts: RunOptions = {}): RunResult {
@@ -920,17 +931,17 @@ export function* monteCarloSteps(base: CoreModel, opts: MonteCarloOptions = {}):
   const { model } = resolveModel(base, overlays);
   const deterministic = isDeterministic(model);
   if (!Number.isInteger(requested) || requested < 1 || requested > limits.maxDraws) {
-    const manifest = manifestFor(base, overlays, seed, 0);
+    const manifest = manifestFor(base, overlays, seed, 0, { requestedRuns: requested, effectiveRuns: 0 });
     const diagnostics: Diagnostic[] = [{ level: 'error', code: 'limit-exceeded', message: `${String(requested)} Monte Carlo draws requested; the limit is 1 to ${limits.maxDraws.toLocaleString('en-US')}`, where: 'runs' }];
     return { ok: false, diagnostics, years: [], runs: 0, quantiles: {}, manifest };
   }
   const problems = checkRunSettings({ model, runs: requested, seed, ensemble: true }, limits);
-  if (problems.length) return { ok: false, diagnostics: problems.map(p => ({ level: 'error', code: p.code, message: p.message })), years: [], runs: 0, quantiles: {}, manifest: manifestFor(base, overlays, seed, 0) };
+  if (problems.length) return { ok: false, diagnostics: problems.map(p => ({ level: 'error', code: p.code, message: p.message })), years: [], runs: 0, quantiles: {}, manifest: manifestFor(base, overlays, seed, 0, { requestedRuns: requested, effectiveRuns: 0 }) };
   const runs = deterministic ? 1 : requested;
   const budget = opts.budget ?? ambientBudget ?? budgetFor(limits.maxWallClockMs, { limits: opts.limits });
   const runOpts = { overlays, seed, budget, limits: opts.limits };
   const first = runModel(base, { ...runOpts, run: 0 });
-  const manifest = { ...first.manifest, seed };
+  const manifest = manifestFor(base, overlays, seed, 0, { requestedRuns: requested, effectiveRuns: runs });
   if (!first.ok) return { ok: false, diagnostics: first.diagnostics, years: first.years, runs: 0, quantiles: {}, manifest, deterministic };
   const all: RunResult[] = [first];
   yield { done: 1, total: runs };

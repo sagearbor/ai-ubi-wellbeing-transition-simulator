@@ -8,7 +8,7 @@ import { describe, expect, it } from 'vitest';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import LabTab from './LabTab';
-import { ENGINE_VERSION } from '../../src/core/engine';
+import { NUMERICAL_CONVENTIONS, ENGINE_VERSION } from '../../src/core/engine';
 import { findFixture } from '../../src/core/fixtures';
 import { encodeLabLink, LAB_HASH_PREFIX } from '../../src/policy/bundle';
 import { findPolicyExample } from '../../src/policy/examples';
@@ -51,7 +51,7 @@ describe('LabTab Policy panel (renders)', () => {
     const out = exampleHtml();
     expect(out).toContain('1 of 23 provisions mapped, 10 unresolved, 12 outside model — every listed provision has a status');
     expect(out).not.toContain('accounted for');
-    expect(out).toContain('Source: 79 of 79 source clauses covered or explicitly excluded (23 by a provision quote, 56 excluded)');
+    expect(out).toContain('Quotation coverage: 79 of 79 source clauses covered or explicitly excluded (23 by a provision quote, 56 excluded)');
     expect(out).toContain('Completeness: completeness not attested');
     expect(out).toContain('Source clauses (79; 0 neither quoted nor excluded)');
     expect(out).not.toContain('Run is disabled');
@@ -81,8 +81,9 @@ describe('LabTab Policy panel (renders)', () => {
       modelId: 'cohort-flow',
       modelHash: modelHash(cohort.model),
       provisions: example.draft.provisions.filter((p) => p.status !== 'mapped'),
+      clauseDispositions: example.draft.clauseDispositions?.map((d) => d.provisionIds?.some((id) => example.draft.provisions.some((p) => p.id === id && p.status === 'mapped')) ? { ...d, status: 'unresolved' as const, provisionIds: undefined, reason: 'Mapped channel omitted in the cohort test scenario.' } : d),
     };
-    const hash = `${LAB_HASH_PREFIX}${encodeLabLink({ v: 2, modelId: 'cohort-flow', modelHash: modelHash(cohort.model), engineVersion: ENGINE_VERSION, overlays: [cohort.overlays[0]], drafts: [draft], runs: 3, seed: 5 })}`;
+    const hash = `${LAB_HASH_PREFIX}${encodeLabLink({ v: 2, modelId: 'cohort-flow', modelHash: modelHash(cohort.model), engineVersion: ENGINE_VERSION, numerical: NUMERICAL_CONVENTIONS, overlays: [cohort.overlays[0]], drafts: [draft], runs: 3, seed: 5 })}`;
     const out = html({ initialHash: hash });
     expect(out).toContain('Opened a shared policy scenario');
     expect(out).toContain('value="cohort-flow" selected=""');
@@ -91,17 +92,17 @@ describe('LabTab Policy panel (renders)', () => {
     expect(out).toContain('deterministic: uncertainty off');
     expect(out).not.toContain('over 3 paired draws');
     // a link carries no source text: coverage is unknown, and it says so
-    expect(out).toContain('Source: source unavailable — coverage unknown');
+    expect(out).toContain('Quotation coverage: source unavailable — coverage unknown');
   });
 
   it('reports a link it cannot open instead of opening a different baseline', () => {
-    const stale = `${LAB_HASH_PREFIX}${encodeLabLink({ v: 2, modelId: 'training-budget', modelHash: '0000000000000000', engineVersion: ENGINE_VERSION, overlays: [], drafts: [example.draft], runs: 3, seed: 1 })}`;
+    const stale = `${LAB_HASH_PREFIX}${encodeLabLink({ v: 2, modelId: 'training-budget', modelHash: '0000000000000000', engineVersion: ENGINE_VERSION, numerical: NUMERICAL_CONVENTIONS, overlays: [], drafts: [example.draft], runs: 3, seed: 1 })}`;
     const out = html({ initialHash: stale });
     expect(out).toContain('Cannot open this lab link');
     expect(out).toContain('would silently use a different baseline');
     expect(out).not.toContain('sec5b2-ndwg-authorization');
 
-    const unknown = `${LAB_HASH_PREFIX}${encodeLabLink({ v: 2, modelId: 'gate-2027', modelHash: 'abc', engineVersion: ENGINE_VERSION, overlays: [], drafts: [example.draft], runs: 3, seed: 1 })}`;
+    const unknown = `${LAB_HASH_PREFIX}${encodeLabLink({ v: 2, modelId: 'gate-2027', modelHash: 'abc', engineVersion: ENGINE_VERSION, numerical: NUMERICAL_CONVENTIONS, overlays: [], drafts: [example.draft], runs: 3, seed: 1 })}`;
     expect(html({ initialHash: unknown })).toContain('which this version of the app does not include');
     expect(html({ initialHash: '#lab=not-a-real-payload!!' })).toContain('Cannot open this lab link');
 
@@ -115,7 +116,7 @@ describe('LabTab Policy panel (renders)', () => {
     const training = findFixture('training-budget')!.model;
     const mapped = example.draft.provisions.find((p) => p.status === 'mapped')!;
     const bad = { ...example.draft, provisions: [...example.draft.provisions, { ...mapped, id: 'second-setter', mapping: { ...mapped.mapping!, op: 'set' as const, value: 1 } }] };
-    const hash = `${LAB_HASH_PREFIX}${encodeLabLink({ v: 2, modelId: 'training-budget', modelHash: modelHash(training), engineVersion: ENGINE_VERSION, overlays: [], drafts: [bad], runs: 3, seed: 1 })}`;
+    const hash = `${LAB_HASH_PREFIX}${encodeLabLink({ v: 2, modelId: 'training-budget', modelHash: modelHash(training), engineVersion: ENGINE_VERSION, numerical: NUMERICAL_CONVENTIONS, overlays: [], drafts: [bad], runs: 3, seed: 1 })}`;
     const out = html({ initialHash: hash });
     expect(out).toContain('Cannot open this lab link');
     expect(out).toContain('set-add-ambiguous');

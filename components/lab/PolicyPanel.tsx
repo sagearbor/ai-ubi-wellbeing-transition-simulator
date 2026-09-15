@@ -39,7 +39,7 @@ import {
 } from '../../src/policy/bundle';
 import { buildClauseInventory, sourceCoverage } from '../../src/policy/clauses';
 import { DEFAULT_RUNS, DEFAULT_SEED, blankDraft, blockingErrors, coverage, validateDraft } from '../../src/policy/draft';
-import { sha256Hex } from '../../src/policy/hash';
+import { modelHash, sha256Hex } from '../../src/policy/hash';
 import { POLICY_EXAMPLES, findPolicyExample } from '../../src/policy/examples';
 import { memoFileName, renderMemo } from '../../src/policy/memo';
 import { EXCLUSION_KINDS, REVIEW_STATUSES, type ExclusionKind, type PairedRunResult, type PolicyDraft, type ReviewStatus } from '../../src/policy/types';
@@ -81,11 +81,12 @@ export interface PolicyPanelProps {
   /** Switch the Lab to another bundled model (with no overlays). */
   onRequestModel: (modelId: string) => void;
   /** Switch the Lab to a model and a scenario (from a bundle). The model may be one the bundle carried. */
-  onOpenScenario: (model: CoreModel, overlays: Overlay[], status: ModelStatus) => void;
+  onOpenScenario: (model: CoreModel, overlays: Overlay[], status: ModelStatus, warnings?: string[]) => void;
   /** Runs paired comparisons and bundle re-runs (a worker in the browser, synchronous in tests). */
   runner: Runner;
   /** 'imported' when the Lab's model was loaded from a file: experimental — not curated. */
   modelStatus?: ModelStatus;
+  importWarnings?: string[];
   /** Models imported this session, so bundles made on them reopen. */
   extraModels?: CoreModel[];
 }
@@ -155,8 +156,10 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
   onOpenScenario,
   runner,
   modelStatus = 'curated',
+  importWarnings = [],
   extraModels = [],
 }) => {
+  const [sourceCandidate, setSourceCandidate] = useState<{ model: CoreModel; overlays: Overlay[]; draft: PolicyDraft; sourceText?: string; reason: string } | null>(null);
   const [sourceTitle, setSourceTitle] = useState(initialSource?.title ?? '');
   const [sourceUrl, setSourceUrl] = useState(initialSource?.url ?? '');
   const [sourceText, setSourceText] = useState(initialSource?.text ?? '');
@@ -354,15 +357,36 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
     if (!draft || !activeResult || !activeFresh) return;
     // The source text travels only when it is the text the draft pins, so quotes can be re-checked on reopening.
     const pinned = sourceText.trim() && (!draft.source.textSha256 || sha256Hex(sourceText) === draft.source.textSha256);
-    const bundle = buildBundle(model, overlays, draft, activeResult.result, { sourceText: pinned ? sourceText : undefined, embedModel: imported });
-    download(bundleFileName(bundle), JSON.stringify(bundle, null, 2), 'application/json');
+    try {
+      const bundle = buildBundle(model, overlays, draft, activeResult.result, { sourceText: pinned ? sourceText : undefined, embedModel: imported, importWarnings });
+      download(bundleFileName(bundle), JSON.stringify(bundle, null, 2), 'application/json');
+    } catch (e) { setNotice({ tone: 'error', text: (e as Error).message }); }
+  };
+
+  const sourceDraftSupported = (draft: PolicyDraft, model: CoreModel, overlays: Overlay[]) => {
+    try { return !validateDraft(draft, model, {overlays}).some((d) => d.code === 'schema'); }
+    catch { return false; }
   };
 
   const openBundleText = async (text: string) => {
+    setSourceCandidate(null);
     const parsed = parseBundleJson(text);
     if (parsed.ok === false) {
       setReport(null);
       setNotice({ tone: 'error', text: `Cannot open this bundle: ${(parsed as { reason: string }).reason}` });
+      // Unknown schema has no replay contract. A bounded, validated embedded source can
+      // still be offered explicitly; no recorded results or certification are adopted.
+      if (text.length <= 5_000_000) {
+        try {
+          const source = JSON.parse(text);
+          if (typeof source?.schema === 'string' && source.schema.startsWith('policy-bundle/') && source.model && source.draft?.source && Array.isArray(source.draft.provisions) && Array.isArray(source.overlays)) {
+            const checked = await runner.run('bundle-source', {kind: 'validate-model', json: source.model}).promise;
+            if (checked.status === 'done' && (checked.result as ValidationResult).ok && sourceDraftSupported(source.draft, (checked.result as ValidationResult).model!, source.overlays)) {
+              setSourceCandidate({model: (checked.result as ValidationResult).model!, overlays: source.overlays, draft: source.draft, sourceText: typeof source.sourceText === 'string' ? source.sourceText : undefined, reason: parsed.reason});
+            }
+          }
+        } catch { /* The original parse error remains visible. */ }
+      }
       return;
     }
     const bundle = parsed.value!;
@@ -391,8 +415,9 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
     }
     const rep = outcome.result as ReopenReport;
     setReport(rep);
-    if (rep.model && rep.draft && rep.overlays) {
-      onOpenScenario(rep.model, rep.overlays, status);
+    if (rep.status !== 'reproduced' && bundle.model && sourceDraftSupported(bundle.draft, bundle.model, bundle.overlays)) setSourceCandidate({model: bundle.model, overlays: bundle.overlays, draft: bundle.draft, sourceText: bundle.sourceText, reason: rep.errors.join(' ')});
+    if (rep.status === 'reproduced' && rep.model && rep.draft && rep.overlays) {
+      onOpenScenario(rep.model, rep.overlays, bundle.importWarnings?.some((w) => w.includes('NEW experimental')) ? 'imported' : status, bundle.importWarnings);
       setDrafts([rep.draft]);
       setActive(0);
       setSourceTitle(rep.draft.source?.title ?? '');
@@ -401,7 +426,7 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
       setRuns(parsed.value.manifest.runs);
       setSeed(parsed.value.manifest.seed);
       setResults(rep.rerun ? [{ key: runKey(rep.model, rep.overlays, rep.draft, parsed.value.manifest.runs, parsed.value.manifest.seed, parsed.value.sourceText ?? ''), result: rep.rerun }] : []);
-      setNotice(rep.status === 'cannot-open' ? { tone: 'error', text: 'The bundled draft is loaded for inspection only; it was not run. Fix the errors listed below, then run it.' } : null);
+      setNotice(null);
     } else {
       setNotice({ tone: 'error', text: rep.errors.join(' ') });
     }
@@ -410,6 +435,7 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
   const onFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
+    if (file.size > 5_000_000) { setNotice({tone: 'error', text: 'The bundle exceeds the 5 MB reopen limit.'}); e.target.value = ''; return; }
     file.text().then((t) => void openBundleText(t), (err: Error) => setNotice({ tone: 'error', text: `Could not read the file: ${err.message}` }));
     e.target.value = '';
   };
@@ -441,6 +467,14 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
         </p>
       </header>
 
+      {sourceCandidate && <button type="button" className={btnPlain} onClick={() => {
+        const c = sourceCandidate;
+        const importedDraft: PolicyDraft = { ...c.draft, modelId: c.model.id, modelHash: modelHash(c.model), reviewStatus: 'author-drafted', reviewedBy: undefined, completeness: undefined };
+        onOpenScenario(c.model, c.overlays, 'imported', [`NEW experimental source import; not replay: ${c.reason}`]);
+        setDrafts([importedDraft]); setActive(0); setResults([]); setReport(null);
+        setSourceTitle(importedDraft.source?.title ?? ''); setSourceUrl(importedDraft.source?.url ?? ''); setSourceText(c.sourceText ?? '');
+        setSourceCandidate(null); setNotice({tone: 'ok', text: `Source imported for a NEW experimental run. Recorded results were not reproduced: ${c.reason}. Inspect the draft and run explicitly.`});
+      }}>Import bundle source for a NEW experimental run (not replay)</button>}
       {notice && (
         <p
           role="status"

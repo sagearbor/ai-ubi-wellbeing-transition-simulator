@@ -7,7 +7,7 @@
  * completeness attestation: it attested the old provisions and exclusions.
  */
 
-import { ENGINE_VERSION, resolveModel } from '../../src/core/engine';
+import { NUMERICAL_CONVENTIONS, ENGINE_VERSION, resolveModel } from '../../src/core/engine';
 import type { CoreModel, Overlay } from '../../src/core/types';
 import type { FixtureEntry } from '../../src/core/fixtures';
 import { contentHash, modelHash, sha256Hex } from '../../src/policy/hash';
@@ -183,12 +183,12 @@ export function splitScenarioOverlays(fixture: FixtureEntry, overlays: Overlay[]
 }
 
 export function linkStateFor(model: CoreModel, overlays: Overlay[], drafts: PolicyDraft[], runs: number, seed: number): LabLinkState {
-  return { v: 2, modelId: model.id, modelHash: modelHash(model), engineVersion: ENGINE_VERSION, overlays, drafts, runs, seed };
+  return { v: 2, modelId: model.id, modelHash: modelHash(model), engineVersion: ENGINE_VERSION, numerical: NUMERICAL_CONVENTIONS, overlays, drafts, runs, seed };
 }
 
 /** Identity of a run's inputs: a result is stale when this changes. */
 export function runKey(model: CoreModel, overlays: Overlay[], draft: PolicyDraft, runs: number, seed: number, sourceText = ''): string {
-  return contentHash({ m: modelHash(model), e: ENGINE_VERSION, overlays, draft, runs, seed, text: sourceText.trim() ? sha256Hex(sourceText) : '' });
+  return contentHash({ m: modelHash(model), e: NUMERICAL_CONVENTIONS, overlays, draft, runs, seed, text: sourceText.trim() ? sha256Hex(sourceText) : '' });
 }
 
 /** Tailwind classes for a provision status chip. */

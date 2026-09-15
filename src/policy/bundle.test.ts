@@ -15,7 +15,7 @@ import {
   type LabLinkState,
   type PolicyBundle,
 } from './bundle';
-import { ENGINE_VERSION } from '../core/engine';
+import { NUMERICAL_CONVENTIONS, ENGINE_VERSION } from '../core/engine';
 import { pairedRun } from './draft';
 import { modelHash } from './hash';
 import { SOURCE_TEXT, cohort, retraining, threeStatusDraft, training } from './testDrafts';
@@ -25,7 +25,7 @@ const registry = (id: string): CoreModel | undefined => findFixture(id)?.model;
 const linkState = (over: Partial<LabLinkState> = {}): LabLinkState => ({
   v: 2,
   modelId: training.id,
-  engineVersion: ENGINE_VERSION,
+  engineVersion: ENGINE_VERSION, numerical: NUMERICAL_CONVENTIONS,
   modelHash: modelHash(training),
   overlays: [],
   drafts: [threeStatusDraft()],
@@ -123,7 +123,7 @@ describe('bundle', () => {
     const result = pairedRun(training, [], draft, { runs: 120, seed: 9, sourceText: SOURCE_TEXT });
     const bundle = roundTrip(buildBundle(training, [], draft, result, { sourceText: SOURCE_TEXT }));
     expect(bundle.manifest.coverage.source.status).toBe('complete');
-    expect(bundle.manifest).toMatchObject({ engineVersion: ENGINE_VERSION, draws: { count: 120, seed: 9, firstIndex: 0 } });
+    expect(bundle.manifest).toMatchObject({ engineVersion: ENGINE_VERSION, numerical: NUMERICAL_CONVENTIONS, draws: { count: 120, seed: 9, firstIndex: 0 } });
     const report = reopenBundle(bundle, registry);
     expect(report.errors).toEqual([]);
     expect(report.status).toBe('reproduced');
@@ -131,7 +131,7 @@ describe('bundle', () => {
     expect(report.maxAbsDiff).toBe(0);
     expect(report.draftDiagnostics.filter((d) => d.level === 'error')).toEqual([]);
     expect(report.draftDiagnostics.map((d) => d.code)).not.toContain('quote-unchecked');
-    expect(report.warnings).toEqual([]);
+    expect(report.warnings.join(' ')).toContain('not independently verified');
     expect(bundleFileName(bundle)).toBe(`test-draft-training-budget-${modelHash(training)}.policy.json`);
   });
 
@@ -157,8 +157,8 @@ describe('bundle', () => {
     expect(report.maxAbsDiff).toBeCloseTo(5, 9);
     expect(report.errors[0]).toContain('outside the declared tolerance');
 
-    const loose = roundTrip({ ...bundle, tolerance: { absolute: 10, relative: 0, note: 'loose' } });
-    expect(reopenBundle(loose, registry).status).toBe('reproduced');
+    const loose = { ...bundle, tolerance: { absolute: 10, relative: 0, note: 'loose' } };
+    expect(reopenBundle(loose, registry).status).toBe('cannot-open');
   });
 
   it('refuses to open an unknown model, a changed model version, an edited draft or an old schema', () => {
@@ -195,7 +195,7 @@ describe('bundle', () => {
     const draft = threeStatusDraft();
     const result = pairedRun(training, [], draft, { runs: 3, seed: 1 });
     // a bundle whose source text is not the text the draft pins (hand-built: the panel would not bundle it)
-    const tampered = roundTrip(buildBundle(training, [], draft, result, { sourceText: SOURCE_TEXT.replace('stipend', 'grant') }));
+    const tampered = roundTrip({ ...buildBundle(training, [], draft, result), sourceText: SOURCE_TEXT.replace('stipend', 'grant') });
     const rep = reopenBundle(tampered, registry);
     expect(rep.status).toBe('cannot-open');
     expect(rep.rerun).toBeUndefined();

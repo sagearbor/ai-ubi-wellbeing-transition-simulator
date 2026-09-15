@@ -35,7 +35,7 @@
  *     not against the draft's list, and completeness is claimed only by a named person's attestation.
  */
 
-import { ENGINE_VERSION, budgetFor, currentBudget, drain, explainBinding, isDeterministic, resolveModel, runModel, type DrawProgress } from '../core/engine';
+import { ENGINE_VERSION, NUMERICAL_CONVENTIONS, budgetFor, currentBudget, drain, explainBinding, isDeterministic, resolveModel, runModel, type DrawProgress } from '../core/engine';
 import { checkSourceSize, checkRunSettings, effectiveLimits } from '../core/limits';
 import type { CoreModel, EvidenceKind, Input, Overlay, RunResult } from '../core/types';
 import { operativeCoverage, sourceCoverage, type SourceCoverage } from './clauses';
@@ -730,6 +730,9 @@ export function* pairedRunSteps(model: CoreModel, overlays: Overlay[], draft: Po
     modelName: model.name,
     modelHash: modelHash(model),
     engineVersion: ENGINE_VERSION,
+    numerical: NUMERICAL_CONVENTIONS,
+    hash: '',
+    sourceHash: sourceText ? sha256Hex(sourceText) : null,
     baselineOverlays: overlays.map((o) => ({ id: o.id, hash: contentHash(o) })),
     policyOverlayId: policyOverlay.id,
     policyOverlayHash: contentHash(policyOverlay),
@@ -800,6 +803,8 @@ export function* pairedRunSteps(model: CoreModel, overlays: Overlay[], draft: Po
   const pointP = runModel(model, { overlays: policyOverlays, budget });
   manifest.baselineRunHash = pointB.manifest.hash;
   manifest.policyRunHash = pointP.manifest.hash;
+  const { createdAt: _createdAt, hash: _hash, ...identity } = manifest;
+  manifest.hash = contentHash(identity);
   empty.years = pointB.years;
 
   const failures = (side: string, r: RunResult) =>

@@ -232,7 +232,7 @@ const LabTab: React.FC<LabTabProps> = ({
   };
 
   /** Open a model with exactly these scenario overlays (from a bundle). */
-  const applyScenario = (m: CoreModel, scenario: Overlay[], st: ModelStatus) => {
+  const applyScenario = (m: CoreModel, scenario: Overlay[], st: ModelStatus, warnings: string[] = []) => {
     const curated = curatedMatch(m);
     if (st === 'curated' && curated) {
       const split = splitScenarioOverlays(curated, scenario);
@@ -241,7 +241,7 @@ const LabTab: React.FC<LabTabProps> = ({
       setCustomOverlays(split.custom);
       return;
     }
-    const key = addImport(m, [], []);
+    const key = addImport(m, [], warnings);
     pickModel(key);
     setCustomOverlays(scenario);
   };
@@ -627,6 +627,7 @@ const LabTab: React.FC<LabTabProps> = ({
         overlays={overlays}
         runner={runner}
         modelStatus={status}
+        importWarnings={importedEntry?.warnings}
         extraModels={imports.map((i) => i.model)}
         initialDrafts={link.opened?.drafts ?? initialPolicy?.drafts ?? []}
         initialSource={initialPolicy?.source}
@@ -648,7 +649,7 @@ const LabTab: React.FC<LabTabProps> = ({
       />
 
       {/* 9. The files themselves. */}
-      <ModelFilePanel model={model} overlays={runOverlays} status={status} />
+      <ModelFilePanel model={model} overlays={runOverlays} status={status} importWarnings={importedEntry?.warnings} />
     </div>
   );
 };
