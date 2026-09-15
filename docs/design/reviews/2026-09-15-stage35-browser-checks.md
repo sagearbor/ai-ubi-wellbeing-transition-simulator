@@ -23,3 +23,18 @@ Generated a real complete bundle with the training fixture, an `external-edit` o
 ## Legacy source-import provenance, 5ff80f9
 
 Generated the previous supported bundle shape: compatible numerical manifest, no structured `provenance`, and the old `importWarnings` source-import marker. Uploaded through the actual bundle file input. The page displayed **Experimental scenario — not curated. Base model: known fixture.** and all 288 stored values reproduced with largest deviation zero. No alert appeared. Thus the compatibility intake preserves the experimental label as well as numerical reproducibility.
+
+## Conditional world, 51fd31a
+
+Fresh isolated browser `stage35-world`, `http://127.0.0.1:4173/`, default conditional model at month zero.
+
+- Verified compact map no longer displays unsupported cooperation, race-risk, virtuous-cycle or crisis zeroes, and no longer advertises market pressure/default corporate adaptation controls. The main scope description now states fixed requests and source limits.
+- Opened Corporations, selected Apple, switched Request type to Monthly amount. Requested 12.1875 billion constant-2015 USD/month: available24.375, funded12.1875, unfunded0, unused12.1875. Requested36.5625: available24.375, funded24.375, unfunded12.1875, unused0. The current contribution display updated immediately.
+- The dormant10% contribution slider/column remains visible alongside amount mode. Code inspection clarified that moving the slider switches back to share mode; it is not ignored, but the current display is misleading. Independent review requested exclusive controls and correct amount-based ranking/columns.
+- Global map dividend0.25417647855428593 is specifically the equal global-pool route, not all transfer receipts. Backend sourceAccounting actual/receipts are25.74225625 billion/month, while global-only pool is1.891925 billion. The existing tooltip makes this distinction; Task6 should name it directly at the value, and guided flow must use its declared aggregate or selected-corporation scope.
+
+These checks do not accept the numerical/import issues independently found in the Task4 review. Those remain in the fix loop before completion.
+
+## Task4 fix round1 browser check — 4bee00c
+
+Charts at month0 renders the conditional-index point (13 chart dots in DOM across charts); no displacement-gap/crisis panel or waiting overlay appears. Caption states same economic conditions and zero funded transfers, and that the difference is not net welfare. Remaining scatter wording (correlation "may need tuning", unlabeled unweighted mean) is assigned to Task6.

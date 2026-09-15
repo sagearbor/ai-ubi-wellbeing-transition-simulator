@@ -1,0 +1,51 @@
+{
+  "baseline": "/private/tmp/alignment-pre-conditional",
+  "current": "/private/tmp/alignment-stage35",
+  "scenarios": [
+    {
+      "id": "organic-incentive",
+      "states": 121
+    },
+    {
+      "id": "evidence-anchored",
+      "states": 121
+    },
+    {
+      "id": "us-reference-korinek",
+      "states": 61
+    }
+  ],
+  "checkedExistingLeaves": 1806103,
+  "stats": {
+    "organic-incentive": {
+      "different": 0,
+      "structural": 0,
+      "maxAbs": 0,
+      "maxRelative": 0,
+      "maxScaledDifference": 0,
+      "maxAbsPath": ""
+    },
+    "evidence-anchored": {
+      "different": 0,
+      "structural": 0,
+      "maxAbs": 0,
+      "maxRelative": 0,
+      "maxScaledDifference": 0,
+      "maxAbsPath": ""
+    },
+    "us-reference-korinek": {
+      "different": 0,
+      "structural": 0,
+      "maxAbs": 0,
+      "maxRelative": 0,
+      "maxScaledDifference": 0,
+      "maxAbsPath": ""
+    }
+  },
+  "differences": [],
+  "newMetadataKeys": [
+    "observedInitialLadder",
+    "macroDiagnostics",
+    "printedLaborShare"
+  ]
+}
