@@ -7,14 +7,17 @@ import { marked } from 'marked';
 import cardSource from '../../docs/design/model-card-default.md?raw';
 
 const REPO_BLOB = 'https://github.com/sagearbor/ai-ubi-wellbeing-transition-simulator/blob/main/';
+const MODEL_CARD_URL = `${REPO_BLOB}docs/design/model-card-default.md`;
 
 /** Markdown -> HTML. The source is a file in this repository, not user input; raw HTML in it is escaped anyway. */
 export function renderModelCard(markdown: string): string {
   const renderer = new marked.Renderer();
   renderer.html = ({ text }) => text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   renderer.link = ({ href, text }) => {
-    const url = /^https?:\/\//.test(href) ? href : REPO_BLOB + href.replace(/^\.?\//, '');
-    return `<a href="${url}" target="_blank" rel="noreferrer">${text}</a>`;
+    const url = /^https?:\/\//.test(href) ? href : new URL(href, MODEL_CARD_URL).href;
+    if (!/^https?:\/\//i.test(url)) return text;
+    const attributeUrl = url.replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+    return `<a href="${attributeUrl}" target="_blank" rel="noreferrer">${text}</a>`;
   };
   renderer.table = function (token) {
     const head = token.header.map((c) => `<th>${this.parser.parseInline(c.tokens)}</th>`).join('');
@@ -54,8 +57,8 @@ export default function ModelCardTab() {
     <div className="max-w-4xl mx-auto px-4 sm:px-8 py-8">
       <style>{STYLE}</style>
       <div className="mb-6 p-4 rounded-2xl border border-amber-200 bg-amber-50 text-amber-900 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-200 text-sm">
-        This is the model card for the built-in world model and its evidence-anchored candidate, rendered from{' '}
-        <a className="underline font-semibold" href={`${REPO_BLOB}docs/design/model-card-default.md`} target="_blank" rel="noreferrer">docs/design/model-card-default.md</a>.
+        This is the model card for the default conditional world model, with links to archived legacy evidence, rendered from{' '}
+        <a className="underline font-semibold" href={MODEL_CARD_URL} target="_blank" rel="noreferrer">docs/design/model-card-default.md</a>.
         It says what the model covers, what each number rests on, and where it is known to fail.
       </div>
       <article className="mc" dangerouslySetInnerHTML={{ __html: html }} />
