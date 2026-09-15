@@ -1379,11 +1379,11 @@ const App: React.FC = () => {
 
             <div>
                 <h2 className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
-                  Scenario Presets
+                  Legacy Scenario Presets
                   <InfoTooltip text="Pre-configured scenarios demonstrating different game theory outcomes: cooperation, defection, protectionism, etc." />
                 </h2>
                 <div className="space-y-2">
-                {SCENARIO_PRESETS.map(scenario => (
+                {!capabilities.conditional && SCENARIO_PRESETS.map(scenario => (
                     <div key={scenario.id} className="border border-slate-200 dark:border-slate-700 rounded-xl p-3 bg-slate-50 dark:bg-slate-800/50">
                       <div className="flex justify-between items-start mb-2">
                         <h3 className="text-xs font-bold text-slate-700 dark:text-slate-200">{scenario.name}</h3>
@@ -1411,7 +1411,7 @@ const App: React.FC = () => {
                   <InfoTooltip text="Select a different scenario to compare against your current setup (Scenario A)." />
                 </h2>
                 <div className="space-y-2">
-                  {SCENARIO_PRESETS.map(scenario => (
+                  {!capabilities.conditional && SCENARIO_PRESETS.map(scenario => (
                     <button
                       key={scenario.id}
                       onClick={() => setComparisonScenarioId(scenario.id)}
@@ -1465,6 +1465,7 @@ const App: React.FC = () => {
                 </div>
             </div>
 
+{!capabilities.conditional && <>
             <div>
                 <h2 className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-4">Corporation Policy</h2>
                 <div className="space-y-6">
@@ -1504,6 +1505,8 @@ const App: React.FC = () => {
                 </div>
             </div>
 
+</>}
+
             <div className="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl">
               <div className="flex items-start gap-2">
                 <div className="mt-0.5 text-blue-600 dark:text-blue-400">
@@ -1514,7 +1517,7 @@ const App: React.FC = () => {
                 <div className="flex-1">
                   <h3 className="text-[10px] font-bold text-blue-900 dark:text-blue-300 uppercase tracking-widest mb-2">Corporation-Centric Model</h3>
                   <p className="text-[10px] text-blue-800 dark:text-blue-400 leading-relaxed">
-                    In this model, UBI contributions are made voluntarily by AI corporations based on their self-interest (customer preservation) and reputation concerns. Nation states cannot mandate participation.
+                    {capabilities.conditional ? 'Requests and allocation routes are fixed scenario inputs. Contributions are limited to the modeled source pool. Customer demand, reputation reactions and national adaptation are not modeled.' : 'In the legacy model, UBI contributions change under assumed customer-preservation and reputation rules.'}
                   </p>
                 </div>
               </div>
@@ -1550,7 +1553,7 @@ const App: React.FC = () => {
                     which converts units with the same helper the engine uses. */}
                 {(() => { const hs = headlineStats(state); return [
                   { label: hs.wellbeingLabel, val: hs.wellbeingAvailable ? hs.meanCountryWellbeing.toFixed(1) : 'Unavailable', color: 'text-emerald-600 dark:text-emerald-400', desc: capabilities.conditional ? "Population-weighted illustrative conditional index across the complete modeled roster. Unavailable if any country is outside the mapping scale." : "Mean of country wellbeing indices (0-100), unweighted: every country counts once regardless of population. Not the average person's wellbeing." },
-                  { label: 'Dividend', val: formatUsdPerPerson(hs.globalDividendUsd), color: 'text-amber-600 dark:text-amber-400', desc: "Global dividend this month: USD per person from the global pool, paid equally per capita worldwide. Customer-weighted and HQ-local payments come on top and vary by country." },
+                  { label: 'Dividend', val: formatUsdPerPerson(hs.globalDividendUsd), color: 'text-amber-600 dark:text-amber-400', desc: "Global dividend this month: USD per person from the global pool, paid equally per capita to all modeled residents. Customer-weighted and HQ-local payments come on top and vary by country." },
                   { label: 'Adoption', val: `${(hs.meanCountryAdoption * 100).toFixed(0)}%`, color: 'text-blue-600 dark:text-blue-400', desc: "Mean of country AI adoption, unweighted: every country counts once regardless of population." },
                   { label: 'Pool', val: formatBillionsUsd(hs.globalPoolBillions), color: 'text-slate-900 dark:text-white', desc: "Global pool this month: contributions routed to equal per-capita distribution. Paid out the same month, not accumulated. Excludes customer-weighted and HQ-local contributions." }
                 ]; })().map((stat, i) => (
@@ -1564,6 +1567,7 @@ const App: React.FC = () => {
                 ))}
               </div>
 
+{!capabilities.conditional && <>
               {/* Secondary Stats Row - Crisis Indicators */}
               <div className="grid grid-cols-3 gap-2 shrink-0">
                 <div className={`bg-white dark:bg-slate-900 border px-3 py-2 rounded-lg flex justify-between items-center shadow-sm ${state.countriesInCrisis > 0 ? 'border-rose-400 dark:border-rose-600' : 'border-slate-200 dark:border-slate-800'}`}>
@@ -1595,6 +1599,9 @@ const App: React.FC = () => {
                 </div>
               </div>
 
+
+</>}
+{!capabilities.conditional && <>
               {/* Game Theory Indicator - P6-T4 */}
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 shrink-0">
                 <div className={`bg-white dark:bg-slate-900 border px-3 py-2 rounded-lg flex justify-between items-center shadow-sm ${
@@ -1655,6 +1662,8 @@ const App: React.FC = () => {
                 </div>
               </div>
 
+
+</>}
               {/* Prisoner's Dilemma Warning */}
               {gameTheoryState.isInPrisonersDilemma && (
                 <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-400 dark:border-amber-600 px-4 py-2 rounded-lg">
