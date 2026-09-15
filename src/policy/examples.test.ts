@@ -36,9 +36,10 @@ describe('worked example: S. 3877 against training-budget', () => {
     expect(coverage(example.draft, example.source.text).completeness.text).toBe('completeness not attested');
   });
 
-  it('validates with no errors or warnings, every quote found verbatim', () => {
+  it('validates with explicit partial-coverage warning, every quote found verbatim', () => {
     const ds = validateDraft(example.draft, model, { sourceText: example.source.text });
-    expect(ds.filter((d) => d.level !== 'info')).toEqual([]);
+    expect(ds.filter((d) => d.level === 'error')).toEqual([]);
+    expect(ds.filter(d => d.level === 'warning').map(d => d.code)).toEqual(['unit-assumed', 'coverage-incomplete']);
     for (const p of example.draft.provisions) expect(quoteInSource(p.quote, example.source.text)).toBe(true);
   });
 

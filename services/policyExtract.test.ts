@@ -232,3 +232,14 @@ describe('extractPolicyDraft with a mocked client', () => {
     await expect(extractPolicyDraft(training, SOURCE)).rejects.toBeInstanceOf(PolicyRateLimitError);
   });
 });
+
+it('preserves proposed time assumptions and operative links without claiming review', () => {
+  const proposed = { ...fund, mapping: { ...fund.mapping, timeAssumption: { basis: 'year', reason: 'Explicit hypothetical annual funding' } } };
+  const out = parsePolicyExtraction(payload([proposed], { clauseDispositions: [{ clauseId: 'sec2(a)', status: 'linked', reason: 'Funding only; no child care or response coefficient covered', provisionIds: ['fund'] }] }), training, SOURCE);
+  expect(out.errors).toEqual([]);
+  expect(out.draft?.provisions[0].mapping?.timeAssumption).toEqual(proposed.mapping.timeAssumption);
+  expect(out.draft?.clauseDispositions?.[0].provisionIds).toEqual(['fund']);
+  expect(out.draft?.reviewStatus).toBe('ai-drafted');
+  expect(out.draft?.completeness).toBeUndefined();
+  expect(coverage(out.draft!, SOURCE).operative.unresolved).toEqual(['sec2(b)', 'sec2(c)']);
+});

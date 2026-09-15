@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { runModel } from '../core/engine';
 import type { CoreModel } from '../core/types';
 import { ENGINE_VERSION } from '../core/engine';
-import { coverage, draftToOverlay, expressionSymbols, pairedRun, quoteInSource, validateDraft, blankDraft, hasErrors, blockingErrors } from './draft';
+import { attestationBinding, coverage, draftToOverlay, expressionSymbols, pairedRun, quoteInSource, validateDraft, blankDraft, hasErrors, blockingErrors } from './draft';
 import { canonicalJson, contentHash, modelHash, sha256Hex } from './hash';
 import {
   SOURCE_TEXT,
@@ -84,6 +84,7 @@ describe('coverage', () => {
   it('completeness is attested only by a named person, never by an AI or an agent', () => {
     expect(coverage(threeStatusDraft(), SOURCE_TEXT).completeness).toEqual({ attested: false, text: 'completeness not attested' });
     const person = threeStatusDraft({ completeness: { name: 'Jane Reviewer', kind: 'person', date: '2026-09-14', statement: 'Checked every clause.', textSha256: sha256Hex(SOURCE_TEXT) } });
+    person.completeness!.contentBinding = attestationBinding(person);
     expect(coverage(person, SOURCE_TEXT).completeness).toMatchObject({ attested: true, text: 'completeness attested by Jane Reviewer on 2026-09-14' });
     expect(hasErrors(validateDraft(person, training, { sourceText: SOURCE_TEXT }))).toBe(false);
 
@@ -106,7 +107,7 @@ describe('validateDraft', () => {
   it('accepts a clean three-status draft against its source', () => {
     const ds = validateDraft(threeStatusDraft(), training, { sourceText: SOURCE_TEXT });
     expect(codes(ds, 'error')).toEqual([]);
-    expect(codes(ds, 'warning')).toEqual([]);
+    expect(codes(ds, 'warning')).toEqual(['coverage-incomplete']);
   });
 
   it('flags a quote that is not verbatim, and a source text whose hash differs', () => {

@@ -6,7 +6,7 @@
  * What converts (and nothing else):
  *   currency     usd, $, dollar(s), with scale words or letters: thousand/k, million/m/mn,
  *                billion/b/bn, trillion/t/tn. "$", "M usd", "million usd", "usd million" all parse.
- *   counts       people/persons/workers/individuals/participants (one kind), jobs, units; with the
+ *   counts       people/persons/residents, workers, participants, households (distinct kinds), jobs, units; with the
  *                same scale words ("2 thousand people").
  *   shares       share/fraction/proportion (scale 1) and percent/pct/% /percentage points (scale 0.01).
  *                "share of L" keeps its qualifier; two different qualifiers do not convert.
@@ -26,7 +26,7 @@
 
 import type { StepUnit } from '../core/types';
 
-export const UNITS_VERSION = 'policy-units/1';
+export const UNITS_VERSION = 'policy-units/2';
 
 export type Dimension = 'currency' | 'count' | 'share' | 'duration' | 'dimensionless' | 'opaque';
 export type TimeBasis = 'year' | 'month' | 'one-off' | 'generation';
@@ -39,8 +39,9 @@ export interface ParsedUnit {
   /** Multiply a value in this unit by `scale` to get the base unit (usd, people, share, year). */
   scale: number;
   time?: TimeBasis;
-  /** A per-person denominator. */
+  /** Legacy indicator for any recipient denominator; recipient identifies which population. */
   perPerson?: boolean;
+  recipient?: 'resident' | 'worker' | 'participant' | 'household';
 }
 
 const SCALE_WORDS: Record<string, number> = {
@@ -50,7 +51,7 @@ const SCALE_WORDS: Record<string, number> = {
   trillion: 1e12, trillions: 1e12, t: 1e12, tn: 1e12,
 };
 const CURRENCY = new Set(['usd', 'dollar', 'dollars', 'us$', 'usdollars']);
-const PEOPLE = new Set(['people', 'person', 'persons', 'worker', 'workers', 'individual', 'individuals', 'participant', 'participants', 'trainee', 'trainees']);
+const PEOPLE = new Set(['people', 'person', 'persons', 'worker', 'workers', 'individual', 'individuals', 'participant', 'participants', 'trainee', 'trainees', 'resident', 'residents', 'household', 'households']);
 const JOBS = new Set(['job', 'jobs', 'position', 'positions']);
 const UNITS = new Set(['unit', 'units']);
 const SHARE = new Set(['share', 'fraction', 'proportion']);
@@ -58,7 +59,8 @@ const PERCENT = new Set(['percent', 'pct', 'percentage', 'pp', 'percentagepoints
 const DIMENSIONLESS = new Set(['1', 'ratio', 'factor', 'x', 'multiplier', 'dimensionless']);
 const YEAR = new Set(['year', 'years', 'yr', 'yrs', 'annum', 'y']);
 const MONTH = new Set(['month', 'months', 'mo', 'mos']);
-const PER_PERSON = new Set(['capita', 'person', 'people', 'persons', 'worker', 'workers', 'head', 'participant', 'participants', 'individual', 'individuals']);
+const PER_PERSON = new Set(['capita', 'person', 'people', 'persons', 'worker', 'workers', 'head', 'participant', 'participants', 'individual', 'individuals', 'resident', 'residents', 'household', 'households']);
+const recipientOf = (s: string): ParsedUnit['recipient'] => /^(worker|workers)$/.test(s) ? 'worker' : /^(participant|participants|trainee|trainees)$/.test(s) ? 'participant' : /^(household|households)$/.test(s) ? 'household' : 'resident';
 const FILLER = new Set(['a', 'an', 'each', 'every', 'the', 'us', 'of']);
 
 function tokens(unit: string): string[] {
@@ -86,6 +88,7 @@ export function parseUnit(unit: string | undefined): ParsedUnit {
   const ts = tokens(raw);
   let time: TimeBasis | undefined;
   let perPerson = false;
+  let recipient: ParsedUnit['recipient'];
   const numerator: string[] = [];
   let qualifier = '';
   for (let i = 0; i < ts.length; i++) {
@@ -100,7 +103,7 @@ export function parseUnit(unit: string | undefined): ParsedUnit {
       if (YEAR.has(next)) { if (time && time !== 'year') return opaque(); time = 'year'; }
       else if (MONTH.has(next)) { if (time && time !== 'month') return opaque(); time = 'month'; }
       else if (next === 'generation') { time = 'generation'; }
-      else if (PER_PERSON.has(next)) perPerson = true;
+      else if (PER_PERSON.has(next)) { if (recipient && recipient !== recipientOf(next)) return opaque(); perPerson = true; recipient = recipientOf(next); }
       else return opaque();
       continue;
     }
@@ -121,7 +124,7 @@ export function parseUnit(unit: string | undefined): ParsedUnit {
     if (w in SCALE_WORDS && numerator.length > 1) scale *= SCALE_WORDS[w];
     else base.push(w);
   }
-  const out = (dimension: Dimension, kind: string, s: number): ParsedUnit => ({ raw, dimension, kind, scale: s, ...(time ? { time } : {}), ...(perPerson ? { perPerson } : {}) });
+  const out = (dimension: Dimension, kind: string, s: number): ParsedUnit => ({ raw, dimension, kind, scale: s, ...(time ? { time } : {}), ...(perPerson ? { perPerson, recipient } : {}) });
 
   if (base.length === 0) {
     // "per year" alone, or nothing but fillers: a dimensionless rate
@@ -130,7 +133,7 @@ export function parseUnit(unit: string | undefined): ParsedUnit {
   if (base.length !== 1) return opaque();
   const b = base[0];
   if (CURRENCY.has(b)) return out('currency', 'usd', scale);
-  if (PEOPLE.has(b)) return out('count', 'people', scale);
+  if (PEOPLE.has(b)) return out('count', recipientOf(b) === 'resident' ? 'people' : recipientOf(b)!, scale);
   if (JOBS.has(b)) return out('count', 'jobs', scale);
   if (UNITS.has(b)) return out('count', 'units', scale);
   if (scale !== 1) return opaque();
@@ -146,6 +149,8 @@ export function parseUnit(unit: string | undefined): ParsedUnit {
 export interface ConversionContext {
   /** The model's step, used only when the target declares no time basis. */
   step?: StepUnit;
+  /** Persist on the mapping; supplies only a missing source time basis, never recipient equivalence. */
+  timeAssumption?: { basis: TimeBasis; reason: string };
   /** A per-step curve or effect (true) versus a parameter (false). */
   perStepTarget?: boolean;
 }
@@ -163,6 +168,11 @@ const nf = (x: number) => (Number.isFinite(x) ? x.toLocaleString('en-US', { maxi
 export function unitFactor(from: string, to: string, label: string, ctx: ConversionContext = {}): Conversion {
   const f = parseUnit(from);
   const t = parseUnit(to);
+  if (ctx.timeAssumption) {
+    if (!['year', 'month', 'one-off', 'generation'].includes(ctx.timeAssumption.basis) || typeof ctx.timeAssumption.reason !== 'string' || !ctx.timeAssumption.reason.trim()) return { ok: false, message: 'time assumption requires a valid basis and a reason' };
+    if (f.time) return { ok: false, message: 'time assumption cannot override an explicit source time basis' };
+    f.time = ctx.timeAssumption.basis;
+  }
   const target = `${label} (${to || 'no unit'})`;
   const fail = (why: string): Conversion => ({ ok: false, message: `${from || 'no unit'} → ${target}: ${why}` });
 
@@ -180,8 +190,9 @@ export function unitFactor(from: string, to: string, label: string, ctx: Convers
     return fail(t.perPerson ? 'a total is not a per-person amount (converting needs a population the mapping does not give)' : 'a per-person amount is not a total (converting needs a population the mapping does not give)');
   }
 
+  if (f.recipient !== t.recipient) return fail(`recipient denominators differ (${f.recipient} versus ${t.recipient}); supply a separately justified population conversion`);
   let factor = f.scale / t.scale;
-  let warning: string | undefined;
+  let warning: string | undefined = ctx.timeAssumption ? `Source time assumed per ${ctx.timeAssumption.basis}: ${ctx.timeAssumption.reason}` : undefined;
   if (f.time !== t.time) {
     if (f.time === 'one-off' || t.time === 'one-off') return fail('a one-off amount and a rate do not convert: say how the amount is spread over time');
     if (f.time === 'generation' || t.time === 'generation') return fail('a per-generation amount does not convert to a calendar rate');
@@ -190,7 +201,7 @@ export function unitFactor(from: string, to: string, label: string, ctx: Convers
       factor *= f.time === 'year' && t.time === 'month' ? 1 / 12 : 12;
     } else if (f.time && !t.time) {
       if (ctx.perStepTarget && ctx.step && f.time === ctx.step) {
-        warning = `"${to}" declares no time basis; the value is taken as per model step (per ${ctx.step})`;
+        warning = [warning, `"${to}" declares no time basis; the value is taken as per model step (per ${ctx.step})`].filter(Boolean).join("; ");
       } else {
         return fail(
           ctx.step && ctx.perStepTarget
@@ -199,7 +210,7 @@ export function unitFactor(from: string, to: string, label: string, ctx: Convers
         );
       }
     }
-    // f has no time basis, t has one: the value is read in the target's basis (no conversion)
+    else if (!f.time && t.time) return fail('source time basis is unknown; supply an explicit persisted time assumption with a reason');
   }
   const message = factor === 1 ? `${from} → ${target}: same unit` : `${from} → ${target}: ×${nf(factor)}`;
   return { ok: true, factor, message, ...(warning ? { warning } : {}) };

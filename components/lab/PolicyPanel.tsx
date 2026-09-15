@@ -1,3 +1,4 @@
+import { attestationBinding } from '../../src/policy/draft';
 /**
  * PolicyPanel — "read a policy text against this model" (v3 stage 5).
  *
@@ -629,12 +630,13 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
                 />
               </p>
               <p className={`font-semibold ${cov.source.status === 'complete' ? 'text-slate-700 dark:text-slate-200' : 'text-amber-700 dark:text-amber-300'}`}>
-                {`Source: ${cov.source.text}`}
+                {`Quotation coverage: ${cov.source.text}`}
                 <Hint
                   label="source coverage"
                   text="The source text is split into clauses by its own structure (sections and (a)/(1)/(A)/(i) subdivisions, or paragraphs and sentences), so the denominator does not depend on the draft. A clause counts when a provision quotes it or it is excluded with a kind and a reason."
                 />
               </p>
+              <p className="text-amber-700 dark:text-amber-300">{cov.operative.text}</p>
               <p className={cov.completeness.attested ? 'text-slate-700 dark:text-slate-200' : 'text-amber-700 dark:text-amber-300'}>{`Completeness: ${cov.completeness.text}`}</p>
             </div>
           )}
@@ -653,6 +655,20 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
                       <span className="min-w-0 flex-1 truncate text-slate-500 dark:text-slate-400">{(clauseText.get(c.id) ?? '').replace(/\s+/g, ' ').trim().slice(0, 120)}</span>
                     </div>
                     {c.provisions.length > 0 && <p className="mt-0.5 text-[11px] text-slate-600 dark:text-slate-300">quoted by {c.provisions.join(', ')}</p>}
+                    <div className="mt-2 space-y-1">
+                      <p>{clauseText.get(c.id)}</p>
+                      <label>Operative disposition
+                        <select aria-label={`operative disposition for ${c.id}`} className={`${field} h-11`} value={draft?.clauseDispositions?.find(d => d.clauseId === c.id)?.status ?? 'unresolved'} onChange={e => edit(x => ({ ...x, clauseDispositions: [...(x.clauseDispositions ?? []).filter(d => d.clauseId !== c.id), { ...(x.clauseDispositions?.find(d => d.clauseId === c.id) ?? { clauseId: c.id, reason: '' }), status: e.target.value as 'linked' | 'unresolved' | 'outside-model' | 'not-operative' }] }))}>
+                          {['unresolved', 'linked', 'outside-model', 'not-operative'].map(s => <option key={s}>{s}</option>)}
+                        </select>
+                      </label>
+                      <input aria-label={`operative reason for ${c.id}`} className={field} placeholder="Explain all mechanisms and restrictions in this clause" value={draft?.clauseDispositions?.find(d => d.clauseId === c.id)?.reason ?? ''} onChange={e => edit(x => ({ ...x, clauseDispositions: [...(x.clauseDispositions ?? []).filter(d => d.clauseId !== c.id), { ...(x.clauseDispositions?.find(d => d.clauseId === c.id) ?? { clauseId: c.id, status: 'unresolved' as const }), reason: e.target.value }] }))} />
+                      <label>Linked provisions (select every applicable mechanism)
+                        <select multiple aria-label={`operative provision ids for ${c.id}`} className={field} value={draft?.clauseDispositions?.find(d => d.clauseId === c.id)?.provisionIds ?? []} onChange={e => { const provisionIds = Array.from(e.currentTarget.selectedOptions as HTMLCollectionOf<HTMLOptionElement>, option => option.value); edit(x => ({ ...x, clauseDispositions: [...(x.clauseDispositions ?? []).filter(d => d.clauseId !== c.id), { ...(x.clauseDispositions?.find(d => d.clauseId === c.id) ?? { clauseId: c.id, status: 'unresolved' as const, reason: '' }), provisionIds }] })); }}>
+                          {draft?.provisions.map(p => <option key={p.id} value={p.id}>{p.id} — {p.summary}</option>)}
+                        </select>
+                      </label>
+                    </div>
                     {c.exclusion ? (
                       <div className="mt-1 grid grid-cols-1 sm:grid-cols-4 gap-1">
                         <select
@@ -729,7 +745,7 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
                     onClick={() =>
                       setDraft(active, {
                         ...draft,
-                        completeness: { name: attestName.trim(), kind: 'person', date: today(), statement: attestStatement.trim(), textSha256: sha256Hex(sourceText) },
+                        completeness: { name: attestName.trim(), kind: 'person', date: today(), statement: attestStatement.trim(), textSha256: sha256Hex(sourceText), contentBinding: attestationBinding(draft) },
                       })
                     }
                   >

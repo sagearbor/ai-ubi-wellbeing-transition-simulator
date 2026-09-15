@@ -155,16 +155,19 @@ ${sourceText}
 MODEL: ${model.name} (id "${model.id}", ${model.time.start}-${model.time.end}, step ${model.time.step})
 SCOPE: ${model.scope ?? '(no scope declared)'}
 
+Recipient units are distinct: worker, resident/person, participant and household are never interchangeable. Preserve source time units; a missing time basis requires an explicit timeAssumption with a reason, never silently copy the target basis.
+
 The ONLY ids a mapping may target (anything else must be "unresolved" or "outside-model"):
 ${modelTargetsText(model)}
 
-SOURCE CLAUSES (computed from the text; every one needs a provision whose quote lies inside it, or an exclusion):
+SOURCE CLAUSES (quotation is navigation only; each needs a separate operative disposition, accounting for ALL mechanisms including eligibility restrictions):
 ${clauseInventoryText(sourceText)}
 
 Return ONLY one JSON object, no markdown, no commentary:
 {
   "title": "short title",
   "notes": "one or two sentences on granularity and anything you left out",
+  "clauseDispositions": [{ "clauseId": "<inventory id>", "status": "linked | unresolved | outside-model | not-operative", "provisionIds": ["<provision id>"], "reason": "Account for every mechanism; linked needs provision ids. Missing mechanisms stay unresolved. Never claim semantic review." }],
   "provisions": [
     {
       "id": "kebab-case-id",
@@ -174,6 +177,7 @@ Return ONLY one JSON object, no markdown, no commentary:
       "role": "control" | "funding" | "constraint" | "coefficient",
       "reason": "why this status (required for unresolved and outside-model)",
       "mapping": {
+        "timeAssumption": { "basis": "year | month | one-off | generation", "reason": "ONLY when source time basis is missing: explicit assumption, not source evidence; omit otherwise" },
         "kind": "parameter" | "input" | "effect",
         "target": "<id from the list above>",
         "op": "set" | "add" | "multiply",
@@ -211,6 +215,7 @@ const extractionSchema = {
   type: 'object',
   required: ['provisions'],
   properties: {
+    clauseDispositions: { type: 'array', items: { type: 'object', required: ['clauseId', 'status', 'reason'], properties: { clauseId: { type: 'string' }, status: { enum: ['linked','unresolved','outside-model','not-operative'] }, reason: { type: 'string' }, provisionIds: { type: 'array', items: { type: 'string' } } } } },
     title: { type: 'string' },
     notes: { type: 'string' },
     provisions: {
@@ -236,6 +241,7 @@ const extractionSchema = {
               curve: { type: 'object', additionalProperties: { type: 'number' } },
               expr: { type: 'string' },
               unit: { type: 'string' },
+              timeAssumption: { type: 'object', required: ['basis','reason'], properties: { basis: { enum: ['year','month','one-off','generation'] }, reason: { type: 'string', minLength: 1 } } },
               stacksOn: { type: 'string' },
               evidenceLabel: { type: 'string' },
             },
@@ -313,7 +319,7 @@ export function parsePolicyExtraction(
     return { draft: null, errors: [`Could not parse JSON from the model's response: ${(e as Error).message}`], demoted: [], droppedExclusions: [] };
   }
   if (!validateExtraction(parsed)) return { draft: null, errors: formatAjv(validateExtraction.errors), demoted: [], droppedExclusions: [] };
-  const body = parsed as { title?: string; notes?: string; provisions: Array<Record<string, unknown>>; exclusions?: Array<Record<string, unknown>> };
+  const body = parsed as { title?: string; notes?: string; provisions: Array<Record<string, unknown>>; clauseDispositions?: import('../src/policy/types').ClauseDisposition[]; exclusions?: Array<Record<string, unknown>> };
   if (body.provisions.length === 0) return { draft: null, errors: ['The extraction listed no provisions.'], demoted: [], droppedExclusions: [] };
   if (body.provisions.length > MAX_PROVISIONS) return { draft: null, errors: [`Too many provisions (${body.provisions.length}); at most ${MAX_PROVISIONS}.`], demoted: [], droppedExclusions: [] };
 
@@ -366,6 +372,7 @@ export function parsePolicyExtraction(
           ...(typeof m.value === 'number' ? { value: m.value } : {}),
           ...(m.curve && typeof m.curve === 'object' ? { curve: m.curve as Record<string, number> } : {}),
           ...(typeof m.expr === 'string' ? { expr: m.expr } : {}),
+          ...(m.timeAssumption ? { timeAssumption: m.timeAssumption as ProvisionMapping['timeAssumption'] } : {}),
           ...(typeof m.unit === 'string' && m.unit ? { unit: m.unit } : {}),
           ...(typeof m.stacksOn === 'string' && m.stacksOn ? { stacksOn: m.stacksOn } : {}),
           evidence: {
@@ -441,6 +448,7 @@ export function parsePolicyExtraction(
     modelId: model.id,
     modelHash: modelHash(model),
     provisions,
+    clauseDispositions: (body.clauseDispositions ?? []).map(d => ({ ...d, provisionIds: fixIds(d.provisionIds) })),
     reviewStatus: 'ai-drafted',
     draftedBy: { kind: 'ai', name: modelUsed, date: today },
     ...(exclusions.length ? { exclusions } : {}),

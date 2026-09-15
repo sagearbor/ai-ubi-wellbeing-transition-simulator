@@ -348,3 +348,23 @@ export function sourceCoverage(draft: Pick<PolicyDraft, 'provisions' | 'exclusio
     text: `${covered + excluded} of ${n} source clause${n === 1 ? '' : 's'} covered or explicitly excluded (${covered} by a provision quote, ${excluded} excluded)`,
   };
 }
+
+/** Explicit bookkeeping, never a proof of semantic completeness or human review. */
+export function operativeCoverage(draft: Partial<PolicyDraft>, sourceText?: string): import('./types').OperativeCoverage {
+  const src = sourceCoverage({ provisions: draft.provisions ?? [], source: draft.source!, exclusions: draft.exclusions }, sourceText);
+  const dispositions = Array.isArray(draft.clauseDispositions) ? draft.clauseDispositions : [];
+  const unresolved = src.detail.filter(c => {
+    const d = dispositions.find(x => x?.clauseId === c.id);
+    return !d || (typeof d.reason !== 'string' || !d.reason.trim()) || d.status === 'unresolved' || !['linked','outside-model','not-operative'].includes(d.status) || (d.status === 'linked' && (!Array.isArray(d.provisionIds) || !d.provisionIds.length || d.provisionIds.some(id => !draft.provisions?.some(p => p.id === id && p.status !== 'unresolved'))));
+  }).map(c => c.id);
+  const outsideModel = src.detail.filter(c => {
+    const d = dispositions.find(x => x?.clauseId === c.id);
+    return d?.status === 'outside-model' || (d?.status === 'linked' && Array.isArray(d.provisionIds) && d.provisionIds.some(id => draft.provisions?.some(p => p.id === id && p.status === 'outside-model')));
+  }).map(c => c.id);
+  const accounted = src.detail.filter(c => {
+    const ds = dispositions.filter(x => x?.clauseId === c.id);
+    const d = ds[0];
+    return ds.length === 1 && d && typeof d.reason === 'string' && !!d.reason.trim() && ['linked','unresolved','outside-model','not-operative'].includes(d.status) && (d.status !== 'linked' || (Array.isArray(d.provisionIds) && d.provisionIds.length > 0 && d.provisionIds.every(id => draft.provisions?.some(p => p.id === id))));
+  }).length;
+  return { clauses: src.clauses, accounted, unresolved, outsideModel, text: src.status === 'source-unavailable' || src.status === 'source-mismatch' ? 'Operative coverage unknown — source unavailable or mismatched' : `${accounted} of ${src.clauses} source clauses have explicit operative dispositions; ${unresolved.length} unresolved, ${outsideModel.length} outside model — ${unresolved.length || outsideModel.length ? 'partial scenario; unsupported effects are not zero effects' : 'bookkeeping complete, semantic completeness requires identified review'}` };
+}

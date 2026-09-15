@@ -31,7 +31,7 @@
         "target": "training_budget",
         "op": "add",
         "value": 40000000,
-        "unit": "usd",
+        "unit": "usd per year",
         "evidence": {
           "label": "S. 3877 sec. 5(b)(2): $40,000,000 authorized for each of FY2026-2030, in addition to existing funds",
           "kind": "assumed",
@@ -626,6 +626,648 @@
       "clauseId": "sec5(b)",
       "kind": "procedural",
       "reason": "Lead-in naming WIOA section 170 as amended; its two amendments are provisions sec5b1-automation-trigger and sec5b2-ndwg-authorization."
+    }
+  ],
+  "clauseDispositions": [
+    {
+      "clauseId": "sec1",
+      "status": "not-operative",
+      "provisionIds": [],
+      "reason": "Short title only."
+    },
+    {
+      "clauseId": "sec2",
+      "status": "not-operative",
+      "provisionIds": [],
+      "reason": "Lead-in to the findings."
+    },
+    {
+      "clauseId": "sec2(1)",
+      "status": "not-operative",
+      "provisionIds": [],
+      "reason": "A congressional finding: it states a reason for the Act and has no legal effect of its own. Its numbers (e.g. federal training funding, displacement forecasts) are not policy settings."
+    },
+    {
+      "clauseId": "sec2(2)",
+      "status": "not-operative",
+      "provisionIds": [],
+      "reason": "A congressional finding: it states a reason for the Act and has no legal effect of its own. Its numbers (e.g. federal training funding, displacement forecasts) are not policy settings."
+    },
+    {
+      "clauseId": "sec2(3)",
+      "status": "not-operative",
+      "provisionIds": [],
+      "reason": "A congressional finding: it states a reason for the Act and has no legal effect of its own. Its numbers (e.g. federal training funding, displacement forecasts) are not policy settings."
+    },
+    {
+      "clauseId": "sec2(4)",
+      "status": "not-operative",
+      "provisionIds": [],
+      "reason": "A congressional finding: it states a reason for the Act and has no legal effect of its own. Its numbers (e.g. federal training funding, displacement forecasts) are not policy settings."
+    },
+    {
+      "clauseId": "sec2(5)",
+      "status": "not-operative",
+      "provisionIds": [],
+      "reason": "A congressional finding: it states a reason for the Act and has no legal effect of its own. Its numbers (e.g. federal training funding, displacement forecasts) are not policy settings."
+    },
+    {
+      "clauseId": "sec2(6)",
+      "status": "not-operative",
+      "provisionIds": [],
+      "reason": "A congressional finding: it states a reason for the Act and has no legal effect of its own. Its numbers (e.g. federal training funding, displacement forecasts) are not policy settings."
+    },
+    {
+      "clauseId": "sec2(7)",
+      "status": "not-operative",
+      "provisionIds": [],
+      "reason": "A congressional finding: it states a reason for the Act and has no legal effect of its own. Its numbers (e.g. federal training funding, displacement forecasts) are not policy settings."
+    },
+    {
+      "clauseId": "sec3",
+      "status": "not-operative",
+      "provisionIds": [],
+      "reason": "Lead-in to the definitions (\"In this Act:\")."
+    },
+    {
+      "clauseId": "sec3(1)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec3-1-automation"
+      ],
+      "reason": "Unresolved in this scenario: Decides who is a worker dislocated 'as a result of automation', so it sets the reach of the section 4 grants and both section 5 amendments. The model has no cause of displacement and no count of automation-displaced workers, so the definition narrows nothing in a run; eligible_people stays the model's guess."
+    },
+    {
+      "clauseId": "sec3(1)(A)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4a1-competitive-grants",
+        "sec5a-wioa-allowable-use",
+        "sec5b1-automation-trigger",
+        "sec4c2a-industry-priority"
+      ],
+      "reason": "Unresolved in this scenario: Part of the definition of automation; read with provision sec3-1-automation."
+    },
+    {
+      "clauseId": "sec3(1)(A)(i)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4a1-competitive-grants",
+        "sec5a-wioa-allowable-use",
+        "sec5b1-automation-trigger",
+        "sec4c2a-industry-priority"
+      ],
+      "reason": "Unresolved in this scenario: Part of the definition of automation; read with provision sec3-1-automation."
+    },
+    {
+      "clauseId": "sec3(1)(A)(ii)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4a1-competitive-grants",
+        "sec5a-wioa-allowable-use",
+        "sec5b1-automation-trigger",
+        "sec4c2a-industry-priority"
+      ],
+      "reason": "Unresolved in this scenario: Part of the definition of automation; read with provision sec3-1-automation."
+    },
+    {
+      "clauseId": "sec3(1)(B)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4a1-competitive-grants",
+        "sec5a-wioa-allowable-use",
+        "sec5b1-automation-trigger",
+        "sec4c2a-industry-priority"
+      ],
+      "reason": "Unresolved in this scenario: Part of the definition of automation; read with provision sec3-1-automation."
+    },
+    {
+      "clauseId": "sec3(1)(C)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4a1-competitive-grants",
+        "sec5a-wioa-allowable-use",
+        "sec5b1-automation-trigger",
+        "sec4c2a-industry-priority"
+      ],
+      "reason": "Unresolved in this scenario: Part of the definition of automation; read with provision sec3-1-automation."
+    },
+    {
+      "clauseId": "sec3(1)(D)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4a1-competitive-grants",
+        "sec5a-wioa-allowable-use",
+        "sec5b1-automation-trigger",
+        "sec4c2a-industry-priority"
+      ],
+      "reason": "Unresolved in this scenario: Part of the definition of automation; read with provision sec3-1-automation."
+    },
+    {
+      "clauseId": "sec3(2)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4c1-covered-population-priority"
+      ],
+      "reason": "Unresolved in this scenario: Defines covered population by WIOA's list of barriers to employment; decides whom the first grant priority favours."
+    },
+    {
+      "clauseId": "sec3(3)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4d1-training-services"
+      ],
+      "reason": "Unresolved in this scenario: Defines digital literacy, which training services may include."
+    },
+    {
+      "clauseId": "sec3(4)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec3-4-dislocated-worker"
+      ],
+      "reason": "Unresolved in this scenario: This is the eligibility rule behind 'dislocated workers' in sections 4 and 5. The nearest model quantity is eligible_people, but the definition imports WIOA's without a count, so there is no honest number to set."
+    },
+    {
+      "clauseId": "sec3(5)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec3-5-eligible-partnership"
+      ],
+      "reason": "Unresolved in this scenario: Decides who may apply for and receive section 4 grants. The model has no grantees, partnerships or selection, so the rule has nothing to act on."
+    },
+    {
+      "clauseId": "sec3(5)(A)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4a1-competitive-grants",
+        "sec4b-applications",
+        "sec4c1-covered-population-priority",
+        "sec4f-labor-standards"
+      ],
+      "reason": "Unresolved in this scenario: Part of the definition of eligible partnership (who must be in it); read with provision sec3-5-eligible-partnership."
+    },
+    {
+      "clauseId": "sec3(5)(B)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4a1-competitive-grants",
+        "sec4b-applications",
+        "sec4c1-covered-population-priority",
+        "sec4f-labor-standards"
+      ],
+      "reason": "Unresolved in this scenario: Part of the definition of eligible partnership (who must be in it); read with provision sec3-5-eligible-partnership."
+    },
+    {
+      "clauseId": "sec3(5)(B)(i)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4a1-competitive-grants",
+        "sec4b-applications",
+        "sec4c1-covered-population-priority",
+        "sec4f-labor-standards"
+      ],
+      "reason": "Unresolved in this scenario: Part of the definition of eligible partnership (who must be in it); read with provision sec3-5-eligible-partnership."
+    },
+    {
+      "clauseId": "sec3(5)(B)(ii)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4a1-competitive-grants",
+        "sec4b-applications",
+        "sec4c1-covered-population-priority",
+        "sec4f-labor-standards"
+      ],
+      "reason": "Unresolved in this scenario: Part of the definition of eligible partnership (who must be in it); read with provision sec3-5-eligible-partnership."
+    },
+    {
+      "clauseId": "sec3(6)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4c2a-industry-priority",
+        "sec4d1-training-services"
+      ],
+      "reason": "Unresolved in this scenario: Defines in-demand industry sector or occupation by WIOA's meaning; decides the second-tier priority and what training may prepare workers for."
+    },
+    {
+      "clauseId": "sec3(7)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4d6-integrated-education"
+      ],
+      "reason": "Unresolved in this scenario: Defines integrated education and training by WIOA section 203."
+    },
+    {
+      "clauseId": "sec3(8)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec3-5-eligible-partnership"
+      ],
+      "reason": "Unresolved in this scenario: Defines state and local workforce development boards, which an eligible partnership must include."
+    },
+    {
+      "clauseId": "sec3(9)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4a1-competitive-grants",
+        "sec4b-applications",
+        "sec4e-reporting"
+      ],
+      "reason": "Unresolved in this scenario: The Secretary is the Secretary of Labor, who awards and receives reports on the grants."
+    },
+    {
+      "clauseId": "sec3(10)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4d1-training-services",
+        "sec4e-reporting"
+      ],
+      "reason": "Unresolved in this scenario: Defines training services by WIOA section 134(c)(3)(D), including digital literacy skills; decides what the grant money may buy."
+    },
+    {
+      "clauseId": "sec4(a)(1)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4a1-competitive-grants"
+      ],
+      "reason": "Unresolved in this scenario: This is the channel the section 4(g) money would pay for. The model's budget-to-completions arithmetic could represent it, but its size depends on 4(g), which has no amount."
+    },
+    {
+      "clauseId": "sec4(a)(2)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4a2-duration"
+      ],
+      "reason": "Unresolved in this scenario: The model has one aggregate budget line and no grant-level structure, so a maximum grant length has nothing to act on."
+    },
+    {
+      "clauseId": "sec4(b)(1)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4b-applications"
+      ],
+      "reason": "Unresolved in this scenario: Administrative selection process. The model has no applicants, selection or programme design."
+    },
+    {
+      "clauseId": "sec4(b)(2)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4b-applications"
+      ],
+      "reason": "Unresolved in this scenario: What an application must describe (partners, training plans, technology skills, goals, covered populations). Summarised under sec4b-applications; the model has no applicants, selection or programme design."
+    },
+    {
+      "clauseId": "sec4(b)(2)(A)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4b-applications"
+      ],
+      "reason": "Unresolved in this scenario: What an application must describe (partners, training plans, technology skills, goals, covered populations). Summarised under sec4b-applications; the model has no applicants, selection or programme design."
+    },
+    {
+      "clauseId": "sec4(b)(2)(B)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4b-applications"
+      ],
+      "reason": "Unresolved in this scenario: What an application must describe (partners, training plans, technology skills, goals, covered populations). Summarised under sec4b-applications; the model has no applicants, selection or programme design."
+    },
+    {
+      "clauseId": "sec4(b)(2)(B)(i)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4b-applications"
+      ],
+      "reason": "Unresolved in this scenario: What an application must describe (partners, training plans, technology skills, goals, covered populations). Summarised under sec4b-applications; the model has no applicants, selection or programme design."
+    },
+    {
+      "clauseId": "sec4(b)(2)(B)(ii)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4b-applications"
+      ],
+      "reason": "Unresolved in this scenario: What an application must describe (partners, training plans, technology skills, goals, covered populations). Summarised under sec4b-applications; the model has no applicants, selection or programme design."
+    },
+    {
+      "clauseId": "sec4(b)(2)(C)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4b-applications"
+      ],
+      "reason": "Unresolved in this scenario: What an application must describe (partners, training plans, technology skills, goals, covered populations). Summarised under sec4b-applications; the model has no applicants, selection or programme design."
+    },
+    {
+      "clauseId": "sec4(b)(2)(D)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4b-applications"
+      ],
+      "reason": "Unresolved in this scenario: What an application must describe (partners, training plans, technology skills, goals, covered populations). Summarised under sec4b-applications; the model has no applicants, selection or programme design."
+    },
+    {
+      "clauseId": "sec4(b)(2)(E)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4b-applications"
+      ],
+      "reason": "Unresolved in this scenario: What an application must describe (partners, training plans, technology skills, goals, covered populations). Summarised under sec4b-applications; the model has no applicants, selection or programme design."
+    },
+    {
+      "clauseId": "sec4(c)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4c1-covered-population-priority"
+      ],
+      "reason": "Unresolved in this scenario: Lead-in to the grant priorities; each priority is its own provision."
+    },
+    {
+      "clauseId": "sec4(c)(1)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4c1-covered-population-priority"
+      ],
+      "reason": "Unresolved in this scenario: The model has no population groups or places, so it cannot say who is served. Distributional effects are outside its scope."
+    },
+    {
+      "clauseId": "sec4(c)(2)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4c2a-industry-priority"
+      ],
+      "reason": "Unresolved in this scenario: Lead-in to the second-tier priorities (after the covered-population priority); carried by sec4c2a, sec4c2b, sec4c2c and sec4c2d."
+    },
+    {
+      "clauseId": "sec4(c)(2)(A)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4c2a-industry-priority"
+      ],
+      "reason": "Unresolved in this scenario: Lead-in to the industry-concentration priority; carried by sec4c2a-industry-priority."
+    },
+    {
+      "clauseId": "sec4(c)(2)(A)(i)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4c2a-industry-priority"
+      ],
+      "reason": "Unresolved in this scenario: The model has no industries or regions; targeting cannot be represented."
+    },
+    {
+      "clauseId": "sec4(c)(2)(A)(ii)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4c2a-industry-priority"
+      ],
+      "reason": "Unresolved in this scenario: The in-demand-industry half of the same priority; its summary covers both halves."
+    },
+    {
+      "clauseId": "sec4(c)(2)(B)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4c2b-incumbent-backfill"
+      ],
+      "reason": "Unresolved in this scenario: Part of the incumbent-worker-training priority; carried by sec4c2b-incumbent-backfill, which quotes its backfilling condition."
+    },
+    {
+      "clauseId": "sec4(c)(2)(B)(i)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4c2b-incumbent-backfill"
+      ],
+      "reason": "Unresolved in this scenario: Part of the incumbent-worker-training priority; carried by sec4c2b-incumbent-backfill, which quotes its backfilling condition."
+    },
+    {
+      "clauseId": "sec4(c)(2)(B)(i)(I)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4c2b-incumbent-backfill"
+      ],
+      "reason": "Unresolved in this scenario: Part of the incumbent-worker-training priority; carried by sec4c2b-incumbent-backfill, which quotes its backfilling condition."
+    },
+    {
+      "clauseId": "sec4(c)(2)(B)(i)(II)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4c2b-incumbent-backfill"
+      ],
+      "reason": "Unresolved in this scenario: Part of the incumbent-worker-training priority; carried by sec4c2b-incumbent-backfill, which quotes its backfilling condition."
+    },
+    {
+      "clauseId": "sec4(c)(2)(B)(ii)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4c2b-incumbent-backfill"
+      ],
+      "reason": "Unresolved in this scenario: Backfilling opens jobs for other workers, which is a net-employment effect. The model's scope says it tracks gross placements through one channel and nothing about other workers."
+    },
+    {
+      "clauseId": "sec4(c)(2)(C)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4c2c-supports-priority"
+      ],
+      "reason": "Unresolved in this scenario: The model has no take-up, completion or dropout behaviour for these supports to change."
+    },
+    {
+      "clauseId": "sec4(c)(2)(D)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4c2d-shared-curriculum"
+      ],
+      "reason": "Unresolved in this scenario: Could lower cost_per_completion. How much is a response coefficient the model does not have and the bill cannot supply, so no effect is attached."
+    },
+    {
+      "clauseId": "sec4(d)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4d1-training-services"
+      ],
+      "reason": "Unresolved in this scenario: Lead-in limiting grant funds to the six uses in (d)(1) to (d)(6); each use is its own provision."
+    },
+    {
+      "clauseId": "sec4(d)(1)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4d1-training-services"
+      ],
+      "reason": "Unresolved in this scenario: This is the use the model's channel represents (budget buys completions), but these are section 4 funds, which have no amount (see sec4g-such-sums)."
+    },
+    {
+      "clauseId": "sec4(d)(2)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4d2-staff-position"
+      ],
+      "reason": "Unresolved in this scenario: Could raise instructor_capacity, the limit that binds once money is ample. Turning staff spending into training places needs a coefficient the model lacks, so nothing is attached."
+    },
+    {
+      "clauseId": "sec4(d)(3)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4d3-equipment"
+      ],
+      "reason": "Unresolved in this scenario: Could raise instructor_capacity. The conversion from equipment spending to training places is an empirical coefficient that neither the model nor the bill provides."
+    },
+    {
+      "clauseId": "sec4(d)(4)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4d4-job-search"
+      ],
+      "reason": "Unresolved in this scenario: The model places people only through training completions (placement_rate, capped by suitable_openings). It has no search process for workers outside training."
+    },
+    {
+      "clauseId": "sec4(d)(5)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4d5-training-stipend"
+      ],
+      "reason": "Unresolved in this scenario: The model has no trainee income or completion behaviour. It also cannot split one grant between stipends and training places."
+    },
+    {
+      "clauseId": "sec4(d)(6)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4d6-integrated-education"
+      ],
+      "reason": "Unresolved in this scenario: The model has one undifferentiated kind of training; different costs or placement rates by programme type are not represented."
+    },
+    {
+      "clauseId": "sec4(e)(1)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4e-reporting"
+      ],
+      "reason": "Unresolved in this scenario: Part of the grantee reporting duty (timing, items, disaggregation); carried by sec4e-reporting, which changes nothing in a run."
+    },
+    {
+      "clauseId": "sec4(e)(1)(A)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4e-reporting"
+      ],
+      "reason": "Unresolved in this scenario: Part of the grantee reporting duty (timing, items, disaggregation); carried by sec4e-reporting, which changes nothing in a run."
+    },
+    {
+      "clauseId": "sec4(e)(1)(B)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4e-reporting"
+      ],
+      "reason": "Unresolved in this scenario: A reporting duty. It would produce data that could later calibrate placement_rate, but it changes nothing in a run."
+    },
+    {
+      "clauseId": "sec4(e)(1)(C)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4e-reporting"
+      ],
+      "reason": "Unresolved in this scenario: Part of the grantee reporting duty (timing, items, disaggregation); carried by sec4e-reporting, which changes nothing in a run."
+    },
+    {
+      "clauseId": "sec4(e)(1)(D)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4e-reporting"
+      ],
+      "reason": "Unresolved in this scenario: Part of the grantee reporting duty (timing, items, disaggregation); carried by sec4e-reporting, which changes nothing in a run."
+    },
+    {
+      "clauseId": "sec4(e)(1)(E)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4e-reporting"
+      ],
+      "reason": "Unresolved in this scenario: Part of the grantee reporting duty (timing, items, disaggregation); carried by sec4e-reporting, which changes nothing in a run."
+    },
+    {
+      "clauseId": "sec4(e)(1)(F)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4e-reporting"
+      ],
+      "reason": "Unresolved in this scenario: Part of the grantee reporting duty (timing, items, disaggregation); carried by sec4e-reporting, which changes nothing in a run."
+    },
+    {
+      "clauseId": "sec4(e)(1)(G)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4e-reporting"
+      ],
+      "reason": "Unresolved in this scenario: Part of the grantee reporting duty (timing, items, disaggregation); carried by sec4e-reporting, which changes nothing in a run."
+    },
+    {
+      "clauseId": "sec4(e)(2)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4e-reporting"
+      ],
+      "reason": "Unresolved in this scenario: Part of the grantee reporting duty (timing, items, disaggregation); carried by sec4e-reporting, which changes nothing in a run."
+    },
+    {
+      "clauseId": "sec4(f)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4f-labor-standards"
+      ],
+      "reason": "Unresolved in this scenario: Legal conditions on how money is used; the model has no compliance mechanism or cost for them."
+    },
+    {
+      "clauseId": "sec4(g)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec4g-such-sums"
+      ],
+      "reason": "Unresolved in this scenario: A second funding line with no amount. Mapping it would mean inventing a dollar figure. If money is appropriated under it, the mapped run understates funding."
+    },
+    {
+      "clauseId": "sec5(a)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec5a-wioa-allowable-use"
+      ],
+      "reason": "Unresolved in this scenario: Lead-in naming the WIOA clause amended; the substance is the new clause (xiii), provision sec5a-wioa-allowable-use."
+    },
+    {
+      "clauseId": "sec5(a)(1)",
+      "status": "unresolved",
+      "provisionIds": [],
+      "reason": "Unresolved in this scenario: Conforming punctuation (strikes \"and\") to make room for the new clause (xiii)."
+    },
+    {
+      "clauseId": "sec5(a)(2)",
+      "status": "unresolved",
+      "provisionIds": [],
+      "reason": "Unresolved in this scenario: Conforming punctuation (replaces a period) to make room for the new clause (xiii)."
+    },
+    {
+      "clauseId": "sec5(a)(3)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec5a-wioa-allowable-use"
+      ],
+      "reason": "Unresolved in this scenario: An allowable use of existing formula funds, with no new money. States might redirect some funds to this group, but the text sets no amount and the model has no split of existing funds between uses."
+    },
+    {
+      "clauseId": "sec5(b)",
+      "status": "unresolved",
+      "provisionIds": [],
+      "reason": "Unresolved in this scenario: Lead-in naming WIOA section 170 as amended; its two amendments are provisions sec5b1-automation-trigger and sec5b2-ndwg-authorization."
+    },
+    {
+      "clauseId": "sec5(b)(1)",
+      "status": "unresolved",
+      "provisionIds": [
+        "sec5b1-automation-trigger"
+      ],
+      "reason": "Unresolved in this scenario: Widens eligibility. The nearest model quantity is eligible_people, but the text gives no count of newly eligible workers, and eligible_people (10,000, a guess) never binds in the baseline, so there is no honest value to set."
+    },
+    {
+      "clauseId": "sec5(b)(2)",
+      "status": "linked",
+      "provisionIds": [
+        "sec5b2-ndwg-authorization"
+      ],
+      "reason": "Annual authorization mapped to training_budget only under the appropriation, calendar and single-channel assumptions documented in the provision. No eligibility or grant-allocation mechanism is inferred."
     }
   ]
 }
