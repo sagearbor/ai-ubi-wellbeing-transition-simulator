@@ -26,8 +26,8 @@ export default function ScenarioContext({ model, state, qualification, uploadedM
   } else if (conditional) {
     status = qualification.accounting === 'reviewed-conditional'
       ? 'Accounting reviewed for these inputs'
-      : 'Your scenario · accounting unreviewed';
-    description = 'Monthly-flow snapshot, not elapsed payments. Macro paths and the conditional wellbeing index are illustrative.';
+      : 'Changed inputs · accounting not rechecked';
+    description = 'Monthly-flow snapshot, not elapsed payments. Macro paths and the conditional wellbeing index are illustrative. Accounting checks are arithmetic checks, not evidence of real-world effects.' + (qualification.accounting === 'reviewed-conditional' ? '' : ' Your inputs differ from the checked reference; this status alone does not mean the calculation failed.');
   } else if (anchored) {
     status = 'Provisional level model · illustrative';
     description = 'The active output is a provisional wellbeing level under macro assumptions. Its wellbeing mapping is not independently reviewed.';

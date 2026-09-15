@@ -247,7 +247,7 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
   const activeKey = draft ? runKey(model, overlays, draft, runs, seed, sourceText) : '';
   const viewStatus = activeFresh ? 'ready' : attempt === 'ready' && activeResult && !activeResult.result.ok ? 'failed' : attempt === 'running' || attempt === 'failed' || attempt === 'cancelled' ? attempt : activeResult ? 'stale' : 'empty';
   const cov = draft ? coverage(draft, sourceText.trim() ? sourceText : undefined) : null;
-  const coverageText = cov ? `${cov.text}; Quotation coverage: ${cov.source.text}; Operative disposition coverage: ${cov.operative.text}; ${cov.completeness.text}` : 'No policy draft selected.';
+  const coverageText = cov ? `${cov.text}; Source text quoted or excluded: ${cov.source.text}; Clause handling coverage: ${cov.operative.text}; ${cov.completeness.text}` : 'No policy draft selected.';
   const noMapped = !draft?.provisions.some(p => p.status === 'mapped' && p.mapping);
   const origin = `${provenance?.kind ?? modelStatus}${provenance?.reason ? `: ${provenance.reason}` : ''}${importWarnings.length ? `; ${importWarnings.join('; ')}` : ''}`;
   useEffect(() => {
@@ -752,7 +752,7 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
                 />
               </p>
               <p className={`font-semibold ${cov.source.status === 'complete' ? 'text-slate-700 dark:text-slate-200' : 'text-amber-700 dark:text-amber-300'}`}>
-                {`Quotation coverage: ${cov.source.text}`}
+                {`Source text quoted or excluded: ${cov.source.text}`}
                 <Hint
                   label="source coverage"
                   text="The source text is split into clauses by its own structure (sections and (a)/(1)/(A)/(i) subdivisions, or paragraphs and sentences), so the denominator does not depend on the draft. A clause counts when a provision quotes it or it is excluded with a kind and a reason."
@@ -779,7 +779,7 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
                     {c.provisions.length > 0 && <p className="mt-0.5 text-[11px] text-slate-600 dark:text-slate-300">quoted by {c.provisions.join(', ')}</p>}
                     <div className="mt-2 space-y-1">
                       <p>{clauseText.get(c.id)}</p>
-                      <label>Operative disposition
+                      <label>How this clause is handled
                         <select aria-label={`operative disposition for ${c.id}`} className={`${field} h-11`} value={draft?.clauseDispositions?.find(d => d.clauseId === c.id)?.status ?? 'unresolved'} onChange={e => edit(x => ({ ...x, clauseDispositions: [...(x.clauseDispositions ?? []).filter(d => d.clauseId !== c.id), { ...(x.clauseDispositions?.find(d => d.clauseId === c.id) ?? { clauseId: c.id, reason: '' }), status: e.target.value as 'linked' | 'unresolved' | 'outside-model' | 'not-operative' }] }))}>
                           {['unresolved', 'linked', 'outside-model', 'not-operative'].map(s => <option key={s}>{s}</option>)}
                         </select>

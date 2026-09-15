@@ -3,7 +3,7 @@ import { assertRunSupported, resolveRunCapabilities } from './simulation/capabil
 import { conditionalWorld } from './simulation/conditionalWorld';
 import { evaluateConditionalSnapshot, noCorporateUbiInputs } from './simulation/run';
 
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import React, { lazy, Suspense, useState, useEffect, useCallback, useMemo } from 'react';
 import { AreaChart, Area, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ScatterChart, Scatter, ZAxis, ReferenceLine } from 'recharts';
 import { Globe, TrendingUp, TrendingDown, Sparkles, Share2, ChevronDown, BrainCircuit, FlaskConical, Database, MousePointer2, PlayCircle, Menu, X, BookOpen, Lightbulb, ArrowRight, ArrowLeft, Info, FileText, Sun, Moon, Copy, Settings, Download, Upload, Trophy } from 'lucide-react';
 import WorldMap from './components/WorldMap';
@@ -43,6 +43,9 @@ import {
 } from './simulation/appState';
 import { formatBillionsUsd, formatUsdPerPerson, millionsToBillionsUsd } from './simulation/units';
 import EquationErrorBanner from './components/EquationErrorBanner';
+import { decodeExperiment, exactModel, FINANCE_PREFIX } from './src/financials/share';
+const PublishedExperience = lazy(() => import('./components/published/PublishedExperience'));
+const HistoryExperience = lazy(() => import('./components/history/HistoryExperience'));
 import GuidedExperience, { type LabEntry } from './components/guided/GuidedExperience';
 import { initialGuidedMode } from './components/guided/navigation';
 
@@ -210,12 +213,26 @@ const App: React.FC = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [speed, setSpeed] = useState(1);
   const [initialRoute] = useState(() => typeof window === 'undefined' ? sharedRoute('', '') : sharedRoute(window.location.search, window.location.hash));
-  const [guidedMode, setGuidedMode] = useState<'explore' | 'compare' | null>(() => typeof window === 'undefined' ? 'explore' : initialGuidedMode(window.location.search, window.location.hash));
+  const [financialBoot] = useState(() => {
+    if (typeof window === 'undefined' || !window.location.hash.startsWith(FINANCE_PREFIX)) return { experiment: undefined, error: undefined };
+    try { const side = new URLSearchParams(window.location.search).get('side'); if (side !== null && side !== 'A' && side !== 'B') throw new Error('Unknown financial scenario side.'); return { experiment: decodeExperiment(window.location.hash), error: undefined }; }
+    catch (e) { return { experiment: undefined, error: String(e) }; }
+  });
+  const [publishedMode, setPublishedMode] = useState<'explore' | 'compare' | null>(() => {
+    if (typeof window === 'undefined') return 'explore';
+    if (window.location.hash.startsWith(FINANCE_PREFIX)) return new URLSearchParams(window.location.search).get('tab') === 'lab' && !financialBoot.error ? null : financialBoot.experiment?.view ?? 'explore';
+    return initialGuidedMode(window.location.search, window.location.hash);
+  });
+  const [publishedVisited, setPublishedVisited] = useState(!!publishedMode);
+  useEffect(() => { if (publishedMode) setPublishedVisited(true); }, [publishedMode]);
+  const [financialImports] = useState(() => financialBoot.experiment && new URLSearchParams(window.location.search).get('tab') === 'lab' ? [{ model: exactModel(financialBoot.experiment, new URLSearchParams(window.location.search).get('side') === 'B' ? 'B' : 'A') }] : []);
+  const openPublished = (mode: 'explore' | 'compare') => { setPublishedMode(mode); setGuidedMode(null); setIsPlaying(false); setSelectedEntity(null); };
+  const [guidedMode, setGuidedMode] = useState<'explore' | 'compare' | null>(null);
   const [activeTab, setRawActiveTab] = useState<AppTab>(initialRoute.tab);
-  const setActiveTab = useCallback((tab: AppTab) => { setGuidedMode(null); setRawActiveTab(tab); }, []);
+  const setActiveTab = useCallback((tab: AppTab) => { setPublishedMode(null); setGuidedMode(null); setRawActiveTab(tab); }, []);
   const [labEntry, setLabEntry] = useState<{ kind: LabEntry; sequence: number } | undefined>();
   const openLab = (kind?: LabEntry) => { setActiveTab('lab'); setSelectedEntity(null); if (kind) setLabEntry(old => ({kind, sequence:(old?.sequence ?? 0)+1})); };
-  const openGuided = (mode: 'explore' | 'compare') => { if (shareError) { setGuidedMode(null); setRawActiveTab('map'); return; } setRawActiveTab('map'); setGuidedMode(mode); setIsPlaying(false); setSelectedEntity(null); setAboutDropdownOpen(false); };
+  const openGuided = (mode: 'explore' | 'compare') => { setPublishedMode(null); if (shareError) { setGuidedMode(null); setRawActiveTab('map'); return; } setRawActiveTab('map'); setGuidedMode(mode); setIsPlaying(false); setSelectedEntity(null); setAboutDropdownOpen(false); };
   const [labVisited, setLabVisited] = useState(false);
   const [activePolicy, setActivePolicy] = useState<ActiveRunView | null>(null);
   const [resultFamily, setResultFamily] = useState<'world' | 'lab-policy'>(initialRoute.policy ? 'lab-policy' : 'world');
@@ -229,7 +246,7 @@ const App: React.FC = () => {
   // Mount-only payload parsers must be re-entered for a newly opened share hash.
   // Ordinary tabs preserve the Lab; explicit share links intentionally open a new scenario.
   useEffect(() => {
-    const openHash = () => { if (recognizedShareHash(window.location.hash)) window.location.reload(); };
+    const openHash = () => { if (recognizedShareHash(window.location.hash) || window.location.hash.startsWith(FINANCE_PREFIX)) window.location.reload(); };
     window.addEventListener('hashchange', openHash);
     return () => window.removeEventListener('hashchange', openHash);
   }, []);
@@ -272,7 +289,7 @@ const App: React.FC = () => {
    * with their own calendars, so those controls are hidden there rather than shown next to an
    * unrelated model (review 2026-09-14, stage 5 gap "Other tabs still use unrelated world state").
    */
-  const showWorldControls = !guidedMode && resultFamily === 'world' && !shareError && !['lab', 'modelcard', 'models', 'futures'].includes(activeTab);
+  const showWorldControls = !publishedMode && !guidedMode && resultFamily === 'world' && !shareError && !['lab', 'modelcard', 'models', 'futures', 'history'].includes(activeTab);
   const [showStartHint, setShowStartHint] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
   const [shareUrl, setShareUrl] = useState<string | null>(null);
@@ -288,9 +305,9 @@ const App: React.FC = () => {
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {
     if (typeof window !== 'undefined') {
         const saved = localStorage.getItem('sim_theme_v1');
-        return (saved as 'dark' | 'light') || 'dark';
+        return (saved === 'dark' ? 'dark' : 'light');
     }
-    return 'dark';
+    return 'light';
   });
 
   // Tour State
@@ -1310,14 +1327,15 @@ const App: React.FC = () => {
       )}
 
       <header className="guided-header">
-        <button className="guided-brand" onClick={() => openGuided('explore')} aria-label="Transition Engine home"><Globe size={25} aria-hidden="true"/><span>Transition Engine</span></button>
+        <button className="guided-brand" onClick={() => openPublished('explore')} aria-label="Transition Engine home"><Globe size={25} aria-hidden="true"/><span>Transition Engine</span></button>
         <nav className="guided-primary-nav" aria-label="Primary navigation">
-          <button aria-current={guidedMode === 'explore' ? 'page' : undefined} onClick={() => openGuided('explore')}>Explore</button>
-          <button aria-current={guidedMode === 'compare' ? 'page' : undefined} onClick={() => openGuided('compare')}>Compare</button>
-          <button aria-current={!guidedMode && activeTab === 'lab' ? 'page' : undefined} onClick={() => openLab()}>Model Lab</button>
+          <button aria-current={publishedMode === 'explore' ? 'page' : undefined} onClick={() => openPublished('explore')}>Explore</button>
+          <button aria-current={publishedMode === 'compare' ? 'page' : undefined} onClick={() => openPublished('compare')}>Compare</button>
+          <button aria-current={!publishedMode && activeTab === 'history' ? 'page' : undefined} onClick={() => setActiveTab('history')}>Check against history</button>
+          <button aria-current={!publishedMode && !guidedMode && activeTab === 'lab' ? 'page' : undefined} onClick={() => openLab()}>Model Lab</button>
         </nav>
         <div className="guided-utilities">
-          <details className="guided-about" onKeyDown={e=>{if(e.key==='Escape'){e.currentTarget.open=false;e.currentTarget.querySelector('summary')?.focus();}}}><summary>About</summary><nav aria-label="About and advanced views">{([['guide','Guide'],['overview','Overview'],['modelcard','Model card'],['equations','Sources and equations'],['analysis','Analysis'],['models','World model editor'],['leaderboard','Leaderboard']] as const).map(([tab,label]) => <button key={tab} onClick={e => {setActiveTab(tab);setSelectedEntity(null);e.currentTarget.closest('details')?.removeAttribute('open');}}>{label}</button>)}</nav></details>
+          <details className="guided-about" onKeyDown={e=>{if(e.key==='Escape'){e.currentTarget.open=false;e.currentTarget.querySelector('summary')?.focus();}}}><summary>About</summary><nav aria-label="About and advanced views">{([['guide','Guide'],['overview','Overview'],['modelcard','World model card'],['equations','Sources and equations'],['analysis','Analysis'],['models','World model editor'],['leaderboard','Leaderboard']] as const).map(([tab,label]) => <button key={tab} onClick={e => {setActiveTab(tab);setSelectedEntity(null);e.currentTarget.closest('details')?.removeAttribute('open');}}>{label}</button>)}</nav></details>
           <button className="guided-theme" onClick={() => setTheme(t=>t==='dark'?'light':'dark')} aria-label={theme==='dark'?'Switch to light mode':'Switch to dark mode'}>{theme==='dark'?<Sun size={19}/>:<Moon size={19}/>}</button>
         </div>
       </header>
@@ -1522,13 +1540,15 @@ const App: React.FC = () => {
         </aside>
 
         {/* Main Content Area */}
-        <section id="main-content" className={`guided-main flex-1 overflow-y-auto relative h-full ${guidedMode ? '' : 'p-4 lg:p-6 bg-slate-50 dark:bg-slate-950'}`}>
+        <section id="main-content" className={`guided-main flex-1 overflow-y-auto relative h-full ${guidedMode || publishedMode ? '' : 'p-4 lg:p-6 bg-slate-50 dark:bg-slate-950'}`}>
+          {(publishedVisited || publishedMode) && <div hidden={!publishedMode}><Suspense fallback={<p className="p-8">Loading published experiment…</p>}><PublishedExperience mode={publishedMode ?? 'explore'} initial={financialBoot.experiment} error={financialBoot.error} onMode={openPublished} onLab={openLab} onWorld={() => {setResultFamily('world');openGuided('explore');}} onHistory={() => setActiveTab('history')} onRisk={() => {setResultFamily('world');setActiveTab('futures');}} /></Suspense></div>}
           {guidedMode && pendingAutosave && <div className="guided-recovery" role="status"><span>A saved scenario from {new Date(pendingAutosave.timestamp).toLocaleString()} is available (month {pendingAutosave.month}).</span><button onClick={restoreAutosave}>Restore saved scenario</button><button onClick={discardAutosave}>Discard saved scenario</button></div>}
           {guidedMode && <GuidedExperience mode={guidedMode} model={model} run={run} paired={pairedRun} qualification={qualification} needsDividendReference={needsDividendReference} uploadedModelName={activeModelConfig?.name} equationIssue={capabilities.equationIssue ?? (equationErrors.length ? 'Uploaded equations do not compile.' : undefined)} error={guidedError} activePolicy={resultFamily === 'lab-policy'}
             onUpdate={(id,patch)=>{try { evaluateConditionalSnapshot(editCorporation(run,id,patch),{model}); updateCorporation(id,patch);setGuidedError(null); }catch(e){setGuidedError(`Changes were not applied: ${String(e)}`);} }} onModel={next => { try {const a=evaluateConditionalSnapshot(run,{model:next});const b=evaluateConditionalSnapshot(pairedRun,noCorporateUbiInputs({model:next}));setModel(next);setRun(a);setPairedRun(b);setGuidedError(null);}catch(e){setGuidedError(`Changes were not applied: ${String(e)}`);} }} onLab={openLab} onView={openSingleWorldView}
             onDividend={openDividend} onCompare={()=>openGuided('compare')} onMapCompare={enterMapComparison}
             onPolicyCompare={openPolicyCharts} onShare={()=>{setShareUrl(null);setShowShareModal(true);}} onSave={saveToFile}/>}
-          <div hidden={!!guidedMode} className="guided-existing-content">
+          <div hidden={!!guidedMode || !!publishedMode} className="guided-existing-content">
+          {activeTab === 'history' && <Suspense fallback={<p>Loading historical reconstruction…</p>}><HistoryExperience /></Suspense>}
           {!guidedMode && showWorldControls && (
             <nav className="guided-view-nav" aria-label="World views">
               <button onClick={() => setIsSidebarOpen(!isSidebarOpen)}>World settings</button>
@@ -1547,7 +1567,7 @@ const App: React.FC = () => {
 
           {shareError && <div role="alert" className="p-4 border border-red-500 rounded-lg"><p>{shareError}</p><p>The shared result was not opened.</p><button className="underline min-h-11" onClick={switchToWorld}>Start a new world scenario</button></div>}
           {resultFamily === 'lab-policy' && activeTab === 'charts' && <ActivePolicyResultView view={activePolicy} onAuthor={() => setActiveTab('lab')} onWorld={switchToWorld} />}
-          {resultFamily === 'lab-policy' && !['lab', 'charts', 'models', 'guide', 'modelcard'].includes(activeTab) && <div className="space-y-4"><h2 className="font-bold">This view does not support the selected Lab policy result</h2><p>{unsupportedPolicyView}</p><button className="underline min-h-11 mr-4" onClick={openPolicyCharts}>View policy Charts</button><button className="underline min-h-11" onClick={() => { setResultFamily('world'); setSelectedEntity(null); }}>Switch to {activeTab === 'futures' ? 'the separate Futures model' : 'world model'}</button></div>}
+          {resultFamily === 'lab-policy' && !['lab', 'charts', 'models', 'guide', 'modelcard', 'history'].includes(activeTab) && <div className="space-y-4"><h2 className="font-bold">This view does not support the selected Lab policy result</h2><p>{unsupportedPolicyView}</p><button className="underline min-h-11 mr-4" onClick={openPolicyCharts}>View policy Charts</button><button className="underline min-h-11" onClick={() => { setResultFamily('world'); setSelectedEntity(null); }}>Switch to {activeTab === 'futures' ? 'the separate Futures model' : 'world model'}</button></div>}
           {/* Active run identity (review 2026-09-14, stage-5 gap 3): every view says which model its numbers come from. */}
           {resultFamily === 'world' && !shareError && (activeTab === 'map' || activeTab === 'charts' || activeTab === 'corporations') && (
             <p data-testid="active-model" className="mb-2 text-[11px] text-slate-500 dark:text-slate-400">
@@ -1558,7 +1578,7 @@ const App: React.FC = () => {
           {resultFamily === 'world' && !shareError && activeTab === 'futures' && (
             <p className="mb-2 text-[11px] text-slate-500 dark:text-slate-400">AI Futures Map · a separate influence model with its own assumptions; it does not read or drive the world simulation.</p>
           )}
-          {resultFamily === 'world' && !shareError && activeTab === 'map' && (
+          {!publishedMode && !guidedMode && resultFamily === 'world' && !shareError && activeTab === 'map' && (
             <div className="h-full flex flex-col gap-2">
               {/* Compact Stats Row - Primary */}
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 shrink-0">
@@ -1864,7 +1884,7 @@ const App: React.FC = () => {
 
           {(labVisited || activeTab === 'lab') && (
             <div hidden={activeTab !== 'lab'} className="h-full overflow-y-auto scrollbar-hide pb-32">
-              <LabTab entryRequest={labEntry} onActiveRunChange={publishPolicy} onOpenResultView={openPolicyCharts} />
+              <LabTab initialImports={financialImports} entryRequest={labEntry} onActiveRunChange={publishPolicy} onOpenResultView={openPolicyCharts} />
             </div>
           )}
 
