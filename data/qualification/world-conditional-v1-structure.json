@@ -1,9 +1,9 @@
 {
-  "hash": "950d3fb43937e507c4a2cf67599c92105430a320c337712851a5067a28f3291e",
+  "hash": "4b16b1021edd2a084d0d7990d675e941e36e6f54d2b3c90127aca8668e47ef60",
   "sources": {
     "build/qualificationSourcePlugin.ts": "18ece29b0103406e16ad371ea5e0de63265985844ff5ce6f1bedfb2be5815049",
     "build/qualificationSources.ts": "f916d6df9660a7a579a4e742d5004424a556dcd74f02e3fb3c5273c05d2f11ae",
-    "constants.ts": "160413c4c3f4ed3817a0f85cf3de6c832dde59e160130dd464dafce20ebbdd95",
+    "constants.ts": "37b110e014eb552cd32679ab189527516b2ed7dc782bf48892a66f85b1433bd0",
     "data/core/korinek-2026-faithful.json": "f4e937a2f08ea8fb0b51dec6526ca239cc1cb37906865768681e61ab24b332f4",
     "data/core/overlays/korinek-faithful-extreme.json": "0eb891deb9856e42380b2cbdc56e554ec8ed7bb44cf4b7aa2cc9a489fae6b395",
     "data/core/overlays/korinek-faithful-modest.json": "b6408ff094b3baceae2c8813eb136b4867a78e6072cb375abd1b95afaf4bc60f",
@@ -17,7 +17,7 @@
     "scripts/response-profile.ts": "03d8eeed77e96e6b38ba151151c73eee332ba2c0a4dbdb50c70f00d6e4267f91",
     "simulation/capabilities.ts": "375527b7f229f94bc1f08a1249b513288293023d65c5d51f5b41a91b1956d43e",
     "simulation/conditionalWorld.ts": "07578b4f526d6dccc42a112f363ff72b7ba84ce01d32cb9664c20d9db7914476",
-    "simulation/pure.ts": "f1cd98262fd1b86518680a74f0a60be89a11e43f3aa9e41463a58042bfd91912",
+    "simulation/pure.ts": "91d4174ac885308bda5b4d0960777a2c67285da23c2cb64ff8c682ff05e9a9ff",
     "simulation/qualification.ts": "849f331f2a0e04bf71373de20c207548d62763d3301c7f7f240debe14c67bd4b",
     "simulation/run.ts": "28d3599a1e77bbd30d984330675d233b17005e21bf7657ca7071752f009d2c1b",
     "simulation/sourceFreshness.ts": "eb745bb0b6c0d2663a2cede09572c746f1891cec7cc33c6bbae877e9e57451e6",

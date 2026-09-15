@@ -12,7 +12,7 @@ describe('independently accepted exact default accounting points', () => {
     expect(executingSourceHash()).toBe(structure.hash);
     expect(record.independentReview).toBe('accepted');
     expect(record.reviewer).toBe('Independent automated Astra numerical/accounting review');
-    expect(record.reviewReport).toBe('docs/design/reviews/2026-09-15-stage35-qualification-rereview.md');
+    expect(record.reviewReport).toBe('docs/design/reviews/2026-09-15-policy-evidence-qualification-review.md');
     expect(record.evidenceHash).toBe(evidence.payloadHash);
     expect(record.structureHash).toBe(evidence.structureHash);
     expect(record.reviewedRunIdentities).toEqual(evidence.baselineRunIdentities);
