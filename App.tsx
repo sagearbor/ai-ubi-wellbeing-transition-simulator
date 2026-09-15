@@ -43,7 +43,7 @@ import {
 } from './simulation/appState';
 import { formatBillionsUsd, formatUsdPerPerson, millionsToBillionsUsd } from './simulation/units';
 import EquationErrorBanner from './components/EquationErrorBanner';
-import { decodeExperiment, exactModel, FINANCE_PREFIX } from './src/financials/share';
+import { decodeExperiment, financialLabEntry, FINANCE_PREFIX } from './src/financials/share';
 const PublishedExperience = lazy(() => import('./components/published/PublishedExperience'));
 const HistoryExperience = lazy(() => import('./components/history/HistoryExperience'));
 import GuidedExperience, { type LabEntry } from './components/guided/GuidedExperience';
@@ -225,12 +225,17 @@ const App: React.FC = () => {
   });
   const [publishedVisited, setPublishedVisited] = useState(!!publishedMode);
   useEffect(() => { if (publishedMode) setPublishedVisited(true); }, [publishedMode]);
-  const [financialImports] = useState(() => financialBoot.experiment && new URLSearchParams(window.location.search).get('tab') === 'lab' ? [{ model: exactModel(financialBoot.experiment, new URLSearchParams(window.location.search).get('side') === 'B' ? 'B' : 'A') }] : []);
+  const [financialLab] = useState(() => financialBoot.experiment && new URLSearchParams(window.location.search).get('tab') === 'lab'
+    ? { experiment: financialBoot.experiment, side: new URLSearchParams(window.location.search).get('side') === 'B' ? 'B' as const : 'A' as const }
+    : undefined);
   const openPublished = (mode: 'explore' | 'compare') => { setPublishedMode(mode); setGuidedMode(null); setIsPlaying(false); setSelectedEntity(null); };
   const [guidedMode, setGuidedMode] = useState<'explore' | 'compare' | null>(null);
   const [activeTab, setRawActiveTab] = useState<AppTab>(initialRoute.tab);
   const setActiveTab = useCallback((tab: AppTab) => { setPublishedMode(null); setGuidedMode(null); setRawActiveTab(tab); }, []);
-  const [labEntry, setLabEntry] = useState<{ kind: LabEntry; sequence: number } | undefined>();
+  const [labEntry, setLabEntry] = useState<{ kind: LabEntry; sequence: number } | undefined>(() => {
+    const kind = financialLab && financialLabEntry(window.location.search);
+    return kind ? { kind, sequence: 1 } : undefined;
+  });
   const openLab = (kind?: LabEntry) => { setActiveTab('lab'); setSelectedEntity(null); if (kind) setLabEntry(old => ({kind, sequence:(old?.sequence ?? 0)+1})); };
   const openGuided = (mode: 'explore' | 'compare') => { setPublishedMode(null); if (shareError) { setGuidedMode(null); setRawActiveTab('map'); return; } setRawActiveTab('map'); setGuidedMode(mode); setIsPlaying(false); setSelectedEntity(null); setAboutDropdownOpen(false); };
   const [labVisited, setLabVisited] = useState(false);
@@ -1331,7 +1336,7 @@ const App: React.FC = () => {
         <nav className="guided-primary-nav" aria-label="Primary navigation">
           <button aria-current={publishedMode === 'explore' ? 'page' : undefined} onClick={() => openPublished('explore')}>Explore</button>
           <button aria-current={publishedMode === 'compare' ? 'page' : undefined} onClick={() => openPublished('compare')}>Compare</button>
-          <button aria-current={!publishedMode && activeTab === 'history' ? 'page' : undefined} onClick={() => setActiveTab('history')}>Check against history</button>
+          <button aria-label="History: check the world model against history" aria-current={!publishedMode && activeTab === 'history' ? 'page' : undefined} onClick={() => setActiveTab('history')}>History</button>
           <button aria-current={!publishedMode && !guidedMode && activeTab === 'lab' ? 'page' : undefined} onClick={() => openLab()}>Model Lab</button>
         </nav>
         <div className="guided-utilities">
@@ -1339,6 +1344,11 @@ const App: React.FC = () => {
           <button className="guided-theme" onClick={() => setTheme(t=>t==='dark'?'light':'dark')} aria-label={theme==='dark'?'Switch to light mode':'Switch to dark mode'}>{theme==='dark'?<Sun size={19}/>:<Moon size={19}/>}</button>
         </div>
       </header>
+
+      <aside className="guided-beta" aria-label="Research beta notice">
+        <span><strong>Research beta</strong> · Illustrative scenarios; methods and data are still being reviewed.</span>
+        <a href="https://github.com/sagearbor/ai-ubi-wellbeing-transition-simulator/issues" target="_blank" rel="noopener noreferrer">Feedback on GitHub ↗</a>
+      </aside>
 
       <main className="flex-1 overflow-hidden flex relative">
         {/* Mobile Backdrop */}
@@ -1884,7 +1894,7 @@ const App: React.FC = () => {
 
           {(labVisited || activeTab === 'lab') && (
             <div hidden={activeTab !== 'lab'} className="h-full overflow-y-auto scrollbar-hide pb-32">
-              <LabTab initialImports={financialImports} entryRequest={labEntry} onActiveRunChange={publishPolicy} onOpenResultView={openPolicyCharts} />
+              <LabTab initialFinancialExperiment={financialLab} entryRequest={labEntry} onActiveRunChange={publishPolicy} onOpenResultView={openPolicyCharts} />
             </div>
           )}
 

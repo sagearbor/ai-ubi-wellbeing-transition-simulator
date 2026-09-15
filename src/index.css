@@ -8,6 +8,8 @@
 .dark .guided-shell { --guided-bg:#101c2c; --guided-surface:#17273b; --guided-ink:#e9f0fa; --guided-secondary:#b0c1d5; --guided-border:#42566e; --guided-accent:#83acff; --guided-accent-ink:#10213e; --guided-muted-flow:#526b8d; --guided-available:#7596c5; --guided-reserved:#748397; --guided-warn:#ffa8b8; }
 .guided-shell [hidden] { display:none!important; }
 .guided-header { min-height:76px; display:flex; align-items:center; justify-content:space-between; gap:24px; padding:12px max(24px,calc((100vw - 1200px)/2)); border-bottom:1px solid var(--guided-border); flex-shrink:0; background:var(--guided-surface); z-index:110; }
+.guided-beta {display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:4px 16px;padding:6px max(16px,calc((100vw - 1200px)/2));flex-shrink:0;border-bottom:1px solid var(--guided-border);color:var(--guided-secondary);font-size:12px;line-height:1.5;}
+.guided-beta a {color:var(--guided-accent);text-decoration:underline;text-underline-offset:3px;white-space:nowrap;}
 .guided-brand { display:flex;align-items:center;gap:10px;font-size:18px;font-weight:650;white-space:nowrap; }
 .guided-primary-nav,.guided-utilities {display:flex;align-items:center;gap:12px;}
 .guided-primary-nav button {min-height:44px;padding:8px 12px;border-bottom:3px solid transparent;font-size:16px;}

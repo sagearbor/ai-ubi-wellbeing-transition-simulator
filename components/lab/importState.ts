@@ -12,6 +12,9 @@ import { ENGINE_VERSION, NUMERICAL_CONVENTIONS } from '../../src/core/engine';
 import { CORE_FIXTURES, type FixtureEntry } from '../../src/core/fixtures';
 import type { CoreModel, Overlay } from '../../src/core/types';
 import { contentHash, modelHash } from '../../src/policy/hash';
+import { exactModel, FINANCIAL_DATA_HASH, validateExperiment, type FinancialExperiment } from '../../src/financials/share';
+import { financialCollection, financialRecord } from '../../src/financials/catalog';
+import { reportedFinancialParameters } from '../../src/financials/presentation';
 
 export type ModelStatus = 'curated' | 'imported';
 
@@ -27,6 +30,29 @@ export interface ImportedModel {
   /** Validation warnings shown with it. */
   warnings: string[];
   provenance?: ScenarioProvenance;
+  /** Set only by the verified experiment entry path, never copied from imported JSON. */
+  financialOrigin?: { collectionId: string; dataHash: string; modelHash: string; fiscalYear: number };
+}
+
+/** The financial entry accepts a pinned experiment, never a caller-supplied model or origin flag. */
+export function importFinancialExperiment(experiment: FinancialExperiment, side: 'A' | 'B'): ImportedModel {
+  if (side !== 'A' && side !== 'B') throw new Error('Unknown financial scenario side.');
+  const checked = validateExperiment(experiment);
+  const model = exactModel(checked, side);
+  return {
+    key: importKey(model), model, overlays: [], warnings: [],
+    financialOrigin: {
+      collectionId: checked.collectionId, dataHash: checked.dataHash, modelHash: checked.modelHashes[side],
+      fiscalYear: financialRecord(checked.recordId).fiscalYear,
+    },
+  };
+}
+
+/** Recheck the actual model, so a replaced or edited import cannot retain an app-origin claim. */
+export function verifiedFinancialOrigin(entry: ImportedModel | undefined): ImportedModel['financialOrigin'] {
+  const origin = entry?.financialOrigin;
+  return origin && origin.collectionId === financialCollection.id && origin.dataHash === FINANCIAL_DATA_HASH && origin.modelHash === modelHash(entry.model)
+    && reportedFinancialParameters(entry.model).size > 0 ? origin : undefined;
 }
 
 export interface ModelExport {

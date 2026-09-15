@@ -19,8 +19,9 @@ export interface FinancialExperiment {
   modelHashes: { A: string; B: string };
   view: 'explore' | 'compare';
 }
+export const FINANCIAL_DATA_HASH = contentHash({ financialRecords, recipientCohorts });
 const pins = { collectionId: financialCollection.id, recipientsId: recipientCohorts[0].datasetId,
-  dataHash: contentHash({ financialRecords, recipientCohorts }), engineVersion: ENGINE_VERSION,
+  dataHash: FINANCIAL_DATA_HASH, engineVersion: ENGINE_VERSION,
   numericalHash: contentHash(NUMERICAL_CONVENTIONS) };
 export function buildExperiment(recordId = 'apple-fy2025', scenarios = { A: { ...defaultFinancialScenario }, B: { ...defaultFinancialScenario, trainingShare: .2 } }, view: FinancialExperiment['view'] = 'explore'): FinancialExperiment {
   const record = financialRecord(recordId);
@@ -52,9 +53,15 @@ export function decodeExperiment(hash: string): FinancialExperiment {
   if (!hash.startsWith(FINANCE_PREFIX) || hash.length > MAX_FINANCE_BYTES * 3) throw new Error('Malformed financial experiment link.');
   return parseExperiment(decodeURIComponent(hash.slice(FINANCE_PREFIX.length)));
 }
-export function experimentUrl(value: FinancialExperiment, base: string, side?: 'A' | 'B'): string {
+export type FinancialLabEntry = 'policy' | 'author' | 'uncertainty';
+export function financialLabEntry(search: string): FinancialLabEntry | undefined {
+  const entry = new URLSearchParams(search).get('entry');
+  return entry === 'policy' || entry === 'author' || entry === 'uncertainty' ? entry : undefined;
+}
+export function experimentUrl(value: FinancialExperiment, base: string, side?: 'A' | 'B', entry?: FinancialLabEntry): string {
   const url = new URL(base); url.search = ''; url.searchParams.set('tab', side ? 'lab' : value.view);
   if (side) url.searchParams.set('side', side);
+  if (side && entry) url.searchParams.set('entry', entry);
   url.hash = FINANCE_PREFIX + encodeExperiment(value); return url.href;
 }
 export function exactModel(value: FinancialExperiment, side: 'A' | 'B') {
