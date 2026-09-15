@@ -40,3 +40,9 @@ Task 7: aggregate final fix running, worker beta_authoring_affordance, base e6a0
 Task 7: implemented 84075ba; 39 focused tests, independent 4-test re-review, typecheck and fresh build pass. Root browser verified financial limitation/export and supported income overlay creation/removal. Scoped final reviewer recording verdict.
 
 Task 7: complete (e6a02a8..84075ba, one scoped final re-review accepted, no residual findings). Task 4: local review/browser complete; publishing draft PR and verifying final GitHub CI next.
+
+## New hosted-CI evidence after review
+
+Draft PR21 was published at 35e6d35. GitHub run 35020019690 found eight packaging integration tests above the default five-second deadline (5.132–6.007 seconds); the other 90 files passed. This was not a numerical assertion failure. A separate scoped test-harness repair is being verified: retain all tamper cases and exact rejection/no-overwrite assertions, bound the child process, and use an explicit integration-test deadline. No scientific tolerance or production/evidence source changes are authorized. Final remote validation is still required.
+
+CI repair e54a435: all 13 focused packaging tests and TypeScript pass; explicit process-timeout assertions added. This changes only the integration-test harness and its documentation. The hosted final status is available in PR21 checks.

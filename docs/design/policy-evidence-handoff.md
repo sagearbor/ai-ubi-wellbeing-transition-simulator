@@ -1,6 +1,6 @@
 # Policy evidence follow-up — Claude Code handoff
 
-This follow-up is on `codex/policy-evidence-readiness`, based on the preserved published-data candidate `a064c2c676b2158afea7705e0e9a31668adbd642`. PR20 remains the earlier comparison. No main merge or public deployment has occurred in this follow-up.
+This follow-up is [draft PR21](https://github.com/sagearbor/ai-ubi-wellbeing-transition-simulator/pull/21) on `codex/policy-evidence-readiness`, based on the preserved published-data candidate `a064c2c676b2158afea7705e0e9a31668adbd642`. PR20 remains the earlier comparison. No main merge or public deployment has occurred in this follow-up.
 
 ## Review scope
 

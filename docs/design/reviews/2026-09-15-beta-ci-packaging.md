@@ -88,3 +88,23 @@ before failing. Synchronous fixture filesystem operations are not themselves
 interruptible by Vitest's timer. No hosted success is claimed from local results:
 the remaining gate is scoped independent review followed by the unchanged full
 GitHub `npm run check` workflow on the updated PR head.
+
+## Independent scoped review — 35e6d35..e54a435
+
+**Domain lens:** Principal engineer reviewing process-failure assertions and CI integration-test coverage.
+
+**Verdict: ACCEPTED.** This is a bounded harness repair supported by the new hosted timing evidence. No critical or important defect was found. It neither reopens the completed integration review nor establishes hosted success; the exact updated PR head still needs the normal GitHub workflow.
+
+| Claim | Verdict | Evidence |
+| --- | --- | --- |
+| Failures were test deadlines | Verified in retained hosted log | Packaging reports eight `Test timed out in 5000ms` failures. The repair does not remove a numerical or identity assertion. |
+| Deadline change is scoped | Verified | Only the 11 parameterized real-command cases receive 30 seconds; the two other cases and global configuration are unchanged. |
+| A timeout cannot pass as expected rejection | Verified | The new assertions require `error === undefined`, `signal === null` and a non-null status before nonzero exit and the existing identity-mismatch message. Independent Node 22 probe produced `ETIMEDOUT`, `SIGKILL`, and null status; that result fails all three normal-exit requirements. |
+| All rejection coverage remains | Verified | Same 11 mutations, real child invocation, specific error-message check, byte-for-byte output preservation and `finally` cleanup. Independently reran all 13 tests: passed. |
+| Scientific source closure is unaffected | Verified | The diff changes only this test and this report. A direct probe confirms the test is absent from both evaluation and qualification source closures. No data, runtime, model, tolerance or target changes exist in this range. |
+
+Independent execution used Node 22.23.2 and the focused verbose Vitest command above: **13 tests passed**, exit 0, 12.44 seconds total; command cases ranged from 1,055 to 1,134 ms. The separate short-deadline process probe used the same `spawnSync` timeout/SIGKILL mechanism and confirmed the expected failure fields. Worker typecheck is reported evidence and was not duplicated.
+
+No coverage weakening or internal inconsistency found. The deadline raises permitted latency; it does not improve performance. Synchronous fixture I/O remains outside the child's timeout, as the report explicitly acknowledges. The 20-second child bound plus 30-second test deadline is reasonable headroom relative to the observed hosted cases; an unusually slow runner can still fail honestly.
+
+**Recommendation:** push the reviewed repair and verify the unchanged full workflow against its exact hosted head. **Confidence: high for the scoped harness correctness; hosted outcome remains unverified until that run finishes.** No production edits, commits or pushes were performed by this reviewer.
