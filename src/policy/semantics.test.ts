@@ -69,3 +69,13 @@ it('editing operative dispositions in UI state clears the bound attestation', ()
   const edited = withEdit(draft, { ...draft, clauseDispositions: [{ clauseId: 'sec1(a)', status: 'unresolved', reason: 'Needs eligibility review' }] });
   expect(edited.completeness).toBeUndefined();
 });
+
+it('duplicate operative dispositions cannot report bookkeeping complete', () => {
+  const source = 'Grant funding.';
+  const draft = threeStatusDraft({ source: { title: 'Grant', excerptChars: source.length }, clauseDispositions: [
+    { clauseId: 'p1', status: 'not-operative', reason: 'Test' },
+    { clauseId: 'p1', status: 'not-operative', reason: 'Duplicate' },
+  ] });
+  expect(coverage(draft, source).operative.text).not.toContain('bookkeeping complete');
+  expect(coverage(draft, source).operative.unresolved).toContain('p1');
+});

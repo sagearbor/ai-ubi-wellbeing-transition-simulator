@@ -448,7 +448,8 @@ export function parsePolicyExtraction(
     modelId: model.id,
     modelHash: modelHash(model),
     provisions,
-    clauseDispositions: (body.clauseDispositions ?? []).map(d => ({ ...d, provisionIds: fixIds(d.provisionIds) })),
+    // Re-slug known IDs, but never discard an unknown mechanism link: validation must block it.
+    clauseDispositions: (body.clauseDispositions ?? []).map(d => ({ ...d, provisionIds: d.provisionIds?.map(id => idMap.get(id) ?? id) })),
     reviewStatus: 'ai-drafted',
     draftedBy: { kind: 'ai', name: modelUsed, date: today },
     ...(exclusions.length ? { exclusions } : {}),
