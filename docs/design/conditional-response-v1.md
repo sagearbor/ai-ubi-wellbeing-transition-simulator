@@ -2,6 +2,8 @@
 
 Model: world-conditional-v1. Deterministic assumption grid; not a probability distribution.
 
+The 61 exact default monthly points (months 0–60) are accepted for conditional source/allocation accounting after [independent automated numerical/accounting review](reviews/2026-09-15-stage35-qualification-rereview.md). This does not accept the whole 383-case grid as a reviewed input region, establish human/empirical approval, or complete final product integration. Macro/wellbeing remain illustrative; timing, induced demand and net welfare remain unsupported.
+
 Computational audit: {"expected":383,"attempted":383,"completed":383,"missing":0,"incomplete":0,"altered":0,"duplicates":0,"failures":0,"accountingFailures":0,"outputFailures":0,"pass":true}. Independent review is separate.
 
 | Month | Full-roster conditional index | Raw weighted | Invalid countries | Modeled residents (millions) | Source / funded (billions constant-2015 USD/month) |
