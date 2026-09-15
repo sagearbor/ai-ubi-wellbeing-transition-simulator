@@ -102,3 +102,19 @@ describe('published observation identity in Lab', () => {
     expect(r.diagnostics.some(d => d.code === 'invariant-violated')).toBe(true);
   });
 });
+
+describe('decimal conservation at every company scale', () => {
+  it.each(financialRecords.map(record => [record.companyName, record] as const))('%s conserves512 scenario variants without floating-point false failures', (_name, record) => {
+    const shares = [0, .01, .1, .25, .333333333333, .7, .99, 1];
+    for (const policyShare of shares) for (const trainingShare of shares) for (const costPerCompletion of [1, 3, 4999.99, 5000]) for (const instructorCapacity of [17, 1e12]) {
+      const m = createFinancialModel(record, { ...defaultFinancialScenario, policyShare, trainingShare, costPerCompletion, instructorCapacity, eligibleTrainees: 1e12, suitableOpenings: 1e12 });
+      const r = runModel(m);
+      expect(r.ok, `${record.id}/${policyShare}/${trainingShare}/${costPerCompletion}/${instructorCapacity}: ${JSON.stringify(r.diagnostics)}`).toBe(true);
+      const s = r.series._;
+      const error = Math.abs(s.policy_budget[0] - s.dividend_spend[0] - s.actual_training_spend[0] - s.unspent_training[0]);
+      expect(error).toBeLessThanOrEqual(Math.max(1e-6, s.policy_budget[0] * 1e-12));
+      expect(s.completions[0]).toBeLessThanOrEqual(recipientCohort('USA').population);
+      expect(s.placements[0]).toBeLessThanOrEqual(s.completions[0]);
+    }
+  });
+});
