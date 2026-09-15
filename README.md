@@ -93,10 +93,10 @@ npm run validate:korinek  # reduced-form Korinek reproduction (KJ-1..3)
 npm run validate:core     # every core model and overlay in data/core against its own tests
 npm run validate:cases    # policy-effect cases (data/cases), signed discrepancies, no grade
 npm run hindcast          # 2015-2025 reconstruction (report, not a gate)
-npm run check       # typecheck, tests, the validators above and a production build (what CI runs)
+npm run check       # all tests, anchor/Futures/Korinek/core/case validators, ledger, production build
 ```
 
-CI (`.github/workflows/ci.yml`) runs `npm run check` on every push and pull request.
+CI (`.github/workflows/ci.yml`) runs the complete `npm run check` on pushes to main and pull requests. Clean-checkout checks verify qualification source/lock and evidence metadata integrity without the gitignored raw profile; full raw arithmetic verification is a separate local step. See the [v3 acceptance record](docs/design/v3-acceptance-2026-09-15.md) for commands and limits.
 
 ### Deploy (Cloud Run)
 
@@ -128,9 +128,11 @@ basis for a conference-panel presentation; `main` has moved on since.
 Because it's pre-1.0, expect rough edges: parameters and coefficients are still
 being tuned, the model catalog is small, and interfaces may change.
 
-Current results for the built-in engine (`npm run check`, 2026-09-13): 767 tests; anchor tests
+Historical check result for the built-in engine (2026-09-13, before this integration): 767 tests; anchor tests
 5 of 6 (AT-3 fails for a measurement reason documented in the model card); Korinek reduced form
 3 of 3; every core model passes its own reproduction tests.
+
+**Current acceptance:** the default has independent automated review for conditional source/allocation accounting at exactly 61 baseline monthly snapshots. Macro and wellbeing remain illustrative. Supported policy sharing/reopen and native Charts/Compare are implemented; final browser, whole-branch review and GitHub release checks are tracked in the [v3 acceptance record](docs/design/v3-acceptance-2026-09-15.md).
 
 **Where to start reviewing (v3 plan, stages 1-5):**
 

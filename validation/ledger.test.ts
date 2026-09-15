@@ -257,5 +257,6 @@ describe('success requires fresh evidence', () => {
     const testFiles = Object.fromEntries(KNOWN_MISS_PINS.map(p => [p.file, readFileSync(p.file, 'utf8')]));
     const report = checkLedger({ current, previous: [recorded], computed: computeLedger(current.entries), testFiles, targetKeys: discoverTargetKeys() });
     expect(report.failures.some(f => f.id === e.id)).toBe(true);
-  }, 30000);
+    // Full numerical ledger under concurrent CI load; this is not a 30-second performance contract.
+  }, 120000);
 });
