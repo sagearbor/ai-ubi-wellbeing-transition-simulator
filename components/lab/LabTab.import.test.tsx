@@ -108,7 +108,7 @@ describe('Lab with an imported model', () => {
       initialPolicy: { drafts: [draft], source: { title: example.source.title, url: example.source.url, text: example.source.text }, runs: 20, seed: 1, run: true },
     });
     expect(out).toContain('paired difference A');
-    expect(out).toContain('Experimental — not curated: these results come from a model imported into the Lab');
+    expect(out).toContain('Experimental imported model: validation does not independently establish scientific validity.');
     expect(out).toContain('links are off; the bundle carries the model');
 
     const result = pairedRun(authored, [], draft, { runs: 20, seed: 1, sourceText: example.source.text });

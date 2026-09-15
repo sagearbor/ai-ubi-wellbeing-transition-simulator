@@ -21,6 +21,10 @@ import { ModelDetail } from './components/ModelDetail';
 import { ModelRating } from './components/ModelRating';
 import FuturesTab from './components/futures/FuturesTab';
 import LabTab from './components/lab/LabTab';
+import ActivePolicyResultView from './components/lab/ActivePolicyResultView';
+import { sharedRoute, recognizedShareHash, type AppTab } from './components/lab/navigation';
+import { resolveQualification } from './simulation/qualification';
+import { unsupportedPolicyView, type ActiveRunView } from './components/lab/activeRunView';
 import ModelCardTab from './components/modelcard/ModelCardTab';
 import { InterventionImportPanel } from './components/futures/InterventionImportPanel';
 import { LOCKED_GRAPH, LOCKED_INTERVENTIONS, loadCustomInterventions, saveCustomInterventions } from './src/futures/data';
@@ -203,17 +207,23 @@ const App: React.FC = () => {
   const [history, setHistory] = useState<HistoryPoint[]>([]);
   const [isPlaying, setIsPlaying] = useState(false);
   const [speed, setSpeed] = useState(1);
-  const [activeTab, setActiveTab] = useState<'map' | 'charts' | 'corporations' | 'futures' | 'lab' | 'analysis' | 'overview' | 'equations' | 'guide' | 'models' | 'leaderboard' | 'modelcard'>('map');
+  const [initialRoute] = useState(() => typeof window === 'undefined' ? sharedRoute('', '') : sharedRoute(window.location.search, window.location.hash));
+  const [activeTab, setActiveTab] = useState<AppTab>(initialRoute.tab);
+  const [labVisited, setLabVisited] = useState(false);
+  const [activePolicy, setActivePolicy] = useState<ActiveRunView | null>(null);
+  const [resultFamily, setResultFamily] = useState<'world' | 'lab-policy'>(initialRoute.policy ? 'lab-policy' : 'world');
+  const [shareError, setShareError] = useState<string | null>(null);
+  useEffect(() => { if (activeTab === 'lab') setLabVisited(true); }, [activeTab]);
+  const publishPolicy = React.useCallback((view: ActiveRunView) => { setActivePolicy(view); if (activeTab === 'lab' && view.status !== 'empty') setResultFamily('lab-policy'); }, [activeTab]);
+  const openPolicyCharts = () => { setResultFamily('lab-policy'); setActiveTab('charts'); setSelectedEntity(null); };
+  const switchToWorld = () => { setResultFamily('world'); setShareError(null); setActiveTab('map'); };
   const [customInterventions, setCustomInterventions] = useState<Intervention[]>(() => loadCustomInterventions());
-  // Deep link: /?tab=lab opens a tab directly (shareable, and it bypasses the header menu on phones).
+  // Mount-only payload parsers must be re-entered for a newly opened share hash.
+  // Ordinary tabs preserve the Lab; explicit share links intentionally open a new scenario.
   useEffect(() => {
-    try {
-      const wanted = new URLSearchParams(window.location.search).get('tab');
-      const valid = ['map', 'charts', 'corporations', 'futures', 'lab', 'analysis', 'overview', 'equations', 'guide', 'models', 'leaderboard', 'modelcard'];
-      if (wanted && valid.includes(wanted)) setActiveTab(wanted as any);
-      // A shared policy scenario (#lab=...) opens the Model Lab, which reads and reports on the link itself.
-      if (window.location.hash.startsWith('#lab=')) setActiveTab('lab');
-    } catch { /* no window */ }
+    const openHash = () => { if (recognizedShareHash(window.location.hash)) window.location.reload(); };
+    window.addEventListener('hashchange', openHash);
+    return () => window.removeEventListener('hashchange', openHash);
   }, []);
   const [viewMode, setViewMode] = useState<'adoption' | 'wellbeing'>('wellbeing'); // Default to wellbeing
   const [equationViewMode, setEquationViewMode] = useState<'simple' | 'detailed'>('simple');
@@ -224,7 +234,7 @@ const App: React.FC = () => {
   const [comparisonScenarioId, setComparisonScenarioId] = useState<string>('free-market-optimism');
 
   // Models tab mode state (P8-T13)
-  const [modelMode, setModelMode] = useState<'upload' | 'edit'>('upload');
+  const [modelMode, setModelMode] = useState<'upload' | 'edit'>(initialRoute.edit ? 'edit' : 'upload');
 
   // Initialize default selected countries
   const [selectedCountries, setSelectedCountries] = useState<string[]>(() => {
@@ -254,7 +264,7 @@ const App: React.FC = () => {
    * with their own calendars, so those controls are hidden there rather than shown next to an
    * unrelated model (review 2026-09-14, stage 5 gap "Other tabs still use unrelated world state").
    */
-  const showWorldControls = activeTab !== 'lab' && activeTab !== 'modelcard';
+  const showWorldControls = resultFamily === 'world' && !shareError && !['lab', 'modelcard', 'models', 'futures'].includes(activeTab);
   const [showStartHint, setShowStartHint] = useState(true);
   const [showShareModal, setShowShareModal] = useState(false);
   const [shareUrl, setShareUrl] = useState<string | null>(null);
@@ -378,6 +388,7 @@ const App: React.FC = () => {
   // months are not modelled, so the clock does not run past them (review 2026-09-14, decision 4(c)).
   const referenceEnded = (!!model.macro?.usReference && state.month >= US_REFERENCE_LAST_WORLD_MONTH) || (state.outOfScope?.length ?? 0) > 0;
   const capabilities = resolveRunCapabilities(model,compiledEquations);
+  const qualification = useMemo(() => resolveQualification(model, run, compiledEquations), [model, run, compiledEquations]);
   const comparisonCapabilities = resolveRunCapabilities(comparisonModel,compiledEquations);
   const comparisonEnded = comparisonMode && comparisonCapabilities.lastMonth !== null && comparisonRun.state.month >= comparisonCapabilities.lastMonth;
   const canStep = equationErrors.length === 0 && !capabilities.equationIssue && (!comparisonMode || !comparisonCapabilities.equationIssue) && !referenceEnded && !comparisonEnded;
@@ -426,7 +437,7 @@ const App: React.FC = () => {
             setComparisonHistory([]);
         }
       } catch (e) {
-        console.error("Failed to decode shared state", e);
+        setShareError(`Cannot open this shared scenario: ${e instanceof Error ? e.message : String(e)}`);
       }
     }
   }, []);
@@ -437,6 +448,7 @@ const App: React.FC = () => {
     if (!showWorldControls) {
       setIsPlaying(false);
       setIsSidebarOpen(false);
+      setSelectedEntity(null);
     }
   }, [showWorldControls]);
 
@@ -464,8 +476,8 @@ const App: React.FC = () => {
 
   const handleCopyLink = async () => {
     if (shareUrl) {
-        await navigator.clipboard.writeText(shareUrl);
-        alert("Link copied to clipboard!");
+        try { await navigator.clipboard.writeText(shareUrl); alert("Link copied to clipboard!"); }
+        catch { alert("Clipboard unavailable. Select and copy the full link, or use Open shared scenario."); }
     }
   };
 
@@ -1209,7 +1221,8 @@ const App: React.FC = () => {
                 ) : (
                     <div className="space-y-4">
                          <div className="p-3 bg-slate-100 dark:bg-slate-950 rounded-lg border border-slate-200 dark:border-slate-800 break-all text-xs font-mono text-slate-600 dark:text-slate-400">
-                            {shareUrl.substring(0, 50)}...
+                            <input aria-label="Full shared scenario link" readOnly value={shareUrl} className="w-full bg-transparent" />
+                            <a href={shareUrl} target="_blank" rel="noreferrer" className="underline">Open shared scenario</a>
                          </div>
                          <button 
                             onClick={handleCopyLink}
@@ -1289,19 +1302,21 @@ const App: React.FC = () => {
           {/* Compare Mode Toggle (P7-T5) */}
           <button
              onClick={() => {
+               if (resultFamily === 'lab-policy' || activeTab === 'lab') { openPolicyCharts(); return; }
                setComparisonMode(!comparisonMode);
                if (!comparisonMode) setActiveTab('map'); // Switch to map tab when enabling comparison
              }}
              className={`px-2 py-1.5 rounded-lg text-[10px] font-bold uppercase transition-all ${comparisonMode ? 'bg-purple-600 text-white shadow-md' : 'text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-700'}`}
              title="Compare two scenarios side-by-side on Map tab"
           >
-            Compare{comparisonMode ? '' : ' Maps'}
+            Compare{resultFamily === 'lab-policy' || activeTab === 'lab' ? ' Policy' : comparisonMode ? '' : ' Maps'}
           </button>
 
           <div className="w-px h-6 bg-slate-300 dark:bg-slate-700 mx-1"></div>
 
           {/* Save/Load Buttons */}
           <button
+             hidden={!showWorldControls}
              onClick={saveToFile}
              className="p-1.5 rounded-lg text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
              title="Save Scenario to File"
@@ -1311,6 +1326,7 @@ const App: React.FC = () => {
 
           <label
              className="p-1.5 rounded-lg text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors cursor-pointer"
+             hidden={!showWorldControls}
              title="Load Scenario from File"
           >
             <Upload size={16} />
@@ -1358,7 +1374,7 @@ const App: React.FC = () => {
             <div>
                 <h2 className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-4">Baseline Models</h2>
                 <div className="grid grid-cols-1 gap-2">
-                {PRESET_MODELS.map(m => (
+                {[DEFAULT_MODEL, ...PRESET_MODELS.filter(m => m.id !== DEFAULT_MODEL.id)].map(m => (
                     <button
                     key={m.id}
                     onClick={() => {
@@ -1535,16 +1551,20 @@ const App: React.FC = () => {
 
         {/* Main Content Area */}
         <section className="flex-1 overflow-y-auto p-4 lg:p-6 bg-slate-50 dark:bg-slate-950 relative h-full scrollbar-hide">
+          {shareError && <div role="alert" className="p-4 border border-red-500 rounded-lg"><p>{shareError}</p><p>The shared result was not opened.</p><button className="underline min-h-11" onClick={switchToWorld}>Start a new world scenario</button></div>}
+          {resultFamily === 'lab-policy' && activeTab === 'charts' && <ActivePolicyResultView view={activePolicy} onAuthor={() => setActiveTab('lab')} onWorld={switchToWorld} />}
+          {resultFamily === 'lab-policy' && !['lab', 'charts', 'models', 'guide', 'modelcard'].includes(activeTab) && <div className="space-y-4"><h2 className="font-bold">This view does not support the selected Lab policy result</h2><p>{unsupportedPolicyView}</p><button className="underline min-h-11 mr-4" onClick={openPolicyCharts}>View policy Charts</button><button className="underline min-h-11" onClick={() => { setResultFamily('world'); setSelectedEntity(null); }}>Switch to {activeTab === 'futures' ? 'the separate Futures model' : 'world model'}</button></div>}
           {/* Active run identity (review 2026-09-14, stage-5 gap 3): every view says which model its numbers come from. */}
-          {(activeTab === 'map' || activeTab === 'charts' || activeTab === 'corporations') && (
+          {resultFamily === 'world' && !shareError && (activeTab === 'map' || activeTab === 'charts' || activeTab === 'corporations') && (
             <p data-testid="active-model" className="mb-2 text-[11px] text-slate-500 dark:text-slate-400">
-              World simulation · <span className="font-semibold text-slate-700 dark:text-slate-200">{activeModelConfig ? `${activeModelConfig.name} (uploaded equations)` : model.name}</span> · month {state.month}. The Model Lab and the AI Futures Map are separate models and do not feed this view.
+              World simulation · <span className="font-semibold text-slate-700 dark:text-slate-200">{activeModelConfig ? `${activeModelConfig.name} (uploaded equations)` : model.name}</span> · month {state.month}. The Model Lab and the AI Futures Map are separate models and do not feed this view. {capabilities.conditional && <span>Accounting: {qualification.accounting === 'reviewed-conditional' ? 'independently reviewed at this exact default point' : 'unreviewed scenario point (not a computation failure)'}. Macro and wellbeing: illustrative. Money: constant-2015 USD; residents: modeled roster.</span>}
             </p>
           )}
-          {activeTab === 'futures' && (
+          {showWorldControls && state.sourceAccounting && ['map','charts','corporations'].includes(activeTab) && <p className="mb-3 text-xs" data-testid="source-accounting">Modeled source accounting (constant-2015 USD billions/month): source {state.sourceAccounting.source.toFixed(4)} · funded {state.sourceAccounting.actual.toFixed(4)} · receipts {state.sourceAccounting.receipts.toFixed(4)} · retained / unused {state.sourceAccounting.unused.toFixed(4)} · reserved {state.sourceAccounting.reserved.toFixed(4)} · unfunded {state.sourceAccounting.unfunded.toFixed(4)}. Transfer-to-macro effects are unestimated; equal macro curves do not measure zero effect.</p>}
+          {resultFamily === 'world' && !shareError && activeTab === 'futures' && (
             <p className="mb-2 text-[11px] text-slate-500 dark:text-slate-400">AI Futures Map · a separate influence model with its own assumptions; it does not read or drive the world simulation.</p>
           )}
-          {activeTab === 'map' && (
+          {resultFamily === 'world' && !shareError && activeTab === 'map' && (
             <div className="h-full flex flex-col gap-2">
               {/* Compact Stats Row - Primary */}
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 shrink-0">
@@ -1552,7 +1572,7 @@ const App: React.FC = () => {
                     which converts units with the same helper the engine uses. */}
                 {(() => { const hs = headlineStats(state); return [
                   { label: hs.wellbeingLabel, val: hs.wellbeingAvailable ? hs.meanCountryWellbeing.toFixed(1) : 'Unavailable', color: 'text-emerald-600 dark:text-emerald-400', desc: capabilities.conditional ? "Population-weighted illustrative conditional index across the complete modeled roster. Unavailable if any country is outside the mapping scale." : "Mean of country wellbeing indices (0-100), unweighted: every country counts once regardless of population. Not the average person's wellbeing." },
-                  { label: 'Dividend', val: formatUsdPerPerson(hs.globalDividendUsd), color: 'text-amber-600 dark:text-amber-400', desc: "Global dividend this month: USD per person from the global pool, paid equally per capita to all modeled residents. Customer-weighted and HQ-local payments come on top and vary by country." },
+                  { label: 'Global dividend', val: formatUsdPerPerson(hs.globalDividendUsd), color: 'text-amber-600 dark:text-amber-400', desc: "Global dividend this month: USD per person from the global pool, paid equally per capita to all modeled residents. Customer-weighted and HQ-local payments come on top and vary by country." },
                   { label: 'Adoption', val: `${(hs.meanCountryAdoption * 100).toFixed(0)}%`, color: 'text-blue-600 dark:text-blue-400', desc: "Mean of country AI adoption, unweighted: every country counts once regardless of population." },
                   { label: 'Pool', val: formatBillionsUsd(hs.globalPoolBillions), color: 'text-slate-900 dark:text-white', desc: "Global pool this month: contributions routed to equal per-capita distribution. Paid out the same month, not accumulated. Excludes customer-weighted and HQ-local contributions." }
                 ]; })().map((stat, i) => (
@@ -1664,7 +1684,7 @@ const App: React.FC = () => {
 
 </>}
               {/* Prisoner's Dilemma Warning */}
-              {gameTheoryState.isInPrisonersDilemma && (
+              {!capabilities.conditional && gameTheoryState.isInPrisonersDilemma && (
                 <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-400 dark:border-amber-600 px-4 py-2 rounded-lg">
                   <div className="flex items-center gap-2">
                     <div className="text-amber-600 dark:text-amber-400 font-bold text-xs uppercase">Warning: Prisoner's Dilemma Detected</div>
@@ -1703,7 +1723,7 @@ const App: React.FC = () => {
                           selectedCountryId={selectedEntity?.type === 'country' ? selectedEntity.id : null}
                           corporations={corporations}
                           selectedCorpId={selectedEntity?.type === 'corporation' ? selectedEntity.id : null}
-                          selectedArchetype={selectedArchetype}
+                          selectedArchetype={capabilities.conditional ? null : selectedArchetype}
                         />
                       </div>
                     </div>
@@ -1733,7 +1753,7 @@ const App: React.FC = () => {
                           selectedCountryId={null}
                           corporations={comparisonCorporations}
                           selectedCorpId={null}
-                          selectedArchetype={selectedArchetype}
+                          selectedArchetype={capabilities.conditional ? null : selectedArchetype}
                         />
                       </div>
                     </div>
@@ -1748,7 +1768,7 @@ const App: React.FC = () => {
                     selectedCountryId={selectedEntity?.type === 'country' ? selectedEntity.id : null}
                     corporations={corporations}
                     selectedCorpId={selectedEntity?.type === 'corporation' ? selectedEntity.id : null}
-                    selectedArchetype={selectedArchetype}
+                    selectedArchetype={capabilities.conditional ? null : selectedArchetype}
                   />
                 )}
 
@@ -1776,7 +1796,7 @@ const App: React.FC = () => {
               </div>
 
               {/* Archetype Filter */}
-              <div className="flex justify-center shrink-0 mt-2">
+              <div hidden={capabilities.conditional} className="flex justify-center shrink-0 mt-2">
                 <div className="flex flex-wrap gap-1.5 p-2 bg-white dark:bg-slate-900 rounded-lg border border-slate-200 dark:border-slate-800 shadow-sm max-w-xl">
                   <div className="text-[9px] text-slate-500 dark:text-slate-400 uppercase font-bold tracking-widest w-full mb-1">Filter by Archetype:</div>
                   <button
@@ -1848,13 +1868,13 @@ const App: React.FC = () => {
             </div>
           )}
 
-          {activeTab === 'lab' && (
-            <div className="h-full overflow-y-auto scrollbar-hide pb-32">
-              <LabTab />
+          {(labVisited || activeTab === 'lab') && (
+            <div hidden={activeTab !== 'lab'} className="h-full overflow-y-auto scrollbar-hide pb-32">
+              <LabTab onActiveRunChange={publishPolicy} onOpenResultView={openPolicyCharts} />
             </div>
           )}
 
-          {activeTab === 'futures' && (
+          {resultFamily === 'world' && !shareError && activeTab === 'futures' && (
             <div className="h-full overflow-y-auto scrollbar-hide pb-32">
               <FuturesTab
                 graph={LOCKED_GRAPH}
@@ -1873,7 +1893,7 @@ const App: React.FC = () => {
             </div>
           )}
 
-          {activeTab === 'charts' && (
+          {resultFamily === 'world' && !shareError && activeTab === 'charts' && (
             <div className="flex flex-col gap-6 lg:gap-8 h-full overflow-y-auto scrollbar-hide pb-32 relative">
               {/* Comparison Mode Info Banner */}
               {comparisonMode && (
@@ -2035,7 +2055,7 @@ const App: React.FC = () => {
             </div>
           )}
 
-          {activeTab === 'corporations' && (
+          {resultFamily === 'world' && !shareError && activeTab === 'corporations' && (
             <div className="h-full overflow-y-auto">
               <div className="max-w-7xl mx-auto p-6 space-y-6">
                 {/* Comparison Mode Info Banner */}
@@ -2073,7 +2093,7 @@ const App: React.FC = () => {
             </div>
           )}
 
-          {activeTab === 'analysis' && (
+          {resultFamily === 'world' && !shareError && activeTab === 'analysis' && (
              <div className="max-w-6xl mx-auto py-6 lg:py-12 flex flex-col lg:flex-row gap-6 lg:gap-8 h-full">
                 
                 {/* Control Panel */}
@@ -2236,7 +2256,7 @@ const App: React.FC = () => {
             </div>
           )}
 
-          {activeTab === 'leaderboard' && (
+          {resultFamily === 'world' && !shareError && activeTab === 'leaderboard' && (
             <div className="p-6">
               <Leaderboard
                 onApplyModel={(model) => {
@@ -2250,7 +2270,7 @@ const App: React.FC = () => {
             </div>
           )}
 
-          {activeTab === 'overview' && (
+          {resultFamily === 'world' && !shareError && activeTab === 'overview' && (
             <div className="max-w-6xl mx-auto py-8 lg:py-12 flex flex-col items-center justify-center h-full gap-8">
               <div className="text-center space-y-3">
                 <h2 className="text-3xl font-bold text-slate-900 dark:text-white">The Abundance Cycle</h2>
@@ -2487,7 +2507,7 @@ const App: React.FC = () => {
             </div>
           )}
 
-          {activeTab === 'equations' && (
+          {resultFamily === 'world' && !shareError && activeTab === 'equations' && (
             <div className="max-w-4xl mx-auto py-8 lg:py-12 space-y-8">
               <div className="text-center space-y-4">
                 <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Model Equations</h2>

@@ -120,6 +120,7 @@ export const WellbeingScatterPlot: React.FC<WellbeingScatterPlotProps> = ({
   countryData,
   month
 }) => {
+  const conditional = Object.values<CountryStats>(countryData).some(c => c.conditionalWellbeing);
   // Transform country data to scatter plot points
   const { dataPoints, regression, archetypeData } = useMemo(() => {
     const points: DataPoint[] = Object.values<CountryStats>(countryData).map(country => ({
@@ -127,7 +128,7 @@ export const WellbeingScatterPlot: React.FC<WellbeingScatterPlotProps> = ({
       name: country.name,
       aiAdoption: country.aiAdoption * 100, // Convert to percentage
       wellbeing: country.conditionalWellbeing?.raw ?? country.wellbeing,
-      archetype: country.archetype,
+      archetype: conditional ? 'modeled-residents' : country.archetype,
       population: country.population,
       ubiReceived: country.totalUbiReceived || 0
     }));
@@ -160,7 +161,7 @@ export const WellbeingScatterPlot: React.FC<WellbeingScatterPlotProps> = ({
   // Determine health of the relationship
   const relationshipHealth = useMemo(() => {
     if (regression.rSquared < 0.1) {
-      return { status: 'weak', color: 'text-yellow-500', message: 'Weak correlation - model may need tuning' };
+      return { status: 'weak', color: 'text-yellow-500', message: 'Weak cross-country association; not a tuning target or causal effect' };
     }
     if (regression.slope < 0) {
       return { status: 'inverse', color: 'text-red-500', message: 'Negative association across modeled countries; not a causal effect' };
@@ -168,7 +169,7 @@ export const WellbeingScatterPlot: React.FC<WellbeingScatterPlotProps> = ({
     if (regression.slope > 0 && regression.rSquared > 0.3) {
       return { status: 'healthy', color: 'text-green-500', message: 'Positive association across modeled countries; not a causal effect' };
     }
-    return { status: 'moderate', color: 'text-blue-500', message: 'Moderate positive relationship' };
+    return { status: 'moderate', color: 'text-blue-500', message: 'Moderate positive association; not a causal effect' };
   }, [regression]);
 
   // Custom tooltip
@@ -185,10 +186,10 @@ export const WellbeingScatterPlot: React.FC<WellbeingScatterPlotProps> = ({
             Wellbeing: <span className="text-green-400">{data.wellbeing.toFixed(1)}</span>
           </p>
           <p className="text-sm text-gray-400">
-            Type: {archetypeLabels[data.archetype] || data.archetype}
+            {conditional ? 'Modeled country; no measured governance classification' : `Legacy assumed group: ${archetypeLabels[data.archetype] || data.archetype}`}
           </p>
           <p className="text-sm text-gray-400">
-            UBI Received: ${(data.ubiReceived / 1e9).toFixed(2)}B
+            Receipts (constant-2015 USD): ${(data.ubiReceived / 1e9).toFixed(2)}B
           </p>
         </div>
       );
@@ -260,12 +261,12 @@ export const WellbeingScatterPlot: React.FC<WellbeingScatterPlotProps> = ({
             <YAxis
               type="number"
               dataKey="wellbeing"
-              name="Wellbeing"
-              domain={[0, 100]}
+              name={conditional ? 'Conditional index' : 'Wellbeing'}
+              domain={['dataMin', 'dataMax']}
               tick={{ fill: '#9ca3af', fontSize: 12 }}
             >
               <Label
-                value="Wellbeing (0-100)"
+                value={conditional ? 'Conditional index (raw)' : 'Wellbeing'}
                 angle={-90}
                 position="left"
                 offset={10}
@@ -329,7 +330,7 @@ export const WellbeingScatterPlot: React.FC<WellbeingScatterPlotProps> = ({
           </div>
         </div>
         <div className="bg-gray-700/50 rounded p-2">
-          <div className="text-gray-400">Avg Wellbeing</div>
+          <div className="text-gray-400">Unweighted country mean</div>
           <div className="text-green-400 font-bold">
             {(dataPoints.reduce((s, p) => s + p.wellbeing, 0) / dataPoints.length).toFixed(1)}
           </div>

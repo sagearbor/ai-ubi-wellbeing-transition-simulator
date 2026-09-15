@@ -43,6 +43,7 @@ import DiagnosticsPanel, { TestsPanel } from './DiagnosticsPanel';
 import ModelFilePanel from './ModelFilePanel';
 import ModelImportPanel from './ModelImportPanel';
 import PolicyPanel from './PolicyPanel';
+import type { ActiveRunView } from './activeRunView';
 import { splitScenarioOverlays } from './policyState';
 import OutputChart from './OutputChart';
 import { scenarioProvenance, type ScenarioProvenance } from '../../src/policy/provenance';
@@ -58,6 +59,8 @@ import {
 import { useRunnerJob } from './useRunnerJob';
 
 export interface LabTabProps {
+  onActiveRunChange?: (view: ActiveRunView) => void;
+  onOpenResultView?: () => void;
   /** Fixture to open on. Defaults to the first entry of CORE_FIXTURES. */
   initialModelId?: string;
   /** Ids of that fixture's overlays to switch on at mount. */
@@ -106,6 +109,8 @@ const LabTab: React.FC<LabTabProps> = ({
   initialPolicy,
   initialImports = [],
   runner: runnerProp,
+  onActiveRunChange,
+  onOpenResultView,
 }) => {
   const runner = useMemo(() => runnerProp ?? getDefaultRunner(), [runnerProp]);
 
@@ -177,7 +182,7 @@ const LabTab: React.FC<LabTabProps> = ({
   );
   const point = useRunnerJob(runner, 'lab-point', pointJob, keyOf(pointJob));
   // A result for another model (the run for a newly picked one is still going) is not shown.
-  const pr = point.result && point.result.plain.manifest.modelId === model.id ? point.result : null;
+  const pr = point.status === 'done' && !point.stale && point.result && point.result.plain.manifest.modelId === model.id ? point.result : null;
 
   const deterministic = useMemo(() => isDeterministic(resolveModel(model, runOverlays).model), [model, runOverlays]);
   const mcJob = useMemo<MonteCarloJob | null>(
@@ -638,6 +643,8 @@ const LabTab: React.FC<LabTabProps> = ({
 
       {/* 8. Read a policy text against this model: paired run, share, reopen, memo. */}
       <PolicyPanel
+        onActiveRunChange={onActiveRunChange}
+        onOpenResultView={onOpenResultView}
         model={model}
         overlays={overlays}
         runner={runner}

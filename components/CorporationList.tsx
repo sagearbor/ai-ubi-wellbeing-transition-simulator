@@ -58,7 +58,7 @@ const CorporationList: React.FC<CorporationListProps> = ({
         return false;
       }
       // Stance filter
-      if (filterStance !== 'all' && corp.policyStance !== filterStance) {
+      if (!conditional && filterStance !== 'all' && corp.policyStance !== filterStance) {
         return false;
       }
       return true;
@@ -297,7 +297,7 @@ const CorporationList: React.FC<CorporationListProps> = ({
           </select>
 
           {/* Stance Filter */}
-          <select
+          <select hidden={conditional}
             value={filterStance}
             onChange={(e) => setFilterStance(e.target.value)}
             className="w-full px-3 py-2 text-sm border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none"
@@ -449,6 +449,7 @@ const CorporationList: React.FC<CorporationListProps> = ({
               </th>
               <th
                 className="px-4 py-3 text-left text-xs font-semibold text-slate-700 dark:text-slate-300 cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700"
+                hidden={conditional}
                 onClick={() => handleSort('stance')}
               >
                 <div className="flex items-center gap-1">
@@ -474,7 +475,7 @@ const CorporationList: React.FC<CorporationListProps> = ({
                   }}
                   className={`
                     border-b border-slate-100 dark:border-slate-800 border-l-4
-                    ${getStanceBorderColor(corp.policyStance)}
+                    ${conditional ? '' : getStanceBorderColor(corp.policyStance)}
                     ${isSelected
                       ? 'bg-blue-100 dark:bg-blue-900/30'
                       : selectedCorpId === corp.id
@@ -519,7 +520,7 @@ const CorporationList: React.FC<CorporationListProps> = ({
                     {corp.distributionStrategy.replace('-', ' ')}
                   </span>
                 </td>
-                <td className="px-4 py-3">
+                <td hidden={conditional} className="px-4 py-3">
                   <span className={`inline-block px-2 py-1 rounded text-xs font-semibold capitalize ${getStanceColor(corp.policyStance)}`}>
                     {corp.policyStance}
                   </span>
