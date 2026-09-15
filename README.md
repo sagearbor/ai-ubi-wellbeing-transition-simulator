@@ -8,7 +8,7 @@ This comparison branch opens with **reported company cash flow → an editable a
 
 This branch has not been deployed or merged into main. The public app may show a different version.
 
-> **Live demo:** https://wellbeing-transition-simulator-808228086396.us-west1.run.app
+> **Live demo:** https://wellbeing-transition-simulator-6icr7acugq-uw.a.run.app/
 
 ## What the separate World scenarios model
 
@@ -67,11 +67,11 @@ exported to / imported from a JSON snapshot.
 
 ## Quickstart
 
-**Prerequisites:** Node.js.
+**Prerequisites:** Node.js 22 (the release and CI runtime).
 
 ```bash
-# 1. Install dependencies
-npm install
+# 1. Install the locked dependencies
+npm ci
 
 # 2. (Optional) enable Gemini-assisted features
 #    Copy .example.env to .env.local and add a Google Gemini API key.

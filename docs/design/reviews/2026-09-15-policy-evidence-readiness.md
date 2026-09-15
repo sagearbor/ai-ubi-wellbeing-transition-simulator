@@ -1,6 +1,6 @@
 # Policy evidence and evaluation follow-up — 15 September 2026
 
-Status: implemented and independently reviewed on `codex/policy-evidence-readiness`. Final UI correction: `cb29ab2`. PR20 remains unchanged at `a064c2c676b2158afea7705e0e9a31668adbd642`; its GitHub CI passed. No deployment or merge in this follow-up.
+Status: this report records the initial policy-evidence work through `cb29ab2`. Subsequent Claude-feedback fixes, security patches, final runtime compatibility, and current checks are in [beta delivery readiness](2026-09-15-beta-delivery-readiness.md). PR20 remains unchanged at `a064c2c676b2158afea7705e0e9a31668adbd642`; its GitHub CI passed. No deployment or merge in this follow-up.
 
 ## What the historical test actually found
 
@@ -39,4 +39,3 @@ Real browser bundles and provenance are in `docs/design/reviews/evidence/policy-
 Successful candidate live extraction remains **not verified** until an existing authorized origin/key configuration is supplied. The browser-side key architecture is the owner's accepted decision; this review does not introduce a gateway requirement. The actual website restriction still prevents completing the release smoke test. Public live successes, parser tests and manual runs are not substitutes.
 
 The historical weakness also remains substantive: the first frozen wellbeing test underperforms persistence. There is no honest code change that can convert a proposal into an evidence-backed causal prediction without appropriate data and research. This branch is suitable for research review and bounded scenario exploration; it is not established as a reliable economic forecasting or policy-advice product.
-

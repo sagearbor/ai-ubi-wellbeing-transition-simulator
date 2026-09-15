@@ -76,3 +76,13 @@ Worker final raw-check log `/private/tmp/beta-security-raw-check.log` was inspec
 ## Confidence Assessment
 
 **High for the bounded repair and exact baseline accounting acceptance.** Direct diff inspection, preserved witnesses, independent full-baseline replication and separate arithmetic support the decision. No broader empirical, security, or deployment certification is conferred.
+
+## Scoped activation review — 10142e8..e399b4f
+
+**Outcome: ACCEPTED; no activation blocker.** Reviewed on 2026-09-15. This addendum supersedes the earlier descriptions of the authority record as pending/empty: the earlier review accurately described its pre-activation state; the current authority is accepted for the same narrow scope.
+
+Programmatic verification confirms that the authority's only changed fields are `independentReview`, `reviewer`, `reviewReport`, and `reviewedRunIdentities`. The reviewer is exactly `Independent automated Astra security/numerical review`; the linked report is this actual report. Its identity array exactly equals the evidence manifest's 61 unique baseline identities, with no added points or changed scope/unresolved fields. Structure `6d3da294a002ee6ee0000c31d2b1af1723901287e6c5806c35c04d4d4f204206` and payload `66feccd9efd7393646a2ce64b249901c97381237527c3d869cc4753dab33fa73` remain unchanged. Both complete structure/evidence files are byte-identical between the two commits and the checked working tree; all 33 source-file pins still match. The evidence manifest's generation-time pending label is not the active authority and was correctly preserved.
+
+The model card, response report and activation reports point to this review and retain the exact monthly accounting restriction, illustrative macro/wellbeing labels, and absence of human/empirical approval. The acceptance test changes only the expected reviewer/report; its existing checks still require exact identity-array equality, all 61 baseline months, illustrative broader outputs and refusal outside the accepted points. Independently reran that acceptance test: **3 tests passed on Node 22.23.2**, exit 0. No full-suite rerun or scope expansion was performed.
+
+Inspected worker logs show 11 covering tests passed and the full check reached 1,256 passing tests across 90 files plus the completed production build. The full-check exit-0 report is the worker's recorded result. AT-3 remains visibly failed as a scientific target; 11 kf-oracle normalized-error warnings retain unchanged status. Root independently confirmed those warnings predate this repair; this activation diff contains no target/ledger rewrite. Prior limitations, residual development advisory and the distinction between software checks and scientific qualification all remain in force.
