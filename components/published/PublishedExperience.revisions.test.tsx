@@ -91,7 +91,7 @@ describe('collection identity through published edits', () => {
     expect(changed.view).toBe('compare');
     expect(changed.scenarios.B.trainingShare).toBe(.53);
     expect(text(ui.tree)).toContain('NVIDIA · FY2025 (ended 2025-01-26)');
-    for (const label of ['Paste a policy', 'Add a variable', 'Inspect uncertainty']) {
+    for (const label of ['Paste a policy', 'Inspect extension options', 'Inspect uncertainty']) {
       const link = nodes(ui.tree).find(n => n.type === 'a' && text(n) === label);
       expect(decodeExperiment(new URL(link.props.href).hash)).toEqual(changed);
     }

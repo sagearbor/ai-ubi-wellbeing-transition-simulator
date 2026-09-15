@@ -14,7 +14,7 @@ describe('published source and outcome view', () => {
     const view=html();expect(view).toContain('$2.42');expect(view).toContain('$98.77 billion');expect(view).toContain('340,003,797');expect(view).toContain('Share repurchases');expect(view).toContain('Reported');expect(view).toContain('not measured AI-generated cash');expect(view).toContain('target="_blank"');
   });
   it('provides two editable panels, friendly constraints and the required authoring paths', () => {
-    const view=html('compare');expect((view.match(/role="group" aria-label="Allocation of proposed policy budget"/g)||[])).toHaveLength(2);for(const label of ['Policy share A percent','Policy share B percent','Training share B percent','Instructor capacity limits','training equations B','Paste a policy','Add a variable','Inspect uncertainty','Explore change over time','AI risk','Open saved experiment']) expect(view).toContain(label);
+    const view=html('compare');expect((view.match(/role="group" aria-label="Allocation of proposed policy budget"/g)||[])).toHaveLength(2);for(const label of ['Policy share A percent','Policy share B percent','Training share B percent','Instructor capacity limits','training equations B','Paste a policy','Inspect extension options','Inspect uncertainty','Explore change over time','AI risk','Open saved experiment']) expect(view).toContain(label);
   });
   it('does not replace an invalid shared experiment with default results',()=>{const view=html('explore','Stale dataHash');expect(view).toContain('Stale dataHash');expect(view).not.toContain('$2.42');expect(view).not.toContain('Scenario A');});
   it('only publishes successful current semantic results, never pending, stale or failed output', () => {

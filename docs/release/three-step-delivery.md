@@ -21,7 +21,7 @@ node --import tsx scripts/hindcast/export-experience.ts --check
 node --import tsx scripts/evaluation/run.ts package
 ```
 
-The packaging check must succeed without changing frozen predictions, observations or scores. Record the final commit, engine version, data collection identities, CI URL and deployed revision in the release notes. Keep original dataset versions. Replay also requires the same numerical runtime: the planned security patch changes the math-library identity, so prior review-build links must be refused explicitly rather than silently rerun under different software. New experiments may still select retained v1 data on the patched runtime.
+The packaging check must succeed without changing frozen predictions, observations or scores. Record the final commit, engine version, data collection identities, CI URL and deployed revision in the release notes. Keep original dataset versions. Replay also requires the same numerical runtime: the completed security patch changed the math-library identity, so prior review-build links must be refused explicitly rather than silently rerun under different software. New experiments may still select retained v1 data on the patched runtime.
 
 ### Deployment and real AI gate
 

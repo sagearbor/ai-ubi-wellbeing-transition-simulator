@@ -592,7 +592,7 @@ export default function PublishedExperience({
             rel="noopener noreferrer"
             href={experimentUrl(experiment, currentUrl(), 'A', 'author')}
           >
-            Add a variable
+            Inspect extension options
           </a>
           <a
             className="pub-action"

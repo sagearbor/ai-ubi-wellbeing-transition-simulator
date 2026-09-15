@@ -29,7 +29,7 @@ function destination(text: string, experiment = current): URL {
 const lab = (props: object) => renderToString(<LabTab initialHash="" runner={runner} {...props} />).replace(/<!-- -->/g, '');
 
 describe('published financial scenario handoff', () => {
-  it.each([['Paste a policy', 'policy'], ['Add a variable', 'author'], ['Inspect uncertainty', 'uncertainty']])(
+  it.each([['Paste a policy', 'policy'], ['Inspect extension options', 'author'], ['Inspect uncertainty', 'uncertainty']])(
     '%s carries current A, source pins and its intended Lab tool', (label, entry) => {
       const url = destination(label);
       expect(url.searchParams.get('tab')).toBe('lab');
@@ -122,7 +122,7 @@ describe('financial origin stays distinct from an uploaded claim', () => {
 
 describe('published collection source identity', () => {
   const legacyApple = validateExperiment(originalExperiments[0]);
-  it.each([['Paste a policy', 'policy'], ['Add a variable', 'author'], ['Inspect uncertainty', 'uncertainty']])(
+  it.each([['Paste a policy', 'policy'], ['Inspect extension options', 'author'], ['Inspect uncertainty', 'uncertainty']])(
     '%s preserves an opened v1 experiment and source', (label, entry) => {
       const url = destination(label, legacyApple);
       expect(url.searchParams.get('entry')).toBe(entry);

@@ -69,9 +69,22 @@ const AddVariableForm: React.FC<AddVariableFormProps> = ({ model, onApply, appli
         Add a variable
         <Hint
           label="Add a variable"
-          text="Declare a new exogenous input and attach it to existing equations as effects. This writes an overlay, so the base model file is untouched and the change is reversible — and it needs no change to this app."
+          text="When the model exposes eligible targets, declare a new exogenous input and attach it to existing equations as effects. This writes an overlay, so the base model file is untouched and the change is reversible — and it needs no change to this app."
         />
       </h3>
+      {targets.length === 0 ? (
+        <div className="mt-2 rounded-lg border border-slate-200 dark:border-slate-700 p-3 text-sm text-slate-700 dark:text-slate-200">
+          <p className="font-semibold">Adding a variable here is unavailable for this model.</p>
+          <p className="mt-1">This model exposes no eligible equation targets for overlay effects.</p>
+          <ol className="mt-2 list-decimal pl-5 space-y-1">
+            <li>Use “Equations and files” to reach “Advanced: model file” below, then choose “Export model + overlays (JSON)”.</li>
+            <li>Edit the exported model in a text editor to define your new inputs and equations, with their units and sources.</li>
+            <li>Use “Import a model or overlay (JSON)” at the top of the Lab to load and validate the edited file as a new experimental model.</li>
+          </ol>
+          <p className="mt-2">Model-file changes need their own tests and review; they do not extend the original model’s evidence.</p>
+        </div>
+      ) : (
+        <>
       <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">
         One new input, one or two effects. Effects add to, or multiply, the variable they attach to; they never replace its
         equation.
@@ -222,6 +235,8 @@ const AddVariableForm: React.FC<AddVariableFormProps> = ({ model, onApply, appli
           Apply as an overlay
         </button>
       </form>
+        </>
+      )}
 
       {applied.length > 0 && (
         <div className="mt-3 pt-3 border-t border-slate-200 dark:border-slate-800">
