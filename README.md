@@ -2,87 +2,19 @@
 
 **What happens to human well-being when AI automates the economy faster than our institutions can adapt — and who, if anyone, keeps the lights on for everyone else?**
 
-The Wellbeing Transition Simulator is an interactive, month-by-month model of the
-transition from labor-based economies to AI-driven abundance. It lets you run the
-next few decades as a live experiment: watch AI adoption spread across ~80
-corporations and 128 countries, watch labor income get displaced, and watch a
-corporation-funded Universal Basic Income (UBI) system either hold society
-together or collapse into a race to the bottom — depending on the incentives you
-set.
+The default `world-conditional-v1` compares funded transfers across 128 countries under explicit corporate and macro assumptions. It reports a population-weighted **conditional wellbeing index** for each month's conditions; realized wellbeing timing, demand feedback and total welfare effects are unestimated.
 
 > **Live demo:** https://wellbeing-transition-simulator-808228086396.us-west1.run.app
 
----
+## What the default models
 
-## Why this matters
+A hypothetical monthly source pool equals market capitalization × corporate adoption × 0.15 / 12, in billions of constant-2015 USD. A declared available share limits funded requests. This is a modeled source convention, not measured profit or surplus cash. Expenses, ownership and competing uses are unestimated.
 
-Most conversations about AI and jobs stall at "someone should do UBI." This tool
-asks the harder, more concrete questions: *funded by whom, distributed how, and
-what stops everyone from defecting?*
+Contribution shares or explicit monthly amounts and global/customer-resident/HQ-resident allocation are meaningful policy controls. Adoption, productivity, workforce, available funding share and wellbeing coefficients are scenario assumptions. Source equals funded transfers plus unused and reserved amounts; transfers do not create GDP. The conditional mapping reports income, transfer and assumed non-income unemployment terms separately. Past wellbeing does not alter corporate responses.
 
-Its central bet is a **corporation-centric** thought experiment. Instead of
-waiting for every nation-state to cooperate on redistribution — a fragile
-assumption — it models a world where **corporations voluntarily route a slice of
-their AI revenue into a global UBI fund out of self-interest**: if their own
-customers go broke, demand collapses and so do their profits. Money flows
-**direct-to-wallet** (a blockchain / digital-identity premise that bypasses
-government intermediaries and corruption), and nation-states are treated as
-**recipients and markets, not policymakers**.
+The complete country roster participates in allocation. Missing or invalid countries are refused, and out-of-scale mapping values remain visible while the full-roster headline becomes unavailable. The default model card and response evidence distinguish conditional accounting review, illustrative macro/wellbeing and unsupported effects.
 
-That premise is deliberately provocative, not a prediction. The point of the
-simulator is to make the incentive structure *visible and tunable* so you can
-argue about it with numbers instead of vibes.
-
----
-
-## What it models
-
-Each simulated country carries real socio-economic structure — population, GDP
-per capita, AI-adoption level, a Gini inequality coefficient, a governance /
-institutional-quality score, and an archetype (`rich-democracy`,
-`middle-stable`, `developing-fragile`, `authoritarian`, or `failed-state`).
-Each corporation carries a headquarters country, a set of operating (customer)
-countries, market cap, AI revenue, an AI-adoption level, a UBI **contribution
-rate**, a **distribution strategy**, a **policy stance**, and a reputation score.
-
-The engine advances in **five phases every month**:
-
-1. **Corporation revenue generation.** AI revenue is earned as a function of
-   automation and customer purchasing power:
-   `aiRevenue ≈ aiAdoptionLevel × marketCap × 0.15 / 12 × demandFactor × reputationMultiplier` per month,
-   where `demandFactor` shrinks when the corporation's customer countries are too
-   poor to buy — poor customers literally reduce revenue.
-2. **Contribution decisions.** Each corporation contributes a share of that
-   revenue (roughly 5–50%) via one of three strategies:
-   - `global` — pooled into a global ledger and paid out equally per capita worldwide,
-   - `customer-weighted` — distributed in proportion to where its customers live,
-   - `hq-local` — sent only to its headquarters country.
-3. **UBI distribution.** The global ledger pays out per capita; each country sums
-   what it receives from the global pool, customer-weighted corps, and HQ-local corps.
-4. **Wellbeing calculation.** A country's well-being (0–100) moves each month as
-   a UBI boost minus displacement friction, with institutions acting as a buffer.
-   The actual coefficients baked into the engine include:
-   - Displacement friction rises with automation and falls with good governance:
-     `baseFriction = 40 × (1 − governance)^1.5 × (1 + gini × 0.5)`, scaled by
-     `sin(adoption × π)` so friction peaks mid-transition.
-   - Inequality damps the utility of UBI: `giniDamper = 1.5 − gini`.
-   - Net update: `wellbeing += ubiBoost × 0.20 − displacementFriction × 0.12`,
-     with capped crisis penalties and a subsistence floor.
-   - A parallel **shadow simulation** runs the same world with *no intervention*
-     as a counterfactual, so you can see the UBI system's marginal impact.
-5. **Adaptive corporate policy (game theory).** Corporations watch demand
-   projections, competitor behavior, and reputation, then adjust. This is where
-   the **prisoner's-dilemma dynamics** live: cross ~60% cooperation and a
-   virtuous cycle pulls laggards up; cross ~40% defection and a race to the
-   bottom drags everyone down. Regional behaviors (US, China, EU) add
-   protectionist and social-contract flavors.
-
-**Global tunable parameters** include `aiGrowthRate`, `displacementRate`,
-`gdpScaling` (flat vs. GDP-weighted UBI), `globalRedistributionRate`,
-`marketPressure`, and the default corporate policy stance. Six **scenario
-presets** ship in the box — *Free Market Optimism, Race to Bottom, Corporate
-Altruism, US Protectionism, China Dominance,* and *EU Solidarity* — each a
-one-click starting point for a different story about how the transition goes.
+Legacy presets remain selectable for historical assumed dynamics, including adaptive corporations and crisis rules. Their displacementRate and gdpScaling controls apply only to appropriate legacy flow models. Tax, baseUBI, adoption-incentive, redistribution and market-pressure fields must not be interpreted as effective default policy controls. The current capability resolver supplies the executable control inventory.
 
 ### Bring your own economic model
 
@@ -98,11 +30,7 @@ a desired direction can exclude a competing model without showing it is wrong. E
 are scored for **complexity** (an Occam's-razor tiebreaker) on a leaderboard.
 Example configs live in [`examples/models/`](examples/models/).
 
-> **Status of custom models (preview):** uploads are parsed, schema-checked and
-> scored for complexity, and the anchor tests run against the built-in engine —
-> but the engine does **not yet execute uploaded equations** (checklist item
-> P8-T9). Applying a model changes the label and leaderboard bookkeeping; the
-> trajectory is still the default model's. See *Status & roadmap* below.
+> **Custom model execution:** supported required flow hooks execute in legacy flow mode. Conditional and anchored wellbeing modes explicitly refuse uploaded flow hooks. Unimplemented optional demand/reputation/Gini hooks are refused when changed. A parsed upload is not evidence that every requested mechanism executes; the app reports the actual execution/refusal scope.
 
 ---
 
@@ -208,7 +136,7 @@ Current results for the built-in engine (`npm run check`, 2026-09-13): 767 tests
 
 | What | Where |
 |---|---|
-| Model card for the default and the evidence-anchored candidate (scope, accounting, evidence, response review, stress review, hindcast, known failures) | [`docs/design/model-card-default.md`](docs/design/model-card-default.md), also in-app: MORE → Model Card |
+| Conditional default model card and archived legacy evidence (scope, accounting, response review and limitations) | [`docs/design/model-card-default.md`](docs/design/model-card-default.md), also in-app: MORE → Model Card |
 | Audit of the engine and the fixes made | [`docs/design/audit-2026-09-13.md`](docs/design/audit-2026-09-13.md) |
 | Authoring core (equations, stocks, lags, entities, effects, solve blocks with `through`) | [`docs/core-authoring.md`](docs/core-authoring.md), `src/core/`, Model Lab tab |
 | Faithful port of Korinek et al. (2026), paper equations, 169 published cells reproduced | `data/core/korinek-2026-faithful.json`, [`docs/design/research/korinek-2026-model.md`](docs/design/research/korinek-2026-model.md) |
@@ -229,7 +157,7 @@ A faithful port of their equations now lives in the Model Lab (`data/core/korine
 see the table above) and is the canonical US reference: the preset "Provisional level model + US reference"
 feeds its US GDP gap, labour income and unemployment into the world engine from January 2025 to January
 2030 and stops there (`simulation/usReference.ts`). The reduced form below is kept only as an
-illustrative legacy approximation for old scenarios; it is not an authoritative reproduction. This engine's optional macro block (`ModelParameters.macro`, see `simulation/pure.ts`) is
+illustrative approximation in world scenarios; it is not an authoritative reproduction. This engine's optional macro block (`ModelParameters.macro`, see `simulation/pure.ts`) is
 a reduced-form approximation calibrated to match their published US 2030 outputs when
 driven by the same inputs — it is not a port of their equations — with the AI
 capability/adoption path treated as the scenario input exactly as their explorer does:
@@ -241,10 +169,7 @@ capability/adoption path treated as the scenario input exactly as their explorer
 | Extreme — paper / this engine | +32.4% / +31.3% | 45.2% / 45.4% | 17.9% / 17.8% |
 
 `npm run validate:korinek` runs the three scenarios as tests (KJ-1..3, tolerance ±2 to
-±2.5 points). The point is what comes after their framework's stated boundary: this repo
-adds the demand feedback from displaced customers, the corporation-funded transfer
-institution and its game theory, 128 countries instead of one, and (Futures tab) the
-catastrophic and non-economic paths with community-weighted likelihoods.
+±2.5 points). The conditional world default adds explicitly funded transfers and an illustrative wellbeing mapping across 128 countries. Legacy presets separately retain assumed demand/game-theory dynamics; Futures is a separate influence model. None of these extensions inherits the US reproduction claim.
 
 ### Hindcast against the last decade
 
@@ -253,15 +178,14 @@ ladder, World Bank GDP per capita) and scores the engine against 2025 actuals wi
 switched off. The wellbeing anchor was fitted on this same 2015-2025 span, so this is a
 retrospective reconstruction, not a forecast — the comparison to beat is the persistence
 baseline (predicting no change), not zero. Current result: wellbeing-change correlation
-0.49 and mean absolute error 0.45 ladder points across 106 countries; the script also
+0.473 and mean absolute error 4.53 index points (0.453 ladder points) across 106 countries; the script also
 prints the persistence baseline and, where enough pre-2015 data exists, a
 trend-continuation baseline alongside it. It is an in-sample reconstruction and validates
 nothing: the anchor was fitted on the span, the gated run switches AI and UBI off, and the AI
-channel has no measurable macro footprint in that decade. Its wellbeing MAE beats persistence
-(4.68) by 0.2 index points.
+channel has no measurable macro footprint in that decade. The AI-off wellbeing MAE beats persistence (4.68) by 0.15 index points. The separate legacy anchored AI-on MAE is 4.48; neither score validates conditional policy effects. The anchor fit uses 335 observations across 120 countries; 106 is the comparison cohort.
 
 Directions under exploration (see `developer_checklist.yaml` and `docs/`):
-- execute uploaded model equations inside the pure engine (P8-T9), so anchor
+- extend explicitly supported uploaded equation hooks, so anchor
   tests and the leaderboard discriminate between models,
 - revisit the UBI-boost / friction coefficients so AT-2 passes for an honest reason,
 - broader anchor-test coverage and richer validation reporting,
@@ -273,16 +197,12 @@ Directions under exploration (see `developer_checklist.yaml` and `docs/`):
 
 ## Limitations & honest caveats
 
-- **This is a stylized policy sandbox, not a forecast.** Coefficients were tuned
-  by hand to produce plausible, legible behavior — they are *not* econometric
-  estimates fit to historical data, and outputs should not be read as predictions.
+- **This is a stylized policy sandbox, not a forecast.** The income/governance anchor is fitted associationally; macro responses and policy mappings retain additional assumptions. Outputs are not forecasts or validated causal policy effects.
 - **The corporation-centric, direct-to-wallet premise is an assumption**, chosen
   to isolate an incentive question. It presumes frictionless blockchain
   distribution and zero leakage, which is a modeling choice, not a claim about the
   real world.
-- **Corporate and country figures are illustrative.** Market caps, revenues, and
-  country attributes are simplified starting values meant to drive dynamics, not
-  a curated economic dataset.
+- **Corporate scale and workforce inputs are assumed.** Most country population/GDP/governance inputs have versioned sources; missing GDP fallbacks remain explicitly assumed. Corporate money is a newly declared hypothetical constant-2015 USD convention, not historical company accounts.
 - **No backend.** State lives in the browser (`localStorage`) and JSON exports;
   the leaderboard is local.
 - **The AI Analysis features require a Google Gemini API key** and reflect an

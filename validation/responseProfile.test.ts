@@ -3,7 +3,7 @@ import { runResponseProfile, renderMarkdown, NUMERIC_LEVERS, HEADLINE_KEYS, MACR
 import { PRESET_MODELS } from '../constants';
 
 describe('responseProfile - stage 3 response review of the default world model', () => {
-  const profile = runResponseProfile({ horizons: [12, 24] });
+  const profile = runResponseProfile({ scenario: {...defaultScenario(),model:PRESET_MODELS[0]}, horizons: [12, 24] });
 
   it('profiles every public numeric lever with four nudge arms and a sweep', () => {
     expect(profile.levers.map((l) => l.id)).toEqual(NUMERIC_LEVERS.map((l) => l.id));
@@ -50,6 +50,6 @@ describe('responseProfile - stage 4 displacement stress of the anchored candidat
 
   it('is offered only to models with a macro block', () => {
     expect(CATEGORICAL_SWITCHES.map((s) => s.id)).not.toContain('stress');
-    expect(runResponseProfile({ horizons: [1] }).switches.map((s) => s.id)).not.toContain('stress');
+    expect(runResponseProfile({ scenario: {...defaultScenario(),model:PRESET_MODELS[0]}, horizons: [1] }).switches.map((s) => s.id)).not.toContain('stress');
   });
 });
