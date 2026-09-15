@@ -211,3 +211,8 @@ Directions under exploration (see `developer_checklist.yaml` and `docs/`):
 Treat it as an instrument for reasoning about incentives during the AI economic
 transition — a way to make assumptions explicit and stress-test them — rather than
 as an oracle.
+
+
+### Qualification source freshness
+
+`npm run build` requires the committed qualification source/evidence metadata to match the current local import graph and dependency lock. Direct Vite builds use the same guard. `npm run qualification:source-check` performs this small clean-checkout check without the large local response artifact. Development remains available for unreviewed edits: source changes invalidate its qualification marker and reload open pages. Refreshing manifests alone does not supply independent acceptance.

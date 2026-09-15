@@ -1,24 +1,54 @@
 /** Local qualification authority. Saved files cannot provide review records or attestations. */
 import { canonicalJson, sha256Hex } from '../src/policy/hash';
-const contentHash = (v: unknown) => sha256Hex(canonicalJson(v));
 import type { ModelParameters } from '../types';
-import type { SimulationRun } from './run';
+import { evaluateConditionalSnapshot, type SimulationRun } from './run';
+import { executingSourceHash } from './sourceFreshness';
 import { resolveRunCapabilities } from './capabilities';
 import record from '../data/qualification/world-conditional-v1.json';
 import evidence from '../data/qualification/world-conditional-v1-evidence.json';
 import structure from '../data/qualification/world-conditional-v1-structure.json';
-export const QUALIFICATION_STRUCTURE_VERSION = 'conditional-engine-4bee00c-v1';
+export const QUALIFICATION_STRUCTURE_VERSION = 'conditional-input-identity-v2';
 function requireFinite(value: unknown): void {
     if (typeof value === 'number' && !Number.isFinite(value))
         throw new Error('Non-finite qualification input');
     if (value && typeof value === 'object')
         Object.values(value).forEach(requireFinite);
 }
-/** Complete actual snapshot, including roster, money provenance, workforce and all model fields.
- * Exact-point region, deliberately no interpolation or model-ID-only inheritance. */
+/** Exact inputs and economic snapshot. Only derived illustrative mapping fields are excluded.
+ * Authored values, money/workforce provenance, imports, macro/accounting and history stay exact. */
 export function qualificationInputText(model: ModelParameters, run: SimulationRun): string {
-    requireFinite({ model, run });
-    return canonicalJson({ structure: { version: QUALIFICATION_STRUCTURE_VERSION, hash: structure.hash }, model, run });
+    const { conditionalSummary: _summary, ...state } = run.state;
+    const countryData = Object.fromEntries(Object.entries(state.countryData).map(([id, country]) => {
+        const { conditionalWellbeing: _mapping, ...inputs } = country;
+        return [id, inputs];
+    }));
+    const exact = { model, run: { ...run, state: { ...state, countryData } } };
+    requireFinite(exact);
+    return canonicalJson({ structure: { version: QUALIFICATION_STRUCTURE_VERSION, hash: executingSourceHash() ?? structure.hash }, ...exact });
+}
+/** Fixed absolute numerical tolerance for derived illustrative values only; no input rounding. */
+export const DERIVED_OUTPUT_ABSOLUTE_TOLERANCE = 1e-10;
+function sameDerived(actual: unknown, expected: unknown): boolean {
+    if (typeof actual === 'number' && typeof expected === 'number') {
+        return Number.isFinite(actual) && Number.isFinite(expected)
+            && Math.abs(actual - expected) <= DERIVED_OUTPUT_ABSOLUTE_TOLERANCE;
+    }
+    if (actual && expected && typeof actual === 'object' && typeof expected === 'object') {
+        const a = actual as Record<string, unknown>, b = expected as Record<string, unknown>;
+        return Object.keys(a).length === Object.keys(b).length
+            && Object.keys(b).every(key => Object.hasOwn(a, key) && sameDerived(a[key], b[key]));
+    }
+    return actual === expected;
+}
+export function checkDerivedOutputs(model: ModelParameters, run: SimulationRun): boolean {
+    try {
+        const checked = evaluateConditionalSnapshot(run, { model });
+        return sameDerived(run.state.conditionalSummary, checked.state.conditionalSummary)
+            && Object.keys(checked.state.countryData).every(id => sameDerived(run.state.countryData[id]?.conditionalWellbeing, checked.state.countryData[id].conditionalWellbeing));
+    }
+    catch {
+        return false;
+    }
 }
 export function qualificationIdentity(model: ModelParameters, run: SimulationRun): string { return sha256Hex(qualificationInputText(model, run)); }
 export interface QualificationResult {
@@ -63,6 +93,10 @@ export function resolveQualification(model: ModelParameters, run: SimulationRun,
         reasons.push('No complete locally pinned independent evidence acceptance.');
     if (record.structureHash !== structure.hash || evidence.structureHash !== structure.hash)
         reasons.push("Pinned review does not match the built source manifest.");
+    if (executingSourceHash() !== structure.hash)
+        reasons.push('Executing source freshness is unverified or stale; this runtime cannot grant reviewed status.');
+    if (capabilities.conditional && !checkDerivedOutputs(model, run))
+        reasons.push('Derived output check failed: fixed absolute tolerance 1e-10; no authored inputs are rounded.');
     const reviewed = capabilities.conditional && reasons.length === 0;
     return { version: record.version, identity, structureVersion: QUALIFICATION_STRUCTURE_VERSION,
         accounting: reviewed ? 'reviewed-conditional' as const : 'unreviewed' as const,

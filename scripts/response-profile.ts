@@ -3,7 +3,7 @@ import { readFileSync, writeFileSync, mkdirSync, appendFileSync, createReadStrea
 import { gzipSync, createGunzip } from 'node:zlib';
 import { createInterface } from 'node:readline';
 import { createHash } from 'node:crypto';
-import { execFileSync } from 'node:child_process';
+import { sourceManifest } from '../build/qualificationSources';
 import { runResponseProfile, renderMarkdown, defaultScenario } from '../validation/responseProfile';
 import { runConditionalProfile, auditConditionalProfile, renderConditionalMarkdown, conditionalCases, profileConditionalCase } from '../validation/conditionalProfile';
 import { PRESET_MODELS } from '../constants';
@@ -15,10 +15,7 @@ const modelArg = process.argv.find(a => a.startsWith('--model='))?.split('=')[1]
 const model = modelArg ? PRESET_MODELS.find(m => m.id === modelArg) : defaultScenario().model;
 if (!model)
     throw new Error(`Unknown model ${modelArg}`);
-function structure() {
-    const paths = execFileSync('git', ['ls-files', '--cached', '--others', '--exclude-standard', 'simulation/*.ts', 'constants.ts', 'types.ts', 'data/countries', 'data/hindcast', 'src/core', 'src/policy/hash.ts', 'data/core/korinek-2026-faithful.json', 'data/core/overlays/korinek-faithful-modest.json', 'data/core/overlays/korinek-faithful-extreme.json', 'src/services/equationParser.ts', 'package-lock.json', 'validation/conditionalProfile.ts', 'validation/responseProfile.ts', 'scripts/response-profile.ts'], { encoding: 'utf8' }).trim().split('\n').filter(p => !p.endsWith('.test.ts'));
-    return Object.fromEntries([...new Set(paths)].sort().map(p => [p, sha256Hex(readFileSync(p, 'utf8'))]));
-}
+function structure() { return sourceManifest(process.cwd()).sources; }
 if (process.argv.includes('--refresh-structure')) {
     const sources = structure();
     writeFileSync(`${dir}/world-conditional-v1-structure.json`, JSON.stringify({ hash: contentHash(sources), sources }, null, 2) + '\n');

@@ -1,1 +1,15 @@
-{"version":"world-qualification-v1","independentReview":"pending","reviewer":null,"reviewReport":null,"evidenceHash":null,"structureHash":null,"reviewedRunIdentities":[],"scope":"Conditional source/allocation accounting only","unresolved":["Independent response evidence review pending","Corporate scale and availableShare are assumptions, not measured distributable profits","Macro and wellbeing illustrative; realized timing, demand feedback and net welfare unsupported"]}
+{
+  "version": "world-qualification-v2",
+  "independentReview": "pending",
+  "reviewer": null,
+  "reviewReport": null,
+  "evidenceHash": null,
+  "structureHash": null,
+  "reviewedRunIdentities": [],
+  "scope": "Conditional source/allocation accounting only",
+  "unresolved": [
+    "Independent response evidence review pending",
+    "Corporate scale and availableShare are assumptions, not measured distributable profits",
+    "Macro and wellbeing illustrative; realized timing, demand feedback and net welfare unsupported"
+  ]
+}

@@ -24,7 +24,9 @@
     "profile:default": "tsx scripts/response-profile.ts",
     "check": "npm run typecheck && npm run test && npm run validate && npm run validate:futures && npm run validate:korinek && npm run validate:core && npm run validate:cases && npm run ledger -- --check && npm run build",
     "deploy": "bash scripts/deploy.sh",
-    "deploy:promote": "bash scripts/deploy.sh --promote"
+    "deploy:promote": "bash scripts/deploy.sh --promote",
+    "qualification:source-check": "node --import tsx scripts/qualification-source-check.ts",
+    "prebuild": "npm run qualification:source-check"
   },
   "dependencies": {
     "@google/genai": "^1.34.0",
