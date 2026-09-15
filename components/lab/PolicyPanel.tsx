@@ -634,20 +634,21 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
       {/* 2. Drafts */}
       {drafts.length > 0 && draft && (
         <div className="space-y-3 border-t border-slate-100 dark:border-slate-800 pt-3">
-          <div className="flex flex-wrap items-center gap-2" role="tablist" aria-label="Drafts">
-            {drafts.map((x, i) => (
-              <button
-                key={i}
-                type="button"
-                role="tab"
-                aria-selected={i === active}
-                onClick={() => setActive(i)}
-                className={`${btn} ${i === active ? 'border-sky-500 bg-sky-50 text-sky-800 dark:border-sky-600 dark:bg-sky-950/50 dark:text-sky-200' : 'border-slate-300 text-slate-700 dark:border-slate-700 dark:text-slate-200'}`}
-              >
-                {`Draft ${i === 0 ? 'A' : 'B'}`}
-                <span className="font-normal opacity-80 max-w-[12rem] truncate">{x.title}</span>
-              </button>
-            ))}
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2" role="group" aria-label="Draft selection">
+              {drafts.map((x, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  aria-pressed={i === active}
+                  onClick={() => setActive(i)}
+                  className={`${btn} ${i === active ? 'border-sky-500 bg-sky-50 text-sky-800 dark:border-sky-600 dark:bg-sky-950/50 dark:text-sky-200' : 'border-slate-300 text-slate-700 dark:border-slate-700 dark:text-slate-200'}`}
+                >
+                  {`Draft ${i === 0 ? 'A' : 'B'}`}
+                  <span className="font-normal opacity-80 max-w-[12rem] truncate">{x.title}</span>
+                </button>
+              ))}
+            </div>
             {drafts.length === 1 ? (
               <button type="button" className={btnPlain} onClick={() => { setDrafts([drafts[0], copyAsDraftB(drafts[0])]); setActive(1); }}>
                 <Plus size={14} aria-hidden="true" />

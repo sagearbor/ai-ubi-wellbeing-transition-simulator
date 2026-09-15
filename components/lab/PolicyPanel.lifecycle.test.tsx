@@ -52,6 +52,23 @@ describe('draft authorship honesty',()=>{
   expect(words(ui.tree)).toContain('completeness not attested');
  });
 });
+describe('draft selector accessibility',()=>{
+ it('uses a labeled pressed-button group without mixing in draft actions',()=>{
+  const draftB={...example.draft,title:'Alternative draft'};
+  const ui=mount({initialDrafts:[example.draft,draftB],initialSource:example.source});
+  const group=nodes(ui.tree).find(n=>n.props?.role==='group'&&n.props?.['aria-label']==='Draft selection');
+  expect(group).toBeTruthy();
+  const buttons=nodes(group).filter(n=>n.type==='button');
+  expect(buttons.map(button=>[words(button),button.props['aria-pressed']])).toEqual([
+   [`Draft A${example.draft.title}`,true],
+   ['Draft BAlternative draft',false],
+  ]);
+  expect(buttons.some(button=>words(button).includes('Remove draft B'))).toBe(false);
+  buttons[1].props.onClick();ui.render();
+  const selected=nodes(ui.tree).find(n=>n.props?.role==='group'&&n.props?.['aria-label']==='Draft selection');
+  expect(nodes(selected).filter(n=>n.type==='button').map(button=>button.props['aria-pressed'])).toEqual([false,true]);
+ });
+});
 it('changing author kind invalidates existing human review and completeness',()=>{
  const reviewed={...example.draft,reviewStatus:'human-reviewed' as const,reviewedBy:{name:'Independent reviewer'},completeness:{name:'Independent reviewer',kind:'person' as const,date:'2026-09-15',statement:'Checked'}};
  const ui=mount({initialDrafts:[reviewed],initialSource:example.source});
