@@ -135,7 +135,7 @@ Task5 completion is limited to reviewed conditional source/allocation accounting
 
 **Files:** comparison artifact/report, GitHub UI draft PR, local preview services.
 
-- [ ] Publish the UI experiment branch and open a clearly scoped draft PR with verified tests. Keep it unmerged for the owner's comparison. Core fixes retain earlier merge authorization.
-- [ ] Provide actual local preview URLs for core-fixed baseline and improved interface where available; distinguish them from unchanged public deployment. Capture comparable screenshots with commits, viewport, scenario/model/data/time settings.
-- [ ] Prepare a concise morning report with before/after comparison, current main versus branch state, completed work, meaningful test evidence, remaining limitations and exact instructions Claude Code needs to continue. Preserve all changes and the working handoff in durable files.
-- [ ] Around09:00Eastern on2026-09-15, report actual status even if anything remains unfinished. Do not convert a deadline into a false completion claim. Pause the overnight heartbeat after the report/work is complete.
+- [x] Publish the UI experiment branch and open a clearly scoped draft PR with verified tests. Keep it unmerged for the owner's comparison. Core fixes retain earlier merge authorization.
+- [x] Provide actual local preview URLs for core-fixed baseline and improved interface where available; distinguish them from unchanged public deployment. Capture comparable screenshots with commits, viewport, scenario/model/data/time settings.
+- [x] Prepare a concise morning report with before/after comparison, current main versus branch state, completed work, meaningful test evidence, remaining limitations and exact instructions Claude Code needs to continue. Preserve all changes and the working handoff in durable files.
+- [x] Around09:00Eastern on2026-09-15, report actual status even if anything remains unfinished. Do not convert a deadline into a false completion claim. Pause the overnight heartbeat after the report/work is complete.

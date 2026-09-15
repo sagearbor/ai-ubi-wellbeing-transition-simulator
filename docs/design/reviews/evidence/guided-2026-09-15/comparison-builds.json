@@ -23,11 +23,11 @@
     },
     {
       "file": "comparison-after-desktop-light.png",
-      "sha256": "f3916bb5c8fb4467220828f1f8dad14c22b27fee99bac1856dafd1562029f2b4"
+      "sha256": "c314015e137344cff1e4977f08ea10806ec76980a4e817af001f9fa30bbcb456"
     },
     {
       "file": "comparison-after-laptop-light.png",
-      "sha256": "da3d09889af06e8aab93e77ad846b4878267a0e5c5ff20084e31c00784b63042"
+      "sha256": "29f4cf42aaeea9ff67a769fccc023dad3cac20ccc54214ff42f1b219417ec84e"
     },
     {
       "file": "comparison-after-narrow-light.png",
@@ -35,7 +35,7 @@
     },
     {
       "file": "comparison-after-phone-dark.png",
-      "sha256": "698854f1ce2affde10ff26cfc6d6dce4fc417511326c36556c0b1f55a4c5d0ac"
+      "sha256": "a55652d780580a4701dacea280e84da8b794458c3f8c6aa1afdedf3d18faeebc"
     },
     {
       "file": "comparison-after-phone-light.png",
@@ -53,5 +53,6 @@
       "file": "comparison-before-phone-light.png",
       "sha256": "fc740b409864d0f4176f9808761e4f5c2d0177c6ef399283a681da70296d963f"
     }
-  ]
+  ],
+  "captureNote": "Final affected captures reset to the heading after the sharing test; desktop heading top 102 pixels at 1440 by 900."
 }
