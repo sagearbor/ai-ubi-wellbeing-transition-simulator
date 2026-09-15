@@ -41,3 +41,22 @@ describe('PolicyPanel real file input ownership',()=>{
  it('ignores a file selected before a source edit',async()=>{const ui=mount();const a=deferred<string>();ui.file(()=>a.promise);const input=nodes(ui.tree).find(n=>n.props?.id==='policy-source-text');input.props.onChange({target:{value:'New source'}});ui.render();a.resolve(bundleText());await flush();expect(ui.open).not.toHaveBeenCalled();});
  it('shows operative coverage in the owner and published alternate view',()=>{const publish=vi.fn();const ui=mount({initialDrafts:[example.draft],initialSource:example.source,onActiveRunChange:publish});expect(words(ui.tree)).toContain('68 unresolved');expect(publish.mock.calls.at(-1)?.[0].coverage).toContain('68 unresolved');expect(publish.mock.calls.at(-1)?.[0].coverage).toContain('Source text quoted or excluded');});
 });
+describe('draft authorship honesty',()=>{
+ it('lets an automated author select AI without promoting review or completeness',()=>{
+  const publish=vi.fn();const ui=mount({initialDrafts:[example.draft],initialSource:example.source,onActiveRunChange:publish});
+  const selector=nodes(ui.tree).find(n=>n.props?.id==='policy-author-kind');expect(selector).toBeTruthy();selector.props.onChange({target:{value:'ai'}});ui.render();
+  expect(nodes(ui.tree).find(n=>n.props?.id==='policy-author-kind').props.value).toBe('ai');
+  const author=nodes(ui.tree).find(n=>n.props?.id==='policy-drafted-by');author.props.onChange({target:{value:'Codex automated workflow probe'}});ui.render();
+  expect(nodes(ui.tree).find(n=>n.props?.id==='policy-author-kind').props.value).toBe('ai');
+  expect(nodes(ui.tree).find(n=>n.type==='select' && n.props.value=== 'author-drafted')).toBeTruthy();
+  expect(words(ui.tree)).toContain('completeness not attested');
+ });
+});
+it('changing author kind invalidates existing human review and completeness',()=>{
+ const reviewed={...example.draft,reviewStatus:'human-reviewed' as const,reviewedBy:{name:'Independent reviewer'},completeness:{name:'Independent reviewer',kind:'person' as const,date:'2026-09-15',statement:'Checked'}};
+ const ui=mount({initialDrafts:[reviewed],initialSource:example.source});
+ nodes(ui.tree).find(n=>n.props?.id==='policy-author-kind').props.onChange({target:{value:'ai'}});ui.render();
+ expect(nodes(ui.tree).find(n=>n.type==='select'&&n.props.value==='author-drafted')).toBeTruthy();
+ expect(nodes(ui.tree).find(n=>n.props?.id==='policy-reviewed-by')).toBeUndefined();
+ expect(words(ui.tree)).toContain('completeness not attested');
+});
