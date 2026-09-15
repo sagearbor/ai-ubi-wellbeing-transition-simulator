@@ -11,7 +11,9 @@ vi.mock('react', async original => {
 });
 import PublishedExperience from './PublishedExperience';
 import { buildExperiment, decodeExperiment, exactModel, validateExperiment, type FinancialExperiment } from '../../src/financials/share';
-import originalExperiments from '../../src/financials/fixtures/v1-experiments.json';
+import recordedPrepatchExperiments from '../../src/financials/fixtures/v1-experiments.json';
+// Revision behavior uses explicitly new executions on this runtime, never relabeled fixture pins.
+const originalExperiments = recordedPrepatchExperiments.map(e => buildExperiment(e.recordId, e.scenarios, e.view as 'explore' | 'compare', e.collectionId));
 
 function nodes(tree: any): any[] {
   if (!tree || typeof tree !== 'object') return [];
@@ -62,6 +64,13 @@ function mount(initial?: FinancialExperiment) {
 beforeEach(() => { host.cells = []; host.cursor = 0; });
 
 describe('collection identity through published edits', () => {
+  it('clearly refuses an old-runtime file without replacing the current experiment', async () => {
+    const ui = mount();
+    const current = ui.experiment();
+    await ui.open(recordedPrepatchExperiments[0]);
+    expect(ui.experiment()).toEqual(current);
+    expect(text(ui.tree)).toContain('Incompatible runtime');
+  });
   it('keeps v1 through independent scenario, company, cohort, view and tool-link changes', () => {
     const original = validateExperiment(originalExperiments[0]);
     const ui = mount(original);

@@ -1,5 +1,5 @@
 {
-  "hash": "4b16b1021edd2a084d0d7990d675e941e36e6f54d2b3c90127aca8668e47ef60",
+  "hash": "6d3da294a002ee6ee0000c31d2b1af1723901287e6c5806c35c04d4d4f204206",
   "sources": {
     "build/qualificationSourcePlugin.ts": "18ece29b0103406e16ad371ea5e0de63265985844ff5ce6f1bedfb2be5815049",
     "build/qualificationSources.ts": "f916d6df9660a7a579a4e742d5004424a556dcd74f02e3fb3c5273c05d2f11ae",
@@ -11,8 +11,8 @@
     "data/countries/legacy-hand-entered.json": "c5b83a59c750bb5a0ac6e8e06e199a23f8529800873819fd465c9efd0d0cdab8",
     "data/countries/wb-2026-09.json": "ec6cacc150dabd92acc168ac6efd491e32f6f311619ce8bde027198d0054aaf9",
     "data/hindcast/wellbeing-ladder.json": "b899e7c8f0e39e4402f318ac483bcdc8efbe0bc9dab9cf5289d8deda3e153066",
-    "package-lock.json": "9905c4b9732c44c97d7cbda098471b50b80dec29295572ecb1b1125ad11cbb01",
-    "package.json": "1ea7b215d43759274073929707511e830eb8c0606edccdf03c5d1a5863f61617",
+    "package-lock.json": "063cbb3cd22a110053f124ae276ccab323e8d19150d2966d87fcb4149198acb8",
+    "package.json": "1140ff24493d0300954fccf775b6603ed21d39e885d5e732975074fda8880e86",
     "scripts/qualification-source-check.ts": "0693352bd471266fe316362828ed3dca4a090728f7e68e54449023e3fe5fd0c2",
     "scripts/response-profile.ts": "03d8eeed77e96e6b38ba151151c73eee332ba2c0a4dbdb50c70f00d6e4267f91",
     "simulation/capabilities.ts": "375527b7f229f94bc1f08a1249b513288293023d65c5d51f5b41a91b1956d43e",

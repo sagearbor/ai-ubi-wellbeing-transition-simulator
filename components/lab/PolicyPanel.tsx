@@ -609,6 +609,7 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
         <p className="text-[11px] text-slate-500 dark:text-slate-400">{sourceText.length.toLocaleString('en-US')} characters</p>
       </div>
       <div className="flex flex-wrap items-center gap-2">
+        <p className="text-xs text-slate-500 dark:text-slate-400">AI extraction sends pasted text and model details to Google Gemini. Manual drafting works locally.</p>
         <button type="button" className={btnPlain} onClick={extract} disabled={!apiKey || extracting}>
           <Sparkles size={14} aria-hidden="true" />
           {extracting ? 'Extracting…' : 'Extract provisions with AI'}

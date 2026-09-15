@@ -44,6 +44,7 @@ export function validateExperiment(value: unknown): FinancialExperiment {
   if (v.version !== 1) throw new Error('Unsupported saved experiment version.');
   if (typeof v.collectionId !== 'string') throw new Error('Missing financial collectionId.');
   const pins = experimentPins(v.collectionId);
+  if (v.engineVersion !== pins.engineVersion || v.numericalHash !== pins.numericalHash) throw new Error('Incompatible runtime: this saved experiment uses a different engineVersion or numericalHash and cannot be reproduced by the current numerical runtime.');
   for (const key of Object.keys(pins) as (keyof typeof pins)[]) if (v[key] !== pins[key]) throw new Error(`Stale or unknown ${key}; this experiment cannot be reproduced with the current data and engine.`);
   if (v.view !== 'explore' && v.view !== 'compare') throw new Error('Unknown experiment view.');
   if (typeof v.recordId !== 'string' || !v.scenarios?.A || !v.scenarios?.B) throw new Error('Missing company or scenario inputs.');

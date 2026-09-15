@@ -113,7 +113,7 @@
     "data/hindcast/gdp-per-capita.json": "5780ca831ed0308deaa2d5c78f6126b094cd64a0b7204e9d820401ee1a897eae",
     "data/hindcast/unemployment.json": "49418077c61a917185868e5a2dce642591904d155be60be3f9af8cae25725003",
     "data/hindcast/wellbeing-ladder.json": "b899e7c8f0e39e4402f318ac483bcdc8efbe0bc9dab9cf5289d8deda3e153066",
-    "package-lock.json": "9905c4b9732c44c97d7cbda098471b50b80dec29295572ecb1b1125ad11cbb01",
+    "package-lock.json": "063cbb3cd22a110053f124ae276ccab323e8d19150d2966d87fcb4149198acb8",
     "scripts/hindcast/export-experience.ts": "a15d7df99a3ebeabc6da6137aa625ad2a1a5b094ce450b2dddde5ec88b68fbb6",
     "scripts/hindcast/run-hindcast.ts": "6095aef93ca4f742f1810d4a465a4064675da518b8df7bc365030ae6a200aa60",
     "simulation/capabilities.ts": "375527b7f229f94bc1f08a1249b513288293023d65c5d51f5b41a91b1956d43e",

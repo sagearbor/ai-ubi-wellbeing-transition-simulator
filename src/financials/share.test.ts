@@ -42,12 +42,14 @@ describe('immutable financial collection replay', () => {
     expect(sha256('../../data/financials/fy2025-v1.json')).toBe('fa0017ef898082cb7289448a2fc7e174a39039c8b67bd9683aacc8ea7bc64dba');
     expect(sha256('./fixtures/v1-experiments.json')).toBe('12bb8f688e1e087aeda1bfa6d3edceb08b9924c42c6ac818690c890d8c909d6b');
   });
-  it.each(originalExperiments)('replays the original $recordId models and allocation outputs', original => {
+  it.each(originalExperiments)('refuses prepatch $recordId execution and reproduces its data on the current runtime', original => {
     expect(original.collectionId).toBe('reported-company-financials-fy2025-v1');
     expect(original.dataHash).toBe('6cc262100734a0ba');
-    const old = parseExperiment(JSON.stringify(original));
-    expect(old).toEqual(original);
-    expect(decodeExperiment(FINANCE_PREFIX + encodeExperiment(old))).toEqual(original);
+    expect(() => parseExperiment(JSON.stringify(original))).toThrow(/Incompatible runtime/);
+    expect(() => decodeExperiment(FINANCE_PREFIX + encodeURIComponent(JSON.stringify(original)))).toThrow(/Incompatible runtime/);
+    const old = buildExperiment(original.recordId, original.scenarios, original.view as 'explore' | 'compare', original.collectionId);
+    expect(old.numericalHash).not.toBe(original.numericalHash);
+    expect(old.modelHashes).toEqual(original.modelHashes);
     const current = buildExperiment(old.recordId, old.scenarios, old.view);
     expect(current.collectionId).toBe('reported-company-financials-fy2025-v2');
     expect(current.dataHash).not.toBe(old.dataHash);
@@ -66,7 +68,7 @@ describe('immutable financial collection replay', () => {
     }
   });
   it('retains old collection pins through scenario edits and all exact Lab links', () => {
-    const old = validateExperiment(originalExperiments[0]);
+    const old = buildExperiment(originalExperiments[0].recordId, originalExperiments[0].scenarios, 'explore', originalExperiments[0].collectionId);
     const edited = buildExperiment(old.recordId, { A: { ...old.scenarios.A, policyShare: .37 }, B: old.scenarios.B }, 'compare', old.collectionId);
     expect(edited.collectionId).toBe(old.collectionId);
     expect(edited.dataHash).toBe(old.dataHash);
@@ -79,7 +81,7 @@ describe('immutable financial collection replay', () => {
     }
   });
   it('does not accept exchanged collection/data pins or a source from another collection', () => {
-    const old = validateExperiment(originalExperiments[0]);
+    const old = buildExperiment(originalExperiments[0].recordId, originalExperiments[0].scenarios, 'explore', originalExperiments[0].collectionId);
     const current = buildExperiment();
     expect(() => validateExperiment({ ...old, collectionId: current.collectionId })).toThrow(/dataHash/);
     expect(() => validateExperiment({ ...current, collectionId: old.collectionId })).toThrow(/dataHash/);

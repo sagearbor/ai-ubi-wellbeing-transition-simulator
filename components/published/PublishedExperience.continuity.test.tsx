@@ -7,7 +7,9 @@ import { buildExperiment, decodeExperiment, exactModel, financialDataHash, valid
 import { modelHash } from '../../src/policy/hash';
 import { createSyncRunner } from '../../src/workers/client';
 import { importFinancialExperiment, importKey, verifiedFinancialOrigin } from '../lab/importState';
-import originalExperiments from '../../src/financials/fixtures/v1-experiments.json';
+import recordedPrepatchExperiments from '../../src/financials/fixtures/v1-experiments.json';
+// Revision behavior uses explicitly new executions on this runtime, never relabeled fixture pins.
+const originalExperiments = recordedPrepatchExperiments.map(e => buildExperiment(e.recordId, e.scenarios, e.view as 'explore' | 'compare', e.collectionId));
 import { financialRecordForModel, reportedFinancialParameters } from '../../src/financials/presentation';
 
 const runner = createSyncRunner();
