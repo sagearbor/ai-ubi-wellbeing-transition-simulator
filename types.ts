@@ -157,6 +157,7 @@ export interface CountryStats {
   workforceAssumption?: { version: string; source: string; status: 'assumed'; year: number };
   monetaryBasis?: MonetaryBasis;
   printedLaborShare?: number;
+  adoptionDiagnostics?: { raw: number; actual: number; cap: number; capActive: boolean; kind: 'numerical-cap' };
   macroDiagnostics?: { rawUnemployment: number; rawCognitiveUnemployment: number; unemploymentCapActive: boolean; cognitiveUnemploymentCapActive: boolean };
 
   id: string;

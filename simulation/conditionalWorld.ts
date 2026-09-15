@@ -18,6 +18,38 @@ function finite(n: number, name: string, min = 0, max = Infinity): number {
         fail(`${name} must be finite in [${min},${max}]`);
     return n;
 }
+/** Reject nonrepresentable totals before they can become JSON nulls. */
+function sumFinite(values: Iterable<number>, name: string): number {
+    let total = 0;
+    for (const value of values) total = finite(total + finite(value, name), name);
+    return total;
+}
+
+function validateMacroState(country: CountryStats): void {
+    const prefix = country.id;
+    finite(country.population, `${prefix}.population`, Number.MIN_VALUE);
+    finite(country.aiAdoption, `${prefix}.aiAdoption`, 0, 1);
+    finite(country.lastAiAdoption!, `${prefix}.lastAiAdoption`, 0, 1);
+    finite(country.gdpPerCapita, `${prefix}.gdpPerCapita`, Number.MIN_VALUE);
+    finite(country.gdpNoAi!, `${prefix}.gdpNoAi`, Number.MIN_VALUE);
+    finite(country.governance, `${prefix}.governance`, 0, 1);
+    finite(country.cognitiveShare!, `${prefix}.cognitiveShare`, Number.MIN_VALUE, 1);
+    finite(country.naturalUnemployment!, `${prefix}.naturalUnemployment`, 0, 0.6);
+    finite(country.displacedPool!, `${prefix}.displacedPool`, 0, 1 - country.naturalUnemployment!);
+    finite(country.laborShare!, `${prefix}.laborShare`, Number.MIN_VALUE, 1);
+    finite(country.unemployment!, `${prefix}.unemployment`, 0, 1);
+    if (country.cognitiveUnemployment !== undefined) finite(country.cognitiveUnemployment, `${prefix}.cognitiveUnemployment`, 0, 1);
+    finite(country.laborForcePerResident!, `${prefix}.laborForcePerResident`, 0, 1);
+}
+
+/** Validate composed published diagnostics, including signed raw mapping values. */
+function assertFiniteNumbers(value: unknown, path: string): void {
+    if (typeof value === 'number' && !Number.isFinite(value)) fail(`${path} is not a representable finite number`);
+    if (value && typeof value === 'object') {
+        for (const [key, child] of Object.entries(value)) assertFiniteNumbers(child, `${path}.${key}`);
+    }
+}
+
 export function requireCompatibleMoney(basis: MonetaryBasis | undefined): void {
     if (!basis || basis.currency !== 'USD' || basis.priceYear !== 2015)
         fail('Conditional ratios require a declared constant-2015 USD basis; unknown vintages cannot be converted implicitly.');
@@ -33,7 +65,16 @@ export function sourceBudget(c: Corporation): SourceBudget {
     const requested = kind === 'amount' && c.fundingRequest?.kind === 'amount' ? finite(c.fundingRequest.monthlyBillions, 'requested monthly amount') : source * finite(c.contributionRate, 'contributionRate', 0, 1);
     const actual = Math.min(requested, available);
     return {
-        name: 'modeled-source-pool', unit: 'billion-constant-2015-USD/month', source, reservedForOtherUses: source - available, requested, available, actual, slack: available - actual, unfunded: requested - actual, assumptionId: 'conditional-assumptions-v1'
+        name: 'modeled-source-pool',
+        unit: 'billion-constant-2015-USD/month',
+        source,
+        reservedForOtherUses: source - available,
+        requested,
+        available,
+        actual,
+        slack: available - actual,
+        unfunded: requested - actual,
+        assumptionId: 'conditional-assumptions-v1'
     };
 }
 /** Pure allocation over an explicitly complete supplied roster, useful for independent hand fixtures. */
@@ -56,19 +97,21 @@ export function allocateConditional(countries: Record<string, CountryStats>, cor
         if (!['global', 'customer-weighted', 'hq-local'].includes(route))
             fail('Unknown allocation strategy');
         const destinations = route === 'global' ? ids : route === 'hq-local' ? [c.headquartersCountry] : c.operatingCountries;
-        const population = destinations.reduce((n, id) => n + countries[id].population, 0);
+        const population = sumFinite(destinations.map(id => countries[id].population), 'destination population');
         const key = route === 'global' ? 'global' : route === 'hq-local' ? 'local' : 'customer';
         destinations.forEach(id => {
-            receipts[id][key] += budget.actual * countries[id].population / population;
+            const residentShare = countries[id].population / population;
+            receipts[id][key] = finite(receipts[id][key] + budget.actual * residentShare, `${id} receipts`);
         });
     }
-    return {
-        receipts, budgets
-    };
+    assertFiniteNumbers(budgets, 'source budgets');
+    assertFiniteNumbers(receipts, 'receipts');
+    return { receipts, budgets };
 }
 export function conditionalWorld(input: SimulationInput, initialize = false, evaluateOnly = false): SimulationOutput {
     const { model } = input;
     assertRunSupported(model, input.state.month + (initialize || evaluateOnly ? 0 : 1), input.equations);
+    if (initialize && input.state.month !== 0) fail('Conditional initialization requires month zero');
     if (model.executionMode !== 'world-conditional-v1')
         fail('Conditional executor requires its explicit execution mode');
     const macro = model.macro ?? fail('Conditional world requires declared macro assumptions');
@@ -112,6 +155,7 @@ export function conditionalWorld(input: SimulationInput, initialize = false, eva
             c.gdpNoAi = c.gdpPerCapita / (1 + macro.productivityGain * affected);
             c.laborShare = 0.60 * (1 - macro.laborShareSensitivity * affected);
             c.unemployment = c.naturalUnemployment;
+            c.cognitiveUnemployment = c.naturalUnemployment;
             c.displacedPool = 0;
             c.lastAiAdoption = c.aiAdoption;
             if (macro.usReference && c.id === 'USA') {
@@ -120,17 +164,19 @@ export function conditionalWorld(input: SimulationInput, initialize = false, eva
             }
         }
         requireCompatibleMoney(c.monetaryBasis);
-        finite(c.aiAdoption, `${c.id}.aiAdoption`, 0, 1);
-        finite(c.gdpPerCapita, `${c.id}.gdpPerCapita`, Number.MIN_VALUE);
-        finite(c.governance, `${c.id}.governance`, 0, 1);
-        finite(c.unemployment!, `${c.id}.unemployment`, 0, 1);
-        finite(c.cognitiveShare!, `${c.id}.cognitiveShare`, Number.MIN_VALUE, 1);
-        finite(c.naturalUnemployment!, `${c.id}.naturalUnemployment`, 0, 1);
-        finite(c.laborForcePerResident!, `${c.id}.laborForcePerResident`, 0, 1);
+        validateMacroState(c);
         if (!initialize && !evaluateOnly) {
             const serving = corporations.filter(corp => corp.operatingCountries.includes(c.id));
             const level = serving.length ? serving.reduce((n, corp) => n + corp.aiAdoptionLevel, 0) / serving.length : 0;
-            c.aiAdoption = Math.min(.999, c.aiAdoption + model.aiGrowthRate * (1 + c.gdpPerCapita / 100000) * level * .1 * (1 - c.aiAdoption));
+            const rawAdoption = finite(c.aiAdoption + model.aiGrowthRate * (1 + c.gdpPerCapita / 100000) * level * .1 * (1 - c.aiAdoption), `${c.id}.rawAdoption`);
+            c.aiAdoption = Math.min(.999, rawAdoption);
+            c.adoptionDiagnostics = {
+                raw: rawAdoption,
+                actual: c.aiAdoption,
+                cap: .999,
+                capActive: rawAdoption > .999,
+                kind: 'numerical-cap',
+            };
         }
         if (!evaluateOnly && macro.usReference && c.id === 'USA')
             applyUsReference(c, month, macro.usReference, macro.baselineGrowth);
@@ -138,6 +184,9 @@ export function conditionalWorld(input: SimulationInput, initialize = false, eva
             applyMacroDynamics(c, {
                 ...macro, wellbeingAnchorRate: 0
             });
+        validateMacroState(c);
+        assertFiniteNumbers(c.macroDiagnostics, `${c.id}.macroDiagnostics`);
+        assertFiniteNumbers(c.adoptionDiagnostics, `${c.id}.adoptionDiagnostics`);
     }
     corporations.forEach(c => {
         if (initialize) {
@@ -163,7 +212,8 @@ export function conditionalWorld(input: SimulationInput, initialize = false, eva
     });
     // Annual GDP-derived resident income is divided by twelve exactly once.
     const k = wellbeingAnchorCoefficientsFor(dataset);
-    let population = 0, weighted = 0, validPopulation = 0, invalid = 0, assumedCount = 0, assumedPopulation = 0;
+    const population = sumFinite(Object.values(countryData).map(c => c.population), 'modeled population');
+    let weighted = 0, validPopulation = 0, invalid = 0, assumedCount = 0, assumedPopulation = 0;
     for (const c of Object.values(countryData)) {
         const r = receipts[c.id];
         c.ubiReceivedGlobal = r.global;
@@ -188,8 +238,9 @@ export function conditionalWorld(input: SimulationInput, initialize = false, eva
         c.conditionalWellbeing = {
             raw, income, transfer, nonIncomeUnemployment, transferRatio, incomeDenominatorAnnual: denominator, valid, status: valid ? 'illustrative' : 'outside-mapping-scale'
         };
-        population += c.population;
-        weighted += raw * c.population;
+        // Normalize first: raw * population can overflow even when the mean is finite.
+        weighted += raw * (c.population / population);
+        if (!Number.isFinite(weighted)) fail('Population-weighted mapping is not representable');
         if (valid)
             validPopulation += c.population;
         else
@@ -202,18 +253,57 @@ export function conditionalWorld(input: SimulationInput, initialize = false, eva
     ledger.monthlyOutflow = ledger.monthlyInflow;
     ledger.fundsPerCapita = usdPerPerson(ledger.totalFunds, population);
     // This is a monthly-flow snapshot. Month zero is not elapsed historical spending.
-    const sum = (key: keyof SourceBudget) => Object.values(budgets).reduce((n, b) => n + Number(b[key]), 0);
-    return {
-        state: {
-            ...input.state, month, countryData, sourceAccounting: {
-                source: sum('source'), available: sum('available'), requested: sum('requested'), actual: sum('actual'), unfunded: sum('unfunded'), unused: sum('slack'), reserved: sum('reservedForOtherUses'), receipts: ledger.monthlyInflow, residual: sum('actual') - ledger.monthlyInflow
-            }, globalFund: ledger.totalFunds, executionMode: 'world-conditional-v1', conditionalSummary: {
-                rawPopulationWeighted: weighted / population, value: invalid ? null : weighted / population, populationMillions: population, countryCount: roster.length, invalidCountryCount: invalid, validPopulationMillions: validPopulation, assumedGdpCountryCount: assumedCount, assumedGdpPopulationMillions: assumedPopulation
-            }, outputDefinition: {
-                version: assumptions.version, flowConvention: 'monthly-flow-at-month', monetaryBasis: CONDITIONAL_MONEY, limitations: resolveRunCapabilities(model).limitations
-            }
-        }, corporations, ledger, gameTheory: {
-            isInPrisonersDilemma: false, defectionCount: 0, cooperationCount: 0, moderateCount: 0, raceToBottomRisk: 0, virtuousCycleStrength: 0, avgContributionRate: 0
-        }
+    const sum = (key: keyof SourceBudget) => sumFinite(Object.values(budgets).map(b => Number(b[key])), `aggregate ${key}`);
+    const sourceAccounting = {
+        source: sum('source'),
+        available: sum('available'),
+        requested: sum('requested'),
+        actual: sum('actual'),
+        unfunded: sum('unfunded'),
+        unused: sum('slack'),
+        reserved: sum('reservedForOtherUses'),
+        receipts: ledger.monthlyInflow,
+        residual: sum('actual') - ledger.monthlyInflow,
     };
+    const conditionalSummary = {
+        rawPopulationWeighted: weighted,
+        value: invalid ? null : weighted,
+        populationMillions: population,
+        countryCount: roster.length,
+        invalidCountryCount: invalid,
+        validPopulationMillions: validPopulation,
+        assumedGdpCountryCount: assumedCount,
+        assumedGdpPopulationMillions: assumedPopulation,
+    };
+    const output: SimulationOutput = {
+        state: {
+            ...input.state,
+            month,
+            countryData,
+            sourceAccounting,
+            globalFund: ledger.totalFunds,
+            executionMode: 'world-conditional-v1',
+            conditionalSummary,
+            outputDefinition: {
+                version: assumptions.version,
+                flowConvention: 'monthly-flow-at-month',
+                monetaryBasis: CONDITIONAL_MONEY,
+                limitations: resolveRunCapabilities(model).limitations,
+            },
+        },
+        corporations,
+        ledger,
+        // Compatibility shape only: capability guards prevent interpreting these as findings.
+        gameTheory: {
+            isInPrisonersDilemma: false,
+            defectionCount: 0,
+            cooperationCount: 0,
+            moderateCount: 0,
+            raceToBottomRisk: 0,
+            virtuousCycleStrength: 0,
+            avgContributionRate: 0,
+        },
+    };
+    assertFiniteNumbers(output, 'conditional output');
+    return output;
 }

@@ -182,10 +182,27 @@ export function initialRun(
   };
   return opts.model?.executionMode === 'world-conditional-v1' ? initializeConditionalOutputs(run,{model:opts.model}) : run;
 }
+/** Only for a newly constructed month-zero run. */
 export function initializeConditionalOutputs(run: SimulationRun, inputs: RunInputs): SimulationRun {
-  assertRunSupported(inputs.model,run.state.month,inputs.equations);
-  const corporations = inputs.contributionRateOverride === undefined ? run.corporations : run.corporations.map(c=>({...c,contributionRate:inputs.contributionRateOverride!,fundingRequest:{kind:'share' as const}}));
-  return conditionalWorld({state:run.state,corporations,model:inputs.model,equations:inputs.equations},true);
+  if (run.state.month !== 0) throw new Error('Conditional initialization requires month zero; evaluate an existing snapshot instead');
+  return conditionalWorld(conditionalInput(run, inputs), true);
+}
+
+/** Reprice the same economic snapshot without resetting displacement, baseline or adoption. */
+export function evaluateConditionalSnapshot(run: SimulationRun, inputs: RunInputs): SimulationRun {
+  return conditionalWorld(conditionalInput(run, inputs), false, true);
+}
+
+function conditionalInput(run: SimulationRun, inputs: RunInputs) {
+  assertRunSupported(inputs.model, run.state.month, inputs.equations);
+  const corporations = inputs.contributionRateOverride === undefined
+    ? run.corporations
+    : run.corporations.map(c => ({
+        ...c,
+        contributionRate: inputs.contributionRateOverride!,
+        fundingRequest: { kind: 'share' as const },
+      }));
+  return { state: run.state, corporations, model: inputs.model, equations: inputs.equations };
 }
 
 /** Advance one month. Pure: the input run is not modified (the engine clones countries; corporations are re-mapped). */

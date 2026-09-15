@@ -178,7 +178,7 @@ const CorporationDetailPanel: React.FC<CorporationDetailPanelProps> = ({
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <div className="text-xs text-slate-500 dark:text-slate-400 mb-1">AI Revenue</div>
+                <div className="text-xs text-slate-500 dark:text-slate-400 mb-1">{corporation.sourceBudget ? 'Modeled source (constant-2015 USD/month)' : 'AI Revenue'}</div>
                 <div className="text-lg font-bold text-slate-900 dark:text-white">
                   {formatBillions(corporation.aiRevenue)}
                 </div>
@@ -259,6 +259,7 @@ const CorporationDetailPanel: React.FC<CorporationDetailPanelProps> = ({
               Policy Controls
             </h3>
 
+            {(!corporation.sourceBudget || corporation.fundingRequest?.kind !== 'amount') && <>
             {/* Contribution Rate Slider */}
             <div>
               <div className="flex items-center justify-between mb-2">
@@ -284,6 +285,7 @@ const CorporationDetailPanel: React.FC<CorporationDetailPanelProps> = ({
               </div>
             </div>
 
+            </>}
             {/* Distribution Strategy Dropdown */}
             <div>
               <label className="text-xs font-medium text-slate-700 dark:text-slate-300 block mb-2">

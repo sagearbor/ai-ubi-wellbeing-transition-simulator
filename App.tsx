@@ -1,6 +1,7 @@
+import { historyThroughCurrent, writeRecoverySnapshot } from './simulation/appState';
 import { assertRunSupported, resolveRunCapabilities } from './simulation/capabilities';
 import { conditionalWorld } from './simulation/conditionalWorld';
-import { initializeConditionalOutputs, noCorporateUbiInputs } from './simulation/run';
+import { evaluateConditionalSnapshot, noCorporateUbiInputs } from './simulation/run';
 
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { AreaChart, Area, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ScatterChart, Scatter, ZAxis, ReferenceLine } from 'recharts';
@@ -336,7 +337,7 @@ const App: React.FC = () => {
    * (`baseRun`), model, equations and corporation edits as the main run, with every contribution
    * rate held at 0. Stepped, sought, reset and rebuilt together with `run`; Charts draws it.
    */
-  const [pairedRun, setPairedRun] = useState<SimulationRun>(() => initializeConditionalOutputs(baseRun,noCorporateUbiInputs({model:DEFAULT_MODEL})));
+  const [pairedRun, setPairedRun] = useState<SimulationRun>(() => evaluateConditionalSnapshot(baseRun,noCorporateUbiInputs({model:DEFAULT_MODEL})));
   const [pairedHistory, setPairedHistory] = useState<HistoryPoint[]>([]);
 
   const state = run.state;
@@ -416,7 +417,7 @@ const App: React.FC = () => {
             setBaseCorporations(fresh.corporations);
             setBaseRun(fresh);
             setRun(fresh);
-            setPairedRun(decoded.model.executionMode ? initializeConditionalOutputs(fresh,noCorporateUbiInputs({model:decoded.model})) : fresh);
+            setPairedRun(decoded.model.executionMode ? evaluateConditionalSnapshot(fresh,noCorporateUbiInputs({model:decoded.model})) : fresh);
             setHistory([]);
             setPairedHistory([]);
             const freshB = initialRun(INITIAL_CORPORATIONS, undefined, initOptionsFor(DEFAULT_MODEL, decoded.countryDataset));
@@ -484,7 +485,7 @@ const App: React.FC = () => {
     setBaseRun(freshA);
     setRun(freshA);
     setHistory([]);
-    setPairedRun(init.model?.executionMode ? initializeConditionalOutputs(freshA,noCorporateUbiInputs({model:init.model})) : freshA);
+    setPairedRun(init.model?.executionMode ? evaluateConditionalSnapshot(freshA,noCorporateUbiInputs({model:init.model})) : freshA);
     setPairedHistory([]);
 
     // The comparison panel is reset with its own roster so both start at month 0 together.
@@ -690,7 +691,7 @@ const App: React.FC = () => {
       console.error("Failed to save simulation:", err);
       alert("Failed to save simulation. Check console for details.");
     }
-  }, [state, run, corporations, globalLedger, gameTheoryState, model, history, activeModelConfig, countryDataset]);
+  }, [state, run, corporations, globalLedger, gameTheoryState, model, history, activeModelConfig, countryDataset, baseRun]);
 
   /**
    * Load simulation state from a JSON file
@@ -1005,8 +1006,15 @@ const App: React.FC = () => {
     return `M ${start.x} ${start.y} C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${end.x} ${end.y}`;
   };
 
+  const visibleChartHistory = useMemo(() => capabilities.conditional
+    ? historyThroughCurrent(history, baseRun, run)
+    : history.filter(point => point.month <= state.month), [capabilities.conditional, history, baseRun, run, state.month]);
+  const visiblePairedHistory = useMemo(() => capabilities.conditional
+    ? historyThroughCurrent(pairedHistory, evaluateConditionalSnapshot(baseRun, noCorporateUbiInputs({model})), pairedRun)
+    : pairedHistory, [capabilities.conditional, pairedHistory, baseRun, model, pairedRun]);
+
   const chartData = useMemo(() => {
-    return history.map(point => {
+    return visibleChartHistory.map(point => {
       const data: any = {
           month: point.month,
           date: formatMonthDate(point.month),
@@ -1018,16 +1026,16 @@ const App: React.FC = () => {
       data['Adoption_Global'] = globalAdoption;
 
       // Global displacement gap
-      data['DisplacementGap_Global'] = millionsToBillionsUsd(point.state.globalDisplacementGap); // USD/person x millions of people -> billions
+      if (!capabilities.conditional) data['DisplacementGap_Global'] = millionsToBillionsUsd(point.state.globalDisplacementGap); // USD/person x millions of people -> billions
 
       Object.keys(point.state.countryData).forEach(id => {
         data[`Wellbeing_${id}`] = point.state.countryData[id].conditionalWellbeing?.raw ?? point.state.countryData[id].wellbeing;
         data[`Adoption_${id}`] = point.state.countryData[id].aiAdoption * 100;
-        data[`DisplacementGap_${id}`] = (point.state.countryData[id].displacementGap || 0) / 1000; // Convert to thousands
+        if (!capabilities.conditional) data[`DisplacementGap_${id}`] = (point.state.countryData[id].displacementGap || 0) / 1000; // Convert to thousands
       });
       return data;
     });
-  }, [history]);
+  }, [visibleChartHistory, capabilities.conditional]);
 
   useEffect(() => {
     let interval: any;
@@ -1057,33 +1065,24 @@ const App: React.FC = () => {
         gameTheoryState,
         model,
         // Full runs per point make the timeline seekable after a restore. They are also the
-        // bulk of the payload, so if localStorage refuses the write we drop them and keep the
-        // chartable states; seeking then replays from month 0 instead.
+        // bulk of the payload. Only legacy saves can fall back to chartable states; conditional
+        // saves need their complete snapshot history. Failed writes preserve the prior recovery.
         baseRun,
         history: model.executionMode ? historyForSave(history) : withRuns ? historyForSave(history) : historyForPrompt(history),
         activeModelConfig,  // P8-T9: Include custom model config
         countryDataset,
       });
-      try {
-        localStorage.setItem('ubi-sim-autosave', JSON.stringify(build(true)));
-        console.log(`Auto-saved at ${new Date().toLocaleTimeString()}`);
-      } catch (err) {
-        if (err instanceof DOMException && err.name === 'QuotaExceededError') {
-          try {
-            localStorage.setItem('ubi-sim-autosave', JSON.stringify(build(false)));
-            console.warn('Auto-save: storage full, saved without per-month runs (seek will replay).');
-          } catch (err2) {
-            console.error("Auto-save failed:", err2);
-            localStorage.removeItem('ubi-sim-autosave');
-          }
-        } else {
-          console.error("Auto-save failed:", err);
-        }
+      const result = writeRecoverySnapshot(localStorage, build(true), model.executionMode ? undefined : () => build(false));
+      if (result.saved) {
+        console.log(result.reduced ? 'Auto-save: saved reduced legacy history; seek will replay.' : `Auto-saved at ${new Date().toLocaleTimeString()}`);
+      } else {
+        console.error('Auto-save failed; the last successful recovery was preserved.', result.error);
       }
+
     }, 5 * 60 * 1000); // 5 minutes
 
     return () => clearInterval(interval);
-  }, [state, run, corporations, globalLedger, gameTheoryState, model, history, activeModelConfig, countryDataset]);
+  }, [state, run, corporations, globalLedger, gameTheoryState, model, history, activeModelConfig, countryDataset, baseRun]);
 
   // Autosave found on mount: offer to restore it in-page. A native confirm() dialog blocked the
   // whole page (and any automation) until dismissed, so it is a banner with two buttons instead.
@@ -1908,7 +1907,7 @@ const App: React.FC = () => {
               
               {/* Charts Container with Conditional Overlay */}
               <div className="relative flex flex-col gap-6 lg:gap-8">
-                  {history.length === 0 && (
+                  {visibleChartHistory.length === 0 && (
                       <div className="absolute inset-0 z-20 flex items-center justify-center backdrop-blur-sm bg-white/30 dark:bg-slate-900/30 rounded-[2rem]">
                           <div className="bg-white/90 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 p-8 rounded-2xl shadow-2xl max-w-sm text-center animate-in fade-in zoom-in duration-300">
                               <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -1923,9 +1922,9 @@ const App: React.FC = () => {
                   <div className="h-[400px] shrink-0">
                     <MotionChart 
                         // Up to the displayed month (history[0] is month 1, so slice(0, month + 1) showed one month too many after a seek).
-                        history={history.filter(h => h.month <= state.month)}
-                        pairedHistory={pairedHistory}
-                        maxMonth={Math.max(...history.map(h => h.month), 10)}
+                        history={visibleChartHistory}
+                        pairedHistory={visiblePairedHistory}
+                        maxMonth={Math.max(state.month, ...history.map(h => h.month), 10)}
                         selectedCountries={selectedCountries} 
                         allCountries={['Global', ...INITIAL_COUNTRIES.map(c => c.id)].map(id => ({ id, name: id }))}
                         onToggleCountry={(id) => setSelectedCountries(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id])}
@@ -1957,6 +1956,7 @@ const App: React.FC = () => {
                      </ResponsiveContainer>
                   </div>
 
+                  {!capabilities.conditional && <>
                   <div className="h-[350px] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-4 shadow-sm relative overflow-hidden">
                      <div className="flex items-start justify-between mb-4">
                        <div>
@@ -2024,6 +2024,7 @@ const App: React.FC = () => {
                      </div>
                   </div>
 
+                  </>}
                   {/* AI Adoption vs Wellbeing Scatter Plot */}
                   <WellbeingScatterPlot
                     key={`scatter-${state.month}`}

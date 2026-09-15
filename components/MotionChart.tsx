@@ -247,7 +247,7 @@ const ThreeDChart: React.FC<{
         data.forEach((point) => {
             const nx = (point.month / (maxMonth || 1)) * 2 - 1;
             const valY = point[`Wellbeing_${id}`];
-            if (valY === undefined) return;
+            if (valY == null || !Number.isFinite(valY)) return;
             const ny = (valY / 100) * 2 - 1;
             const valZ = point[`Adoption_${id}`];
             const nz = (valZ / 100) * 2 - 1;
@@ -271,7 +271,7 @@ const ThreeDChart: React.FC<{
              const last = data[data.length - 1];
              const valY = last[`Wellbeing_${id}`];
              const valZ = last[`Adoption_${id}`];
-             if(valY !== undefined) {
+             if(valY != null && Number.isFinite(valY)) {
                  const nx = (last.month / (maxMonth || 1)) * 2 - 1;
                  const ny = (valY / 100) * 2 - 1;
                  const nz = (valZ / 100) * 2 - 1;
@@ -323,6 +323,8 @@ const MotionChart: React.FC<MotionChartProps> = ({
   const [showPaired, setShowPaired] = useState(true);
 
   // Main run and paired no-UBI counterfactual, matched by month.
+  const conditional = history.some(point => (point.state ?? point.run?.state)?.executionMode === 'world-conditional-v1');
+  const wellbeingLabel = conditional ? 'Conditional wellbeing index' : 'Wellbeing Index';
   const chartData = useMemo(() => buildMotionChartData(history, pairedHistory), [history, pairedHistory]);
 
   return (
@@ -334,7 +336,7 @@ const MotionChart: React.FC<MotionChartProps> = ({
                 {is3D ? "3D Multivariable Plot" : "Growth Motion Chart"}
             </h3>
             <span className="text-xs text-slate-500 bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded-full border border-slate-200 dark:border-slate-700 hidden sm:inline-block">
-                {is3D ? "X: Time • Y: Wellbeing • Z: Adoption" : "X: Time • Y: Wellbeing"}
+                {`X: Time • Y: ${wellbeingLabel}${is3D ? " • Z: Adoption" : ""}`}
             </span>
          </div>
 
@@ -405,7 +407,7 @@ const MotionChart: React.FC<MotionChartProps> = ({
                         stroke={theme === 'light' ? '#64748b' : '#94a3b8'} 
                         fontSize={10}
                     >
-                        <Label value="Wellbeing Index" angle={-90} position="insideLeft" style={{ textAnchor: 'middle', fill: theme === 'light' ? '#64748b' : '#94a3b8', fontSize: 10 }} />
+                        <Label value={wellbeingLabel} angle={-90} position="insideLeft" style={{ textAnchor: 'middle', fill: theme === 'light' ? '#64748b' : '#94a3b8', fontSize: 10 }} />
                     </YAxis>
                     <Tooltip 
                         labelFormatter={(v) => formatDate(v as number)}
@@ -422,7 +424,7 @@ const MotionChart: React.FC<MotionChartProps> = ({
                                 strokeWidth={2}
                                 strokeDasharray="5 5"
                                 strokeOpacity={0.6}
-                                dot={false}
+                                dot={conditional && chartData.length === 1 ? { r: 4 } : false}
                                 name={`${id}: ${PAIRED_SERIES_LABEL}`}
                                 isAnimationActive={false}
                             />
@@ -438,7 +440,7 @@ const MotionChart: React.FC<MotionChartProps> = ({
                                 dataKey={`Wellbeing_${id}`}
                                 stroke={`hsl(${hue}, 70%, 60%)`}
                                 strokeWidth={3}
-                                dot={false}
+                                dot={conditional && chartData.length === 1 ? { r: 4 } : false}
                                 name={id}
                                 isAnimationActive={false}
                             />
@@ -455,9 +457,7 @@ const MotionChart: React.FC<MotionChartProps> = ({
         <p className="shrink-0 text-[10px] leading-snug text-slate-500 dark:text-slate-400">
           Dashed grey: {PAIRED_SERIES_LABEL}.{' '}
           <span className="hidden sm:inline">
-            A second run from the same starting point, model, equations and corporations, with every corporation's
-            contribution rate held at 0 each month. The gap between a solid and a dashed line is this model's effect
-            of corporate UBI, nothing else.
+            {conditional ? 'Same economic conditions with zero funded transfers. The gap is an illustrative recipient-side mapping difference, not a net welfare or macro effect.' : "A second run from the same starting point, model, equations and corporations, with every corporation's contribution rate held at 0 each month. The gap is this legacy model's corporate UBI effect."}
           </span>
         </p>
       )}

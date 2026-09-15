@@ -20,7 +20,7 @@ import {
 } from '../constants';
 import {
   advanceRun,
-  initialRun, initOptionsFor, initializeConditionalOutputs,
+  initialRun, initOptionsFor, evaluateConditionalSnapshot,
   noCorporateUbiInputs,
   replayTo,
   runMonths,
@@ -67,8 +67,9 @@ export function seekInHistory(
   base: SimulationRun,
 ): SimulationRun {
   assertRunSupported(inputs.model,month,inputs.equations);
+  if (month < base.state.month) throw new Error('Requested month precedes the available scenario snapshot');
   const target = Math.max(0, month);
-  if (target === 0) return base;
+  if (target === base.state.month) return base;
   const exact = history.find((p) => p.month === target);
   if (exact?.run) return exact.run;
   const from = nearestFullPoint(history, target) ?? base;
@@ -134,7 +135,7 @@ export function seekWithCounterfactual(
 ): RunPair {
   return {
     run: seekInHistory(history, month, inputs, base),
-    paired: seekInHistory(pairedHistory, month, noCorporateUbiInputs(inputs), inputs.model.executionMode === 'world-conditional-v1' ? initializeConditionalOutputs(base,noCorporateUbiInputs(inputs)) : base),
+    paired: seekInHistory(pairedHistory, month, noCorporateUbiInputs(inputs), inputs.model.executionMode === 'world-conditional-v1' ? evaluateConditionalSnapshot(base,noCorporateUbiInputs(inputs)) : base),
   };
 }
 
@@ -150,7 +151,7 @@ export function rebuildCounterfactual(
   inputs: RunInputs,
 ): { paired: SimulationRun; pairedHistory: HistoryPoint[] } {
   const last = Math.max(month, 0, ...history.map((p) => p.month));
-  const pairedBase = inputs.model.executionMode === 'world-conditional-v1' ? initializeConditionalOutputs(base,noCorporateUbiInputs(inputs)) : base;
+  const pairedBase = inputs.model.executionMode === 'world-conditional-v1' ? evaluateConditionalSnapshot(base,noCorporateUbiInputs(inputs)) : base;
   const caught = catchUp(pairedBase, last, noCorporateUbiInputs(inputs));
   const at = caught.history.find((p) => p.month === month)?.run ?? pairedBase;
   return { paired: at, pairedHistory: caught.history };
@@ -320,4 +321,37 @@ export function historyFromSave(saved: SavedState): LoadedSave {
     note: `Save file predates the simulation-run format: rebuilt months 0-${month} by replaying with the saved model.`,
     countryDataset,
   };
+}
+
+/** Include the anchor and current snapshot without inventing elapsed month-zero spending. */
+export function historyThroughCurrent(history: HistoryPoint[], base: SimulationRun, current: SimulationRun): HistoryPoint[] {
+  const points = new Map<number, HistoryPoint>();
+  points.set(base.state.month, historyPoint(base));
+  for (const point of history) {
+    if (point.month >= base.state.month && point.month <= current.state.month) points.set(point.month, point);
+  }
+  points.set(current.state.month, historyPoint(current));
+  return [...points.values()].sort((a, b) => a.month - b.month);
+}
+
+/** A failed storage write must never delete the last successfully saved recovery. */
+export function writeRecoverySnapshot(
+  storage: Pick<Storage, 'setItem'>,
+  full: SavedState,
+  reduced?: () => SavedState,
+): { saved: boolean; reduced: boolean; error?: unknown } {
+  try {
+    storage.setItem('ubi-sim-autosave', JSON.stringify(full));
+    return { saved: true, reduced: false };
+  } catch (error) {
+    if (reduced && error && typeof error === 'object' && 'name' in error && error.name === 'QuotaExceededError') {
+      try {
+        storage.setItem('ubi-sim-autosave', JSON.stringify(reduced()));
+        return { saved: true, reduced: true };
+      } catch (fallbackError) {
+        return { saved: false, reduced: false, error: fallbackError };
+      }
+    }
+    return { saved: false, reduced: false, error };
+  }
 }
