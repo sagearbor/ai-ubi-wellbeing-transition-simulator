@@ -89,7 +89,10 @@ export function checkSourceSize(values: unknown[], override?: Partial<RunLimits>
     const value = pending.pop();
     if (typeof value === 'string') size += value.length + 2;
     else if (value && typeof value === 'object') {
-      size += 2;
+      // JSON emits null for every array hole. Charge every slot before enumerating properties,
+      // so a sparse array cannot expand into an unbounded null-filled clone or manifest.
+      size += 2 + (Array.isArray(value) ? value.length * 5 : 0);
+      if (size > limits.maxSourceChars) break;
       for (const key in value) {
         size += key.length + 4;
         if (size > limits.maxSourceChars) break;

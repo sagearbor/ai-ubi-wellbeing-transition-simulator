@@ -246,6 +246,6 @@ describe('review 2026-09-14 finding 3: the add-variable defaults cannot break th
     const onCompletions = runModel(training, { overlays: [{ id: 'x', effects: [{ id: 'x', target: 'completions', op: 'multiply', expr: '1.025', source: { label: 'g', kind: 'guess' } }] }] });
     expect(onCompletions.ok).toBe(false);
     expect(onCompletions.diagnostics.some((d) => d.code === 'no-hook')).toBe(true);
-    expect((training.invariants ?? []).map((i) => i.id)).toEqual(['within-instructor-capacity', 'within-eligible', 'within-openings', 'budget-not-overspent']);
+    expect((training.invariants ?? []).map((i) => i.id)).toEqual(['within-instructor-capacity', 'within-eligible', 'within-openings', 'budget-not-overspent', 'nonnegative-final-values', 'placements-within-completions']);
   });
 });

@@ -8,7 +8,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { budgetFor, compileModel, runModel, runMonteCarlo, withRunBudget } from '../core/engine';
 import { findFixture } from '../core/fixtures';
 import { validateCoreModel, validateOverlay } from '../core/validate';
-import { RUN_LIMITS, checkRunSettings, effectiveLimits } from '../core/limits';
+import { RUN_LIMITS, checkSourceSize, checkRunSettings, effectiveLimits } from '../core/limits';
 import type { CoreModel, MonteCarloResult } from '../core/types';
 import { pairedRun } from '../policy/draft';
 import { modelHash } from '../policy/hash';
@@ -407,4 +407,15 @@ it('queued cancellation and supersession do not restart an unrelated active lane
   expect((await active.promise).status).toBe('done');
   expect((await replacement.promise).status).toBe('done');
   runner.dispose();
+});
+
+
+it('counts sparse array slots before cloning malformed direct models', () => {
+  const serialized = vi.fn(() => { throw new Error('sparse source reached serialization'); });
+  const raw: CoreModel = { ...minimal, variables: new Array(1_000_000) };
+  Object.defineProperty(raw, 'toJSON', {value: serialized, enumerable: false});
+  expect(checkSourceSize([raw])?.limit).toBe('maxSourceChars');
+  expect(runModel(raw).ok).toBe(false);
+  expect(runMonteCarlo(raw, {runs: 1}).ok).toBe(false);
+  expect(serialized).not.toHaveBeenCalled();
 });
