@@ -46,7 +46,7 @@ export function createFinancialModel(record: FinancialRecord, scenario: Financia
 
 ### Task 2: Reproducible historical reconstruction artifact and view
 
-Own new files scripts/hindcast/export-experience.ts, data/hindcast/experience.json, src/history/, components/history/, docs/design/research/historical-experience.md. May add script/check command to package.json; don't edit existing economic harness or observations or App. Read spec Historical page and appearance.
+Own new files scripts/hindcast/export-experience.ts, data/hindcast/experience.json, src/history/, components/history/, docs/design/research/historical-experience.md. Do not edit package.json (it is in the pinned legacy qualification manifest), existing economic harness, observations or App. Invoke the exporter with node --import tsx and gate freshness via ordinary Vitest tests. Read spec Historical page and appearance.
 
 Interfaces:
 ```ts
