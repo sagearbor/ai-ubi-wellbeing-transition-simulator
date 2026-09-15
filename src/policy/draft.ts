@@ -35,8 +35,8 @@
  *     not against the draft's list, and completeness is claimed only by a named person's attestation.
  */
 
-import { ENGINE_VERSION, drain, explainBinding, isDeterministic, resolveModel, runModel, type DrawProgress } from '../core/engine';
-import { effectiveLimits } from '../core/limits';
+import { ENGINE_VERSION, budgetFor, currentBudget, drain, explainBinding, isDeterministic, resolveModel, runModel, type DrawProgress } from '../core/engine';
+import { checkRunSettings, effectiveLimits } from '../core/limits';
 import type { CoreModel, EvidenceKind, Input, Overlay, RunResult } from '../core/types';
 import { sourceCoverage, type SourceCoverage } from './clauses';
 import { contentHash, modelHash, sha256Hex } from './hash';
@@ -685,6 +685,7 @@ export function pairedRun(model: CoreModel, overlays: Overlay[], draft: PolicyDr
 
 /** pairedRun as a generator: yields { done, total } after each paired draw. */
 export function* pairedRunSteps(model: CoreModel, overlays: Overlay[], draft: PolicyDraft, opts: PairedRunOptions = {}): Generator<DrawProgress, PairedRunResult, void> {
+  const budget = currentBudget() ?? budgetFor(effectiveLimits().maxWallClockMs);
   const requested = Math.max(1, Math.floor(opts.runs ?? DEFAULT_RUNS));
   const overDraws = requested > effectiveLimits().maxDraws;
   let runs = overDraws ? 0 : requested;
@@ -761,8 +762,13 @@ export function* pairedRunSteps(model: CoreModel, overlays: Overlay[], draft: Po
     manifest.draws = { count: 1, seed, firstIndex: 0, deterministic: true };
   }
 
-  const pointB = runModel(model, { overlays });
-  const pointP = runModel(model, { overlays: policyOverlays });
+  // Both resolved sides must fit before either point run allocates retained arrays.
+  const resourceProblems = [resolveModel(model, overlays).model, resolveModel(model, policyOverlays).model]
+    .flatMap(side => checkRunSettings({ model: side, runs, seed, sides: 3, ensemble: true }, currentBudget()?.limits));
+  if (resourceProblems.length) return { ...empty, errors: resourceProblems.map(p => `[limit-exceeded] ${p.message}`) };
+
+  const pointB = runModel(model, { overlays, budget });
+  const pointP = runModel(model, { overlays: policyOverlays, budget });
   manifest.baselineRunHash = pointB.manifest.hash;
   manifest.policyRunHash = pointP.manifest.hash;
   empty.years = pointB.years;
@@ -788,8 +794,8 @@ export function* pairedRunSteps(model: CoreModel, overlays: Overlay[], draft: Po
   const drawsD = mk(outputs);
 
   for (let r = 0; r < runs; r++) {
-    const b = runModel(model, { overlays, seed, run: r });
-    const p = runModel(model, { overlays: policyOverlays, seed, run: r });
+    const b = runModel(model, { overlays, seed, run: r, budget });
+    const p = runModel(model, { overlays: policyOverlays, seed, run: r, budget });
     if (!b.ok || !p.ok) {
       return { ...empty, errors: [`draw ${r} failed`, ...(b.ok ? [] : failures('baseline', b)), ...(p.ok ? [] : failures('policy', p))] };
     }

@@ -302,3 +302,41 @@ describe('runner protocol (fake worker)', () => {
     runner.dispose();
   });
 });
+
+it('rejects combined retained allocations before compiling or allocating', () => {
+  const huge: CoreModel = { ...minimal, time: { start: 0, end: 4999, step: 'year' },
+    entities: { kind: 'region', ids: Array.from({ length: 500 }, (_, i) => `e${i}`) },
+    variables: Array.from({ length: 250 }, (_, i) => ({ id: `v${i}`, equation: '1' })), outputs: ['v0'] };
+  expect(preflight(mcJob(2000, huge)).some(p => p.limit === 'maxRetainedCells')).toBe(true);
+  const r = runModel(huge);
+  expect(r.ok).toBe(false);
+  expect(r.years).toEqual([]);
+});
+
+it('checks overlays, source complexity and direct paired retained draws', () => {
+  const extra = Array.from({ length: 1001 }, (_, i) => ({ id: `extra${i}`, equation: '1' }));
+  expect(runModel(minimal, { overlays: [{ id: 'large', variables: extra }] }).diagnostics.some(d => d.code === 'limit-exceeded')).toBe(true);
+  expect(compileModel({ ...minimal, variables: [{ id: 'x', equation: '('.repeat(65) + '1' + ')'.repeat(65) }] }).diagnostics.some(d => d.code === 'limit-exceeded')).toBe(true);
+  const model: CoreModel = { ...training, time: { start: 2026, end: 2525, step: 'year' } };
+  const result = pairedRun(model, [], { ...threeStatusDraft(), modelHash: modelHash(model) }, { runs: 2000 });
+  expect(result.ok).toBe(false);
+  expect(result.errors.join(' ')).toContain('retained cells');
+});
+
+it('serializes asynchronous jobs before they allocate result arrays', async () => {
+  let resume!: () => void;
+  let paused!: () => void;
+  const waiting = new Promise<void>(resolve => { paused = resolve; });
+  const first = executeAsync(mcJob(2), { sliceMs: 0, pause: () => { paused(); return new Promise<void>(resolve => { resume = resolve; }); } });
+  await waiting;
+  let secondProgress = 0;
+  const second = executeAsync(mcJob(2), { sliceMs: 0, onProgress: () => { secondProgress++; } });
+  await Promise.resolve();
+  expect(secondProgress).toBe(0);
+  resume();
+  // The first generator yields again after draw two; allow that pause too.
+  await Promise.resolve(); await Promise.resolve();
+  resume();
+  expect((await first).status).toBe('done');
+  expect((await second).status).toBe('done');
+});

@@ -113,7 +113,7 @@ describe('recording', () => {
 describe('check rule (a): no target disappears without a retirement reason', () => {
   it('fails when an id present at the comparison base is gone', () => {
     const prev = ledgerOf([entry({ id: 'kept' }), entry({ id: 'dropped' })]);
-    const r = check({ current: ledgerOf([entry({ id: 'kept', compute: null })]), previous: [prev] });
+    const r = check({ current: ledgerOf([entry({ id: 'kept', compute: null, status: 'not-checked' })]), previous: [prev] });
     expect(r.failures.map((f) => [f.rule, f.id])).toEqual([['a', 'dropped']]);
   });
 
@@ -126,7 +126,7 @@ describe('check rule (a): no target disappears without a retirement reason', () 
   });
 
   it('fails when a harness still declares a target no entry covers, unless it is excluded with a reason', () => {
-    const current = ledgerOf([entry({ id: 'e', compute: null, covers: ['kj:modest:gdpBoostPct'] })], {
+    const current = ledgerOf([entry({ id: 'e', compute: null, status: 'not-checked', covers: ['kj:modest:gdpBoostPct'] })], {
       exclusions: [{ pattern: '^infile:minimal::', reason: 'synthetic' }],
     });
     const r = check({ current, targetKeys: ['kj:modest:gdpBoostPct', 'infile:minimal::income compounds', 'anchor:AT-9'] });
@@ -136,7 +136,7 @@ describe('check rule (a): no target disappears without a retirement reason', () 
   });
 
   it('fails when a checkedBy file no longer exists', () => {
-    const r = check({ current: ledgerOf([entry({ compute: null, checkedBy: ['gone.test.ts:3'] })]), existingFiles: new Set(['a.test.ts']) });
+    const r = check({ current: ledgerOf([entry({ compute: null, status: 'not-checked', checkedBy: ['gone.test.ts:3'] })]), existingFiles: new Set(['a.test.ts']) });
     expect(r.failures.map((f) => f.rule)).toEqual(['a']);
   });
 });
@@ -156,7 +156,7 @@ describe('check rule (b): computed status must equal the recorded status', () =>
   });
 
   it('a computation that breaks is a failure; one that was not attempted is a warning', () => {
-    const current = ledgerOf([entry({ id: 'broken' }), entry({ id: 'skipped' }), entry({ id: 'missing' })]);
+    const current = ledgerOf([entry({ id: 'broken' }), entry({ id: 'skipped', status: 'not-checked' }), entry({ id: 'missing' })]);
     const r = check({ current, computed: results([['broken', { value: null, error: 'in-file test not found' }], ['skipped', { value: null, skipped: 'no hindcast data' }]]) });
     expect(r.failures.map((f) => f.id)).toEqual(['broken', 'missing']);
     expect(r.warnings.join()).toContain('skipped: not computed');
@@ -168,7 +168,7 @@ describe('check rule (b): computed status must equal the recorded status', () =>
   });
 
   it('an entry with no tolerance must carry a classification', () => {
-    const r = check({ current: ledgerOf([entry({ compute: null, tolerance: { kind: 'none', setBy: 'nobody' } })]) });
+    const r = check({ current: ledgerOf([entry({ compute: null, status: 'not-checked', tolerance: { kind: 'none', setBy: 'nobody' } })]) });
     expect(r.failures.map((f) => f.rule)).toEqual(['schema']);
   });
 });
@@ -178,13 +178,13 @@ describe('check rule (c): a test that pins a known miss must have its ledger ent
   const pinning = { [pin.file]: 'expect(at3?.passed).toBe(false);' };
 
   it('fails when the pinning test exists and the entry does not', () => {
-    const r = check({ current: ledgerOf([entry({ id: 'other', compute: null, checkedBy: [`${pin.file}:36`] })]), testFiles: pinning });
+    const r = check({ current: ledgerOf([entry({ id: 'other', compute: null, status: 'not-checked', checkedBy: [`${pin.file}:36`] })]), testFiles: pinning });
     expect(r.failures.map((f) => [f.rule, f.id])).toEqual([['c', 'anchor-AT-3']]);
   });
 
   it('fails when the entry records the pinned miss as reproduced', () => {
     const r = check({ current: ledgerOf([entry({ id: 'anchor-AT-3', compute: null, status: 'reproduced', checkedBy: [`${pin.file}:36`] })]), testFiles: pinning });
-    expect(r.failures.map((f) => f.rule)).toEqual(['c']);
+    expect(r.failures.map((f) => f.rule)).toEqual(['b', 'c']);
   });
 
   it('passes when the entry is recorded as missed; ignores the pin once the test no longer contains it', () => {
@@ -199,7 +199,7 @@ describe('check rule (c): a test that pins a known miss must have its ledger ent
     expect(flagged.failures.map((f) => f.rule)).toEqual(['c']);
     expect(flagged.failures[0].message).toContain('src/new.test.ts');
     expect(check({ testFiles: files, current: ledgerOf([], { scanExemptions: [{ file: 'src/new.test.ts', reason: 'synthetic' }] }) }).failures).toEqual([]);
-    expect(check({ testFiles: files, current: ledgerOf([entry({ compute: null, checkedBy: ['src/new.test.ts:1'] })]) }).failures).toEqual([]);
+    expect(check({ testFiles: files, current: ledgerOf([entry({ compute: null, status: 'not-checked', checkedBy: ['src/new.test.ts:1'] })]) }).failures).toEqual([]);
   });
 });
 
@@ -232,4 +232,30 @@ describe('rendering', () => {
     expect(md.indexOf('## alaska-pfd')).toBeLessThan(md.indexOf('## hindcast'));
     expect(md).toContain('| `b` | **missed** |');
   });
+});
+
+describe('success requires fresh evidence', () => {
+  it('refuses non-finite targets and invalid tolerances', () => {
+    expect(withinTolerance(10, Infinity, { kind: 'abs', value: Infinity, setBy: 'invalid' })).toBe(false);
+    expect(withinTolerance(10, 10, { kind: 'abs', value: Infinity, setBy: 'invalid' })).toBe(false);
+    expect(withinTolerance(10, 10, { kind: 'relative', value: -1, setBy: 'invalid' })).toBe(false);
+  });
+
+  it.each(['reproduced', 'reproduced-with-caveat'] as const)('refuses %s without computation or with skipped evidence', (status) => {
+    for (const r of [undefined, { value: null, skipped: 'unavailable' }]) {
+      const e = entry({ status, compute: r ? entry().compute : null });
+      expect(check({ current: ledgerOf([e]), computed: r ? results([['x', r]]) : new Map() }).failures.length).toBeGreaterThan(0);
+    }
+  });
+  it('full ledger retains known miss after compute deletion', async () => {
+    const { readFileSync } = await import('node:fs');
+    const { discoverTargetKeys } = await import('./ledger');
+    const recorded = JSON.parse(readFileSync('data/ledger/reference-targets.json', 'utf8')) as Ledger;
+    const current = structuredClone(recorded);
+    const e = current.entries.find(e => e.id === 'gp-fig3a-p100-tau0.5')!;
+    e.compute = null; e.status = 'reproduced-with-caveat'; e.caveat = 'still misses';
+    const testFiles = Object.fromEntries(KNOWN_MISS_PINS.map(p => [p.file, readFileSync(p.file, 'utf8')]));
+    const report = checkLedger({ current, previous: [recorded], computed: computeLedger(current.entries), testFiles, targetKeys: discoverTargetKeys() });
+    expect(report.failures.some(f => f.id === e.id)).toBe(true);
+  }, 30000);
 });

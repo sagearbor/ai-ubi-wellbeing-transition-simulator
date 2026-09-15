@@ -41,10 +41,10 @@ import type {
   TestOutcome,
   Variable,
 } from './types';
-import { effectiveLimits, stepCount, type RunLimits } from './limits';
+import { checkRunSettings, effectiveLimits, stepCount, type RunLimits } from './limits';
 
 /** Bump on any change to numerical behaviour (solver acceptance, ordering, invariants); it is part of every run hash. */
-export const ENGINE_VERSION = 'core-0.2.0';
+export const ENGINE_VERSION = 'core-0.3.0';
 const SINGLE = '_';
 
 // ---------------------------------------------------------------------------
@@ -305,6 +305,8 @@ function yearsOf(model: CoreModel, maxSteps: number): number[] {
 export function compileModel(model: CoreModel, limitsOverride?: Partial<RunLimits>): CompiledModel {
   const diagnostics: Diagnostic[] = [];
   const limits = effectiveLimits(limitsOverride ?? ambientBudget?.limits);
+  const combined = checkRunSettings({ model }, limits).filter(p => !['maxSteps', 'maxEntities', 'maxSolverIterations'].includes(p.limit));
+  if (combined.length) return { model, entities: [], years: [], order: [], variables: new Map(), solves: new Map(), aggregates: new Map(), tests: [], invariants: [], diagnostics: combined.map(p => ({ level: 'error', code: p.code, message: p.message })) };
   const steps = stepCount(model.time);
   if (!Number.isFinite(steps) || steps < 1 || steps > limits.maxSteps) {
     diagnostics.push({
@@ -324,6 +326,7 @@ export function compileModel(model: CoreModel, limitsOverride?: Partial<RunLimit
     }
   }
   // Over a limit, nothing is expanded per entity or per step (the graph would be as large as the request).
+  if (diagnostics.length) return { model, entities: [], years: [], order: [], variables: new Map(), solves: new Map(), aggregates: new Map(), tests: [], invariants: [], diagnostics };
   const overLimit = diagnostics.length > 0;
   const entities = overLimit ? [SINGLE] : model.entities?.ids?.length ? [...model.entities.ids] : [SINGLE];
   const years = yearsOf(model, limits.maxSteps);
@@ -644,7 +647,7 @@ function manifestFor(model: CoreModel, overlays: Overlay[], seed: number | null,
 export function runModel(base: CoreModel, opts: RunOptions = {}): RunResult {
   const overlays = opts.overlays ?? [];
   const seed = opts.seed ?? null;
-  const budget = opts.budget ?? ambientBudget;
+  const budget = opts.budget ?? ambientBudget ?? budgetFor(effectiveLimits(opts.limits).maxWallClockMs, { limits: opts.limits });
   const { model, diagnostics: d0 } = resolveModel(base, overlays);
   const cm = compileModel(model, opts.limits ?? budget?.limits);
   const diagnostics = [...d0, ...cm.diagnostics];
@@ -780,19 +783,14 @@ export function runModel(base: CoreModel, opts: RunOptions = {}): RunResult {
         if (!Number.isFinite(flo) || !Number.isFinite(fhi)) {
           return fail('no-root', 'solve-no-root', `residual is not finite at a bracket end [${lo}, ${hi}] (${flo}, ${fhi})`);
         }
-        const scale0 = Math.max(Math.abs(flo), Math.abs(fhi));
-        // A root is accepted on its residual, never on bracket width alone. Either the residual is
-        // (absolutely) zero to within `exactTol`, or the bracket is narrow by `tol` AND the residual has
-        // shrunk to `acceptTol` (default: one billionth of its magnitude at the bracket ends). A jump or
-        // a pole narrows the bracket without shrinking the residual, and is rejected.
+        // Absolute residual tolerance is independent of the bracket endpoint magnitudes.
         const exactTol = residualTol ?? tol;
-        const acceptTol = residualTol ?? Math.max(tol, 1e-9 * scale0);
         let root: number | null = null;
         let it = 0;
         // Endpoint roots first: bisection never evaluates the ends again.
         if (Math.abs(flo) <= exactTol) root = lo;
         else if (Math.abs(fhi) <= exactTol) root = hi;
-        else if (flo * fhi > 0) {
+        else if (Math.sign(flo) === Math.sign(fhi)) {
           return fail('no-root', 'solve-no-root', `residual has the same sign at both ends of the bracket [${lo}, ${hi}] (${flo.toPrecision(3)}, ${fhi.toPrecision(3)})`);
         } else {
           for (; it < maxIter; it++) {
@@ -800,17 +798,13 @@ export function runModel(base: CoreModel, opts: RunOptions = {}): RunResult {
               const halt = stopped(t);
               if (halt) return halt;
             }
-            const mid = (lo + hi) / 2;
+            const mid = lo / 2 + hi / 2;
+            if (mid === lo || mid === hi) return fail('no-convergence', 'solve-no-convergence', `floating-point bracket stagnation without reaching residual tolerance ${exactTol}`);
             const fm = Number(f(mid));
             if (!Number.isFinite(fm)) return fail('discontinuity', 'solve-discontinuity', `residual is not finite at u = ${mid} inside the bracket: a pole or undefined region, not a root`);
             if (Math.abs(fm) <= exactTol) { root = mid; break; }
-            if (flo * fm < 0) { hi = mid; fhi = fm; } else { lo = mid; flo = fm; }
-            if (hi - lo <= tol * Math.max(1, Math.abs(mid)) && Math.abs(fm) <= acceptTol) { root = mid; break; }
-            // Narrowing to machine precision without the residual reaching zero means the sign change
-            // is a jump or a pole (or the residual tolerance is below what the arithmetic can reach).
-            if (hi - lo <= 4 * Number.EPSILON * Math.max(1, Math.abs(mid))) {
-              return fail('discontinuity', 'solve-discontinuity', `the residual changes sign at u ≈ ${mid} but does not reach |residual| <= ${acceptTol.toPrecision(3)} there (${flo.toPrecision(3)} to ${fhi.toPrecision(3)}): a discontinuity or pole, not a root. If the residual is continuous, set a larger residualTol.`);
-            }
+            if (Math.sign(flo) !== Math.sign(fm)) { hi = mid; fhi = fm; } else { lo = mid; flo = fm; }
+
           }
           if (root === null) return fail('no-convergence', 'solve-no-convergence', `did not converge in ${maxIter} iterations (bracket [${lo}, ${hi}], residual ${flo.toPrecision(3)} to ${fhi.toPrecision(3)})`);
         }
@@ -917,8 +911,11 @@ export function* monteCarloSteps(base: CoreModel, opts: MonteCarloOptions = {}):
     const diagnostics: Diagnostic[] = [{ level: 'error', code: 'limit-exceeded', message: `${String(requested)} Monte Carlo draws requested; the limit is 1 to ${limits.maxDraws.toLocaleString('en-US')}`, where: 'runs' }];
     return { ok: false, diagnostics, years: [], runs: 0, quantiles: {}, manifest };
   }
+  const problems = checkRunSettings({ model, runs: requested, seed, ensemble: true }, limits);
+  if (problems.length) return { ok: false, diagnostics: problems.map(p => ({ level: 'error', code: p.code, message: p.message })), years: [], runs: 0, quantiles: {}, manifest: manifestFor(base, overlays, seed, 0) };
   const runs = deterministic ? 1 : requested;
-  const runOpts = { overlays, seed, budget: opts.budget, limits: opts.limits };
+  const budget = opts.budget ?? ambientBudget ?? budgetFor(limits.maxWallClockMs, { limits: opts.limits });
+  const runOpts = { overlays, seed, budget, limits: opts.limits };
   const first = runModel(base, { ...runOpts, run: 0 });
   const manifest = { ...first.manifest, seed };
   if (!first.ok) return { ok: false, diagnostics: first.diagnostics, years: first.years, runs: 0, quantiles: {}, manifest, deterministic };

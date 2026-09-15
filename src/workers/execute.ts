@@ -27,14 +27,17 @@ const clock = (): number => (typeof performance !== 'undefined' ? performance.no
 export function preflight(job: RunJob, limits?: Partial<RunLimits>): LimitProblem[] {
   switch (job.kind) {
     case 'monte-carlo':
-      return checkRunSettings({ runs: job.runs, seed: job.seed, model: resolveModel(job.model, job.overlays).model }, limits);
+      return checkRunSettings({ runs: job.runs, seed: job.seed, ensemble: true, model: resolveModel(job.model, job.overlays).model }, limits);
     case 'paired':
-      return checkRunSettings({ runs: job.runs, seed: job.seed, model: resolveModel(job.model, job.overlays).model }, limits);
+      return checkRunSettings({ runs: job.runs, seed: job.seed, ensemble: true, sides: 3, retainedJobs: Math.max(1, job.drafts.length), model: resolveModel(job.model, job.overlays).model }, limits);
     case 'reopen-bundle': {
       const m = job.bundle?.manifest;
       const model = registryFor(job.models)(String(m?.modelId ?? ''), String(m?.modelHash ?? ''));
       return checkRunSettings({ runs: Number(m?.runs), seed: Number(m?.seed), ...(model ? { model: resolveModel(model, Array.isArray(job.bundle.overlays) ? job.bundle.overlays : []).model } : {}) }, limits);
     }
+    case 'lab-point':
+      return [job.overlays, job.hypotheticalOverlays ?? []].flatMap(overlays =>
+        checkRunSettings({ model: resolveModel(job.model, overlays).model, sides: 4 }, limits));
     default:
       // Point runs and validation: the engine itself refuses a model over the step, entity or
       // solver limits, with a diagnostic the Lab lists like any other.
@@ -52,6 +55,8 @@ export function registryFor(models: CoreModel[]): (id: string, hash?: string) =>
 
 /** The job as a generator of progress, returning its result. */
 export function* jobSteps(job: RunJob, now: () => number = clock): Generator<Progress, unknown, void> {
+  const problems = preflight(job);
+  if (problems.length) throw new Error(problems.map(p => `[limit-exceeded] ${p.message}`).join('; '));
   switch (job.kind) {
     case 'lab-point': {
       const total = job.hypotheticalOverlays ? 4 : 3;
@@ -125,6 +130,7 @@ function stopOutcome<R>(budget: RunBudget): RunOutcome<R> | null {
 
 /** Run a job to completion on this thread (tests, SSR, no Worker). Same limits, same results. */
 export function executeSync<R = unknown>(job: RunJob, opts: { limits?: Partial<RunLimits>; now?: () => number } = {}): RunOutcome<R> {
+  if (activeAsyncJob) return { status: 'limit-exceeded', message: 'An asynchronous job currently reserves the execution memory budget.' };
   const now = opts.now ?? clock;
   const limits = effectiveLimits(opts.limits);
   const problems = preflight(job, limits);
@@ -158,7 +164,7 @@ export interface AsyncOptions {
 const macrotask = (): Promise<void> => new Promise((resolve) => setTimeout(resolve, 0));
 
 /** Run a job in time slices, yielding between them. Used inside the worker. */
-export async function executeAsync<R = unknown>(job: RunJob, opts: AsyncOptions = {}): Promise<RunOutcome<R>> {
+async function executeAsyncJob<R = unknown>(job: RunJob, opts: AsyncOptions = {}): Promise<RunOutcome<R>> {
   const now = opts.now ?? clock;
   const isCancelled = opts.isCancelled ?? (() => false);
   const limits = effectiveLimits(opts.limits);
@@ -186,4 +192,23 @@ export async function executeAsync<R = unknown>(job: RunJob, opts: AsyncOptions 
   } catch (e) {
     return { status: 'error', message: (e as Error)?.message ?? String(e) };
   }
+}
+
+// One retained asynchronous job at a time in this execution realm. Queued jobs own no result
+// arrays; this reserves the full retained-cell budget instead of multiplying it across lanes.
+let executionTail: Promise<void> = Promise.resolve();
+let queuedJobs = 0;
+let activeAsyncJob = false;
+export async function executeAsync<R = unknown>(job: RunJob, opts: AsyncOptions = {}): Promise<RunOutcome<R>> {
+  const problems = preflight(job, opts.limits);
+  if (problems.length) return limitOutcome(problems);
+  if (queuedJobs >= 16) return { status: 'limit-exceeded', message: 'At most 16 queued jobs per execution realm.' };
+  queuedJobs++;
+  const previous = executionTail;
+  let release!: () => void;
+  executionTail = new Promise<void>(resolve => { release = resolve; });
+  await previous;
+  activeAsyncJob = true;
+  try { return await executeAsyncJob<R>(job, opts); }
+  finally { activeAsyncJob = false; queuedJobs--; release(); }
 }

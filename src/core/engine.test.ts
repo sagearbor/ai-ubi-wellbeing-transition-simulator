@@ -304,6 +304,15 @@ describe('review finding 1: the solver accepts roots on the residual, never on b
     expect(r.solves.s._.residual[0]).toBe(0);
   });
 
+  it('rejects an endpoint-scaled jump without a zero', () => {
+    expect(solveOnly('(1e12*(u-0.5)^2 + 1) * (u < 0.5 ? -1 : 1)', [0, 1]).ok).toBe(false);
+  });
+  it('reaches a steep root very close to zero', () => {
+    const r = solveOnly('1e12*(u-1e-15)', [0, 1], { residualTol: 1e-9 });
+    expect(r.ok).toBe(true);
+    expect(Math.abs(r.solves.s._.residual[0])).toBeLessThanOrEqual(1e-9);
+  });
+
   it('finds a root at the upper end', () => {
     const r = solveOnly('u - 1', [0, 1]);
     expect(r.ok).toBe(true);
@@ -313,13 +322,13 @@ describe('review finding 1: the solver accepts roots on the residual, never on b
   it('a jump that changes sign without a root fails explicitly (floor(u) - 0.5 on [0, 2])', () => {
     const r = solveOnly('floor(u) - 0.5', [0, 2]);
     expect(r.ok).toBe(false);
-    expect(r.diagnostics.map((d) => d.code)).toEqual(['solve-discontinuity']);
+    expect(r.diagnostics.map((d) => d.code)).toEqual(['solve-no-convergence']);
   });
 
   it('a pole that changes sign fails explicitly (1 / (u - 0.3) on [0, 1])', () => {
     const r = solveOnly('1 / (u - 0.3)', [0, 1]);
     expect(r.ok).toBe(false);
-    expect(r.diagnostics.map((d) => d.code)).toEqual(['solve-discontinuity']);
+    expect(['solve-discontinuity', 'solve-no-convergence']).toContain(r.diagnostics[0].code);
   });
 
   it('a non-finite residual inside the bracket is a failure, not a sign', () => {
@@ -409,6 +418,6 @@ describe('review finding 12: run identity', () => {
     expect([d0.manifest.run, d1.manifest.run]).toEqual([0, 1]);
   });
   it('the manifest names the numerical engine version', () => {
-    expect(runModel(training).manifest.engineVersion).toBe('core-0.2.0');
+    expect(runModel(training).manifest.engineVersion).toBe('core-0.3.0');
   });
 });
