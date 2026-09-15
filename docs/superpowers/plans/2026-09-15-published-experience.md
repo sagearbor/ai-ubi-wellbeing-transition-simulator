@@ -27,7 +27,7 @@ export const financialRecords: FinancialRecord[];
 export function financialRecord(id: string): FinancialRecord; // reject unknown
 // FinancialRecord: id, companyId, companyName, fiscalYear, periodStart, periodEnd,
 // currency:'USD', unit:'million-USD', revenue:number|null, netIncome:number|null,
-// operatingCashFlow:number, cashPpePurchases:number, dividends:number|null,
+// operatingCashFlow:number, cashCapitalInvestment:number, cashCapitalInvestmentLabel:string, cashCapitalInvestmentNote:string, dividends:number|null,
 // repurchases:number|null, sourceUrl, sourceTitle, retrievedAt, evidence: line-item provenance.
 // src/financials/model.ts
 export const defaultFinancialScenario: FinancialScenario;
