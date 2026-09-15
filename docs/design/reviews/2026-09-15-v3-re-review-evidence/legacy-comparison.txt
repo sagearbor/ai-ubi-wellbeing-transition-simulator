@@ -1,0 +1,3 @@
+Reviewer comparison: all 121 monthly complete states for organic-incentive and evidence-anchored are numerically identical at bb85a92 and 436a16e when countries-legacy-v1 is selected. Only added state.countryDataset metadata was excluded. 0 differences in either run.
+legacy-before-bb85a92.json SHA256 6082cef6b97cd07c49516e7e449f92cbcac0fc4121ac2bc313bc659a2cd84982
+legacy-after-436a16e.json SHA256 6082cef6b97cd07c49516e7e449f92cbcac0fc4121ac2bc313bc659a2cd84982

@@ -1,0 +1,46 @@
+import {runModel, runMonteCarlo} from './src/core/engine';
+import {unitFactor} from './src/policy/units';
+import {coverage,validateDraft,pairedRun} from './src/policy/draft';
+import {sourceCoverage,buildClauseInventory} from './src/policy/clauses';
+import {modelHash} from './src/policy/hash';
+import {initialRun,advanceRun,noCorporateUbiInputs,runMonths,initOptionsFor} from './simulation/run';
+import {headlineStats} from './simulation/appState';
+import {DEFAULT_MODEL,PRESET_MODELS,INITIAL_CORPORATIONS,countriesForDataset,countryDatasetFile} from './constants';
+import {applyUsReference,usReferencePath,portStepForWorldMonth} from './simulation/usReference';
+import {anchoredWellbeingTarget} from './simulation/pure';
+import {preflight,executeSync} from './src/workers/execute';
+import training from './data/core/training-budget.json';
+const out=(label:string,v:unknown)=>console.log(JSON.stringify({label,...v as any}));
+const base:any={schemaVersion:1,id:'review-probe',name:'Reviewer probe',time:{start:2026,end:2026,step:'year'},parameters:[],variables:[],outputs:['u'],solves:[{id:'root',unknown:'u',residual:'u',bracket:[0,1]}]};
+for(const [label,residual,extra] of [
+ ['endpoint-scaled-jump','(1e12 * (u-0.5)^2 + 1) * (u < 0.5 ? -1 : 1)',{}],
+ ['legitimate-near-zero','1e12 * (u - 1e-15)',{residualTol:1e-9}],
+ ['scaled-jump-explicit-residual','(1e12 * (u-0.5)^2 + 1) * (u < 0.5 ? -1 : 1)',{residualTol:1e-9}],
+] as const){ const m=structuredClone(base); Object.assign(m.solves[0],{residual},extra);const r=runModel(m);out(label,{ok:r.ok,value:r.series._?.u,solves:r.solves,diagnostics:r.diagnostics}); }
+for(const [label,extra] of [
+ ['negative-placements',{effects:[{id:'negative',target:'potential_placements',op:'multiply',expr:'-1',source:{label:'review',kind:'assumed'}}]}],
+ ['placements-exceed-completions',{inputs:[{...training.inputs[0],curve:{2026:500000,2029:500000}}],effects:[{id:'over',target:'potential_placements',op:'multiply',expr:'3',source:{label:'review',kind:'assumed'}}]}],
+ ['capacity-default-overlay',{inputs:[{id:'newAccess',unit:'share',curve:{2026:0,2029:.5}}],effects:[{id:'newAccessEffect',target:'potential_placements',op:'multiply',expr:'1+0.05*newAccess',source:{label:'review',kind:'assumed'}}]}]
+] as const){const r=runModel(training as any,{overlays:[{id:'probe',...extra} as any]});out(label,{ok:r.ok,completions:r.series._?.completions,placements:r.series._?.placements,diagnostics:r.diagnostics});}
+for(const [f,t] of [['usd per worker','usd per person'],['people','workers'],['usd','usd per month'],['million usd per year','usd per month']])out('unit-'+f+'-'+t,unitFactor(f,t,'probe'));
+const text='SEC. 1. PAYMENTS.\n(a) Pay a training grant. Limit eligibility to displaced workers.\n(b) Tax robot profits.';
+const draft:any={schemaVersion:1,id:'probe',title:'Probe',source:{title:'Probe'},modelId:training.id,modelHash:modelHash(training),reviewStatus:'ai-drafted',provisions:[{id:'all',quote:text,summary:'Training grant',status:'mapped',role:'funding',mapping:{kind:'input',target:'training_budget',op:'set',value:20000000,unit:'usd',evidence:{label:'Assumed',kind:'assumed'}}}]};
+out('whole-text-one-mapping',{coverage:coverage(draft,text),diagnostics:validateDraft(draft,training as any,{sourceText:text}),ok:pairedRun(training as any,[],draft,{sourceText:text,runs:1}).ok});
+draft.provisions[0].quote='Not in the source.';
+out('invalid-quote-only',{ok:pairedRun(training as any,[],draft,{sourceText:text,runs:1}).ok,diagnostics:validateDraft(draft,training as any,{sourceText:text})});
+for(const dataset of ['countries-legacy-v1','countries-wb-2026-09'] as const){
+ for(const model of [PRESET_MODELS[0],DEFAULT_MODEL]){
+  const corps=INITIAL_CORPORATIONS.map(c=>({...c,contributionRate:0})); const b=initialRun(corps,undefined,initOptionsFor(model,dataset));
+  const a=advanceRun(b,{model}), cf=advanceRun(b,noCorporateUbiInputs({model}));
+  out('zero-transfer',{dataset,model:model.id,month:a.state.month,ubi:a.state.countryData.USA.totalUbiReceived,inflow:a.ledger.monthlyInflow,wellbeing:a.state.countryData.USA.wellbeing,counterfactual:cf.state.countryData.USA.wellbeing,headline:headlineStats(a.state)});
+ }
+}
+for(const scenario of [undefined,'modest','substantial','extreme'] as const){
+ const model:any=structuredClone(DEFAULT_MODEL); if(scenario)model.macro.usReference=scenario;
+ const b=initialRun(undefined,undefined,initOptionsFor(model,'countries-wb-2026-09'));
+ const rows=runMonths(b,61,{model}), c=rows[60].state.countryData.USA, next=rows[61].state.countryData.USA;
+ const p=scenario?usReferencePath(scenario).points[portStepForWorldMonth(60)]:undefined;
+ out('US-2030',{scenario:scenario??'default-reduced',archetype:c.archetype,gov:c.governance,gdp:c.gdpPerCapita,noAi:c.gdpNoAi,gap:c.gdpPerCapita/c.gdpNoAi!-1,share:c.laborShare,unemployment:c.unemployment,wellbeing:c.wellbeing,labourGap:c.gdpPerCapita*c.laborShare!/(c.gdpNoAi!*.6)-1,port:p,month61:{month:rows[61].state.month,outOfScope:rows[61].state.outOfScope,wellbeing:next.wellbeing,gdp:next.gdpPerCapita}});
+}
+out('worker-overdraws',preflight({kind:'monte-carlo',model:training as any,overlays:[],runs:2001,seed:1}));
+out('worker-point',executeSync({kind:'lab-point',model:training as any,overlays:[]}));
