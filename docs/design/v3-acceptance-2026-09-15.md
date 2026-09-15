@@ -62,6 +62,8 @@ The complete local check passed on 2026-09-15. Anchor results remain 5 of 6: acc
 |---|---|
 | Complete local `npm run check` on integrated branch | Passed: 73 files / 1,054 tests, all required validators, live ledger and build; initial sandbox IPC restriction resolved by approved rerun |
 | Final production-browser supported flows and accepted default status | Passed within the recorded automated scope: Chrome/Vite `562582a` accepted all 61 default accounting points; fixed production build `e529c73` covered supported policy, Futures and world flows, bundle/link reopen and invalid-owner refusal. No live Gemini request, arbitrary-source/browser delivery, human usability study or accessibility certification. |
-| Independent whole-branch review and resolution of blocking findings | Pending coordinator review |
+| Independent whole-branch review and resolution of blocking findings | Passed: all three P2 findings addressed at eb80fbf; [scoped re-review](reviews/2026-09-15-stage35-final-branch-rereview.md) |
 | Fresh GitHub CI, pull request and merge SHA | Pending; no main/release claim |
 | Cloud deployment and live demo update | Not performed by this work |
+
+Final bounded rendering corrections were also verified in production build `eb80fbf`: actual USA population label, imported-roster dividend headline and supported-upload wording. See the final section of the [browser evidence report](reviews/2026-09-15-stage35-browser-checks.md).
