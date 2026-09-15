@@ -27,17 +27,17 @@
 
 **Interfaces:** Keep runModel/runMonteCarlo public entry points. Existing SolveBlock.residualTol remains accepted. Add explicit residualScale only if required for model authors; default scale must not derive from endpoint magnitudes. Run limits must be enforced from every public runner, including overlays and direct core execution. The ledger checker continues returning failures/warnings.
 
-- [ ] Add and run failing tests for review N1: endpoint-scaled jump has no root; legitimate 1e12*(u-1e-15) root is reachable; original endpoint/floor/pole cases remain covered. Use these exact residuals:
+- [x] Add and run failing tests for review N1: endpoint-scaled jump has no root; legitimate 1e12*(u-1e-15) root is reachable; original endpoint/floor/pole cases remain covered. Use these exact residuals:
 ```ts
 '(1e12*(u-0.5)^2 + 1) * (u < 0.5 ? -1 : 1)'
 '1e12*(u-1e-15)' // residualTol 1e-9, bracket [0,1]
 ```
-- [ ] Implement absolute/explicitly normalized residual acceptance, finite checks and true floating-point midpoint stagnation. Separate unresolved convergence from proved invalid evaluation. Preserve faithful Korinek and GP results.
-- [ ] Add failing training tests: hook multiplier -1 must fail; budget 500000 plus potential placements multiplier 3 cannot yield 150 placements from 100 completions. Add final nonnegativity and placements<=completions invariants. Do not silently cap invalid final effects.
-- [ ] Add failing ledger test on the full recorded ledger: remove compute from gp-fig3a-p100-tau0.5, label reproduced-with-caveat, retain previous entry/test sources and discover targets. Require computation and in-tolerance evidence for either success status, with deliberate downgrade/retirement on removal. Missing or skipped computation cannot certify success.
-- [ ] Add preflight regression with 500 entities, 5000 steps, 250 constant variables and 2000 draws. It must fail before allocation. Define documented conservative combined retained-cell/byte and work budgets; include all retained variables, intermediates, paired sides/draws, overlays and concurrent job accounting where relevant. Limit source/AST size and variables before expensive compilation. Preserve ordinary fixtures and deterministic one-draw optimization.
-- [ ] Run targeted core, faithful reference, training, worker, ledger tests; run typecheck. Explain any numerical drift, never repin published targets.
-- [ ] Commit only owned changes and append a report with red/green commands/results, interfaces, limitations and commit IDs.
+- [x] Implement absolute/explicitly normalized residual acceptance, finite checks and true floating-point midpoint stagnation. Separate unresolved convergence from proved invalid evaluation. Preserve faithful Korinek and GP results.
+- [x] Add failing training tests: hook multiplier -1 must fail; budget 500000 plus potential placements multiplier 3 cannot yield 150 placements from 100 completions. Add final nonnegativity and placements<=completions invariants. Do not silently cap invalid final effects.
+- [x] Add failing ledger test on the full recorded ledger: remove compute from gp-fig3a-p100-tau0.5, label reproduced-with-caveat, retain previous entry/test sources and discover targets. Require computation and in-tolerance evidence for either success status, with deliberate downgrade/retirement on removal. Missing or skipped computation cannot certify success.
+- [x] Add preflight regression with 500 entities, 5000 steps, 250 constant variables and 2000 draws. It must fail before allocation. Define documented conservative combined retained-cell/byte and work budgets; include all retained variables, intermediates, paired sides/draws, overlays and concurrent job accounting where relevant. Limit source/AST size and variables before expensive compilation. Preserve ordinary fixtures and deterministic one-draw optimization.
+- [x] Run targeted core, faithful reference, training, worker, ledger tests; run typecheck. Explain any numerical drift, never repin published targets.
+- [x] Commit only owned changes and append a report with red/green commands/results, interfaces, limitations and commit IDs.
 
 ### Task 2: Policy semantics and operative coverage
 

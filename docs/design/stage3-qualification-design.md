@@ -140,3 +140,133 @@ Tests specific to this architecture: varying the conditional wellbeing coefficie
 **Other thresholds:** projectedDemandCollapse display uses customer wellbeing<40; demandFactor saturates at1; monthly adoption caps at0.999; macro unemployment caps0.6 and cognitive unemployment0.9; legacy crisis threshold is displacementGap>30% monthly wage, subsistence changes at adoption>0.60 and transfer floor multiples. In anchored mode the legacy wellbeing penalties are overwritten, but countriesInCrisis still reports its threshold count. Label that diagnostic separately. Review activation traces, and do not call these all “economic capacity limits.”
 
 **Confirmed dead public controls:** App.tsx still renders Surplus Tax (`corporateTaxRate`) and Adoption Incentive (`adoptionIncentive`) as editable with badges; GDP Scaling (`gdpScaling`) and Displacement Rate (`displacementRate`) are also dead for anchored final outputs; Market Pressure (`marketPressure`) and Default Corp Policy (`defaultCorpPolicy`) are rendered but repo-wide reads found no engine/initialization consumption. The latter two appear in AI prompts, which can make explanations even more misleading. `baseUBI`, `globalRedistributionRate`, `directToWalletEnabled`, and `volatility` likewise have no reads in inspected world stepping. Hide/disable these for the built-in default using the shared capability contract, and fix AI prompt and Methods text. The App comment that unused controls remain because custom equations “may use them” is not sufficient: current evaluate() scopes do not pass these model variables. Declare support only for actual equation bindings. Corporation-specific contribution rate/allocation and actual adoption/macro inputs remain the useful controls.
+
+## Concrete task4/5 implementation addendum: minimum conditional world reference
+
+The following is a concrete proposed model definition, not a claim these numerical assumptions are empirically identified. The implementer should use these choices consistently instead of silently filling gaps. New model ID: `world-conditional-v1`. Old presets, model IDs and defaults attached to old artifacts retain their original definitions.
+
+### Small implementation surface
+
+Use one new `simulation/conditionalWorld.ts` module containing the new corporate resource calculation, conditional wellbeing calculation, month-zero initializer and result metadata. Add a single explicit `executionMode: 'legacy-world' | 'conditional-world-v1'` discriminator to ModelParameters. Missing discriminator means legacy-world, never the new default. Reuse the existing country/corporation/ledger run shape and geography/allocation code. Branch in `stepSimulationPure` at revenue generation, wellbeing calculation and corporation adaptation; do not duplicate the full stepper.
+
+For the new mode, the existing `country.wellbeing` number may hold the conditional output **only if** `SimulationState.wellbeingDefinition = 'conditional-index-v1'` is mandatory and every reader uses the mode correctly. That is smaller than maintaining two evolving wellbeing states. Add optional `country.wellbeingComponents` with raw income/transfer/unemployment/total and validity. Keep `country.observedWellbeing` as a constant reference marker when sourced; never use it to seed a realized dynamics state. The new mode must bypass **all** wellbeing/trend consumers in revenue, demand predictions, corporate adaptation and reputation adaptation. Remove/disable their output cards via capabilities, rather than leaving obsolete computed narratives visible. Old mode stays untouched.
+
+Maintainable rule: exactly one discriminator selects an execution definition; UI labels and capability checks derive from that definition. A test that mutates any conditional wellbeing coefficient without changing corporate or macro results verifies the absence of hidden feedback.
+
+### Corporate resource model and genuine budget plateau
+
+Author and version these scenario assumptions explicitly:
+
+- Corporate market capitalization M is **assumed billions of constant-2015 USD**, newly declared scenario units; it is not a deflated observation of the real named company.
+- Fixed corporate AI capability a is existing aiAdoptionLevel; fixed annual AI revenue-to-market-capitalization ratio r = 0.15/year. Monthly gross modeled AI revenue R = M × a × r / 12. Demand and reputation multipliers are exactly absent from this definition, not zero measured effects. They are outside scope.
+- Define the available modeled source pool F = R by accounting convention (`availableShare = 1.00`). R is the modeled gross source, not a claim of economically disposable profits. Expenses, ownership incidence and competing uses are unestimated. An optional explicitly authored availableShare scenario may reserve part of R: F = R × availableShare and reservedForOtherUses = R−F. No default fraction is chosen to manufacture a plateau.
+- Existing contributionRate becomes requested share q of the modeled gross monthly source. Requested funds Q = R × q; actual contribution C = min(Q,F). Valid public q in [0,1], optional availableShare in [0,1]. Also support an explicit requested monthly amount Q >= 0 for funding diagnostics/stress (with an exclusive request kind, never simultaneous amount and rate setters). Unfunded request = max(0,Q−F), unused available funding = F−C. No borrowing or outside financing.
+- Freeze the request specification, allocation strategy, a, M and availableShare across months unless the user explicitly edits a scenario input; no competition, reputation, wellbeing-triggered or political adaptation in this mode.
+- The selected global/customer/HQ allocation route consumes C, never Q. Preserve all-country population denominator. Require valid recipients; a missing HQ or empty customer recipient set is a typed invalid scenario, not lost funds.
+
+This imposes source conservation, not an empirically estimated profit or spending limit. The public 100% rate endpoint alone is not a measured economic bottleneck. To demonstrate actual source exhaustion, use explicit requested amounts below/at/above F. With Apple M=3000, a=0.65, R=F=24.375 billion/month, requested amounts Q=12.1875,24.375,36.5625 yield C=12.1875,24.375,24.375 and unfunded requests0,0,12.1875. Unused source is12.1875,0,0. Every actual contribution remains funded, while the last requested amount cannot be met from the modeled pool. This is an arithmetic scenario example, not Apple's real revenue or cash position. Optional availableShare changes must be visible authored assumptions, never selected to create an attractive plateau.
+
+Expose constraint data `{name,unit,requested,available,actual,slack,unfunded,assumptionId}`. Don't call a fixed50% rate slider endpoint a financing constraint. New q supports0–100%; the visible plateau follows the separately inspectable available resource assumption.
+
+Accounting acceptance is local to these modeled corporate resources and transfers:
+
+- R = reservedForOtherUses + F.
+- F = C + unusedAvailableFunding.
+- Sum(C) = sum(country receipts), with no leakage or borrowing in this mode.
+- Global/customer/HQ breakdowns reconcile to total receipts.
+- Transfer payments do not increase modeled produced GDP; recipients' transfers are funded by C.
+
+This is not balanced full national accounts: firm ownership losses, indirect taxes, displaced consumption, general-equilibrium prices, public financing and household distribution are unestimated. Do not use `net welfare`, `total benefit` or a net fiscal cost claim. Corporate retained funding is a modeled resource remainder, not profit attributable to real shareholders.
+
+### Macro and workforce
+
+Reuse existing reduced-form macro equations as **illustrative scenario conditions**, with explicit per-country cognitiveShare and naturalUnemployment records frozen from the prior initialized default and marked assumed. Their default numbers are not new measurements. Governance no longer selects either value. Keep the US reference optional and horizon-limited; it does not earn a global macro-evidence status. Avoid new political regime classifications.
+
+Expose AI adoption growth, automationShare, reemploymentMonths, productivityGain, laborShareSensitivity and baselineGrowth under “Scenario assumptions,” not policy controls. Transfer-policy comparisons hold these inputs and initial state fixed. Macro outcomes' paired differences under this definition are structurally absent; UI says “Transfer-to-macro feedback not modeled” instead of interpreting identical paths as an estimated zero effect.
+
+### Conditional wellbeing: exact choice and population basis
+
+Keep the existing associational log-GDP/governance anchor coefficients for the selected matching dataset, but evaluate the **raw** regression without the15–90 clamp. Income index I = GDPperResident × laborShare/0.60; income component A = intercept + lnGdp × ln(I) + governanceCoefficient × governance. Require I>0; no silent floor or epsilon replacement. The labor-share rescaling remains an assumed extension of a GDP regression.
+
+Use existing transfer coefficient beta = 2.8 index points per income doubling as an explicitly **assumed** default; retain no claim the cited studies identify its dose slope. Transfer ratio s = monthlyTransferPerResident / (GDPperResident × laborShare /12). Transfer component T = beta × log2(1+s). This deliberately remains a per-resident labor-income proxy, not household disposable income or consumption.
+
+Replace the old overlapping aggregate/direct unemployment coefficient with an explicitly direct, non-income scenario term:
+
+- `nonIncomeLossPerAdditionalUnemployedPerson = 5` index points (equivalent0.5 ladder point). This is a NEW declared scenario assumption, **not an estimate drawn from the existing papers**.
+- `laborForcePerResident = 0.50` per country, explicitly assumed until replaced by compatible sourced population data. Do not call it the employment rate. It represents economically active persons / all residents.
+- Additional unemployed persons per resident e = max(0,u−uNatural) × laborForcePerResident.
+- Non-income population-average decrement U = 5 × e. One percentage point additional unemployment then subtracts0.025 index point when laborForcePerResident=0.50. No separate aggregate unemployment penalty is added; no income loss is contained in this5-point coefficient by definition.
+- Conditional index W = A + T − U. No temporal relaxation and no output clipping. If W is outside[0,100], mark that country's wellbeing output unsupported/outside declared mapping scale, retain the raw diagnostic value, and don't include it in a supposedly valid headline without excluded-count/coverage information.
+
+The values5 and0.50 are intentionally explicit and inspectable, not empirically qualified. The **wellbeing mapping remains illustrative**, while its computation can be implementation-reviewed. Joint sensitivity must include non-income loss0/5/10, laborForcePerResident0.35/0.50/0.65, beta0/2.8/5.6 and explicit alternative income denominators. These are diagnostic scenarios, not a confidence interval or probability distribution. Zero is a tested counter-assumption, not default omission of harm. Distinct assumed values may be substituted later only as a new reviewed model definition with the same honesty requirements.
+
+If new assumption values are judged too much model-authoring for this task, do not silently reuse0.45; retain old wellbeing output as illustrative legacy and leave the new capability unavailable. The concrete proposed definition above is the minimum that actually removes overlapping unemployment effects instead of renaming them.
+
+### Month zero and observation date
+
+Add `initializeConditionalOutputs(run, inputs)` called by initialRun/initOptionsFor for this mode. It evaluates the corporate resource/allocation calculation and W on month-zero economic conditions **without** advancing month/adoption/GDP or applying any lag dynamics. Month-zero policy receipts and conditional output thus have the same semantics as every subsequent month. Record the ledger as `monthly-flow-at-month`, not cumulative elapsed spending. No time integral may count month0 as already-paid historical money.
+
+Initialize all macro base values explicitly (laborShare0.60; gdpNoAi initial GDP; u=uNatural; displacedPool0) before evaluating W. Reference mode must apply its month0 reference conditions before the output mapping. Original observed ladder remains separately dated; exclude unsourced formula fallback from the observed marker. Never splice observed ladder values into the new conditional index path.
+
+### Verified demandFactor dimensional issue
+
+Current calculateAiRevenue computes `customerDemand = sum(GDP USD/person/year × population millions × wellbeing/100)`, whose numeric unit is **million USD/year**. It divides by `marketCap billions USD ×10`. Under the code's stated expected-demand denominator interpretation, the latter needs units of annual demand (10/year). Even granting that implicit time unit, a factor1000 is missing.
+
+Hand calculation using the repo's USA GDP66856.5131698371, population340.003797 million, a hypothetical wellbeing70, and real Apple model marketCap3000 billion, with only USA as a diagnostic customer:
+
+- raw customerDemand = 15,912,027.832347583 **million USD/year**;
+- converted demand = 15,912.027832347583 **billion USD/year**;
+- existing ratio = 15,912,027.832347583 /30,000 =530.4009277449194, capped to1;
+- denomination-correct ratio =15,912.027832347583 /30,000 =0.5304009277449194.
+
+Thus the ratio before the min cap is overstated1000-fold in this diagnostic. This calculation does not establish that every real current company output changes1000-fold; operating-country totals and the min cap matter. The denominator's economic meaning/year unit is itself undocumented. New fixed-response mode avoids this formula altogether; don't claim to have validated it. Preserve historical mode for reproducibility and document this defect in its review status; a corrected dynamic model must get a new version rather than silently rewriting replay.
+
+Further monetary audit: marketCap is a stock; R/C/receipts are monthly flows; GDP/labor income are annual per-resident flows; `country.population` is millions. Use `usdPerPerson` only for billion-flow/million-person conversion; divide GDP-based income by12 before transfer ratios. Existing initialized `corp.aiRevenue` numbers are overwritten by the formula; new initialization must do that before first displayed result. Corporate market cap is assumed; availableShare 1.00 defines the modeled source accounting boundary, while any alternative availableShare is an explicit scenario assumption. PRK/TWN fallback GDP remains explicit assumed basis or unsupported for wellbeing; never silently include a nominal unknown value in a reviewed constant-dollar ratio. Record assumed-country counts and covered population.
+
+### Actual qualification resolver
+
+Do not place `reviewed:true` on the preset and trust it. Add a checked-in, generated `validation/default-review.json` with:
+
+- model definition version/hash, relevant engine code version, dataset content hash, initial corporate table hash, monetary-assumption table hash, scenario-input rules hash;
+- declared reviewed parameter domains and joint restrictions;
+- exact executed test/report artifacts, date, command, success/failure counts and retained finding IDs;
+- outcome/capability classifications and reviewed coverage;
+- response grid and joint-case definitions, raw results/flags, explained constraints, unresolved anomalies and exclusions.
+
+Canonical serialization must sort object keys, reject non-finite numbers and include full equations/assumptions/initial state, not display names alone. Use the existing hashing machinery if it is deterministic and adequate; qualification lookup compares the full canonical signature or cryptographic digest, not a short non-cryptographic display hash alone. A manifest hash proves identity, not model quality.
+
+`resolveReview(inputs, manifest)` accepts a known structural fingerprint plus input values within the explicitly tested/reviewed region; it checks unsupported custom equations, dataset changes, workforce overrides and monetary basis. Exact registered default gets its actual artifact classification. In-domain parameter changes inherit only the declared region-specific capability review, with their own run fingerprint and conditional assumption list. Unknown structural variants or out-of-region inputs become unreviewed/illustrative, never silently reuse the preset's badge. An old result cannot supply its own trusted qualification record: recompute identity and lookup local signed/pinned artifact content.
+
+Use a test/report command that regenerates the computed evidence and a --check mode that fails stale artifacts. Failure includes missing test cases, changed model/dataset signature, accounting residual outside predeclared numerical tolerance, non-finite outputs, unhandled domain error, disconnected advertised control, or unexplained material-response flag. Large response alone is not a failure; it must be recorded and explained. Human scientific review remains a distinct record rather than an assertion generated by the same tests.
+
+### Capability verdicts and visible controls
+
+For the proposed completed implementation, warranted statuses are:
+
+| Component | Status that can be earned now | Acceptance |
+|---|---|---|
+| Corporate resource and transfer allocation | reviewed-conditional | Identities, units, budget constraint, geographic coverage, live controls, zero comparator, replay and scenario-domain checks pass; assumptions visible |
+| Budget plateau and funding constraint | reviewed-conditional arithmetic | Requested-amount sweep below/at/above source reproduces independent expected figures; no endpoint called measured capacity |
+| World macro conditions | illustrative | Existing reduced form remains assumed/calibrated; no new causal evidence |
+| US faithful macro option | reproduced-reference within scope | Port checks and month0–60 contract pass; do not transfer claim to world macro/wellbeing |
+| Conditional wellbeing mapping | illustrative, implementation-checked | Explicit population/dose/denominator assumptions, no overlap/timing claim, raw range diagnostics and sensitivity report |
+| Realized wellbeing timing, induced demand, total policy GDP/employment effects, risk/safety | unsupported | Outputs absent or plainly unavailable; never represented as estimated zero |
+
+Top-level model label: **“Conditional world reference”**, with visible one-line scope “Compare funded transfers under stated corporate and macro assumptions; wellbeing is an illustrative conditional index.” Do not attach an unqualified global reviewed badge to every output. Stage3 can be reported complete **only within this explicitly published reference scope after the specified checks and response review are actually accepted**; the report must simultaneously say wellbeing/macro causal qualification is not established. If the requested Stage3 interpretation requires a reviewed causal wellbeing response, this design does not meet that demand and should remain partial.
+
+Visible policy controls: corporation requested contribution rate and allocation strategy. Visible scenario controls: optional authored available funding share, corporate scale/capability assumptions, adoption/macro assumptions, and explicitly illustrative wellbeing assumptions. Remove dead built-in controls listed above. No custom control qualifies solely because an equation parses; require binding and response evidence. Map, Charts and Corporations remain usable for their compatible outputs; Futures remains separate and unavailable as an effect of these transfers. Ship exports/imports with output definition, flow convention, support status and complete assumptions.
+
+### Bounded acceptance checklist for task4/5
+
+Task4 model work: implement new mode and month-zero semantics; retain old behavior; explicit workforce/money assumptions; remove wellbeing feedback in new mode; add budget diagnostics and conditional mapping; correct live-control capabilities.
+
+Task5 evidence/UX work: generate raw response/qualification artifacts; independent hand fixtures and domain/threshold/interaction tests; check old/new replay and bundle identity; active-view adapter uses actual result definitions; explain scope, finance constraint and illustrative outcomes on first visit. Test the actual map/chart/corporation view at month0 and a later month, changing the explicit requested monthly amount below and above the modeled source budget. The plateau message must identify available funds, requested funds and unfunded request. New default need not duplicate or rebuild the application.
+
+
+### Final funding ruling (supersedes the original 0.20 proposal)
+
+Use availableShare 1.00 by definition of the modeled source pool. No empirical availability/expense fraction is introduced by default, and no fraction is selected to make a plateau appear. Source-exhaustion tests use explicitly requested amounts exceeding that source; they verify conservation and visible unmet requests. The 100% contribution-rate endpoint is a control boundary, not empirical evidence of economic capacity.
+
+Independent expected-value fixture: source 24.375 billion/month; requests 12.1875,24.375,36.5625; paid 12.1875,24.375,24.375; unpaid 0, 0, 12.1875; retained source 12.1875,0,0. Test that recipients sum to paid, paid+retained equals source, and paid+unpaid equals requested. Raising the source is a separate hypothetical source assumption, not a policy-free increase in available resources.
+
+Substantive limitation: because the source construction is a gross-revenue scenario, interpreting its entire pool as funds a real corporation could safely transfer would be unjustified. Label it “modeled source pool” throughout, disclose expenses/ownership/competing uses as unestimated, and do not call the available balance profit, surplus cash or net public benefit. This is defensible for the explicitly scoped conditional resource/allocation accounting reference, while broader macro/wellbeing remains illustrative. No production code changed by this design note.
