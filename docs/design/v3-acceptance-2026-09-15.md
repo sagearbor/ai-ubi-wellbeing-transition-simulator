@@ -1,6 +1,6 @@
 # v3 acceptance — stages 3–5 integration, 2026-09-15
 
-This record describes the implementation branch `codex/complete-v3-stages-3-5`, including Task 6 corrections at `e529c73`. It is not a deployment or merged-main claim. Recorded automated browser evidence is limited to the builds and flows named below; independent whole-branch review and GitHub checks/merge remain coordinator-owned and pending in this record.
+This record describes the implementation branch `codex/complete-v3-stages-3-5`, including Task 6 corrections at `e529c73`. It is not a deployment or merged-main claim. Recorded automated browser evidence is limited to the builds and flows named below. Independent whole-branch review and its correction re-review have passed. Fresh GitHub checks and merge remain pending in this record.
 
 | v3 stage | Accepted implementation scope | Evidence and remaining limits |
 |---|---|---|
