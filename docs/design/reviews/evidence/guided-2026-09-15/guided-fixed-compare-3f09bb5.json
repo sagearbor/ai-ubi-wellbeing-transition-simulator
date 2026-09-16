@@ -1,0 +1,4 @@
+{
+  "header": "What changes between two scenarios?",
+  "text": "World contributions versus zero contributions\n\nThe paired world run keeps the same model and corporate assumptions, with every corporate contribution set to zero.\n\nAll corporations · month 0 · constant-2015 USD per month\nAccounting flow\tCurrent contributions\tZero contributions\nFunded transfers\t$23.30B\t$0\nUnfunded requests\t$0\t$0\nRecipient receipts\t$23.30B\t$0\n\nTransfer-to-macro feedback is unestimated. Equal macro curves do not measure zero economic effect. An index difference is a conditional model result, not a forecast.\n\nCompare world maps\nPaired world charts\nBuild a policy A/B comparison\n\nMap comparison uses compatible world scenarios. Arbitrary cross-model chart overlays are not supported; the Policy panel compares within its selected model."
+}

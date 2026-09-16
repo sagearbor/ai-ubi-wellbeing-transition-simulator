@@ -43,6 +43,8 @@ import {
 } from './simulation/appState';
 import { formatBillionsUsd, formatUsdPerPerson, millionsToBillionsUsd } from './simulation/units';
 import EquationErrorBanner from './components/EquationErrorBanner';
+import GuidedExperience, { type LabEntry } from './components/guided/GuidedExperience';
+import { initialGuidedMode } from './components/guided/navigation';
 
 // Helper for math rendering
 const MathEq: React.FC<{ children: React.ReactNode }> = ({ children }) => (
@@ -208,10 +210,16 @@ const App: React.FC = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [speed, setSpeed] = useState(1);
   const [initialRoute] = useState(() => typeof window === 'undefined' ? sharedRoute('', '') : sharedRoute(window.location.search, window.location.hash));
-  const [activeTab, setActiveTab] = useState<AppTab>(initialRoute.tab);
+  const [guidedMode, setGuidedMode] = useState<'explore' | 'compare' | null>(() => typeof window === 'undefined' ? 'explore' : initialGuidedMode(window.location.search, window.location.hash));
+  const [activeTab, setRawActiveTab] = useState<AppTab>(initialRoute.tab);
+  const setActiveTab = useCallback((tab: AppTab) => { setGuidedMode(null); setRawActiveTab(tab); }, []);
+  const [labEntry, setLabEntry] = useState<{ kind: LabEntry; sequence: number } | undefined>();
+  const openLab = (kind?: LabEntry) => { setActiveTab('lab'); setSelectedEntity(null); if (kind) setLabEntry(old => ({kind, sequence:(old?.sequence ?? 0)+1})); };
+  const openGuided = (mode: 'explore' | 'compare') => { if (shareError) { setGuidedMode(null); setRawActiveTab('map'); return; } setRawActiveTab('map'); setGuidedMode(mode); setIsPlaying(false); setSelectedEntity(null); setAboutDropdownOpen(false); };
   const [labVisited, setLabVisited] = useState(false);
   const [activePolicy, setActivePolicy] = useState<ActiveRunView | null>(null);
   const [resultFamily, setResultFamily] = useState<'world' | 'lab-policy'>(initialRoute.policy ? 'lab-policy' : 'world');
+  const [guidedError, setGuidedError] = useState<string | null>(null);
   const [shareError, setShareError] = useState<string | null>(null);
   useEffect(() => { if (activeTab === 'lab') setLabVisited(true); }, [activeTab]);
   const publishPolicy = React.useCallback((view: ActiveRunView) => { setActivePolicy(view); if (activeTab === 'lab' && view.status !== 'empty') setResultFamily('lab-policy'); }, [activeTab]);
@@ -264,10 +272,17 @@ const App: React.FC = () => {
    * with their own calendars, so those controls are hidden there rather than shown next to an
    * unrelated model (review 2026-09-14, stage 5 gap "Other tabs still use unrelated world state").
    */
-  const showWorldControls = resultFamily === 'world' && !shareError && !['lab', 'modelcard', 'models', 'futures'].includes(activeTab);
-  const [showStartHint, setShowStartHint] = useState(true);
+  const showWorldControls = !guidedMode && resultFamily === 'world' && !shareError && !['lab', 'modelcard', 'models', 'futures'].includes(activeTab);
+  const [showStartHint, setShowStartHint] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
   const [shareUrl, setShareUrl] = useState<string | null>(null);
+  const shareDialog = React.useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!showShareModal) return;
+    const previous = document.activeElement as HTMLElement | null;
+    shareDialog.current?.querySelector<HTMLButtonElement>('button')?.focus();
+    return () => previous?.focus();
+  }, [showShareModal]);
   
   // Theme State - Defaulting to 'dark' and using a new key to reset user preferences
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {
@@ -388,6 +403,9 @@ const App: React.FC = () => {
   // months are not modelled, so the clock does not run past them (review 2026-09-14, decision 4(c)).
   const referenceEnded = (!!model.macro?.usReference && state.month >= US_REFERENCE_LAST_WORLD_MONTH) || (state.outOfScope?.length ?? 0) > 0;
   const capabilities = resolveRunCapabilities(model,compiledEquations);
+  const needsDividendReference = !capabilities.conditional
+    || run.state.executionMode !== 'world-conditional-v1'
+    || activeModelConfig !== null;
   const qualification = useMemo(() => resolveQualification(model, run, compiledEquations), [model, run, compiledEquations]);
   const comparisonCapabilities = resolveRunCapabilities(comparisonModel,compiledEquations);
   const comparisonEnded = comparisonMode && comparisonCapabilities.lastMonth !== null && comparisonRun.state.month >= comparisonCapabilities.lastMonth;
@@ -535,10 +553,65 @@ const App: React.FC = () => {
   }, [resetAll]);
 
   // Clear custom model and revert to default
-  const clearModelConfig = useCallback(() => {
+  const clearModelConfig = useCallback((reference?: {
+    model: ModelParameters; corporations: Corporation[]; dataset: CountryDatasetId;
+  }) => {
     setActiveModelConfig(null);
-    handleReset();
-  }, [handleReset]);
+    if (reference) {
+      setModel(reference.model);
+      setCountryDataset(reference.dataset);
+      setBaseCorporations(reference.corporations);
+      resetAll(reference.corporations, reference.model, reference.dataset);
+    } else {
+      handleReset();
+    }
+  }, [handleReset, resetAll]);
+
+  // Only this explicitly labeled action can replace a legacy/uploaded scenario.
+  // Home and ordinary Explore navigation deliberately never call it.
+  const openDividend = () => {
+    if (needsDividendReference) {
+      clearModelConfig({
+        model: DEFAULT_MODEL,
+        corporations: INITIAL_CORPORATIONS,
+        dataset: COUNTRY_DATASET_ID,
+      });
+      setComparisonMode(false);
+      setGuidedError(null);
+    }
+    setResultFamily('world');
+    setShareError(null);
+    setRawActiveTab('map');
+    setGuidedMode('explore');
+    setIsPlaying(false);
+    setSelectedEntity(null);
+    requestAnimationFrame(() => document.getElementById('guided-corporation')?.focus());
+  };
+
+  const openSingleWorldView = (tab: AppTab) => {
+    if (['map', 'charts', 'corporations'].includes(tab)) setComparisonMode(false);
+    if (tab === 'futures') setResultFamily('world');
+    setActiveTab(tab);
+  };
+
+  const enterMapComparison = () => {
+    const scenario = SCENARIO_PRESETS.find(item => item.id === comparisonScenarioId);
+    const nextComparisonModel = { ...DEFAULT_MODEL, ...scenario?.modelParams };
+    const issue = equationErrors.length ? 'Uploaded equations do not compile.'
+      : resolveRunCapabilities(nextComparisonModel, compiledEquations).equationIssue;
+    if (issue) {
+      setGuidedError(`Map comparison unavailable: ${issue}`);
+      return;
+    }
+    setGuidedError(null);
+    setComparisonMode(true);
+    setActiveTab('map');
+  };
+
+  const exitMapComparison = () => {
+    setComparisonMode(false);
+    setActiveTab('map');
+  };
 
   // Check if using custom model
   const isUsingCustomModel = activeModelConfig !== null;
@@ -1166,7 +1239,7 @@ const App: React.FC = () => {
   }, [state.month, activeModelConfig, runRecorded, state.averageWellbeing, globalLedger.totalFunds, state.countriesInCrisis, gameTheoryState]);
 
   return (
-    <div className={`flex flex-col h-[100dvh] overflow-hidden transition-colors duration-300 ${theme === 'light' ? 'bg-slate-50 text-slate-900' : 'bg-slate-950 text-slate-100'}`}>
+    <div className={`guided-shell flex flex-col h-[100dvh] overflow-hidden ${theme === 'light' ? 'bg-slate-50 text-slate-900' : 'bg-slate-950 text-slate-100'}`}>
       {/* Tour Overlay */}
       {tourStep !== null && (
           <TourOverlay
@@ -1191,15 +1264,15 @@ const App: React.FC = () => {
       {showShareModal && (
         <div className="fixed inset-0 z-[250] flex items-center justify-center p-4">
             <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => setShowShareModal(false)} />
-            <div className="relative w-full max-w-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-2xl animate-in zoom-in-95 duration-200">
-                <button onClick={() => setShowShareModal(false)} className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-white"><X size={20}/></button>
+            <div ref={shareDialog} role="dialog" aria-modal="true" aria-labelledby="share-dialog-title" onKeyDown={e=>{if(e.key==='Escape'){setShowShareModal(false);return;}if(e.key==='Tab'){const nodes=Array.from((e.currentTarget as HTMLDivElement).querySelectorAll<HTMLElement>('button:not([disabled]),a[href],input:not([disabled])'));const first=nodes[0],last=nodes[nodes.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last?.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first?.focus();}}}} className="relative w-full max-w-md bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl p-6 shadow-2xl animate-in zoom-in-95 duration-200">
+                <button aria-label="Close scenario sharing" onClick={() => setShowShareModal(false)} className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-white"><X size={20}/></button>
                 
                 <div className="text-center mb-6">
                     <div className="w-12 h-12 bg-blue-600/20 text-blue-600 dark:text-blue-400 rounded-full flex items-center justify-center mx-auto mb-3">
                         <Settings size={24} />
                     </div>
-                    <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-1">Share Model Configuration</h3>
-                    <p className="text-sm text-slate-600 dark:text-slate-400">Share your custom simulation parameters with others.</p>
+                    <h3 id="share-dialog-title" className="text-xl font-bold text-slate-900 dark:text-white mb-1">Share scenario</h3>
+                    <p className="text-sm text-slate-600 dark:text-slate-400">Share the current inputs and accounting snapshot.</p>
                 </div>
 
                 {!shareUrl ? (
@@ -1208,7 +1281,7 @@ const App: React.FC = () => {
                             <Info className="text-blue-600 dark:text-blue-400 shrink-0" size={20} />
                             <div className="space-y-1">
                                 <h4 className="text-blue-700 dark:text-blue-400 text-xs font-bold uppercase tracking-wide">Sharing Info</h4>
-                                <p className="text-slate-600 dark:text-slate-300 text-xs leading-relaxed">Conditional links preserve the current corporate requests and economic inputs at the displayed month. Accounting is recomputed on opening; earlier history and macro inputs are not independently verified. Legacy links share settings only.</p>
+                                <p className="text-slate-600 dark:text-slate-300 text-xs leading-relaxed">Conditional links preserve the current corporate requests and economic inputs at the displayed month. Accounting is recomputed on opening; earlier history and macro inputs are not independently verified. Legacy links share settings only. Complete links can be too long for some messaging services; save a scenario file when sharing through those channels.</p><button className="underline min-h-11" onClick={saveToFile}>Download complete scenario file</button>
                             </div>
                         </div>
                         <button 
@@ -1236,118 +1309,17 @@ const App: React.FC = () => {
         </div>
       )}
 
-      {/* Header */}
-      <header className="h-14 lg:h-16 flex items-center justify-between px-4 lg:px-6 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 sticky top-0 z-[100] shrink-0 transition-colors">
-        <div className="flex items-center gap-3">
-          <button 
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)} 
-            hidden={!showWorldControls}
-            aria-label={isSidebarOpen ? 'Close world simulation settings' : 'Open world simulation settings'}
-            className="lg:hidden p-2 -ml-2 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white rounded-lg active:bg-slate-100 dark:active:bg-slate-800"
-          >
-            {isSidebarOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
-          
-          <div className="w-8 h-8 lg:w-10 lg:h-10 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-lg lg:rounded-xl flex items-center justify-center shadow-lg shadow-blue-600/20">
-            <Sparkles className="text-white" size={20} />
-          </div>
-          <div className="hidden sm:block">
-            <h1 className="text-base lg:text-lg font-bold leading-none text-slate-900 dark:text-white">Transition Engine</h1>
-            <p className="text-[8px] lg:text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-widest mt-1 font-mono">Abundance Cycle v0.14</p>
-          </div>
-        </div>
-
-        <nav className="flex items-center gap-1 sm:gap-2 p-1 bg-slate-100 dark:bg-slate-800 rounded-lg lg:rounded-xl border border-slate-200 dark:border-slate-700 max-w-[calc(100vw-112px)] sm:max-w-[70vw] lg:max-w-none overflow-x-auto lg:overflow-visible scrollbar-hide">
-          {(['map', 'charts', 'corporations', 'futures'] as const).map(tab => (
-            <button
-              key={tab}
-              onClick={() => {
-                setActiveTab(tab);
-                setAboutDropdownOpen(false);
-                if (tab !== 'map') setSelectedEntity(null); // Close detail panel when leaving Map tab
-              }}
-              className={`shrink-0 whitespace-nowrap px-2 sm:px-3 py-1 lg:px-4 lg:py-1.5 rounded-md lg:rounded-lg text-[10px] lg:text-xs font-bold uppercase transition-all ${activeTab === tab ? 'bg-blue-600 text-white shadow-md' : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'}`}
-            >
-              {tab === 'corporations' ? (<><span className="sm:hidden">corps</span><span className="hidden sm:inline">corporations</span></>) : tab}
-            </button>
-          ))}
-          <div className="relative group">
-            <button 
-              onMouseEnter={() => setAboutDropdownOpen(true)}
-              onClick={() => setAboutDropdownOpen(!aboutDropdownOpen)}
-              className={`px-3 py-1 lg:px-4 lg:py-1.5 rounded-md lg:rounded-lg text-[10px] lg:text-xs font-bold uppercase flex items-center gap-1 transition-all ${(activeTab === 'overview' || activeTab === 'equations' || activeTab === 'analysis' || activeTab === 'guide' || activeTab === 'models' || activeTab === 'leaderboard' || activeTab === 'lab' || activeTab === 'modelcard') ? 'bg-slate-800 text-white dark:bg-slate-700 dark:text-white' : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'}`}
-            >
-                More <ChevronDown size={12} className={aboutDropdownOpen ? 'rotate-180' : ''} />
-            </button>
-            {aboutDropdownOpen && (
-                <div
-                  onMouseLeave={() => setAboutDropdownOpen(false)}
-                  className="absolute right-0 top-full mt-2 max-lg:fixed max-lg:top-14 max-lg:right-3 w-48 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-2xl overflow-hidden z-[110]"
-                >
-                    <button onClick={() => { setActiveTab('guide'); setAboutDropdownOpen(false); setSelectedEntity(null); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors border-b border-slate-100 dark:border-slate-700 flex items-center gap-2"><BookOpen size={14} /> About & Guide</button>
-                    <button onClick={() => { setActiveTab('overview'); setAboutDropdownOpen(false); setSelectedEntity(null); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors border-b border-slate-100 dark:border-slate-700 flex items-center gap-2"><Globe size={14} /> Overview</button>
-                    <button onClick={() => { setActiveTab('equations'); setAboutDropdownOpen(false); setSelectedEntity(null); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors border-b border-slate-100 dark:border-slate-700 flex items-center gap-2"><FlaskConical size={14} /> Model Equations</button>
-                    <button onClick={() => { setActiveTab('modelcard'); setAboutDropdownOpen(false); setSelectedEntity(null); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors border-b border-slate-100 dark:border-slate-700 flex items-center gap-2"><BookOpen size={14} /> Model Card</button>
-                    <button onClick={() => { setActiveTab('analysis'); setAboutDropdownOpen(false); setSelectedEntity(null); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors border-b border-slate-100 dark:border-slate-700 flex items-center gap-2"><BrainCircuit size={14} /> Analysis Hub</button>
-                    <button onClick={() => { setActiveTab('models'); setAboutDropdownOpen(false); setSelectedEntity(null); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors border-b border-slate-100 dark:border-slate-700 flex items-center gap-2"><Settings size={14} /> Models</button>
-                    <button onClick={() => { setActiveTab('lab'); setAboutDropdownOpen(false); setSelectedEntity(null); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors border-b border-slate-100 dark:border-slate-700 flex items-center gap-2"><FlaskConical size={14} /> Model Lab</button>
-                    <button onClick={() => { setActiveTab('futures'); setAboutDropdownOpen(false); setSelectedEntity(null); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors border-b border-slate-100 dark:border-slate-700 flex items-center gap-2"><Sparkles size={14} /> AI Futures Map</button>
-                    <button onClick={() => { setActiveTab('leaderboard'); setAboutDropdownOpen(false); setSelectedEntity(null); }} className="w-full text-left px-4 py-3 text-xs font-bold uppercase hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 transition-colors flex items-center gap-2"><Trophy size={14} /> Leaderboard</button>
-                </div>
-            )}
-          </div>
-
-          <div className="w-px h-6 bg-slate-300 dark:bg-slate-700 mx-1"></div>
-
-          {/* Compare Mode Toggle (P7-T5) */}
-          <button
-             onClick={() => {
-               if (resultFamily === 'lab-policy' || activeTab === 'lab') { openPolicyCharts(); return; }
-               setComparisonMode(!comparisonMode);
-               if (!comparisonMode) setActiveTab('map'); // Switch to map tab when enabling comparison
-             }}
-             className={`px-2 py-1.5 rounded-lg text-[10px] font-bold uppercase transition-all ${comparisonMode ? 'bg-purple-600 text-white shadow-md' : 'text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-700'}`}
-             title="Compare two scenarios side-by-side on Map tab"
-          >
-            Compare{resultFamily === 'lab-policy' || activeTab === 'lab' ? ' Policy' : comparisonMode ? '' : ' Maps'}
-          </button>
-
-          <div className="w-px h-6 bg-slate-300 dark:bg-slate-700 mx-1"></div>
-
-          {/* Save/Load Buttons */}
-          <button
-             hidden={!showWorldControls}
-             onClick={saveToFile}
-             className="p-1.5 rounded-lg text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
-             title="Save Scenario to File"
-          >
-            <Download size={16} />
-          </button>
-
-          <label
-             className="p-1.5 rounded-lg text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors cursor-pointer"
-             hidden={!showWorldControls}
-             title="Load Scenario from File"
-          >
-            <Upload size={16} />
-            <input
-              type="file"
-              accept=".json"
-              onChange={loadFromFile}
-              className="hidden"
-            />
-          </label>
-
-          <div className="w-px h-6 bg-slate-300 dark:bg-slate-700 mx-1"></div>
-
-          <button
-             onClick={() => setTheme(prev => prev === 'dark' ? 'light' : 'dark')}
-             className={`p-1.5 rounded-lg transition-colors ${theme === 'dark' ? 'bg-slate-700 text-yellow-400 hover:bg-slate-600' : 'bg-slate-200 text-slate-700 hover:bg-slate-300'}`}
-             title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-          >
-            {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
-          </button>
+      <header className="guided-header">
+        <button className="guided-brand" onClick={() => openGuided('explore')} aria-label="Transition Engine home"><Globe size={25} aria-hidden="true"/><span>Transition Engine</span></button>
+        <nav className="guided-primary-nav" aria-label="Primary navigation">
+          <button aria-current={guidedMode === 'explore' ? 'page' : undefined} onClick={() => openGuided('explore')}>Explore</button>
+          <button aria-current={guidedMode === 'compare' ? 'page' : undefined} onClick={() => openGuided('compare')}>Compare</button>
+          <button aria-current={!guidedMode && activeTab === 'lab' ? 'page' : undefined} onClick={() => openLab()}>Model Lab</button>
         </nav>
+        <div className="guided-utilities">
+          <details className="guided-about" onKeyDown={e=>{if(e.key==='Escape'){e.currentTarget.open=false;e.currentTarget.querySelector('summary')?.focus();}}}><summary>About</summary><nav aria-label="About and advanced views">{([['guide','Guide'],['overview','Overview'],['modelcard','Model card'],['equations','Sources and equations'],['analysis','Analysis'],['models','World model editor'],['leaderboard','Leaderboard']] as const).map(([tab,label]) => <button key={tab} onClick={e => {setActiveTab(tab);setSelectedEntity(null);e.currentTarget.closest('details')?.removeAttribute('open');}}>{label}</button>)}</nav></details>
+          <button className="guided-theme" onClick={() => setTheme(t=>t==='dark'?'light':'dark')} aria-label={theme==='dark'?'Switch to light mode':'Switch to dark mode'}>{theme==='dark'?<Sun size={19}/>:<Moon size={19}/>}</button>
+        </div>
       </header>
 
       <main className="flex-1 overflow-hidden flex relative">
@@ -1550,7 +1522,29 @@ const App: React.FC = () => {
         </aside>
 
         {/* Main Content Area */}
-        <section className="flex-1 overflow-y-auto p-4 lg:p-6 bg-slate-50 dark:bg-slate-950 relative h-full scrollbar-hide">
+        <section id="main-content" className={`guided-main flex-1 overflow-y-auto relative h-full ${guidedMode ? '' : 'p-4 lg:p-6 bg-slate-50 dark:bg-slate-950'}`}>
+          {guidedMode && pendingAutosave && <div className="guided-recovery" role="status"><span>A saved scenario from {new Date(pendingAutosave.timestamp).toLocaleString()} is available (month {pendingAutosave.month}).</span><button onClick={restoreAutosave}>Restore saved scenario</button><button onClick={discardAutosave}>Discard saved scenario</button></div>}
+          {guidedMode && <GuidedExperience mode={guidedMode} model={model} run={run} paired={pairedRun} qualification={qualification} needsDividendReference={needsDividendReference} uploadedModelName={activeModelConfig?.name} equationIssue={capabilities.equationIssue ?? (equationErrors.length ? 'Uploaded equations do not compile.' : undefined)} error={guidedError} activePolicy={resultFamily === 'lab-policy'}
+            onUpdate={(id,patch)=>{try { evaluateConditionalSnapshot(editCorporation(run,id,patch),{model}); updateCorporation(id,patch);setGuidedError(null); }catch(e){setGuidedError(`Changes were not applied: ${String(e)}`);} }} onModel={next => { try {const a=evaluateConditionalSnapshot(run,{model:next});const b=evaluateConditionalSnapshot(pairedRun,noCorporateUbiInputs({model:next}));setModel(next);setRun(a);setPairedRun(b);setGuidedError(null);}catch(e){setGuidedError(`Changes were not applied: ${String(e)}`);} }} onLab={openLab} onView={openSingleWorldView}
+            onDividend={openDividend} onCompare={()=>openGuided('compare')} onMapCompare={enterMapComparison}
+            onPolicyCompare={openPolicyCharts} onShare={()=>{setShareUrl(null);setShowShareModal(true);}} onSave={saveToFile}/>}
+          <div hidden={!!guidedMode} className="guided-existing-content">
+          {!guidedMode && showWorldControls && (
+            <nav className="guided-view-nav" aria-label="World views">
+              <button onClick={() => setIsSidebarOpen(!isSidebarOpen)}>World settings</button>
+              {(['map', 'charts', 'corporations'] as const).map(tab => (
+                <button key={tab} aria-current={activeTab === tab ? 'page' : undefined}
+                  onClick={() => openSingleWorldView(tab)}>
+                  {tab === 'map' ? 'Map' : tab === 'charts' ? 'Charts' : 'Corporations'}
+                </button>
+              ))}
+              {comparisonMode && <button onClick={exitMapComparison}>Exit map comparison</button>}
+              <button onClick={() => { setShareUrl(null); setShowShareModal(true); }}>Share scenario</button>
+              <button onClick={saveToFile}>Save scenario</button>
+              <label>Load scenario<input type="file" accept=".json" onChange={loadFromFile}/></label>
+            </nav>
+          )}
+
           {shareError && <div role="alert" className="p-4 border border-red-500 rounded-lg"><p>{shareError}</p><p>The shared result was not opened.</p><button className="underline min-h-11" onClick={switchToWorld}>Start a new world scenario</button></div>}
           {resultFamily === 'lab-policy' && activeTab === 'charts' && <ActivePolicyResultView view={activePolicy} onAuthor={() => setActiveTab('lab')} onWorld={switchToWorld} />}
           {resultFamily === 'lab-policy' && !['lab', 'charts', 'models', 'guide', 'modelcard'].includes(activeTab) && <div className="space-y-4"><h2 className="font-bold">This view does not support the selected Lab policy result</h2><p>{unsupportedPolicyView}</p><button className="underline min-h-11 mr-4" onClick={openPolicyCharts}>View policy Charts</button><button className="underline min-h-11" onClick={() => { setResultFamily('world'); setSelectedEntity(null); }}>Switch to {activeTab === 'futures' ? 'the separate Futures model' : 'world model'}</button></div>}
@@ -1870,7 +1864,7 @@ const App: React.FC = () => {
 
           {(labVisited || activeTab === 'lab') && (
             <div hidden={activeTab !== 'lab'} className="h-full overflow-y-auto scrollbar-hide pb-32">
-              <LabTab onActiveRunChange={publishPolicy} onOpenResultView={openPolicyCharts} />
+              <LabTab entryRequest={labEntry} onActiveRunChange={publishPolicy} onOpenResultView={openPolicyCharts} />
             </div>
           )}
 
@@ -2178,7 +2172,7 @@ const App: React.FC = () => {
                         <span className="text-slate-600 dark:text-slate-600 ml-2">by {activeModelConfig.metadata.author}</span>
                       </div>
                       <button
-                        onClick={clearModelConfig}
+                        onClick={() => clearModelConfig()}
                         className="px-3 py-1 bg-red-600 hover:bg-red-700 text-white text-sm rounded font-medium transition-colors"
                       >
                         Clear & Use Default
@@ -3050,10 +3044,11 @@ effect(t)      = wellbeing_main(t) - wellbeing_paired(t)`}
                 </div>
             </div>
           )}
+          </div>
         </section>
       </main>
 
-      <footer hidden={!showWorldControls} className="px-4 lg:px-6 py-3 lg:py-4 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 sticky bottom-0 z-[100] backdrop-blur-md shrink-0">
+      <footer hidden={!showWorldControls} className="guided-world-footer px-4 lg:px-6 py-3 lg:py-4 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 shrink-0">
         {/* A5: a custom model that does not compile blocks playback and says so, here, next to
             the controls it disables. The built-in engine is never used in its place. */}
         {pendingAutosave && (
@@ -3074,7 +3069,7 @@ effect(t)      = wellbeing_main(t) - wellbeing_paired(t)`}
         <EquationErrorBanner
           modelName={activeModelConfig?.name || 'custom model'}
           errors={equationErrors}
-          onClear={clearModelConfig}
+          onClear={() => clearModelConfig()}
         />
         <SimulationControls isPlaying={isPlaying} onPlay={() => setIsPlaying(true)} onPause={() => setIsPlaying(false)} onReset={handleReset} onStep={stepSimulation} speed={speed} setSpeed={setSpeed} month={state.month} maxMonth={history.length > 0 ? Math.max(...history.map(h => h.month)) : state.month} onSeek={handleSeek} disabled={!canStep} disabledReason={capabilities.equationIssue || comparisonCapabilities.equationIssue || (comparisonEnded ? 'Comparison reference ends at month 60.' : undefined) || (referenceEnded ? 'The US reference path (Korinek et al. 2026) ends in January 2030; later months are not modelled.' : `Custom model "${activeModelConfig?.name || ''}" has ${equationErrors.length} equation errors`)} />
       </footer>

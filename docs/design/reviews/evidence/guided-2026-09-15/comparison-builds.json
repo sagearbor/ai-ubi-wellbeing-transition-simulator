@@ -1,0 +1,58 @@
+{
+  "recordedAt": "2026-09-15T11:33:02.047129+00:00",
+  "coreMain": "d6d0b34b8d4a8c901c453e50e2a0dc0422768f77",
+  "uiIntegrationCheck": "4a212a9e722fb3ca857c20e1701d74b55aabbdf9",
+  "before": {
+    "commit": "eb80fbf6fb19088e6188698646933e16aa82b5e0",
+    "entry": "/assets/index-D3WWcq0i.js",
+    "sha256": "2a884b419ffdc359892fb7a5b72465701df1fed85e560a3703a19b9ffa91d2f3"
+  },
+  "after": {
+    "commit": "ab5216853f4d926d0caba47b0f9b78ddd4e765d5",
+    "entry": "/assets/index-9E6-EEsE.js",
+    "sha256": "aa2b2b45369207810d38cf496bead8f0500dc42d3464a9839d21569e201ed57e",
+    "source": "clean worktree final npm run check build",
+    "port": 4183
+  },
+  "sameScenario": "Fresh conditional world reference, month 0 (Jan 2025), current country dataset, default corporations. UI additionally selects Apple, 10% contribution, operating-country residents. Old global-pool dividend and new Apple-specific receipt are different metrics; do not compare them as a numerical model change.",
+  "finalBuildEntryIdentical": true,
+  "screenshots": [
+    {
+      "file": "comparison-after-desktop-dark.png",
+      "sha256": "79f6f9e7dac2e9a24b3c8ca1b06deb97b9c6f9d3ed2771d8d7d899c7bd7c09f6"
+    },
+    {
+      "file": "comparison-after-desktop-light.png",
+      "sha256": "c314015e137344cff1e4977f08ea10806ec76980a4e817af001f9fa30bbcb456"
+    },
+    {
+      "file": "comparison-after-laptop-light.png",
+      "sha256": "29f4cf42aaeea9ff67a769fccc023dad3cac20ccc54214ff42f1b219417ec84e"
+    },
+    {
+      "file": "comparison-after-narrow-light.png",
+      "sha256": "39cda00643ec631c2ef9a105b7624fcdb39d7cc60662f87aecf7bd8bc922629f"
+    },
+    {
+      "file": "comparison-after-phone-dark.png",
+      "sha256": "a55652d780580a4701dacea280e84da8b794458c3f8c6aa1afdedf3d18faeebc"
+    },
+    {
+      "file": "comparison-after-phone-light.png",
+      "sha256": "68f7a8691acadb5f0b76066f506243618fcf35f3794d0632a380139fc3b4c164"
+    },
+    {
+      "file": "comparison-before-desktop-dark.png",
+      "sha256": "8ce834f5016a6bd461e19da72c366e21629eeb1527507673f9d29eecd17d75d2"
+    },
+    {
+      "file": "comparison-before-desktop-light.png",
+      "sha256": "7b6de622654edb0cb1f7fa793d4456d910785c558327746fca4cff84d19e3b72"
+    },
+    {
+      "file": "comparison-before-phone-light.png",
+      "sha256": "fc740b409864d0f4176f9808761e4f5c2d0177c6ef399283a681da70296d963f"
+    }
+  ],
+  "captureNote": "Final affected captures reset to the heading after the sharing test; desktop heading top 102 pixels at 1440 by 900."
+}

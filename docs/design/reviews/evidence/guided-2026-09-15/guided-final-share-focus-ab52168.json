@@ -1,0 +1,6 @@
+{
+  "dialog": "Share scenario\n\nShare the current inputs and accounting snapshot.\n\nSHARING INFO\n\nConditional links preserve the current corporate requests and economic inputs at the displayed month. Accounting is recomputed on opening; earlier history and macro inputs are not independently verified. Legacy links share settings only. Complete links can be too long for some messaging services; save a scenario file when sharing through those channels.\n\nDownload complete scenario file\nGENERATE LINK",
+  "focus": "Close scenario sharing",
+  "overflow": false,
+  "reducedMotion": true
+}

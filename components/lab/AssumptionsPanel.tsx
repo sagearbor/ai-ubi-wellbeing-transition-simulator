@@ -77,7 +77,7 @@ const ParameterRow: React.FC<{
       </div>
       {bounds && (
         <div className="mt-1.5 flex items-center gap-2">
-          <span className="text-[11px] tabular-nums text-slate-400 dark:text-slate-500 w-12 shrink-0 text-right">
+          <span className="text-[11px] tabular-nums text-slate-600 dark:text-slate-300 w-12 shrink-0 text-right">
             {fmtCompact(parameter.range!.p5)}
           </span>
           <input
@@ -90,7 +90,7 @@ const ParameterRow: React.FC<{
             value={value}
             onChange={(e) => onEdit(parameter.id, Number(e.target.value))}
           />
-          <span className="text-[11px] tabular-nums text-slate-400 dark:text-slate-500 w-12 shrink-0">
+          <span className="text-[11px] tabular-nums text-slate-600 dark:text-slate-300 w-12 shrink-0">
             {fmtCompact(parameter.range!.p95)}
           </span>
         </div>
@@ -129,7 +129,7 @@ const InputRow: React.FC<{ input: Input; series?: number[]; years: number[] }> =
           <tbody>
             <tr>
               {keys.map((k) => (
-                <th key={k} scope="col" className="pr-3 text-left font-medium text-slate-400 dark:text-slate-500">
+                <th key={k} scope="col" className="pr-3 text-left font-medium text-slate-600 dark:text-slate-300">
                   {k}
                 </th>
               ))}
