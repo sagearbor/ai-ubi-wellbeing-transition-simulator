@@ -1,0 +1,93 @@
+{
+  "schema": "forecast-family/1",
+  "id": "five-approaches-20260916",
+  "registeredAt": "2026-09-16",
+  "baseCommit": "0ca2eda3ea5db518499abebda1de1367d4e1ab7e",
+  "researchBriefCommit": "5fa9aa68c811aa7f7281c0dfdcf0ff67b7c15875",
+  "entries": [
+    "research-offset-2018-v1",
+    "research-damped-2018-v1",
+    "research-changes-2018-v1",
+    "research-health-2018-v1",
+    "research-ensemble-2018-v1"
+  ],
+  "additionalEntry": "research-objective-1980-v1",
+  "developmentYears": [
+    2015,
+    2016,
+    2017,
+    2018
+  ],
+  "originYear": 2018,
+  "testYears": [
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "cohort": {
+    "source": "data/evaluation/level-holdout-2018/origin.json",
+    "countries": 100,
+    "excluded": 28,
+    "roster": 128,
+    "noOutcomeAvailabilitySelection": true
+  },
+  "primary": "2025 endpoint ladder MAE against identical-origin persistence on identical observed masks",
+  "mandatorySecondary": [
+    "Each horizon 2019–2025: ladder MAE, RMSE, bias and skill",
+    "Pooled, equally weighted observed country-year ladder MAE and skill",
+    "Same metrics for GDP cumulative-growth error, in percentage points relative to origin GDP",
+    "Origin GDP quartile results; tied GDP ordered by country ID",
+    "Every country contribution to pooled and endpoint MAE improvement; all 28 origin exclusions",
+    "Every missing or invalid observation counted; null metric with a reason for empty sets or zero-baseline skill"
+  ],
+  "grouping": "Sort the 100 origin countries by GDP then ID; quartile = 1 + floor(index * 4 / 100). Use no future country classifications.",
+  "strictInputEntries": [
+    "research-offset-2018-v1",
+    "research-damped-2018-v1",
+    "research-changes-2018-v1",
+    "research-ensemble-2018-v1"
+  ],
+  "extraFeatureEntry": {
+    "id": "research-health-2018-v1",
+    "difference": "The owner explicitly requested health and lifespan predictors. New date-limited 2015–2018 official features extend PR23’s identical-input restriction; do not claim strict same-input compliance. Preserve the exact outcomes and cohort, and declare vintage and missing-feature fallback."
+  },
+  "longRunEntry": "Separate life expectancy in years and GDP per capita in constant-2015 USD: training 1960–1980, origin 1980, test 1981–2025. Use its own cohort, persistence, protocol and missingness rules. Never transform onto Cantril ladder or claim that this validates AI/UBI mechanisms.",
+  "freezeGate": "Commit all five model pipelines, protocols, calibrations and 700 predictions, plus the long-run protocol and predictions, before ANY new external held-out score. The registry holds immutable commits and SHA-256 hashes. No post-score fitting, reselection or resubmission. Create one exclusive receipt per entry before reading outcomes; retain failed attempts.",
+  "honesty": {
+    "publishAll": true,
+    "familySelection": "Selecting the best of five is exploratory. No independent confirmation, statistical significance or forecast interval is inferred. A genuinely unseen period or cohort is needed for confirmation.",
+    "vintage": "Revised 2026 data and model selection after the test period; these are not vintage-correct or blinded 2018 forecasts.",
+    "knownPriorInformation": "The published old aggregate failure and proposed structural diagnosis were known. Coordinator research on WHR 2025 definitions unexpectedly surfaced regression tables and 2024 country rankings; no country values were passed to builders or used for model selection. Builders record their own exposure. General post-period literature knowledge cannot be undone.",
+    "briefCorrections": [
+      "PR23’s 106 countries and 22 excluded conflict with the frozen origin file’s 100 and 28; preserve the actual cohort.",
+      "The old 0.3175/0.2897 numbers are pooled country-year MAE, not the 2025 endpoint; report both.",
+      "There is no guarantee a new candidate will beat persistence. Publish losses."
+    ]
+  },
+  "sources": [
+    {
+      "url": "https://otexts.com/fpp3/tscv.html",
+      "use": "Temporal cross-validation must use past data only and evaluate multiple horizons."
+    },
+    {
+      "url": "https://otexts.com/fpp3/holt.html",
+      "use": "Damped trends limit indefinite linear extrapolation."
+    },
+    {
+      "url": "https://otexts.com/fpp3/combinations.html",
+      "use": "Simple forecast combinations are useful comparators."
+    },
+    {
+      "url": "https://files.worldhappiness.report/WHR25_Ch02_Appendix_B.pdf",
+      "use": "Variable definitions and health interpolation limitations; no fitted coefficients borrowed."
+    },
+    {
+      "url": "https://datahelpdesk.worldbank.org/knowledgebase/articles/898581",
+      "use": "Date-scoped API queries and source provenance."
+    }
+  ]
+}
