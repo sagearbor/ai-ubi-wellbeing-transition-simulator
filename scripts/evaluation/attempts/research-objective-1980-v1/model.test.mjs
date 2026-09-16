@@ -1,0 +1,10 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {eligible,fit,predict,series,PHI} from './model.mjs';
+const fixture=(f,end=1980)=>Array.from({length:end-1960+1},(_,i)=>({year:1960+i,value:f(i)}));
+test('linear historical slope and observed-origin damped forecast',()=>{const m=fit(fixture(i=>50+i*.2),'lifeExpectancy');assert.ok(Math.abs(m.slope-.2)<1e-12);assert.ok(Math.abs(predict(m,1).prediction-(54+.2*PHI))<1e-12);});
+test('GDP exponential transform preserves positive values',()=>{const m=fit(fixture(i=>1000*Math.exp(.03*i)),'gdp');assert.ok(Math.abs(m.slope-.03)<1e-12);assert.ok(predict(m,45).prediction>0);});
+test('future rows are rejected at input and fit boundaries',()=>{assert.throws(()=>series([{date:'1981',indicator:{id:'SP.DYN.LE00.IN'},countryiso3code:'AAA',value:60}],'lifeExpectancy'),/window/);assert.throws(()=>fit(fixture(i=>60+i,1980),'lifeExpectancy',1975),/window/);});
+test('validation fit cannot depend on held-out values',()=>{const all=fixture(i=>50+.1*i);const a=fit(all.filter(r=>r.year<=1975),'lifeExpectancy',1975);const altered=all.map(r=>r.year>1975?{...r,value:100}:r);assert.deepEqual(a,fit(altered.filter(r=>r.year<=1975),'lifeExpectancy',1975));});
+test('origin and adequate historical span required',()=>{assert.equal(eligible(fixture(i=>50+i).filter(r=>r.year!==1980)).qualified,false);assert.equal(eligible(fixture(i=>50+i).slice(-9)).qualified,false);});
+test('life expectancy bounds are explicit and preserve raw forecast',()=>{const p=predict({target:'lifeExpectancy',originValue:119,slope:2},45);assert.equal(p.prediction,120);assert.ok(p.rawPrediction>120);});

@@ -1,0 +1,122 @@
+{
+  "schema": "forecast-source-provenance/1",
+  "entryId": "research-objective-1980-v1",
+  "sources": [
+    {
+      "name": "countries",
+      "url": "https://api.worldbank.org/v2/country?format=json&per_page=1000",
+      "retrievedAt": "2026-09-16T21:00:25.458Z",
+      "relativePath": "raw/countries.json",
+      "sha256": "4b2b4111572ec0e4c78ce3f7edd8aad47a6790c462279e66bd514cfd8824077d",
+      "bytes": 113591,
+      "responseRows": 295,
+      "lastUpdated": null,
+      "requestedYears": null,
+      "actualYears": null,
+      "role": "metadata only"
+    },
+    {
+      "name": "SP.DYN.LE00.IN-metadata",
+      "url": "https://api.worldbank.org/v2/indicator/SP.DYN.LE00.IN?source=2&format=json&per_page=1000",
+      "retrievedAt": "2026-09-16T21:00:26.004Z",
+      "relativePath": "raw/SP.DYN.LE00.IN-metadata.json",
+      "sha256": "321c62091af04f07cc57b65400ab96606e0822c6377f5135263b06959f08f399",
+      "bytes": 971,
+      "responseRows": 1,
+      "lastUpdated": null,
+      "requestedYears": null,
+      "actualYears": null,
+      "role": "metadata only"
+    },
+    {
+      "name": "SP.DYN.LE00.IN-1960-1980",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/SP.DYN.LE00.IN?date=1960:1980&source=2&format=json&per_page=20000",
+      "retrievedAt": "2026-09-16T21:00:26.432Z",
+      "relativePath": "raw/SP.DYN.LE00.IN-1960-1980.json",
+      "sha256": "83b1666f846cb0adc9ee69dbc828af24cc1db62b5e3669cc21a88944880a95d7",
+      "bytes": 1269979,
+      "responseRows": 5565,
+      "lastUpdated": "2026-07-13",
+      "requestedYears": [
+        1960,
+        1980
+      ],
+      "actualYears": [
+        1960,
+        1961,
+        1962,
+        1963,
+        1964,
+        1965,
+        1966,
+        1967,
+        1968,
+        1969,
+        1970,
+        1971,
+        1972,
+        1973,
+        1974,
+        1975,
+        1976,
+        1977,
+        1978,
+        1979,
+        1980
+      ],
+      "role": "training-only observations"
+    },
+    {
+      "name": "NY.GDP.PCAP.KD-metadata",
+      "url": "https://api.worldbank.org/v2/indicator/NY.GDP.PCAP.KD?source=2&format=json&per_page=1000",
+      "retrievedAt": "2026-09-16T21:00:27.953Z",
+      "relativePath": "raw/NY.GDP.PCAP.KD-metadata.json",
+      "sha256": "96f64b3907687d8b35cfffa7a11a6f10b71093a022da2776daa898741132c77d",
+      "bytes": 1102,
+      "responseRows": 1,
+      "lastUpdated": null,
+      "requestedYears": null,
+      "actualYears": null,
+      "role": "metadata only"
+    },
+    {
+      "name": "NY.GDP.PCAP.KD-1960-1980",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/NY.GDP.PCAP.KD?date=1960:1980&source=2&format=json&per_page=20000",
+      "retrievedAt": "2026-09-16T21:00:28.358Z",
+      "relativePath": "raw/NY.GDP.PCAP.KD-1960-1980.json",
+      "sha256": "b1e547b86e0273593f5765cad33a6e679f8e8029a9a925f595685c000a3b30e6",
+      "bytes": 1253355,
+      "responseRows": 5565,
+      "lastUpdated": "2026-07-13",
+      "requestedYears": [
+        1960,
+        1980
+      ],
+      "actualYears": [
+        1960,
+        1961,
+        1962,
+        1963,
+        1964,
+        1965,
+        1966,
+        1967,
+        1968,
+        1969,
+        1970,
+        1971,
+        1972,
+        1973,
+        1974,
+        1975,
+        1976,
+        1977,
+        1978,
+        1979,
+        1980
+      ],
+      "role": "training-only observations"
+    }
+  ],
+  "vintage": "Current revised source vintage; not archived as-of 1980"
+}

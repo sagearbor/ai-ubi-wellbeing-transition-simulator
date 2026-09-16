@@ -1,0 +1,32 @@
+{
+  "schema": "forecast-integrity/1",
+  "entryId": "research-objective-1980-v1",
+  "protocolRegistrationCommit": "41fe91c",
+  "allowedNumericYears": [
+    1960,
+    1980
+  ],
+  "newHealthDataExposedBeforeFreeze": false,
+  "inputs": {
+    "protocol.json": "b9a5ab6fb8ea01fb33cccd2db57043006c25f01664334d32ef3f947b9eb18e5e",
+    "source-provenance.json": "c8e18854682ae89daeaeb6ca6624de2bcad6b91c7d77e1514a92179ffabf45fe",
+    "raw/countries.json": "4b2b4111572ec0e4c78ce3f7edd8aad47a6790c462279e66bd514cfd8824077d",
+    "raw/SP.DYN.LE00.IN-metadata.json": "321c62091af04f07cc57b65400ab96606e0822c6377f5135263b06959f08f399",
+    "raw/SP.DYN.LE00.IN-1960-1980.json": "83b1666f846cb0adc9ee69dbc828af24cc1db62b5e3669cc21a88944880a95d7",
+    "raw/NY.GDP.PCAP.KD-metadata.json": "96f64b3907687d8b35cfffa7a11a6f10b71093a022da2776daa898741132c77d",
+    "raw/NY.GDP.PCAP.KD-1960-1980.json": "b1e547b86e0273593f5765cad33a6e679f8e8029a9a925f595685c000a3b30e6"
+  },
+  "code": {
+    "fetch.mjs": "344ebb8fcd089d0df27cb8418df2778e0395a4c8e23b919067a8b1c03af9a823",
+    "model.mjs": "e7a52e01546370d5c785d081a2cede992617d7514ffc1783b6b2f7726e962b22",
+    "run.mjs": "6f4227a30cbeec60ca917f9f492bd8f286ccc6628de56cc7db70d217f10c797f",
+    "model.test.mjs": "47af2850fc6789ef2839003b820cdb466bddd8730f021368e445c666e337cab0"
+  },
+  "outputs": {
+    "cohort.json": "dd78a2fecc1e75ec3ad028cede49818a9a2513525d954733aa7c16a94e102e36",
+    "calibration.json": "e327ad5406b52538b5632c24b598d08d809cb57d9944183b240f69fbb9566107",
+    "internal-validation.json": "20e4f0422c5137ce2fe53cb8a1350d53976775f0690bb3c9ca661516d15a6ffa",
+    "predictions.json": "6062e3bbe3b393fa258e192bcdef4a42b50fa5754d8ea924326c0f644d42624f"
+  },
+  "externalScoring": "pending; prohibited until all family entries frozen"
+}
