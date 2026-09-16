@@ -1,0 +1,25 @@
+{
+  "baseCommit": "0ca2eda3ea5db518499abebda1de1367d4e1ab7e",
+  "scope": "Every original level-holdout-2018 file is byte-identical; git diff additionally confirms no pre-existing tracked file changed. Hashing is not numerical evaluation.",
+  "sha256": {
+    "data/evaluation/level-holdout-2018/default-before.json": "835efb2dddda14929e1b714de7300dfe652eebf92118efe8cd7bfec0225080d4",
+    "data/evaluation/level-holdout-2018/experience.json": "a6ff9b0cb89667338f92db47fc18975e7d8054132c45bf266353ff3fec5f681c",
+    "data/evaluation/level-holdout-2018/frozen-fit.json": "48f2aabaa5287642dde8ae570bf14dc01a8eea04ed41c6c4774dff4da5d8f543",
+    "data/evaluation/level-holdout-2018/origin.json": "564bab92fe88415df70a1b239223213a53c12274891ec2d39f0e08c3e28e3f77",
+    "data/evaluation/level-holdout-2018/partition-provenance.json": "480d74240be50e0cc0275891e55765b281cae1522d943fa2eadab5ac00fa5641",
+    "data/evaluation/level-holdout-2018/predictions.json": "309a365dcafe010b05e1c7ceccd9d4b756638b70bb1096d3d430cd8496e21c4a",
+    "data/evaluation/level-holdout-2018/protocol.json": "694cc25212c42a84c873a55b7f6db7023e604fd5bbedde2ff9639d2faaaa1c3b",
+    "data/evaluation/level-holdout-2018/roster.json": "6800d4d1e79b87eeadab5996c1894aca0a384ac92a5b0b60c6dca082683d1635",
+    "data/evaluation/level-holdout-2018/scores.json": "d4b69e79226328fefb68dbbbe57433f32cd2f87d9efe9af5881c8e794e681b21",
+    "data/evaluation/level-holdout-2018/sources/CC.EST.json": "9791825047ad703237659a84ac16e0b7a8d4fd5f3c611ccc2147bd162663f122",
+    "data/evaluation/level-holdout-2018/sources/GE.EST.json": "62f1d4e81bd67367fe3ae7e8a88293f4e953e1a3323f35b46cb988409b64b3f8",
+    "data/evaluation/level-holdout-2018/sources/RL.EST.json": "3e622f14ac49d92190251fcdfa38c6818c5c0220455c7889c5871f98f7c2dfbb",
+    "data/evaluation/level-holdout-2018/sources/SI.POV.GINI.json": "5eaf0277c60a15d7e3c4bcee82d9b123db5248a419e71508054ffa297c4b7550",
+    "data/evaluation/level-holdout-2018/sources/SP.POP.TOTL.json": "881276f1806917ab6712ff06c5708decb29e53e8f1025f41d0de912c34b3cb44",
+    "data/evaluation/level-holdout-2018/sources/catalog-provenance.json": "f71c6e33c61f4cb7a2aedbf5e028caef384317d7408cae2259f95b955a3314fc",
+    "data/evaluation/level-holdout-2018/sources/provenance.json": "819e70bfa0fadbf8ea6f61eeadec940bfad192bd41075480aedc7cde01117077",
+    "data/evaluation/level-holdout-2018/sources/wgi-indicator-catalog.json": "670b5de01a823d2cfd97b7ec53eec418978cabcda1c11989290b7e193f05a0af",
+    "data/evaluation/level-holdout-2018/test-outcomes.json": "bbcd0b78bc4d02024b2c5064fc15b9249e8849c271f7abd29d9cedeece2ce969",
+    "data/evaluation/level-holdout-2018/train.json": "979ac8d45dda418403fc59e04111b9c9dbcd2fa484e4c26aa900cd37e777bd02"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "rows": 12600,
+  "maxAbsoluteDifference": {
+    "lifeExpectancy": 1.4210854715202004e-14,
+    "gdp": 3.7834979593753815e-10
+  },
+  "scope": "All frozen slopes/forecasts rederived from raw 1960\u20131980 response; no post-origin target fetched.",
+  "method": "Independent Python arithmetic; does not execute or import submitted model",
+  "relativeTolerance": 1e-09
+}
