@@ -316,6 +316,8 @@ export default function PublishedExperience({
   const cohort = recipientCohort(saved.scenarios.A.recipientCountry);
   const experiment = buildExperiment(saved.recordId, saved.scenarios, mode, saved.collectionId);
   function update(side: 'A' | 'B', patch: Partial<FinancialScenario>) {
+    // Edits make any earlier copied/opened confirmation stale.
+    setNotice('');
     try {
       const next = buildExperiment(
         saved.recordId,
@@ -556,6 +558,8 @@ export default function PublishedExperience({
                   setFileError(null);
                   setNotice('Saved experiment opened; all source and model versions match.');
                 } catch (err) {
+                  // A refused file must not sit next to an earlier "versions match" message.
+                  setNotice('');
                   setFileError(String(err));
                 }
                 e.target.value = '';

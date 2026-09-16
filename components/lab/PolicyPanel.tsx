@@ -92,6 +92,8 @@ export interface PolicyPanelProps {
   runner: Runner;
   /** 'imported' when the Lab's model was loaded from a file: experimental — not curated. */
   modelStatus?: ModelStatus;
+  /** True when the imported base model is the app-built financial model with a verified origin. */
+  appBuilt?: boolean;
   importWarnings?: string[];
   provenance?: ScenarioProvenance;
   /** Models imported this session, so bundles made on them reopen. */
@@ -163,6 +165,7 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
   onOpenScenario,
   runner,
   modelStatus = 'curated',
+  appBuilt = false,
   importWarnings = [],
   provenance,
   extraModels = [],
@@ -556,7 +559,7 @@ const PolicyPanel: React.FC<PolicyPanelProps> = ({
         </p>
       </header>
 
-      {provenance && provenance.kind !== 'fixture' && <p role="note" className="text-xs text-amber-700 dark:text-amber-300">Experimental scenario — not curated. Base model: {modelStatus === 'curated' ? 'known fixture' : 'imported'}.{provenance.reason ? ` Source import reason: ${provenance.reason}` : ''}</p>}
+      {provenance && provenance.kind !== 'fixture' && <p role="note" className="text-xs text-amber-700 dark:text-amber-300">Experimental scenario — not curated. Base model: {modelStatus === 'curated' ? 'known fixture' : appBuilt ? 'app-built from the pinned financial dataset (illustrative)' : 'imported'}.{provenance.reason ? ` Source import reason: ${provenance.reason}` : ''}</p>}
       {sourceCandidate && <button type="button" className={btnPlain} onClick={() => {
         const c = sourceCandidate;
         const importedDraft: PolicyDraft = { ...c.draft, modelId: c.model.id, modelHash: modelHash(c.model), reviewStatus: 'author-drafted', reviewedBy: undefined, completeness: undefined };

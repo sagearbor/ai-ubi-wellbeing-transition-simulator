@@ -45,6 +45,10 @@ describe('published financial scenario handoff', () => {
       expect(output).toContain('Built by this app from the pinned FY2025 dataset');
       expect(output).toContain('illustrative');
       expect(output).not.toContain('Loaded from a file on this device');
+      // The policy panel names the same origin as the Lab header (review 2026-09-15), not "imported".
+      expect(output).toContain('Experimental scenario — not curated');
+      expect(output).toContain('app-built from the pinned financial dataset');
+      expect(output).not.toMatch(/Base model: (<!-- -->)?imported/);
     },
   );
   it('keeps the explicit B link on the exact independent B model', () => {
