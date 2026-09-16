@@ -1,0 +1,11 @@
+{
+  "schema": "forecast-research-entry/1",
+  "id": "research-damped-2018-v1",
+  "familyId": "five-approaches-20260916",
+  "branch": "codex/research-damped-20260916",
+  "status": "registered-before-fit",
+  "protocol": "data/evaluation/research-damped-2018-v1/protocol.json",
+  "note": "docs/design/research/2026-09-16-research-damped-2018-v1.md",
+  "externalScoreStatus": "pending-controller-family-freeze",
+  "authorship": "Automated research agent; no independent human review"
+}
