@@ -1,0 +1,13 @@
+{
+  "schema": "one-shot-score-receipt/1",
+  "entry": "research-objective-1980-v1",
+  "family": "five-approaches-20260916",
+  "preScoreCommit": "c654f461861c18264c0bb24552d77ff3b6c1d622",
+  "startedAt": "2026-09-16T21:26:08.833Z",
+  "status": "completed",
+  "registrySha256": "9efaaae977a155310acbf3614915926f3ce381259f13d6d02d76901bccc2a4a3",
+  "predictionsSha256": "6062e3bbe3b393fa258e192bcdef4a42b50fa5754d8ea924326c0f644d42624f",
+  "protocolSha256": "b9a5ab6fb8ea01fb33cccd2db57043006c25f01664334d32ef3f947b9eb18e5e",
+  "completedAt": "2026-09-16T21:26:08.899Z",
+  "scoresSha256": "43d3e6aee97caa9697f6d7360c29084f10676ffcb8dde68a245837f6555e915e"
+}

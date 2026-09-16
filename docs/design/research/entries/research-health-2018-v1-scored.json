@@ -1,0 +1,125 @@
+{
+  "schema": "registered-research-result/1",
+  "id": "research-health-2018-v1-scored",
+  "entry": "research-health-2018-v1",
+  "family": "five-approaches-20260916",
+  "status": "completed-one-scored-run",
+  "result": "lower observed MAE than persistence; exploratory, not qualified",
+  "protocolCommit": "6c6cdb2dbe638a88097abae1d826abee0dec8116",
+  "freezeCommit": "c0a39243de8abc1d6fc3a5c2ade094b91a49978d",
+  "scoreReceipt": "data/evaluation/research-health-2018-v1/score-receipt.json",
+  "scores": "data/evaluation/research-health-2018-v1/scores.json",
+  "scoresSha256": "4699192b2a575b911a69981cad55b804e73dab9279e39bb4088013df7cd02ac3",
+  "report": "docs/design/research/2026-09-16-research-health-2018-v1-results.md",
+  "metrics": {
+    "ladder": {
+      "primaryEndpoint": {
+        "expected": 100,
+        "observed": 97,
+        "unscored": 3,
+        "model": {
+          "n": 97,
+          "mae": 0.36269597584009056,
+          "rmse": 0.4590308889042806,
+          "bias": -0.13825238541277707,
+          "reason": null
+        },
+        "persistence": {
+          "n": 97,
+          "mae": 0.3889999999999999,
+          "rmse": 0.4939188651598809,
+          "bias": -0.19753608247422674,
+          "reason": null
+        },
+        "modelMinusPersistenceMae": -0.026304024159909345,
+        "skill": {
+          "value": 0.06761959938280038,
+          "reason": null
+        }
+      },
+      "pooled": {
+        "expected": 700,
+        "observed": 681,
+        "unscored": 19,
+        "model": {
+          "n": 681,
+          "mae": 0.27483356194301123,
+          "rmse": 0.39727813608269913,
+          "bias": -0.04489757020514009,
+          "reason": null
+        },
+        "persistence": {
+          "n": 681,
+          "mae": 0.2897439060205584,
+          "rmse": 0.413165639541218,
+          "bias": -0.08621057268722461,
+          "reason": null
+        },
+        "modelMinusPersistenceMae": -0.014910344077547155,
+        "skill": {
+          "value": 0.051460423386744836,
+          "reason": null
+        }
+      }
+    },
+    "gdp": {
+      "primaryEndpoint": {
+        "expected": 100,
+        "observed": 97,
+        "unscored": 3,
+        "model": {
+          "n": 97,
+          "mae": 9.261989807381065,
+          "rmse": 12.351962858955629,
+          "bias": -4.168443939957081,
+          "reason": null
+        },
+        "persistence": {
+          "n": 97,
+          "mae": 15.629918353270511,
+          "rmse": 19.53321311150404,
+          "bias": -13.244278728725808,
+          "reason": null
+        },
+        "modelMinusPersistenceMae": -6.367928545889447,
+        "skill": {
+          "value": 0.40741918172317115,
+          "reason": null
+        }
+      },
+      "pooled": {
+        "expected": 700,
+        "observed": 691,
+        "unscored": 9,
+        "model": {
+          "n": 691,
+          "mae": 5.929629667238282,
+          "rmse": 8.731537027380071,
+          "bias": 0.7712239579870809,
+          "reason": null
+        },
+        "persistence": {
+          "n": 691,
+          "mae": 8.6499816020173,
+          "rmse": 12.2093393665981,
+          "bias": -5.359578932512586,
+          "reason": null
+        },
+        "modelMinusPersistenceMae": -2.7203519347790186,
+        "skill": {
+          "value": 0.31449222205797445,
+          "reason": null
+        }
+      }
+    }
+  },
+  "qualifiesDefault": false,
+  "validatesPolicyEffects": false,
+  "targetDefinitionCorrection": "Trailing three-year survey average, not an individual-year survey score; identified after scoring, protocol unchanged.",
+  "supersedesPendingStatusOnly": "docs/design/research/entries/research-health-2018-v1.json",
+  "limitations": [
+    "This is an additional-input experiment, not strict identical-input compliance with PR23. Pre-2019 World Bank life expectancy is used; all future covariates are predicted from past data.",
+    "Post-period literature excerpts were inadvertently exposed after method registration; the protocol records timing and categories. Do not call the result blinded.",
+    "The fitted life-expectancy coefficient is slightly negative, and the strongest income-only approach is better on ladder MAE. Different equations and GDP forecasts prevent attributing the difference to adding health; no causal or incremental-health benefit is established."
+  ]
+}

@@ -1,0 +1,177 @@
+{
+  "schema": "registered-research-result/1",
+  "id": "research-objective-1980-v1-scored",
+  "entry": "research-objective-1980-v1",
+  "family": "five-approaches-20260916",
+  "status": "completed-one-scored-run-after-disclosed-preflight-failure",
+  "protocolCommit": "41fe91cbf84766dfe363d5cded56b82ad0caa3b6",
+  "freezeCommit": "af07c67c38830b64273e84677dd9723f90c934a4",
+  "scoreReceipt": "data/evaluation/research-objective-1980-v1/score-receipt.json",
+  "scoresSha256": "43d3e6aee97caa9697f6d7360c29084f10676ffcb8dde68a245837f6555e915e",
+  "primaryLifeExpectancyVerdict": "not scored: no2025 outcomes",
+  "primaryGdpVerdict": "lower observed MAE than persistence; exploratory",
+  "qualifiesDefault": false,
+  "mapsToLadder": false,
+  "metrics": {
+    "lifeExpectancy": {
+      "primaryEndpoint": {
+        "expected": 140,
+        "observed": 0,
+        "unscored": 140,
+        "model": {
+          "n": 0,
+          "mae": null,
+          "rmse": null,
+          "bias": null,
+          "reason": "No observed country-years"
+        },
+        "persistence": {
+          "n": 0,
+          "mae": null,
+          "rmse": null,
+          "bias": null,
+          "reason": "No observed country-years"
+        },
+        "skill": {
+          "value": null,
+          "reason": "No scored observations"
+        },
+        "supplementaryLevels": {
+          "model": {
+            "n": 0,
+            "mae": null,
+            "rmse": null,
+            "bias": null,
+            "reason": "No observed country-years"
+          },
+          "persistence": {
+            "n": 0,
+            "mae": null,
+            "rmse": null,
+            "bias": null,
+            "reason": "No observed country-years"
+          }
+        }
+      },
+      "pooled": {
+        "expected": 6300,
+        "observed": 6160,
+        "unscored": 140,
+        "model": {
+          "n": 6160,
+          "mae": 3.66643953295475,
+          "rmse": 5.32042737178571,
+          "bias": -1.2926086400265284,
+          "reason": null
+        },
+        "persistence": {
+          "n": 6160,
+          "mae": 6.487477672632251,
+          "rmse": 8.24781718368776,
+          "bias": -6.011007859518535,
+          "reason": null
+        },
+        "skill": {
+          "value": 0.4348435990120153,
+          "reason": null
+        },
+        "supplementaryLevels": {
+          "model": {
+            "n": 6160,
+            "mae": 3.66643953295475,
+            "rmse": 5.32042737178571,
+            "bias": -1.2926086400265284,
+            "reason": null
+          },
+          "persistence": {
+            "n": 6160,
+            "mae": 6.487477672632251,
+            "rmse": 8.24781718368776,
+            "bias": -6.011007859518535,
+            "reason": null
+          }
+        }
+      }
+    },
+    "gdp": {
+      "primaryEndpoint": {
+        "expected": 140,
+        "observed": 132,
+        "unscored": 8,
+        "model": {
+          "n": 132,
+          "mae": 143.45765641521766,
+          "rmse": 328.803619346339,
+          "bias": -83.28404964785905,
+          "reason": null
+        },
+        "persistence": {
+          "n": 132,
+          "mae": 161.69112212481508,
+          "rmse": 347.94841373614605,
+          "bias": -152.78548867619895,
+          "reason": null
+        },
+        "skill": {
+          "value": 0.11276726557394023,
+          "reason": null
+        },
+        "supplementaryLevels": {
+          "model": {
+            "n": 132,
+            "mae": 8011.474425327793,
+            "rmse": 21678.558928284307,
+            "bias": 35.73576922709849,
+            "reason": null
+          },
+          "persistence": {
+            "n": 132,
+            "mae": 9153.754765521095,
+            "rmse": 16503.17432549172,
+            "bias": -7870.490252040106,
+            "reason": null
+          }
+        }
+      },
+      "pooled": {
+        "expected": 6300,
+        "observed": 6289,
+        "unscored": 11,
+        "model": {
+          "n": 6289,
+          "mae": 64.6333261632773,
+          "rmse": 149.94059535669112,
+          "bias": -11.052488584313371,
+          "reason": null
+        },
+        "persistence": {
+          "n": 6289,
+          "mae": 67.12694500998883,
+          "rmse": 158.48508229869165,
+          "bias": -54.924466262595466,
+          "reason": null
+        },
+        "skill": {
+          "value": 0.037147807729674964,
+          "reason": null
+        },
+        "supplementaryLevels": {
+          "model": {
+            "n": 6289,
+            "mae": 6502.093850912559,
+            "rmse": 25704.163159907697,
+            "bias": 3170.1153686448924,
+            "reason": null
+          },
+          "persistence": {
+            "n": 6289,
+            "mae": 5581.786951453155,
+            "rmse": 12407.18723737972,
+            "bias": -3366.834813998633,
+            "reason": null
+          }
+        }
+      }
+    }
+  }
+}
