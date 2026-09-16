@@ -1,6 +1,6 @@
 # Shrunk country trends — sealed external result
 
-Entry `research-damped-2018-v1`. Base `0ca2eda`. Protocol `7d40306fdf677d756042e75ca2fa56afc839c5fe`; numerical freeze `130bc0e66ecbff50457baf114a9a20540c37a940`. Scoring commit `3eb6382360d8db8dfecb5f5fa81cd1d90f635c73`; receipt completed `2026-09-16T21: 24: 43.980Z`.
+Entry `research-damped-2018-v1`. Base `0ca2eda`. Protocol `7d40306fdf677d756042e75ca2fa56afc839c5fe`; numerical freeze `130bc0e66ecbff50457baf114a9a20540c37a940`. Scoring commit `3eb6382360d8db8dfecb5f5fa81cd1d90f635c73`; receipt completed `2026-09-16T21:24:43.980Z`.
 
 These are exploratory retrospective comparisons from one declared family of five. All five forecasts froze before any new test scoring. All five results are published, including essentially null gains. No parameter, input, country, horizon or model was changed after scoring. Selection of a winner now requires new confirmation; it is not an independent validation sample. No default or application behavior changed.
 
@@ -60,7 +60,7 @@ Skill = 1 − model MAE / persistence MAE; positive means lower error. MAE is me
 
 The small aggregate gain does not establish a practically reliable advantage or statistical significance. Training-window model selection remains optimistic.
 
-The frozen origin is 100 countries; 28 of the original 128 roster were excluded by the original protocol. Ladder has 681 observed and 19 missing cells; GDP has 691 observed and 9 missing cells. Both have97 observed countries at 2025. Full row-specific missingness and the 28 origin exclusions remain in the score artifact.
+The frozen origin is 100 countries; 28 of the original 128 roster were excluded by the original protocol. Ladder has 681 observed and 19 missing cells; GDP has 691 observed and 9 missing cells. Both have 97 observed countries at 2025. Full row-specific missingness and the 28 origin exclusions remain in the score artifact.
 
 ## Countries moving wellbeing error
 
