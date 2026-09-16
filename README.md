@@ -2,13 +2,17 @@
 
 **What happens to human well-being when AI automates the economy faster than our institutions can adapt — and who, if anyone, keeps the lights on for everyone else?**
 
-The default `world-conditional-v1` compares funded transfers across 128 countries under explicit corporate and macro assumptions. It reports a population-weighted **conditional wellbeing index** for each month's conditions; realized wellbeing timing, demand feedback and total welfare effects are unestimated.
+This comparison branch opens with **reported company cash flow → an editable allocation → visible limits**. Select Apple, Microsoft, Alphabet, Amazon, Meta or NVIDIA, compare two policies, and reopen the exact experiment in Model Lab. Reported observations, derived amounts and scenario assumptions are labeled separately.
+
+**Check against history** shows observed values, the existing world model reconstruction and a persistence baseline, including the misses. It discloses same-span fitting and does not claim forecast validation. See the [published-experience handoff](docs/design/published-experience-handoff.md) for the comparison, evidence and remaining limits.
+
+This branch has not been deployed or merged into main. The public app may show a different version.
 
 > **Live demo:** https://wellbeing-transition-simulator-808228086396.us-west1.run.app
 
-## What the default models
+## What the separate World scenarios model
 
-A hypothetical monthly source pool equals market capitalization × corporate adoption × 0.15 / 12, in billions of constant-2015 USD. A declared available share limits funded requests. This is a modeled source convention, not measured profit or surplus cash. Expenses, ownership and competing uses are unestimated.
+The preserved `world-conditional-v1` model compares conditional outcomes across 128 countries. It does not receive the new financial allocation results. A hypothetical monthly source pool equals market capitalization × corporate adoption × 0.15 / 12, in billions of constant-2015 USD. A declared available share limits funded requests. This is a modeled source convention, not measured profit or surplus cash. Expenses, ownership and competing uses are unestimated.
 
 Contribution shares or explicit monthly amounts and global/customer-resident/HQ-resident allocation are meaningful policy controls. Adoption, productivity, workforce, available funding share and wellbeing coefficients are scenario assumptions. Source equals funded transfers plus unused and reserved amounts; transfers do not create GDP. The conditional mapping reports income, transfer and assumed non-income unemployment terms separately. Past wellbeing does not alter corporate responses.
 
@@ -51,7 +55,7 @@ Example configs live in [`examples/models/`](examples/models/).
   and policy-text extraction into a reviewable draft. The core simulation and manual
   policy flow run fully without any API key; only these three features need one.
 
-The UI is organized into tabs: **Overview** (a legacy abundance-cycle diagram, not
+The primary navigation is **Explore**, **Compare**, **Check against history** and **Model Lab**. Explore offers direct paths to policy text, model import, variables, uncertainty, world scenarios and AI risk. The preserved world tools include **Overview** (a legacy abundance-cycle diagram, not
 operative default behavior), **Map** (adoption / well-being / UBI-received /
 corporate-HQ views), **Corporations** (a sortable, filterable table plus a legacy-only
 game-theory dashboard with a cooperation meter and contribution histogram), **Charts** (the motion chart and
@@ -137,11 +141,14 @@ Historical check result for the built-in engine (2026-09-13, before this integra
 
 **Where to start reviewing (v3 plan, stages 1-5):**
 
-The separate guided-interface branch has a [morning comparison and Claude Code handoff](docs/design/overnight-2026-09-15-handoff.md), with exact build and browser evidence.
+Start with the [new published-data comparison and Claude Code handoff](docs/design/published-experience-handoff.md). The [earlier guided-interface handoff](docs/design/overnight-2026-09-15-handoff.md) records its separate baseline.
 
 | What | Where |
 |---|---|
-| Conditional default model card and archived legacy evidence (scope, accounting, response review and limitations) | [`docs/design/model-card-default.md`](docs/design/model-card-default.md), also in-app: MORE → Model Card |
+| New front door, exact financial model, A/B and file/link replay | `components/published/`, `src/financials/`, `data/financials/fy2025-v1.json` |
+| Six official company reports and precise cash-investment definitions | [`docs/design/research/reported-company-financials.md`](docs/design/research/reported-company-financials.md) |
+| Observed/model/persistence graph, full cohort and reproducible artifact | `?tab=history`, `components/history/`, [`docs/design/research/historical-experience.md`](docs/design/research/historical-experience.md) |
+| Conditional default model card and archived legacy evidence (scope, accounting, response review and limitations) | [`docs/design/model-card-default.md`](docs/design/model-card-default.md), also in-app: About → World model card |
 | Audit of the engine and the fixes made | [`docs/design/audit-2026-09-13.md`](docs/design/audit-2026-09-13.md) |
 | Authoring core (equations, stocks, lags, entities, effects, solve blocks with `through`) | [`docs/core-authoring.md`](docs/core-authoring.md), `src/core/`, Model Lab tab |
 | Faithful port of Korinek et al. (2026), paper equations, 169 published cells reproduced | `data/core/korinek-2026-faithful.json`, [`docs/design/research/korinek-2026-model.md`](docs/design/research/korinek-2026-model.md) |
