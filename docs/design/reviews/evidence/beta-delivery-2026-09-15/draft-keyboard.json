@@ -1,0 +1,14 @@
+{
+  "focused": "Draft BManual policy draft (variant B)",
+  "group": [
+    {
+      "text": "Draft A\nManual policy draft",
+      "pressed": "false"
+    },
+    {
+      "text": "Draft B\nManual policy draft (variant B)",
+      "pressed": "true"
+    }
+  ],
+  "containsAction": false
+}

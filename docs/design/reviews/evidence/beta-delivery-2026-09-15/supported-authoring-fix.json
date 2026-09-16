@@ -1,0 +1,62 @@
+{
+  "model": "Income and wellbeing (three variables)",
+  "actions": [
+    "Applied unchanged newAccess multiply form",
+    "Observed lab-newAccess overlay",
+    "Removed overlay through its native button"
+  ],
+  "beforeRemoval": {
+    "text": "Add a variable\n\nOne new input, one or two effects. Effects add to, or multiply, the variable they attach to; they never replace its equation.\n\nNew input id\nUnit\nCurve (two points, interpolated between)\nStart year\nStart value\nEnd year\nEnd value\nEffect 1\nTarget variable\nincome (usd)\nincomeMultiple\nwellbeing (ladder)\nOperation\nadd\nmultiply\nEffect unit\nExpression\nAdd a second effect\nSource label\nSource kind\ncausal\nassociational\ncalibrated\nelicited\nassumed\nguess\nApply as an overlay\nYour overlays\nlab-newAccess1 effect \u00b7 yours",
+    "buttons": [
+      {
+        "text": "",
+        "label": "What does Add a variable mean?"
+      },
+      {
+        "text": "",
+        "label": "What does New input id mean?"
+      },
+      {
+        "text": "",
+        "label": "What does Unit mean?"
+      },
+      {
+        "text": "",
+        "label": "What does Curve mean?"
+      },
+      {
+        "text": "",
+        "label": "What does Effect 1 mean?"
+      },
+      {
+        "text": "",
+        "label": "What does Expression mean?"
+      },
+      {
+        "text": " Add a second effect",
+        "label": null
+      },
+      {
+        "text": "",
+        "label": "What does Source label mean?"
+      },
+      {
+        "text": "",
+        "label": "What does Source kind mean?"
+      },
+      {
+        "text": "Apply as an overlay",
+        "label": null
+      },
+      {
+        "text": "",
+        "label": "Remove overlay lab-newAccess"
+      }
+    ],
+    "alerts": []
+  },
+  "afterRemoval": {
+    "text": "Add a variable\n\nOne new input, one or two effects. Effects add to, or multiply, the variable they attach to; they never replace its equation.\n\nNew input id\nUnit\nCurve (two points, interpolated between)\nStart year\nStart value\nEnd year\nEnd value\nEffect 1\nTarget variable\nincome (usd)\nincomeMultiple\nwellbeing (ladder)\nOperation\nadd\nmultiply\nEffect unit\nExpression\nAdd a second effect\nSource label\nSource kind\ncausal\nassociational\ncalibrated\nelicited\nassumed\nguess\nApply as an overlay",
+    "alerts": []
+  }
+}

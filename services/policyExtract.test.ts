@@ -3,6 +3,8 @@ import { findFixture } from '../src/core/fixtures';
 import type { CoreModel } from '../src/core/types';
 import { coverage, pairedRun, validateDraft } from '../src/policy/draft';
 import { modelHash, sha256Hex } from '../src/policy/hash';
+import { createFinancialModel, defaultFinancialScenario } from '../src/financials/model';
+import { financialRecord } from '../src/financials/catalog';
 import {
   PolicyNoApiKeyError,
   PolicyRateLimitError,
@@ -250,4 +252,33 @@ it('preserves unknown operative mechanism links for blocking validation', () => 
   expect(validateDraft(out.draft!, training, { sourceText: SOURCE }).some(d => d.level === 'error' && d.code === 'unknown-interprets')).toBe(true);
   expect(coverage(out.draft!, SOURCE).operative.unresolved).toContain('sec2(a)');
   expect(pairedRun(training, [], out.draft!, { sourceText: SOURCE, runs: 1 }).ok).toBe(false);
+});
+
+describe('review 2026-09-15: live extractor output shapes seen on the authorized origin', () => {
+  const financial = createFinancialModel(financialRecord('apple-fy2025'), defaultFinancialScenario);
+  const src = 'Set the policy share to 20 percent.';
+  const provision = (mapping: Record<string, unknown>) => JSON.stringify({ title: 'Probe', provisions: [{ id: 'set-policy-share', quote: src, summary: 'Sets the policy share', status: 'mapped', role: 'control', mapping }] });
+
+  it('removes a time assumption the extractor attached to a share-to-share mapping, with a visible note, so the draft runs', () => {
+    const out = parsePolicyExtraction(provision({ kind: 'parameter', target: 'policy_share', op: 'set', value: 20, unit: 'percent', timeAssumption: { basis: 'year', reason: 'annual model' }, evidenceLabel: 'quoted' }), financial, src);
+    const p = out.draft!.provisions[0];
+    expect(p.status).toBe('mapped');
+    expect(p.mapping!.timeAssumption).toBeUndefined();
+    expect(p.mapping!.evidence.note).toMatch(/time assumption \(per year: annual model\) was removed/);
+    const errors = validateDraft(out.draft!, financial, { sourceText: src }).filter((d) => d.level === 'error');
+    expect(errors).toEqual([]);
+  });
+
+  it('keeps a time assumption on a currency flow', () => {
+    const out = parsePolicyExtraction(JSON.stringify({ title: 'Probe', provisions: [{ ...fund, mapping: { ...fund.mapping, timeAssumption: { basis: 'year', reason: 'Explicit hypothetical annual funding' } } }] }), training, fund.quote);
+    expect(out.draft!.provisions[0].mapping!.timeAssumption).toEqual({ basis: 'year', reason: 'Explicit hypothetical annual funding' });
+  });
+
+  it('accepts a target echoed with its own kind word, and still demotes a mismatched kind word', () => {
+    const ok = parsePolicyExtraction(provision({ kind: 'parameter', target: 'parameter policy_share', op: 'set', value: 20, unit: 'percent' }), financial, src);
+    expect(ok.draft!.provisions[0].status).toBe('mapped');
+    expect(ok.draft!.provisions[0].mapping!.target).toBe('policy_share');
+    const bad = parsePolicyExtraction(provision({ kind: 'parameter', target: 'input policy_share', op: 'set', value: 20, unit: 'percent' }), financial, src);
+    expect(bad.draft!.provisions[0].status).toBe('unresolved');
+  });
 });

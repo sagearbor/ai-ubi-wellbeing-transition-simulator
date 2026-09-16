@@ -2,6 +2,7 @@ import React, { useId, useMemo, useState } from 'react';
 import rawArtifact from '../../data/hindcast/experience.json';
 import { annualRows, type HistoryArtifact, type HistoryMetric } from '../../src/history/types';
 import './history.css';
+import HeldoutExperience from './HeldoutExperience';
 
 const artifact = rawArtifact as unknown as HistoryArtifact;
 const labels: Record<string, string> = {
@@ -24,7 +25,7 @@ function downloadData() {
 }
 
 /** Static, lazy-loadable experience; never invokes or qualifies the financial experiment. */
-export default function HistoryExperience(): React.ReactElement {
+function ReconstructionExperience(): React.ReactElement {
   const [runId, setRunId] = useState('ai-off');
   const [countryId, setCountryId] = useState('USA');
   const [metric, setMetric] = useState<HistoryMetric>('wellbeing');
@@ -95,8 +96,16 @@ export default function HistoryExperience(): React.ReactElement {
     <details><summary>Annual data table · {country.name} · {units}</summary><div className="history-table-scroll"><table><caption>Annual values for {country.name} — {units}</caption><thead><tr><th scope="col">Year</th><th scope="col">Observed</th><th scope="col">Modeled</th><th scope="col">Persistence</th><th scope="col">Model minus observed</th></tr></thead><tbody>{rows.map(row => <tr key={row.year}><th scope="row">{row.year}</th><td>{format(row.observed)}</td><td>{format(row.modeled)}</td><td>{format(row.persistence)}</td><td>{row.observed === null ? 'Not scored' : signed(row.modeled - row.observed)}</td></tr>)}</tbody></table></div></details>
     <details><summary>All {run.countries.length} countries · 2025 endpoints and errors</summary><div className="history-table-scroll"><table><caption>{labels[runId]} — wellbeing index points and GDP growth percentage-point errors</caption><thead><tr><th scope="col">Country</th><th scope="col">Observed wellbeing</th><th scope="col">Modeled wellbeing</th><th scope="col">Wellbeing error</th><th scope="col">GDP growth error</th></tr></thead><tbody>{[...run.countries].sort((a, b) => Math.abs(b.wellbeingError) - Math.abs(a.wellbeingError)).map(c => <tr key={c.id}><th scope="row">{c.name} ({c.id})</th><td>{format(c.actualWellbeingEnd)}</td><td>{format(c.predictedWellbeingEnd)}</td><td>{signed(c.wellbeingError)}</td><td>{signed(c.gdpGrowthErrorPct)}</td></tr>)}</tbody></table></div></details>
     <details><summary>Excluded countries and missing endpoints</summary><p>The same endpoint requirements apply to every run. An interior missing observation does not exclude a country with both endpoints.</p><ul>{[...run.dropped, ...run.droppedAtEnd].map(c => <li key={c.id}>{c.name} ({c.id}): {c.reason}</li>)}</ul></details>
-    <details><summary>What this reconstruction cannot establish</summary><p>The observations were retrieved after the reconstruction period. Revised or later-published values are not the information a forecaster had in 2015. Population, governance and other background attributes come from the legacy model constants, rather than a complete historical panel.</p><p>Observed wellbeing is the Cantril ladder, rescaled from 0–10 to 0–100 by multiplying by ten; matching scales does not establish identical constructs. COVID, war, inflation and other omitted shocks can dominate these changes. No causal validation follows. Frozen calibration with historical data vintages and temporal or country holdouts is a missing future capability.</p><p>All five existing runs are offered in the selector. The sensitivity cases explore channels, and are not evidence that corporate UBI actually occurred during this decade.</p></details>
+    <details><summary>What this reconstruction cannot establish</summary><p>The observations were retrieved after the reconstruction period. Revised or later-published values are not the information a forecaster had in 2015. Population, governance and other background attributes come from the legacy model constants, rather than a complete historical panel.</p><p>Observed wellbeing is the Cantril ladder, rescaled from 0–10 to 0–100 by multiplying by ten; matching scales does not establish identical constructs. COVID, war, inflation and other omitted shocks can dominate these changes. No causal validation follows. A separate Held-out test now freezes calibration before scoring 2019–2025. It uses revised vintages and does not turn this reconstruction into an independent forecast.</p><p>All five existing runs are offered in the selector. The sensitivity cases explore channels, and are not evidence that corporate UBI actually occurred during this decade.</p></details>
     <details><summary>Model identity, source vintages and reproducibility</summary><p>{artifact.model}</p><p>{artifact.fitScope}</p><p>{artifact.calendar}</p><ul>{Object.entries(report.sources).map(([key, source]) => <li key={key}><a href={source.url} target="_blank" rel="noreferrer">{source.name}</a> · retrieved {source.retrievedAt}{key === 'unemployment' ? ' · fetched but not scored' : ''}</li>)}</ul><p>Artifact version {artifact.version}. Recreate and check from the repository terminal:</p><pre>{`${artifact.producingCommand}\n${artifact.checkingCommand}`}</pre><p>Run model identifier: <code>{run.params.id}</code>. SHA-256 source hashes:</p><div className="history-table-scroll"><table><thead><tr><th scope="col">Source</th><th scope="col">SHA-256</th></tr></thead><tbody>{Object.entries(artifact.sourceHashes).map(([source, hash]) => <tr key={source}><th scope="row">{source}</th><td><code>{hash}</code></td></tr>)}</tbody></table></div></details>
     <button type="button" onClick={downloadData}>Download all countries, years, runs and provenance (JSON)</button>
   </section>;
+}
+
+export default function HistoryExperience(): React.ReactElement {
+  const [view, setView] = useState<'holdout' | 'reconstruction'>('holdout');
+  return <><nav className="history-experience history-view-nav" aria-label="History evidence views">
+    <button type="button" aria-pressed={view === 'holdout'} onClick={() => setView('holdout')}>Held-out test</button>
+    <button type="button" aria-pressed={view === 'reconstruction'} onClick={() => setView('reconstruction')}>Historical reconstruction</button>
+  </nav>{view === 'holdout' ? <HeldoutExperience/> : <ReconstructionExperience/>}</>;
 }

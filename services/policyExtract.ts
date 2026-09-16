@@ -27,6 +27,7 @@ import Ajv, { type ErrorObject } from 'ajv';
 import { resolveModel } from '../src/core/engine';
 import type { CoreModel, Overlay } from '../src/core/types';
 import { buildClauseInventory } from '../src/policy/clauses';
+import { parseUnit } from '../src/policy/units';
 import { quoteInSource, expressionSymbols } from '../src/policy/draft';
 import { modelHash, sha256Hex } from '../src/policy/hash';
 import { EXCLUSION_KINDS, PROVISION_ROLES, PROVISION_STATUSES, type ClauseExclusion, type PolicyDraft, type Provision, type ProvisionMapping } from '../src/policy/types';
@@ -155,7 +156,7 @@ ${sourceText}
 MODEL: ${model.name} (id "${model.id}", ${model.time.start}-${model.time.end}, step ${model.time.step})
 SCOPE: ${model.scope ?? '(no scope declared)'}
 
-Recipient units are distinct: worker, resident/person, participant and household are never interchangeable. Preserve source time units; a missing time basis requires an explicit timeAssumption with a reason, never silently copy the target basis.
+Recipient units are distinct: worker, resident/person, participant and household are never interchangeable. Preserve source time units; a missing time basis requires an explicit timeAssumption with a reason, never silently copy the target basis. Shares, percentages and ratios have no time basis: never give a timeAssumption when both the stated value and the target are a share, percent or ratio. Give a target as its bare id (policy_share), without the words parameter, input or variable.
 
 The ONLY ids a mapping may target (anything else must be "unresolved" or "outside-model"):
 ${modelTargetsText(model)}
@@ -365,9 +366,15 @@ export function parsePolicyExtraction(
       if (!m) {
         demote('Demoted from mapped: the extractor gave no mapping.');
       } else {
+        // The prompt lists targets as "parameter <id>"; models sometimes echo the kind word. Strip it
+        // only when it names the mapping's own kind, so a wrong kind still demotes below.
+        const rawTarget = String(m.target).trim();
+        const prefixed = /^(parameter|input|variable|effect)\s+([A-Za-z_][A-Za-z0-9_]*)$/.exec(rawTarget);
+        const kindWord = m.kind === 'effect' ? ['variable', 'effect'] : [String(m.kind)];
+        const target = prefixed && kindWord.includes(prefixed[1]) ? prefixed[2] : rawTarget;
         const mapping: ProvisionMapping = {
           kind: m.kind as ProvisionMapping['kind'],
-          target: String(m.target),
+          target,
           op: m.op as ProvisionMapping['op'],
           ...(typeof m.value === 'number' ? { value: m.value } : {}),
           ...(m.curve && typeof m.curve === 'object' ? { curve: m.curve as Record<string, number> } : {}),
@@ -383,6 +390,18 @@ export function parsePolicyExtraction(
           },
         };
         out.mapping = mapping;
+        // A share, percent or ratio has no time basis. An extractor-supplied time assumption on a
+        // share-to-share mapping cannot be a source fact and would block validation; remove it and say so.
+        // (A person entering one by hand still gets the validator's error.)
+        if (mapping.timeAssumption) {
+          const targetUnit = scenario.parameters.find((x) => x.id === mapping.target)?.unit ?? scenario.inputs?.find((x) => x.id === mapping.target)?.unit ?? scenario.variables.find((x) => x.id === mapping.target)?.unit;
+          const rateless = (u: string | undefined) => { if (u === undefined) return false; const pu = parseUnit(u); return !pu.time && (pu.dimension === 'share' || pu.dimension === 'dimensionless'); };
+          if (rateless(mapping.unit) && rateless(targetUnit)) {
+            const dropped = mapping.timeAssumption;
+            delete mapping.timeAssumption;
+            mapping.evidence = { ...mapping.evidence, note: `${mapping.evidence.note} The extractor's time assumption (per ${dropped.basis}: ${dropped.reason}) was removed because a share or ratio has no time basis.` };
+          }
+        }
         const targetOk =
           (mapping.kind === 'parameter' && params.has(mapping.target)) ||
           (mapping.kind === 'input' && inputs.has(mapping.target)) ||

@@ -1,0 +1,2819 @@
+{
+  "originYear": 2018,
+  "countries": [
+    {
+      "id": "USA",
+      "name": "United States",
+      "population": {
+        "value": 321815121,
+        "year": 2015
+      },
+      "gini": {
+        "value": 41.5,
+        "year": 2015
+      },
+      "ge": {
+        "value": 1.5727519,
+        "year": 2015
+      },
+      "rl": {
+        "value": 1.3770167,
+        "year": 2015
+      },
+      "cc": {
+        "value": 1.2367604,
+        "year": 2015
+      },
+      "governance": 0.7791019333333333,
+      "ladder": 6.892,
+      "gdp": 59817.6556798612
+    },
+    {
+      "id": "CAN",
+      "name": "Canada",
+      "population": {
+        "value": 35704498,
+        "year": 2015
+      },
+      "gini": {
+        "value": 33.7,
+        "year": 2015
+      },
+      "ge": {
+        "value": 1.8766375,
+        "year": 2015
+      },
+      "rl": {
+        "value": 1.7204594,
+        "year": 2015
+      },
+      "cc": {
+        "value": 1.8679741,
+        "year": 2015
+      },
+      "governance": 0.8643380666666667,
+      "ladder": 7.278,
+      "gdp": 44907.3887994469
+    },
+    {
+      "id": "MEX",
+      "name": "Mexico",
+      "population": {
+        "value": 121072306,
+        "year": 2015
+      },
+      "gini": {
+        "value": 48.9,
+        "year": 2014
+      },
+      "ge": {
+        "value": 0.0999956999999999,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.6829719,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.840903899999999,
+        "year": 2015
+      },
+      "governance": 0.4050746600000001,
+      "ladder": 6.595,
+      "gdp": 10296.8690940459
+    },
+    {
+      "id": "GTM",
+      "name": "Guatemala",
+      "population": {
+        "value": 15971743,
+        "year": 2015
+      },
+      "gini": {
+        "value": 48.3,
+        "year": 2014
+      },
+      "ge": {
+        "value": -0.652722799999999,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.9498506,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.9067476,
+        "year": 2015
+      },
+      "governance": 0.3327119333333334,
+      "ladder": 6.436,
+      "gdp": 4040.21214374742
+    },
+    {
+      "id": "HTI",
+      "name": "Haiti",
+      "population": {
+        "value": 10523242,
+        "year": 2015
+      },
+      "gini": {
+        "value": 41.1,
+        "year": 2012
+      },
+      "ge": {
+        "value": -1.86939899999999,
+        "year": 2015
+      },
+      "rl": {
+        "value": -1.2262159,
+        "year": 2015
+      },
+      "cc": {
+        "value": -1.4465713,
+        "year": 2015
+      },
+      "governance": 0.1971875866666673,
+      "ladder": 3.597,
+      "gdp": 1437.35251928349
+    },
+    {
+      "id": "DOM",
+      "name": "Dominican Rep.",
+      "population": {
+        "value": 10434829,
+        "year": 2015
+      },
+      "gini": {
+        "value": 45.2,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.303055299999999,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.5344359,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.7903907,
+        "year": 2015
+      },
+      "governance": 0.3914745400000001,
+      "ladder": 5.425,
+      "gdp": 7818.70593240469
+    },
+    {
+      "id": "HND",
+      "name": "Honduras",
+      "population": {
+        "value": 9237305,
+        "year": 2015
+      },
+      "gini": {
+        "value": 49.2,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.5555614,
+        "year": 2015
+      },
+      "rl": {
+        "value": -1.1570215,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.8111784,
+        "year": 2015
+      },
+      "governance": 0.3317492466666667,
+      "ladder": 5.86,
+      "gdp": 2430.13503657762
+    },
+    {
+      "id": "NIC",
+      "name": "Nicaragua",
+      "population": {
+        "value": 6149417,
+        "year": 2015
+      },
+      "gini": {
+        "value": 46.2,
+        "year": 2014
+      },
+      "ge": {
+        "value": -0.754890699999999,
+        "year": 2015
+      },
+      "rl": {
+        "value": -1.0046454,
+        "year": 2015
+      },
+      "cc": {
+        "value": -1.01658009999999,
+        "year": 2015
+      },
+      "governance": 0.31492558666666737,
+      "ladder": 6.105,
+      "gdp": 2107.3396261623
+    },
+    {
+      "id": "SLV",
+      "name": "El Salvador",
+      "population": {
+        "value": 6183676,
+        "year": 2015
+      },
+      "gini": {
+        "value": 40.6,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.3051905,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.7675683,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.523622599999999,
+        "year": 2015
+      },
+      "governance": 0.3935745733333334,
+      "ladder": 6.253,
+      "gdp": 4046.16291720583
+    },
+    {
+      "id": "CRI",
+      "name": "Costa Rica",
+      "population": {
+        "value": 4818038,
+        "year": 2015
+      },
+      "gini": {
+        "value": 48.4,
+        "year": 2015
+      },
+      "ge": {
+        "value": 0.3596651,
+        "year": 2015
+      },
+      "rl": {
+        "value": 0.5212516,
+        "year": 2015
+      },
+      "cc": {
+        "value": 0.7699694,
+        "year": 2015
+      },
+      "governance": 0.6100590733333333,
+      "ladder": 7.167,
+      "gdp": 12708.8042828359
+    },
+    {
+      "id": "PAN",
+      "name": "Panama",
+      "population": {
+        "value": 3960035,
+        "year": 2015
+      },
+      "gini": {
+        "value": 50.8,
+        "year": 2015
+      },
+      "ge": {
+        "value": 0.3209871,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.1702773,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.424039399999999,
+        "year": 2015
+      },
+      "governance": 0.48177802666666675,
+      "ladder": 6.321,
+      "gdp": 15375.6500855703
+    },
+    {
+      "id": "BRA",
+      "name": "Brazil",
+      "population": {
+        "value": 201675532,
+        "year": 2015
+      },
+      "gini": {
+        "value": 51.9,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.1018264,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.225204699999999,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.3512683,
+        "year": 2015
+      },
+      "governance": 0.45478004000000005,
+      "ladder": 6.3,
+      "gdp": 8722.33630317935
+    },
+    {
+      "id": "ARG",
+      "name": "Argentina",
+      "population": {
+        "value": 43477012,
+        "year": 2015
+      },
+      "gini": {
+        "value": 41.8,
+        "year": 2014
+      },
+      "ge": {
+        "value": 0.1187015,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.467320499999999,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.645135999999999,
+        "year": 2015
+      },
+      "governance": 0.4337496666666668,
+      "ladder": 6.086,
+      "gdp": 13058.3285449954
+    },
+    {
+      "id": "COL",
+      "name": "Colombia",
+      "population": {
+        "value": 46969940,
+        "year": 2015
+      },
+      "gini": {
+        "value": 52,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.134012,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.3995338,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.3173369,
+        "year": 2015
+      },
+      "governance": 0.4432744866666667,
+      "ladder": 6.125,
+      "gdp": 6353.5464285392
+    },
+    {
+      "id": "CHL",
+      "name": "Chile",
+      "population": {
+        "value": 18047625,
+        "year": 2015
+      },
+      "gini": {
+        "value": 45.3,
+        "year": 2015
+      },
+      "ge": {
+        "value": 1.0506453,
+        "year": 2015
+      },
+      "rl": {
+        "value": 1.0033345,
+        "year": 2015
+      },
+      "cc": {
+        "value": 1.1438485,
+        "year": 2015
+      },
+      "governance": 0.7131885533333334,
+      "ladder": 6.444,
+      "gdp": 13763.0068844795
+    },
+    {
+      "id": "PER",
+      "name": "Peru",
+      "population": {
+        "value": 30457600,
+        "year": 2015
+      },
+      "gini": {
+        "value": 43.4,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.248759199999999,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.4520227,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.5919962,
+        "year": 2015
+      },
+      "governance": 0.4138147933333334,
+      "ladder": 5.697,
+      "gdp": 6593.14437459526
+    },
+    {
+      "id": "ECU",
+      "name": "Ecuador",
+      "population": {
+        "value": 16266225,
+        "year": 2015
+      },
+      "gini": {
+        "value": 46,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.193812999999999,
+        "year": 2015
+      },
+      "rl": {
+        "value": -1.0655454,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.7228483,
+        "year": 2015
+      },
+      "governance": 0.3678528866666667,
+      "ladder": 6.028,
+      "gdp": 6063.0956178776
+    },
+    {
+      "id": "BOL",
+      "name": "Bolivia",
+      "population": {
+        "value": 11014705,
+        "year": 2015
+      },
+      "gini": {
+        "value": 46.7,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.4320931,
+        "year": 2015
+      },
+      "rl": {
+        "value": -1.2376147,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.754699,
+        "year": 2015
+      },
+      "governance": 0.33837288,
+      "ladder": 5.779,
+      "gdp": 3204.53670838005
+    },
+    {
+      "id": "PRY",
+      "name": "Paraguay",
+      "population": {
+        "value": 6159103,
+        "year": 2015
+      },
+      "gini": {
+        "value": 47.6,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.7854223,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.5495654,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.951100899999999,
+        "year": 2015
+      },
+      "governance": 0.34759409333333335,
+      "ladder": 5.743,
+      "gdp": 6354.2392005297
+    },
+    {
+      "id": "URY",
+      "name": "Uruguay",
+      "population": {
+        "value": 3368017,
+        "year": 2015
+      },
+      "gini": {
+        "value": 40.1,
+        "year": 2015
+      },
+      "ge": {
+        "value": 0.6355429,
+        "year": 2015
+      },
+      "rl": {
+        "value": 0.8604208,
+        "year": 2015
+      },
+      "cc": {
+        "value": 1.2570517,
+        "year": 2015
+      },
+      "governance": 0.68353436,
+      "ladder": 6.293,
+      "gdp": 17608.94412947
+    },
+    {
+      "id": "RUS",
+      "name": "Russia",
+      "population": {
+        "value": 144640716,
+        "year": 2015
+      },
+      "gini": {
+        "value": 36.5,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.322434699999999,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.9088341,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.913436199999999,
+        "year": 2015
+      },
+      "governance": 0.35701966666666685,
+      "ladder": 5.648,
+      "gdp": 9674.787109375
+    },
+    {
+      "id": "GBR",
+      "name": "United Kingdom",
+      "population": {
+        "value": 65087000,
+        "year": 2015
+      },
+      "gini": {
+        "value": 33.3,
+        "year": 2015
+      },
+      "ge": {
+        "value": 1.6362652,
+        "year": 2015
+      },
+      "rl": {
+        "value": 1.6608814,
+        "year": 2015
+      },
+      "cc": {
+        "value": 1.6542704,
+        "year": 2015
+      },
+      "governance": 0.8300944666666668,
+      "ladder": 7.054,
+      "gdp": 47516.2099770322
+    },
+    {
+      "id": "FRA",
+      "name": "France",
+      "population": {
+        "value": 66548272,
+        "year": 2015
+      },
+      "gini": {
+        "value": 32.7,
+        "year": 2015
+      },
+      "ge": {
+        "value": 1.4592807,
+        "year": 2015
+      },
+      "rl": {
+        "value": 1.2424867,
+        "year": 2015
+      },
+      "cc": {
+        "value": 1.2963551,
+        "year": 2015
+      },
+      "governance": 0.7665415,
+      "ladder": 6.592,
+      "gdp": 38062.4435961412
+    },
+    {
+      "id": "DEU",
+      "name": "Germany",
+      "population": {
+        "value": 81686611,
+        "year": 2015
+      },
+      "gini": {
+        "value": 31.4,
+        "year": 2015
+      },
+      "ge": {
+        "value": 1.9623466,
+        "year": 2015
+      },
+      "rl": {
+        "value": 1.739872,
+        "year": 2015
+      },
+      "cc": {
+        "value": 1.7233648,
+        "year": 2015
+      },
+      "governance": 0.8617055600000001,
+      "ladder": 6.985,
+      "gdp": 43905.8550061973
+    },
+    {
+      "id": "ITA",
+      "name": "Italy",
+      "population": {
+        "value": 60229605,
+        "year": 2015
+      },
+      "gini": {
+        "value": 35.4,
+        "year": 2015
+      },
+      "ge": {
+        "value": 0.3701946,
+        "year": 2015
+      },
+      "rl": {
+        "value": 0.4617928,
+        "year": 2015
+      },
+      "cc": {
+        "value": 0.0677760999999999,
+        "year": 2015
+      },
+      "governance": 0.5599842333333334,
+      "ladder": 6.223,
+      "gdp": 31963.6417148824
+    },
+    {
+      "id": "ESP",
+      "name": "Spain",
+      "population": {
+        "value": 46422303,
+        "year": 2015
+      },
+      "gini": {
+        "value": 36.2,
+        "year": 2015
+      },
+      "ge": {
+        "value": 1.0684401,
+        "year": 2015
+      },
+      "rl": {
+        "value": 0.9539353,
+        "year": 2015
+      },
+      "cc": {
+        "value": 0.5903482,
+        "year": 2015
+      },
+      "governance": 0.6741815733333333,
+      "ladder": 6.354,
+      "gdp": 27956.7225466484
+    },
+    {
+      "id": "NLD",
+      "name": "Netherlands",
+      "population": {
+        "value": 16939923,
+        "year": 2015
+      },
+      "gini": {
+        "value": 28.2,
+        "year": 2015
+      },
+      "ge": {
+        "value": 1.9280339,
+        "year": 2015
+      },
+      "rl": {
+        "value": 1.8839565,
+        "year": 2015
+      },
+      "cc": {
+        "value": 1.8631148,
+        "year": 2015
+      },
+      "governance": 0.8783403466666666,
+      "ladder": 7.488,
+      "gdp": 48463.0055608731
+    },
+    {
+      "id": "SWE",
+      "name": "Sweden",
+      "population": {
+        "value": 9799186,
+        "year": 2015
+      },
+      "gini": {
+        "value": 29.2,
+        "year": 2015
+      },
+      "ge": {
+        "value": 1.8309837,
+        "year": 2015
+      },
+      "rl": {
+        "value": 1.9483702,
+        "year": 2015
+      },
+      "cc": {
+        "value": 2.0948719,
+        "year": 2015
+      },
+      "governance": 0.8916150533333334,
+      "ladder": 7.343,
+      "gdp": 52203.0872589761
+    },
+    {
+      "id": "BEL",
+      "name": "Belgium",
+      "population": {
+        "value": 11274196,
+        "year": 2015
+      },
+      "gini": {
+        "value": 27.7,
+        "year": 2015
+      },
+      "ge": {
+        "value": 1.5255063,
+        "year": 2015
+      },
+      "rl": {
+        "value": 1.4251797,
+        "year": 2015
+      },
+      "cc": {
+        "value": 1.5244457,
+        "year": 2015
+      },
+      "governance": 0.7983421133333334,
+      "ladder": 6.923,
+      "gdp": 42208.3625650272
+    },
+    {
+      "id": "AUT",
+      "name": "Austria",
+      "population": {
+        "value": 8642699,
+        "year": 2015
+      },
+      "gini": {
+        "value": 30.5,
+        "year": 2015
+      },
+      "ge": {
+        "value": 1.6009157,
+        "year": 2015
+      },
+      "rl": {
+        "value": 1.7816313,
+        "year": 2015
+      },
+      "cc": {
+        "value": 1.4914799,
+        "year": 2015
+      },
+      "governance": 0.8249351266666667,
+      "ladder": 7.246,
+      "gdp": 45951.5819164034
+    },
+    {
+      "id": "POL",
+      "name": "Poland",
+      "population": {
+        "value": 37986412,
+        "year": 2015
+      },
+      "gini": {
+        "value": 31.8,
+        "year": 2015
+      },
+      "ge": {
+        "value": 0.8717909,
+        "year": 2015
+      },
+      "rl": {
+        "value": 0.8357984,
+        "year": 2015
+      },
+      "cc": {
+        "value": 0.8356935,
+        "year": 2015
+      },
+      "governance": 0.6695521866666667,
+      "ladder": 6.182,
+      "gdp": 14551.0850277089
+    },
+    {
+      "id": "NOR",
+      "name": "Norway",
+      "population": {
+        "value": 5188607,
+        "year": 2015
+      },
+      "gini": {
+        "value": 27.5,
+        "year": 2015
+      },
+      "ge": {
+        "value": 1.9270491,
+        "year": 2015
+      },
+      "rl": {
+        "value": 1.9800469,
+        "year": 2015
+      },
+      "cc": {
+        "value": 2.1755199,
+        "year": 2015
+      },
+      "governance": 0.9055077266666667,
+      "ladder": 7.554,
+      "gdp": 79313.2889434042
+    },
+    {
+      "id": "CHE",
+      "name": "Switzerland",
+      "population": {
+        "value": 8282396,
+        "year": 2015
+      },
+      "gini": {
+        "value": 32.3,
+        "year": 2015
+      },
+      "ge": {
+        "value": 2.0359711,
+        "year": 2015
+      },
+      "rl": {
+        "value": 1.8856813,
+        "year": 2015
+      },
+      "cc": {
+        "value": 2.2702247,
+        "year": 2015
+      },
+      "governance": 0.9127918066666667,
+      "ladder": 7.48,
+      "gdp": 88581.0826935584
+    },
+    {
+      "id": "IRL",
+      "name": "Ireland",
+      "population": {
+        "value": 4701957,
+        "year": 2015
+      },
+      "gini": {
+        "value": 31.8,
+        "year": 2015
+      },
+      "ge": {
+        "value": 1.4129064,
+        "year": 2015
+      },
+      "rl": {
+        "value": 1.603553,
+        "year": 2015
+      },
+      "cc": {
+        "value": 1.6308016,
+        "year": 2015
+      },
+      "governance": 0.8098174,
+      "ladder": 7.021,
+      "gdp": 74029.0550611436
+    },
+    {
+      "id": "DNK",
+      "name": "Denmark",
+      "population": {
+        "value": 5683483,
+        "year": 2015
+      },
+      "gini": {
+        "value": 28.2,
+        "year": 2015
+      },
+      "ge": {
+        "value": 1.7943827,
+        "year": 2015
+      },
+      "rl": {
+        "value": 1.9817984,
+        "year": 2015
+      },
+      "cc": {
+        "value": 2.1589365,
+        "year": 2015
+      },
+      "governance": 0.8956745066666667,
+      "ladder": 7.6,
+      "gdp": 56355.0733084714
+    },
+    {
+      "id": "FIN",
+      "name": "Finland",
+      "population": {
+        "value": 5479531,
+        "year": 2015
+      },
+      "gini": {
+        "value": 27.1,
+        "year": 2015
+      },
+      "ge": {
+        "value": 1.9234691,
+        "year": 2015
+      },
+      "rl": {
+        "value": 2.0648276,
+        "year": 2015
+      },
+      "cc": {
+        "value": 2.1750212,
+        "year": 2015
+      },
+      "governance": 0.9108878600000001,
+      "ladder": 7.769,
+      "gdp": 45337.2409550575
+    },
+    {
+      "id": "PRT",
+      "name": "Portugal",
+      "population": {
+        "value": 10358076,
+        "year": 2015
+      },
+      "gini": {
+        "value": 35.5,
+        "year": 2015
+      },
+      "ge": {
+        "value": 1.1121757,
+        "year": 2015
+      },
+      "rl": {
+        "value": 1.1272881,
+        "year": 2015
+      },
+      "cc": {
+        "value": 0.7238455,
+        "year": 2015
+      },
+      "governance": 0.6975539533333334,
+      "ladder": 5.693,
+      "gdp": 20997.7745987013
+    },
+    {
+      "id": "GRC",
+      "name": "Greece",
+      "population": {
+        "value": 10820883,
+        "year": 2015
+      },
+      "gini": {
+        "value": 36,
+        "year": 2015
+      },
+      "ge": {
+        "value": 0.1817351,
+        "year": 2015
+      },
+      "rl": {
+        "value": 0.3396437,
+        "year": 2015
+      },
+      "cc": {
+        "value": 0.0220321,
+        "year": 2015
+      },
+      "governance": 0.5362273933333334,
+      "ladder": 5.287,
+      "gdp": 18769.0389621976
+    },
+    {
+      "id": "CZE",
+      "name": "Czechia",
+      "population": {
+        "value": 10546059,
+        "year": 2015
+      },
+      "gini": {
+        "value": 25.9,
+        "year": 2015
+      },
+      "ge": {
+        "value": 0.9304102,
+        "year": 2015
+      },
+      "rl": {
+        "value": 1.0475127,
+        "year": 2015
+      },
+      "cc": {
+        "value": 0.5929256,
+        "year": 2015
+      },
+      "governance": 0.6713899,
+      "ladder": 6.852,
+      "gdp": 19736.6295261285
+    },
+    {
+      "id": "HUN",
+      "name": "Hungary",
+      "population": {
+        "value": 9797755,
+        "year": 2015
+      },
+      "gini": {
+        "value": 30.4,
+        "year": 2015
+      },
+      "ge": {
+        "value": 0.579719,
+        "year": 2015
+      },
+      "rl": {
+        "value": 0.3552783,
+        "year": 2015
+      },
+      "cc": {
+        "value": 0.1723755,
+        "year": 2015
+      },
+      "governance": 0.5738248533333333,
+      "ladder": 5.758,
+      "gdp": 14533.7783144312
+    },
+    {
+      "id": "ROU",
+      "name": "Romania",
+      "population": {
+        "value": 19815616,
+        "year": 2015
+      },
+      "gini": {
+        "value": 35.9,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.0115775,
+        "year": 2015
+      },
+      "rl": {
+        "value": 0.3856172,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.0980376999999999,
+        "year": 2015
+      },
+      "governance": 0.5184001333333333,
+      "ladder": 6.07,
+      "gdp": 10714.1701157127
+    },
+    {
+      "id": "UKR",
+      "name": "Ukraine",
+      "population": {
+        "value": 45784896,
+        "year": 2015
+      },
+      "gini": {
+        "value": 25.5,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.5539736,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.699935499999999,
+        "year": 2015
+      },
+      "cc": {
+        "value": -1.0636259,
+        "year": 2015
+      },
+      "governance": 0.3454976666666667,
+      "ladder": 4.332,
+      "gdp": 2308.6669921875
+    },
+    {
+      "id": "BLR",
+      "name": "Belarus",
+      "population": {
+        "value": 9461076,
+        "year": 2015
+      },
+      "gini": {
+        "value": 25.6,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.334119699999999,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.731698899999999,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.2405698,
+        "year": 2015
+      },
+      "governance": 0.4129074400000001,
+      "ladder": 5.323,
+      "gdp": 6165.91320019277
+    },
+    {
+      "id": "SRB",
+      "name": "Serbia",
+      "population": {
+        "value": 7095383,
+        "year": 2015
+      },
+      "gini": {
+        "value": 40.5,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.0428976,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.0388041,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.3238735,
+        "year": 2015
+      },
+      "governance": 0.47296165333333334,
+      "ladder": 5.603,
+      "gdp": 6524.08029755191
+    },
+    {
+      "id": "ISL",
+      "name": "Iceland",
+      "population": {
+        "value": 330815,
+        "year": 2015
+      },
+      "gini": {
+        "value": 26.8,
+        "year": 2015
+      },
+      "ge": {
+        "value": 1.3946724,
+        "year": 2015
+      },
+      "rl": {
+        "value": 1.6421472,
+        "year": 2015
+      },
+      "cc": {
+        "value": 1.9854027,
+        "year": 2015
+      },
+      "governance": 0.8348148200000001,
+      "ladder": 7.494,
+      "gdp": 57731.6523639512
+    },
+    {
+      "id": "EST",
+      "name": "Estonia",
+      "population": {
+        "value": 1315407,
+        "year": 2015
+      },
+      "gini": {
+        "value": 32.7,
+        "year": 2015
+      },
+      "ge": {
+        "value": 1.0344114,
+        "year": 2015
+      },
+      "rl": {
+        "value": 1.3613873,
+        "year": 2015
+      },
+      "cc": {
+        "value": 1.2999987,
+        "year": 2015
+      },
+      "governance": 0.7463864933333334,
+      "ladder": 5.893,
+      "gdp": 19914.3454922878
+    },
+    {
+      "id": "LVA",
+      "name": "Latvia",
+      "population": {
+        "value": 1977527,
+        "year": 2015
+      },
+      "gini": {
+        "value": 34.2,
+        "year": 2015
+      },
+      "ge": {
+        "value": 0.7616412,
+        "year": 2015
+      },
+      "rl": {
+        "value": 0.6625807,
+        "year": 2015
+      },
+      "cc": {
+        "value": 0.6009075,
+        "year": 2015
+      },
+      "governance": 0.6350086266666667,
+      "ladder": 5.94,
+      "gdp": 15120.0698171804
+    },
+    {
+      "id": "LTU",
+      "name": "Lithuania",
+      "population": {
+        "value": 2911109,
+        "year": 2015
+      },
+      "gini": {
+        "value": 37.4,
+        "year": 2015
+      },
+      "ge": {
+        "value": 0.8794501,
+        "year": 2015
+      },
+      "rl": {
+        "value": 0.8491406,
+        "year": 2015
+      },
+      "cc": {
+        "value": 0.6814439,
+        "year": 2015
+      },
+      "governance": 0.6606689733333333,
+      "ladder": 6.149,
+      "gdp": 16604.9021440809
+    },
+    {
+      "id": "SVK",
+      "name": "Slovakia",
+      "population": {
+        "value": 5423801,
+        "year": 2015
+      },
+      "gini": {
+        "value": 26.5,
+        "year": 2015
+      },
+      "ge": {
+        "value": 0.6446273,
+        "year": 2015
+      },
+      "rl": {
+        "value": 0.2446535,
+        "year": 2015
+      },
+      "cc": {
+        "value": 0.192681,
+        "year": 2015
+      },
+      "governance": 0.5721307866666667,
+      "ladder": 6.198,
+      "gdp": 17869.0149173679
+    },
+    {
+      "id": "SVN",
+      "name": "Slovenia",
+      "population": {
+        "value": 2063531,
+        "year": 2015
+      },
+      "gini": {
+        "value": 25.4,
+        "year": 2015
+      },
+      "ge": {
+        "value": 1.0221829,
+        "year": 2015
+      },
+      "rl": {
+        "value": 0.8075466,
+        "year": 2015
+      },
+      "cc": {
+        "value": 0.6575394,
+        "year": 2015
+      },
+      "governance": 0.6658179266666667,
+      "ladder": 6.118,
+      "gdp": 23293.966665323
+    },
+    {
+      "id": "HRV",
+      "name": "Croatia",
+      "population": {
+        "value": 4151725,
+        "year": 2015
+      },
+      "gini": {
+        "value": 31.1,
+        "year": 2015
+      },
+      "ge": {
+        "value": 0.2567445,
+        "year": 2015
+      },
+      "rl": {
+        "value": 0.333543,
+        "year": 2015
+      },
+      "cc": {
+        "value": 0.1722605,
+        "year": 2015
+      },
+      "governance": 0.5508365333333334,
+      "ladder": 5.432,
+      "gdp": 14061.0597402919
+    },
+    {
+      "id": "BIH",
+      "name": "Bosnia & Herz.",
+      "population": {
+        "value": 3518541,
+        "year": 2015
+      },
+      "gini": {
+        "value": 32.9,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.4626996,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.2307844,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.4923931,
+        "year": 2015
+      },
+      "governance": 0.4209415266666667,
+      "ladder": 5.386,
+      "gdp": 5360.25201017633
+    },
+    {
+      "id": "MNE",
+      "name": "Montenegro",
+      "population": {
+        "value": 624651,
+        "year": 2015
+      },
+      "gini": {
+        "value": 39,
+        "year": 2015
+      },
+      "ge": {
+        "value": 0.3138915,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.0128937999999999,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.1544911,
+        "year": 2015
+      },
+      "governance": 0.5097671066666667,
+      "ladder": 5.523,
+      "gdp": 7159.46778433252
+    },
+    {
+      "id": "MKD",
+      "name": "North Macedonia",
+      "population": {
+        "value": 1912430,
+        "year": 2015
+      },
+      "gini": {
+        "value": 35.6,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.0722863,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.2782059,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.3062159,
+        "year": 2015
+      },
+      "governance": 0.45621946,
+      "ladder": 5.274,
+      "gdp": 5698.39334484489
+    },
+    {
+      "id": "ALB",
+      "name": "Albania",
+      "population": {
+        "value": 2731293,
+        "year": 2015
+      },
+      "gini": {
+        "value": 32.8,
+        "year": 2015
+      },
+      "ge": {
+        "value": 0.1835585,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.2267931,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.5865235,
+        "year": 2015
+      },
+      "governance": 0.4580161266666667,
+      "ladder": 4.719,
+      "gdp": 4893.82375538717
+    },
+    {
+      "id": "BGR",
+      "name": "Bulgaria",
+      "population": {
+        "value": 6984225,
+        "year": 2015
+      },
+      "gini": {
+        "value": 38.6,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.109724499999999,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.2080985,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.4387083,
+        "year": 2015
+      },
+      "governance": 0.44956458000000005,
+      "ladder": 5.011,
+      "gdp": 8194.79296320014
+    },
+    {
+      "id": "MDA",
+      "name": "Moldova",
+      "population": {
+        "value": 2835978,
+        "year": 2015
+      },
+      "gini": {
+        "value": 27,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.6288785,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.419315799999999,
+        "year": 2015
+      },
+      "cc": {
+        "value": -1.03857019999999,
+        "year": 2015
+      },
+      "governance": 0.3608823666666674,
+      "ladder": 5.529,
+      "gdp": 3267.9961042872
+    },
+    {
+      "id": "LUX",
+      "name": "Luxembourg",
+      "population": {
+        "value": 569604,
+        "year": 2015
+      },
+      "gini": {
+        "value": 32.9,
+        "year": 2015
+      },
+      "ge": {
+        "value": 1.8995712,
+        "year": 2015
+      },
+      "rl": {
+        "value": 1.8141125,
+        "year": 2015
+      },
+      "cc": {
+        "value": 2.2241466,
+        "year": 2015
+      },
+      "governance": 0.8958553533333333,
+      "ladder": 7.09,
+      "gdp": 106788.661202756
+    },
+    {
+      "id": "CYP",
+      "name": "Cyprus",
+      "population": {
+        "value": 1219502,
+        "year": 2015
+      },
+      "gini": {
+        "value": 34,
+        "year": 2015
+      },
+      "ge": {
+        "value": 1.0770285,
+        "year": 2015
+      },
+      "rl": {
+        "value": 0.835657,
+        "year": 2015
+      },
+      "cc": {
+        "value": 0.6824205,
+        "year": 2015
+      },
+      "governance": 0.6730070666666667,
+      "ladder": 6.046,
+      "gdp": 26962.392578125
+    },
+    {
+      "id": "MLT",
+      "name": "Malta",
+      "population": {
+        "value": 444220,
+        "year": 2015
+      },
+      "gini": {
+        "value": 29.4,
+        "year": 2015
+      },
+      "ge": {
+        "value": 1.008955,
+        "year": 2015
+      },
+      "rl": {
+        "value": 1.0918616,
+        "year": 2015
+      },
+      "cc": {
+        "value": 0.8513513,
+        "year": 2015
+      },
+      "governance": 0.6968111933333333,
+      "ladder": 6.726,
+      "gdp": 29536.7913868949
+    },
+    {
+      "id": "CHN",
+      "name": "China",
+      "population": {
+        "value": 1379860000,
+        "year": 2015
+      },
+      "gini": {
+        "value": 38.6,
+        "year": 2015
+      },
+      "ge": {
+        "value": 0.5336101,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.6620808,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.1750814,
+        "year": 2015
+      },
+      "governance": 0.47976319333333334,
+      "ladder": 5.191,
+      "gdp": 9798.57890566402
+    },
+    {
+      "id": "JPN",
+      "name": "Japan",
+      "population": {
+        "value": 127141000,
+        "year": 2015
+      },
+      "gini": {
+        "value": 30.7,
+        "year": 2015
+      },
+      "ge": {
+        "value": 1.7060508,
+        "year": 2015
+      },
+      "rl": {
+        "value": 1.4360203,
+        "year": 2015
+      },
+      "cc": {
+        "value": 1.4505851,
+        "year": 2015
+      },
+      "governance": 0.8061770800000001,
+      "ladder": 5.886,
+      "gdp": 36899.3847079435
+    },
+    {
+      "id": "KOR",
+      "name": "South Korea",
+      "population": {
+        "value": 51014947,
+        "year": 2015
+      },
+      "gini": {
+        "value": 31.2,
+        "year": 2014
+      },
+      "ge": {
+        "value": 1.1983681,
+        "year": 2015
+      },
+      "rl": {
+        "value": 1.0105606,
+        "year": 2015
+      },
+      "cc": {
+        "value": 0.3449721,
+        "year": 2015
+      },
+      "governance": 0.6702600533333334,
+      "ladder": 5.895,
+      "gdp": 32852.8887488942
+    },
+    {
+      "id": "MNG",
+      "name": "Mongolia",
+      "population": {
+        "value": 3026864,
+        "year": 2015
+      },
+      "gini": {
+        "value": 32,
+        "year": 2014
+      },
+      "ge": {
+        "value": -0.3329464,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.2154153,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.586661299999999,
+        "year": 2015
+      },
+      "governance": 0.42433180000000004,
+      "ladder": 5.285,
+      "gdp": 4183.85566447661
+    },
+    {
+      "id": "VNM",
+      "name": "Vietnam",
+      "population": {
+        "value": 92823254,
+        "year": 2015
+      },
+      "gini": {
+        "value": 34.8,
+        "year": 2014
+      },
+      "ge": {
+        "value": 0.0996825,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.372697,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.3774131,
+        "year": 2015
+      },
+      "governance": 0.45663816,
+      "ladder": 5.175,
+      "gdp": 3048.28327602145
+    },
+    {
+      "id": "IDN",
+      "name": "Indonesia",
+      "population": {
+        "value": 261799249,
+        "year": 2015
+      },
+      "gini": {
+        "value": 38.2,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.062646,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.3812221,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.5229666,
+        "year": 2015
+      },
+      "governance": 0.43554435333333336,
+      "ladder": 5.192,
+      "gdp": 3701.32155461912
+    },
+    {
+      "id": "PHL",
+      "name": "Philippines",
+      "population": {
+        "value": 105312992,
+        "year": 2015
+      },
+      "gini": {
+        "value": 44.6,
+        "year": 2015
+      },
+      "ge": {
+        "value": 0.408021,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.4299627,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.590425299999999,
+        "year": 2015
+      },
+      "governance": 0.4591755333333334,
+      "ladder": 5.631,
+      "gdp": 3410.93647976109
+    },
+    {
+      "id": "THA",
+      "name": "Thailand",
+      "population": {
+        "value": 70540795,
+        "year": 2015
+      },
+      "gini": {
+        "value": 36,
+        "year": 2015
+      },
+      "ge": {
+        "value": 0.0674039,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.3757008,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.5473428,
+        "year": 2015
+      },
+      "governance": 0.4429573533333333,
+      "ladder": 6.008,
+      "gdp": 6314.19948412043
+    },
+    {
+      "id": "MYS",
+      "name": "Malaysia",
+      "population": {
+        "value": 31232798,
+        "year": 2015
+      },
+      "gini": {
+        "value": 41.1,
+        "year": 2015
+      },
+      "ge": {
+        "value": 0.8365268,
+        "year": 2015
+      },
+      "rl": {
+        "value": 0.1141708,
+        "year": 2015
+      },
+      "cc": {
+        "value": 0.2439907,
+        "year": 2015
+      },
+      "governance": 0.5796458866666667,
+      "ladder": 5.339,
+      "gdp": 10610.1950240479
+    },
+    {
+      "id": "MMR",
+      "name": "Myanmar",
+      "population": {
+        "value": 51089056,
+        "year": 2015
+      },
+      "gini": {
+        "value": 38.1,
+        "year": 2015
+      },
+      "ge": {
+        "value": -1.2574663,
+        "year": 2015
+      },
+      "rl": {
+        "value": -1.24813,
+        "year": 2015
+      },
+      "cc": {
+        "value": -1.0035195,
+        "year": 2015
+      },
+      "governance": 0.26605894666666663,
+      "ladder": 4.36,
+      "gdp": 1361.5683126412
+    },
+    {
+      "id": "LAO",
+      "name": "Laos",
+      "population": {
+        "value": 6801645,
+        "year": 2015
+      },
+      "gini": {
+        "value": 36,
+        "year": 2012
+      },
+      "ge": {
+        "value": -0.353978299999999,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.7713994,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.9998267,
+        "year": 2015
+      },
+      "governance": 0.3583197066666667,
+      "ladder": 4.796,
+      "gdp": 2459.97874636195
+    },
+    {
+      "id": "IND",
+      "name": "India",
+      "population": {
+        "value": 1328024498,
+        "year": 2015
+      },
+      "gini": {
+        "value": 28.8,
+        "year": 2011
+      },
+      "ge": {
+        "value": 0.3968483,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.1374229,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.3449931,
+        "year": 2015
+      },
+      "governance": 0.4942954866666667,
+      "ladder": 4.015,
+      "gdp": 1883.35772705055
+    },
+    {
+      "id": "PAK",
+      "name": "Pakistan",
+      "population": {
+        "value": 217290883,
+        "year": 2015
+      },
+      "gini": {
+        "value": 31.3,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.6105847,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.914828299999999,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.981116999999999,
+        "year": 2015
+      },
+      "governance": 0.33289800000000014,
+      "ladder": 5.653,
+      "gdp": 1561.68169819559
+    },
+    {
+      "id": "BGD",
+      "name": "Bangladesh",
+      "population": {
+        "value": 159383179,
+        "year": 2015
+      },
+      "gini": {
+        "value": 32.1,
+        "year": 2010
+      },
+      "ge": {
+        "value": -0.6547007,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.856926099999999,
+        "year": 2015
+      },
+      "cc": {
+        "value": -1.0798121,
+        "year": 2015
+      },
+      "governance": 0.3272374066666667,
+      "ladder": 4.456,
+      "gdp": 1462.25050255713
+    },
+    {
+      "id": "LKA",
+      "name": "Sri Lanka",
+      "population": {
+        "value": 20970000,
+        "year": 2015
+      },
+      "gini": {
+        "value": 38.7,
+        "year": 2012
+      },
+      "ge": {
+        "value": 0.0898368,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.110513199999999,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.3413605,
+        "year": 2015
+      },
+      "governance": 0.47586420666666673,
+      "ladder": 4.366,
+      "gdp": 4493.03574617534
+    },
+    {
+      "id": "NPL",
+      "name": "Nepal",
+      "population": {
+        "value": 27823629,
+        "year": 2015
+      },
+      "gini": {
+        "value": 32.8,
+        "year": 2010
+      },
+      "ge": {
+        "value": -1.16337389999999,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.5990489,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.830829399999999,
+        "year": 2015
+      },
+      "governance": 0.3271165200000007,
+      "ladder": 4.913,
+      "gdp": 1021.91492204011
+    },
+    {
+      "id": "BTN",
+      "name": "Bhutan",
+      "population": {
+        "value": 740618,
+        "year": 2015
+      },
+      "gini": {
+        "value": 38.8,
+        "year": 2012
+      },
+      "ge": {
+        "value": 0.3649184,
+        "year": 2015
+      },
+      "rl": {
+        "value": 0.5171592,
+        "year": 2015
+      },
+      "cc": {
+        "value": 1.0788548,
+        "year": 2015
+      },
+      "governance": 0.6307288266666666,
+      "ladder": 5.082,
+      "gdp": 3300.55006461736
+    },
+    {
+      "id": "KAZ",
+      "name": "Kazakhstan",
+      "population": {
+        "value": 18084169,
+        "year": 2015
+      },
+      "gini": {
+        "value": 26.8,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.011417,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.4919324,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.8337886,
+        "year": 2015
+      },
+      "governance": 0.41085746666666667,
+      "ladder": 5.809,
+      "gdp": 10670.2120148279
+    },
+    {
+      "id": "KGZ",
+      "name": "Kyrgyzstan",
+      "population": {
+        "value": 6040036,
+        "year": 2015
+      },
+      "gini": {
+        "value": 29,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.8949145,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.8379898,
+        "year": 2015
+      },
+      "cc": {
+        "value": -1.2076555,
+        "year": 2015
+      },
+      "governance": 0.30396268000000004,
+      "ladder": 5.261,
+      "gdp": 1175.0712778747
+    },
+    {
+      "id": "TJK",
+      "name": "Tajikistan",
+      "population": {
+        "value": 8643840,
+        "year": 2015
+      },
+      "gini": {
+        "value": 34,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.7357851,
+        "year": 2015
+      },
+      "rl": {
+        "value": -1.09089939999999,
+        "year": 2015
+      },
+      "cc": {
+        "value": -1.2043521,
+        "year": 2015
+      },
+      "governance": 0.297930893333334,
+      "ladder": 5.467,
+      "gdp": 1094.8002018221
+    },
+    {
+      "id": "TUR",
+      "name": "Turkey",
+      "population": {
+        "value": 78218479,
+        "year": 2015
+      },
+      "gini": {
+        "value": 42.9,
+        "year": 2015
+      },
+      "ge": {
+        "value": 0.3331512,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.4773732,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.1063785,
+        "year": 2015
+      },
+      "governance": 0.4832933,
+      "ladder": 5.373,
+      "gdp": 12255.0082146169
+    },
+    {
+      "id": "IRN",
+      "name": "Iran",
+      "population": {
+        "value": 82619362,
+        "year": 2015
+      },
+      "gini": {
+        "value": 35.3,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.191803399999999,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.9741059,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.7596233,
+        "year": 2015
+      },
+      "governance": 0.37163116000000007,
+      "ladder": 4.548,
+      "gdp": 5127.22495367018
+    },
+    {
+      "id": "IRQ",
+      "name": "Iraq",
+      "population": {
+        "value": 37560535,
+        "year": 2015
+      },
+      "gini": {
+        "value": 29.5,
+        "year": 2012
+      },
+      "ge": {
+        "value": -1.0793082,
+        "year": 2015
+      },
+      "rl": {
+        "value": -1.48886679999999,
+        "year": 2015
+      },
+      "cc": {
+        "value": -1.393567,
+        "year": 2015
+      },
+      "governance": 0.23588386666666733,
+      "ladder": 4.437,
+      "gdp": 4749.00921836896
+    },
+    {
+      "id": "ARE",
+      "name": "UAE",
+      "population": {
+        "value": 8505237,
+        "year": 2015
+      },
+      "gini": {
+        "value": 32.5,
+        "year": 2013
+      },
+      "ge": {
+        "value": 1.4040254,
+        "year": 2015
+      },
+      "rl": {
+        "value": 0.3509975,
+        "year": 2015
+      },
+      "cc": {
+        "value": 0.9199437,
+        "year": 2015
+      },
+      "governance": 0.6783311066666667,
+      "ladder": 6.825,
+      "gdp": 43377.802601486
+    },
+    {
+      "id": "ISR",
+      "name": "Israel",
+      "population": {
+        "value": 8380100,
+        "year": 2015
+      },
+      "gini": {
+        "value": 39.7,
+        "year": 2015
+      },
+      "ge": {
+        "value": 1.4633523,
+        "year": 2015
+      },
+      "rl": {
+        "value": 1.0408491,
+        "year": 2015
+      },
+      "cc": {
+        "value": 0.8495585,
+        "year": 2015
+      },
+      "governance": 0.7235839933333333,
+      "ladder": 7.139,
+      "gdp": 38695.0100079706
+    },
+    {
+      "id": "JOR",
+      "name": "Jordan",
+      "population": {
+        "value": 9544729,
+        "year": 2015
+      },
+      "gini": {
+        "value": 33.7,
+        "year": 2010
+      },
+      "ge": {
+        "value": 0.3820942,
+        "year": 2015
+      },
+      "rl": {
+        "value": 0.1375421,
+        "year": 2015
+      },
+      "cc": {
+        "value": 0.2644497,
+        "year": 2015
+      },
+      "governance": 0.5522724,
+      "ladder": 4.906,
+      "gdp": 4320.029787425
+    },
+    {
+      "id": "LBN",
+      "name": "Lebanon",
+      "population": {
+        "value": 6472469,
+        "year": 2015
+      },
+      "gini": {
+        "value": 31.8,
+        "year": 2011
+      },
+      "ge": {
+        "value": -0.2826924,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.8084504,
+        "year": 2015
+      },
+      "cc": {
+        "value": -1.0047914,
+        "year": 2015
+      },
+      "governance": 0.3602710533333333,
+      "ladder": 5.197,
+      "gdp": 8388.7235123835
+    },
+    {
+      "id": "YEM",
+      "name": "Yemen",
+      "population": {
+        "value": 31159379,
+        "year": 2015
+      },
+      "gini": {
+        "value": 36.7,
+        "year": 2014
+      },
+      "ge": {
+        "value": -1.5567828,
+        "year": 2015
+      },
+      "rl": {
+        "value": -1.5231762,
+        "year": 2015
+      },
+      "cc": {
+        "value": -1.4855019,
+        "year": 2015
+      },
+      "governance": 0.19563594,
+      "ladder": 3.38,
+      "gdp": 1079.32938366255
+    },
+    {
+      "id": "GEO",
+      "name": "Georgia",
+      "population": {
+        "value": 3725276,
+        "year": 2015
+      },
+      "gini": {
+        "value": 36.5,
+        "year": 2015
+      },
+      "ge": {
+        "value": 0.4698911,
+        "year": 2015
+      },
+      "rl": {
+        "value": 0.3405598,
+        "year": 2015
+      },
+      "cc": {
+        "value": 0.7754032,
+        "year": 2015
+      },
+      "governance": 0.6057236066666667,
+      "ladder": 4.519,
+      "gdp": 4713.65354845303
+    },
+    {
+      "id": "ARM",
+      "name": "Armenia",
+      "population": {
+        "value": 3004600,
+        "year": 2015
+      },
+      "gini": {
+        "value": 32.4,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.1424065,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.396324299999999,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.6231951,
+        "year": 2015
+      },
+      "governance": 0.4225382733333334,
+      "ladder": 4.559,
+      "gdp": 4027.83393010979
+    },
+    {
+      "id": "PSE",
+      "name": "Palestine",
+      "population": {
+        "value": 4270092,
+        "year": 2015
+      },
+      "gini": {
+        "value": 34.4,
+        "year": 2011
+      },
+      "ge": {
+        "value": -0.2500245,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.869190199999999,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.4552156,
+        "year": 2015
+      },
+      "governance": 0.39503798000000007,
+      "ladder": 4.696,
+      "gdp": 3417.79440837962
+    },
+    {
+      "id": "NGA",
+      "name": "Nigeria",
+      "population": {
+        "value": 190671878,
+        "year": 2015
+      },
+      "gini": {
+        "value": 35.9,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.913883799999999,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.960877499999999,
+        "year": 2015
+      },
+      "cc": {
+        "value": -1.1613946,
+        "year": 2015
+      },
+      "governance": 0.2975896066666668,
+      "ladder": 5.265,
+      "gdp": 2431.77857832597
+    },
+    {
+      "id": "ZAF",
+      "name": "South Africa",
+      "population": {
+        "value": 56723537,
+        "year": 2015
+      },
+      "gini": {
+        "value": 59.6,
+        "year": 2014
+      },
+      "ge": {
+        "value": 0.2444848,
+        "year": 2015
+      },
+      "rl": {
+        "value": 0.0440534,
+        "year": 2015
+      },
+      "cc": {
+        "value": 0.0114254,
+        "year": 2015
+      },
+      "governance": 0.5199975733333333,
+      "ladder": 4.722,
+      "gdp": 6117.2701406047
+    },
+    {
+      "id": "EGY",
+      "name": "Egypt",
+      "population": {
+        "value": 99597342,
+        "year": 2015
+      },
+      "gini": {
+        "value": 31.8,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.5216722,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.8381446,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.5639736,
+        "year": 2015
+      },
+      "governance": 0.37174730666666667,
+      "ladder": 4.166,
+      "gdp": 3568.63966286365
+    },
+    {
+      "id": "ETH",
+      "name": "Ethiopia",
+      "population": {
+        "value": 103867135,
+        "year": 2015
+      },
+      "gini": {
+        "value": 35,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.5298526,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.805187299999999,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.5196265,
+        "year": 2015
+      },
+      "governance": 0.3763555733333334,
+      "ladder": 4.286,
+      "gdp": 705.96881207336
+    },
+    {
+      "id": "KEN",
+      "name": "Kenya",
+      "population": {
+        "value": 47088526,
+        "year": 2015
+      },
+      "gini": {
+        "value": 40.8,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.3675673,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.6423593,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.9711807,
+        "year": 2015
+      },
+      "governance": 0.36792618,
+      "ladder": 4.509,
+      "gdp": 1596.69045914945
+    },
+    {
+      "id": "COD",
+      "name": "DR Congo",
+      "population": {
+        "value": 81035531,
+        "year": 2015
+      },
+      "gini": {
+        "value": 42.1,
+        "year": 2012
+      },
+      "ge": {
+        "value": -1.4727107,
+        "year": 2015
+      },
+      "rl": {
+        "value": -1.57003159999999,
+        "year": 2015
+      },
+      "cc": {
+        "value": -1.3932852,
+        "year": 2015
+      },
+      "governance": 0.20426483333333395,
+      "ladder": 4.418,
+      "gdp": 495.312105711027
+    },
+    {
+      "id": "MAR",
+      "name": "Morocco",
+      "population": {
+        "value": 34607588,
+        "year": 2015
+      },
+      "gini": {
+        "value": 39.5,
+        "year": 2013
+      },
+      "ge": {
+        "value": -0.2363813,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.3687701,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.352055199999999,
+        "year": 2015
+      },
+      "governance": 0.43618622666666673,
+      "ladder": 5.208,
+      "gdp": 3304.7119140625
+    },
+    {
+      "id": "DZA",
+      "name": "Algeria",
+      "population": {
+        "value": 40019529,
+        "year": 2015
+      },
+      "gini": {
+        "value": 27.6,
+        "year": 2011
+      },
+      "ge": {
+        "value": -0.3555636,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.8774318,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.6299526,
+        "year": 2015
+      },
+      "governance": 0.37580346666666664,
+      "ladder": 5.211,
+      "gdp": 4717.0035885361
+    },
+    {
+      "id": "AUS",
+      "name": "Australia",
+      "population": {
+        "value": 23815995,
+        "year": 2015
+      },
+      "gini": {
+        "value": 34.4,
+        "year": 2014
+      },
+      "ge": {
+        "value": 1.6762148,
+        "year": 2015
+      },
+      "rl": {
+        "value": 1.7177851,
+        "year": 2015
+      },
+      "cc": {
+        "value": 1.8544442,
+        "year": 2015
+      },
+      "governance": 0.8498962733333333,
+      "ladder": 7.228,
+      "gdp": 58772.7063152213
+    }
+  ],
+  "excluded": [
+    {
+      "id": "CUB",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "JAM",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "BLZ",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "BHS",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "TTO",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "VEN",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "GUY",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "SUR",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "TWN",
+      "reason": "Missing historical population, gini, ge, rl, cc"
+    },
+    {
+      "id": "PRK",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "SGP",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "KHM",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "BRN",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "MDV",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "UZB",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "TKM",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "SAU",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "AFG",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "SYR",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "OMN",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "QAT",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "KWT",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "BHR",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "AZE",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "AGO",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "NZL",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "PNG",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "TLS",
+      "reason": "Missing/invalid 2018 origin outcomes"
+    }
+  ]
+}

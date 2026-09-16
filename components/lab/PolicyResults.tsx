@@ -1,3 +1,4 @@
+import { firstChangedDisplayYear } from '../../src/policy/presentation';
 /**
  * PolicyResults — the paired comparison, for one or two drafts on the same baseline.
  *
@@ -60,6 +61,7 @@ const PolicyResults: React.FC<PolicyResultsProps> = ({ model, entries, active, y
   const entity = entities[0];
   const t = year === null ? years.length - 1 : stepForYear(years, year);
   const shown = first;
+  const firstChanged = firstChangedDisplayYear(model, first.result, t);
   const unitName = timeUnitName(model.time);
   const steady = steadyStateOf(model);
   const steadyIndex = steady ? years.findIndex((y) => Math.abs(y - steady.at) < 1e-9) : -1;
@@ -111,6 +113,8 @@ const PolicyResults: React.FC<PolicyResultsProps> = ({ model, entries, active, y
         </span>
       </div>
 
+      <p className="text-xs text-slate-600 dark:text-slate-300">The p5–p95 range is assumption-draw spread, not confidence, forecast probabilities or evidence that the equations are right. Outputs below show entity {entity}.</p>
+      {firstChanged !== null && <p role="status" className="rounded-lg bg-slate-100 dark:bg-slate-800 p-3 text-sm">For selected draft {first.label} and displayed entity {entity}, the shown differences are zero in {timeLabel(model.time, years[t])}; another year differs. This does not mean the policy has no real-world effects. <button type="button" className="underline font-semibold" onClick={() => onYear(firstChanged)}>Show first changed {unitName.toLowerCase()}: {timeLabel(model.time, firstChanged)}</button></p>}
       <div className="overflow-x-auto rounded-lg border border-slate-200 dark:border-slate-800">
         <table className="min-w-full text-xs">
           <thead className="bg-slate-50 dark:bg-slate-800/60 text-left text-[11px] text-slate-600 dark:text-slate-300">

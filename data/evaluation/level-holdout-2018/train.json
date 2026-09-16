@@ -1,0 +1,4304 @@
+{
+  "countries": [
+    {
+      "id": "USA",
+      "name": "United States",
+      "population": {
+        "value": 321815121,
+        "year": 2015
+      },
+      "gini": {
+        "value": 41.5,
+        "year": 2015
+      },
+      "ge": {
+        "value": 1.5727519,
+        "year": 2015
+      },
+      "rl": {
+        "value": 1.3770167,
+        "year": 2015
+      },
+      "cc": {
+        "value": 1.2367604,
+        "year": 2015
+      },
+      "governance": 0.7791019333333333
+    },
+    {
+      "id": "CAN",
+      "name": "Canada",
+      "population": {
+        "value": 35704498,
+        "year": 2015
+      },
+      "gini": {
+        "value": 33.7,
+        "year": 2015
+      },
+      "ge": {
+        "value": 1.8766375,
+        "year": 2015
+      },
+      "rl": {
+        "value": 1.7204594,
+        "year": 2015
+      },
+      "cc": {
+        "value": 1.8679741,
+        "year": 2015
+      },
+      "governance": 0.8643380666666667
+    },
+    {
+      "id": "MEX",
+      "name": "Mexico",
+      "population": {
+        "value": 121072306,
+        "year": 2015
+      },
+      "gini": {
+        "value": 48.9,
+        "year": 2014
+      },
+      "ge": {
+        "value": 0.0999956999999999,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.6829719,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.840903899999999,
+        "year": 2015
+      },
+      "governance": 0.4050746600000001
+    },
+    {
+      "id": "GTM",
+      "name": "Guatemala",
+      "population": {
+        "value": 15971743,
+        "year": 2015
+      },
+      "gini": {
+        "value": 48.3,
+        "year": 2014
+      },
+      "ge": {
+        "value": -0.652722799999999,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.9498506,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.9067476,
+        "year": 2015
+      },
+      "governance": 0.3327119333333334
+    },
+    {
+      "id": "HTI",
+      "name": "Haiti",
+      "population": {
+        "value": 10523242,
+        "year": 2015
+      },
+      "gini": {
+        "value": 41.1,
+        "year": 2012
+      },
+      "ge": {
+        "value": -1.86939899999999,
+        "year": 2015
+      },
+      "rl": {
+        "value": -1.2262159,
+        "year": 2015
+      },
+      "cc": {
+        "value": -1.4465713,
+        "year": 2015
+      },
+      "governance": 0.1971875866666673
+    },
+    {
+      "id": "DOM",
+      "name": "Dominican Rep.",
+      "population": {
+        "value": 10434829,
+        "year": 2015
+      },
+      "gini": {
+        "value": 45.2,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.303055299999999,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.5344359,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.7903907,
+        "year": 2015
+      },
+      "governance": 0.3914745400000001
+    },
+    {
+      "id": "HND",
+      "name": "Honduras",
+      "population": {
+        "value": 9237305,
+        "year": 2015
+      },
+      "gini": {
+        "value": 49.2,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.5555614,
+        "year": 2015
+      },
+      "rl": {
+        "value": -1.1570215,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.8111784,
+        "year": 2015
+      },
+      "governance": 0.3317492466666667
+    },
+    {
+      "id": "NIC",
+      "name": "Nicaragua",
+      "population": {
+        "value": 6149417,
+        "year": 2015
+      },
+      "gini": {
+        "value": 46.2,
+        "year": 2014
+      },
+      "ge": {
+        "value": -0.754890699999999,
+        "year": 2015
+      },
+      "rl": {
+        "value": -1.0046454,
+        "year": 2015
+      },
+      "cc": {
+        "value": -1.01658009999999,
+        "year": 2015
+      },
+      "governance": 0.31492558666666737
+    },
+    {
+      "id": "SLV",
+      "name": "El Salvador",
+      "population": {
+        "value": 6183676,
+        "year": 2015
+      },
+      "gini": {
+        "value": 40.6,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.3051905,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.7675683,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.523622599999999,
+        "year": 2015
+      },
+      "governance": 0.3935745733333334
+    },
+    {
+      "id": "CRI",
+      "name": "Costa Rica",
+      "population": {
+        "value": 4818038,
+        "year": 2015
+      },
+      "gini": {
+        "value": 48.4,
+        "year": 2015
+      },
+      "ge": {
+        "value": 0.3596651,
+        "year": 2015
+      },
+      "rl": {
+        "value": 0.5212516,
+        "year": 2015
+      },
+      "cc": {
+        "value": 0.7699694,
+        "year": 2015
+      },
+      "governance": 0.6100590733333333
+    },
+    {
+      "id": "PAN",
+      "name": "Panama",
+      "population": {
+        "value": 3960035,
+        "year": 2015
+      },
+      "gini": {
+        "value": 50.8,
+        "year": 2015
+      },
+      "ge": {
+        "value": 0.3209871,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.1702773,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.424039399999999,
+        "year": 2015
+      },
+      "governance": 0.48177802666666675
+    },
+    {
+      "id": "BRA",
+      "name": "Brazil",
+      "population": {
+        "value": 201675532,
+        "year": 2015
+      },
+      "gini": {
+        "value": 51.9,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.1018264,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.225204699999999,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.3512683,
+        "year": 2015
+      },
+      "governance": 0.45478004000000005
+    },
+    {
+      "id": "ARG",
+      "name": "Argentina",
+      "population": {
+        "value": 43477012,
+        "year": 2015
+      },
+      "gini": {
+        "value": 41.8,
+        "year": 2014
+      },
+      "ge": {
+        "value": 0.1187015,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.467320499999999,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.645135999999999,
+        "year": 2015
+      },
+      "governance": 0.4337496666666668
+    },
+    {
+      "id": "COL",
+      "name": "Colombia",
+      "population": {
+        "value": 46969940,
+        "year": 2015
+      },
+      "gini": {
+        "value": 52,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.134012,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.3995338,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.3173369,
+        "year": 2015
+      },
+      "governance": 0.4432744866666667
+    },
+    {
+      "id": "CHL",
+      "name": "Chile",
+      "population": {
+        "value": 18047625,
+        "year": 2015
+      },
+      "gini": {
+        "value": 45.3,
+        "year": 2015
+      },
+      "ge": {
+        "value": 1.0506453,
+        "year": 2015
+      },
+      "rl": {
+        "value": 1.0033345,
+        "year": 2015
+      },
+      "cc": {
+        "value": 1.1438485,
+        "year": 2015
+      },
+      "governance": 0.7131885533333334
+    },
+    {
+      "id": "PER",
+      "name": "Peru",
+      "population": {
+        "value": 30457600,
+        "year": 2015
+      },
+      "gini": {
+        "value": 43.4,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.248759199999999,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.4520227,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.5919962,
+        "year": 2015
+      },
+      "governance": 0.4138147933333334
+    },
+    {
+      "id": "ECU",
+      "name": "Ecuador",
+      "population": {
+        "value": 16266225,
+        "year": 2015
+      },
+      "gini": {
+        "value": 46,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.193812999999999,
+        "year": 2015
+      },
+      "rl": {
+        "value": -1.0655454,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.7228483,
+        "year": 2015
+      },
+      "governance": 0.3678528866666667
+    },
+    {
+      "id": "BOL",
+      "name": "Bolivia",
+      "population": {
+        "value": 11014705,
+        "year": 2015
+      },
+      "gini": {
+        "value": 46.7,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.4320931,
+        "year": 2015
+      },
+      "rl": {
+        "value": -1.2376147,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.754699,
+        "year": 2015
+      },
+      "governance": 0.33837288
+    },
+    {
+      "id": "PRY",
+      "name": "Paraguay",
+      "population": {
+        "value": 6159103,
+        "year": 2015
+      },
+      "gini": {
+        "value": 47.6,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.7854223,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.5495654,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.951100899999999,
+        "year": 2015
+      },
+      "governance": 0.34759409333333335
+    },
+    {
+      "id": "URY",
+      "name": "Uruguay",
+      "population": {
+        "value": 3368017,
+        "year": 2015
+      },
+      "gini": {
+        "value": 40.1,
+        "year": 2015
+      },
+      "ge": {
+        "value": 0.6355429,
+        "year": 2015
+      },
+      "rl": {
+        "value": 0.8604208,
+        "year": 2015
+      },
+      "cc": {
+        "value": 1.2570517,
+        "year": 2015
+      },
+      "governance": 0.68353436
+    },
+    {
+      "id": "RUS",
+      "name": "Russia",
+      "population": {
+        "value": 144640716,
+        "year": 2015
+      },
+      "gini": {
+        "value": 36.5,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.322434699999999,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.9088341,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.913436199999999,
+        "year": 2015
+      },
+      "governance": 0.35701966666666685
+    },
+    {
+      "id": "GBR",
+      "name": "United Kingdom",
+      "population": {
+        "value": 65087000,
+        "year": 2015
+      },
+      "gini": {
+        "value": 33.3,
+        "year": 2015
+      },
+      "ge": {
+        "value": 1.6362652,
+        "year": 2015
+      },
+      "rl": {
+        "value": 1.6608814,
+        "year": 2015
+      },
+      "cc": {
+        "value": 1.6542704,
+        "year": 2015
+      },
+      "governance": 0.8300944666666668
+    },
+    {
+      "id": "FRA",
+      "name": "France",
+      "population": {
+        "value": 66548272,
+        "year": 2015
+      },
+      "gini": {
+        "value": 32.7,
+        "year": 2015
+      },
+      "ge": {
+        "value": 1.4592807,
+        "year": 2015
+      },
+      "rl": {
+        "value": 1.2424867,
+        "year": 2015
+      },
+      "cc": {
+        "value": 1.2963551,
+        "year": 2015
+      },
+      "governance": 0.7665415
+    },
+    {
+      "id": "DEU",
+      "name": "Germany",
+      "population": {
+        "value": 81686611,
+        "year": 2015
+      },
+      "gini": {
+        "value": 31.4,
+        "year": 2015
+      },
+      "ge": {
+        "value": 1.9623466,
+        "year": 2015
+      },
+      "rl": {
+        "value": 1.739872,
+        "year": 2015
+      },
+      "cc": {
+        "value": 1.7233648,
+        "year": 2015
+      },
+      "governance": 0.8617055600000001
+    },
+    {
+      "id": "ITA",
+      "name": "Italy",
+      "population": {
+        "value": 60229605,
+        "year": 2015
+      },
+      "gini": {
+        "value": 35.4,
+        "year": 2015
+      },
+      "ge": {
+        "value": 0.3701946,
+        "year": 2015
+      },
+      "rl": {
+        "value": 0.4617928,
+        "year": 2015
+      },
+      "cc": {
+        "value": 0.0677760999999999,
+        "year": 2015
+      },
+      "governance": 0.5599842333333334
+    },
+    {
+      "id": "ESP",
+      "name": "Spain",
+      "population": {
+        "value": 46422303,
+        "year": 2015
+      },
+      "gini": {
+        "value": 36.2,
+        "year": 2015
+      },
+      "ge": {
+        "value": 1.0684401,
+        "year": 2015
+      },
+      "rl": {
+        "value": 0.9539353,
+        "year": 2015
+      },
+      "cc": {
+        "value": 0.5903482,
+        "year": 2015
+      },
+      "governance": 0.6741815733333333
+    },
+    {
+      "id": "NLD",
+      "name": "Netherlands",
+      "population": {
+        "value": 16939923,
+        "year": 2015
+      },
+      "gini": {
+        "value": 28.2,
+        "year": 2015
+      },
+      "ge": {
+        "value": 1.9280339,
+        "year": 2015
+      },
+      "rl": {
+        "value": 1.8839565,
+        "year": 2015
+      },
+      "cc": {
+        "value": 1.8631148,
+        "year": 2015
+      },
+      "governance": 0.8783403466666666
+    },
+    {
+      "id": "SWE",
+      "name": "Sweden",
+      "population": {
+        "value": 9799186,
+        "year": 2015
+      },
+      "gini": {
+        "value": 29.2,
+        "year": 2015
+      },
+      "ge": {
+        "value": 1.8309837,
+        "year": 2015
+      },
+      "rl": {
+        "value": 1.9483702,
+        "year": 2015
+      },
+      "cc": {
+        "value": 2.0948719,
+        "year": 2015
+      },
+      "governance": 0.8916150533333334
+    },
+    {
+      "id": "BEL",
+      "name": "Belgium",
+      "population": {
+        "value": 11274196,
+        "year": 2015
+      },
+      "gini": {
+        "value": 27.7,
+        "year": 2015
+      },
+      "ge": {
+        "value": 1.5255063,
+        "year": 2015
+      },
+      "rl": {
+        "value": 1.4251797,
+        "year": 2015
+      },
+      "cc": {
+        "value": 1.5244457,
+        "year": 2015
+      },
+      "governance": 0.7983421133333334
+    },
+    {
+      "id": "AUT",
+      "name": "Austria",
+      "population": {
+        "value": 8642699,
+        "year": 2015
+      },
+      "gini": {
+        "value": 30.5,
+        "year": 2015
+      },
+      "ge": {
+        "value": 1.6009157,
+        "year": 2015
+      },
+      "rl": {
+        "value": 1.7816313,
+        "year": 2015
+      },
+      "cc": {
+        "value": 1.4914799,
+        "year": 2015
+      },
+      "governance": 0.8249351266666667
+    },
+    {
+      "id": "POL",
+      "name": "Poland",
+      "population": {
+        "value": 37986412,
+        "year": 2015
+      },
+      "gini": {
+        "value": 31.8,
+        "year": 2015
+      },
+      "ge": {
+        "value": 0.8717909,
+        "year": 2015
+      },
+      "rl": {
+        "value": 0.8357984,
+        "year": 2015
+      },
+      "cc": {
+        "value": 0.8356935,
+        "year": 2015
+      },
+      "governance": 0.6695521866666667
+    },
+    {
+      "id": "NOR",
+      "name": "Norway",
+      "population": {
+        "value": 5188607,
+        "year": 2015
+      },
+      "gini": {
+        "value": 27.5,
+        "year": 2015
+      },
+      "ge": {
+        "value": 1.9270491,
+        "year": 2015
+      },
+      "rl": {
+        "value": 1.9800469,
+        "year": 2015
+      },
+      "cc": {
+        "value": 2.1755199,
+        "year": 2015
+      },
+      "governance": 0.9055077266666667
+    },
+    {
+      "id": "CHE",
+      "name": "Switzerland",
+      "population": {
+        "value": 8282396,
+        "year": 2015
+      },
+      "gini": {
+        "value": 32.3,
+        "year": 2015
+      },
+      "ge": {
+        "value": 2.0359711,
+        "year": 2015
+      },
+      "rl": {
+        "value": 1.8856813,
+        "year": 2015
+      },
+      "cc": {
+        "value": 2.2702247,
+        "year": 2015
+      },
+      "governance": 0.9127918066666667
+    },
+    {
+      "id": "IRL",
+      "name": "Ireland",
+      "population": {
+        "value": 4701957,
+        "year": 2015
+      },
+      "gini": {
+        "value": 31.8,
+        "year": 2015
+      },
+      "ge": {
+        "value": 1.4129064,
+        "year": 2015
+      },
+      "rl": {
+        "value": 1.603553,
+        "year": 2015
+      },
+      "cc": {
+        "value": 1.6308016,
+        "year": 2015
+      },
+      "governance": 0.8098174
+    },
+    {
+      "id": "DNK",
+      "name": "Denmark",
+      "population": {
+        "value": 5683483,
+        "year": 2015
+      },
+      "gini": {
+        "value": 28.2,
+        "year": 2015
+      },
+      "ge": {
+        "value": 1.7943827,
+        "year": 2015
+      },
+      "rl": {
+        "value": 1.9817984,
+        "year": 2015
+      },
+      "cc": {
+        "value": 2.1589365,
+        "year": 2015
+      },
+      "governance": 0.8956745066666667
+    },
+    {
+      "id": "FIN",
+      "name": "Finland",
+      "population": {
+        "value": 5479531,
+        "year": 2015
+      },
+      "gini": {
+        "value": 27.1,
+        "year": 2015
+      },
+      "ge": {
+        "value": 1.9234691,
+        "year": 2015
+      },
+      "rl": {
+        "value": 2.0648276,
+        "year": 2015
+      },
+      "cc": {
+        "value": 2.1750212,
+        "year": 2015
+      },
+      "governance": 0.9108878600000001
+    },
+    {
+      "id": "PRT",
+      "name": "Portugal",
+      "population": {
+        "value": 10358076,
+        "year": 2015
+      },
+      "gini": {
+        "value": 35.5,
+        "year": 2015
+      },
+      "ge": {
+        "value": 1.1121757,
+        "year": 2015
+      },
+      "rl": {
+        "value": 1.1272881,
+        "year": 2015
+      },
+      "cc": {
+        "value": 0.7238455,
+        "year": 2015
+      },
+      "governance": 0.6975539533333334
+    },
+    {
+      "id": "GRC",
+      "name": "Greece",
+      "population": {
+        "value": 10820883,
+        "year": 2015
+      },
+      "gini": {
+        "value": 36,
+        "year": 2015
+      },
+      "ge": {
+        "value": 0.1817351,
+        "year": 2015
+      },
+      "rl": {
+        "value": 0.3396437,
+        "year": 2015
+      },
+      "cc": {
+        "value": 0.0220321,
+        "year": 2015
+      },
+      "governance": 0.5362273933333334
+    },
+    {
+      "id": "CZE",
+      "name": "Czechia",
+      "population": {
+        "value": 10546059,
+        "year": 2015
+      },
+      "gini": {
+        "value": 25.9,
+        "year": 2015
+      },
+      "ge": {
+        "value": 0.9304102,
+        "year": 2015
+      },
+      "rl": {
+        "value": 1.0475127,
+        "year": 2015
+      },
+      "cc": {
+        "value": 0.5929256,
+        "year": 2015
+      },
+      "governance": 0.6713899
+    },
+    {
+      "id": "HUN",
+      "name": "Hungary",
+      "population": {
+        "value": 9797755,
+        "year": 2015
+      },
+      "gini": {
+        "value": 30.4,
+        "year": 2015
+      },
+      "ge": {
+        "value": 0.579719,
+        "year": 2015
+      },
+      "rl": {
+        "value": 0.3552783,
+        "year": 2015
+      },
+      "cc": {
+        "value": 0.1723755,
+        "year": 2015
+      },
+      "governance": 0.5738248533333333
+    },
+    {
+      "id": "ROU",
+      "name": "Romania",
+      "population": {
+        "value": 19815616,
+        "year": 2015
+      },
+      "gini": {
+        "value": 35.9,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.0115775,
+        "year": 2015
+      },
+      "rl": {
+        "value": 0.3856172,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.0980376999999999,
+        "year": 2015
+      },
+      "governance": 0.5184001333333333
+    },
+    {
+      "id": "UKR",
+      "name": "Ukraine",
+      "population": {
+        "value": 45784896,
+        "year": 2015
+      },
+      "gini": {
+        "value": 25.5,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.5539736,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.699935499999999,
+        "year": 2015
+      },
+      "cc": {
+        "value": -1.0636259,
+        "year": 2015
+      },
+      "governance": 0.3454976666666667
+    },
+    {
+      "id": "BLR",
+      "name": "Belarus",
+      "population": {
+        "value": 9461076,
+        "year": 2015
+      },
+      "gini": {
+        "value": 25.6,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.334119699999999,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.731698899999999,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.2405698,
+        "year": 2015
+      },
+      "governance": 0.4129074400000001
+    },
+    {
+      "id": "SRB",
+      "name": "Serbia",
+      "population": {
+        "value": 7095383,
+        "year": 2015
+      },
+      "gini": {
+        "value": 40.5,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.0428976,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.0388041,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.3238735,
+        "year": 2015
+      },
+      "governance": 0.47296165333333334
+    },
+    {
+      "id": "ISL",
+      "name": "Iceland",
+      "population": {
+        "value": 330815,
+        "year": 2015
+      },
+      "gini": {
+        "value": 26.8,
+        "year": 2015
+      },
+      "ge": {
+        "value": 1.3946724,
+        "year": 2015
+      },
+      "rl": {
+        "value": 1.6421472,
+        "year": 2015
+      },
+      "cc": {
+        "value": 1.9854027,
+        "year": 2015
+      },
+      "governance": 0.8348148200000001
+    },
+    {
+      "id": "EST",
+      "name": "Estonia",
+      "population": {
+        "value": 1315407,
+        "year": 2015
+      },
+      "gini": {
+        "value": 32.7,
+        "year": 2015
+      },
+      "ge": {
+        "value": 1.0344114,
+        "year": 2015
+      },
+      "rl": {
+        "value": 1.3613873,
+        "year": 2015
+      },
+      "cc": {
+        "value": 1.2999987,
+        "year": 2015
+      },
+      "governance": 0.7463864933333334
+    },
+    {
+      "id": "LVA",
+      "name": "Latvia",
+      "population": {
+        "value": 1977527,
+        "year": 2015
+      },
+      "gini": {
+        "value": 34.2,
+        "year": 2015
+      },
+      "ge": {
+        "value": 0.7616412,
+        "year": 2015
+      },
+      "rl": {
+        "value": 0.6625807,
+        "year": 2015
+      },
+      "cc": {
+        "value": 0.6009075,
+        "year": 2015
+      },
+      "governance": 0.6350086266666667
+    },
+    {
+      "id": "LTU",
+      "name": "Lithuania",
+      "population": {
+        "value": 2911109,
+        "year": 2015
+      },
+      "gini": {
+        "value": 37.4,
+        "year": 2015
+      },
+      "ge": {
+        "value": 0.8794501,
+        "year": 2015
+      },
+      "rl": {
+        "value": 0.8491406,
+        "year": 2015
+      },
+      "cc": {
+        "value": 0.6814439,
+        "year": 2015
+      },
+      "governance": 0.6606689733333333
+    },
+    {
+      "id": "SVK",
+      "name": "Slovakia",
+      "population": {
+        "value": 5423801,
+        "year": 2015
+      },
+      "gini": {
+        "value": 26.5,
+        "year": 2015
+      },
+      "ge": {
+        "value": 0.6446273,
+        "year": 2015
+      },
+      "rl": {
+        "value": 0.2446535,
+        "year": 2015
+      },
+      "cc": {
+        "value": 0.192681,
+        "year": 2015
+      },
+      "governance": 0.5721307866666667
+    },
+    {
+      "id": "SVN",
+      "name": "Slovenia",
+      "population": {
+        "value": 2063531,
+        "year": 2015
+      },
+      "gini": {
+        "value": 25.4,
+        "year": 2015
+      },
+      "ge": {
+        "value": 1.0221829,
+        "year": 2015
+      },
+      "rl": {
+        "value": 0.8075466,
+        "year": 2015
+      },
+      "cc": {
+        "value": 0.6575394,
+        "year": 2015
+      },
+      "governance": 0.6658179266666667
+    },
+    {
+      "id": "HRV",
+      "name": "Croatia",
+      "population": {
+        "value": 4151725,
+        "year": 2015
+      },
+      "gini": {
+        "value": 31.1,
+        "year": 2015
+      },
+      "ge": {
+        "value": 0.2567445,
+        "year": 2015
+      },
+      "rl": {
+        "value": 0.333543,
+        "year": 2015
+      },
+      "cc": {
+        "value": 0.1722605,
+        "year": 2015
+      },
+      "governance": 0.5508365333333334
+    },
+    {
+      "id": "BIH",
+      "name": "Bosnia & Herz.",
+      "population": {
+        "value": 3518541,
+        "year": 2015
+      },
+      "gini": {
+        "value": 32.9,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.4626996,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.2307844,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.4923931,
+        "year": 2015
+      },
+      "governance": 0.4209415266666667
+    },
+    {
+      "id": "MNE",
+      "name": "Montenegro",
+      "population": {
+        "value": 624651,
+        "year": 2015
+      },
+      "gini": {
+        "value": 39,
+        "year": 2015
+      },
+      "ge": {
+        "value": 0.3138915,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.0128937999999999,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.1544911,
+        "year": 2015
+      },
+      "governance": 0.5097671066666667
+    },
+    {
+      "id": "MKD",
+      "name": "North Macedonia",
+      "population": {
+        "value": 1912430,
+        "year": 2015
+      },
+      "gini": {
+        "value": 35.6,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.0722863,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.2782059,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.3062159,
+        "year": 2015
+      },
+      "governance": 0.45621946
+    },
+    {
+      "id": "ALB",
+      "name": "Albania",
+      "population": {
+        "value": 2731293,
+        "year": 2015
+      },
+      "gini": {
+        "value": 32.8,
+        "year": 2015
+      },
+      "ge": {
+        "value": 0.1835585,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.2267931,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.5865235,
+        "year": 2015
+      },
+      "governance": 0.4580161266666667
+    },
+    {
+      "id": "BGR",
+      "name": "Bulgaria",
+      "population": {
+        "value": 6984225,
+        "year": 2015
+      },
+      "gini": {
+        "value": 38.6,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.109724499999999,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.2080985,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.4387083,
+        "year": 2015
+      },
+      "governance": 0.44956458000000005
+    },
+    {
+      "id": "MDA",
+      "name": "Moldova",
+      "population": {
+        "value": 2835978,
+        "year": 2015
+      },
+      "gini": {
+        "value": 27,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.6288785,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.419315799999999,
+        "year": 2015
+      },
+      "cc": {
+        "value": -1.03857019999999,
+        "year": 2015
+      },
+      "governance": 0.3608823666666674
+    },
+    {
+      "id": "LUX",
+      "name": "Luxembourg",
+      "population": {
+        "value": 569604,
+        "year": 2015
+      },
+      "gini": {
+        "value": 32.9,
+        "year": 2015
+      },
+      "ge": {
+        "value": 1.8995712,
+        "year": 2015
+      },
+      "rl": {
+        "value": 1.8141125,
+        "year": 2015
+      },
+      "cc": {
+        "value": 2.2241466,
+        "year": 2015
+      },
+      "governance": 0.8958553533333333
+    },
+    {
+      "id": "CYP",
+      "name": "Cyprus",
+      "population": {
+        "value": 1219502,
+        "year": 2015
+      },
+      "gini": {
+        "value": 34,
+        "year": 2015
+      },
+      "ge": {
+        "value": 1.0770285,
+        "year": 2015
+      },
+      "rl": {
+        "value": 0.835657,
+        "year": 2015
+      },
+      "cc": {
+        "value": 0.6824205,
+        "year": 2015
+      },
+      "governance": 0.6730070666666667
+    },
+    {
+      "id": "MLT",
+      "name": "Malta",
+      "population": {
+        "value": 444220,
+        "year": 2015
+      },
+      "gini": {
+        "value": 29.4,
+        "year": 2015
+      },
+      "ge": {
+        "value": 1.008955,
+        "year": 2015
+      },
+      "rl": {
+        "value": 1.0918616,
+        "year": 2015
+      },
+      "cc": {
+        "value": 0.8513513,
+        "year": 2015
+      },
+      "governance": 0.6968111933333333
+    },
+    {
+      "id": "CHN",
+      "name": "China",
+      "population": {
+        "value": 1379860000,
+        "year": 2015
+      },
+      "gini": {
+        "value": 38.6,
+        "year": 2015
+      },
+      "ge": {
+        "value": 0.5336101,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.6620808,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.1750814,
+        "year": 2015
+      },
+      "governance": 0.47976319333333334
+    },
+    {
+      "id": "JPN",
+      "name": "Japan",
+      "population": {
+        "value": 127141000,
+        "year": 2015
+      },
+      "gini": {
+        "value": 30.7,
+        "year": 2015
+      },
+      "ge": {
+        "value": 1.7060508,
+        "year": 2015
+      },
+      "rl": {
+        "value": 1.4360203,
+        "year": 2015
+      },
+      "cc": {
+        "value": 1.4505851,
+        "year": 2015
+      },
+      "governance": 0.8061770800000001
+    },
+    {
+      "id": "KOR",
+      "name": "South Korea",
+      "population": {
+        "value": 51014947,
+        "year": 2015
+      },
+      "gini": {
+        "value": 31.2,
+        "year": 2014
+      },
+      "ge": {
+        "value": 1.1983681,
+        "year": 2015
+      },
+      "rl": {
+        "value": 1.0105606,
+        "year": 2015
+      },
+      "cc": {
+        "value": 0.3449721,
+        "year": 2015
+      },
+      "governance": 0.6702600533333334
+    },
+    {
+      "id": "MNG",
+      "name": "Mongolia",
+      "population": {
+        "value": 3026864,
+        "year": 2015
+      },
+      "gini": {
+        "value": 32,
+        "year": 2014
+      },
+      "ge": {
+        "value": -0.3329464,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.2154153,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.586661299999999,
+        "year": 2015
+      },
+      "governance": 0.42433180000000004
+    },
+    {
+      "id": "VNM",
+      "name": "Vietnam",
+      "population": {
+        "value": 92823254,
+        "year": 2015
+      },
+      "gini": {
+        "value": 34.8,
+        "year": 2014
+      },
+      "ge": {
+        "value": 0.0996825,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.372697,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.3774131,
+        "year": 2015
+      },
+      "governance": 0.45663816
+    },
+    {
+      "id": "IDN",
+      "name": "Indonesia",
+      "population": {
+        "value": 261799249,
+        "year": 2015
+      },
+      "gini": {
+        "value": 38.2,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.062646,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.3812221,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.5229666,
+        "year": 2015
+      },
+      "governance": 0.43554435333333336
+    },
+    {
+      "id": "PHL",
+      "name": "Philippines",
+      "population": {
+        "value": 105312992,
+        "year": 2015
+      },
+      "gini": {
+        "value": 44.6,
+        "year": 2015
+      },
+      "ge": {
+        "value": 0.408021,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.4299627,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.590425299999999,
+        "year": 2015
+      },
+      "governance": 0.4591755333333334
+    },
+    {
+      "id": "THA",
+      "name": "Thailand",
+      "population": {
+        "value": 70540795,
+        "year": 2015
+      },
+      "gini": {
+        "value": 36,
+        "year": 2015
+      },
+      "ge": {
+        "value": 0.0674039,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.3757008,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.5473428,
+        "year": 2015
+      },
+      "governance": 0.4429573533333333
+    },
+    {
+      "id": "MYS",
+      "name": "Malaysia",
+      "population": {
+        "value": 31232798,
+        "year": 2015
+      },
+      "gini": {
+        "value": 41.1,
+        "year": 2015
+      },
+      "ge": {
+        "value": 0.8365268,
+        "year": 2015
+      },
+      "rl": {
+        "value": 0.1141708,
+        "year": 2015
+      },
+      "cc": {
+        "value": 0.2439907,
+        "year": 2015
+      },
+      "governance": 0.5796458866666667
+    },
+    {
+      "id": "MMR",
+      "name": "Myanmar",
+      "population": {
+        "value": 51089056,
+        "year": 2015
+      },
+      "gini": {
+        "value": 38.1,
+        "year": 2015
+      },
+      "ge": {
+        "value": -1.2574663,
+        "year": 2015
+      },
+      "rl": {
+        "value": -1.24813,
+        "year": 2015
+      },
+      "cc": {
+        "value": -1.0035195,
+        "year": 2015
+      },
+      "governance": 0.26605894666666663
+    },
+    {
+      "id": "LAO",
+      "name": "Laos",
+      "population": {
+        "value": 6801645,
+        "year": 2015
+      },
+      "gini": {
+        "value": 36,
+        "year": 2012
+      },
+      "ge": {
+        "value": -0.353978299999999,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.7713994,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.9998267,
+        "year": 2015
+      },
+      "governance": 0.3583197066666667
+    },
+    {
+      "id": "TLS",
+      "name": "Timor-Leste",
+      "population": {
+        "value": 1205131,
+        "year": 2015
+      },
+      "gini": {
+        "value": 28.7,
+        "year": 2014
+      },
+      "ge": {
+        "value": -0.989996999999999,
+        "year": 2015
+      },
+      "rl": {
+        "value": -1.0527445,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.646685699999999,
+        "year": 2015
+      },
+      "governance": 0.32070485333333343
+    },
+    {
+      "id": "IND",
+      "name": "India",
+      "population": {
+        "value": 1328024498,
+        "year": 2015
+      },
+      "gini": {
+        "value": 28.8,
+        "year": 2011
+      },
+      "ge": {
+        "value": 0.3968483,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.1374229,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.3449931,
+        "year": 2015
+      },
+      "governance": 0.4942954866666667
+    },
+    {
+      "id": "PAK",
+      "name": "Pakistan",
+      "population": {
+        "value": 217290883,
+        "year": 2015
+      },
+      "gini": {
+        "value": 31.3,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.6105847,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.914828299999999,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.981116999999999,
+        "year": 2015
+      },
+      "governance": 0.33289800000000014
+    },
+    {
+      "id": "BGD",
+      "name": "Bangladesh",
+      "population": {
+        "value": 159383179,
+        "year": 2015
+      },
+      "gini": {
+        "value": 32.1,
+        "year": 2010
+      },
+      "ge": {
+        "value": -0.6547007,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.856926099999999,
+        "year": 2015
+      },
+      "cc": {
+        "value": -1.0798121,
+        "year": 2015
+      },
+      "governance": 0.3272374066666667
+    },
+    {
+      "id": "LKA",
+      "name": "Sri Lanka",
+      "population": {
+        "value": 20970000,
+        "year": 2015
+      },
+      "gini": {
+        "value": 38.7,
+        "year": 2012
+      },
+      "ge": {
+        "value": 0.0898368,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.110513199999999,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.3413605,
+        "year": 2015
+      },
+      "governance": 0.47586420666666673
+    },
+    {
+      "id": "NPL",
+      "name": "Nepal",
+      "population": {
+        "value": 27823629,
+        "year": 2015
+      },
+      "gini": {
+        "value": 32.8,
+        "year": 2010
+      },
+      "ge": {
+        "value": -1.16337389999999,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.5990489,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.830829399999999,
+        "year": 2015
+      },
+      "governance": 0.3271165200000007
+    },
+    {
+      "id": "BTN",
+      "name": "Bhutan",
+      "population": {
+        "value": 740618,
+        "year": 2015
+      },
+      "gini": {
+        "value": 38.8,
+        "year": 2012
+      },
+      "ge": {
+        "value": 0.3649184,
+        "year": 2015
+      },
+      "rl": {
+        "value": 0.5171592,
+        "year": 2015
+      },
+      "cc": {
+        "value": 1.0788548,
+        "year": 2015
+      },
+      "governance": 0.6307288266666666
+    },
+    {
+      "id": "KAZ",
+      "name": "Kazakhstan",
+      "population": {
+        "value": 18084169,
+        "year": 2015
+      },
+      "gini": {
+        "value": 26.8,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.011417,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.4919324,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.8337886,
+        "year": 2015
+      },
+      "governance": 0.41085746666666667
+    },
+    {
+      "id": "KGZ",
+      "name": "Kyrgyzstan",
+      "population": {
+        "value": 6040036,
+        "year": 2015
+      },
+      "gini": {
+        "value": 29,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.8949145,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.8379898,
+        "year": 2015
+      },
+      "cc": {
+        "value": -1.2076555,
+        "year": 2015
+      },
+      "governance": 0.30396268000000004
+    },
+    {
+      "id": "TJK",
+      "name": "Tajikistan",
+      "population": {
+        "value": 8643840,
+        "year": 2015
+      },
+      "gini": {
+        "value": 34,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.7357851,
+        "year": 2015
+      },
+      "rl": {
+        "value": -1.09089939999999,
+        "year": 2015
+      },
+      "cc": {
+        "value": -1.2043521,
+        "year": 2015
+      },
+      "governance": 0.297930893333334
+    },
+    {
+      "id": "TUR",
+      "name": "Turkey",
+      "population": {
+        "value": 78218479,
+        "year": 2015
+      },
+      "gini": {
+        "value": 42.9,
+        "year": 2015
+      },
+      "ge": {
+        "value": 0.3331512,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.4773732,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.1063785,
+        "year": 2015
+      },
+      "governance": 0.4832933
+    },
+    {
+      "id": "IRN",
+      "name": "Iran",
+      "population": {
+        "value": 82619362,
+        "year": 2015
+      },
+      "gini": {
+        "value": 35.3,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.191803399999999,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.9741059,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.7596233,
+        "year": 2015
+      },
+      "governance": 0.37163116000000007
+    },
+    {
+      "id": "IRQ",
+      "name": "Iraq",
+      "population": {
+        "value": 37560535,
+        "year": 2015
+      },
+      "gini": {
+        "value": 29.5,
+        "year": 2012
+      },
+      "ge": {
+        "value": -1.0793082,
+        "year": 2015
+      },
+      "rl": {
+        "value": -1.48886679999999,
+        "year": 2015
+      },
+      "cc": {
+        "value": -1.393567,
+        "year": 2015
+      },
+      "governance": 0.23588386666666733
+    },
+    {
+      "id": "ARE",
+      "name": "UAE",
+      "population": {
+        "value": 8505237,
+        "year": 2015
+      },
+      "gini": {
+        "value": 32.5,
+        "year": 2013
+      },
+      "ge": {
+        "value": 1.4040254,
+        "year": 2015
+      },
+      "rl": {
+        "value": 0.3509975,
+        "year": 2015
+      },
+      "cc": {
+        "value": 0.9199437,
+        "year": 2015
+      },
+      "governance": 0.6783311066666667
+    },
+    {
+      "id": "ISR",
+      "name": "Israel",
+      "population": {
+        "value": 8380100,
+        "year": 2015
+      },
+      "gini": {
+        "value": 39.7,
+        "year": 2015
+      },
+      "ge": {
+        "value": 1.4633523,
+        "year": 2015
+      },
+      "rl": {
+        "value": 1.0408491,
+        "year": 2015
+      },
+      "cc": {
+        "value": 0.8495585,
+        "year": 2015
+      },
+      "governance": 0.7235839933333333
+    },
+    {
+      "id": "JOR",
+      "name": "Jordan",
+      "population": {
+        "value": 9544729,
+        "year": 2015
+      },
+      "gini": {
+        "value": 33.7,
+        "year": 2010
+      },
+      "ge": {
+        "value": 0.3820942,
+        "year": 2015
+      },
+      "rl": {
+        "value": 0.1375421,
+        "year": 2015
+      },
+      "cc": {
+        "value": 0.2644497,
+        "year": 2015
+      },
+      "governance": 0.5522724
+    },
+    {
+      "id": "LBN",
+      "name": "Lebanon",
+      "population": {
+        "value": 6472469,
+        "year": 2015
+      },
+      "gini": {
+        "value": 31.8,
+        "year": 2011
+      },
+      "ge": {
+        "value": -0.2826924,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.8084504,
+        "year": 2015
+      },
+      "cc": {
+        "value": -1.0047914,
+        "year": 2015
+      },
+      "governance": 0.3602710533333333
+    },
+    {
+      "id": "YEM",
+      "name": "Yemen",
+      "population": {
+        "value": 31159379,
+        "year": 2015
+      },
+      "gini": {
+        "value": 36.7,
+        "year": 2014
+      },
+      "ge": {
+        "value": -1.5567828,
+        "year": 2015
+      },
+      "rl": {
+        "value": -1.5231762,
+        "year": 2015
+      },
+      "cc": {
+        "value": -1.4855019,
+        "year": 2015
+      },
+      "governance": 0.19563594
+    },
+    {
+      "id": "GEO",
+      "name": "Georgia",
+      "population": {
+        "value": 3725276,
+        "year": 2015
+      },
+      "gini": {
+        "value": 36.5,
+        "year": 2015
+      },
+      "ge": {
+        "value": 0.4698911,
+        "year": 2015
+      },
+      "rl": {
+        "value": 0.3405598,
+        "year": 2015
+      },
+      "cc": {
+        "value": 0.7754032,
+        "year": 2015
+      },
+      "governance": 0.6057236066666667
+    },
+    {
+      "id": "ARM",
+      "name": "Armenia",
+      "population": {
+        "value": 3004600,
+        "year": 2015
+      },
+      "gini": {
+        "value": 32.4,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.1424065,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.396324299999999,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.6231951,
+        "year": 2015
+      },
+      "governance": 0.4225382733333334
+    },
+    {
+      "id": "PSE",
+      "name": "Palestine",
+      "population": {
+        "value": 4270092,
+        "year": 2015
+      },
+      "gini": {
+        "value": 34.4,
+        "year": 2011
+      },
+      "ge": {
+        "value": -0.2500245,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.869190199999999,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.4552156,
+        "year": 2015
+      },
+      "governance": 0.39503798000000007
+    },
+    {
+      "id": "NGA",
+      "name": "Nigeria",
+      "population": {
+        "value": 190671878,
+        "year": 2015
+      },
+      "gini": {
+        "value": 35.9,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.913883799999999,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.960877499999999,
+        "year": 2015
+      },
+      "cc": {
+        "value": -1.1613946,
+        "year": 2015
+      },
+      "governance": 0.2975896066666668
+    },
+    {
+      "id": "ZAF",
+      "name": "South Africa",
+      "population": {
+        "value": 56723537,
+        "year": 2015
+      },
+      "gini": {
+        "value": 59.6,
+        "year": 2014
+      },
+      "ge": {
+        "value": 0.2444848,
+        "year": 2015
+      },
+      "rl": {
+        "value": 0.0440534,
+        "year": 2015
+      },
+      "cc": {
+        "value": 0.0114254,
+        "year": 2015
+      },
+      "governance": 0.5199975733333333
+    },
+    {
+      "id": "EGY",
+      "name": "Egypt",
+      "population": {
+        "value": 99597342,
+        "year": 2015
+      },
+      "gini": {
+        "value": 31.8,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.5216722,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.8381446,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.5639736,
+        "year": 2015
+      },
+      "governance": 0.37174730666666667
+    },
+    {
+      "id": "ETH",
+      "name": "Ethiopia",
+      "population": {
+        "value": 103867135,
+        "year": 2015
+      },
+      "gini": {
+        "value": 35,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.5298526,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.805187299999999,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.5196265,
+        "year": 2015
+      },
+      "governance": 0.3763555733333334
+    },
+    {
+      "id": "KEN",
+      "name": "Kenya",
+      "population": {
+        "value": 47088526,
+        "year": 2015
+      },
+      "gini": {
+        "value": 40.8,
+        "year": 2015
+      },
+      "ge": {
+        "value": -0.3675673,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.6423593,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.9711807,
+        "year": 2015
+      },
+      "governance": 0.36792618
+    },
+    {
+      "id": "COD",
+      "name": "DR Congo",
+      "population": {
+        "value": 81035531,
+        "year": 2015
+      },
+      "gini": {
+        "value": 42.1,
+        "year": 2012
+      },
+      "ge": {
+        "value": -1.4727107,
+        "year": 2015
+      },
+      "rl": {
+        "value": -1.57003159999999,
+        "year": 2015
+      },
+      "cc": {
+        "value": -1.3932852,
+        "year": 2015
+      },
+      "governance": 0.20426483333333395
+    },
+    {
+      "id": "MAR",
+      "name": "Morocco",
+      "population": {
+        "value": 34607588,
+        "year": 2015
+      },
+      "gini": {
+        "value": 39.5,
+        "year": 2013
+      },
+      "ge": {
+        "value": -0.2363813,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.3687701,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.352055199999999,
+        "year": 2015
+      },
+      "governance": 0.43618622666666673
+    },
+    {
+      "id": "DZA",
+      "name": "Algeria",
+      "population": {
+        "value": 40019529,
+        "year": 2015
+      },
+      "gini": {
+        "value": 27.6,
+        "year": 2011
+      },
+      "ge": {
+        "value": -0.3555636,
+        "year": 2015
+      },
+      "rl": {
+        "value": -0.8774318,
+        "year": 2015
+      },
+      "cc": {
+        "value": -0.6299526,
+        "year": 2015
+      },
+      "governance": 0.37580346666666664
+    },
+    {
+      "id": "AUS",
+      "name": "Australia",
+      "population": {
+        "value": 23815995,
+        "year": 2015
+      },
+      "gini": {
+        "value": 34.4,
+        "year": 2014
+      },
+      "ge": {
+        "value": 1.6762148,
+        "year": 2015
+      },
+      "rl": {
+        "value": 1.7177851,
+        "year": 2015
+      },
+      "cc": {
+        "value": 1.8544442,
+        "year": 2015
+      },
+      "governance": 0.8498962733333333
+    }
+  ],
+  "ladder": {
+    "USA": {
+      "2015": 7.104,
+      "2016": 6.993,
+      "2017": 6.886,
+      "2018": 6.892
+    },
+    "CAN": {
+      "2015": 7.404,
+      "2016": 7.316,
+      "2017": 7.328,
+      "2018": 7.278
+    },
+    "MEX": {
+      "2015": 6.778,
+      "2016": 6.578,
+      "2017": 6.488,
+      "2018": 6.595
+    },
+    "GTM": {
+      "2015": 6.324,
+      "2016": 6.454,
+      "2017": 6.382,
+      "2018": 6.436
+    },
+    "HTI": {
+      "2015": 4.028,
+      "2016": 3.603,
+      "2017": 3.582,
+      "2018": 3.597
+    },
+    "DOM": {
+      "2015": 5.155,
+      "2016": 5.23,
+      "2017": 5.302,
+      "2018": 5.425
+    },
+    "HND": {
+      "2015": 4.871,
+      "2016": 5.181,
+      "2017": 5.504,
+      "2018": 5.86
+    },
+    "NIC": {
+      "2015": 5.992,
+      "2016": 6.071,
+      "2017": 6.141,
+      "2018": 6.105
+    },
+    "SLV": {
+      "2015": 6.068,
+      "2016": 6.003,
+      "2017": 6.167,
+      "2018": 6.253
+    },
+    "CRI": {
+      "2015": 7.087,
+      "2016": 7.079,
+      "2017": 7.072,
+      "2018": 7.167
+    },
+    "PAN": {
+      "2015": 6.701,
+      "2016": 6.452,
+      "2017": 6.43,
+      "2018": 6.321
+    },
+    "BRA": {
+      "2015": 6.952,
+      "2016": 6.635,
+      "2017": 6.419,
+      "2018": 6.3
+    },
+    "ARG": {
+      "2015": 6.65,
+      "2016": 6.599,
+      "2017": 6.388,
+      "2018": 6.086
+    },
+    "COL": {
+      "2015": 6.481,
+      "2016": 6.357,
+      "2017": 6.26,
+      "2018": 6.125
+    },
+    "CHL": {
+      "2015": 6.705,
+      "2016": 6.652,
+      "2017": 6.476,
+      "2018": 6.444
+    },
+    "PER": {
+      "2015": 5.743,
+      "2016": 5.715,
+      "2017": 5.663,
+      "2018": 5.697
+    },
+    "ECU": {
+      "2015": 5.976,
+      "2016": 6.008,
+      "2017": 5.973,
+      "2018": 6.028
+    },
+    "BOL": {
+      "2015": 5.822,
+      "2016": 5.823,
+      "2017": 5.752,
+      "2018": 5.779
+    },
+    "PRY": {
+      "2015": 5.538,
+      "2016": 5.493,
+      "2017": 5.681,
+      "2018": 5.743
+    },
+    "URY": {
+      "2015": 6.545,
+      "2016": 6.454,
+      "2017": 6.379,
+      "2018": 6.293
+    },
+    "RUS": {
+      "2015": 5.856,
+      "2016": 5.963,
+      "2017": 5.81,
+      "2018": 5.648
+    },
+    "GBR": {
+      "2015": 6.725,
+      "2016": 6.714,
+      "2017": 6.814,
+      "2018": 7.054
+    },
+    "FRA": {
+      "2015": 6.478,
+      "2016": 6.442,
+      "2017": 6.489,
+      "2018": 6.592
+    },
+    "DEU": {
+      "2015": 6.994,
+      "2016": 6.951,
+      "2017": 6.965,
+      "2018": 6.985
+    },
+    "ITA": {
+      "2015": 5.977,
+      "2016": 5.964,
+      "2017": 6,
+      "2018": 6.223
+    },
+    "ESP": {
+      "2015": 6.361,
+      "2016": 6.403,
+      "2017": 6.31,
+      "2018": 6.354
+    },
+    "NLD": {
+      "2015": 7.339,
+      "2016": 7.377,
+      "2017": 7.441,
+      "2018": 7.488
+    },
+    "SWE": {
+      "2015": 7.291,
+      "2016": 7.284,
+      "2017": 7.314,
+      "2018": 7.343
+    },
+    "BEL": {
+      "2015": 6.929,
+      "2016": 6.891,
+      "2017": 6.927,
+      "2018": 6.923
+    },
+    "AUT": {
+      "2015": 7.119,
+      "2016": 7.006,
+      "2017": 7.139,
+      "2018": 7.246
+    },
+    "POL": {
+      "2015": 5.835,
+      "2016": 5.973,
+      "2017": 6.123,
+      "2018": 6.182
+    },
+    "NOR": {
+      "2015": 7.498,
+      "2016": 7.537,
+      "2017": 7.594,
+      "2018": 7.554
+    },
+    "CHE": {
+      "2015": 7.509,
+      "2016": 7.494,
+      "2017": 7.487,
+      "2018": 7.48
+    },
+    "IRL": {
+      "2015": 6.907,
+      "2016": 6.977,
+      "2017": 6.977,
+      "2018": 7.021
+    },
+    "DNK": {
+      "2015": 7.526,
+      "2016": 7.522,
+      "2017": 7.555,
+      "2018": 7.6
+    },
+    "FIN": {
+      "2015": 7.413,
+      "2016": 7.469,
+      "2017": 7.632,
+      "2018": 7.769
+    },
+    "PRT": {
+      "2015": 5.123,
+      "2016": 5.195,
+      "2017": 5.41,
+      "2018": 5.693
+    },
+    "GRC": {
+      "2015": 5.033,
+      "2016": 5.227,
+      "2017": 5.358,
+      "2018": 5.287
+    },
+    "CZE": {
+      "2015": 6.596,
+      "2016": 6.609,
+      "2017": 6.711,
+      "2018": 6.852
+    },
+    "HUN": {
+      "2015": 5.145,
+      "2016": 5.324,
+      "2017": 5.62,
+      "2018": 5.758
+    },
+    "ROU": {
+      "2015": 5.528,
+      "2016": 5.825,
+      "2017": 5.945,
+      "2018": 6.07
+    },
+    "UKR": {
+      "2015": 4.324,
+      "2016": 4.096,
+      "2017": 4.103,
+      "2018": 4.332
+    },
+    "BLR": {
+      "2015": 5.802,
+      "2016": 5.569,
+      "2017": 5.483,
+      "2018": 5.323
+    },
+    "SRB": {
+      "2015": 5.177,
+      "2016": 5.395,
+      "2017": 5.398,
+      "2018": 5.603
+    },
+    "ISL": {
+      "2015": 7.501,
+      "2016": 7.504,
+      "2017": 7.495,
+      "2018": 7.494
+    },
+    "EST": {
+      "2015": 5.517,
+      "2016": 5.611,
+      "2017": 5.739,
+      "2018": 5.893
+    },
+    "LVA": {
+      "2015": 5.56,
+      "2016": 5.85,
+      "2017": 5.933,
+      "2018": 5.94
+    },
+    "LTU": {
+      "2015": 5.813,
+      "2016": 5.902,
+      "2017": 5.952,
+      "2018": 6.149
+    },
+    "SVK": {
+      "2015": 6.078,
+      "2016": 6.098,
+      "2017": 6.173,
+      "2018": 6.198
+    },
+    "SVN": {
+      "2015": 5.768,
+      "2016": 5.758,
+      "2017": 5.948,
+      "2018": 6.118
+    },
+    "HRV": {
+      "2015": 5.488,
+      "2016": 5.293,
+      "2017": 5.321,
+      "2018": 5.432
+    },
+    "BIH": {
+      "2015": 5.163,
+      "2016": 5.182,
+      "2017": 5.129,
+      "2018": 5.386
+    },
+    "MNE": {
+      "2015": 5.161,
+      "2016": 5.237,
+      "2017": 5.347,
+      "2018": 5.523
+    },
+    "MKD": {
+      "2015": 5.121,
+      "2016": 5.175,
+      "2017": 5.185,
+      "2018": 5.274
+    },
+    "ALB": {
+      "2015": 4.655,
+      "2016": 4.644,
+      "2017": 4.586,
+      "2018": 4.719
+    },
+    "BGR": {
+      "2015": 4.217,
+      "2016": 4.714,
+      "2017": 4.933,
+      "2018": 5.011
+    },
+    "MDA": {
+      "2015": 5.897,
+      "2016": 5.838,
+      "2017": 5.64,
+      "2018": 5.529
+    },
+    "LUX": {
+      "2015": 6.871,
+      "2016": 6.863,
+      "2017": 6.91,
+      "2018": 7.09
+    },
+    "CYP": {
+      "2015": 5.546,
+      "2016": 5.621,
+      "2017": 5.762,
+      "2018": 6.046
+    },
+    "MLT": {
+      "2015": 6.488,
+      "2016": 6.527,
+      "2017": 6.627,
+      "2018": 6.726
+    },
+    "CHN": {
+      "2015": 5.245,
+      "2016": 5.273,
+      "2017": 5.246,
+      "2018": 5.191
+    },
+    "JPN": {
+      "2015": 5.921,
+      "2016": 5.92,
+      "2017": 5.915,
+      "2018": 5.886
+    },
+    "KOR": {
+      "2015": 5.835,
+      "2016": 5.838,
+      "2017": 5.875,
+      "2018": 5.895
+    },
+    "MNG": {
+      "2015": 4.907,
+      "2016": 4.955,
+      "2017": 5.125,
+      "2018": 5.285
+    },
+    "VNM": {
+      "2015": 5.061,
+      "2016": 5.074,
+      "2017": 5.103,
+      "2018": 5.175
+    },
+    "IDN": {
+      "2015": 5.314,
+      "2016": 5.262,
+      "2017": 5.093,
+      "2018": 5.192
+    },
+    "PHL": {
+      "2015": 5.279,
+      "2016": 5.43,
+      "2017": 5.524,
+      "2018": 5.631
+    },
+    "THA": {
+      "2015": 6.474,
+      "2016": 6.424,
+      "2017": 6.072,
+      "2018": 6.008
+    },
+    "MYS": {
+      "2015": 6.005,
+      "2016": 6.084,
+      "2017": 6.322,
+      "2018": 5.339
+    },
+    "MMR": {
+      "2015": 4.395,
+      "2016": 4.545,
+      "2017": 4.308,
+      "2018": 4.36
+    },
+    "LAO": {
+      "2015": 4.876,
+      "2017": 4.623,
+      "2018": 4.796
+    },
+    "IND": {
+      "2015": 4.404,
+      "2016": 4.315,
+      "2017": 4.19,
+      "2018": 4.015
+    },
+    "PAK": {
+      "2015": 5.132,
+      "2016": 5.269,
+      "2017": 5.472,
+      "2018": 5.653
+    },
+    "BGD": {
+      "2015": 4.643,
+      "2016": 4.608,
+      "2017": 4.5,
+      "2018": 4.456
+    },
+    "LKA": {
+      "2015": 4.415,
+      "2016": 4.44,
+      "2017": 4.471,
+      "2018": 4.366
+    },
+    "NPL": {
+      "2015": 4.793,
+      "2016": 4.962,
+      "2017": 4.88,
+      "2018": 4.913
+    },
+    "BTN": {
+      "2015": 5.196,
+      "2016": 5.011,
+      "2017": 5.082,
+      "2018": 5.082
+    },
+    "KAZ": {
+      "2015": 5.919,
+      "2016": 5.819,
+      "2017": 5.79,
+      "2018": 5.809
+    },
+    "KGZ": {
+      "2015": 5.185,
+      "2016": 5.004,
+      "2017": 5.131,
+      "2018": 5.261
+    },
+    "TJK": {
+      "2015": 4.996,
+      "2016": 5.041,
+      "2017": 5.352,
+      "2018": 5.467
+    },
+    "TUR": {
+      "2015": 5.389,
+      "2016": 5.5,
+      "2017": 5.483,
+      "2018": 5.373
+    },
+    "IRN": {
+      "2015": 4.813,
+      "2016": 4.692,
+      "2017": 4.707,
+      "2018": 4.548
+    },
+    "IRQ": {
+      "2015": 4.575,
+      "2016": 4.497,
+      "2017": 4.456,
+      "2018": 4.437
+    },
+    "ARE": {
+      "2015": 6.573,
+      "2016": 6.648,
+      "2017": 6.774,
+      "2018": 6.825
+    },
+    "ISR": {
+      "2015": 7.267,
+      "2016": 7.213,
+      "2017": 7.19,
+      "2018": 7.139
+    },
+    "JOR": {
+      "2015": 5.303,
+      "2016": 5.336,
+      "2017": 5.161,
+      "2018": 4.906
+    },
+    "LBN": {
+      "2015": 5.129,
+      "2016": 5.225,
+      "2017": 5.199,
+      "2018": 5.197
+    },
+    "YEM": {
+      "2015": 3.724,
+      "2016": 3.593,
+      "2017": 3.355,
+      "2018": 3.38
+    },
+    "GEO": {
+      "2015": 4.252,
+      "2016": 4.286,
+      "2017": 4.34,
+      "2018": 4.519
+    },
+    "ARM": {
+      "2015": 4.36,
+      "2016": 4.376,
+      "2017": 4.321,
+      "2018": 4.559
+    },
+    "PSE": {
+      "2015": 4.754,
+      "2016": 4.775,
+      "2017": 4.743,
+      "2018": 4.696
+    },
+    "NGA": {
+      "2015": 4.875,
+      "2016": 5.074,
+      "2017": 5.155,
+      "2018": 5.265
+    },
+    "ZAF": {
+      "2015": 4.459,
+      "2016": 4.829,
+      "2017": 4.724,
+      "2018": 4.722
+    },
+    "EGY": {
+      "2015": 4.362,
+      "2016": 4.735,
+      "2017": 4.419,
+      "2018": 4.166
+    },
+    "ETH": {
+      "2015": 4.508,
+      "2016": 4.46,
+      "2017": 4.35,
+      "2018": 4.286
+    },
+    "KEN": {
+      "2015": 4.356,
+      "2016": 4.553,
+      "2017": 4.41,
+      "2018": 4.509
+    },
+    "COD": {
+      "2015": 4.272,
+      "2016": 4.28,
+      "2017": 4.245,
+      "2018": 4.418
+    },
+    "MAR": {
+      "2015": 5.151,
+      "2016": 5.235,
+      "2017": 5.254,
+      "2018": 5.208
+    },
+    "DZA": {
+      "2015": 6.355,
+      "2016": 5.872,
+      "2017": 5.295,
+      "2018": 5.211
+    },
+    "AUS": {
+      "2015": 7.313,
+      "2016": 7.284,
+      "2017": 7.272,
+      "2018": 7.228
+    }
+  },
+  "gdp": {
+    "USA": {
+      "2015": 56849.4697923159,
+      "2016": 57430.8499298804,
+      "2017": 58435.9707535619,
+      "2018": 59817.6556798612
+    },
+    "CAN": {
+      "2015": 43594.2379080706,
+      "2016": 43551.3863558236,
+      "2017": 44339.4332217878,
+      "2018": 44907.3887994469
+    },
+    "MEX": {
+      "2015": 10021.2386113616,
+      "2016": 10100.5021195819,
+      "2017": 10193.7727188313,
+      "2018": 10296.8690940459
+    },
+    "GTM": {
+      "2015": 3893.50533299068,
+      "2016": 3924.7789643024,
+      "2017": 3972.74059262672,
+      "2018": 4040.21214374742
+    },
+    "HTI": {
+      "2015": 1411.12684746796,
+      "2016": 1416.74881879698,
+      "2017": 1432.67228609541,
+      "2018": 1437.35251928349
+    },
+    "DOM": {
+      "2015": 6800.95309395474,
+      "2016": 7177.75376475488,
+      "2017": 7379.39978067137,
+      "2018": 7818.70593240469
+    },
+    "HND": {
+      "2015": 2271.20265980349,
+      "2016": 2315.72983058198,
+      "2017": 2383.37398439714,
+      "2018": 2430.13503657762
+    },
+    "NIC": {
+      "2015": 2074.45620634731,
+      "2016": 2140.14405941606,
+      "2017": 2209.63273423213,
+      "2018": 2107.3396261623
+    },
+    "SLV": {
+      "2015": 3790.34089108162,
+      "2016": 3875.84691357954,
+      "2017": 3954.84014277572,
+      "2018": 4046.16291720583
+    },
+    "CRI": {
+      "2015": 11714.7106121672,
+      "2016": 12084.4351419988,
+      "2017": 12468.5654849336,
+      "2018": 12708.8042828359
+    },
+    "PAN": {
+      "2015": 14082.6548502728,
+      "2016": 14474.1243636349,
+      "2017": 15045.5456426827,
+      "2018": 15375.6500855703
+    },
+    "BRA": {
+      "2015": 8936.19661712113,
+      "2016": 8577.84376650911,
+      "2017": 8628.25308908043,
+      "2018": 8722.33630317935
+    },
+    "ARG": {
+      "2015": 13679.6264980954,
+      "2016": 13265.8860639123,
+      "2017": 13520.1129846159,
+      "2018": 13058.3285449954
+    },
+    "COL": {
+      "2015": 6248.51490534512,
+      "2016": 6316.07067782542,
+      "2017": 6309.67745292518,
+      "2018": 6353.5464285392
+    },
+    "CHL": {
+      "2015": 13433.9202987032,
+      "2016": 13505.097711133,
+      "2017": 13473.3458532934,
+      "2018": 13763.0068844795
+    },
+    "PER": {
+      "2015": 6231.71150338894,
+      "2016": 6392.25474941014,
+      "2017": 6457.41940254721,
+      "2018": 6593.14437459526
+    },
+    "ECU": {
+      "2015": 5976.1596805651,
+      "2016": 5849.13587933672,
+      "2017": 6104.27253521751,
+      "2018": 6063.0956178776
+    },
+    "BOL": {
+      "2015": 2996.01289811344,
+      "2016": 3077.57057582774,
+      "2017": 3160.16421247588,
+      "2018": 3204.53670838005
+    },
+    "PRY": {
+      "2015": 5879.33792308671,
+      "2016": 6041.95879367268,
+      "2017": 6243.13363139058,
+      "2018": 6354.2392005297
+    },
+    "URY": {
+      "2015": 17125.9016800298,
+      "2016": 17357.2349992841,
+      "2017": 17611.6036800874,
+      "2018": 17608.94412947
+    },
+    "RUS": {
+      "2015": 9277.7138671875,
+      "2016": 9269.3173828125,
+      "2017": 9418.99609375,
+      "2018": 9674.787109375
+    },
+    "GBR": {
+      "2015": 45256.040227057,
+      "2016": 45888.7099614563,
+      "2017": 47019.4510419999,
+      "2018": 47516.2099770322
+    },
+    "FRA": {
+      "2015": 36702.4323733379,
+      "2016": 36920.5342846914,
+      "2017": 37580.5979329356,
+      "2018": 38062.4435961412
+    },
+    "DEU": {
+      "2015": 41929.7549110722,
+      "2016": 42516.9337063103,
+      "2017": 43543.4807050551,
+      "2018": 43905.8550061973
+    },
+    "ITA": {
+      "2015": 30639.8829751432,
+      "2016": 31077.6792675211,
+      "2017": 31635.52277108,
+      "2018": 31963.6417148824
+    },
+    "ESP": {
+      "2015": 25982.4416197775,
+      "2016": 26719.2442268615,
+      "2017": 27426.281015093,
+      "2018": 27956.7225466484
+    },
+    "NLD": {
+      "2015": 45793.8135434697,
+      "2016": 46655.0340264754,
+      "2017": 47670.0858101833,
+      "2018": 48463.0055608731
+    },
+    "SWE": {
+      "2015": 51188.1652120493,
+      "2016": 51626.3235312369,
+      "2017": 51894.3748177808,
+      "2018": 52203.0872589761
+    },
+    "BEL": {
+      "2015": 40893.804537772,
+      "2016": 41172.8862831209,
+      "2017": 41619.328629169,
+      "2018": 42208.3625650272
+    },
+    "AUT": {
+      "2015": 43915.228020857,
+      "2016": 44362.6702805116,
+      "2017": 45056.6385912412,
+      "2018": 45951.5819164034
+    },
+    "POL": {
+      "2015": 12637.5220324406,
+      "2016": 13026.1858988718,
+      "2017": 13695.6452848724,
+      "2018": 14551.0850277089
+    },
+    "NOR": {
+      "2015": 77220.9524311414,
+      "2016": 77532.2750022669,
+      "2017": 78961.7757906168,
+      "2018": 79313.2889434042
+    },
+    "CHE": {
+      "2015": 85265.06205193,
+      "2016": 85951.2234148345,
+      "2017": 86362.360972862,
+      "2018": 88581.0826935584
+    },
+    "IRL": {
+      "2015": 64250.1385181257,
+      "2016": 64205.979777351,
+      "2017": 69748.6221034014,
+      "2018": 74029.0550611436
+    },
+    "DNK": {
+      "2015": 53094.0133607574,
+      "2016": 54300.2039621991,
+      "2017": 55601.0145717787,
+      "2018": 56355.0733084714
+    },
+    "FIN": {
+      "2015": 42560.3456767103,
+      "2016": 43529.6761616969,
+      "2017": 44862.220404205,
+      "2018": 45337.2409550575
+    },
+    "PRT": {
+      "2015": 19215.7813014347,
+      "2016": 19662.82312462,
+      "2017": 20364.1962735946,
+      "2018": 20997.7745987013
+    },
+    "GRC": {
+      "2015": 17980.7298238137,
+      "2016": 18049.928997892,
+      "2017": 18352.0884461258,
+      "2018": 18769.0389621976
+    },
+    "CZE": {
+      "2015": 17931.5987670768,
+      "2016": 18359.0978103904,
+      "2017": 19257.6930680911,
+      "2018": 19736.6295261285
+    },
+    "HUN": {
+      "2015": 12782.9412577973,
+      "2016": 13145.6559885563,
+      "2017": 13734.2442804335,
+      "2018": 14533.7783144312
+    },
+    "ROU": {
+      "2015": 8977.01748158196,
+      "2016": 9286.87678236598,
+      "2017": 10106.2269557253,
+      "2018": 10714.1701157127
+    },
+    "UKR": {
+      "2015": 2094.47387695313,
+      "2016": 2156.0830078125,
+      "2017": 2217.7529296875,
+      "2018": 2308.6669921875
+    },
+    "BLR": {
+      "2015": 5967.05595058777,
+      "2016": 5811.20159182547,
+      "2017": 5964.89668834561,
+      "2018": 6165.91320019277
+    },
+    "SRB": {
+      "2015": 5820.3215576888,
+      "2016": 6024.95754653784,
+      "2017": 6200.26118592152,
+      "2018": 6524.08029755191
+    },
+    "ISL": {
+      "2015": 53505.6964079339,
+      "2016": 56049.2928672039,
+      "2017": 56657.9800322797,
+      "2018": 57731.6523639512
+    },
+    "EST": {
+      "2015": 17722.1557669523,
+      "2016": 18264.9873304279,
+      "2017": 19270.8141210511,
+      "2018": 19914.3454922878
+    },
+    "LVA": {
+      "2015": 13321.9753140616,
+      "2016": 13787.3367440023,
+      "2017": 14382.8612727134,
+      "2018": 15120.0698171804
+    },
+    "LTU": {
+      "2015": 14269.8039878287,
+      "2016": 14823.107153522,
+      "2017": 15695.9993288456,
+      "2018": 16604.9021440809
+    },
+    "SVK": {
+      "2015": 16442.0760860018,
+      "2016": 16740.7413996428,
+      "2017": 17195.2888721963,
+      "2018": 17869.0149173679
+    },
+    "SVN": {
+      "2015": 20697.2748530619,
+      "2016": 21309.7122138949,
+      "2017": 22397.7634988337,
+      "2018": 23293.966665323
+    },
+    "HRV": {
+      "2015": 12283.8750299177,
+      "2016": 12848.473748279,
+      "2017": 13485.3711360576,
+      "2018": 14061.0597402919
+    },
+    "BIH": {
+      "2015": 4662.25869219448,
+      "2016": 4876.53471495633,
+      "2017": 5099.81602856447,
+      "2018": 5360.25201017633
+    },
+    "MNE": {
+      "2015": 6421.00005731419,
+      "2016": 6634.38197201003,
+      "2017": 6840.90834101224,
+      "2018": 7159.46778433252
+    },
+    "MKD": {
+      "2015": 5262.68671928674,
+      "2016": 5429.94678358359,
+      "2017": 5510.81862920922,
+      "2018": 5698.39334484489
+    },
+    "ALB": {
+      "2015": 4199.53912925398,
+      "2016": 4431.55635814168,
+      "2017": 4648.23078660658,
+      "2018": 4893.82375538717
+    },
+    "BGR": {
+      "2015": 7269.02586513711,
+      "2016": 7586.89174668116,
+      "2017": 7899.11056589871,
+      "2018": 8194.79296320014
+    },
+    "MDA": {
+      "2015": 2749.55137054338,
+      "2016": 2910.95486872376,
+      "2017": 3085.33305844263,
+      "2018": 3267.9961042872
+    },
+    "LUX": {
+      "2015": 105462.012584423,
+      "2016": 108351.452194449,
+      "2017": 107142.05542835,
+      "2018": 106788.661202756
+    },
+    "CYP": {
+      "2015": 23088.4296875,
+      "2016": 24477.974609375,
+      "2017": 25665.990234375,
+      "2018": 26962.392578125
+    },
+    "MLT": {
+      "2015": 25529.6693210673,
+      "2016": 25969.4999809345,
+      "2017": 28546.6464943104,
+      "2018": 29536.7913868949
+    },
+    "CHN": {
+      "2015": 8175.33285077393,
+      "2016": 8679.22528805041,
+      "2017": 9221.35045639842,
+      "2018": 9798.57890566402
+    },
+    "JPN": {
+      "2015": 35664.6446110613,
+      "2016": 35934.4467886662,
+      "2017": 36547.7357437305,
+      "2018": 36899.3847079435
+    },
+    "KOR": {
+      "2015": 30171.7906545222,
+      "2016": 31005.4072876388,
+      "2017": 31979.9027302467,
+      "2018": 32852.8887488942
+    },
+    "MNG": {
+      "2015": 3838.92126989984,
+      "2016": 3817.91962716702,
+      "2017": 3956.2049437134,
+      "2018": 4183.85566447661
+    },
+    "VNM": {
+      "2015": 2577.56885340113,
+      "2016": 2715.57887431272,
+      "2017": 2868.13680013379,
+      "2018": 3048.28327602145
+    },
+    "IDN": {
+      "2015": 3288.22269725538,
+      "2016": 3416.81005170972,
+      "2017": 3553.51999262321,
+      "2018": 3701.32155461912
+    },
+    "PHL": {
+      "2015": 2909.85818010301,
+      "2016": 3076.3374186759,
+      "2017": 3247.4503878362,
+      "2018": 3410.93647976109
+    },
+    "THA": {
+      "2015": 5688.85335397884,
+      "2016": 5857.78052935926,
+      "2017": 6076.74307700082,
+      "2018": 6314.19948412043
+    },
+    "MYS": {
+      "2015": 9648.6797937523,
+      "2016": 9901.47960179812,
+      "2017": 10293.7629205362,
+      "2018": 10610.1950240479
+    },
+    "MMR": {
+      "2015": 1166.73305546337,
+      "2016": 1225.37913970989,
+      "2017": 1290.5640902569,
+      "2018": 1361.5683126412
+    },
+    "LAO": {
+      "2015": 2121.01339097363,
+      "2017": 2351.57441747595,
+      "2018": 2459.97874636195
+    },
+    "IND": {
+      "2015": 1583.99815907985,
+      "2016": 1694.46534973787,
+      "2017": 1788.69770318481,
+      "2018": 1883.35772705055
+    },
+    "PAK": {
+      "2015": 1380.47020838317,
+      "2016": 1452.18658269177,
+      "2017": 1495.26187528032,
+      "2018": 1561.68169819559
+    },
+    "BGD": {
+      "2015": 1224.38647668165,
+      "2016": 1299.83091360792,
+      "2017": 1373.75363740186,
+      "2018": 1462.25050255713
+    },
+    "LKA": {
+      "2015": 4057.71582716521,
+      "2016": 4214.74117217382,
+      "2017": 4436.00789131029,
+      "2018": 4493.03574617534
+    },
+    "NPL": {
+      "2015": 875.543635474862,
+      "2016": 875.188943730855,
+      "2017": 951.857298563641,
+      "2018": 1021.91492204011
+    },
+    "BTN": {
+      "2015": 2954.04081911097,
+      "2016": 3173.36773217431,
+      "2017": 3211.80903275593,
+      "2018": 3300.55006461736
+    },
+    "KAZ": {
+      "2015": 10196.1226255982,
+      "2016": 10151.423313302,
+      "2017": 10404.2718646317,
+      "2018": 10670.2120148279
+    },
+    "KGZ": {
+      "2015": 1105.65193844261,
+      "2016": 1128.3161612818,
+      "2017": 1157.18275758067,
+      "2018": 1175.0712778747
+    },
+    "TJK": {
+      "2015": 956.916310930656,
+      "2016": 997.352614556708,
+      "2017": 1042.26391757642,
+      "2018": 1094.8002018221
+    },
+    "TUR": {
+      "2015": 11064.6494504662,
+      "2016": 11279.6169531569,
+      "2017": 12005.6459824832,
+      "2018": 12255.0082146169
+    },
+    "IRN": {
+      "2015": 4952.73355532178,
+      "2016": 5312.61724954192,
+      "2017": 5395.2398398598,
+      "2018": 5127.22495367018
+    },
+    "IRQ": {
+      "2015": 4440.14189252367,
+      "2016": 4932.9272911439,
+      "2017": 4736.32710809857,
+      "2018": 4749.00921836896
+    },
+    "ARE": {
+      "2015": 44910.3458860776,
+      "2016": 45168.4955973912,
+      "2017": 43293.0202360765,
+      "2018": 43377.802601486
+    },
+    "ISR": {
+      "2015": 36138.13561386,
+      "2016": 37044.0118623764,
+      "2017": 37911.0217281157,
+      "2018": 38695.0100079706
+    },
+    "JOR": {
+      "2015": 4441.61896013754,
+      "2016": 4326.17261571505,
+      "2017": 4335.92512689541,
+      "2018": 4320.029787425
+    },
+    "LBN": {
+      "2015": 7714.1099998804,
+      "2016": 8019.1416913426,
+      "2017": 8305.57405425721,
+      "2018": 8388.7235123835
+    },
+    "YEM": {
+      "2015": 1362.1738120601,
+      "2016": 1197.95865971172,
+      "2017": 1103.45634849842,
+      "2018": 1079.32938366255
+    },
+    "GEO": {
+      "2015": 4086.6223465965,
+      "2016": 4225.09154904806,
+      "2017": 4442.50744127374,
+      "2018": 4713.65354845303
+    },
+    "ARM": {
+      "2015": 3512.39350276709,
+      "2016": 3533.88503607007,
+      "2017": 3815.3747426037,
+      "2018": 4027.83393010979
+    },
+    "PSE": {
+      "2015": 3272.15432360708,
+      "2016": 3483.09903532972,
+      "2017": 3462.97986107136,
+      "2018": 3417.79440837962
+    },
+    "NGA": {
+      "2015": 2585.73360671797,
+      "2016": 2481.81490350403,
+      "2017": 2441.71236404537,
+      "2018": 2431.77857832597
+    },
+    "ZAF": {
+      "2015": 6112.27382485974,
+      "2016": 6095.295060428,
+      "2017": 6125.6920507497,
+      "2018": 6117.2701406047
+    },
+    "EGY": {
+      "2015": 3306.98159414141,
+      "2016": 3381.22246307712,
+      "2017": 3452.90961245976,
+      "2018": 3568.63966286365
+    },
+    "ETH": {
+      "2015": 597.912113218663,
+      "2016": 636.835680951429,
+      "2017": 678.98541915757,
+      "2018": 705.96881207336
+    },
+    "KEN": {
+      "2015": 1489.11959777284,
+      "2016": 1517.97796057742,
+      "2017": 1542.33773973372,
+      "2018": 1596.69045914945
+    },
+    "COD": {
+      "2015": 495.826633014883,
+      "2016": 480.461377880475,
+      "2017": 482.854682128541,
+      "2018": 495.312105711027
+    },
+    "MAR": {
+      "2015": 3146.24780273438,
+      "2016": 3124.42504882813,
+      "2017": 3242.64428710938,
+      "2018": 3304.7119140625
+    },
+    "DZA": {
+      "2015": 4685.05902729002,
+      "2016": 4768.73140081027,
+      "2017": 4742.90075532529,
+      "2018": 4717.0035885361
+    },
+    "AUS": {
+      "2015": 56970.3613028094,
+      "2016": 57632.9995925594,
+      "2017": 57991.771347333,
+      "2018": 58772.7063152213
+    }
+  },
+  "years": [
+    2015,
+    2016,
+    2017,
+    2018
+  ],
+  "excluded": [
+    {
+      "id": "CUB",
+      "year": 2015,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "CUB",
+      "year": 2016,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "CUB",
+      "year": 2017,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "CUB",
+      "year": 2018,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "JAM",
+      "year": 2015,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "JAM",
+      "year": 2016,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "JAM",
+      "year": 2017,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "JAM",
+      "year": 2018,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "BLZ",
+      "year": 2015,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "BLZ",
+      "year": 2016,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "BLZ",
+      "year": 2017,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "BLZ",
+      "year": 2018,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "BHS",
+      "year": 2015,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "BHS",
+      "year": 2016,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "BHS",
+      "year": 2017,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "BHS",
+      "year": 2018,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "TTO",
+      "year": 2015,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "TTO",
+      "year": 2016,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "TTO",
+      "year": 2017,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "TTO",
+      "year": 2018,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "VEN",
+      "year": 2015,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "VEN",
+      "year": 2016,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "VEN",
+      "year": 2017,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "VEN",
+      "year": 2018,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "GUY",
+      "year": 2015,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "GUY",
+      "year": 2016,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "GUY",
+      "year": 2017,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "GUY",
+      "year": 2018,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "SUR",
+      "year": 2015,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "SUR",
+      "year": 2016,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "SUR",
+      "year": 2017,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "SUR",
+      "year": 2018,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "TWN",
+      "year": 2015,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "TWN",
+      "year": 2016,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "TWN",
+      "year": 2017,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "TWN",
+      "year": 2018,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "PRK",
+      "year": 2015,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "PRK",
+      "year": 2016,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "PRK",
+      "year": 2017,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "PRK",
+      "year": 2018,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "SGP",
+      "year": 2015,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "SGP",
+      "year": 2016,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "SGP",
+      "year": 2017,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "SGP",
+      "year": 2018,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "KHM",
+      "year": 2015,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "KHM",
+      "year": 2016,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "KHM",
+      "year": 2017,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "KHM",
+      "year": 2018,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "LAO",
+      "year": 2016,
+      "reason": "Missing/invalid paired training outcomes"
+    },
+    {
+      "id": "BRN",
+      "year": 2015,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "BRN",
+      "year": 2016,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "BRN",
+      "year": 2017,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "BRN",
+      "year": 2018,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "TLS",
+      "year": 2015,
+      "reason": "Missing/invalid paired training outcomes"
+    },
+    {
+      "id": "TLS",
+      "year": 2016,
+      "reason": "Missing/invalid paired training outcomes"
+    },
+    {
+      "id": "TLS",
+      "year": 2017,
+      "reason": "Missing/invalid paired training outcomes"
+    },
+    {
+      "id": "TLS",
+      "year": 2018,
+      "reason": "Missing/invalid paired training outcomes"
+    },
+    {
+      "id": "MDV",
+      "year": 2015,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "MDV",
+      "year": 2016,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "MDV",
+      "year": 2017,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "MDV",
+      "year": 2018,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "UZB",
+      "year": 2015,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "UZB",
+      "year": 2016,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "UZB",
+      "year": 2017,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "UZB",
+      "year": 2018,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "TKM",
+      "year": 2015,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "TKM",
+      "year": 2016,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "TKM",
+      "year": 2017,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "TKM",
+      "year": 2018,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "SAU",
+      "year": 2015,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "SAU",
+      "year": 2016,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "SAU",
+      "year": 2017,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "SAU",
+      "year": 2018,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "AFG",
+      "year": 2015,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "AFG",
+      "year": 2016,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "AFG",
+      "year": 2017,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "AFG",
+      "year": 2018,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "SYR",
+      "year": 2015,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "SYR",
+      "year": 2016,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "SYR",
+      "year": 2017,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "SYR",
+      "year": 2018,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "OMN",
+      "year": 2015,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "OMN",
+      "year": 2016,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "OMN",
+      "year": 2017,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "OMN",
+      "year": 2018,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "QAT",
+      "year": 2015,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "QAT",
+      "year": 2016,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "QAT",
+      "year": 2017,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "QAT",
+      "year": 2018,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "KWT",
+      "year": 2015,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "KWT",
+      "year": 2016,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "KWT",
+      "year": 2017,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "KWT",
+      "year": 2018,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "BHR",
+      "year": 2015,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "BHR",
+      "year": 2016,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "BHR",
+      "year": 2017,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "BHR",
+      "year": 2018,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "AZE",
+      "year": 2015,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "AZE",
+      "year": 2016,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "AZE",
+      "year": 2017,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "AZE",
+      "year": 2018,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "AGO",
+      "year": 2015,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "AGO",
+      "year": 2016,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "AGO",
+      "year": 2017,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "AGO",
+      "year": 2018,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "NZL",
+      "year": 2015,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "NZL",
+      "year": 2016,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "NZL",
+      "year": 2017,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "NZL",
+      "year": 2018,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "PNG",
+      "year": 2015,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "PNG",
+      "year": 2016,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "PNG",
+      "year": 2017,
+      "reason": "Missing required historical background"
+    },
+    {
+      "id": "PNG",
+      "year": 2018,
+      "reason": "Missing required historical background"
+    }
+  ]
+}
