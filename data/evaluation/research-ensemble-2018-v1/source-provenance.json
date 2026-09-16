@@ -1,0 +1,284 @@
+{
+  "schema": "forecast-source-provenance/1",
+  "entry": "research-ensemble-2018-v1",
+  "family": "five-approaches-20260916",
+  "registrationCommit": "2fee937281751947567ab856047c41ad3cbdba4a",
+  "baseCommit": "0ca2eda3ea5db518499abebda1de1367d4e1ab7e",
+  "sourceBindings": {
+    "data/evaluation/research-ensemble-2018-v1/protocol.json": "9371efc2ee88410b5d99c5402fd005aa03f87b9bd61484f7b34486e0080bd8e5",
+    "data/evaluation/level-holdout-2018/train.json": "979ac8d45dda418403fc59e04111b9c9dbcd2fa484e4c26aa900cd37e777bd02",
+    "data/evaluation/level-holdout-2018/origin.json": "564bab92fe88415df70a1b239223213a53c12274891ec2d39f0e08c3e28e3f77",
+    "data/evaluation/level-holdout-2018/partition-provenance.json": "480d74240be50e0cc0275891e55765b281cae1522d943fa2eadab5ac00fa5641",
+    "data/evaluation/level-holdout-2018/protocol.json": "694cc25212c42a84c873a55b7f6db7023e604fd5bbedde2ff9639d2faaaa1c3b",
+    "scripts/evaluation/attempts/research-ensemble-2018-v1/model.ts": "d8494d23a7b3b3a07085b8303be9661babc22322ef0a12df890dd9357cca6537",
+    "scripts/evaluation/attempts/research-ensemble-2018-v1/run.ts": "1e37ea40939b966aa02031b6fe13495bd666af1ea6a0ca773c2adc5907ed8365",
+    "scripts/evaluation/attempts/research-ensemble-2018-v1/model.test.ts": "f48030f1f3207ca7246c416148cbc90d36223c37a4a8df0515ca2d6d79f7a425",
+    "package-lock.json": "063cbb3cd22a110053f124ae276ccab323e8d19150d2966d87fcb4149198acb8"
+  },
+  "numericalInputs": [
+    "data/evaluation/level-holdout-2018/train.json",
+    "data/evaluation/level-holdout-2018/origin.json"
+  ],
+  "parentSourceMetadata": {
+    "protocolHash": "694cc25212c42a84c873a55b7f6db7023e604fd5bbedde2ff9639d2faaaa1c3b",
+    "sourceHashes": {
+      "data/countries/wb-2026-09.json": "ec6cacc150dabd92acc168ac6efd491e32f6f311619ce8bde027198d0054aaf9",
+      "data/hindcast/wellbeing-ladder.json": "b899e7c8f0e39e4402f318ac483bcdc8efbe0bc9dab9cf5289d8deda3e153066",
+      "data/hindcast/gdp-per-capita.json": "5780ca831ed0308deaa2d5c78f6126b094cd64a0b7204e9d820401ee1a897eae",
+      "data/evaluation/level-holdout-2018/sources/provenance.json": "819e70bfa0fadbf8ea6f61eeadec940bfad192bd41075480aedc7cde01117077"
+    },
+    "rosterUse": "Only immutable IDs and names; no current numeric country features",
+    "backgroundExcluded": [
+      {
+        "id": "CUB",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "JAM",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "BLZ",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "BHS",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "TTO",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "VEN",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "GUY",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "SUR",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "TWN",
+        "reason": "Missing historical population, gini, ge, rl, cc"
+      },
+      {
+        "id": "PRK",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "SGP",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "KHM",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "BRN",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "MDV",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "UZB",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "TKM",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "SAU",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "AFG",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "SYR",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "OMN",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "QAT",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "KWT",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "BHR",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "AZE",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "AGO",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "NZL",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "PNG",
+        "reason": "Missing historical gini"
+      }
+    ]
+  },
+  "runtime": {
+    "node": "v22.23.2",
+    "execution": "node --import tsx",
+    "randomness": "none; deterministic iteration and tie order"
+  },
+  "counts": {
+    "trainingCountries": 101,
+    "pairedTrainingRows": 399,
+    "originCountries": 100,
+    "excludedOriginCountries": 28,
+    "predictions": 700
+  },
+  "originExclusions": [
+    {
+      "id": "CUB",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "JAM",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "BLZ",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "BHS",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "TTO",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "VEN",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "GUY",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "SUR",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "TWN",
+      "reason": "Missing historical population, gini, ge, rl, cc"
+    },
+    {
+      "id": "PRK",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "SGP",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "KHM",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "BRN",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "MDV",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "UZB",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "TKM",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "SAU",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "AFG",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "SYR",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "OMN",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "QAT",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "KWT",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "BHR",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "AZE",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "AGO",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "NZL",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "PNG",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "TLS",
+      "reason": "Missing/invalid 2018 origin outcomes"
+    }
+  ],
+  "externalOutcomes": "Never read or hashed by this worker. Controller owns identity binding and one-shot scoring after six freezes.",
+  "vintageLimit": "The original aggregate miss and the brief's structural hypothesis were known before this recipe. Revised 2026-vintage 2015–2018 data are not a 2018 information archive. No blinded independent confirmation or deployable historical forecast is claimed.",
+  "methods": [
+    {
+      "url": "https://otexts.com/fpp3/combinations.html",
+      "use": "Motivates a small simple forecast combination; does not establish skill for this panel."
+    },
+    {
+      "url": "https://otexts.com/fpp3/tscv.html",
+      "use": "Training observations precede each forecast origin; evaluate multiple horizons."
+    },
+    {
+      "url": "https://otexts.com/fpp3/holt.html",
+      "use": "Damped accumulated trends avoid indefinite linear extrapolation; this is not a fitted Holt smoother."
+    }
+  ]
+}

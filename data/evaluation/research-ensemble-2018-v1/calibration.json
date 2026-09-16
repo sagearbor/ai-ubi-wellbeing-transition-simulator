@@ -1,0 +1,1222 @@
+{
+  "schema": "forecast-calibration/1",
+  "entry": "research-ensemble-2018-v1",
+  "family": "five-approaches-20260916",
+  "registrationCommit": "2fee937281751947567ab856047c41ad3cbdba4a",
+  "protocolSha256": "9371efc2ee88410b5d99c5402fd005aa03f87b9bd61484f7b34486e0080bd8e5",
+  "trainSha256": "979ac8d45dda418403fc59e04111b9c9dbcd2fa484e4c26aa900cd37e777bd02",
+  "config": {
+    "weights": [
+      [
+        1,
+        0,
+        0,
+        0
+      ],
+      [
+        0.875,
+        0.125,
+        0,
+        0
+      ],
+      [
+        0.75,
+        0.25,
+        0,
+        0
+      ],
+      [
+        0.875,
+        0,
+        0.125,
+        0
+      ],
+      [
+        0.75,
+        0,
+        0.25,
+        0
+      ],
+      [
+        0.875,
+        0,
+        0,
+        0.125
+      ],
+      [
+        0.75,
+        0,
+        0,
+        0.25
+      ],
+      [
+        0.75,
+        0.125,
+        0.125,
+        0
+      ],
+      [
+        0.75,
+        0.125,
+        0,
+        0.125
+      ],
+      [
+        0.75,
+        0,
+        0.125,
+        0.125
+      ],
+      [
+        0.625,
+        0.125,
+        0.125,
+        0.125
+      ],
+      [
+        0.5,
+        0.25,
+        0.125,
+        0.125
+      ]
+    ],
+    "damping": 0.8,
+    "tolerance": 0.01
+  },
+  "selected": {
+    "ladder": {
+      "index": 4,
+      "weights": [
+        0.75,
+        0,
+        0.25,
+        0
+      ]
+    },
+    "gdp": {
+      "index": 4,
+      "weights": [
+        0.75,
+        0,
+        0.25,
+        0
+      ]
+    }
+  },
+  "fit": {
+    "originYear": 2018,
+    "countries": [
+      {
+        "id": "ALB",
+        "latestYear": 2018,
+        "ladder": 4.719,
+        "gdp": 4893.82375538717,
+        "observations": 4,
+        "ladderSlope": 0.013400000000000033,
+        "logGdpSlope": 0.05067333180093332,
+        "ladderSmoother": 4.674666666666667,
+        "logGdpSmoother": 8.478566804040502
+      },
+      {
+        "id": "ARE",
+        "latestYear": 2018,
+        "ladder": 6.825,
+        "gdp": 43377.802601486,
+        "observations": 4,
+        "ladderSlope": 0.08819999999999997,
+        "logGdpSlope": -0.014656943530073362,
+        "ladderSmoother": 6.808,
+        "logGdpSmoother": 10.677050987476877
+      },
+      {
+        "id": "ARG",
+        "latestYear": 2018,
+        "ladder": 6.086,
+        "gdp": 13058.3285449954,
+        "observations": 4,
+        "ladderSlope": -0.19030000000000005,
+        "logGdpSlope": -0.01204617835531625,
+        "ladderSmoother": 6.186666666666667,
+        "logGdpSmoother": 9.488765510049278
+      },
+      {
+        "id": "ARM",
+        "latestYear": 2018,
+        "ladder": 4.559,
+        "gdp": 4027.83393010979,
+        "observations": 4,
+        "ladderSlope": 0.054199999999999894,
+        "logGdpSlope": 0.04874341373948674,
+        "ladderSmoother": 4.479666666666667,
+        "logGdpSmoother": 8.282920738620076
+      },
+      {
+        "id": "AUS",
+        "latestYear": 2018,
+        "ladder": 7.228,
+        "gdp": 58772.7063152213,
+        "observations": 4,
+        "ladderSlope": -0.026699999999999946,
+        "logGdpSlope": 0.009964505403093326,
+        "ladderSmoother": 7.2426666666666675,
+        "logGdpSmoother": 10.976974033920614
+      },
+      {
+        "id": "AUT",
+        "latestYear": 2018,
+        "ladder": 7.246,
+        "gdp": 45951.5819164034,
+        "observations": 4,
+        "ladderSlope": 0.0514000000000002,
+        "logGdpSlope": 0.015150338367473282,
+        "ladderSmoother": 7.210333333333334,
+        "logGdpSmoother": 10.728787573631179
+      },
+      {
+        "id": "BEL",
+        "latestYear": 2018,
+        "ladder": 6.923,
+        "gdp": 42208.3625650272,
+        "observations": 4,
+        "ladderSlope": 0.0017999999999998907,
+        "logGdpSlope": 0.010570412961201647,
+        "ladderSmoother": 6.924333333333333,
+        "logGdpSmoother": 10.645689086576992
+      },
+      {
+        "id": "BGD",
+        "latestYear": 2018,
+        "ladder": 4.456,
+        "gdp": 1462.25050255713,
+        "observations": 4,
+        "ladderSlope": -0.06689999999999978,
+        "logGdpSlope": 0.058792310253070745,
+        "ladderSmoother": 4.470666666666667,
+        "logGdpSmoother": 7.266922029841948
+      },
+      {
+        "id": "BGR",
+        "latestYear": 2018,
+        "ladder": 5.011,
+        "gdp": 8194.79296320014,
+        "observations": 4,
+        "ladderSlope": 0.2601000000000001,
+        "logGdpSlope": 0.03999581564659867,
+        "ladderSmoother": 4.985,
+        "logGdpSmoother": 8.999004633216432
+      },
+      {
+        "id": "BIH",
+        "latestYear": 2018,
+        "ladder": 5.386,
+        "gdp": 5360.25201017633,
+        "observations": 4,
+        "ladderSlope": 0.06159999999999988,
+        "logGdpSlope": 0.04633024846066132,
+        "ladderSmoother": 5.300333333333334,
+        "logGdpSmoother": 8.570164094932784
+      },
+      {
+        "id": "BLR",
+        "latestYear": 2018,
+        "ladder": 5.323,
+        "gdp": 6165.91320019277,
+        "observations": 4,
+        "ladderSlope": -0.1522999999999998,
+        "logGdpSlope": 0.012445213295005964,
+        "ladderSmoother": 5.376333333333334,
+        "logGdpSmoother": 8.715743359034404
+      },
+      {
+        "id": "BOL",
+        "latestYear": 2018,
+        "ladder": 5.779,
+        "gdp": 3204.53670838005,
+        "observations": 4,
+        "ladderSlope": -0.020000000000000108,
+        "logGdpSlope": 0.022833894976240464,
+        "ladderSmoother": 5.77,
+        "logGdpSmoother": 8.06767496116037
+      },
+      {
+        "id": "BRA",
+        "latestYear": 2018,
+        "ladder": 6.3,
+        "gdp": 8722.33630317935,
+        "observations": 4,
+        "ladderSlope": -0.21720000000000006,
+        "logGdpSlope": -0.00668093239686538,
+        "ladderSmoother": 6.339666666666666,
+        "logGdpSmoother": 9.070027383975228
+      },
+      {
+        "id": "BTN",
+        "latestYear": 2018,
+        "ladder": 5.082,
+        "gdp": 3300.55006461736,
+        "observations": 4,
+        "ladderSlope": -0.027099999999999992,
+        "logGdpSlope": 0.034478635565652206,
+        "ladderSmoother": 5.082,
+        "logGdpSmoother": 8.09275948620412
+      },
+      {
+        "id": "CAN",
+        "latestYear": 2018,
+        "ladder": 7.278,
+        "gdp": 44907.3887994469,
+        "observations": 4,
+        "ladderSlope": -0.036600000000000056,
+        "logGdpSlope": 0.010696496179194525,
+        "ladderSmoother": 7.294666666666667,
+        "logGdpSmoother": 10.708114981130967
+      },
+      {
+        "id": "CHE",
+        "latestYear": 2018,
+        "ladder": 7.48,
+        "gdp": 88581.0826935584,
+        "observations": 4,
+        "ladderSlope": -0.009399999999999941,
+        "logGdpSlope": 0.01192325972832684,
+        "ladderSmoother": 7.482333333333334,
+        "logGdpSmoother": 11.383218141115002
+      },
+      {
+        "id": "CHL",
+        "latestYear": 2018,
+        "ladder": 6.444,
+        "gdp": 13763.0068844795,
+        "observations": 4,
+        "ladderSlope": -0.09590000000000005,
+        "logGdpSlope": 0.0070250504720309696,
+        "ladderSmoother": 6.454666666666667,
+        "logGdpSmoother": 9.52264928464028
+      },
+      {
+        "id": "CHN",
+        "latestYear": 2018,
+        "ladder": 5.191,
+        "gdp": 9798.57890566402,
+        "observations": 4,
+        "ladderSlope": -0.018900000000000007,
+        "logGdpSlope": 0.06039370266778334,
+        "ladderSmoother": 5.209333333333333,
+        "logGdpSmoother": 9.16975402172846
+      },
+      {
+        "id": "COD",
+        "latestYear": 2018,
+        "ladder": 4.418,
+        "gdp": 495.312105711027,
+        "observations": 4,
+        "ladderSlope": 0.04029999999999996,
+        "logGdpSlope": 0.00018541322207896727,
+        "ladderSmoother": 4.360333333333333,
+        "logGdpSmoother": 6.196697301384794
+      },
+      {
+        "id": "COL",
+        "latestYear": 2018,
+        "ladder": 6.125,
+        "gdp": 6353.5464285392,
+        "observations": 4,
+        "ladderSlope": -0.1165,
+        "logGdpSlope": 0.004899525978365205,
+        "ladderSmoother": 6.169999999999999,
+        "logGdpSmoother": 8.754458898253441
+      },
+      {
+        "id": "CRI",
+        "latestYear": 2018,
+        "ladder": 7.167,
+        "gdp": 12708.8042828359,
+        "observations": 4,
+        "ladderSlope": 0.023300000000000053,
+        "logGdpSlope": 0.0275641346857352,
+        "ladderSmoother": 7.135333333333333,
+        "logGdpSmoother": 9.443688853504971
+      },
+      {
+        "id": "CYP",
+        "latestYear": 2018,
+        "ladder": 6.046,
+        "gdp": 26962.392578125,
+        "observations": 4,
+        "ladderSlope": 0.1640999999999999,
+        "logGdpSlope": 0.051272730526454244,
+        "ladderSmoother": 5.951333333333333,
+        "logGdpSmoother": 10.185772890150526
+      },
+      {
+        "id": "CZE",
+        "latestYear": 2018,
+        "ladder": 6.852,
+        "gdp": 19736.6295261285,
+        "observations": 4,
+        "ladderSlope": 0.0870000000000001,
+        "logGdpSlope": 0.0335520851503345,
+        "ladderSmoother": 6.805,
+        "logGdpSmoother": 9.882043003295301
+      },
+      {
+        "id": "DEU",
+        "latestYear": 2018,
+        "ladder": 6.985,
+        "gdp": 43905.8550061973,
+        "observations": 4,
+        "ladderSlope": -0.0012999999999998124,
+        "logGdpSlope": 0.01620134585498878,
+        "ladderSmoother": 6.978333333333334,
+        "logGdpSmoother": 10.687040399170082
+      },
+      {
+        "id": "DNK",
+        "latestYear": 2018,
+        "ladder": 7.6,
+        "gdp": 56355.0733084714,
+        "observations": 4,
+        "ladderSlope": 0.0254999999999999,
+        "logGdpSlope": 0.0202497733751148,
+        "ladderSmoother": 7.585,
+        "logGdpSmoother": 10.934937274261232
+      },
+      {
+        "id": "DOM",
+        "latestYear": 2018,
+        "ladder": 5.425,
+        "gdp": 7818.70593240469,
+        "observations": 4,
+        "ladderSlope": 0.08819999999999979,
+        "logGdpSlope": 0.04460747043067155,
+        "ladderSmoother": 5.384,
+        "logGdpSmoother": 8.944998753288928
+      },
+      {
+        "id": "DZA",
+        "latestYear": 2018,
+        "ladder": 5.211,
+        "gdp": 4717.0035885361,
+        "observations": 4,
+        "ladderSlope": -0.40090000000000003,
+        "logGdpSlope": 0.0014954357152955565,
+        "ladderSmoother": 5.239,
+        "logGdpSmoother": 8.460754096436021
+      },
+      {
+        "id": "ECU",
+        "latestYear": 2018,
+        "ladder": 6.028,
+        "gdp": 6063.0956178776,
+        "observations": 4,
+        "ladderSlope": 0.012099999999999866,
+        "logGdpSlope": 0.008602199392287523,
+        "ladderSmoother": 6.009666666666667,
+        "logGdpSmoother": 8.71223192464326
+      },
+      {
+        "id": "EGY",
+        "latestYear": 2018,
+        "ladder": 4.166,
+        "gdp": 3568.63966286365,
+        "observations": 4,
+        "ladderSlope": -0.0904,
+        "logGdpSlope": 0.0249425746269214,
+        "ladderSmoother": 4.250333333333334,
+        "logGdpSmoother": 8.168950677067514
+      },
+      {
+        "id": "ESP",
+        "latestYear": 2018,
+        "ladder": 6.354,
+        "gdp": 27956.7225466484,
+        "observations": 4,
+        "ladderSlope": -0.0113999999999999,
+        "logGdpSlope": 0.024582776216462855,
+        "ladderSmoother": 6.339333333333333,
+        "logGdpSmoother": 10.232027644680192
+      },
+      {
+        "id": "EST",
+        "latestYear": 2018,
+        "ladder": 5.893,
+        "gdp": 19914.3454922878,
+        "observations": 4,
+        "ladderSlope": 0.12559999999999985,
+        "logGdpSlope": 0.04034800309790896,
+        "ladderSmoother": 5.841666666666666,
+        "logGdpSmoother": 9.888246089550536
+      },
+      {
+        "id": "ETH",
+        "latestYear": 2018,
+        "ladder": 4.286,
+        "gdp": 705.96881207336,
+        "observations": 4,
+        "ladderSlope": -0.07760000000000015,
+        "logGdpSlope": 0.05624698458159747,
+        "ladderSmoother": 4.307333333333333,
+        "logGdpSmoother": 6.546580591767122
+      },
+      {
+        "id": "FIN",
+        "latestYear": 2018,
+        "ladder": 7.769,
+        "gdp": 45337.2409550575,
+        "observations": 4,
+        "ladderSlope": 0.1230999999999999,
+        "logGdpSlope": 0.021977057942570967,
+        "ladderSmoother": 7.723333333333334,
+        "logGdpSmoother": 10.718373147633367
+      },
+      {
+        "id": "FRA",
+        "latestYear": 2018,
+        "ladder": 6.592,
+        "gdp": 38062.4435961412,
+        "observations": 4,
+        "ladderSlope": 0.038899999999999935,
+        "logGdpSlope": 0.012687512442926163,
+        "ladderSmoother": 6.557666666666666,
+        "logGdpSmoother": 10.542736622976195
+      },
+      {
+        "id": "GBR",
+        "latestYear": 2018,
+        "ladder": 7.054,
+        "gdp": 47516.2099770322,
+        "observations": 4,
+        "ladderSlope": 0.10870000000000016,
+        "logGdpSlope": 0.017054655732150436,
+        "ladderSmoother": 6.974,
+        "logGdpSmoother": 10.765323011999001
+      },
+      {
+        "id": "GEO",
+        "latestYear": 2018,
+        "ladder": 4.519,
+        "gdp": 4713.65354845303,
+        "observations": 4,
+        "ladderSlope": 0.08550000000000013,
+        "logGdpSlope": 0.04784115597685314,
+        "ladderSmoother": 4.459333333333333,
+        "logGdpSmoother": 8.438470469428253
+      },
+      {
+        "id": "GRC",
+        "latestYear": 2018,
+        "ladder": 5.287,
+        "gdp": 18769.0389621976,
+        "observations": 4,
+        "ladderSlope": 0.0892999999999998,
+        "logGdpSlope": 0.014532571705869657,
+        "ladderSmoother": 5.310666666666666,
+        "logGdpSmoother": 9.832475504617813
+      },
+      {
+        "id": "GTM",
+        "latestYear": 2018,
+        "ladder": 6.436,
+        "gdp": 4040.21214374742,
+        "observations": 4,
+        "ladderSlope": 0.026400000000000024,
+        "logGdpSlope": 0.012310815432938327,
+        "ladderSmoother": 6.417999999999999,
+        "logGdpSmoother": 8.298438807308344
+      },
+      {
+        "id": "HND",
+        "latestYear": 2018,
+        "ladder": 5.86,
+        "gdp": 2430.13503657762,
+        "observations": 4,
+        "ladderSlope": 0.3289999999999999,
+        "logGdpSlope": 0.023170421225883066,
+        "ladderSmoother": 5.741333333333333,
+        "logGdpSmoother": 7.789225538020751
+      },
+      {
+        "id": "HRV",
+        "latestYear": 2018,
+        "ladder": 5.432,
+        "gdp": 14061.0597402919,
+        "observations": 4,
+        "ladderSlope": -0.014000000000000058,
+        "logGdpSlope": 0.04537459299015687,
+        "ladderSmoother": 5.3950000000000005,
+        "logGdpSmoother": 9.537229942600703
+      },
+      {
+        "id": "HTI",
+        "latestYear": 2018,
+        "ladder": 3.597,
+        "gdp": 1437.35251928349,
+        "observations": 4,
+        "ladderSlope": -0.1313999999999999,
+        "logGdpSlope": 0.006641972556453446,
+        "ladderSmoother": 3.592,
+        "logGdpSmoother": 7.269471018379028
+      },
+      {
+        "id": "HUN",
+        "latestYear": 2018,
+        "ladder": 5.758,
+        "gdp": 14533.7783144312,
+        "observations": 4,
+        "ladderSlope": 0.21350000000000016,
+        "logGdpSlope": 0.042889266965232764,
+        "ladderSmoother": 5.712,
+        "logGdpSmoother": 9.56536969730024
+      },
+      {
+        "id": "IDN",
+        "latestYear": 2018,
+        "ladder": 5.192,
+        "gdp": 3701.32155461912,
+        "observations": 4,
+        "ladderSlope": -0.05349999999999992,
+        "logGdpSlope": 0.03942594598349469,
+        "ladderSmoother": 5.159,
+        "logGdpSmoother": 8.20286145399895
+      },
+      {
+        "id": "IND",
+        "latestYear": 2018,
+        "ladder": 4.015,
+        "gdp": 1883.35772705055,
+        "observations": 4,
+        "ladderSlope": -0.12920000000000006,
+        "logGdpSlope": 0.05734327846396381,
+        "ladderSmoother": 4.073333333333333,
+        "logGdpSmoother": 7.5236220231794215
+      },
+      {
+        "id": "IRL",
+        "latestYear": 2018,
+        "ladder": 7.021,
+        "gdp": 74029.0550611436,
+        "observations": 4,
+        "ladderSlope": 0.03419999999999997,
+        "logGdpSlope": 0.050782263362993164,
+        "ladderSmoother": 7.006333333333333,
+        "logGdpSmoother": 11.192359602290432
+      },
+      {
+        "id": "IRN",
+        "latestYear": 2018,
+        "ladder": 4.548,
+        "gdp": 5127.22495367018,
+        "observations": 4,
+        "ladderSlope": -0.07799999999999993,
+        "logGdpSlope": 0.011930718084909132,
+        "ladderSmoother": 4.601,
+        "logGdpSmoother": 8.559304008950473
+      },
+      {
+        "id": "IRQ",
+        "latestYear": 2018,
+        "ladder": 4.437,
+        "gdp": 4749.00921836896,
+        "observations": 4,
+        "ladderSlope": -0.045499999999999916,
+        "logGdpSlope": 0.016107841168587277,
+        "ladderSmoother": 4.443333333333334,
+        "logGdpSmoother": 8.464799940647334
+      },
+      {
+        "id": "ISL",
+        "latestYear": 2018,
+        "ladder": 7.494,
+        "gdp": 57731.6523639512,
+        "observations": 4,
+        "ladderSlope": -0.0030000000000001137,
+        "logGdpSlope": 0.023885371312169924,
+        "ladderSmoother": 7.4943333333333335,
+        "logGdpSmoother": 10.9573032873023
+      },
+      {
+        "id": "ISR",
+        "latestYear": 2018,
+        "ladder": 7.139,
+        "gdp": 38695.0100079706,
+        "observations": 4,
+        "ladderSlope": -0.0407,
+        "logGdpSlope": 0.022822103127937688,
+        "ladderSmoother": 7.156,
+        "logGdpSmoother": 10.556643006748384
+      },
+      {
+        "id": "ITA",
+        "latestYear": 2018,
+        "ladder": 6.223,
+        "gdp": 31963.6417148824,
+        "observations": 4,
+        "ladderSlope": 0.07739999999999983,
+        "logGdpSlope": 0.014468037921847633,
+        "ladderSmoother": 6.148666666666666,
+        "logGdpSmoother": 10.36891486178429
+      },
+      {
+        "id": "JOR",
+        "latestYear": 2018,
+        "ladder": 4.906,
+        "gdp": 4320.029787425,
+        "observations": 4,
+        "ladderSlope": -0.13660000000000014,
+        "logGdpSlope": -0.008101816197494926,
+        "ladderSmoother": 4.991,
+        "logGdpSmoother": 8.372241809363757
+      },
+      {
+        "id": "JPN",
+        "latestYear": 2018,
+        "ladder": 5.886,
+        "gdp": 36899.3847079435,
+        "observations": 4,
+        "ladderSlope": -0.011000000000000032,
+        "logGdpSlope": 0.011902795455796067,
+        "ladderSmoother": 5.895666666666667,
+        "logGdpSmoother": 10.512758274773091
+      },
+      {
+        "id": "KAZ",
+        "latestYear": 2018,
+        "ladder": 5.809,
+        "gdp": 10670.2120148279,
+        "observations": 4,
+        "ladderSlope": -0.03589999999999982,
+        "logGdpSlope": 0.016094782052090473,
+        "ladderSmoother": 5.802666666666667,
+        "logGdpSmoother": 9.266798061854987
+      },
+      {
+        "id": "KEN",
+        "latestYear": 2018,
+        "ladder": 4.509,
+        "gdp": 1596.69045914945,
+        "observations": 4,
+        "ladderSlope": 0.03160000000000016,
+        "logGdpSlope": 0.022516397601449346,
+        "ladderSmoother": 4.476,
+        "logGdpSmoother": 7.364143721049698
+      },
+      {
+        "id": "KGZ",
+        "latestYear": 2018,
+        "ladder": 5.261,
+        "gdp": 1175.0712778747,
+        "observations": 4,
+        "ladderSlope": 0.03550000000000022,
+        "logGdpSlope": 0.020794296698715263,
+        "ladderSmoother": 5.217666666666667,
+        "logGdpSmoother": 7.063970615463133
+      },
+      {
+        "id": "KOR",
+        "latestYear": 2018,
+        "ladder": 5.895,
+        "gdp": 32852.8887488942,
+        "observations": 4,
+        "ladderSlope": 0.021699999999999876,
+        "logGdpSlope": 0.028634287309539097,
+        "ladderSmoother": 5.888333333333333,
+        "logGdpSmoother": 10.390817620006143
+      },
+      {
+        "id": "LAO",
+        "latestYear": 2018,
+        "ladder": 4.796,
+        "gdp": 2459.97874636195,
+        "observations": 3,
+        "ladderSlope": -0.04092857142857146,
+        "logGdpSlope": 0.049730426012301966,
+        "ladderSmoother": 4.738333333333333,
+        "logGdpSmoother": 7.7928854420309825
+      },
+      {
+        "id": "LBN",
+        "latestYear": 2018,
+        "ladder": 5.197,
+        "gdp": 8388.7235123835,
+        "observations": 4,
+        "ladderSlope": 0.01780000000000017,
+        "logGdpSlope": 0.0286607203616569,
+        "ladderSmoother": 5.197666666666667,
+        "logGdpSmoother": 9.031323143028198
+      },
+      {
+        "id": "LKA",
+        "latestYear": 2018,
+        "ladder": 4.366,
+        "gdp": 4493.03574617534,
+        "observations": 4,
+        "ladderSlope": -0.011600000000000143,
+        "logGdpSlope": 0.035689178984980606,
+        "ladderSmoother": 4.401,
+        "logGdpSmoother": 8.406025952470472
+      },
+      {
+        "id": "LTU",
+        "latestYear": 2018,
+        "ladder": 6.149,
+        "gdp": 16604.9021440809,
+        "observations": 4,
+        "ladderSlope": 0.10580000000000007,
+        "logGdpSlope": 0.0511875401344998,
+        "ladderSmoother": 6.083333333333333,
+        "logGdpSmoother": 9.69868920677095
+      },
+      {
+        "id": "LUX",
+        "latestYear": 2018,
+        "ladder": 7.09,
+        "gdp": 106788.661202756,
+        "observations": 4,
+        "ladderSlope": 0.0703999999999998,
+        "logGdpSlope": 0.0026278247848532388,
+        "ladderSmoother": 7.03,
+        "logGdpSmoother": 11.57970830549244
+      },
+      {
+        "id": "LVA",
+        "latestYear": 2018,
+        "ladder": 5.94,
+        "gdp": 15120.0698171804,
+        "observations": 4,
+        "ladderSlope": 0.12230000000000026,
+        "logGdpSlope": 0.042211087664070134,
+        "ladderSmoother": 5.937666666666668,
+        "logGdpSmoother": 9.607116373951266
+      },
+      {
+        "id": "MAR",
+        "latestYear": 2018,
+        "ladder": 5.208,
+        "gdp": 3304.7119140625,
+        "observations": 4,
+        "ladderSlope": 0.019000000000000038,
+        "logGdpSlope": 0.018455505420065067,
+        "ladderSmoother": 5.223333333333334,
+        "logGdpSmoother": 8.096784525833435
+      },
+      {
+        "id": "MDA",
+        "latestYear": 2018,
+        "ladder": 5.529,
+        "gdp": 3267.9961042872,
+        "observations": 4,
+        "ladderSlope": -0.13020000000000015,
+        "logGdpSlope": 0.05763961247838907,
+        "ladderSmoother": 5.566,
+        "logGdpSmoother": 8.072759806303551
+      },
+      {
+        "id": "MEX",
+        "latestYear": 2018,
+        "ladder": 6.595,
+        "gdp": 10296.8690940459,
+        "observations": 4,
+        "ladderSlope": -0.06389999999999993,
+        "logGdpSlope": 0.009059140561383749,
+        "ladderSmoother": 6.559333333333334,
+        "logGdpSmoother": 9.236240869394413
+      },
+      {
+        "id": "MKD",
+        "latestYear": 2018,
+        "ladder": 5.274,
+        "gdp": 5698.39334484489,
+        "observations": 4,
+        "ladderSlope": 0.04689999999999985,
+        "logGdpSlope": 0.025341160913190386,
+        "ladderSmoother": 5.2443333333333335,
+        "logGdpSmoother": 8.636782517394913
+      },
+      {
+        "id": "MLT",
+        "latestYear": 2018,
+        "ladder": 6.726,
+        "gdp": 29536.7913868949,
+        "observations": 4,
+        "ladderSlope": 0.08139999999999983,
+        "logGdpSlope": 0.053200281663214354,
+        "ladderSmoother": 6.6930000000000005,
+        "logGdpSmoother": 10.282026203076986
+      },
+      {
+        "id": "MMR",
+        "latestYear": 2018,
+        "ladder": 4.36,
+        "gdp": 1361.5683126412,
+        "observations": 4,
+        "ladderSlope": -0.034199999999999786,
+        "logGdpSlope": 0.05151179747254151,
+        "ladderSmoother": 4.342666666666667,
+        "logGdpSmoother": 7.198539883947824
+      },
+      {
+        "id": "MNE",
+        "latestYear": 2018,
+        "ladder": 5.523,
+        "gdp": 7159.46778433252,
+        "observations": 4,
+        "ladderSlope": 0.11960000000000007,
+        "logGdpSlope": 0.03572403104345749,
+        "ladderSmoother": 5.464333333333333,
+        "logGdpSmoother": 8.861019216994299
+      },
+      {
+        "id": "MNG",
+        "latestYear": 2018,
+        "ladder": 5.285,
+        "gdp": 4183.85566447661,
+        "observations": 4,
+        "ladderSlope": 0.13040000000000002,
+        "logGdpSlope": 0.029370500809498525,
+        "ladderSmoother": 5.2316666666666665,
+        "logGdpSmoother": 8.320339171152066
+      },
+      {
+        "id": "MYS",
+        "latestYear": 2018,
+        "ladder": 5.339,
+        "gdp": 10610.1950240479,
+        "observations": 4,
+        "ladderSlope": -0.1759999999999998,
+        "logGdpSlope": 0.03238366790969387,
+        "ladderSmoother": 5.666666666666667,
+        "logGdpSmoother": 9.259478224764912
+      },
+      {
+        "id": "NGA",
+        "latestYear": 2018,
+        "ladder": 5.265,
+        "gdp": 2431.77857832597,
+        "observations": 4,
+        "ladderSlope": 0.12509999999999993,
+        "logGdpSlope": -0.020044956636061696,
+        "ladderSmoother": 5.228333333333333,
+        "logGdpSmoother": 7.797737082793983
+      },
+      {
+        "id": "NIC",
+        "latestYear": 2018,
+        "ladder": 6.105,
+        "gdp": 2107.3396261623,
+        "observations": 4,
+        "ladderSlope": 0.04090000000000016,
+        "logGdpSlope": 0.007913495737784704,
+        "ladderSmoother": 6.117,
+        "logGdpSmoother": 7.668981592539045
+      },
+      {
+        "id": "NLD",
+        "latestYear": 2018,
+        "ladder": 7.488,
+        "gdp": 48463.0055608731,
+        "observations": 4,
+        "ladderSlope": 0.05110000000000001,
+        "logGdpSlope": 0.019147842254889545,
+        "ladderSmoother": 7.472333333333334,
+        "logGdpSmoother": 10.78305712537919
+      },
+      {
+        "id": "NOR",
+        "latestYear": 2018,
+        "ladder": 7.554,
+        "gdp": 79313.2889434042,
+        "observations": 4,
+        "ladderSlope": 0.022500000000000055,
+        "logGdpSlope": 0.009847418715161104,
+        "ladderSmoother": 7.567333333333334,
+        "logGdpSmoother": 11.279680368990796
+      },
+      {
+        "id": "NPL",
+        "latestYear": 2018,
+        "ladder": 4.913,
+        "gdp": 1021.91492204011,
+        "observations": 4,
+        "ladderSlope": 0.027800000000000047,
+        "logGdpSlope": 0.054774091728383656,
+        "ladderSmoother": 4.902,
+        "logGdpSmoother": 6.905760722871247
+      },
+      {
+        "id": "PAK",
+        "latestYear": 2018,
+        "ladder": 5.653,
+        "gdp": 1561.68169819559,
+        "observations": 4,
+        "ladderSlope": 0.1766,
+        "logGdpSlope": 0.039924819161646766,
+        "ladderSmoother": 5.592666666666666,
+        "logGdpSmoother": 7.339031233478852
+      },
+      {
+        "id": "PAN",
+        "latestYear": 2018,
+        "ladder": 6.321,
+        "gdp": 15375.6500855703,
+        "observations": 4,
+        "ladderSlope": -0.1162,
+        "logGdpSlope": 0.030224306955833845,
+        "ladderSmoother": 6.357333333333333,
+        "logGdpSmoother": 9.633306001107188
+      },
+      {
+        "id": "PER",
+        "latestYear": 2018,
+        "ladder": 5.697,
+        "gdp": 6593.14437459526,
+        "observations": 4,
+        "ladderSlope": -0.019000000000000038,
+        "logGdpSlope": 0.017928079262916796,
+        "ladderSmoother": 5.685666666666667,
+        "logGdpSmoother": 8.78685211925037
+      },
+      {
+        "id": "PHL",
+        "latestYear": 2018,
+        "ladder": 5.631,
+        "gdp": 3410.93647976109,
+        "observations": 4,
+        "ladderSlope": 0.11500000000000013,
+        "logGdpSlope": 0.05307780621642148,
+        "ladderSmoother": 5.5953333333333335,
+        "logGdpSmoother": 8.118369930511946
+      },
+      {
+        "id": "POL",
+        "latestYear": 2018,
+        "ladder": 6.182,
+        "gdp": 14551.0850277089,
+        "observations": 4,
+        "ladderSlope": 0.11910000000000016,
+        "logGdpSlope": 0.047310199477076334,
+        "ladderSmoother": 6.162333333333334,
+        "logGdpSmoother": 9.565224961069982
+      },
+      {
+        "id": "PRT",
+        "latestYear": 2018,
+        "ladder": 5.693,
+        "gdp": 20997.7745987013,
+        "observations": 4,
+        "ladderSlope": 0.1924999999999998,
+        "logGdpSlope": 0.030110230169298192,
+        "ladderSmoother": 5.5986666666666665,
+        "logGdpSmoother": 9.941959010812887
+      },
+      {
+        "id": "PRY",
+        "latestYear": 2018,
+        "ladder": 5.743,
+        "gdp": 6354.2392005297,
+        "observations": 4,
+        "ladderSlope": 0.0803,
+        "logGdpSlope": 0.02657880479166739,
+        "ladderSmoother": 5.722333333333334,
+        "logGdpSmoother": 8.750997479797473
+      },
+      {
+        "id": "PSE",
+        "latestYear": 2018,
+        "ladder": 4.696,
+        "gdp": 3417.79440837962,
+        "observations": 4,
+        "ladderSlope": -0.02059999999999995,
+        "logGdpSlope": 0.012484757701636618,
+        "ladderSmoother": 4.711666666666667,
+        "logGdpSmoother": 8.14112871776429
+      },
+      {
+        "id": "ROU",
+        "latestYear": 2018,
+        "ladder": 6.07,
+        "gdp": 10714.1701157127,
+        "observations": 4,
+        "ladderSlope": 0.17460000000000023,
+        "logGdpSlope": 0.06152478904148832,
+        "ladderSmoother": 6.028333333333333,
+        "logGdpSmoother": 9.25985065051068
+      },
+      {
+        "id": "RUS",
+        "latestYear": 2018,
+        "ladder": 5.648,
+        "gdp": 9674.787109375,
+        "observations": 4,
+        "ladderSlope": -0.0777000000000001,
+        "logGdpSlope": 0.014174297712460237,
+        "ladderSmoother": 5.701999999999999,
+        "logGdpSmoother": 9.168346939005442
+      },
+      {
+        "id": "SLV",
+        "latestYear": 2018,
+        "ladder": 6.253,
+        "gdp": 4046.16291720583,
+        "observations": 4,
+        "ladderSlope": 0.07190000000000012,
+        "logGdpSlope": 0.021611511686058904,
+        "ladderSmoother": 6.224333333333334,
+        "logGdpSmoother": 8.297914675559431
+      },
+      {
+        "id": "SRB",
+        "latestYear": 2018,
+        "ladder": 5.603,
+        "gdp": 6524.08029755191,
+        "observations": 4,
+        "ladderSlope": 0.12810000000000005,
+        "logGdpSlope": 0.037111443087650645,
+        "ladderSmoother": 5.534666666666666,
+        "logGdpSmoother": 8.766285746762252
+      },
+      {
+        "id": "SVK",
+        "latestYear": 2018,
+        "ladder": 6.198,
+        "gdp": 17869.0149173679,
+        "observations": 4,
+        "ladderSlope": 0.04350000000000005,
+        "logGdpSlope": 0.02764637057024668,
+        "ladderSmoother": 6.1896666666666675,
+        "logGdpSmoother": 9.778012561965744
+      },
+      {
+        "id": "SVN",
+        "latestYear": 2018,
+        "ladder": 6.118,
+        "gdp": 23293.966665323,
+        "observations": 4,
+        "ladderSlope": 0.1240000000000002,
+        "logGdpSlope": 0.04043751997309926,
+        "ladderSmoother": 6.061333333333334,
+        "logGdpSmoother": 10.042871906098936
+      },
+      {
+        "id": "SWE",
+        "latestYear": 2018,
+        "ladder": 7.343,
+        "gdp": 52203.0872589761,
+        "observations": 4,
+        "ladderSlope": 0.018599999999999905,
+        "logGdpSlope": 0.00640785476450354,
+        "ladderSmoother": 7.333333333333333,
+        "logGdpSmoother": 10.860919836098097
+      },
+      {
+        "id": "THA",
+        "latestYear": 2018,
+        "ladder": 6.008,
+        "gdp": 6314.19948412043,
+        "observations": 4,
+        "ladderSlope": -0.1750000000000001,
+        "logGdpSlope": 0.03495749175029559,
+        "ladderSmoother": 6.029333333333334,
+        "logGdpSmoother": 8.737778892806993
+      },
+      {
+        "id": "TJK",
+        "latestYear": 2018,
+        "ladder": 5.467,
+        "gdp": 1094.8002018221,
+        "observations": 4,
+        "ladderSlope": 0.17239999999999975,
+        "logGdpSlope": 0.044787975688083834,
+        "ladderSmoother": 5.428666666666667,
+        "logGdpSmoother": 6.9819349310308025
+      },
+      {
+        "id": "TUR",
+        "latestYear": 2018,
+        "ladder": 5.373,
+        "gdp": 12255.0082146169,
+        "observations": 4,
+        "ladderSlope": -0.006500000000000039,
+        "logGdpSlope": 0.03689179358986294,
+        "ladderSmoother": 5.409666666666666,
+        "logGdpSmoother": 9.406837416399801
+      },
+      {
+        "id": "UKR",
+        "latestYear": 2018,
+        "ladder": 4.332,
+        "gdp": 2308.6669921875,
+        "observations": 4,
+        "ladderSlope": 0.0030999999999999695,
+        "logGdpSlope": 0.03203050638769458,
+        "ladderSmoother": 4.2556666666666665,
+        "logGdpSmoother": 7.731033641001744
+      },
+      {
+        "id": "URY",
+        "latestYear": 2018,
+        "ladder": 6.293,
+        "gdp": 17608.94412947,
+        "observations": 4,
+        "ladderSlope": -0.08309999999999995,
+        "logGdpSlope": 0.009799334206493171,
+        "ladderSmoother": 6.321666666666666,
+        "logGdpSmoother": 9.776212582007005
+      },
+      {
+        "id": "USA",
+        "latestYear": 2018,
+        "ladder": 6.892,
+        "gdp": 59817.6556798612,
+        "observations": 4,
+        "ladderSlope": -0.07429999999999995,
+        "logGdpSlope": 0.017003193103758463,
+        "ladderSmoother": 6.890000000000001,
+        "logGdpSmoother": 10.991266400151863
+      },
+      {
+        "id": "VNM",
+        "latestYear": 2018,
+        "ladder": 5.175,
+        "gdp": 3048.28327602145,
+        "observations": 4,
+        "ladderSlope": 0.03709999999999995,
+        "logGdpSlope": 0.05578532424509932,
+        "ladderSmoother": 5.151,
+        "logGdpSmoother": 8.002028533667984
+      },
+      {
+        "id": "YEM",
+        "latestYear": 2018,
+        "ladder": 3.38,
+        "gdp": 1079.32938366255,
+        "observations": 4,
+        "ladderSlope": -0.12700000000000009,
+        "logGdpSlope": -0.07803973257768142,
+        "ladderSmoother": 3.3716666666666666,
+        "logGdpSmoother": 6.991464346665996
+      },
+      {
+        "id": "ZAF",
+        "latestYear": 2018,
+        "ladder": 4.722,
+        "gdp": 6117.2701406047,
+        "observations": 4,
+        "ladderSlope": 0.06840000000000028,
+        "logGdpSlope": 0.0007425834441743718,
+        "ladderSmoother": 4.722666666666667,
+        "logGdpSmoother": 8.719329819327458
+      }
+    ],
+    "pooled": {
+      "countries": 100,
+      "ladderSlope": 0.02034999999999996,
+      "logGdpSlope": 0.02423407376431639
+    }
+  },
+  "clamping": {
+    "rule": "Final ladder clamp to [0,10]; no GDP cap",
+    "finalPredictionCount": 0
+  },
+  "missingHistory": [],
+  "status": "frozen-pending-external"
+}

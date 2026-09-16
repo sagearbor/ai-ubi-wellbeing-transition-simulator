@@ -1,0 +1,3769 @@
+{
+  "schema": "forecast-internal-validation/1",
+  "entry": "research-ensemble-2018-v1",
+  "registrationCommit": "2fee937281751947567ab856047c41ad3cbdba4a",
+  "protocolSha256": "9371efc2ee88410b5d99c5402fd005aa03f87b9bd61484f7b34486e0080bd8e5",
+  "units": {
+    "ladder": "ladder points",
+    "gdp": "cumulative GDP growth error percentage points relative to fold-origin GDP"
+  },
+  "selectionRule": "For each outcome compute each candidate's MAE separately in cells 2016→2017, 2016→2018, 2017→2018, then average the three cell MAEs with equal cell weight. Use ladder error in points and GDP error 100*(predicted-actual)/fold-origin-GDP in percentage points. From candidates within 1% of the smallest score (plus absolute 1e-12 for floating point), choose largest persistence weight, then smallest score, then earliest registered grid index. If a cell is empty, throw instead of changing weights or folds.",
+  "limitations": "Only two origins and horizons 1–2 can be checked. Countries and targets repeat across cells; this is temporal validation for the same countries, not independent-country evidence. No observed seven-year validation is available inside four years. Candidate selection itself is optimistic.",
+  "folds": [
+    {
+      "origin": 2016,
+      "targets": [
+        2017,
+        2018
+      ],
+      "model": {
+        "originYear": 2016,
+        "countries": [
+          {
+            "id": "ALB",
+            "latestYear": 2016,
+            "ladder": 4.644,
+            "gdp": 4431.55635814168,
+            "observations": 2,
+            "ladderSlope": -0.01100000000000012,
+            "logGdpSlope": 0.053776056598982436,
+            "ladderSmoother": 4.647666666666667,
+            "logGdpSmoother": 8.378580771519877
+          },
+          {
+            "id": "ARE",
+            "latestYear": 2016,
+            "ladder": 6.648,
+            "gdp": 45168.4955973912,
+            "observations": 2,
+            "ladderSlope": 0.07499999999999929,
+            "logGdpSlope": 0.005731654932208841,
+            "ladderSmoother": 6.623,
+            "logGdpSmoother": 10.716244571101067
+          },
+          {
+            "id": "ARG",
+            "latestYear": 2016,
+            "ladder": 6.599,
+            "gdp": 13265.8860639123,
+            "observations": 2,
+            "ladderSlope": -0.051000000000000156,
+            "logGdpSlope": -0.030711826563292632,
+            "ladderSmoother": 6.616,
+            "logGdpSmoother": 9.503188336990815
+          },
+          {
+            "id": "ARM",
+            "latestYear": 2016,
+            "ladder": 4.376,
+            "gdp": 3533.88503607007,
+            "observations": 2,
+            "ladderSlope": 0.016000000000000014,
+            "logGdpSlope": 0.0061001278416519256,
+            "ladderSmoother": 4.370666666666668,
+            "logGdpSmoother": 8.168119745579876
+          },
+          {
+            "id": "AUS",
+            "latestYear": 2016,
+            "ladder": 7.284,
+            "gdp": 57632.9995925594,
+            "observations": 2,
+            "ladderSlope": -0.028999999999999915,
+            "logGdpSlope": 0.01156415778898534,
+            "ladderSmoother": 7.293666666666667,
+            "logGdpSmoother": 10.957995872963986
+          },
+          {
+            "id": "AUT",
+            "latestYear": 2016,
+            "ladder": 7.006,
+            "gdp": 44362.6702805116,
+            "observations": 2,
+            "ladderSlope": -0.11299999999999955,
+            "logGdpSlope": 0.010137216675358829,
+            "ladderSmoother": 7.043666666666667,
+            "logGdpSmoother": 10.696774563110806
+          },
+          {
+            "id": "BEL",
+            "latestYear": 2016,
+            "ladder": 6.891,
+            "gdp": 41172.8862831209,
+            "observations": 2,
+            "ladderSlope": -0.038000000000000256,
+            "logGdpSlope": 0.006801366507744433,
+            "ladderSmoother": 6.903666666666666,
+            "logGdpSmoother": 10.62326809660131
+          },
+          {
+            "id": "BGD",
+            "latestYear": 2016,
+            "ladder": 4.608,
+            "gdp": 1299.83091360792,
+            "observations": 2,
+            "ladderSlope": -0.03500000000000014,
+            "logGdpSlope": 0.05979430637781924,
+            "ladderSmoother": 4.619666666666666,
+            "logGdpSmoother": 7.150058033075534
+          },
+          {
+            "id": "BGR",
+            "latestYear": 2016,
+            "ladder": 4.714,
+            "gdp": 7586.89174668116,
+            "observations": 2,
+            "ladderSlope": 0.4970000000000008,
+            "logGdpSlope": 0.04279969921402227,
+            "ladderSmoother": 4.548333333333333,
+            "logGdpSmoother": 8.919910700567625
+          },
+          {
+            "id": "BIH",
+            "latestYear": 2016,
+            "ladder": 5.182,
+            "gdp": 4876.53471495633,
+            "observations": 2,
+            "ladderSlope": 0.019000000000000128,
+            "logGdpSlope": 0.044934839625584644,
+            "ladderSmoother": 5.175666666666667,
+            "logGdpSmoother": 8.47721186733781
+          },
+          {
+            "id": "BLR",
+            "latestYear": 2016,
+            "ladder": 5.569,
+            "gdp": 5811.20159182547,
+            "observations": 2,
+            "ladderSlope": -0.23299999999999965,
+            "logGdpSlope": -0.026466301257173086,
+            "ladderSmoother": 5.646666666666666,
+            "logGdpSmoother": 8.67636474330965
+          },
+          {
+            "id": "BOL",
+            "latestYear": 2016,
+            "ladder": 5.823,
+            "gdp": 3077.57057582774,
+            "observations": 2,
+            "ladderSlope": 0.001000000000000334,
+            "logGdpSlope": 0.02685814090062344,
+            "ladderSmoother": 5.822666666666667,
+            "logGdpSmoother": 8.02294307700622
+          },
+          {
+            "id": "BRA",
+            "latestYear": 2016,
+            "ladder": 6.635,
+            "gdp": 8577.84376650911,
+            "observations": 2,
+            "ladderSlope": -0.31700000000000017,
+            "logGdpSlope": -0.04092749168433585,
+            "ladderSmoother": 6.740666666666667,
+            "logGdpSmoother": 9.070580348861983
+          },
+          {
+            "id": "BTN",
+            "latestYear": 2016,
+            "ladder": 5.011,
+            "gdp": 3173.36773217431,
+            "observations": 2,
+            "ladderSlope": -0.1849999999999996,
+            "logGdpSlope": 0.07161939778343296,
+            "ladderSmoother": 5.072666666666667,
+            "logGdpSmoother": 8.038675546434968
+          },
+          {
+            "id": "CAN",
+            "latestYear": 2016,
+            "ladder": 7.316,
+            "gdp": 43551.3863558236,
+            "observations": 2,
+            "ladderSlope": -0.08800000000000008,
+            "logGdpSlope": -0.000983447099327961,
+            "ladderSmoother": 7.3453333333333335,
+            "logGdpSmoother": 10.682024631132151
+          },
+          {
+            "id": "CHE",
+            "latestYear": 2016,
+            "ladder": 7.494,
+            "gdp": 85951.2234148345,
+            "observations": 2,
+            "ladderSlope": -0.015000000000000568,
+            "logGdpSlope": 0.008015184238603368,
+            "ladderSmoother": 7.499,
+            "logGdpSmoother": 11.358863516659646
+          },
+          {
+            "id": "CHL",
+            "latestYear": 2016,
+            "ladder": 6.652,
+            "gdp": 13505.097711133,
+            "observations": 2,
+            "ladderSlope": -0.052999999999999936,
+            "logGdpSlope": 0.005284348377923465,
+            "ladderSmoother": 6.669666666666667,
+            "logGdpSmoother": 9.509061051923242
+          },
+          {
+            "id": "CHN",
+            "latestYear": 2016,
+            "ladder": 5.273,
+            "gdp": 8679.22528805041,
+            "observations": 2,
+            "ladderSlope": 0.02799999999999958,
+            "logGdpSlope": 0.05981084051480323,
+            "ladderSmoother": 5.2636666666666665,
+            "logGdpSmoother": 9.048750604304129
+          },
+          {
+            "id": "COD",
+            "latestYear": 2016,
+            "ladder": 4.28,
+            "gdp": 480.461377880475,
+            "observations": 2,
+            "ladderSlope": 0.008000000000000007,
+            "logGdpSlope": -0.031479489254159,
+            "ladderSmoother": 4.277333333333334,
+            "logGdpSmoother": 6.185240009243636
+          },
+          {
+            "id": "COL",
+            "latestYear": 2016,
+            "ladder": 6.357,
+            "gdp": 6316.07067782542,
+            "observations": 2,
+            "ladderSlope": -0.12399999999999967,
+            "logGdpSlope": 0.010753466244889154,
+            "ladderSmoother": 6.398333333333333,
+            "logGdpSmoother": 8.747268076847307
+          },
+          {
+            "id": "CRI",
+            "latestYear": 2016,
+            "ladder": 7.079,
+            "gdp": 12084.4351419988,
+            "observations": 2,
+            "ladderSlope": -0.008000000000000007,
+            "logGdpSlope": 0.031072903319463663,
+            "ladderSmoother": 7.081666666666666,
+            "logGdpSmoother": 9.389315917183284
+          },
+          {
+            "id": "CYP",
+            "latestYear": 2016,
+            "ladder": 5.621,
+            "gdp": 24477.974609375,
+            "observations": 2,
+            "ladderSlope": 0.07500000000000018,
+            "logGdpSlope": 0.05844210495934021,
+            "ladderSmoother": 5.596,
+            "logGdpSmoother": 10.086048295005154
+          },
+          {
+            "id": "CZE",
+            "latestYear": 2016,
+            "ladder": 6.609,
+            "gdp": 18359.0978103904,
+            "observations": 2,
+            "ladderSlope": 0.0129999999999999,
+            "logGdpSlope": 0.023560794321166867,
+            "ladderSmoother": 6.604666666666667,
+            "logGdpSmoother": 9.810026925992446
+          },
+          {
+            "id": "DEU",
+            "latestYear": 2016,
+            "ladder": 6.951,
+            "gdp": 42516.9337063103,
+            "observations": 2,
+            "ladderSlope": -0.04300000000000015,
+            "logGdpSlope": 0.013906720749712775,
+            "ladderSmoother": 6.965333333333334,
+            "logGdpSmoother": 10.65302214212155
+          },
+          {
+            "id": "DNK",
+            "latestYear": 2016,
+            "ladder": 7.522,
+            "gdp": 54300.2039621991,
+            "observations": 2,
+            "ladderSlope": -0.0039999999999995595,
+            "logGdpSlope": 0.02246380398607606,
+            "ladderSmoother": 7.523333333333333,
+            "logGdpSmoother": 10.894795327462875
+          },
+          {
+            "id": "DOM",
+            "latestYear": 2016,
+            "ladder": 5.23,
+            "gdp": 7177.75376475488,
+            "observations": 2,
+            "ladderSlope": 0.07500000000000018,
+            "logGdpSlope": 0.053923724743013324,
+            "ladderSmoother": 5.205000000000001,
+            "logGdpSmoother": 8.860767192046952
+          },
+          {
+            "id": "DZA",
+            "latestYear": 2016,
+            "ladder": 5.872,
+            "gdp": 4768.73140081027,
+            "observations": 2,
+            "ladderSlope": -0.48300000000000054,
+            "logGdpSlope": 0.01770180100062113,
+            "ladderSmoother": 6.033,
+            "logGdpSmoother": 8.463934994468348
+          },
+          {
+            "id": "ECU",
+            "latestYear": 2016,
+            "ladder": 6.008,
+            "gdp": 5849.13587933672,
+            "observations": 2,
+            "ladderSlope": 0.03200000000000003,
+            "logGdpSlope": -0.021484230383045144,
+            "ladderSmoother": 5.997333333333334,
+            "logGdpSmoother": 8.681210626509062
+          },
+          {
+            "id": "EGY",
+            "latestYear": 2016,
+            "ladder": 4.735,
+            "gdp": 3381.22246307712,
+            "observations": 2,
+            "ladderSlope": 0.3730000000000002,
+            "logGdpSlope": 0.022201451315376985,
+            "ladderSmoother": 4.610666666666667,
+            "logGdpSmoother": 8.11859211478307
+          },
+          {
+            "id": "ESP",
+            "latestYear": 2016,
+            "ladder": 6.403,
+            "gdp": 26719.2442268615,
+            "observations": 2,
+            "ladderSlope": 0.041999999999999815,
+            "logGdpSlope": 0.02796307577316881,
+            "ladderSmoother": 6.388999999999999,
+            "logGdpSmoother": 10.183818317069985
+          },
+          {
+            "id": "EST",
+            "latestYear": 2016,
+            "ladder": 5.611,
+            "gdp": 18264.9873304279,
+            "observations": 2,
+            "ladderSlope": 0.09399999999999942,
+            "logGdpSlope": 0.030170371539496088,
+            "ladderSmoother": 5.579666666666667,
+            "logGdpSmoother": 9.802684455062975
+          },
+          {
+            "id": "ETH",
+            "latestYear": 2016,
+            "ladder": 4.46,
+            "gdp": 636.835680951429,
+            "observations": 2,
+            "ladderSlope": -0.04800000000000004,
+            "logGdpSlope": 0.06306788931726182,
+            "ladderSmoother": 4.476,
+            "logGdpSmoother": 6.43548903483287
+          },
+          {
+            "id": "FIN",
+            "latestYear": 2016,
+            "ladder": 7.469,
+            "gdp": 43529.6761616969,
+            "observations": 2,
+            "ladderSlope": 0.05600000000000005,
+            "logGdpSlope": 0.022519949004921713,
+            "ladderSmoother": 7.450333333333333,
+            "logGdpSmoother": 10.673691545422313
+          },
+          {
+            "id": "FRA",
+            "latestYear": 2016,
+            "ladder": 6.442,
+            "gdp": 36920.5342846914,
+            "observations": 2,
+            "ladderSlope": -0.03599999999999959,
+            "logGdpSlope": 0.005924850879329924,
+            "ladderSmoother": 6.454000000000001,
+            "logGdpSmoother": 10.514548209635313
+          },
+          {
+            "id": "GBR",
+            "latestYear": 2016,
+            "ladder": 6.714,
+            "gdp": 45888.7099614563,
+            "observations": 2,
+            "ladderSlope": -0.010999999999999233,
+            "logGdpSlope": 0.013882969553860036,
+            "ladderSmoother": 6.717666666666666,
+            "logGdpSmoother": 10.729346738936377
+          },
+          {
+            "id": "GEO",
+            "latestYear": 2016,
+            "ladder": 4.286,
+            "gdp": 4225.09154904806,
+            "observations": 2,
+            "ladderSlope": 0.03399999999999981,
+            "logGdpSlope": 0.03332213224861391,
+            "ladderSmoother": 4.274666666666666,
+            "logGdpSmoother": 8.337688830554056
+          },
+          {
+            "id": "GRC",
+            "latestYear": 2016,
+            "ladder": 5.227,
+            "gdp": 18049.928997892,
+            "observations": 2,
+            "ladderSlope": 0.19399999999999995,
+            "logGdpSlope": 0.0038411320482811817,
+            "ladderSmoother": 5.162333333333334,
+            "logGdpSmoother": 9.799616652769073
+          },
+          {
+            "id": "GTM",
+            "latestYear": 2016,
+            "ladder": 6.454,
+            "gdp": 3924.7789643024,
+            "observations": 2,
+            "ladderSlope": 0.1299999999999999,
+            "logGdpSlope": 0.008000169070882635,
+            "ladderSmoother": 6.410666666666667,
+            "logGdpSmoother": 8.272398590779728
+          },
+          {
+            "id": "HND",
+            "latestYear": 2016,
+            "ladder": 5.181,
+            "gdp": 2315.72983058198,
+            "observations": 2,
+            "ladderSlope": 0.3099999999999996,
+            "logGdpSlope": 0.019415402167738627,
+            "ladderSmoother": 5.0776666666666666,
+            "logGdpSmoother": 7.74100837770375
+          },
+          {
+            "id": "HRV",
+            "latestYear": 2016,
+            "ladder": 5.293,
+            "gdp": 12848.473748279,
+            "observations": 2,
+            "ladderSlope": -0.19500000000000028,
+            "logGdpSlope": 0.044937600710149184,
+            "ladderSmoother": 5.3580000000000005,
+            "logGdpSmoother": 9.44600110857941
+          },
+          {
+            "id": "HTI",
+            "latestYear": 2016,
+            "ladder": 3.603,
+            "gdp": 1416.74881879698,
+            "observations": 2,
+            "ladderSlope": -0.4249999999999994,
+            "logGdpSlope": 0.003976114510826356,
+            "ladderSmoother": 3.744666666666667,
+            "logGdpSmoother": 7.254794589804448
+          },
+          {
+            "id": "HUN",
+            "latestYear": 2016,
+            "ladder": 5.324,
+            "gdp": 13145.6559885563,
+            "observations": 2,
+            "ladderSlope": 0.17900000000000027,
+            "logGdpSlope": 0.0279797931353567,
+            "ladderSmoother": 5.264333333333333,
+            "logGdpSmoother": 9.474520042243265
+          },
+          {
+            "id": "IDN",
+            "latestYear": 2016,
+            "ladder": 5.262,
+            "gdp": 3416.81005170972,
+            "observations": 2,
+            "ladderSlope": -0.05200000000000049,
+            "logGdpSlope": 0.038360177180654986,
+            "ladderSmoother": 5.279333333333333,
+            "logGdpSmoother": 8.12367593564506
+          },
+          {
+            "id": "IND",
+            "latestYear": 2016,
+            "ladder": 4.315,
+            "gdp": 1694.46534973787,
+            "observations": 2,
+            "ladderSlope": -0.08899999999999952,
+            "logGdpSlope": 0.06741513199681837,
+            "ladderSmoother": 4.344666666666667,
+            "logGdpSmoother": 7.412650831507844
+          },
+          {
+            "id": "IRL",
+            "latestYear": 2016,
+            "ladder": 6.977,
+            "gdp": 64205.979777351,
+            "observations": 2,
+            "ladderSlope": 0.07000000000000028,
+            "logGdpSlope": -0.0006875303893671969,
+            "ladderSmoother": 6.953666666666667,
+            "logGdpSmoother": 11.070080805086368
+          },
+          {
+            "id": "IRN",
+            "latestYear": 2016,
+            "ladder": 4.692,
+            "gdp": 5312.61724954192,
+            "observations": 2,
+            "ladderSlope": -0.12099999999999955,
+            "logGdpSlope": 0.07014494695480522,
+            "ladderSmoother": 4.732333333333333,
+            "logGdpSmoother": 8.554458234506194
+          },
+          {
+            "id": "IRQ",
+            "latestYear": 2016,
+            "ladder": 4.497,
+            "gdp": 4932.9272911439,
+            "observations": 2,
+            "ladderSlope": -0.07800000000000029,
+            "logGdpSlope": 0.10524624915634284,
+            "ladderSmoother": 4.523,
+            "logGdpSmoother": 8.468605778795462
+          },
+          {
+            "id": "ISL",
+            "latestYear": 2016,
+            "ladder": 7.504,
+            "gdp": 56049.2928672039,
+            "observations": 2,
+            "ladderSlope": 0.0029999999999992255,
+            "logGdpSlope": 0.046443410183044875,
+            "ladderSmoother": 7.503,
+            "logGdpSmoother": 10.918505675586061
+          },
+          {
+            "id": "ISR",
+            "latestYear": 2016,
+            "ladder": 7.213,
+            "gdp": 37044.0118623764,
+            "observations": 2,
+            "ladderSlope": -0.05400000000000027,
+            "logGdpSlope": 0.024758019582890256,
+            "ladderSmoother": 7.231000000000001,
+            "logGdpSmoother": 10.511609321319773
+          },
+          {
+            "id": "ITA",
+            "latestYear": 2016,
+            "ladder": 5.964,
+            "gdp": 31077.6792675211,
+            "observations": 2,
+            "ladderSlope": -0.0129999999999999,
+            "logGdpSlope": 0.014187327553367268,
+            "ladderSmoother": 5.968333333333334,
+            "logGdpSmoother": 10.339516022867032
+          },
+          {
+            "id": "JOR",
+            "latestYear": 2016,
+            "ladder": 5.336,
+            "gdp": 4326.17261571505,
+            "observations": 2,
+            "ladderSlope": 0.03300000000000036,
+            "logGdpSlope": -0.026335711987220733,
+            "ladderSmoother": 5.325,
+            "logGdpSmoother": 8.38121707830146
+          },
+          {
+            "id": "JPN",
+            "latestYear": 2016,
+            "ladder": 5.92,
+            "gdp": 35934.4467886662,
+            "observations": 2,
+            "ladderSlope": -0.001000000000000334,
+            "logGdpSlope": 0.0075365049854188015,
+            "ladderSmoother": 5.920333333333333,
+            "logGdpSmoother": 10.486939466677947
+          },
+          {
+            "id": "KAZ",
+            "latestYear": 2016,
+            "ladder": 5.819,
+            "gdp": 10151.423313302,
+            "observations": 2,
+            "ladderSlope": -0.09999999999999964,
+            "logGdpSlope": -0.0043935897071136765,
+            "ladderSmoother": 5.852333333333333,
+            "logGdpSmoother": 9.226833732452818
+          },
+          {
+            "id": "KEN",
+            "latestYear": 2016,
+            "ladder": 4.553,
+            "gdp": 1517.97796057742,
+            "observations": 2,
+            "ladderSlope": 0.19700000000000006,
+            "logGdpSlope": 0.019194088799753928,
+            "ladderSmoother": 4.487333333333333,
+            "logGdpSmoother": 7.318736409526557
+          },
+          {
+            "id": "KGZ",
+            "latestYear": 2016,
+            "ladder": 5.004,
+            "gdp": 1128.3161612818,
+            "observations": 2,
+            "ladderSlope": -0.18100000000000005,
+            "logGdpSlope": 0.020291248092568992,
+            "ladderSmoother": 5.064333333333333,
+            "logGdpSmoother": 7.0217179282456526
+          },
+          {
+            "id": "KOR",
+            "latestYear": 2016,
+            "ladder": 5.838,
+            "gdp": 31005.4072876388,
+            "observations": 2,
+            "ladderSlope": 0.0030000000000001137,
+            "logGdpSlope": 0.027254214342857352,
+            "ladderSmoother": 5.837,
+            "logGdpSmoother": 10.332832158775602
+          },
+          {
+            "id": "LAO",
+            "latestYear": 2015,
+            "ladder": 4.876,
+            "gdp": 2121.01339097363,
+            "observations": 1,
+            "ladderSlope": 0,
+            "logGdpSlope": 0,
+            "ladderSmoother": 4.876,
+            "logGdpSmoother": 7.659649268063672
+          },
+          {
+            "id": "LBN",
+            "latestYear": 2016,
+            "ladder": 5.225,
+            "gdp": 8019.1416913426,
+            "observations": 2,
+            "ladderSlope": 0.09600000000000009,
+            "logGdpSlope": 0.038780275665400765,
+            "ladderSmoother": 5.193,
+            "logGdpSmoother": 8.976659915548666
+          },
+          {
+            "id": "LKA",
+            "latestYear": 2016,
+            "ladder": 4.44,
+            "gdp": 4214.74117217382,
+            "observations": 2,
+            "ladderSlope": 0.025000000000000355,
+            "logGdpSlope": 0.037967972057870725,
+            "ladderSmoother": 4.4316666666666675,
+            "logGdpSmoother": 8.333687471500095
+          },
+          {
+            "id": "LTU",
+            "latestYear": 2016,
+            "ladder": 5.902,
+            "gdp": 14823.107153522,
+            "observations": 2,
+            "ladderSlope": 0.08900000000000041,
+            "logGdpSlope": 0.03804156194152242,
+            "ladderSmoother": 5.872333333333334,
+            "logGdpSmoother": 9.591262015709342
+          },
+          {
+            "id": "LUX",
+            "latestYear": 2016,
+            "ladder": 6.863,
+            "gdp": 108351.452194449,
+            "observations": 2,
+            "ladderSlope": -0.008000000000000007,
+            "logGdpSlope": 0.02702931291699784,
+            "ladderSmoother": 6.865666666666667,
+            "logGdpSmoother": 11.584125638712223
+          },
+          {
+            "id": "LVA",
+            "latestYear": 2016,
+            "ladder": 5.85,
+            "gdp": 13787.3367440023,
+            "observations": 2,
+            "ladderSlope": 0.29000000000000004,
+            "logGdpSlope": 0.0343355926705069,
+            "ladderSmoother": 5.753333333333333,
+            "logGdpSmoother": 9.520060625064632
+          },
+          {
+            "id": "MAR",
+            "latestYear": 2016,
+            "ladder": 5.235,
+            "gdp": 3124.42504882813,
+            "observations": 2,
+            "ladderSlope": 0.08400000000000052,
+            "logGdpSlope": -0.0069602872049383535,
+            "ladderSmoother": 5.207,
+            "logGdpSmoother": 8.049325656603282
+          },
+          {
+            "id": "MDA",
+            "latestYear": 2016,
+            "ladder": 5.838,
+            "gdp": 2910.95486872376,
+            "observations": 2,
+            "ladderSlope": -0.05900000000000016,
+            "logGdpSlope": 0.05704340055559243,
+            "ladderSmoother": 5.857666666666667,
+            "logGdpSmoother": 7.957221973071672
+          },
+          {
+            "id": "MEX",
+            "latestYear": 2016,
+            "ladder": 6.578,
+            "gdp": 10100.5021195819,
+            "observations": 2,
+            "ladderSlope": -0.1999999999999993,
+            "logGdpSlope": 0.007878435496069258,
+            "ladderSmoother": 6.644666666666667,
+            "logGdpSmoother": 9.217714271238343
+          },
+          {
+            "id": "MKD",
+            "latestYear": 2016,
+            "ladder": 5.175,
+            "gdp": 5429.94678358359,
+            "observations": 2,
+            "ladderSlope": 0.05399999999999938,
+            "logGdpSlope": 0.031287653974128915,
+            "ladderSmoother": 5.157,
+            "logGdpSmoother": 8.589255394443569
+          },
+          {
+            "id": "MLT",
+            "latestYear": 2016,
+            "ladder": 6.527,
+            "gdp": 25969.4999809345,
+            "observations": 2,
+            "ladderSlope": 0.0389999999999997,
+            "logGdpSlope": 0.01708149316441876,
+            "ladderSmoother": 6.514,
+            "logGdpSmoother": 10.158984219698285
+          },
+          {
+            "id": "MMR",
+            "latestYear": 2016,
+            "ladder": 4.545,
+            "gdp": 1225.37913970989,
+            "observations": 2,
+            "ladderSlope": 0.15000000000000036,
+            "logGdpSlope": 0.04904271502374247,
+            "ladderSmoother": 4.495,
+            "logGdpSmoother": 7.094658005222435
+          },
+          {
+            "id": "MNE",
+            "latestYear": 2016,
+            "ladder": 5.237,
+            "gdp": 6634.38197201003,
+            "observations": 2,
+            "ladderSlope": 0.07600000000000051,
+            "logGdpSlope": 0.03269163906272787,
+            "ladderSmoother": 5.211666666666667,
+            "logGdpSmoother": 8.78912358276192
+          },
+          {
+            "id": "MNG",
+            "latestYear": 2016,
+            "ladder": 4.955,
+            "gdp": 3817.91962716702,
+            "observations": 2,
+            "ladderSlope": 0.04800000000000004,
+            "logGdpSlope": -0.0054857337856368815,
+            "ladderSmoother": 4.939,
+            "logGdpSmoother": 8.249289530962548
+          },
+          {
+            "id": "MYS",
+            "latestYear": 2016,
+            "ladder": 6.084,
+            "gdp": 9901.47960179812,
+            "observations": 2,
+            "ladderSlope": 0.07899999999999974,
+            "logGdpSlope": 0.025863103646269536,
+            "ladderSmoother": 6.057666666666666,
+            "logGdpSmoother": 9.191818445133762
+          },
+          {
+            "id": "NGA",
+            "latestYear": 2016,
+            "ladder": 5.074,
+            "gdp": 2481.81490350403,
+            "observations": 2,
+            "ladderSlope": 0.19899999999999984,
+            "logGdpSlope": -0.041019152940690695,
+            "ladderSmoother": 5.007666666666666,
+            "logGdpSmoother": 7.830418438421596
+          },
+          {
+            "id": "NIC",
+            "latestYear": 2016,
+            "ladder": 6.071,
+            "gdp": 2140.14405941606,
+            "observations": 2,
+            "ladderSlope": 0.07899999999999974,
+            "logGdpSlope": 0.031174094145871578,
+            "ladderSmoother": 6.044666666666667,
+            "logGdpSmoother": 7.658237058519027
+          },
+          {
+            "id": "NLD",
+            "latestYear": 2016,
+            "ladder": 7.377,
+            "gdp": 46655.0340264754,
+            "observations": 2,
+            "ladderSlope": 0.03799999999999937,
+            "logGdpSlope": 0.01863182548027531,
+            "ladderSmoother": 7.364333333333334,
+            "logGdpSmoother": 10.744325502495519
+          },
+          {
+            "id": "NOR",
+            "latestYear": 2016,
+            "ladder": 7.537,
+            "gdp": 77532.2750022669,
+            "observations": 2,
+            "ladderSlope": 0.0389999999999997,
+            "logGdpSlope": 0.004023476553895122,
+            "ladderSmoother": 7.524,
+            "logGdpSmoother": 11.257108421440376
+          },
+          {
+            "id": "NPL",
+            "latestYear": 2016,
+            "ladder": 4.962,
+            "gdp": 875.188943730855,
+            "observations": 2,
+            "ladderSlope": 0.1689999999999996,
+            "logGdpSlope": -0.0004051923784054168,
+            "ladderSmoother": 4.905666666666666,
+            "logGdpSmoother": 6.7745748628654
+          },
+          {
+            "id": "PAK",
+            "latestYear": 2016,
+            "ladder": 5.269,
+            "gdp": 1452.18658269177,
+            "observations": 2,
+            "ladderSlope": 0.13700000000000045,
+            "logGdpSlope": 0.050646236777522446,
+            "ladderSmoother": 5.223333333333334,
+            "logGdpSmoother": 7.263943608679848
+          },
+          {
+            "id": "PAN",
+            "latestYear": 2016,
+            "ladder": 6.452,
+            "gdp": 14474.1243636349,
+            "observations": 2,
+            "ladderSlope": -0.24899999999999967,
+            "logGdpSlope": 0.027418640953582596,
+            "ladderSmoother": 6.535,
+            "logGdpSmoother": 9.570978260613758
+          },
+          {
+            "id": "PER",
+            "latestYear": 2016,
+            "ladder": 5.715,
+            "gdp": 6392.25474941014,
+            "observations": 2,
+            "ladderSlope": -0.02800000000000047,
+            "logGdpSlope": 0.025436047367234593,
+            "ladderSmoother": 5.724333333333334,
+            "logGdpSmoother": 8.75436365860955
+          },
+          {
+            "id": "PHL",
+            "latestYear": 2016,
+            "ladder": 5.43,
+            "gdp": 3076.3374186759,
+            "observations": 2,
+            "ladderSlope": 0.1509999999999998,
+            "logGdpSlope": 0.05563539496930936,
+            "ladderSmoother": 5.379666666666666,
+            "logGdpSmoother": 8.012949886931015
+          },
+          {
+            "id": "POL",
+            "latestYear": 2016,
+            "ladder": 5.973,
+            "gdp": 13026.1858988718,
+            "observations": 2,
+            "ladderSlope": 0.1379999999999999,
+            "logGdpSlope": 0.030291303630125554,
+            "ladderSmoother": 5.927,
+            "logGdpSmoother": 9.464619809164946
+          },
+          {
+            "id": "PRT",
+            "latestYear": 2016,
+            "ladder": 5.195,
+            "gdp": 19662.82312462,
+            "observations": 2,
+            "ladderSlope": 0.07200000000000006,
+            "logGdpSlope": 0.02299781758966546,
+            "ladderSmoother": 5.171,
+            "logGdpSmoother": 9.878819041582057
+          },
+          {
+            "id": "PRY",
+            "latestYear": 2016,
+            "ladder": 5.493,
+            "gdp": 6041.95879367268,
+            "observations": 2,
+            "ladderSlope": -0.04499999999999993,
+            "logGdpSlope": 0.0272841055034867,
+            "ladderSmoother": 5.508,
+            "logGdpSmoother": 8.697388840107514
+          },
+          {
+            "id": "PSE",
+            "latestYear": 2016,
+            "ladder": 4.775,
+            "gdp": 3483.09903532972,
+            "observations": 2,
+            "ladderSlope": 0.021000000000000796,
+            "logGdpSlope": 0.06247384235085107,
+            "ladderSmoother": 4.768,
+            "logGdpSmoother": 8.134853089760899
+          },
+          {
+            "id": "ROU",
+            "latestYear": 2016,
+            "ladder": 5.825,
+            "gdp": 9286.87678236598,
+            "observations": 2,
+            "ladderSlope": 0.2970000000000006,
+            "logGdpSlope": 0.03393460680429783,
+            "ladderSmoother": 5.726,
+            "logGdpSmoother": 9.125046048332276
+          },
+          {
+            "id": "RUS",
+            "latestYear": 2016,
+            "ladder": 5.963,
+            "gdp": 9269.3173828125,
+            "observations": 2,
+            "ladderSlope": 0.1070000000000002,
+            "logGdpSlope": -0.0009054263008927421,
+            "ladderSmoother": 5.927333333333333,
+            "logGdpSmoother": 9.134766827378456
+          },
+          {
+            "id": "SLV",
+            "latestYear": 2016,
+            "ladder": 6.003,
+            "gdp": 3875.84691357954,
+            "observations": 2,
+            "ladderSlope": -0.0649999999999995,
+            "logGdpSlope": 0.02230823734206666,
+            "ladderSmoother": 6.024666666666666,
+            "logGdpSmoother": 8.255083397136136
+          },
+          {
+            "id": "SRB",
+            "latestYear": 2016,
+            "ladder": 5.395,
+            "gdp": 6024.95754653784,
+            "observations": 2,
+            "ladderSlope": 0.21799999999999997,
+            "logGdpSlope": 0.03455492245502079,
+            "ladderSmoother": 5.322333333333333,
+            "logGdpSmoother": 8.692147404631239
+          },
+          {
+            "id": "SVK",
+            "latestYear": 2016,
+            "ladder": 6.098,
+            "gdp": 16740.7413996428,
+            "observations": 2,
+            "ladderSlope": 0.019999999999999574,
+            "logGdpSlope": 0.018001688928523052,
+            "ladderSmoother": 6.091333333333334,
+            "logGdpSmoother": 9.719600069193058
+          },
+          {
+            "id": "SVN",
+            "latestYear": 2016,
+            "ladder": 5.758,
+            "gdp": 21309.7122138949,
+            "observations": 2,
+            "ladderSlope": -0.009999999999999787,
+            "logGdpSlope": 0.029160899280627817,
+            "ladderSmoother": 5.761333333333333,
+            "logGdpSmoother": 9.957197920496773
+          },
+          {
+            "id": "SWE",
+            "latestYear": 2016,
+            "ladder": 7.284,
+            "gdp": 51626.3235312369,
+            "observations": 2,
+            "ladderSlope": -0.007000000000000561,
+            "logGdpSlope": 0.008523331237073606,
+            "ladderSmoother": 7.286333333333334,
+            "logGdpSmoother": 10.848945856931289
+          },
+          {
+            "id": "THA",
+            "latestYear": 2016,
+            "ladder": 6.424,
+            "gdp": 5857.78052935926,
+            "observations": 2,
+            "ladderSlope": -0.04999999999999982,
+            "logGdpSlope": 0.0292620742703793,
+            "ladderSmoother": 6.440666666666668,
+            "logGdpSmoother": 8.66577203681455
+          },
+          {
+            "id": "TJK",
+            "latestYear": 2016,
+            "ladder": 5.041,
+            "gdp": 997.352614556708,
+            "observations": 2,
+            "ladderSlope": 0.04499999999999993,
+            "logGdpSlope": 0.041388444781051525,
+            "ladderSmoother": 5.026000000000001,
+            "logGdpSmoother": 6.89130823475648
+          },
+          {
+            "id": "TUR",
+            "latestYear": 2016,
+            "ladder": 5.5,
+            "gdp": 11279.6169531569,
+            "observations": 2,
+            "ladderSlope": 0.11099999999999977,
+            "logGdpSlope": 0.019241995372615506,
+            "ladderSmoother": 5.463,
+            "logGdpSmoother": 9.324338567964459
+          },
+          {
+            "id": "UKR",
+            "latestYear": 2016,
+            "ladder": 4.096,
+            "gdp": 2156.0830078125,
+            "observations": 2,
+            "ladderSlope": -0.22799999999999976,
+            "logGdpSlope": 0.02899076403056,
+            "ladderSmoother": 4.172,
+            "logGdpSmoother": 7.666384844118241
+          },
+          {
+            "id": "URY",
+            "latestYear": 2016,
+            "ladder": 6.454,
+            "gdp": 17357.2349992841,
+            "observations": 2,
+            "ladderSlope": -0.09100000000000019,
+            "logGdpSlope": 0.013417386701297218,
+            "ladderSmoother": 6.484333333333333,
+            "logGdpSmoother": 9.7572922390603
+          },
+          {
+            "id": "USA",
+            "latestYear": 2016,
+            "ladder": 6.993,
+            "gdp": 57430.8499298804,
+            "observations": 2,
+            "ladderSlope": -0.11099999999999977,
+            "logGdpSlope": 0.010174720451971098,
+            "ladderSmoother": 7.03,
+            "logGdpSmoother": 10.954945319670735
+          },
+          {
+            "id": "VNM",
+            "latestYear": 2016,
+            "ladder": 5.074,
+            "gdp": 2715.57887431272,
+            "observations": 2,
+            "ladderSlope": 0.0129999999999999,
+            "logGdpSlope": 0.05215849423211161,
+            "ladderSmoother": 5.0696666666666665,
+            "logGdpSmoother": 7.889374258272109
+          },
+          {
+            "id": "YEM",
+            "latestYear": 2016,
+            "ladder": 3.593,
+            "gdp": 1197.95865971172,
+            "observations": 2,
+            "ladderSlope": -0.13100000000000023,
+            "logGdpSlope": -0.12846282355626837,
+            "ladderSmoother": 3.6366666666666667,
+            "logGdpSmoother": 7.131195211512256
+          },
+          {
+            "id": "ZAF",
+            "latestYear": 2016,
+            "ladder": 4.829,
+            "gdp": 6095.295060428,
+            "observations": 2,
+            "ladderSlope": 0.3700000000000001,
+            "logGdpSlope": -0.002781680044471102,
+            "ladderSmoother": 4.705666666666667,
+            "logGdpSmoother": 8.716199677667618
+          }
+        ],
+        "pooled": {
+          "countries": 99,
+          "ladderSlope": 0.0129999999999999,
+          "logGdpSlope": 0.02299781758966546
+        }
+      }
+    },
+    {
+      "origin": 2017,
+      "targets": [
+        2018
+      ],
+      "model": {
+        "originYear": 2017,
+        "countries": [
+          {
+            "id": "ALB",
+            "latestYear": 2017,
+            "ladder": 4.586,
+            "gdp": 4648.23078660658,
+            "observations": 3,
+            "ladderSlope": -0.034499999999999975,
+            "logGdpSlope": 0.050755941531452464,
+            "ladderSmoother": 4.605333333333333,
+            "logGdpSmoother": 8.428330008028817
+          },
+          {
+            "id": "ARE",
+            "latestYear": 2017,
+            "ladder": 6.774,
+            "gdp": 43293.0202360765,
+            "observations": 3,
+            "ladderSlope": 0.10049999999999981,
+            "logGdpSlope": -0.01833838114370323,
+            "ladderSmoother": 6.731999999999999,
+            "logGdpSmoother": 10.689882844598726
+          },
+          {
+            "id": "ARG",
+            "latestYear": 2017,
+            "ladder": 6.388,
+            "gdp": 13520.1129846159,
+            "observations": 3,
+            "ladderSlope": -0.13100000000000023,
+            "logGdpSlope": -0.00586459081034274,
+            "ladderSmoother": 6.458333333333333,
+            "logGdpSmoother": 9.505606158098123
+          },
+          {
+            "id": "ARM",
+            "latestYear": 2017,
+            "ladder": 4.321,
+            "gdp": 3815.3747426037,
+            "observations": 3,
+            "ladderSlope": -0.019500000000000295,
+            "logGdpSlope": 0.04137058696933149,
+            "ladderSmoother": 4.339333333333333,
+            "logGdpSmoother": 8.221247152258433
+          },
+          {
+            "id": "AUS",
+            "latestYear": 2017,
+            "ladder": 7.272,
+            "gdp": 57991.771347333,
+            "observations": 3,
+            "ladderSlope": -0.02049999999999974,
+            "logGdpSlope": 0.008884985851872251,
+            "ladderSmoother": 7.276,
+            "logGdpSmoother": 10.965987801503488
+          },
+          {
+            "id": "AUT",
+            "latestYear": 2017,
+            "ladder": 7.139,
+            "gdp": 45056.6385912412,
+            "observations": 3,
+            "ladderSlope": 0.010000000000000231,
+            "logGdpSlope": 0.012829597017661065,
+            "ladderSmoother": 7.094666666666666,
+            "logGdpSmoother": 10.710501620242567
+          },
+          {
+            "id": "BEL",
+            "latestYear": 2017,
+            "ladder": 6.927,
+            "gdp": 41619.328629169,
+            "observations": 3,
+            "ladderSlope": -0.001000000000000334,
+            "logGdpSlope": 0.008793058294039646,
+            "ladderSmoother": 6.914999999999999,
+            "logGdpSmoother": 10.632725052157449
+          },
+          {
+            "id": "BGD",
+            "latestYear": 2017,
+            "ladder": 4.5,
+            "gdp": 1373.75363740186,
+            "observations": 3,
+            "ladderSlope": -0.0714999999999999,
+            "logGdpSlope": 0.05755349567379575,
+            "ladderSmoother": 4.5360000000000005,
+            "logGdpSmoother": 7.206864591847989
+          },
+          {
+            "id": "BGR",
+            "latestYear": 2017,
+            "ladder": 4.933,
+            "gdp": 7899.11056589871,
+            "observations": 3,
+            "ladderSlope": 0.3580000000000001,
+            "logGdpSlope": 0.04156393888169507,
+            "ladderSmoother": 4.86,
+            "logGdpSmoother": 8.961062719338544
+          },
+          {
+            "id": "BIH",
+            "latestYear": 2017,
+            "ladder": 5.129,
+            "gdp": 5099.81602856447,
+            "observations": 3,
+            "ladderSlope": -0.017000000000000348,
+            "logGdpSlope": 0.04485221882193002,
+            "ladderSmoother": 5.1466666666666665,
+            "logGdpSmoother": 8.522036545891856
+          },
+          {
+            "id": "BLR",
+            "latestYear": 2017,
+            "ladder": 5.483,
+            "gdp": 5964.89668834561,
+            "observations": 3,
+            "ladderSlope": -0.15949999999999998,
+            "logGdpSlope": -0.0001809647030182049,
+            "ladderSmoother": 5.511666666666667,
+            "logGdpSmoother": 8.684945557458017
+          },
+          {
+            "id": "BOL",
+            "latestYear": 2017,
+            "ladder": 5.752,
+            "gdp": 3160.16421247588,
+            "observations": 3,
+            "ladderSlope": -0.03500000000000014,
+            "logGdpSlope": 0.0266708107325071,
+            "ladderSmoother": 5.775666666666666,
+            "logGdpSmoother": 8.049551444349357
+          },
+          {
+            "id": "BRA",
+            "latestYear": 2017,
+            "ladder": 6.419,
+            "gdp": 8628.25308908043,
+            "observations": 3,
+            "ladderSlope": -0.2665000000000002,
+            "logGdpSlope": -0.017534001390409948,
+            "ladderSmoother": 6.491,
+            "logGdpSmoother": 9.060844177569548
+          },
+          {
+            "id": "BTN",
+            "latestYear": 2017,
+            "ladder": 5.082,
+            "gdp": 3211.80903275593,
+            "observations": 3,
+            "ladderSlope": -0.05699999999999994,
+            "logGdpSlope": 0.041830168871526574,
+            "ladderSmoother": 5.058333333333334,
+            "logGdpSmoother": 8.07057597233586
+          },
+          {
+            "id": "CAN",
+            "latestYear": 2017,
+            "ladder": 7.328,
+            "gdp": 44339.4332217878,
+            "observations": 3,
+            "ladderSlope": -0.03799999999999981,
+            "logGdpSlope": 0.008474719004069264,
+            "ladderSmoother": 7.324000000000001,
+            "logGdpSmoother": 10.693652072170686
+          },
+          {
+            "id": "CHE",
+            "latestYear": 2017,
+            "ladder": 7.487,
+            "gdp": 86362.360972862,
+            "observations": 3,
+            "ladderSlope": -0.01100000000000012,
+            "logGdpSlope": 0.006393581243041346,
+            "ladderSmoother": 7.489333333333334,
+            "logGdpSmoother": 11.364716563570832
+          },
+          {
+            "id": "CHL",
+            "latestYear": 2017,
+            "ladder": 6.476,
+            "gdp": 13473.3458532934,
+            "observations": 3,
+            "ladderSlope": -0.11450000000000005,
+            "logGdpSlope": 0.001465239262214979,
+            "ladderSmoother": 6.534666666666666,
+            "logGdpSmoother": 9.509253254813553
+          },
+          {
+            "id": "CHN",
+            "latestYear": 2017,
+            "ladder": 5.246,
+            "gdp": 9221.35045639842,
+            "observations": 3,
+            "ladderSlope": 0.000500000000000167,
+            "logGdpSlope": 0.06020003276126218,
+            "ladderSmoother": 5.255,
+            "logGdpSmoother": 9.10908036781421
+          },
+          {
+            "id": "COD",
+            "latestYear": 2017,
+            "ladder": 4.245,
+            "gdp": 482.854682128541,
+            "observations": 3,
+            "ladderSlope": -0.013500000000000068,
+            "logGdpSlope": -0.013255296093902746,
+            "ladderSmoother": 4.256666666666667,
+            "logGdpSmoother": 6.178059444203153
+          },
+          {
+            "id": "COL",
+            "latestYear": 2017,
+            "ladder": 6.26,
+            "gdp": 6309.67745292518,
+            "observations": 3,
+            "ladderSlope": -0.11050000000000004,
+            "logGdpSlope": 0.004870369033723065,
+            "ladderSmoother": 6.292333333333333,
+            "logGdpSmoother": 8.750177413477308
+          },
+          {
+            "id": "CRI",
+            "latestYear": 2017,
+            "ladder": 7.072,
+            "gdp": 12468.5654849336,
+            "observations": 3,
+            "ladderSlope": -0.00749999999999984,
+            "logGdpSlope": 0.031182673229161573,
+            "ladderSmoother": 7.074333333333333,
+            "logGdpSmoother": 9.420535180382346
+          },
+          {
+            "id": "CYP",
+            "latestYear": 2017,
+            "ladder": 5.762,
+            "gdp": 25665.990234375,
+            "observations": 3,
+            "ladderSlope": 0.10799999999999965,
+            "logGdpSlope": 0.05291758280831438,
+            "ladderSmoother": 5.715,
+            "logGdpSmoother": 10.137124370429794
+          },
+          {
+            "id": "CZE",
+            "latestYear": 2017,
+            "ladder": 6.711,
+            "gdp": 19257.6930680911,
+            "observations": 3,
+            "ladderSlope": 0.05750000000000011,
+            "logGdpSlope": 0.035673085001837634,
+            "ladderSmoother": 6.677,
+            "logGdpSmoother": 9.849737441221174
+          },
+          {
+            "id": "DEU",
+            "latestYear": 2017,
+            "ladder": 6.965,
+            "gdp": 43543.4807050551,
+            "observations": 3,
+            "ladderSlope": -0.014499999999999957,
+            "logGdpSlope": 0.018882139667926623,
+            "ladderSmoother": 6.960333333333334,
+            "logGdpSmoother": 10.673562754762216
+          },
+          {
+            "id": "DNK",
+            "latestYear": 2017,
+            "ladder": 7.555,
+            "gdp": 55601.0145717787,
+            "observations": 3,
+            "ladderSlope": 0.014499999999999957,
+            "logGdpSlope": 0.023068634813611766,
+            "ladderSmoother": 7.544,
+            "logGdpSmoother": 10.918065572552331
+          },
+          {
+            "id": "DOM",
+            "latestYear": 2017,
+            "ladder": 5.302,
+            "gdp": 7379.39978067137,
+            "observations": 3,
+            "ladderSlope": 0.07349999999999968,
+            "logGdpSlope": 0.040814770768199615,
+            "ladderSmoother": 5.278,
+            "logGdpSmoother": 8.897212311490215
+          },
+          {
+            "id": "DZA",
+            "latestYear": 2017,
+            "ladder": 5.295,
+            "gdp": 4742.90075532529,
+            "observations": 3,
+            "ladderSlope": -0.5300000000000002,
+            "logGdpSlope": 0.00613520370281595,
+            "ladderSmoother": 5.487333333333333,
+            "logGdpSmoother": 8.466214665738564
+          },
+          {
+            "id": "ECU",
+            "latestYear": 2017,
+            "ladder": 5.973,
+            "gdp": 6104.27253521751,
+            "observations": 3,
+            "ladderSlope": -0.0015000000000000568,
+            "logGdpSlope": 0.010605386914935622,
+            "ladderSmoother": 5.984666666666667,
+            "logGdpSmoother": 8.702512552523324
+          },
+          {
+            "id": "EGY",
+            "latestYear": 2017,
+            "ladder": 4.419,
+            "gdp": 3452.90961245976,
+            "observations": 3,
+            "ladderSlope": 0.028499999999999748,
+            "logGdpSlope": 0.02159068664153274,
+            "ladderSmoother": 4.524333333333334,
+            "logGdpSmoother": 8.139979213199988
+          },
+          {
+            "id": "ESP",
+            "latestYear": 2017,
+            "ladder": 6.31,
+            "gdp": 27426.281015093,
+            "observations": 3,
+            "ladderSlope": -0.025500000000000078,
+            "logGdpSlope": 0.027040363627644837,
+            "ladderSmoother": 6.341,
+            "logGdpSmoother": 10.210551109982456
+          },
+          {
+            "id": "EST",
+            "latestYear": 2017,
+            "ladder": 5.739,
+            "gdp": 19270.8141210511,
+            "observations": 3,
+            "ladderSlope": 0.11099999999999977,
+            "logGdpSlope": 0.0418880672939288,
+            "ladderSmoother": 5.696333333333333,
+            "logGdpSmoother": 9.848478420941715
+          },
+          {
+            "id": "ETH",
+            "latestYear": 2017,
+            "ladder": 4.35,
+            "gdp": 678.98541915757,
+            "observations": 3,
+            "ladderSlope": -0.07900000000000018,
+            "logGdpSlope": 0.06357793902267739,
+            "ladderSmoother": 4.386666666666667,
+            "logGdpSmoother": 6.49923699042402
+          },
+          {
+            "id": "FIN",
+            "latestYear": 2017,
+            "ladder": 7.632,
+            "gdp": 44862.220404205,
+            "observations": 3,
+            "ladderSlope": 0.10949999999999971,
+            "logGdpSlope": 0.026336528533883907,
+            "ladderSmoother": 7.5776666666666666,
+            "logGdpSmoother": 10.701300267132517
+          },
+          {
+            "id": "FRA",
+            "latestYear": 2017,
+            "ladder": 6.489,
+            "gdp": 37580.5979329356,
+            "observations": 3,
+            "ladderSlope": 0.00550000000000006,
+            "logGdpSlope": 0.011822437363370852,
+            "ladderSmoother": 6.473333333333334,
+            "logGdpSmoother": 10.52833650916003
+          },
+          {
+            "id": "GBR",
+            "latestYear": 2017,
+            "ladder": 6.814,
+            "gdp": 47019.4510419999,
+            "observations": 3,
+            "ladderSlope": 0.044500000000000206,
+            "logGdpSlope": 0.019112610568035038,
+            "ladderSmoother": 6.780666666666666,
+            "logGdpSmoother": 10.750202563175803
+          },
+          {
+            "id": "GEO",
+            "latestYear": 2017,
+            "ladder": 4.34,
+            "gdp": 4442.50744127374,
+            "observations": 3,
+            "ladderSlope": 0.04400000000000004,
+            "logGdpSlope": 0.04175007966258537,
+            "ladderSmoother": 4.322,
+            "logGdpSmoother": 8.382248226021298
+          },
+          {
+            "id": "GRC",
+            "latestYear": 2017,
+            "ladder": 5.358,
+            "gdp": 18352.0884461258,
+            "observations": 3,
+            "ladderSlope": 0.16249999999999964,
+            "logGdpSlope": 0.010221380357201326,
+            "ladderSmoother": 5.314333333333333,
+            "logGdpSmoother": 9.81196478256258
+          },
+          {
+            "id": "GTM",
+            "latestYear": 2017,
+            "ladder": 6.382,
+            "gdp": 3972.74059262672,
+            "observations": 3,
+            "ladderSlope": 0.028999999999999915,
+            "logGdpSlope": 0.010073158191159948,
+            "ladderSmoother": 6.406,
+            "logGdpSmoother": 8.283162745344313
+          },
+          {
+            "id": "HND",
+            "latestYear": 2017,
+            "ladder": 5.504,
+            "gdp": 2383.37398439714,
+            "observations": 3,
+            "ladderSlope": 0.31649999999999956,
+            "logGdpSlope": 0.024103813503151272,
+            "ladderSmoother": 5.396333333333334,
+            "logGdpSmoother": 7.766674994985372
+          },
+          {
+            "id": "HRV",
+            "latestYear": 2017,
+            "ladder": 5.321,
+            "gdp": 13485.3711360576,
+            "observations": 3,
+            "ladderSlope": -0.08350000000000035,
+            "logGdpSlope": 0.04665902461455218,
+            "ladderSmoother": 5.3116666666666665,
+            "logGdpSmoother": 9.493233941162096
+          },
+          {
+            "id": "HTI",
+            "latestYear": 2017,
+            "ladder": 3.582,
+            "gdp": 1432.67228609541,
+            "observations": 3,
+            "ladderSlope": -0.22299999999999986,
+            "logGdpSlope": 0.007576432042728065,
+            "ladderSmoother": 3.589,
+            "logGdpSmoother": 7.263571127691144
+          },
+          {
+            "id": "HUN",
+            "latestYear": 2017,
+            "ladder": 5.62,
+            "gdp": 13734.2442804335,
+            "observations": 3,
+            "ladderSlope": 0.23750000000000027,
+            "logGdpSlope": 0.03589036437476523,
+            "ladderSmoother": 5.521333333333334,
+            "logGdpSmoother": 9.513047263697834
+          },
+          {
+            "id": "IDN",
+            "latestYear": 2017,
+            "ladder": 5.093,
+            "gdp": 3553.51999262321,
+            "observations": 3,
+            "ladderSlope": -0.11050000000000004,
+            "logGdpSlope": 0.038795727118872136,
+            "ladderSmoother": 5.149333333333334,
+            "logGdpSmoother": 8.162616846076672
+          },
+          {
+            "id": "IND",
+            "latestYear": 2017,
+            "ladder": 4.19,
+            "gdp": 1788.69770318481,
+            "observations": 3,
+            "ladderSlope": -0.10699999999999976,
+            "logGdpSlope": 0.06076784187610107,
+            "ladderSmoother": 4.2316666666666665,
+            "logGdpSmoother": 7.471202910010373
+          },
+          {
+            "id": "IRL",
+            "latestYear": 2017,
+            "ladder": 6.977,
+            "gdp": 69748.6221034014,
+            "observations": 3,
+            "ladderSlope": 0.03500000000000014,
+            "logGdpSlope": 0.04105689300963089,
+            "ladderSmoother": 6.977,
+            "logGdpSmoother": 11.125052505895662
+          },
+          {
+            "id": "IRN",
+            "latestYear": 2017,
+            "ladder": 4.707,
+            "gdp": 5395.2398398598,
+            "observations": 3,
+            "ladderSlope": -0.052999999999999936,
+            "logGdpSlope": 0.04278869805977159,
+            "ladderSmoother": 4.702,
+            "logGdpSmoother": 8.58812818293429
+          },
+          {
+            "id": "IRQ",
+            "latestYear": 2017,
+            "ladder": 4.456,
+            "gdp": 4736.32710809857,
+            "observations": 3,
+            "ladderSlope": -0.059499999999999886,
+            "logGdpSlope": 0.032287814960234584,
+            "ladderSmoother": 4.469666666666667,
+            "logGdpSmoother": 8.476574115690326
+          },
+          {
+            "id": "ISL",
+            "latestYear": 2017,
+            "ladder": 7.495,
+            "gdp": 56657.9800322797,
+            "observations": 3,
+            "ladderSlope": -0.0030000000000001137,
+            "logGdpSlope": 0.028622359967464206,
+            "ladderSmoother": 7.498,
+            "logGdpSmoother": 10.941187685481665
+          },
+          {
+            "id": "ISR",
+            "latestYear": 2017,
+            "ladder": 7.19,
+            "gdp": 37911.0217281157,
+            "observations": 3,
+            "ladderSlope": -0.03849999999999998,
+            "logGdpSlope": 0.023946592315153836,
+            "ladderSmoother": 7.197666666666667,
+            "logGdpSmoother": 10.535285437879015
+          },
+          {
+            "id": "ITA",
+            "latestYear": 2017,
+            "ladder": 6,
+            "gdp": 31635.52277108,
+            "observations": 3,
+            "ladderSlope": 0.011499999999999844,
+            "logGdpSlope": 0.01598905101591619,
+            "ladderSmoother": 5.9879999999999995,
+            "logGdpSmoother": 10.356105648370466
+          },
+          {
+            "id": "JOR",
+            "latestYear": 2017,
+            "ladder": 5.161,
+            "gdp": 4335.92512689541,
+            "observations": 3,
+            "ladderSlope": -0.07100000000000017,
+            "logGdpSlope": -0.012041972219153152,
+            "ladderSmoother": 5.219333333333333,
+            "logGdpSmoother": 8.373939686004997
+          },
+          {
+            "id": "JPN",
+            "latestYear": 2017,
+            "ladder": 5.915,
+            "gdp": 36547.7357437305,
+            "observations": 3,
+            "ladderSlope": -0.0030000000000001137,
+            "logGdpSlope": 0.012229691841016077,
+            "ladderSmoother": 5.916666666666667,
+            "logGdpSmoother": 10.500733554137497
+          },
+          {
+            "id": "KAZ",
+            "latestYear": 2017,
+            "ladder": 5.79,
+            "gdp": 10404.2718646317,
+            "observations": 3,
+            "ladderSlope": -0.06449999999999978,
+            "logGdpSlope": 0.01010448237462569,
+            "ladderSmoother": 5.799666666666667,
+            "logGdpSmoother": 9.241770905521356
+          },
+          {
+            "id": "KEN",
+            "latestYear": 2017,
+            "ladder": 4.41,
+            "gdp": 1542.33773973372,
+            "observations": 3,
+            "ladderSlope": 0.027000000000000135,
+            "logGdpSlope": 0.017557103439148403,
+            "ladderSmoother": 4.457666666666667,
+            "logGdpSmoother": 7.335747851178837
+          },
+          {
+            "id": "KGZ",
+            "latestYear": 2017,
+            "ladder": 5.131,
+            "gdp": 1157.18275758067,
+            "observations": 3,
+            "ladderSlope": -0.02699999999999969,
+            "logGdpSlope": 0.02277662167664829,
+            "ladderSmoother": 5.088666666666667,
+            "logGdpSmoother": 7.045323007783661
+          },
+          {
+            "id": "KOR",
+            "latestYear": 2017,
+            "ladder": 5.875,
+            "gdp": 31979.9027302467,
+            "observations": 3,
+            "ladderSlope": 0.020000000000000018,
+            "logGdpSlope": 0.029100131127755446,
+            "ladderSmoother": 5.862666666666667,
+            "logGdpSmoother": 10.362547595498324
+          },
+          {
+            "id": "LAO",
+            "latestYear": 2017,
+            "ladder": 4.623,
+            "gdp": 2351.57441747595,
+            "observations": 2,
+            "ladderSlope": -0.12650000000000006,
+            "logGdpSlope": 0.05159553981581544,
+            "ladderSmoother": 4.707333333333334,
+            "logGdpSmoother": 7.728443321151427
+          },
+          {
+            "id": "LBN",
+            "latestYear": 2017,
+            "ladder": 5.199,
+            "gdp": 8305.57405425721,
+            "observations": 3,
+            "ladderSlope": 0.03500000000000014,
+            "logGdpSlope": 0.03693787137213089,
+            "ladderSmoother": 5.207666666666666,
+            "logGdpSmoother": 9.012983652156374
+          },
+          {
+            "id": "LKA",
+            "latestYear": 2017,
+            "ladder": 4.471,
+            "gdp": 4436.00789131029,
+            "observations": 3,
+            "ladderSlope": 0.028000000000000025,
+            "logGdpSlope": 0.04456731863263297,
+            "ladderSmoother": 4.4606666666666674,
+            "logGdpSmoother": 8.380454572324316
+          },
+          {
+            "id": "LTU",
+            "latestYear": 2017,
+            "ladder": 5.952,
+            "gdp": 15695.9993288456,
+            "observations": 3,
+            "ladderSlope": 0.06950000000000012,
+            "logGdpSlope": 0.04763008231528332,
+            "ladderSmoother": 5.935333333333333,
+            "logGdpSmoother": 9.642088271482546
+          },
+          {
+            "id": "LUX",
+            "latestYear": 2017,
+            "ladder": 6.91,
+            "gdp": 107142.05542835,
+            "observations": 3,
+            "ladderSlope": 0.01949999999999985,
+            "logGdpSlope": 0.007902378496447149,
+            "ladderSmoother": 6.894333333333333,
+            "logGdpSmoother": 11.58565237240182
+          },
+          {
+            "id": "LVA",
+            "latestYear": 2017,
+            "ladder": 5.933,
+            "gdp": 14382.8612727134,
+            "observations": 3,
+            "ladderSlope": 0.1865000000000001,
+            "logGdpSlope": 0.03831117869017042,
+            "ladderSmoother": 5.905333333333334,
+            "logGdpSmoother": 9.55969699909469
+          },
+          {
+            "id": "MAR",
+            "latestYear": 2017,
+            "ladder": 5.254,
+            "gdp": 3242.64428710938,
+            "observations": 3,
+            "ladderSlope": 0.05149999999999988,
+            "logGdpSlope": 0.015089282925168312,
+            "ladderSmoother": 5.2476666666666665,
+            "logGdpSmoother": 8.071764796238485
+          },
+          {
+            "id": "MDA",
+            "latestYear": 2017,
+            "ladder": 5.64,
+            "gdp": 3085.33305844263,
+            "observations": 3,
+            "ladderSlope": -0.12850000000000028,
+            "logGdpSlope": 0.057610925870752894,
+            "ladderSmoother": 5.7059999999999995,
+            "logGdpSmoother": 8.015022074047478
+          },
+          {
+            "id": "MEX",
+            "latestYear": 2017,
+            "ladder": 6.488,
+            "gdp": 10193.7727188313,
+            "observations": 3,
+            "ladderSlope": -0.14499999999999957,
+            "logGdpSlope": 0.008535157080618916,
+            "ladderSmoother": 6.518000000000001,
+            "logGdpSmoother": 9.226468335513813
+          },
+          {
+            "id": "MKD",
+            "latestYear": 2017,
+            "ladder": 5.185,
+            "gdp": 5510.81862920922,
+            "observations": 3,
+            "ladderSlope": 0.031999999999999584,
+            "logGdpSlope": 0.02303575209740405,
+            "ladderSmoother": 5.181666666666666,
+            "logGdpSmoother": 8.609540512582065
+          },
+          {
+            "id": "MLT",
+            "latestYear": 2017,
+            "ladder": 6.627,
+            "gdp": 28546.6464943104,
+            "observations": 3,
+            "ladderSlope": 0.06949999999999967,
+            "logGdpSlope": 0.05584909490084655,
+            "ladderSmoother": 6.593666666666667,
+            "logGdpSmoother": 10.227755848511274
+          },
+          {
+            "id": "MMR",
+            "latestYear": 2017,
+            "ladder": 4.308,
+            "gdp": 1290.5640902569,
+            "observations": 3,
+            "ladderSlope": -0.04349999999999987,
+            "logGdpSlope": 0.050435909586320715,
+            "ladderSmoother": 4.387,
+            "logGdpSmoother": 7.145558312996282
+          },
+          {
+            "id": "MNE",
+            "latestYear": 2017,
+            "ladder": 5.347,
+            "gdp": 6840.90834101224,
+            "observations": 3,
+            "ladderSlope": 0.09300000000000042,
+            "logGdpSlope": 0.031673321736585436,
+            "ladderSmoother": 5.310333333333333,
+            "logGdpSmoother": 8.820457465389792
+          },
+          {
+            "id": "MNG",
+            "latestYear": 2017,
+            "ladder": 5.125,
+            "gdp": 3956.2049437134,
+            "observations": 3,
+            "ladderSlope": 0.10899999999999999,
+            "logGdpSlope": 0.015046905186576254,
+            "ladderSmoother": 5.068333333333333,
+            "logGdpSmoother": 8.271180649139863
+          },
+          {
+            "id": "MYS",
+            "latestYear": 2017,
+            "ladder": 6.322,
+            "gdp": 10293.7629205362,
+            "observations": 3,
+            "ladderSlope": 0.15850000000000009,
+            "logGdpSlope": 0.0323585365357717,
+            "ladderSmoother": 6.2426666666666675,
+            "logGdpSmoother": 9.226342125966035
+          },
+          {
+            "id": "NGA",
+            "latestYear": 2017,
+            "ladder": 5.155,
+            "gdp": 2441.71236404537,
+            "observations": 3,
+            "ladderSlope": 0.14000000000000012,
+            "logGdpSlope": -0.02865483984502637,
+            "ladderSmoother": 5.128,
+            "logGdpSmoother": 7.805885036275125
+          },
+          {
+            "id": "NIC",
+            "latestYear": 2017,
+            "ladder": 6.141,
+            "gdp": 2209.63273423213,
+            "observations": 3,
+            "ladderSlope": 0.07450000000000001,
+            "logGdpSlope": 0.031563634003978436,
+            "ladderSmoother": 6.1176666666666675,
+            "logGdpSmoother": 7.689930539142374
+          },
+          {
+            "id": "NLD",
+            "latestYear": 2017,
+            "ladder": 7.441,
+            "gdp": 47670.0858101833,
+            "observations": 3,
+            "ladderSlope": 0.05099999999999971,
+            "logGdpSlope": 0.0200775313881687,
+            "ladderSmoother": 7.419666666666667,
+            "logGdpSmoother": 10.764884935852985
+          },
+          {
+            "id": "NOR",
+            "latestYear": 2017,
+            "ladder": 7.594,
+            "gdp": 78961.7757906168,
+            "observations": 3,
+            "ladderSlope": 0.04800000000000004,
+            "logGdpSlope": 0.011146529933072635,
+            "ladderSmoother": 7.575,
+            "logGdpSmoother": 11.270629302499842
+          },
+          {
+            "id": "NPL",
+            "latestYear": 2017,
+            "ladder": 4.88,
+            "gdp": 951.857298563641,
+            "observations": 3,
+            "ladderSlope": 0.04349999999999987,
+            "logGdpSlope": 0.041785067985666835,
+            "ladderSmoother": 4.907333333333333,
+            "logGdpSmoother": 6.830423350972424
+          },
+          {
+            "id": "PAK",
+            "latestYear": 2017,
+            "ladder": 5.472,
+            "gdp": 1495.26187528032,
+            "observations": 3,
+            "ladderSlope": 0.17000000000000037,
+            "logGdpSlope": 0.039938593534093236,
+            "ladderSmoother": 5.404333333333334,
+            "logGdpSmoother": 7.300312987799464
+          },
+          {
+            "id": "PAN",
+            "latestYear": 2017,
+            "ladder": 6.43,
+            "gdp": 15045.5456426827,
+            "observations": 3,
+            "ladderSlope": -0.13549999999999995,
+            "logGdpSlope": 0.03306904456925608,
+            "ladderSmoother": 6.437333333333332,
+            "logGdpSmoother": 9.605930773054906
+          },
+          {
+            "id": "PER",
+            "latestYear": 2017,
+            "ladder": 5.663,
+            "gdp": 6457.41940254721,
+            "observations": 3,
+            "ladderSlope": -0.040000000000000036,
+            "logGdpSlope": 0.01778937498898525,
+            "ladderSmoother": 5.6803333333333335,
+            "logGdpSmoother": 8.769604142805788
+          },
+          {
+            "id": "PHL",
+            "latestYear": 2017,
+            "ladder": 5.524,
+            "gdp": 3247.4503878362,
+            "observations": 3,
+            "ladderSlope": 0.12250000000000005,
+            "logGdpSlope": 0.054882923888592394,
+            "ladderSmoother": 5.4926666666666675,
+            "logGdpSmoother": 8.067581987126035
+          },
+          {
+            "id": "POL",
+            "latestYear": 2017,
+            "ladder": 6.123,
+            "gdp": 13695.6452848724,
+            "observations": 3,
+            "ladderSlope": 0.14400000000000013,
+            "logGdpSlope": 0.040203796062157515,
+            "ladderSmoother": 6.073,
+            "logGdpSmoother": 9.508127769371113
+          },
+          {
+            "id": "PRT",
+            "latestYear": 2017,
+            "ladder": 5.41,
+            "gdp": 20364.1962735946,
+            "observations": 3,
+            "ladderSlope": 0.14349999999999996,
+            "logGdpSlope": 0.029023195025085435,
+            "ladderSmoother": 5.338333333333334,
+            "logGdpSmoother": 9.909850695752281
+          },
+          {
+            "id": "PRY",
+            "latestYear": 2017,
+            "ladder": 5.681,
+            "gdp": 6243.13363139058,
+            "observations": 3,
+            "ladderSlope": 0.0714999999999999,
+            "logGdpSlope": 0.03001904169511249,
+            "ladderSmoother": 5.618333333333333,
+            "logGdpSmoother": 8.728319527199835
+          },
+          {
+            "id": "PSE",
+            "latestYear": 2017,
+            "ladder": 4.743,
+            "gdp": 3462.97986107136,
+            "observations": 3,
+            "ladderSlope": -0.005499999999999616,
+            "logGdpSlope": 0.02834043370060524,
+            "ladderSmoother": 4.753666666666667,
+            "logGdpSmoother": 8.151815720578089
+          },
+          {
+            "id": "ROU",
+            "latestYear": 2017,
+            "ladder": 5.945,
+            "gdp": 10106.2269557253,
+            "observations": 3,
+            "ladderSlope": 0.20850000000000035,
+            "logGdpSlope": 0.059242032996532856,
+            "ladderSmoother": 5.905,
+            "logGdpSmoother": 9.192723890059554
+          },
+          {
+            "id": "RUS",
+            "latestYear": 2017,
+            "ladder": 5.81,
+            "gdp": 9418.99609375,
+            "observations": 3,
+            "ladderSlope": -0.02300000000000013,
+            "logGdpSlope": 0.007556672595049996,
+            "ladderSmoother": 5.861,
+            "logGdpSmoother": 9.145144199605488
+          },
+          {
+            "id": "SLV",
+            "latestYear": 2017,
+            "ladder": 6.167,
+            "gdp": 3954.84014277572,
+            "observations": 3,
+            "ladderSlope": 0.0495000000000001,
+            "logGdpSlope": 0.02124211072837312,
+            "ladderSmoother": 6.112333333333333,
+            "logGdpSmoother": 8.275970132326611
+          },
+          {
+            "id": "SRB",
+            "latestYear": 2017,
+            "ladder": 5.398,
+            "gdp": 6200.26118592152,
+            "observations": 3,
+            "ladderSlope": 0.11050000000000004,
+            "logGdpSlope": 0.031617953623093165,
+            "ladderSmoother": 5.396999999999999,
+            "logGdpSmoother": 8.722786368643689
+          },
+          {
+            "id": "SVK",
+            "latestYear": 2017,
+            "ladder": 6.173,
+            "gdp": 17195.2888721963,
+            "observations": 3,
+            "ladderSlope": 0.047499999999999876,
+            "logGdpSlope": 0.0223958896316665,
+            "ladderSmoother": 6.148,
+            "logGdpSmoother": 9.74346069239244
+          },
+          {
+            "id": "SVN",
+            "latestYear": 2017,
+            "ladder": 5.948,
+            "gdp": 22397.7634988337,
+            "observations": 3,
+            "ladderSlope": 0.0900000000000003,
+            "logGdpSlope": 0.039479534039992714,
+            "ladderSmoother": 5.884666666666667,
+            "logGdpSmoother": 10.000116999456553
+          },
+          {
+            "id": "SWE",
+            "latestYear": 2017,
+            "ladder": 7.314,
+            "gdp": 51894.3748177808,
+            "observations": 3,
+            "ladderSlope": 0.011499999999999844,
+            "logGdpSlope": 0.006851021079734565,
+            "ladderSmoother": 7.303999999999999,
+            "logGdpSmoother": 10.855239441291912
+          },
+          {
+            "id": "THA",
+            "latestYear": 2017,
+            "ladder": 6.072,
+            "gdp": 6076.74307700082,
+            "observations": 3,
+            "ladderSlope": -0.20100000000000007,
+            "logGdpSlope": 0.03298008300379962,
+            "ladderSmoother": 6.189333333333334,
+            "logGdpSmoother": 8.699991456062824
+          },
+          {
+            "id": "TJK",
+            "latestYear": 2017,
+            "ladder": 5.352,
+            "gdp": 1042.26391757642,
+            "observations": 3,
+            "ladderSlope": 0.17799999999999994,
+            "logGdpSlope": 0.04271726591571667,
+            "ladderSmoother": 5.248333333333334,
+            "logGdpSmoother": 6.934468441050417
+          },
+          {
+            "id": "TUR",
+            "latestYear": 2017,
+            "ladder": 5.483,
+            "gdp": 12005.6459824832,
+            "observations": 3,
+            "ladderSlope": 0.04699999999999971,
+            "logGdpSlope": 0.04081087280564599,
+            "ladderSmoother": 5.488666666666667,
+            "logGdpSmoother": 9.372339066581114
+          },
+          {
+            "id": "UKR",
+            "latestYear": 2017,
+            "ladder": 4.103,
+            "gdp": 2217.7529296875,
+            "observations": 3,
+            "ladderSlope": -0.11050000000000004,
+            "logGdpSlope": 0.028596050159940045,
+            "ladderSmoother": 4.100666666666666,
+            "logGdpSmoother": 7.694849322987974
+          },
+          {
+            "id": "URY",
+            "latestYear": 2017,
+            "ladder": 6.379,
+            "gdp": 17611.6036800874,
+            "observations": 3,
+            "ladderSlope": -0.08300000000000018,
+            "logGdpSlope": 0.013982974597836595,
+            "ladderSmoother": 6.404,
+            "logGdpSmoother": 9.771463742956984
+          },
+          {
+            "id": "USA",
+            "latestYear": 2017,
+            "ladder": 6.886,
+            "gdp": 58435.9707535619,
+            "observations": 3,
+            "ladderSlope": -0.10899999999999999,
+            "logGdpSlope": 0.01376237203143571,
+            "ladderSmoother": 6.921666666666667,
+            "logGdpSmoother": 10.969903575561991
+          },
+          {
+            "id": "VNM",
+            "latestYear": 2017,
+            "ladder": 5.103,
+            "gdp": 2868.13680013379,
+            "observations": 3,
+            "ladderSlope": 0.020999999999999908,
+            "logGdpSlope": 0.053407985294672944,
+            "ladderSmoother": 5.093333333333333,
+            "logGdpSmoother": 7.943198740587635
+          },
+          {
+            "id": "YEM",
+            "latestYear": 2017,
+            "ladder": 3.355,
+            "gdp": 1103.45634849842,
+            "observations": 3,
+            "ladderSlope": -0.1845000000000001,
+            "logGdpSlope": -0.10531721314388953,
+            "ladderSmoother": 3.4343333333333335,
+            "logGdpSmoother": 7.033593201839159
+          },
+          {
+            "id": "ZAF",
+            "latestYear": 2017,
+            "ladder": 4.724,
+            "gdp": 6125.6920507497,
+            "observations": 3,
+            "ladderSlope": 0.13250000000000028,
+            "logGdpSlope": 0.0010964429385911245,
+            "ladderSmoother": 4.759,
+            "logGdpSmoother": 8.71858882826723
+          }
+        ],
+        "pooled": {
+          "countries": 100,
+          "ladderSlope": 0.010750000000000037,
+          "logGdpSlope": 0.027690398664125038
+        }
+      }
+    }
+  ],
+  "ladder": {
+    "selectionLoss": "equal mean of three cell MAEs",
+    "selected": {
+      "index": 4,
+      "weights": [
+        0.75,
+        0,
+        0.25,
+        0
+      ],
+      "score": 0.12858337710437703,
+      "pooled": {
+        "n": 298,
+        "mae": 0.12850557046979866,
+        "rmse": 0.18103974699110692,
+        "bias": -0.02082248322147654
+      },
+      "cells": [
+        {
+          "origin": 2016,
+          "year": 2017,
+          "horizon": 1,
+          "metrics": {
+            "n": 99,
+            "mae": 0.09948282828282828,
+            "rmse": 0.13294622897239244,
+            "bias": -0.001474747474747456
+          },
+          "clamped": 0
+        },
+        {
+          "origin": 2016,
+          "year": 2018,
+          "horizon": 2,
+          "metrics": {
+            "n": 99,
+            "mae": 0.18087030303030283,
+            "rmse": 0.23622931136392605,
+            "bias": -0.030149494949494916
+          },
+          "clamped": 0
+        },
+        {
+          "origin": 2017,
+          "year": 2018,
+          "horizon": 1,
+          "metrics": {
+            "n": 100,
+            "mae": 0.10539700000000003,
+            "rmse": 0.15788117272176566,
+            "bias": -0.030743000000000135
+          },
+          "clamped": 0
+        }
+      ]
+    },
+    "persistence": {
+      "index": 0,
+      "weights": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "score": 0.13537538720538722,
+      "pooled": {
+        "n": 298,
+        "mae": 0.13529865771812072,
+        "rmse": 0.18893707450049443,
+        "bias": -0.02374161073825505
+      },
+      "cells": [
+        {
+          "origin": 2016,
+          "year": 2017,
+          "horizon": 1,
+          "metrics": {
+            "n": 99,
+            "mae": 0.10405050505050503,
+            "rmse": 0.1407110729850571,
+            "bias": -0.0040909090909090305
+          },
+          "clamped": 0
+        },
+        {
+          "origin": 2016,
+          "year": 2018,
+          "horizon": 2,
+          "metrics": {
+            "n": 99,
+            "mae": 0.1895656565656566,
+            "rmse": 0.24686971577262481,
+            "bias": -0.03485858585858588
+          },
+          "clamped": 0
+        },
+        {
+          "origin": 2017,
+          "year": 2018,
+          "horizon": 1,
+          "metrics": {
+            "n": 100,
+            "mae": 0.11250999999999997,
+            "rmse": 0.16260654968358434,
+            "bias": -0.03219000000000008
+          },
+          "clamped": 0
+        }
+      ]
+    },
+    "candidates": [
+      {
+        "index": 0,
+        "weights": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "score": 0.13537538720538722,
+        "pooled": {
+          "n": 298,
+          "mae": 0.13529865771812072,
+          "rmse": 0.18893707450049443,
+          "bias": -0.02374161073825505
+        },
+        "cells": [
+          {
+            "origin": 2016,
+            "year": 2017,
+            "horizon": 1,
+            "metrics": {
+              "n": 99,
+              "mae": 0.10405050505050503,
+              "rmse": 0.1407110729850571,
+              "bias": -0.0040909090909090305
+            },
+            "clamped": 0
+          },
+          {
+            "origin": 2016,
+            "year": 2018,
+            "horizon": 2,
+            "metrics": {
+              "n": 99,
+              "mae": 0.1895656565656566,
+              "rmse": 0.24686971577262481,
+              "bias": -0.03485858585858588
+            },
+            "clamped": 0
+          },
+          {
+            "origin": 2017,
+            "year": 2018,
+            "horizon": 1,
+            "metrics": {
+              "n": 100,
+              "mae": 0.11250999999999997,
+              "rmse": 0.16260654968358434,
+              "bias": -0.03219000000000008
+            },
+            "clamped": 0
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "weights": [
+          0.875,
+          0.125,
+          0,
+          0
+        ],
+        "score": 0.13717401795735126,
+        "pooled": {
+          "n": 298,
+          "mae": 0.13709899328859065,
+          "rmse": 0.1909050487175206,
+          "bias": -0.024124999999999994
+        },
+        "cells": [
+          {
+            "origin": 2016,
+            "year": 2017,
+            "horizon": 1,
+            "metrics": {
+              "n": 99,
+              "mae": 0.10567213804713803,
+              "rmse": 0.14306488477229556,
+              "bias": -0.00463594276094268
+            },
+            "clamped": 0
+          },
+          {
+            "origin": 2016,
+            "year": 2018,
+            "horizon": 2,
+            "metrics": {
+              "n": 99,
+              "mae": 0.19103324915824907,
+              "rmse": 0.24882526993578022,
+              "bias": -0.035403619528619534
+            },
+            "clamped": 0
+          },
+          {
+            "origin": 2017,
+            "year": 2018,
+            "horizon": 1,
+            "metrics": {
+              "n": 100,
+              "mae": 0.11481666666666669,
+              "rmse": 0.16446141697556635,
+              "bias": -0.0322533333333334
+            },
+            "clamped": 0
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "weights": [
+          0.75,
+          0.25,
+          0,
+          0
+        ],
+        "score": 0.1390392312008978,
+        "pooled": {
+          "n": 298,
+          "mae": 0.13896588366890372,
+          "rmse": 0.1930478020052557,
+          "bias": -0.024508389261744947
+        },
+        "cells": [
+          {
+            "origin": 2016,
+            "year": 2017,
+            "horizon": 1,
+            "metrics": {
+              "n": 99,
+              "mae": 0.10743518518518513,
+              "rmse": 0.1456475008868685,
+              "bias": -0.005180976430976326
+            },
+            "clamped": 0
+          },
+          {
+            "origin": 2016,
+            "year": 2018,
+            "horizon": 2,
+            "metrics": {
+              "n": 99,
+              "mae": 0.19250084175084164,
+              "rmse": 0.25092040853016967,
+              "bias": -0.035948653198653174
+            },
+            "clamped": 0
+          },
+          {
+            "origin": 2017,
+            "year": 2018,
+            "horizon": 1,
+            "metrics": {
+              "n": 100,
+              "mae": 0.1171816666666667,
+              "rmse": 0.16650678372900535,
+              "bias": -0.03231666666666674
+            },
+            "clamped": 0
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "weights": [
+          0.875,
+          0,
+          0.125,
+          0
+        ],
+        "score": 0.13158965151515148,
+        "pooled": {
+          "n": 298,
+          "mae": 0.13151271812080528,
+          "rmse": 0.18404641452360135,
+          "bias": -0.02228204697986579
+        },
+        "cells": [
+          {
+            "origin": 2016,
+            "year": 2017,
+            "horizon": 1,
+            "metrics": {
+              "n": 99,
+              "mae": 0.10129393939393933,
+              "rmse": 0.1360641029111283,
+              "bias": -0.0027828282828282207
+            },
+            "clamped": 0
+          },
+          {
+            "origin": 2016,
+            "year": 2018,
+            "horizon": 2,
+            "metrics": {
+              "n": 99,
+              "mae": 0.1848115151515151,
+              "rmse": 0.24010339958636426,
+              "bias": -0.03250404040404044
+            },
+            "clamped": 0
+          },
+          {
+            "origin": 2017,
+            "year": 2018,
+            "horizon": 1,
+            "metrics": {
+              "n": 100,
+              "mae": 0.10866350000000002,
+              "rmse": 0.1598134370915036,
+              "bias": -0.031466500000000085
+            },
+            "clamped": 0
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "weights": [
+          0.75,
+          0,
+          0.25,
+          0
+        ],
+        "score": 0.12858337710437703,
+        "pooled": {
+          "n": 298,
+          "mae": 0.12850557046979866,
+          "rmse": 0.18103974699110692,
+          "bias": -0.02082248322147654
+        },
+        "cells": [
+          {
+            "origin": 2016,
+            "year": 2017,
+            "horizon": 1,
+            "metrics": {
+              "n": 99,
+              "mae": 0.09948282828282828,
+              "rmse": 0.13294622897239244,
+              "bias": -0.001474747474747456
+            },
+            "clamped": 0
+          },
+          {
+            "origin": 2016,
+            "year": 2018,
+            "horizon": 2,
+            "metrics": {
+              "n": 99,
+              "mae": 0.18087030303030283,
+              "rmse": 0.23622931136392605,
+              "bias": -0.030149494949494916
+            },
+            "clamped": 0
+          },
+          {
+            "origin": 2017,
+            "year": 2018,
+            "horizon": 1,
+            "metrics": {
+              "n": 100,
+              "mae": 0.10539700000000003,
+              "rmse": 0.15788117272176566,
+              "bias": -0.030743000000000135
+            },
+            "clamped": 0
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "weights": [
+          0.875,
+          0,
+          0,
+          0.125
+        ],
+        "score": 0.13517366835016834,
+        "pooled": {
+          "n": 298,
+          "mae": 0.13509667785234894,
+          "rmse": 0.1887300496314579,
+          "bias": -0.022171610738255042
+        },
+        "cells": [
+          {
+            "origin": 2016,
+            "year": 2017,
+            "horizon": 1,
+            "metrics": {
+              "n": 99,
+              "mae": 0.10398484848484846,
+              "rmse": 0.14067927955804185,
+              "bias": -0.002790909090909387
+            },
+            "clamped": 0
+          },
+          {
+            "origin": 2016,
+            "year": 2018,
+            "horizon": 2,
+            "metrics": {
+              "n": 99,
+              "mae": 0.18930565656565654,
+              "rmse": 0.24655018552789276,
+              "bias": -0.03251858585858566
+            },
+            "clamped": 0
+          },
+          {
+            "origin": 2017,
+            "year": 2018,
+            "horizon": 1,
+            "metrics": {
+              "n": 100,
+              "mae": 0.11223049999999994,
+              "rmse": 0.16239715861122692,
+              "bias": -0.031114999999999924
+            },
+            "clamped": 0
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "weights": [
+          0.75,
+          0,
+          0,
+          0.25
+        ],
+        "score": 0.13497194949494948,
+        "pooled": {
+          "n": 298,
+          "mae": 0.1348946979865771,
+          "rmse": 0.1885374810759648,
+          "bias": -0.020601610738255033
+        },
+        "cells": [
+          {
+            "origin": 2016,
+            "year": 2017,
+            "horizon": 1,
+            "metrics": {
+              "n": 99,
+              "mae": 0.10391919191919187,
+              "rmse": 0.1406594942879198,
+              "bias": -0.0014909090909088728
+            },
+            "clamped": 0
+          },
+          {
+            "origin": 2016,
+            "year": 2018,
+            "horizon": 2,
+            "metrics": {
+              "n": 99,
+              "mae": 0.1890456565656566,
+              "rmse": 0.24625247735204653,
+              "bias": -0.0301785858585863
+            },
+            "clamped": 0
+          },
+          {
+            "origin": 2017,
+            "year": 2018,
+            "horizon": 1,
+            "metrics": {
+              "n": 100,
+              "mae": 0.1119509999999999,
+              "rmse": 0.16219462229062953,
+              "bias": -0.030039999999999775
+            },
+            "clamped": 0
+          }
+        ]
+      },
+      {
+        "index": 7,
+        "weights": [
+          0.75,
+          0.125,
+          0.125,
+          0
+        ],
+        "score": 0.13298150056116717,
+        "pooled": {
+          "n": 298,
+          "mae": 0.13290740492170025,
+          "rmse": 0.1854951077232543,
+          "bias": -0.02266543624161074
+        },
+        "cells": [
+          {
+            "origin": 2016,
+            "year": 2017,
+            "horizon": 1,
+            "metrics": {
+              "n": 99,
+              "mae": 0.10220631313131306,
+              "rmse": 0.1378222331063167,
+              "bias": -0.0033278619528619067
+            },
+            "clamped": 0
+          },
+          {
+            "origin": 2016,
+            "year": 2018,
+            "horizon": 2,
+            "metrics": {
+              "n": 99,
+              "mae": 0.1858371885521885,
+              "rmse": 0.241419617354229,
+              "bias": -0.03304907407407405
+            },
+            "clamped": 0
+          },
+          {
+            "origin": 2017,
+            "year": 2018,
+            "horizon": 1,
+            "metrics": {
+              "n": 100,
+              "mae": 0.11090099999999994,
+              "rmse": 0.161342866845561,
+              "bias": -0.03152983333333341
+            },
+            "clamped": 0
+          }
+        ]
+      },
+      {
+        "index": 8,
+        "weights": [
+          0.75,
+          0.125,
+          0,
+          0.125
+        ],
+        "score": 0.13696513243546574,
+        "pooled": {
+          "n": 298,
+          "mae": 0.13688979865771803,
+          "rmse": 0.19069658431309164,
+          "bias": -0.022555000000000026
+        },
+        "cells": [
+          {
+            "origin": 2016,
+            "year": 2017,
+            "horizon": 1,
+            "metrics": {
+              "n": 99,
+              "mae": 0.10560648148148148,
+              "rmse": 0.1430286607772434,
+              "bias": -0.0033359427609426866
+            },
+            "clamped": 0
+          },
+          {
+            "origin": 2016,
+            "year": 2018,
+            "horizon": 2,
+            "metrics": {
+              "n": 99,
+              "mae": 0.19077324915824911,
+              "rmse": 0.24850312195065066,
+              "bias": -0.033063619528619595
+            },
+            "clamped": 0
+          },
+          {
+            "origin": 2017,
+            "year": 2018,
+            "horizon": 1,
+            "metrics": {
+              "n": 100,
+              "mae": 0.11451566666666661,
+              "rmse": 0.16425397600041355,
+              "bias": -0.031178333333333405
+            },
+            "clamped": 0
+          }
+        ]
+      },
+      {
+        "index": 9,
+        "weights": [
+          0.75,
+          0,
+          0.125,
+          0.125
+        ],
+        "score": 0.13134766329966327,
+        "pooled": {
+          "n": 298,
+          "mae": 0.1312706040268456,
+          "rmse": 0.183848331053638,
+          "bias": -0.020712046979865815
+        },
+        "cells": [
+          {
+            "origin": 2016,
+            "year": 2017,
+            "horizon": 1,
+            "metrics": {
+              "n": 99,
+              "mae": 0.10120202020202017,
+              "rmse": 0.13604372366072154,
+              "bias": -0.0014828282828282273
+            },
+            "clamped": 0
+          },
+          {
+            "origin": 2016,
+            "year": 2018,
+            "horizon": 2,
+            "metrics": {
+              "n": 99,
+              "mae": 0.18445696969696965,
+              "rmse": 0.23979782981469697,
+              "bias": -0.030164040404040485
+            },
+            "clamped": 0
+          },
+          {
+            "origin": 2017,
+            "year": 2018,
+            "horizon": 1,
+            "metrics": {
+              "n": 100,
+              "mae": 0.10838400000000002,
+              "rmse": 0.1596052546910658,
+              "bias": -0.0303915000000001
+            },
+            "clamped": 0
+          }
+        ]
+      },
+      {
+        "index": 10,
+        "weights": [
+          0.625,
+          0.125,
+          0.125,
+          0.125
+        ],
+        "score": 0.1327482665544332,
+        "pooled": {
+          "n": 298,
+          "mae": 0.13267401565995535,
+          "rmse": 0.18529489267443505,
+          "bias": -0.021095436241610782
+        },
+        "cells": [
+          {
+            "origin": 2016,
+            "year": 2017,
+            "horizon": 1,
+            "metrics": {
+              "n": 99,
+              "mae": 0.10214065656565657,
+              "rmse": 0.1377969720180181,
+              "bias": -0.002027861952861958
+            },
+            "clamped": 0
+          },
+          {
+            "origin": 2016,
+            "year": 2018,
+            "horizon": 2,
+            "metrics": {
+              "n": 99,
+              "mae": 0.18548264309764295,
+              "rmse": 0.24111042610554137,
+              "bias": -0.030709074074074135
+            },
+            "clamped": 0
+          },
+          {
+            "origin": 2017,
+            "year": 2018,
+            "horizon": 1,
+            "metrics": {
+              "n": 100,
+              "mae": 0.11062150000000003,
+              "rmse": 0.1611362379022105,
+              "bias": -0.0304548333333334
+            },
+            "clamped": 0
+          }
+        ]
+      },
+      {
+        "index": 11,
+        "weights": [
+          0.5,
+          0.25,
+          0.125,
+          0.125
+        ],
+        "score": 0.13428011560044895,
+        "pooled": {
+          "n": 298,
+          "mae": 0.13420823266219242,
+          "rmse": 0.1869314911924707,
+          "bias": -0.02147882550335571
+        },
+        "cells": [
+          {
+            "origin": 2016,
+            "year": 2017,
+            "horizon": 1,
+            "metrics": {
+              "n": 99,
+              "mae": 0.1034190235690236,
+              "rmse": 0.1398062742246218,
+              "bias": -0.002572895622895536
+            },
+            "clamped": 0
+          },
+          {
+            "origin": 2016,
+            "year": 2018,
+            "horizon": 2,
+            "metrics": {
+              "n": 99,
+              "mae": 0.18656232323232316,
+              "rmse": 0.2425760788600744,
+              "bias": -0.03125410774410777
+            },
+            "clamped": 0
+          },
+          {
+            "origin": 2017,
+            "year": 2018,
+            "horizon": 1,
+            "metrics": {
+              "n": 100,
+              "mae": 0.11285900000000001,
+              "rmse": 0.16286872224620386,
+              "bias": -0.030518166666666735
+            },
+            "clamped": 0
+          }
+        ]
+      }
+    ]
+  },
+  "gdp": {
+    "selectionLoss": "equal mean of three cell MAEs",
+    "selected": {
+      "index": 4,
+      "weights": [
+        0.75,
+        0,
+        0.25,
+        0
+      ],
+      "score": 3.6223635344417,
+      "pooled": {
+        "n": 298,
+        "mae": 3.6185393397174033,
+        "rmse": 4.614237533039758,
+        "bias": -3.1062027149051157
+      },
+      "cells": [
+        {
+          "origin": 2016,
+          "year": 2017,
+          "horizon": 1,
+          "metrics": {
+            "n": 99,
+            "mae": 2.884988970043672,
+            "rmse": 3.5055242058388396,
+            "bias": -2.444409540123032
+          },
+          "clamped": 0
+        },
+        {
+          "origin": 2016,
+          "year": 2018,
+          "horizon": 2,
+          "metrics": {
+            "n": 99,
+            "mae": 5.4993481266798625,
+            "rmse": 6.530503686541226,
+            "bias": -4.789012645987305
+          },
+          "clamped": 0
+        },
+        {
+          "origin": 2017,
+          "year": 2018,
+          "horizon": 1,
+          "metrics": {
+            "n": 100,
+            "mae": 2.482753506601565,
+            "rmse": 3.0101368240726507,
+            "bias": -2.0953961261680156
+          },
+          "clamped": 0
+        }
+      ]
+    },
+    "persistence": {
+      "index": 0,
+      "weights": [
+        1,
+        0,
+        0,
+        0
+      ],
+      "score": 4.154131276029456,
+      "pooled": {
+        "n": 298,
+        "mae": 4.150188004660573,
+        "rmse": 5.218976740835393,
+        "bias": -3.680813274143614
+      },
+      "cells": [
+        {
+          "origin": 2016,
+          "year": 2017,
+          "horizon": 1,
+          "metrics": {
+            "n": 99,
+            "mae": 3.2872985438082183,
+            "rmse": 3.9354841695782614,
+            "bias": -2.878936700385603
+          },
+          "clamped": 0
+        },
+        {
+          "origin": 2016,
+          "year": 2018,
+          "horizon": 2,
+          "metrics": {
+            "n": 99,
+            "mae": 6.1960588761765605,
+            "rmse": 7.335106358496461,
+            "bias": -5.574995985795418
+          },
+          "clamped": 0
+        },
+        {
+          "origin": 2017,
+          "year": 2018,
+          "horizon": 1,
+          "metrics": {
+            "n": 100,
+            "mae": 2.979036408103588,
+            "rmse": 3.545348723278586,
+            "bias": -2.5994301976287613
+          },
+          "clamped": 0
+        }
+      ]
+    },
+    "candidates": [
+      {
+        "index": 0,
+        "weights": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "score": 4.154131276029456,
+        "pooled": {
+          "n": 298,
+          "mae": 4.150188004660573,
+          "rmse": 5.218976740835393,
+          "bias": -3.680813274143614
+        },
+        "cells": [
+          {
+            "origin": 2016,
+            "year": 2017,
+            "horizon": 1,
+            "metrics": {
+              "n": 99,
+              "mae": 3.2872985438082183,
+              "rmse": 3.9354841695782614,
+              "bias": -2.878936700385603
+            },
+            "clamped": 0
+          },
+          {
+            "origin": 2016,
+            "year": 2018,
+            "horizon": 2,
+            "metrics": {
+              "n": 99,
+              "mae": 6.1960588761765605,
+              "rmse": 7.335106358496461,
+              "bias": -5.574995985795418
+            },
+            "clamped": 0
+          },
+          {
+            "origin": 2017,
+            "year": 2018,
+            "horizon": 1,
+            "metrics": {
+              "n": 100,
+              "mae": 2.979036408103588,
+              "rmse": 3.545348723278586,
+              "bias": -2.5994301976287613
+            },
+            "clamped": 0
+          }
+        ]
+      },
+      {
+        "index": 1,
+        "weights": [
+          0.875,
+          0.125,
+          0,
+          0
+        ],
+        "score": 4.249632113855021,
+        "pooled": {
+          "n": 298,
+          "mae": 4.245770810127049,
+          "rmse": 5.323605100942227,
+          "bias": -3.7807278574563528
+        },
+        "cells": [
+          {
+            "origin": 2016,
+            "year": 2017,
+            "horizon": 1,
+            "metrics": {
+              "n": 99,
+              "mae": 3.3717680179825567,
+              "rmse": 4.035641248840438,
+              "bias": -2.968795241695191
+            },
+            "clamped": 0
+          },
+          {
+            "origin": 2016,
+            "year": 2018,
+            "horizon": 2,
+            "metrics": {
+              "n": 99,
+              "mae": 6.278164720662901,
+              "rmse": 7.437040460604319,
+              "bias": -5.664854527105007
+            },
+            "clamped": 0
+          },
+          {
+            "origin": 2017,
+            "year": 2018,
+            "horizon": 1,
+            "metrics": {
+              "n": 100,
+              "mae": 3.0989636029196026,
+              "rmse": 3.6844927732227535,
+              "bias": -2.719255744107736
+            },
+            "clamped": 0
+          }
+        ]
+      },
+      {
+        "index": 2,
+        "weights": [
+          0.75,
+          0.25,
+          0,
+          0
+        ],
+        "score": 4.34662420440326,
+        "pooled": {
+          "n": 298,
+          "mae": 4.342855521845443,
+          "rmse": 5.430549642741128,
+          "bias": -3.8803985910118928
+        },
+        "cells": [
+          {
+            "origin": 2016,
+            "year": 2017,
+            "horizon": 1,
+            "metrics": {
+              "n": 99,
+              "mae": 3.456128441531115,
+              "rmse": 4.1388276734212575,
+              "bias": -3.058424021287594
+            },
+            "clamped": 0
+          },
+          {
+            "origin": 2016,
+            "year": 2018,
+            "horizon": 2,
+            "metrics": {
+              "n": 99,
+              "mae": 6.3601873695047395,
+              "rmse": 7.540513995583066,
+              "bias": -5.7544833066974075
+            },
+            "clamped": 0
+          },
+          {
+            "origin": 2017,
+            "year": 2018,
+            "horizon": 1,
+            "metrics": {
+              "n": 100,
+              "mae": 3.2235568021739267,
+              "rmse": 3.825367630542032,
+              "bias": -2.838809546510291
+            },
+            "clamped": 0
+          }
+        ]
+      },
+      {
+        "index": 3,
+        "weights": [
+          0.875,
+          0,
+          0.125,
+          0
+        ],
+        "score": 3.8860655004281917,
+        "pooled": {
+          "n": 298,
+          "mae": 3.8821759794642015,
+          "rmse": 4.903433149089447,
+          "bias": -3.3946423273516655
+        },
+        "cells": [
+          {
+            "origin": 2016,
+            "year": 2017,
+            "horizon": 1,
+            "metrics": {
+              "n": 99,
+              "mae": 3.0841247317325937,
+              "rmse": 3.7090367630686467,
+              "bias": -2.6623372862568355
+            },
+            "clamped": 0
+          },
+          {
+            "origin": 2016,
+            "year": 2018,
+            "horizon": 2,
+            "metrics": {
+              "n": 99,
+              "mae": 5.847083516393327,
+              "rmse": 6.914318577006008,
+              "bias": -5.184160810198768
+            },
+            "clamped": 0
+          },
+          {
+            "origin": 2017,
+            "year": 2018,
+            "horizon": 1,
+            "metrics": {
+              "n": 100,
+              "mae": 2.7269882531586545,
+              "rmse": 3.271236657081238,
+              "bias": -2.3480010200169197
+            },
+            "clamped": 0
+          }
+        ]
+      },
+      {
+        "index": 4,
+        "weights": [
+          0.75,
+          0,
+          0.25,
+          0
+        ],
+        "score": 3.6223635344417,
+        "pooled": {
+          "n": 298,
+          "mae": 3.6185393397174033,
+          "rmse": 4.614237533039758,
+          "bias": -3.1062027149051157
+        },
+        "cells": [
+          {
+            "origin": 2016,
+            "year": 2017,
+            "horizon": 1,
+            "metrics": {
+              "n": 99,
+              "mae": 2.884988970043672,
+              "rmse": 3.5055242058388396,
+              "bias": -2.444409540123032
+            },
+            "clamped": 0
+          },
+          {
+            "origin": 2016,
+            "year": 2018,
+            "horizon": 2,
+            "metrics": {
+              "n": 99,
+              "mae": 5.4993481266798625,
+              "rmse": 6.530503686541226,
+              "bias": -4.789012645987305
+            },
+            "clamped": 0
+          },
+          {
+            "origin": 2017,
+            "year": 2018,
+            "horizon": 1,
+            "metrics": {
+              "n": 100,
+              "mae": 2.482753506601565,
+              "rmse": 3.0101368240726507,
+              "bias": -2.0953961261680156
+            },
+            "clamped": 0
+          }
+        ]
+      },
+      {
+        "index": 5,
+        "weights": [
+          0.875,
+          0,
+          0,
+          0.125
+        ],
+        "score": 3.91455050760289,
+        "pooled": {
+          "n": 298,
+          "mae": 3.9107101277883385,
+          "rmse": 4.987740642490548,
+          "bias": -3.3734647337296724
+        },
+        "cells": [
+          {
+            "origin": 2016,
+            "year": 2017,
+            "horizon": 1,
+            "metrics": {
+              "n": 99,
+              "mae": 3.0990152671273137,
+              "rmse": 3.770323374844066,
+              "bias": -2.648693871839782
+            },
+            "clamped": 0
+          },
+          {
+            "origin": 2016,
+            "year": 2018,
+            "horizon": 2,
+            "metrics": {
+              "n": 99,
+              "mae": 5.874518932816666,
+              "rmse": 7.0250006753709116,
+              "bias": -5.160177268286579
+            },
+            "clamped": 0
+          },
+          {
+            "origin": 2017,
+            "year": 2018,
+            "horizon": 1,
+            "metrics": {
+              "n": 100,
+              "mae": 2.7701173228646905,
+              "rmse": 3.347358048440941,
+              "bias": -2.3221424777893263
+            },
+            "clamped": 0
+          }
+        ]
+      },
+      {
+        "index": 6,
+        "weights": [
+          0.75,
+          0,
+          0,
+          0.25
+        ],
+        "score": 3.6851079004422402,
+        "pooled": {
+          "n": 298,
+          "mae": 3.681388388676497,
+          "rmse": 4.7656291309827346,
+          "bias": -3.0651104082661296
+        },
+        "cells": [
+          {
+            "origin": 2016,
+            "year": 2017,
+            "horizon": 1,
+            "metrics": {
+              "n": 99,
+              "mae": 2.914863118181889,
+              "rmse": 3.611938638332323,
+              "bias": -2.4179209256929837
+            },
+            "clamped": 0
+          },
+          {
+            "origin": 2016,
+            "year": 2018,
+            "horizon": 2,
+            "metrics": {
+              "n": 99,
+              "mae": 5.5637671888944835,
+              "rmse": 6.7249761839530215,
+              "bias": -4.743637805093804
+            },
+            "clamped": 0
+          },
+          {
+            "origin": 2017,
+            "year": 2018,
+            "horizon": 1,
+            "metrics": {
+              "n": 100,
+              "mae": 2.5766933942503476,
+              "rmse": 3.1608143371822934,
+              "bias": -2.044085873154145
+            },
+            "clamped": 0
+          }
+        ]
+      },
+      {
+        "index": 7,
+        "weights": [
+          0.75,
+          0.125,
+          0.125,
+          0
+        ],
+        "score": 3.982011554447809,
+        "pooled": {
+          "n": 298,
+          "mae": 3.9782122957907204,
+          "rmse": 5.001353465472353,
+          "bias": -3.4952441619129297
+        },
+        "cells": [
+          {
+            "origin": 2016,
+            "year": 2017,
+            "horizon": 1,
+            "metrics": {
+              "n": 99,
+              "mae": 3.168857391357527,
+              "rmse": 3.800844195416036,
+              "bias": -2.7527482706140085
+            },
+            "clamped": 0
+          },
+          {
+            "origin": 2016,
+            "year": 2018,
+            "horizon": 2,
+            "metrics": {
+              "n": 99,
+              "mae": 5.9273447973513145,
+              "rmse": 7.008700309110123,
+              "bias": -5.275014795157687
+            },
+            "clamped": 0
+          },
+          {
+            "origin": 2017,
+            "year": 2018,
+            "horizon": 1,
+            "metrics": {
+              "n": 100,
+              "mae": 2.8498324746345873,
+              "rmse": 3.407011164569974,
+              "bias": -2.46834216738655
+            },
+            "clamped": 0
+          }
+        ]
+      },
+      {
+        "index": 8,
+        "weights": [
+          0.75,
+          0.125,
+          0,
+          0.125
+        ],
+        "score": 4.01317195778086,
+        "pooled": {
+          "n": 298,
+          "mae": 4.009424444540012,
+          "rmse": 5.091492663145169,
+          "bias": -3.473683380127144
+        },
+        "cells": [
+          {
+            "origin": 2016,
+            "year": 2017,
+            "horizon": 1,
+            "metrics": {
+              "n": 99,
+              "mae": 3.185902360552707,
+              "rmse": 3.8696408555221704,
+              "bias": -2.7387593059965702
+            },
+            "clamped": 0
+          },
+          {
+            "origin": 2016,
+            "year": 2018,
+            "horizon": 2,
+            "metrics": {
+              "n": 99,
+              "mae": 5.957200500782455,
+              "rmse": 7.126563178634251,
+              "bias": -5.250408559644806
+            },
+            "clamped": 0
+          },
+          {
+            "origin": 2017,
+            "year": 2018,
+            "horizon": 1,
+            "metrics": {
+              "n": 100,
+              "mae": 2.896413012007416,
+              "rmse": 3.4852580689114143,
+              "bias": -2.442300285793917
+            },
+            "clamped": 0
+          }
+        ]
+      },
+      {
+        "index": 9,
+        "weights": [
+          0.75,
+          0,
+          0.125,
+          0.125
+        ],
+        "score": 3.6445370687491554,
+        "pooled": {
+          "n": 298,
+          "mae": 3.640768969654109,
+          "rmse": 4.6756045548150045,
+          "bias": -3.0863555504634017
+        },
+        "cells": [
+          {
+            "origin": 2016,
+            "year": 2017,
+            "horizon": 1,
+            "metrics": {
+              "n": 99,
+              "mae": 2.8952764425178596,
+              "rmse": 3.546906797848307,
+              "bias": -2.4315957530933088
+            },
+            "clamped": 0
+          },
+          {
+            "origin": 2016,
+            "year": 2018,
+            "horizon": 2,
+            "metrics": {
+              "n": 99,
+              "mae": 5.516691225303777,
+              "rmse": 6.607357353567137,
+              "bias": -4.767720835226956
+            },
+            "clamped": 0
+          },
+          {
+            "origin": 2017,
+            "year": 2018,
+            "horizon": 1,
+            "metrics": {
+              "n": 100,
+              "mae": 2.5216435384258302,
+              "rmse": 3.077542275892184,
+              "bias": -2.07001611794387
+            },
+            "clamped": 0
+          }
+        ]
+      },
+      {
+        "index": 10,
+        "weights": [
+          0.625,
+          0.125,
+          0.125,
+          0.125
+        ],
+        "score": 3.7418028908998155,
+        "pooled": {
+          "n": 298,
+          "mae": 3.738124999372185,
+          "rmse": 4.77205318283069,
+          "bias": -3.187263722247837
+        },
+        "cells": [
+          {
+            "origin": 2016,
+            "year": 2017,
+            "horizon": 1,
+            "metrics": {
+              "n": 99,
+              "mae": 2.9802041930150156,
+              "rmse": 3.637260919049969,
+              "bias": -2.5222149022581823
+            },
+            "clamped": 0
+          },
+          {
+            "origin": 2016,
+            "year": 2018,
+            "horizon": 2,
+            "metrics": {
+              "n": 99,
+              "mae": 5.599413264018462,
+              "rmse": 6.700766799053755,
+              "bias": -4.858951699521087
+            },
+            "clamped": 0
+          },
+          {
+            "origin": 2017,
+            "year": 2018,
+            "horizon": 1,
+            "metrics": {
+              "n": 100,
+              "mae": 2.645791215665968,
+              "rmse": 3.211445413833847,
+              "bias": -2.1906909565370767
+            },
+            "clamped": 0
+          }
+        ]
+      },
+      {
+        "index": 11,
+        "weights": [
+          0.5,
+          0.25,
+          0.125,
+          0.125
+        ],
+        "score": 3.839896327317284,
+        "pooled": {
+          "n": 298,
+          "mae": 3.8363137653725303,
+          "rmse": 4.871520597642932,
+          "bias": -3.2879264102382706
+        },
+        "cells": [
+          {
+            "origin": 2016,
+            "year": 2017,
+            "horizon": 1,
+            "metrics": {
+              "n": 99,
+              "mae": 3.065021778980916,
+              "rmse": 3.7315656869172487,
+              "bias": -2.612603161197247
+            },
+            "clamped": 0
+          },
+          {
+            "origin": 2016,
+            "year": 2018,
+            "horizon": 2,
+            "metrics": {
+              "n": 99,
+              "mae": 5.6823743351891975,
+              "rmse": 6.796217529794773,
+              "bias": -4.949950759697384
+            },
+            "clamped": 0
+          },
+          {
+            "origin": 2017,
+            "year": 2018,
+            "horizon": 1,
+            "metrics": {
+              "n": 100,
+              "mae": 2.7722928677817373,
+              "rmse": 3.3479069438868176,
+              "bias": -2.3110923208243626
+            },
+            "clamped": 0
+          }
+        ]
+      }
+    ]
+  }
+}
