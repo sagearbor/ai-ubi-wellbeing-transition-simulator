@@ -1,0 +1,53 @@
+{
+  "schema": "forecast-protocol/1",
+  "id": "research-ensemble-2018-v1",
+  "family": "five-approaches-20260916",
+  "familyEntries": ["research-offset-2018-v1", "research-damped-2018-v1", "research-changes-2018-v1", "research-health-2018-v1", "research-ensemble-2018-v1"],
+  "registeredAt": "2026-09-16",
+  "baseCommit": "0ca2eda3ea5db518499abebda1de1367d4e1ab7e",
+  "scope": "Prospectively frozen recipe for a retrospective revised-data forecast reconstruction. This independent automated implementation combines its own four simple components, not other family entries or their outputs.",
+  "modelFormChosenAfterTestPeriod": true,
+  "trainingYears": [2015, 2016, 2017, 2018],
+  "originYear": 2018,
+  "testYears": [2019, 2020, 2021, 2022, 2023, 2024, 2025],
+  "allowedNumericalInputs": ["data/evaluation/level-holdout-2018/train.json", "data/evaluation/level-holdout-2018/origin.json"],
+  "background": "Frozen background only establishes the original eligible countries. No governance, population, inequality, cross-sectional anchor, health or outside feature enters a forecast.",
+  "outcomes": {"wellbeing": "WHR Cantril ladder, 0–10; existing pinned 2026-vintage annual panel", "gdp": "World Bank GDP per person, constant-2015 USD; existing pinned 2026-vintage annual panel"},
+  "model": {
+    "transforms": "Model ladder directly and GDP on natural-log scale. Select outcome weights separately; GDP never acts as a ladder predictor.",
+    "components": {
+      "P": "Most recent origin value x_it, requiring a valid value at the forecasting origin.",
+      "S": "Two-thirds of x_it plus one-third of the most recent valid earlier x_is (s<t). If no earlier observation exists, S=P. Constant at every horizon; no future fill.",
+      "T": "P + D(h) * b_i, where b_i is ordinary least squares slope against calendar year using available country values from 2015 through origin; b_i=0 if fewer than two observations.",
+      "M": "P + D(h) * m, where m is median of country slopes with at least two observations, each country contributing once; m=0 if no such country exists.",
+      "damping": "D(h)=sum_{k=1..h}(0.8^k); fixed 0.8, not estimated. No recursive future actuals."
+    },
+    "forecast": "z=wP*P+wS*S+wT*T+wM*M. Ladder=max(0,min(10,z)); GDP=exp(z). A convex combination in ladder/log-GDP space (geometric combination on GDP level), not a convex combination of GDP levels. No GDP caps; throw on nonfinite/nonpositive output. Count ladder clamps before final clamp.",
+    "weightOrder": ["P", "S", "T", "M"],
+    "candidateWeights": [[1,0,0,0],[0.875,0.125,0,0],[0.75,0.25,0,0],[0.875,0,0.125,0],[0.75,0,0.25,0],[0.875,0,0,0.125],[0.75,0,0,0.25],[0.75,0.125,0.125,0],[0.75,0.125,0,0.125],[0.75,0,0.125,0.125],[0.625,0.125,0.125,0.125],[0.5,0.25,0.125,0.125]],
+    "fittedQuantities": ["Within-country OLS ladder and log-GDP slopes", "Equal-country median ladder and log-GDP slope", "Last-two-value levels", "One of the 12 fixed weight tuples for ladder and independently one for GDP"],
+    "notFitted": ["Damping", "Smoother weights", "Regression on future GDP", "Country-specific combination weights", "Post-2018 parameters", "Prediction intervals"]
+  },
+  "internalValidation": {
+    "folds": [{"origin":2016,"trainingYears":[2015,2016],"targetYears":[2017,2018]},{"origin":2017,"trainingYears":[2015,2016,2017],"targetYears":[2018]}],
+    "population": "All frozen training background countries with valid paired values at the fold origin. Score each target outcome when valid, using identical candidate/persistence masks. Final 2018 origin membership is not used for fold eligibility.",
+    "fitBoundary": "All country slopes, median slopes and smoother levels are recomputed on each fold's past data only. Input histories reaching beyond the fold origin are rejected by the fitter.",
+    "selection": "For each outcome compute each candidate's MAE separately in cells 2016→2017, 2016→2018, 2017→2018, then average the three cell MAEs with equal cell weight. Use ladder error in points and GDP error 100*(predicted-actual)/fold-origin-GDP in percentage points. From candidates within 1% of the smallest score (plus absolute 1e-12 for floating point), choose largest persistence weight, then smallest score, then earliest registered grid index. If a cell is empty, throw instead of changing weights or folds.",
+    "baseline": "Candidate zero is exact origin persistence for both outcomes; report baseline, selected candidate, all candidates, cell denominators, RMSE and bias.",
+    "limitations": "Only two origins and horizons 1–2 can be checked. Countries and targets repeat across cells; this is temporal validation for the same countries, not independent-country evidence. No observed seven-year validation is available inside four years. Candidate selection itself is optimistic."
+  },
+  "cohort": {"source":"data/evaluation/level-holdout-2018/origin.json","countries":100,"excluded":28,"originalRoster":128,"trainingBackgroundCountries":101,"expectedPairedTrainingRows":399,"rule":"Preserve every origin country, identity, exclusion and 2018 origin value. Exactly seven forecasts per country, 700 total; never condition membership on future availability."},
+  "missingness": "Use only available valid past values with real calendar years; no interpolation or country-level imputation. Origin-only histories use persistence for smoother/own trend; pooled drift remains available from training countries. Any missing/invalid original origin value is an integrity failure. Existing paired partition determines what is available. External scores use outcome-specific observed masks without dropping a country or earlier horizon for later missingness.",
+  "baseline": "Each country's observed 2018 ladder and GDP persisted at every horizon; identical external masks.",
+  "primaryMetric": "2025 endpoint ladder MAE, equal weight per observed country; also model-minus-persistence MAE and skill 1-MAE_model/MAE_persistence.",
+  "secondaryMetrics": ["2019–2025 ladder MAE/RMSE/bias/skill for each year", "Pooled equally weighted observed country-year ladder metrics", "2025, every horizon and pooled GDP cumulative growth error in percentage points relative to 2018 GDP", "Origin GDP quartiles: sort by GDP then country ID; quartile 1+floor(index*4/100)", "Every country's contribution to endpoint/pooled MAE change; all 28 exclusions and missing-score counts"],
+  "emptyOrUndefinedMetrics": "Null with a reason; never zero success. Zero persistence MAE makes skill undefined.",
+  "accuracyPassThreshold": null,
+  "externalScoring": "Controller alone executes the common original scorer exactly once after all five entries AND the separate long-run entry have frozen protocols/predictions. Publish every result; stop with pending-external ledger after this entry freezes. No external target read, scoring, full check or refit by this worker.",
+  "integrityGates": ["Protocol committed before first fitting or internal-validation execution", "No post-2018 numeric development inputs", "Fit rejects a later-year value rather than silently using it", "Origin values and 100-country coverage unchanged", "700 deterministic finite predictions; GDP positive and ladder within 0–10", "SHA-256 of protocol, source inputs, code, calibration, internal validation and predictions", "Synthetic tests for temporal boundary, missing past history, conservative selection, origin preservation and bounded trajectories", "No edits to application defaults, old evaluation artifacts or shared scoring", "Publish all internal candidates and the external result irrespective of sign"],
+  "vintageLimit": "The original aggregate miss and the brief's structural hypothesis were known before this recipe. Revised 2026-vintage 2015–2018 data are not a 2018 information archive. No blinded independent confirmation or deployable historical forecast is claimed.",
+  "builderExposure": "Read the supplied prior aggregate MAEs and method hypothesis, the original protocol/partition metadata, types and common evaluator, plus FPP methods pages. No held-out country outcomes, other agents' fitted results, later-period wellbeing regression or country ranking searches were used.",
+  "interpretation": "No guaranteed improvement, significance claim, causal claim or AI/UBI validation. Best-of-five selection is exploratory. Persistence winning internal selection is a legitimate entry.",
+  "sources": [{"url":"https://otexts.com/fpp3/combinations.html","use":"Motivates a small simple forecast combination; does not establish skill for this panel."},{"url":"https://otexts.com/fpp3/tscv.html","use":"Training observations precede each forecast origin; evaluate multiple horizons."},{"url":"https://otexts.com/fpp3/holt.html","use":"Damped accumulated trends avoid indefinite linear extrapolation; this is not a fitted Holt smoother."}],
+  "amendments": []
+}
