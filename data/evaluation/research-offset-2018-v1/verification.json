@@ -1,0 +1,26 @@
+{
+  "schema": "research-verification/1",
+  "entryId": "research-offset-2018-v1",
+  "checkedAt": "2026-09-16",
+  "syntheticTests": {
+    "runner": "Vitest 3.2.7",
+    "passed": 11,
+    "failed": 0
+  },
+  "focusedTypeScript": "passed",
+  "deterministicRegeneration": true,
+  "originalPredictionShape": true,
+  "completeOriginRoster": true,
+  "uniqueCountryYears": 700,
+  "allFinite": true,
+  "gdpPositive": true,
+  "sourceAndOutputHashes": "matched",
+  "externalScoring": "not run",
+  "fullRepositoryCheck": "deferred to controller after freeze",
+  "artifactHashes": {
+    "calibration.json": "7b2bc00eae9bd808b3fb605854b3fd98f43a9130a85ed97ec85d59788a38cebc",
+    "internal-validation.json": "0b6ed08edbdf5172b365f7bb9e0589269cc8f529f8b696a21f35ed9f8cbbef5d",
+    "predictions.json": "6ce7e1d1b698688db1077a0064d16bbfc543323f9e5ef004e5ea5959edd25856",
+    "source-hashes.json": "9ff224c781a958b541c0a5f9d0c1eb8aae41c7b918f4c4b7449ac56900912691"
+  }
+}

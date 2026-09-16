@@ -1,0 +1,38 @@
+{
+  "schema": "forecast-research-entry/1",
+  "id": "research-offset-2018-v1",
+  "familyId": "five-approaches-20260916",
+  "familyEntryIds": [
+    "research-offset-2018-v1",
+    "research-damped-2018-v1",
+    "research-changes-2018-v1",
+    "research-health-2018-v1",
+    "research-ensemble-2018-v1"
+  ],
+  "branch": "codex/research-offset-20260916",
+  "baseCommit": "0ca2eda3ea5db518499abebda1de1367d4e1ab7e",
+  "registeredProtocolCommit": "e8e6e72700ba32576269901885f27c7dab7574c9",
+  "status": "frozen-awaiting-joint-external-gate",
+  "method": "Origin offset preservation with within-country GDP slope and selected local/pooled GDP growth",
+  "protocolPath": "data/evaluation/research-offset-2018-v1/protocol.json",
+  "predictionsPath": "data/evaluation/research-offset-2018-v1/predictions.json",
+  "calibrationPath": "data/evaluation/research-offset-2018-v1/calibration.json",
+  "internalValidationPath": "data/evaluation/research-offset-2018-v1/internal-validation.json",
+  "sourceHashesPath": "data/evaluation/research-offset-2018-v1/source-hashes.json",
+  "verificationPath": "data/evaluation/research-offset-2018-v1/verification.json",
+  "researchNotePath": "docs/design/research/2026-09-16-research-offset-2018-v1.md",
+  "selectedSetting": {
+    "gdpMode": "half-local",
+    "offsetWeight": 1,
+    "annualAdjustment": 1
+  },
+  "cohortCount": 100,
+  "forecastRows": 700,
+  "excludedCount": 28,
+  "primaryMetric": "2025 endpoint ladder MAE and model minus persistence MAE, equally weighted observed countries.",
+  "externalScoreInvocations": 0,
+  "externalResults": null,
+  "productionChanged": false,
+  "protocolAmendments": [],
+  "authorship": "Automated research agent; not independent human or domain-expert review"
+}
