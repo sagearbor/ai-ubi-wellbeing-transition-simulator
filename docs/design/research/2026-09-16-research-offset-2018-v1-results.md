@@ -1,6 +1,6 @@
 # Retained country offsets + income change — sealed external result
 
-Entry `research-offset-2018-v1`. Base `0ca2eda`. Protocol `e8e6e72700ba32576269901885f27c7dab7574c9`; numerical freeze `5baaca179bc8921c2ca2896d2999cb1e348ca6be`. Scoring commit `b576fec2ff3ee15488c36ed38176334aefb4d64c`; receipt completed `2026-09-16T21: 24: 43.966Z`.
+Entry `research-offset-2018-v1`. Base `0ca2eda`. Protocol `e8e6e72700ba32576269901885f27c7dab7574c9`; numerical freeze `5baaca179bc8921c2ca2896d2999cb1e348ca6be`. Scoring commit `b576fec2ff3ee15488c36ed38176334aefb4d64c`; receipt completed `2026-09-16T21:24:43.966Z`.
 
 These are exploratory retrospective comparisons from one declared family of five. All five forecasts froze before any new test scoring. All five results are published, including essentially null gains. No parameter, input, country, horizon or model was changed after scoring. Selection of a winner now requires new confirmation; it is not an independent validation sample. No default or application behavior changed.
 
@@ -62,7 +62,7 @@ The aggregate winner loses against persistence in the highest-income quartile: e
 
 With selected full residual retention and adjustment 1, the forecast simplifies to origin ladder plus fitted within-country log-income change. Cross-sectional governance and intercept cancel; the test does not establish their policy effects.
 
-The frozen origin is 100 countries; 28 of the original 128 roster were excluded by the original protocol. Ladder has 681 observed and 19 missing cells; GDP has 691 observed and 9 missing cells. Both have97 observed countries at 2025. Full row-specific missingness and the 28 origin exclusions remain in the score artifact.
+The frozen origin is 100 countries; 28 of the original 128 roster were excluded by the original protocol. Ladder has 681 observed and 19 missing cells; GDP has 691 observed and 9 missing cells. Both have 97 observed countries at 2025. Full row-specific missingness and the 28 origin exclusions remain in the score artifact.
 
 ## Countries moving wellbeing error
 
