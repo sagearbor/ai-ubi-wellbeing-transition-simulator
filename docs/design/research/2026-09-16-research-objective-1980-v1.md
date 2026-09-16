@@ -21,7 +21,7 @@ A fixed 1975-origin diagnostic used only 1960–1975 for fitting and 1976–1980
 Run locally from the repository root:
 
 ```sh
-node --test scripts/evaluation/attempts/research-objective-1980-v1/model.test.mjs
+node --test scripts/evaluation/attempts/research-objective-1980-v1/model.checks.mjs
 node scripts/evaluation/attempts/research-objective-1980-v1/run.mjs
 ```
 

@@ -19,8 +19,9 @@
   "code": {
     "fetch.mjs": "344ebb8fcd089d0df27cb8418df2778e0395a4c8e23b919067a8b1c03af9a823",
     "model.mjs": "e7a52e01546370d5c785d081a2cede992617d7514ffc1783b6b2f7726e962b22",
-    "run.mjs": "6f4227a30cbeec60ca917f9f492bd8f286ccc6628de56cc7db70d217f10c797f",
-    "model.test.mjs": "47af2850fc6789ef2839003b820cdb466bddd8730f021368e445c666e337cab0"
+    "run.mjs": "5b62f8b9e46ff31c3dd12be463dc2cb9572f237ed726b9a4d8816f58a334d4f6",
+    "model.checks.mjs": "47af2850fc6789ef2839003b820cdb466bddd8730f021368e445c666e337cab0",
+    "model.test.ts": "00d56c1a90c214d57f9cf60b7515084fbf6b778692e34edf14c66da77a45e9f3"
   },
   "outputs": {
     "cohort.json": "dd78a2fecc1e75ec3ad028cede49818a9a2513525d954733aa7c16a94e102e36",
@@ -28,5 +29,7 @@
     "internal-validation.json": "20e4f0422c5137ce2fe53cb8a1350d53976775f0690bb3c9ca661516d15a6ffa",
     "predictions.json": "6062e3bbe3b393fa258e192bcdef4a42b50fa5754d8ea924326c0f644d42624f"
   },
-  "externalScoring": "pending; prohibited until all family entries frozen"
+  "externalScoring": "pending; prohibited until all family entries frozen",
+  "numericFreezeCommit": "af07c67",
+  "postFreezeTestIntegration": "Renamed builtin Node tests to .checks.mjs and added Vitest wrapper; updated runner test-file hash list only. No fit, validation or numeric artifact rerun."
 }
