@@ -1,0 +1,11 @@
+{
+  "rows": 700,
+  "coefficient": 0.9188832965656908,
+  "maxAbsoluteDifference": {
+    "ladder": 1.7763568394002505e-15,
+    "gdp": 9.458744898438454e-11
+  },
+  "scope": "All forecasts independently derived from train/origin using selected setting; selection and other candidates code-reviewed, not independently reimplemented.",
+  "method": "Independent Python arithmetic; does not execute or import submitted model",
+  "relativeTolerance": 1e-09
+}

@@ -1,0 +1,78 @@
+{
+  "schema": "forecast-family-registry/1",
+  "family": "five-approaches-20260916",
+  "baseCommit": "0ca2eda3ea5db518499abebda1de1367d4e1ab7e",
+  "registeredAfterAllNumericFreezesAt": "2026-09-16T21:20:39.563472+00:00",
+  "entries": [
+    {
+      "id": "research-offset-2018-v1",
+      "branch": "codex/research-offset-20260916",
+      "protocolCommit": "e8e6e72700ba32576269901885f27c7dab7574c9",
+      "freezeCommit": "5baaca179bc8921c2ca2896d2999cb1e348ca6be",
+      "protocolSha256": "361159323cd9fa2f2b2b7e1078bec77e955c315c2402fb051ff4a5fe61eabeaa",
+      "predictionsSha256": "6ce7e1d1b698688db1077a0064d16bbfc543323f9e5ef004e5ea5959edd25856",
+      "strictOriginalInputSet": true,
+      "countryCount": 100,
+      "predictionRows": 700
+    },
+    {
+      "id": "research-damped-2018-v1",
+      "branch": "codex/research-damped-20260916",
+      "protocolCommit": "7d40306fdf677d756042e75ca2fa56afc839c5fe",
+      "freezeCommit": "130bc0e66ecbff50457baf114a9a20540c37a940",
+      "protocolSha256": "306ae9bf2b6f8cbd521209bd4333f89e79c26e97424135e01a3027ea44f6c52e",
+      "predictionsSha256": "bbb52ca54a515df315ad1c2c09be6f3f9d0f4ad9b261bd1fd04fc59f8c516ac3",
+      "strictOriginalInputSet": true,
+      "countryCount": 100,
+      "predictionRows": 700
+    },
+    {
+      "id": "research-changes-2018-v1",
+      "branch": "codex/research-changes-20260916",
+      "protocolCommit": "dcf05639d28fbe497d18956f138dd96981a60aa8",
+      "freezeCommit": "e437ec74361856f63da5d7d1846c3f1725dd2f63",
+      "protocolSha256": "623e9526a7061a075929b79e9bc1a54c948c7ce21d751905227f887445966c35",
+      "predictionsSha256": "2a01e1b4dd126e49a453915387f93be7ef6b057bf56cb9bfffcc20a6771b4d0d",
+      "strictOriginalInputSet": true,
+      "countryCount": 100,
+      "predictionRows": 700
+    },
+    {
+      "id": "research-health-2018-v1",
+      "branch": "codex/research-health-20260916",
+      "protocolCommit": "6c6cdb2dbe638a88097abae1d826abee0dec8116",
+      "freezeCommit": "c0a39243de8abc1d6fc3a5c2ade094b91a49978d",
+      "protocolSha256": "3e7208880159c8f7665c20691f9e56e220cd64029c2d30aa78160e6739809d4e",
+      "predictionsSha256": "3e827620acc03728cb99a3256ef96120c0bb36e719d594de2f93f796741859ea",
+      "strictOriginalInputSet": false,
+      "countryCount": 100,
+      "predictionRows": 700
+    },
+    {
+      "id": "research-ensemble-2018-v1",
+      "branch": "codex/research-ensemble-20260916",
+      "protocolCommit": "2fee937281751947567ab856047c41ad3cbdba4a",
+      "freezeCommit": "0c1fef8003f179d6c9a9dda1aee65ed1a8cbb005",
+      "protocolSha256": "9371efc2ee88410b5d99c5402fd005aa03f87b9bd61484f7b34486e0080bd8e5",
+      "predictionsSha256": "cb82a477fecaf764e8bf55476bc541fb271f0c78ebb1baafbe922e6e7ddf98e5",
+      "strictOriginalInputSet": true,
+      "countryCount": 100,
+      "predictionRows": 700
+    },
+    {
+      "id": "research-objective-1980-v1",
+      "branch": "codex/research-health-20260916",
+      "protocolCommit": "41fe91cbf84766dfe363d5cded56b82ad0caa3b6",
+      "freezeCommit": "af07c67c38830b64273e84677dd9723f90c934a4",
+      "protocolSha256": "b9a5ab6fb8ea01fb33cccd2db57043006c25f01664334d32ef3f947b9eb18e5e",
+      "predictionsSha256": "6062e3bbe3b393fa258e192bcdef4a42b50fa5754d8ea924326c0f644d42624f",
+      "countryCount": 140,
+      "predictionRows": 12600,
+      "targets": [
+        "lifeExpectancy",
+        "gdp"
+      ]
+    }
+  ],
+  "stoppingRule": "Exactly one scored invocation per entry. All recipes and forecasts committed before any new outcome score. All results published; no post-score tuning."
+}
