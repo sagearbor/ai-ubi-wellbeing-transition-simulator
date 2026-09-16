@@ -1,0 +1,31 @@
+{
+  "schema": "forecast-scoring-bindings/1",
+  "entry": "research-ensemble-2018-v1",
+  "family": "five-approaches-20260916",
+  "bindings": {
+    "data/evaluation/five-approaches-20260916/protocol.json": "c40ef60470416fa2fb7ef08d31e3f61e1540bc4fb3f191c74fcb14465caad1aa",
+    "data/evaluation/five-approaches-20260916/registry.json": "9efaaae977a155310acbf3614915926f3ce381259f13d6d02d76901bccc2a4a3",
+    "data/evaluation/level-holdout-2018/origin.json": "564bab92fe88415df70a1b239223213a53c12274891ec2d39f0e08c3e28e3f77",
+    "data/evaluation/level-holdout-2018/protocol.json": "694cc25212c42a84c873a55b7f6db7023e604fd5bbedde2ff9639d2faaaa1c3b",
+    "data/evaluation/level-holdout-2018/train.json": "979ac8d45dda418403fc59e04111b9c9dbcd2fa484e4c26aa900cd37e777bd02",
+    "data/evaluation/research-ensemble-2018-v1/calibration.json": "fd8a1a24526d9b94bc582097a4f66cb1cf6f218c455a66d444da8a267fbf7366",
+    "data/evaluation/research-ensemble-2018-v1/integrity.json": "d98cdab14c7c873a569d0471e238cf9deb0a4b579f0b301ae48a3a9ef2d4de71",
+    "data/evaluation/research-ensemble-2018-v1/internal-validation.json": "583644f6b042d1698a567bd414ed9cb03aa9f28adb3717260f3b85a8405520de",
+    "data/evaluation/research-ensemble-2018-v1/predictions.json": "cb82a477fecaf764e8bf55476bc541fb271f0c78ebb1baafbe922e6e7ddf98e5",
+    "data/evaluation/research-ensemble-2018-v1/protocol.json": "9371efc2ee88410b5d99c5402fd005aa03f87b9bd61484f7b34486e0080bd8e5",
+    "data/evaluation/research-ensemble-2018-v1/source-provenance.json": "2575cfc5f64ea61c76680e45cd24b8f449cfef408b75742cad5be701b3ef4b97",
+    "package-lock.json": "063cbb3cd22a110053f124ae276ccab323e8d19150d2966d87fcb4149198acb8",
+    "package.json": "1140ff24493d0300954fccf775b6603ed21d39e885d5e732975074fda8880e86",
+    "scripts/evaluation/attempts/family-20260916.test.ts": "2a2bdaf64417d7f12901a1f06291dfb16385280a3f9d29b9cdb3304e2fb57465",
+    "scripts/evaluation/attempts/family-20260916.ts": "10808d02c02a841edef24afadb832ae5c4f57228636517b5a6e786fa06990a77",
+    "scripts/evaluation/attempts/research-ensemble-2018-v1/model.test.ts": "f48030f1f3207ca7246c416148cbc90d36223c37a4a8df0515ca2d6d79f7a425",
+    "scripts/evaluation/attempts/research-ensemble-2018-v1/model.ts": "d8494d23a7b3b3a07085b8303be9661babc22322ef0a12df890dd9357cca6537",
+    "scripts/evaluation/attempts/research-ensemble-2018-v1/run.ts": "1e37ea40939b966aa02031b6fe13495bd666af1ea6a0ca773c2adc5907ed8365",
+    "scripts/evaluation/partition.ts": "15008a2ae773a96d178f27c6649b782abd47fa237e457a60454cf1f7e6dcc5d4",
+    "scripts/evaluation/predict.ts": "8429c77e681b19e801aa91efdfdf8fd78e05d81faedc66117af3a05624964cea",
+    "scripts/evaluation/score.ts": "94be818155101ebdac4b1e1ca31d9af0affba858575b77fc920ae816ad664363"
+  },
+  "testOutcomesSha256": "bbcd0b78bc4d02024b2c5064fc15b9249e8849c271f7abd29d9cedeece2ce969",
+  "runtime": "Node v22.23.2, tsx from locked dependency tree",
+  "scoringInvocation": "node --import tsx scripts/evaluation/attempts/family-20260916.ts research-ensemble-2018-v1"
+}
