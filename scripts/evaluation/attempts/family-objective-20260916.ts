@@ -14,6 +14,8 @@ type Country = { id: string; name: string; originIncomeQuartile: number; availab
 type Forecast = { id: string; name: string; target: Target; unit: string; year: number; horizon: number; originYear: number; originValue: number; prediction: number; rawPrediction: number };
 const hash = (b: Buffer | string) => createHash('sha256').update(b).digest('hex');
 const read = (p: string) => JSON.parse(readFileSync(p, 'utf8'));
+/** Raw API snapshots exceed child_process's default 1 MiB stdout buffer. */
+export const committedObjectiveBytes = (path: string) => execFileSync('git', ['show', `HEAD:${path}`], { maxBuffer: 64 * 1024 * 1024 });
 
 export function validateObjective(rows: Forecast[], countries: Country[]) {
     const origins = new Map(countries.map(c => [c.id, c]));
@@ -97,7 +99,7 @@ export function scoreObjectiveOnce() {
     const entry = registry.entries.find((e: any) => e.id === LONG_ID);
     for (const [file, field] of [['protocol.json', 'protocolSha256'], ['predictions.json', 'predictionsSha256']]) if (hash(readFileSync(base + file)) !== entry[field]) throw Error('Objective registry mismatch');
     verifyBindings(manifest.bindings);
-    for (const path of [...Object.keys(manifest.bindings), base + 'scoring-manifest.json', familyPath]) if (hash(execFileSync('git', ['show', `HEAD:${path}`])) !== hash(readFileSync(path))) throw Error(`Uncommitted objective input: ${path}`);
+    for (const path of [...Object.keys(manifest.bindings), base + 'scoring-manifest.json', familyPath]) if (hash(committedObjectiveBytes(path)) !== hash(readFileSync(path))) throw Error(`Uncommitted objective input: ${path}`);
     const countries = read(base + 'cohort.json').countries as Country[], predictions = read(base + 'predictions.json').rows as Forecast[];
     validateObjective(predictions, countries);
     if (countries.length !== 140 || predictions.length !== 12600 || existsSync(base + 'scores.json')) throw Error('Objective cohort changed or already scored');

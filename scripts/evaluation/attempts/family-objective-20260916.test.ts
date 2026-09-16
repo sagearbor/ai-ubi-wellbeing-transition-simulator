@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import { analyzeObjective, objectivePanel, validateObjective } from './family-objective-20260916';
+import { readFileSync } from 'node:fs';
+import { analyzeObjective, objectivePanel, validateObjective, committedObjectiveBytes } from './family-objective-20260916';
 
 const countries = [{ id: 'AAA', name: 'A', originIncomeQuartile: 1, availability: { lifeExpectancy: { origin: 60 }, gdp: { origin: 100 } } }];
 const predictions = () => Array.from({ length: 45 }, (_, i) => (['lifeExpectancy', 'gdp'] as const).map(target => ({
@@ -10,6 +11,12 @@ const predictions = () => Array.from({ length: 45 }, (_, i) => (['lifeExpectancy
 const response = (indicator: string, value: number | null, year = 1981) => [{ page: 1, pages: 1, total: 1 }, [{ countryiso3code: 'AAA', date: String(year), indicator: { id: indicator }, value }]];
 
 describe('registered objective evaluator', () => {
+    it('can check committed files larger than the default child-process output buffer without parsing targets', () => {
+        const path = 'data/evaluation/research-objective-1980-v1/predictions.json';
+        const bytes = committedObjectiveBytes(path);
+        expect(bytes.length).toBeGreaterThan(1024 * 1024);
+        expect(bytes.equals(readFileSync(path))).toBe(true);
+    });
     it('requires all country-target-year forecasts and correct units/origins', () => {
         expect(() => validateObjective(predictions(), countries)).not.toThrow();
         expect(() => validateObjective(predictions().slice(1), countries)).toThrow(/coverage/);

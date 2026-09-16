@@ -24,8 +24,8 @@
     "package-lock.json": "063cbb3cd22a110053f124ae276ccab323e8d19150d2966d87fcb4149198acb8",
     "package.json": "1140ff24493d0300954fccf775b6603ed21d39e885d5e732975074fda8880e86",
     "scripts/evaluation/attempts/family-20260916.ts": "10808d02c02a841edef24afadb832ae5c4f57228636517b5a6e786fa06990a77",
-    "scripts/evaluation/attempts/family-objective-20260916.test.ts": "abe01f66ff387bb70f42c83d76852c4a7b4f9cc500b171ef1f34543edf6b6dd0",
-    "scripts/evaluation/attempts/family-objective-20260916.ts": "8c283f7bbebc631fc832e4f85953d744534e0606dd461823ad610561153c214e",
+    "scripts/evaluation/attempts/family-objective-20260916.test.ts": "3958a2a14fb970a66cc1a9fe519d1d2341bd2d49796a34a7ca7f3e37dbd8fc79",
+    "scripts/evaluation/attempts/family-objective-20260916.ts": "296111910782d79f7d91d845c192be3a477cb956975c5bf0692c3832068f705c",
     "scripts/evaluation/attempts/fetch-objective-20260916.py": "491098fa54cdc7437aec8f51490232bc39a1bfd9fb2e39adf373aa1cb5613606",
     "scripts/evaluation/attempts/research-objective-1980-v1/fetch.mjs": "344ebb8fcd089d0df27cb8418df2778e0395a4c8e23b919067a8b1c03af9a823",
     "scripts/evaluation/attempts/research-objective-1980-v1/model.checks.mjs": "47af2850fc6789ef2839003b820cdb466bddd8730f021368e445c666e337cab0",
@@ -34,7 +34,8 @@
     "scripts/evaluation/attempts/research-objective-1980-v1/run.mjs": "5b62f8b9e46ff31c3dd12be463dc2cb9572f237ed726b9a4d8816f58a334d4f6",
     "scripts/evaluation/partition.ts": "15008a2ae773a96d178f27c6649b782abd47fa237e457a60454cf1f7e6dcc5d4",
     "scripts/evaluation/predict.ts": "8429c77e681b19e801aa91efdfdf8fd78e05d81faedc66117af3a05624964cea",
-    "scripts/evaluation/score.ts": "94be818155101ebdac4b1e1ca31d9af0affba858575b77fc920ae816ad664363"
+    "scripts/evaluation/score.ts": "94be818155101ebdac4b1e1ca31d9af0affba858575b77fc920ae816ad664363",
+    "data/evaluation/research-objective-1980-v1/preflight-failure.json": "a9c487360920ce85f28cccb4a95f99950ee2d8326efe46bd53618bfb873b3a45"
   },
   "runtime": "Node v22.23.2; tsx from locked dependency tree",
   "scoringInvocation": "node --import tsx scripts/evaluation/attempts/family-objective-20260916.ts"
