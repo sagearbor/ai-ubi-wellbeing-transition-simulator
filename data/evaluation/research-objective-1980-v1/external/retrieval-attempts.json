@@ -1,0 +1,13 @@
+{
+  "attempts": [
+    {
+      "result": "sandbox DNS failed before receiving any response; no outcomes scored",
+      "recovery": "removed empty output directory only"
+    },
+    {
+      "result": "authorized read-only retrieval succeeded for both registered sources"
+    }
+  ],
+  "modelChanges": "none",
+  "scoreInvocationsSoFar": 0
+}
