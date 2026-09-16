@@ -1,0 +1,13 @@
+{
+  "schema": "one-shot-score-receipt/1",
+  "entry": "research-offset-2018-v1",
+  "family": "five-approaches-20260916",
+  "startedAt": "2026-09-16T21:24:43.938Z",
+  "preScoreCommit": "b576fec2ff3ee15488c36ed38176334aefb4d64c",
+  "registrySha256": "9efaaae977a155310acbf3614915926f3ce381259f13d6d02d76901bccc2a4a3",
+  "protocolSha256": "361159323cd9fa2f2b2b7e1078bec77e955c315c2402fb051ff4a5fe61eabeaa",
+  "predictionsSha256": "6ce7e1d1b698688db1077a0064d16bbfc543323f9e5ef004e5ea5959edd25856",
+  "status": "completed",
+  "completedAt": "2026-09-16T21:24:43.966Z",
+  "scoresSha256": "deb455d12bb26680f34ff439b6876ce0defffc9a8c3032810a487a6bbbee065d"
+}

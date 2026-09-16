@@ -1,0 +1,124 @@
+{
+  "schema": "registered-research-result/1",
+  "id": "research-offset-2018-v1-scored",
+  "entry": "research-offset-2018-v1",
+  "family": "five-approaches-20260916",
+  "status": "completed-one-scored-run",
+  "result": "lower observed MAE than persistence; exploratory, not qualified",
+  "protocolCommit": "e8e6e72700ba32576269901885f27c7dab7574c9",
+  "freezeCommit": "5baaca179bc8921c2ca2896d2999cb1e348ca6be",
+  "scoreReceipt": "data/evaluation/research-offset-2018-v1/score-receipt.json",
+  "scores": "data/evaluation/research-offset-2018-v1/scores.json",
+  "scoresSha256": "deb455d12bb26680f34ff439b6876ce0defffc9a8c3032810a487a6bbbee065d",
+  "report": "docs/design/research/2026-09-16-research-offset-2018-v1-results.md",
+  "metrics": {
+    "ladder": {
+      "primaryEndpoint": {
+        "expected": 100,
+        "observed": 97,
+        "unscored": 3,
+        "model": {
+          "n": 97,
+          "mae": 0.35131854480621816,
+          "rmse": 0.44503225050101736,
+          "bias": -0.0768082134085304,
+          "reason": null
+        },
+        "persistence": {
+          "n": 97,
+          "mae": 0.3889999999999999,
+          "rmse": 0.4939188651598809,
+          "bias": -0.19753608247422674,
+          "reason": null
+        },
+        "modelMinusPersistenceMae": -0.03768145519378174,
+        "skill": {
+          "value": 0.09686749407141837,
+          "reason": null
+        }
+      },
+      "pooled": {
+        "expected": 700,
+        "observed": 681,
+        "unscored": 19,
+        "model": {
+          "n": 681,
+          "mae": 0.27212192812760866,
+          "rmse": 0.39469467406703923,
+          "bias": -0.010002592702231236,
+          "reason": null
+        },
+        "persistence": {
+          "n": 681,
+          "mae": 0.2897439060205584,
+          "rmse": 0.413165639541218,
+          "bias": -0.08621057268722461,
+          "reason": null
+        },
+        "modelMinusPersistenceMae": -0.017621977892949725,
+        "skill": {
+          "value": 0.06081914934804322,
+          "reason": null
+        }
+      }
+    },
+    "gdp": {
+      "primaryEndpoint": {
+        "expected": 100,
+        "observed": 97,
+        "unscored": 3,
+        "model": {
+          "n": 97,
+          "mae": 8.727932429740674,
+          "rmse": 11.976936542972322,
+          "bias": 1.2817359918701277,
+          "reason": null
+        },
+        "persistence": {
+          "n": 97,
+          "mae": 15.629918353270511,
+          "rmse": 19.53321311150404,
+          "bias": -13.244278728725808,
+          "reason": null
+        },
+        "modelMinusPersistenceMae": -6.901985923529837,
+        "skill": {
+          "value": 0.4415880983847633,
+          "reason": null
+        }
+      },
+      "pooled": {
+        "expected": 700,
+        "observed": 691,
+        "unscored": 9,
+        "model": {
+          "n": 691,
+          "mae": 6.443658709458862,
+          "rmse": 9.258619543359938,
+          "bias": 3.5628150476583125,
+          "reason": null
+        },
+        "persistence": {
+          "n": 691,
+          "mae": 8.6499816020173,
+          "rmse": 12.2093393665981,
+          "bias": -5.359578932512586,
+          "reason": null
+        },
+        "modelMinusPersistenceMae": -2.206322892558438,
+        "skill": {
+          "value": 0.25506677286387425,
+          "reason": null
+        }
+      }
+    }
+  },
+  "qualifiesDefault": false,
+  "validatesPolicyEffects": false,
+  "targetDefinitionCorrection": "Trailing three-year survey average, not an individual-year survey score; identified after scoring, protocol unchanged.",
+  "supersedesPendingStatusOnly": "docs/design/research/entries/research-offset-2018-v1.json",
+  "limitations": [
+    "The aggregate winner loses against persistence in the highest-income quartile: endpoint skill -30.97%. Do not qualify a universal default from the aggregate gain.",
+    "With selected full residual retention and adjustment1, the forecast simplifies to origin ladder plus fitted within-country log-income change. Cross-sectional governance and intercept cancel; the test does not establish their policy effects."
+  ]
+}
