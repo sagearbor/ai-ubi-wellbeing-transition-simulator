@@ -1,6 +1,6 @@
 # Income + life-expectancy changes — sealed external result
 
-Entry `research-health-2018-v1`. Base `0ca2eda`. Protocol `6c6cdb2dbe638a88097abae1d826abee0dec8116`; numerical freeze `c0a39243de8abc1d6fc3a5c2ade094b91a49978d`. Scoring commit `5e8fb0bd0f9895f64ce9a4d816309eb341f664a2`; receipt completed `2026-09-16T21: 24: 44.038Z`.
+Entry `research-health-2018-v1`. Base `0ca2eda`. Protocol `6c6cdb2dbe638a88097abae1d826abee0dec8116`; numerical freeze `c0a39243de8abc1d6fc3a5c2ade094b91a49978d`. Scoring commit `5e8fb0bd0f9895f64ce9a4d816309eb341f664a2`; receipt completed `2026-09-16T21:24:44.038Z`.
 
 These are exploratory retrospective comparisons from one declared family of five. All five forecasts froze before any new test scoring. All five results are published, including essentially null gains. No parameter, input, country, horizon or model was changed after scoring. Selection of a winner now requires new confirmation; it is not an independent validation sample. No default or application behavior changed.
 
@@ -64,7 +64,7 @@ Post-period literature excerpts were inadvertently exposed after method registra
 
 The fitted life-expectancy coefficient is slightly negative, and the strongest income-only approach is better on ladder MAE. Different equations and GDP forecasts prevent attributing the difference to adding health; no causal or incremental-health benefit is established.
 
-The frozen origin is 100 countries; 28 of the original 128 roster were excluded by the original protocol. Ladder has 681 observed and 19 missing cells; GDP has 691 observed and 9 missing cells. Both have97 observed countries at 2025. Full row-specific missingness and the 28 origin exclusions remain in the score artifact.
+The frozen origin is 100 countries; 28 of the original 128 roster were excluded by the original protocol. Ladder has 681 observed and 19 missing cells; GDP has 691 observed and 9 missing cells. Both have 97 observed countries at 2025. Full row-specific missingness and the 28 origin exclusions remain in the score artifact.
 
 ## Countries moving wellbeing error
 

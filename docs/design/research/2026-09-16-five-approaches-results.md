@@ -20,7 +20,7 @@ Persistence ladder MAE: 0.389000 at 2025 (97 observed countries), 0.289744 poole
 
 ## What this establishes
 
-The country-offset approach is the strongest of these five on both registered wellbeing summaries, improving each of the seven horizons. It preserves country-specific starting differences and adds modest predicted-income changes. Its GDP endpoint error is also lower than persistence. This is an honest gain on the frozen comparison, not proof of universal or causal accuracy.
+The country-offset approach is the strongest of these five on both registered wellbeing summaries, improving each of the seven horizons. It preserves country-specific starting differences and adds modest predicted-income changes. Its GDP endpoint error is also lower than persistence, but its 2020 GDP error is 64.3% higher. A pre-2019 trend did not forecast the pandemic shock. This is an honest gain on the frozen comparison, not proof of universal or causal accuracy.
 
 **The aggregate winner is 31.0% worse than persistence in the richest origin-income quartile at 2025.** The health approach also loses there (10.5% worse). Neither should replace the default automatically. The health entry does not isolate the contribution of health; it changes the forecasting equation and GDP path too. Its negative life-expectancy coefficient must not be wired to a policy lever. The near-zero change-regression gain should be treated as practically negligible.
 
@@ -46,3 +46,11 @@ The separate 1980-origin experiment has no 2025 life-expectancy observations, so
 | codex/research-health-20260916 | research-objective-1980-v1 | 41fe91cbf847 | af07c67c3883 |
 
 Each branch contains its own detailed `*-results.md` with all horizon errors, origin-income groups, both tails of country contributions, source bindings and a scored ledger entry. The health branch also holds the long objective entry. All five branch checks passed before scoring. Final CI includes a no-rescoring test of frozen hashes and receipts. No main merge, production deployment or default change is part of these PRs.
+
+## GitHub review links
+
+- [Offset — PR #24](https://github.com/sagearbor/ai-ubi-wellbeing-transition-simulator/pull/24)
+- [Damped — PR #25](https://github.com/sagearbor/ai-ubi-wellbeing-transition-simulator/pull/25)
+- [Changes — PR #26](https://github.com/sagearbor/ai-ubi-wellbeing-transition-simulator/pull/26)
+- [Health — PR #27](https://github.com/sagearbor/ai-ubi-wellbeing-transition-simulator/pull/27)
+- [Ensemble — PR #28](https://github.com/sagearbor/ai-ubi-wellbeing-transition-simulator/pull/28)
