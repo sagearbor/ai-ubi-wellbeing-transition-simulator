@@ -1,0 +1,30 @@
+{
+  "schema": "forecast-scoring-bindings/1",
+  "entry": "research-changes-2018-v1",
+  "family": "five-approaches-20260916",
+  "bindings": {
+    "data/evaluation/five-approaches-20260916/protocol.json": "c40ef60470416fa2fb7ef08d31e3f61e1540bc4fb3f191c74fcb14465caad1aa",
+    "data/evaluation/five-approaches-20260916/registry.json": "9efaaae977a155310acbf3614915926f3ce381259f13d6d02d76901bccc2a4a3",
+    "data/evaluation/level-holdout-2018/origin.json": "564bab92fe88415df70a1b239223213a53c12274891ec2d39f0e08c3e28e3f77",
+    "data/evaluation/level-holdout-2018/protocol.json": "694cc25212c42a84c873a55b7f6db7023e604fd5bbedde2ff9639d2faaaa1c3b",
+    "data/evaluation/level-holdout-2018/train.json": "979ac8d45dda418403fc59e04111b9c9dbcd2fa484e4c26aa900cd37e777bd02",
+    "data/evaluation/research-changes-2018-v1/calibration.json": "34140e804f77e03b9fed123927cc8f44d9bf3359b738def1b6318c0dcd4e9156",
+    "data/evaluation/research-changes-2018-v1/internal-validation.json": "c8c247f99c7cb94ad22497debf7dc16a589b602371c5cf2e8db4030bf3797998",
+    "data/evaluation/research-changes-2018-v1/predictions.json": "2a01e1b4dd126e49a453915387f93be7ef6b057bf56cb9bfffcc20a6771b4d0d",
+    "data/evaluation/research-changes-2018-v1/protocol.json": "623e9526a7061a075929b79e9bc1a54c948c7ce21d751905227f887445966c35",
+    "data/evaluation/research-changes-2018-v1/provenance.json": "d2f6ea720ad3e02cb374e7c1e036495121006f3f6ff7af98935357a9fb0fd065",
+    "package-lock.json": "063cbb3cd22a110053f124ae276ccab323e8d19150d2966d87fcb4149198acb8",
+    "package.json": "1140ff24493d0300954fccf775b6603ed21d39e885d5e732975074fda8880e86",
+    "scripts/evaluation/attempts/family-20260916.test.ts": "2a2bdaf64417d7f12901a1f06291dfb16385280a3f9d29b9cdb3304e2fb57465",
+    "scripts/evaluation/attempts/family-20260916.ts": "10808d02c02a841edef24afadb832ae5c4f57228636517b5a6e786fa06990a77",
+    "scripts/evaluation/attempts/research-changes-2018-v1/model.mjs": "8b9a820743fe27d22431eada3b42e7cba808e0fe12c6190bf86ac0c9717122fe",
+    "scripts/evaluation/attempts/research-changes-2018-v1/model.test.ts": "284128379d3194656d104e7439bc2e373905fc8b7dd5b9846080b0fa9722b0c1",
+    "scripts/evaluation/attempts/research-changes-2018-v1/run.mjs": "033e627f787bbd791dff26e8f591f41b5acbeb822473d333fcc630d8fe0f135b",
+    "scripts/evaluation/partition.ts": "15008a2ae773a96d178f27c6649b782abd47fa237e457a60454cf1f7e6dcc5d4",
+    "scripts/evaluation/predict.ts": "8429c77e681b19e801aa91efdfdf8fd78e05d81faedc66117af3a05624964cea",
+    "scripts/evaluation/score.ts": "94be818155101ebdac4b1e1ca31d9af0affba858575b77fc920ae816ad664363"
+  },
+  "testOutcomesSha256": "bbcd0b78bc4d02024b2c5064fc15b9249e8849c271f7abd29d9cedeece2ce969",
+  "runtime": "Node v22.23.2, tsx from locked dependency tree",
+  "scoringInvocation": "node --import tsx scripts/evaluation/attempts/family-20260916.ts research-changes-2018-v1"
+}
