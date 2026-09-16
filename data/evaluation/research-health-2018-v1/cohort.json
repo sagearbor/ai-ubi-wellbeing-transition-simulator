@@ -1,0 +1,822 @@
+{
+  "schema": "forecast-cohort/1",
+  "originYear": 2018,
+  "countryCount": 100,
+  "excludedCount": 28,
+  "countries": [
+    {
+      "id": "USA",
+      "name": "United States",
+      "originLadder": 6.892,
+      "originGdp": 59817.6556798612,
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "CAN",
+      "name": "Canada",
+      "originLadder": 7.278,
+      "originGdp": 44907.3887994469,
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "MEX",
+      "name": "Mexico",
+      "originLadder": 6.595,
+      "originGdp": 10296.8690940459,
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "GTM",
+      "name": "Guatemala",
+      "originLadder": 6.436,
+      "originGdp": 4040.21214374742,
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "HTI",
+      "name": "Haiti",
+      "originLadder": 3.597,
+      "originGdp": 1437.35251928349,
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "DOM",
+      "name": "Dominican Rep.",
+      "originLadder": 5.425,
+      "originGdp": 7818.70593240469,
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "HND",
+      "name": "Honduras",
+      "originLadder": 5.86,
+      "originGdp": 2430.13503657762,
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "NIC",
+      "name": "Nicaragua",
+      "originLadder": 6.105,
+      "originGdp": 2107.3396261623,
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "SLV",
+      "name": "El Salvador",
+      "originLadder": 6.253,
+      "originGdp": 4046.16291720583,
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "CRI",
+      "name": "Costa Rica",
+      "originLadder": 7.167,
+      "originGdp": 12708.8042828359,
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "PAN",
+      "name": "Panama",
+      "originLadder": 6.321,
+      "originGdp": 15375.6500855703,
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "BRA",
+      "name": "Brazil",
+      "originLadder": 6.3,
+      "originGdp": 8722.33630317935,
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "ARG",
+      "name": "Argentina",
+      "originLadder": 6.086,
+      "originGdp": 13058.3285449954,
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "COL",
+      "name": "Colombia",
+      "originLadder": 6.125,
+      "originGdp": 6353.5464285392,
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "CHL",
+      "name": "Chile",
+      "originLadder": 6.444,
+      "originGdp": 13763.0068844795,
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "PER",
+      "name": "Peru",
+      "originLadder": 5.697,
+      "originGdp": 6593.14437459526,
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "ECU",
+      "name": "Ecuador",
+      "originLadder": 6.028,
+      "originGdp": 6063.0956178776,
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "BOL",
+      "name": "Bolivia",
+      "originLadder": 5.779,
+      "originGdp": 3204.53670838005,
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "PRY",
+      "name": "Paraguay",
+      "originLadder": 5.743,
+      "originGdp": 6354.2392005297,
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "URY",
+      "name": "Uruguay",
+      "originLadder": 6.293,
+      "originGdp": 17608.94412947,
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "RUS",
+      "name": "Russia",
+      "originLadder": 5.648,
+      "originGdp": 9674.787109375,
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "GBR",
+      "name": "United Kingdom",
+      "originLadder": 7.054,
+      "originGdp": 47516.2099770322,
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "FRA",
+      "name": "France",
+      "originLadder": 6.592,
+      "originGdp": 38062.4435961412,
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "DEU",
+      "name": "Germany",
+      "originLadder": 6.985,
+      "originGdp": 43905.8550061973,
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "ITA",
+      "name": "Italy",
+      "originLadder": 6.223,
+      "originGdp": 31963.6417148824,
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "ESP",
+      "name": "Spain",
+      "originLadder": 6.354,
+      "originGdp": 27956.7225466484,
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "NLD",
+      "name": "Netherlands",
+      "originLadder": 7.488,
+      "originGdp": 48463.0055608731,
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "SWE",
+      "name": "Sweden",
+      "originLadder": 7.343,
+      "originGdp": 52203.0872589761,
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "BEL",
+      "name": "Belgium",
+      "originLadder": 6.923,
+      "originGdp": 42208.3625650272,
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "AUT",
+      "name": "Austria",
+      "originLadder": 7.246,
+      "originGdp": 45951.5819164034,
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "POL",
+      "name": "Poland",
+      "originLadder": 6.182,
+      "originGdp": 14551.0850277089,
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "NOR",
+      "name": "Norway",
+      "originLadder": 7.554,
+      "originGdp": 79313.2889434042,
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "CHE",
+      "name": "Switzerland",
+      "originLadder": 7.48,
+      "originGdp": 88581.0826935584,
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "IRL",
+      "name": "Ireland",
+      "originLadder": 7.021,
+      "originGdp": 74029.0550611436,
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "DNK",
+      "name": "Denmark",
+      "originLadder": 7.6,
+      "originGdp": 56355.0733084714,
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "FIN",
+      "name": "Finland",
+      "originLadder": 7.769,
+      "originGdp": 45337.2409550575,
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "PRT",
+      "name": "Portugal",
+      "originLadder": 5.693,
+      "originGdp": 20997.7745987013,
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "GRC",
+      "name": "Greece",
+      "originLadder": 5.287,
+      "originGdp": 18769.0389621976,
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "CZE",
+      "name": "Czechia",
+      "originLadder": 6.852,
+      "originGdp": 19736.6295261285,
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "HUN",
+      "name": "Hungary",
+      "originLadder": 5.758,
+      "originGdp": 14533.7783144312,
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "ROU",
+      "name": "Romania",
+      "originLadder": 6.07,
+      "originGdp": 10714.1701157127,
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "UKR",
+      "name": "Ukraine",
+      "originLadder": 4.332,
+      "originGdp": 2308.6669921875,
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "BLR",
+      "name": "Belarus",
+      "originLadder": 5.323,
+      "originGdp": 6165.91320019277,
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "SRB",
+      "name": "Serbia",
+      "originLadder": 5.603,
+      "originGdp": 6524.08029755191,
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "ISL",
+      "name": "Iceland",
+      "originLadder": 7.494,
+      "originGdp": 57731.6523639512,
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "EST",
+      "name": "Estonia",
+      "originLadder": 5.893,
+      "originGdp": 19914.3454922878,
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "LVA",
+      "name": "Latvia",
+      "originLadder": 5.94,
+      "originGdp": 15120.0698171804,
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "LTU",
+      "name": "Lithuania",
+      "originLadder": 6.149,
+      "originGdp": 16604.9021440809,
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "SVK",
+      "name": "Slovakia",
+      "originLadder": 6.198,
+      "originGdp": 17869.0149173679,
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "SVN",
+      "name": "Slovenia",
+      "originLadder": 6.118,
+      "originGdp": 23293.966665323,
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "HRV",
+      "name": "Croatia",
+      "originLadder": 5.432,
+      "originGdp": 14061.0597402919,
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "BIH",
+      "name": "Bosnia & Herz.",
+      "originLadder": 5.386,
+      "originGdp": 5360.25201017633,
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "MNE",
+      "name": "Montenegro",
+      "originLadder": 5.523,
+      "originGdp": 7159.46778433252,
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "MKD",
+      "name": "North Macedonia",
+      "originLadder": 5.274,
+      "originGdp": 5698.39334484489,
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "ALB",
+      "name": "Albania",
+      "originLadder": 4.719,
+      "originGdp": 4893.82375538717,
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "BGR",
+      "name": "Bulgaria",
+      "originLadder": 5.011,
+      "originGdp": 8194.79296320014,
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "MDA",
+      "name": "Moldova",
+      "originLadder": 5.529,
+      "originGdp": 3267.9961042872,
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "LUX",
+      "name": "Luxembourg",
+      "originLadder": 7.09,
+      "originGdp": 106788.661202756,
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "CYP",
+      "name": "Cyprus",
+      "originLadder": 6.046,
+      "originGdp": 26962.392578125,
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "MLT",
+      "name": "Malta",
+      "originLadder": 6.726,
+      "originGdp": 29536.7913868949,
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "CHN",
+      "name": "China",
+      "originLadder": 5.191,
+      "originGdp": 9798.57890566402,
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "JPN",
+      "name": "Japan",
+      "originLadder": 5.886,
+      "originGdp": 36899.3847079435,
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "KOR",
+      "name": "South Korea",
+      "originLadder": 5.895,
+      "originGdp": 32852.8887488942,
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "MNG",
+      "name": "Mongolia",
+      "originLadder": 5.285,
+      "originGdp": 4183.85566447661,
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "VNM",
+      "name": "Vietnam",
+      "originLadder": 5.175,
+      "originGdp": 3048.28327602145,
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "IDN",
+      "name": "Indonesia",
+      "originLadder": 5.192,
+      "originGdp": 3701.32155461912,
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "PHL",
+      "name": "Philippines",
+      "originLadder": 5.631,
+      "originGdp": 3410.93647976109,
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "THA",
+      "name": "Thailand",
+      "originLadder": 6.008,
+      "originGdp": 6314.19948412043,
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "MYS",
+      "name": "Malaysia",
+      "originLadder": 5.339,
+      "originGdp": 10610.1950240479,
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "MMR",
+      "name": "Myanmar",
+      "originLadder": 4.36,
+      "originGdp": 1361.5683126412,
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "LAO",
+      "name": "Laos",
+      "originLadder": 4.796,
+      "originGdp": 2459.97874636195,
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "IND",
+      "name": "India",
+      "originLadder": 4.015,
+      "originGdp": 1883.35772705055,
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "PAK",
+      "name": "Pakistan",
+      "originLadder": 5.653,
+      "originGdp": 1561.68169819559,
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "BGD",
+      "name": "Bangladesh",
+      "originLadder": 4.456,
+      "originGdp": 1462.25050255713,
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "LKA",
+      "name": "Sri Lanka",
+      "originLadder": 4.366,
+      "originGdp": 4493.03574617534,
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "NPL",
+      "name": "Nepal",
+      "originLadder": 4.913,
+      "originGdp": 1021.91492204011,
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "BTN",
+      "name": "Bhutan",
+      "originLadder": 5.082,
+      "originGdp": 3300.55006461736,
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "KAZ",
+      "name": "Kazakhstan",
+      "originLadder": 5.809,
+      "originGdp": 10670.2120148279,
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "KGZ",
+      "name": "Kyrgyzstan",
+      "originLadder": 5.261,
+      "originGdp": 1175.0712778747,
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "TJK",
+      "name": "Tajikistan",
+      "originLadder": 5.467,
+      "originGdp": 1094.8002018221,
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "TUR",
+      "name": "Turkey",
+      "originLadder": 5.373,
+      "originGdp": 12255.0082146169,
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "IRN",
+      "name": "Iran",
+      "originLadder": 4.548,
+      "originGdp": 5127.22495367018,
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "IRQ",
+      "name": "Iraq",
+      "originLadder": 4.437,
+      "originGdp": 4749.00921836896,
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "ARE",
+      "name": "UAE",
+      "originLadder": 6.825,
+      "originGdp": 43377.802601486,
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "ISR",
+      "name": "Israel",
+      "originLadder": 7.139,
+      "originGdp": 38695.0100079706,
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "JOR",
+      "name": "Jordan",
+      "originLadder": 4.906,
+      "originGdp": 4320.029787425,
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "LBN",
+      "name": "Lebanon",
+      "originLadder": 5.197,
+      "originGdp": 8388.7235123835,
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "YEM",
+      "name": "Yemen",
+      "originLadder": 3.38,
+      "originGdp": 1079.32938366255,
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "GEO",
+      "name": "Georgia",
+      "originLadder": 4.519,
+      "originGdp": 4713.65354845303,
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "ARM",
+      "name": "Armenia",
+      "originLadder": 4.559,
+      "originGdp": 4027.83393010979,
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "PSE",
+      "name": "Palestine",
+      "originLadder": 4.696,
+      "originGdp": 3417.79440837962,
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "NGA",
+      "name": "Nigeria",
+      "originLadder": 5.265,
+      "originGdp": 2431.77857832597,
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "ZAF",
+      "name": "South Africa",
+      "originLadder": 4.722,
+      "originGdp": 6117.2701406047,
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "EGY",
+      "name": "Egypt",
+      "originLadder": 4.166,
+      "originGdp": 3568.63966286365,
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "ETH",
+      "name": "Ethiopia",
+      "originLadder": 4.286,
+      "originGdp": 705.96881207336,
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "KEN",
+      "name": "Kenya",
+      "originLadder": 4.509,
+      "originGdp": 1596.69045914945,
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "COD",
+      "name": "DR Congo",
+      "originLadder": 4.418,
+      "originGdp": 495.312105711027,
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "MAR",
+      "name": "Morocco",
+      "originLadder": 5.208,
+      "originGdp": 3304.7119140625,
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "DZA",
+      "name": "Algeria",
+      "originLadder": 5.211,
+      "originGdp": 4717.0035885361,
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "AUS",
+      "name": "Australia",
+      "originLadder": 7.228,
+      "originGdp": 58772.7063152213,
+      "originIncomeQuartile": 4
+    }
+  ],
+  "excluded": [
+    {
+      "id": "CUB",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "JAM",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "BLZ",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "BHS",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "TTO",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "VEN",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "GUY",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "SUR",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "TWN",
+      "reason": "Missing historical population, gini, ge, rl, cc"
+    },
+    {
+      "id": "PRK",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "SGP",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "KHM",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "BRN",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "MDV",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "UZB",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "TKM",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "SAU",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "AFG",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "SYR",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "OMN",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "QAT",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "KWT",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "BHR",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "AZE",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "AGO",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "NZL",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "PNG",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "TLS",
+      "reason": "Missing/invalid 2018 origin outcomes"
+    }
+  ]
+}
