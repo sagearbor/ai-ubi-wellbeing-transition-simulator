@@ -1,0 +1,7004 @@
+{
+  "rows": [
+    {
+      "id": "USA",
+      "name": "United States",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.867973485714286,
+      "gdp": 61076.3390321915,
+      "originLadder": 6.892,
+      "originGdp": 59817.6556798612
+    },
+    {
+      "id": "CAN",
+      "name": "Canada",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 7.269053485714285,
+      "gdp": 45710.85236412294,
+      "originLadder": 7.278,
+      "originGdp": 44907.3887994469
+    },
+    {
+      "id": "MEX",
+      "name": "Mexico",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.575133485714286,
+      "gdp": 10472.690563763595,
+      "originLadder": 6.595,
+      "originGdp": 10296.8690940459
+    },
+    {
+      "id": "GTM",
+      "name": "Guatemala",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.4522534857142855,
+      "gdp": 4115.752211187666,
+      "originLadder": 6.436,
+      "originGdp": 4040.21214374742
+    },
+    {
+      "id": "HTI",
+      "name": "Haiti",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 3.550133485714286,
+      "gdp": 1460.1651905155964,
+      "originLadder": 3.597,
+      "originGdp": 1437.35251928349
+    },
+    {
+      "id": "DOM",
+      "name": "Dominican Rep.",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.465973485714286,
+      "gdp": 8091.94266102276,
+      "originLadder": 5.425,
+      "originGdp": 7818.70593240469
+    },
+    {
+      "id": "HND",
+      "name": "Honduras",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.997293485714286,
+      "gdp": 2488.7795422150284,
+      "originLadder": 5.86,
+      "originGdp": 2430.13503657762
+    },
+    {
+      "id": "NIC",
+      "name": "Nicaragua",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.127053485714287,
+      "gdp": 2142.12009668541,
+      "originLadder": 6.105,
+      "originGdp": 2107.3396261623
+    },
+    {
+      "id": "SLV",
+      "name": "El Salvador",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.287453485714286,
+      "gdp": 4140.641629136065,
+      "originLadder": 6.253,
+      "originGdp": 4046.16291720583
+    },
+    {
+      "id": "CRI",
+      "name": "Costa Rica",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 7.182013485714285,
+      "gdp": 13043.5471954986,
+      "originLadder": 7.167,
+      "originGdp": 12708.8042828359
+    },
+    {
+      "id": "PAN",
+      "name": "Panama",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.2802134857142855,
+      "gdp": 15801.219474838617,
+      "originLadder": 6.321,
+      "originGdp": 15375.6500855703
+    },
+    {
+      "id": "BRA",
+      "name": "Brazil",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.218813485714286,
+      "gdp": 8803.114538072388,
+      "originLadder": 6.3,
+      "originGdp": 8722.33630317935
+    },
+    {
+      "id": "ARG",
+      "name": "Argentina",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.015573485714286,
+      "gdp": 13144.660352318773,
+      "originLadder": 6.086,
+      "originGdp": 13058.3285449954
+    },
+    {
+      "id": "COL",
+      "name": "Colombia",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.084093485714286,
+      "gdp": 6448.877155465703,
+      "originLadder": 6.125,
+      "originGdp": 6353.5464285392
+    },
+    {
+      "id": "CHL",
+      "name": "Chile",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.411333485714286,
+      "gdp": 13984.068547538222,
+      "originLadder": 6.444,
+      "originGdp": 13763.0068844795
+    },
+    {
+      "id": "PER",
+      "name": "Peru",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.695093485714286,
+      "gdp": 6734.928884452183,
+      "originLadder": 5.697,
+      "originGdp": 6593.14437459526
+    },
+    {
+      "id": "ECU",
+      "name": "Ecuador",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.038533485714285,
+      "gdp": 6165.243846493366,
+      "originLadder": 6.028,
+      "originGdp": 6063.0956178776
+    },
+    {
+      "id": "BOL",
+      "name": "Bolivia",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.7766934857142855,
+      "gdp": 3281.328101727173,
+      "originLadder": 5.779,
+      "originGdp": 3204.53670838005
+    },
+    {
+      "id": "PRY",
+      "name": "Paraguay",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.780813485714286,
+      "gdp": 6518.4584175643695,
+      "originLadder": 5.743,
+      "originGdp": 6354.2392005297
+    },
+    {
+      "id": "URY",
+      "name": "Uruguay",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.265453485714286,
+      "gdp": 17916.11791205604,
+      "originLadder": 6.293,
+      "originGdp": 17608.94412947
+    },
+    {
+      "id": "RUS",
+      "name": "Russia",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.622613485714285,
+      "gdp": 9864.680524092759,
+      "originLadder": 5.648,
+      "originGdp": 9674.787109375
+    },
+    {
+      "id": "GBR",
+      "name": "United Kingdom",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 7.103173485714286,
+      "gdp": 48517.26968863889,
+      "originLadder": 7.054,
+      "originGdp": 47516.2099770322
+    },
+    {
+      "id": "FRA",
+      "name": "France",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.613253485714285,
+      "gdp": 38781.25682927617,
+      "originLadder": 6.592,
+      "originGdp": 38062.4435961412
+    },
+    {
+      "id": "DEU",
+      "name": "Germany",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.990173485714286,
+      "gdp": 44812.11181553271,
+      "originLadder": 6.985,
+      "originGdp": 43905.8550061973
+    },
+    {
+      "id": "ITA",
+      "name": "Italy",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.259653485714286,
+      "gdp": 32595.704400081868,
+      "originLadder": 6.223,
+      "originGdp": 31963.6417148824
+    },
+    {
+      "id": "ESP",
+      "name": "Spain",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.355133485714286,
+      "gdp": 28651.2010941868,
+      "originLadder": 6.354,
+      "originGdp": 27956.7225466484
+    },
+    {
+      "id": "NLD",
+      "name": "Netherlands",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 7.514133485714286,
+      "gdp": 49534.79200470587,
+      "originLadder": 7.488,
+      "originGdp": 48463.0055608731
+    },
+    {
+      "id": "SWE",
+      "name": "Sweden",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 7.3561334857142855,
+      "gdp": 53025.53546118012,
+      "originLadder": 7.343,
+      "originGdp": 52203.0872589761
+    },
+    {
+      "id": "BEL",
+      "name": "Belgium",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.929413485714286,
+      "gdp": 42960.882081786505,
+      "originLadder": 6.923,
+      "originGdp": 42208.3625650272
+    },
+    {
+      "id": "AUT",
+      "name": "Austria",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 7.272253485714287,
+      "gdp": 46875.91737321742,
+      "originLadder": 7.246,
+      "originGdp": 45951.5819164034
+    },
+    {
+      "id": "POL",
+      "name": "Poland",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.235333485714286,
+      "gdp": 15079.55231406606,
+      "originLadder": 6.182,
+      "originGdp": 14551.0850277089
+    },
+    {
+      "id": "NOR",
+      "name": "Norway",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 7.568693485714286,
+      "gdp": 80698.74644882834,
+      "originLadder": 7.554,
+      "originGdp": 79313.2889434042
+    },
+    {
+      "id": "CHE",
+      "name": "Switzerland",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 7.481933485714286,
+      "gdp": 90220.15340071196,
+      "originLadder": 7.48,
+      "originGdp": 88581.0826935584
+    },
+    {
+      "id": "IRL",
+      "name": "Ireland",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 7.0403734857142855,
+      "gdp": 76848.2789618667,
+      "originLadder": 7.021,
+      "originGdp": 74029.0550611436
+    },
+    {
+      "id": "DNK",
+      "name": "Denmark",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 7.6158934857142855,
+      "gdp": 57632.50729626602,
+      "originLadder": 7.6,
+      "originGdp": 56355.0733084714
+    },
+    {
+      "id": "FIN",
+      "name": "Finland",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 7.823933485714286,
+      "gdp": 46404.18564796532,
+      "originLadder": 7.769,
+      "originGdp": 45337.2409550575
+    },
+    {
+      "id": "PRT",
+      "name": "Portugal",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.775693485714285,
+      "gdp": 21577.747756432538,
+      "originLadder": 5.693,
+      "originGdp": 20997.7745987013
+    },
+    {
+      "id": "GRC",
+      "name": "Greece",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.328413485714286,
+      "gdp": 19140.791196470727,
+      "originLadder": 5.287,
+      "originGdp": 18769.0389621976
+    },
+    {
+      "id": "CZE",
+      "name": "Czechia",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.892493485714286,
+      "gdp": 20316.003223447347,
+      "originLadder": 6.852,
+      "originGdp": 19736.6295261285
+    },
+    {
+      "id": "HUN",
+      "name": "Hungary",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.849093485714286,
+      "gdp": 15029.025036164363,
+      "originLadder": 5.758,
+      "originGdp": 14533.7783144312
+    },
+    {
+      "id": "ROU",
+      "name": "Romania",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.145533485714286,
+      "gdp": 11180.8940772838,
+      "originLadder": 6.07,
+      "originGdp": 10714.1701157127
+    },
+    {
+      "id": "UKR",
+      "name": "Ukraine",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 4.338933485714286,
+      "gdp": 2374.6673398686967,
+      "originLadder": 4.332,
+      "originGdp": 2308.6669921875
+    },
+    {
+      "id": "BLR",
+      "name": "Belarus",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.267773485714287,
+      "gdp": 6281.611278146256,
+      "originLadder": 5.323,
+      "originGdp": 6165.91320019277
+    },
+    {
+      "id": "SRB",
+      "name": "Serbia",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.659933485714285,
+      "gdp": 6727.319100041474,
+      "originLadder": 5.603,
+      "originGdp": 6524.08029755191
+    },
+    {
+      "id": "ISL",
+      "name": "Iceland",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 7.4984934857142855,
+      "gdp": 59145.56073834778,
+      "originLadder": 7.494,
+      "originGdp": 57731.6523639512
+    },
+    {
+      "id": "EST",
+      "name": "Estonia",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.948933485714285,
+      "gdp": 20567.31132077849,
+      "originLadder": 5.893,
+      "originGdp": 19914.3454922878
+    },
+    {
+      "id": "LVA",
+      "name": "Latvia",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.994613485714286,
+      "gdp": 15630.09988558606,
+      "originLadder": 5.94,
+      "originGdp": 15120.0698171804
+    },
+    {
+      "id": "LTU",
+      "name": "Lithuania",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.197013485714286,
+      "gdp": 17240.684525941837,
+      "originLadder": 6.149,
+      "originGdp": 16604.9021440809
+    },
+    {
+      "id": "SVK",
+      "name": "Slovakia",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.221093485714286,
+      "gdp": 18340.413961883278,
+      "originLadder": 6.198,
+      "originGdp": 17869.0149173679
+    },
+    {
+      "id": "SVN",
+      "name": "Slovenia",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.173293485714286,
+      "gdp": 24058.801208831595,
+      "originLadder": 6.118,
+      "originGdp": 23293.966665323
+    },
+    {
+      "id": "HRV",
+      "name": "Croatia",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.432093485714286,
+      "gdp": 14557.916290742756,
+      "originLadder": 5.432,
+      "originGdp": 14061.0597402919
+    },
+    {
+      "id": "BIH",
+      "name": "Bosnia & Herz.",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.4163334857142855,
+      "gdp": 5552.259301963742,
+      "originLadder": 5.386,
+      "originGdp": 5360.25201017633
+    },
+    {
+      "id": "MNE",
+      "name": "Montenegro",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.576533485714285,
+      "gdp": 7377.483087838216,
+      "originLadder": 5.523,
+      "originGdp": 7159.46778433252
+    },
+    {
+      "id": "MKD",
+      "name": "North Macedonia",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.298453485714286,
+      "gdp": 5842.1188536337,
+      "originLadder": 5.274,
+      "originGdp": 5698.39334484489
+    },
+    {
+      "id": "ALB",
+      "name": "Albania",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 4.730053485714286,
+      "gdp": 5079.922463484517,
+      "originLadder": 4.719,
+      "originGdp": 4893.82375538717
+    },
+    {
+      "id": "BGR",
+      "name": "Bulgaria",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.120733485714286,
+      "gdp": 8462.029272322294,
+      "originLadder": 5.011,
+      "originGdp": 8194.79296320014
+    },
+    {
+      "id": "MDA",
+      "name": "Moldova",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.482613485714285,
+      "gdp": 3403.8682613930387,
+      "originLadder": 5.529,
+      "originGdp": 3267.9961042872
+    },
+    {
+      "id": "LUX",
+      "name": "Luxembourg",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 7.123853485714285,
+      "gdp": 108270.36736171135,
+      "originLadder": 7.09,
+      "originGdp": 106788.661202756
+    },
+    {
+      "id": "CYP",
+      "name": "Cyprus",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.117333485714286,
+      "gdp": 27995.919834338878,
+      "originLadder": 6.046,
+      "originGdp": 26962.392578125
+    },
+    {
+      "id": "MLT",
+      "name": "Malta",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.764253485714286,
+      "gdp": 30697.981515907293,
+      "originLadder": 6.726,
+      "originGdp": 29536.7913868949
+    },
+    {
+      "id": "CHN",
+      "name": "China",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.189133485714286,
+      "gdp": 10219.752769724719,
+      "originLadder": 5.191,
+      "originGdp": 9798.57890566402
+    },
+    {
+      "id": "JPN",
+      "name": "Japan",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.887293485714286,
+      "gdp": 37581.78005361687,
+      "originLadder": 5.886,
+      "originGdp": 36899.3847079435
+    },
+    {
+      "id": "KOR",
+      "name": "South Korea",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.909373485714285,
+      "gdp": 33735.901382198055,
+      "originLadder": 5.895,
+      "originGdp": 32852.8887488942
+    },
+    {
+      "id": "MNG",
+      "name": "Mongolia",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.3428534857142855,
+      "gdp": 4297.858555735721,
+      "originLadder": 5.285,
+      "originGdp": 4183.85566447661
+    },
+    {
+      "id": "VNM",
+      "name": "Vietnam",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.195533485714286,
+      "gdp": 3172.1370040227407,
+      "originLadder": 5.175,
+      "originGdp": 3048.28327602145
+    },
+    {
+      "id": "IDN",
+      "name": "Indonesia",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.176293485714286,
+      "gdp": 3820.9564090574977,
+      "originLadder": 5.192,
+      "originGdp": 3701.32155461912
+    },
+    {
+      "id": "PHL",
+      "name": "Philippines",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.682693485714286,
+      "gdp": 3544.8190676793174,
+      "originLadder": 5.631,
+      "originGdp": 3410.93647976109
+    },
+    {
+      "id": "THA",
+      "name": "Thailand",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.943693485714285,
+      "gdp": 6504.031844293962,
+      "originLadder": 6.008,
+      "originGdp": 6314.19948412043
+    },
+    {
+      "id": "MYS",
+      "name": "Malaysia",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.274293485714286,
+      "gdp": 10915.40882566455,
+      "originLadder": 5.339,
+      "originGdp": 10610.1950240479
+    },
+    {
+      "id": "MMR",
+      "name": "Myanmar",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 4.352013485714286,
+      "gdp": 1413.9258143360328,
+      "originLadder": 4.36,
+      "originGdp": 1361.5683126412
+    },
+    {
+      "id": "LAO",
+      "name": "Laos",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 4.785322057142857,
+      "gdp": 2552.3454807098396,
+      "originLadder": 4.796,
+      "originGdp": 2459.97874636195
+    },
+    {
+      "id": "IND",
+      "name": "India",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 3.9690134857142856,
+      "gdp": 1961.376512581191,
+      "originLadder": 4.015,
+      "originGdp": 1883.35772705055
+    },
+    {
+      "id": "PAK",
+      "name": "Pakistan",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.729333485714285,
+      "gdp": 1612.5528228182302,
+      "originLadder": 5.653,
+      "originGdp": 1561.68169819559
+    },
+    {
+      "id": "BGD",
+      "name": "Bangladesh",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 4.434933485714287,
+      "gdp": 1523.9063951356386,
+      "originLadder": 4.456,
+      "originGdp": 1462.25050255713
+    },
+    {
+      "id": "LKA",
+      "name": "Sri Lanka",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 4.367053485714285,
+      "gdp": 4629.775586756661,
+      "originLadder": 4.366,
+      "originGdp": 4493.03574617534
+    },
+    {
+      "id": "NPL",
+      "name": "Nepal",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 4.929813485714286,
+      "gdp": 1062.909182412255,
+      "originLadder": 4.913,
+      "originGdp": 1021.91492204011
+    },
+    {
+      "id": "BTN",
+      "name": "Bhutan",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.0768534857142855,
+      "gdp": 3398.9813577382283,
+      "originLadder": 5.082,
+      "originGdp": 3300.55006461736
+    },
+    {
+      "id": "KAZ",
+      "name": "Kazakhstan",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.800333485714286,
+      "gdp": 10889.88625855757,
+      "originLadder": 5.809,
+      "originGdp": 10670.2120148279
+    },
+    {
+      "id": "KGZ",
+      "name": "Kyrgyzstan",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.2808934857142855,
+      "gdp": 1202.0279959368554,
+      "originLadder": 5.261,
+      "originGdp": 1175.0712778747
+    },
+    {
+      "id": "TJK",
+      "name": "Tajikistan",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.541653485714285,
+      "gdp": 1133.1599029422948,
+      "originLadder": 5.467,
+      "originGdp": 1094.8002018221
+    },
+    {
+      "id": "TUR",
+      "name": "Turkey",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.376093485714286,
+      "gdp": 12635.417456140305,
+      "originLadder": 5.373,
+      "originGdp": 12255.0082146169
+    },
+    {
+      "id": "IRN",
+      "name": "Iran",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 4.5224934857142856,
+      "gdp": 5222.116261350053,
+      "originLadder": 4.548,
+      "originGdp": 5127.22495367018
+    },
+    {
+      "id": "IRQ",
+      "name": "Iraq",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 4.424493485714286,
+      "gdp": 4846.811018201059,
+      "originLadder": 4.437,
+      "originGdp": 4749.00921836896
+    },
+    {
+      "id": "ARE",
+      "name": "UAE",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.865973485714286,
+      "gdp": 43608.76058203168,
+      "originLadder": 6.825,
+      "originGdp": 43377.802601486
+    },
+    {
+      "id": "ISR",
+      "name": "Israel",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 7.128413485714286,
+      "gdp": 39622.04263928637,
+      "originLadder": 7.139,
+      "originGdp": 38695.0100079706
+    },
+    {
+      "id": "JOR",
+      "name": "Jordan",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 4.857053485714285,
+      "gdp": 4357.003373227313,
+      "originLadder": 4.906,
+      "originGdp": 4320.029787425
+    },
+    {
+      "id": "LBN",
+      "name": "Lebanon",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.209813485714286,
+      "gdp": 8614.305329718705,
+      "originLadder": 5.197,
+      "originGdp": 8388.7235123835
+    },
+    {
+      "id": "YEM",
+      "name": "Yemen",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 3.334893485714286,
+      "gdp": 1051.894213833797,
+      "originLadder": 3.38,
+      "originGdp": 1079.32938366255
+    },
+    {
+      "id": "GEO",
+      "name": "Georgia",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 4.558893485714286,
+      "gdp": 4886.115384452274,
+      "originLadder": 4.519,
+      "originGdp": 4713.65354845303
+    },
+    {
+      "id": "ARM",
+      "name": "Armenia",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 4.586373485714286,
+      "gdp": 4177.04948172094,
+      "originLadder": 4.559,
+      "originGdp": 4027.83393010979
+    },
+    {
+      "id": "PSE",
+      "name": "Palestine",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 4.6934534857142856,
+      "gdp": 3481.993861026888,
+      "originLadder": 4.696,
+      "originGdp": 3417.79440837962
+    },
+    {
+      "id": "NGA",
+      "name": "Nigeria",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.320733485714285,
+      "gdp": 2438.2803102012776,
+      "originLadder": 5.265,
+      "originGdp": 2431.77857832597
+    },
+    {
+      "id": "ZAF",
+      "name": "South Africa",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 4.755053485714286,
+      "gdp": 6196.421334264838,
+      "originLadder": 4.722,
+      "originGdp": 6117.2701406047
+    },
+    {
+      "id": "EGY",
+      "name": "Egypt",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 4.135533485714286,
+      "gdp": 3657.9337972640024,
+      "originLadder": 4.166,
+      "originGdp": 3568.63966286365
+    },
+    {
+      "id": "ETH",
+      "name": "Ethiopia",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 4.260653485714285,
+      "gdp": 734.8189903423522,
+      "originLadder": 4.286,
+      "originGdp": 705.96881207336
+    },
+    {
+      "id": "KEN",
+      "name": "Kenya",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 4.527333485714286,
+      "gdp": 1634.6981549977857,
+      "originLadder": 4.509,
+      "originGdp": 1596.69045914945
+    },
+    {
+      "id": "COD",
+      "name": "DR Congo",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 4.439813485714286,
+      "gdp": 501.58397786560596,
+      "originLadder": 4.418,
+      "originGdp": 495.312105711027
+    },
+    {
+      "id": "MAR",
+      "name": "Morocco",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.221293485714286,
+      "gdp": 3376.651757637542,
+      "originLadder": 5.208,
+      "originGdp": 3304.7119140625
+    },
+    {
+      "id": "DZA",
+      "name": "Algeria",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.056333485714286,
+      "gdp": 4779.7997024865435,
+      "originLadder": 5.211,
+      "originGdp": 4717.0035885361
+    },
+    {
+      "id": "AUS",
+      "name": "Australia",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 7.223013485714286,
+      "gdp": 59802.7884989351,
+      "originLadder": 7.228,
+      "originGdp": 58772.7063152213
+    },
+    {
+      "id": "USA",
+      "name": "United States",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.848752274285714,
+      "gdp": 62335.541092643994,
+      "originLadder": 6.892,
+      "originGdp": 59817.6556798612
+    },
+    {
+      "id": "CAN",
+      "name": "Canada",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 7.261896274285714,
+      "gdp": 46512.19184223904,
+      "originLadder": 7.278,
+      "originGdp": 44907.3887994469
+    },
+    {
+      "id": "MEX",
+      "name": "Mexico",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.559240274285714,
+      "gdp": 10647.908001683863,
+      "originLadder": 6.595,
+      "originGdp": 10296.8690940459
+    },
+    {
+      "id": "GTM",
+      "name": "Guatemala",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.465256274285714,
+      "gdp": 4191.151595229965,
+      "originLadder": 6.436,
+      "originGdp": 4040.21214374742
+    },
+    {
+      "id": "HTI",
+      "name": "Haiti",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 3.5126402742857143,
+      "gdp": 1482.8728487442504,
+      "originLadder": 3.597,
+      "originGdp": 1437.35251928349
+    },
+    {
+      "id": "DOM",
+      "name": "Dominican Rep.",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.498752274285714,
+      "gdp": 8368.976643666101,
+      "originLadder": 5.425,
+      "originGdp": 7818.70593240469
+    },
+    {
+      "id": "HND",
+      "name": "Honduras",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.1071282742857145,
+      "gdp": 2547.6239855644526,
+      "originLadder": 5.86,
+      "originGdp": 2430.13503657762
+    },
+    {
+      "id": "NIC",
+      "name": "Nicaragua",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.144696274285715,
+      "gdp": 2176.7618229673417,
+      "originLadder": 6.105,
+      "originGdp": 2107.3396261623
+    },
+    {
+      "id": "SLV",
+      "name": "El Salvador",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.315016274285714,
+      "gdp": 4235.370790710243,
+      "originLadder": 6.253,
+      "originGdp": 4046.16291720583
+    },
+    {
+      "id": "CRI",
+      "name": "Costa Rica",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 7.194024274285714,
+      "gdp": 13380.147957019472,
+      "originLadder": 7.167,
+      "originGdp": 12708.8042828359
+    },
+    {
+      "id": "PAN",
+      "name": "Panama",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.247584274285714,
+      "gdp": 16229.70333802745,
+      "originLadder": 6.321,
+      "originGdp": 15375.6500855703
+    },
+    {
+      "id": "BRA",
+      "name": "Brazil",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.153864274285714,
+      "gdp": 8883.002963890898,
+      "originLadder": 6.3,
+      "originGdp": 8722.33630317935
+    },
+    {
+      "id": "ARG",
+      "name": "Argentina",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.959232274285714,
+      "gdp": 13229.819251177209,
+      "originLadder": 6.086,
+      "originGdp": 13058.3285449954
+    },
+    {
+      "id": "COL",
+      "name": "Colombia",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.051368274285714,
+      "gdp": 6543.688878402661,
+      "originLadder": 6.125,
+      "originGdp": 6353.5464285392
+    },
+    {
+      "id": "CHL",
+      "name": "Chile",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.385200274285714,
+      "gdp": 14204.153495596714,
+      "originLadder": 6.444,
+      "originGdp": 13763.0068844795
+    },
+    {
+      "id": "PER",
+      "name": "Peru",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.693568274285714,
+      "gdp": 6876.835473623759,
+      "originLadder": 5.697,
+      "originGdp": 6593.14437459526
+    },
+    {
+      "id": "ECU",
+      "name": "Ecuador",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.046960274285714,
+      "gdp": 6267.018585688265,
+      "originLadder": 6.028,
+      "originGdp": 6063.0956178776
+    },
+    {
+      "id": "BOL",
+      "name": "Bolivia",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.774848274285715,
+      "gdp": 3358.368724453764,
+      "originLadder": 5.779,
+      "originGdp": 3204.53670838005
+    },
+    {
+      "id": "PRY",
+      "name": "Paraguay",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.811064274285715,
+      "gdp": 6683.510159762438,
+      "originLadder": 5.743,
+      "originGdp": 6354.2392005297
+    },
+    {
+      "id": "URY",
+      "name": "Uruguay",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.243416274285715,
+      "gdp": 18222.346334911483,
+      "originLadder": 6.293,
+      "originGdp": 17608.94412947
+    },
+    {
+      "id": "RUS",
+      "name": "Russia",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.602304274285714,
+      "gdp": 10054.391693279462,
+      "originLadder": 5.648,
+      "originGdp": 9674.787109375
+    },
+    {
+      "id": "GBR",
+      "name": "United Kingdom",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 7.142512274285715,
+      "gdp": 49518.76694055168,
+      "originLadder": 7.054,
+      "originGdp": 47516.2099770322
+    },
+    {
+      "id": "FRA",
+      "name": "France",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.630256274285714,
+      "gdp": 39498.8624797769,
+      "originLadder": 6.592,
+      "originGdp": 38062.4435961412
+    },
+    {
+      "id": "DEU",
+      "name": "Germany",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.994312274285715,
+      "gdp": 45718.38953199811,
+      "originLadder": 6.985,
+      "originGdp": 43905.8550061973
+    },
+    {
+      "id": "ITA",
+      "name": "Italy",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.288976274285714,
+      "gdp": 33227.25045754281,
+      "originLadder": 6.223,
+      "originGdp": 31963.6417148824
+    },
+    {
+      "id": "ESP",
+      "name": "Spain",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.356040274285714,
+      "gdp": 29348.524896972984,
+      "originLadder": 6.354,
+      "originGdp": 27956.7225466484
+    },
+    {
+      "id": "NLD",
+      "name": "Netherlands",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 7.5350402742857145,
+      "gdp": 50608.13614998748,
+      "originLadder": 7.488,
+      "originGdp": 48463.0055608731
+    },
+    {
+      "id": "SWE",
+      "name": "Sweden",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 7.366640274285714,
+      "gdp": 53844.10474220877,
+      "originLadder": 7.343,
+      "originGdp": 52203.0872589761
+    },
+    {
+      "id": "BEL",
+      "name": "Belgium",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.934544274285714,
+      "gdp": 43711.36629032153,
+      "originLadder": 6.923,
+      "originGdp": 42208.3625650272
+    },
+    {
+      "id": "AUT",
+      "name": "Austria",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 7.2932562742857145,
+      "gdp": 47799.80302851313,
+      "originLadder": 7.246,
+      "originGdp": 45951.5819164034
+    },
+    {
+      "id": "POL",
+      "name": "Poland",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.278000274285715,
+      "gdp": 15616.06674910873,
+      "originLadder": 6.182,
+      "originGdp": 14551.0850277089
+    },
+    {
+      "id": "NOR",
+      "name": "Norway",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 7.580448274285715,
+      "gdp": 82079.97227853497,
+      "originLadder": 7.554,
+      "originGdp": 79313.2889434042
+    },
+    {
+      "id": "CHE",
+      "name": "Switzerland",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 7.483480274285715,
+      "gdp": 91855.86402620465,
+      "originLadder": 7.48,
+      "originGdp": 88581.0826935584
+    },
+    {
+      "id": "IRL",
+      "name": "Ireland",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 7.055872274285714,
+      "gdp": 79715.25632442496,
+      "originLadder": 7.021,
+      "originGdp": 74029.0550611436
+    },
+    {
+      "id": "DNK",
+      "name": "Denmark",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 7.628608274285714,
+      "gdp": 58912.48184028851,
+      "originLadder": 7.6,
+      "originGdp": 56355.0733084714
+    },
+    {
+      "id": "FIN",
+      "name": "Finland",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 7.867880274285715,
+      "gdp": 47474.14836094506,
+      "originLadder": 7.769,
+      "originGdp": 45337.2409550575
+    },
+    {
+      "id": "PRT",
+      "name": "Portugal",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.841848274285714,
+      "gdp": 22161.66049759168,
+      "originLadder": 5.693,
+      "originGdp": 20997.7745987013
+    },
+    {
+      "id": "GRC",
+      "name": "Greece",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.3615442742857145,
+      "gdp": 19512.251200146875,
+      "originLadder": 5.287,
+      "originGdp": 18769.0389621976
+    },
+    {
+      "id": "CZE",
+      "name": "Czechia",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.924888274285714,
+      "gdp": 20900.287073035564,
+      "originLadder": 6.852,
+      "originGdp": 19736.6295261285
+    },
+    {
+      "id": "HUN",
+      "name": "Hungary",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.921968274285715,
+      "gdp": 15530.736049032505,
+      "originLadder": 5.758,
+      "originGdp": 14533.7783144312
+    },
+    {
+      "id": "ROU",
+      "name": "Romania",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.205960274285715,
+      "gdp": 11658.003162501635,
+      "originLadder": 6.07,
+      "originGdp": 10714.1701157127
+    },
+    {
+      "id": "UKR",
+      "name": "Ukraine",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 4.344480274285714,
+      "gdp": 2441.1779298610304,
+      "originLadder": 4.332,
+      "originGdp": 2308.6669921875
+    },
+    {
+      "id": "BLR",
+      "name": "Belarus",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.223592274285715,
+      "gdp": 6397.10141254162,
+      "originLadder": 5.323,
+      "originGdp": 6165.91320019277
+    },
+    {
+      "id": "SRB",
+      "name": "Serbia",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.705480274285714,
+      "gdp": 6932.6345030984285,
+      "originLadder": 5.603,
+      "originGdp": 6524.08029755191
+    },
+    {
+      "id": "ISL",
+      "name": "Iceland",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 7.502088274285714,
+      "gdp": 60564.78166735457,
+      "originLadder": 7.494,
+      "originGdp": 57731.6523639512
+    },
+    {
+      "id": "EST",
+      "name": "Estonia",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.993680274285714,
+      "gdp": 21227.985225679455,
+      "originLadder": 5.893,
+      "originGdp": 19914.3454922878
+    },
+    {
+      "id": "LVA",
+      "name": "Latvia",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.038304274285715,
+      "gdp": 16146.61727182386,
+      "originLadder": 5.94,
+      "originGdp": 15120.0698171804
+    },
+    {
+      "id": "LTU",
+      "name": "Lithuania",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.235424274285714,
+      "gdp": 17887.36322470472,
+      "originLadder": 6.149,
+      "originGdp": 16604.9021440809
+    },
+    {
+      "id": "SVK",
+      "name": "Slovakia",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.239568274285714,
+      "gdp": 18814.448215732315,
+      "originLadder": 6.198,
+      "originGdp": 17869.0149173679
+    },
+    {
+      "id": "SVN",
+      "name": "Slovenia",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.217528274285715,
+      "gdp": 24832.6980090439,
+      "originLadder": 6.118,
+      "originGdp": 23293.966665323
+    },
+    {
+      "id": "HRV",
+      "name": "Croatia",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.432168274285715,
+      "gdp": 15061.865286631379,
+      "originLadder": 5.432,
+      "originGdp": 14061.0597402919
+    },
+    {
+      "id": "BIH",
+      "name": "Bosnia & Herz.",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.440600274285714,
+      "gdp": 5747.097720968473,
+      "originLadder": 5.386,
+      "originGdp": 5360.25201017633
+    },
+    {
+      "id": "MNE",
+      "name": "Montenegro",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.619360274285714,
+      "gdp": 7597.577805392541,
+      "originLadder": 5.523,
+      "originGdp": 7159.46778433252
+    },
+    {
+      "id": "MKD",
+      "name": "North Macedonia",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.318016274285714,
+      "gdp": 5986.486298541597,
+      "originLadder": 5.274,
+      "originGdp": 5698.39334484489
+    },
+    {
+      "id": "ALB",
+      "name": "Albania",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 4.738896274285715,
+      "gdp": 5269.163408021841,
+      "originLadder": 4.719,
+      "originGdp": 4893.82375538717
+    },
+    {
+      "id": "BGR",
+      "name": "Bulgaria",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.208520274285714,
+      "gdp": 8732.374043929784,
+      "originLadder": 5.011,
+      "originGdp": 8194.79296320014
+    },
+    {
+      "id": "MDA",
+      "name": "Moldova",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.445504274285714,
+      "gdp": 3542.502230741329,
+      "originLadder": 5.529,
+      "originGdp": 3267.9961042872
+    },
+    {
+      "id": "LUX",
+      "name": "Luxembourg",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 7.150936274285714,
+      "gdp": 109742.38376496715,
+      "originLadder": 7.09,
+      "originGdp": 106788.661202756
+    },
+    {
+      "id": "CYP",
+      "name": "Cyprus",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.1744002742857145,
+      "gdp": 29047.203572166298,
+      "originLadder": 6.046,
+      "originGdp": 26962.392578125
+    },
+    {
+      "id": "MLT",
+      "name": "Malta",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.794856274285714,
+      "gdp": 31880.226241415134,
+      "originLadder": 6.726,
+      "originGdp": 29536.7913868949
+    },
+    {
+      "id": "CHN",
+      "name": "China",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.187640274285714,
+      "gdp": 10650.062079606592,
+      "originLadder": 5.191,
+      "originGdp": 9798.57890566402
+    },
+    {
+      "id": "JPN",
+      "name": "Japan",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.888328274285715,
+      "gdp": 38262.76973441021,
+      "originLadder": 5.886,
+      "originGdp": 36899.3847079435
+    },
+    {
+      "id": "KOR",
+      "name": "South Korea",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.920872274285713,
+      "gdp": 34624.27582610414,
+      "originLadder": 5.895,
+      "originGdp": 32852.8887488942
+    },
+    {
+      "id": "MNG",
+      "name": "Mongolia",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.389136274285715,
+      "gdp": 4412.594658500266,
+      "originLadder": 5.285,
+      "originGdp": 4183.85566447661
+    },
+    {
+      "id": "VNM",
+      "name": "Vietnam",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.2119602742857145,
+      "gdp": 3298.3946445601578,
+      "originLadder": 5.175,
+      "originGdp": 3048.28327602145
+    },
+    {
+      "id": "IDN",
+      "name": "Indonesia",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.163728274285715,
+      "gdp": 3941.949393757214,
+      "originLadder": 5.192,
+      "originGdp": 3701.32155461912
+    },
+    {
+      "id": "PHL",
+      "name": "Philippines",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.724048274285715,
+      "gdp": 3681.1211055232448,
+      "originLadder": 5.631,
+      "originGdp": 3410.93647976109
+    },
+    {
+      "id": "THA",
+      "name": "Thailand",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.8922482742857145,
+      "gdp": 6695.603569891267,
+      "originLadder": 6.008,
+      "originGdp": 6314.19948412043
+    },
+    {
+      "id": "MYS",
+      "name": "Malaysia",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.222528274285715,
+      "gdp": 11223.034898297223,
+      "originLadder": 5.339,
+      "originGdp": 10610.1950240479
+    },
+    {
+      "id": "MMR",
+      "name": "Myanmar",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 4.345624274285715,
+      "gdp": 1467.1890182693955,
+      "originLadder": 4.36,
+      "originGdp": 1361.5683126412
+    },
+    {
+      "id": "LAO",
+      "name": "Laos",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 4.7767797028571435,
+      "gdp": 2646.2288602850094,
+      "originLadder": 4.796,
+      "originGdp": 2459.97874636195
+    },
+    {
+      "id": "IND",
+      "name": "India",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 3.932224274285714,
+      "gdp": 2040.9697099607633,
+      "originLadder": 4.015,
+      "originGdp": 1883.35772705055
+    },
+    {
+      "id": "PAK",
+      "name": "Pakistan",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.790400274285714,
+      "gdp": 1664.0139024207917,
+      "originLadder": 5.653,
+      "originGdp": 1561.68169819559
+    },
+    {
+      "id": "BGD",
+      "name": "Bangladesh",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 4.418080274285715,
+      "gdp": 1586.8507214821116,
+      "originLadder": 4.456,
+      "originGdp": 1462.25050255713
+    },
+    {
+      "id": "LKA",
+      "name": "Sri Lanka",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 4.367896274285714,
+      "gdp": 4767.817308333711,
+      "originLadder": 4.366,
+      "originGdp": 4493.03574617534
+    },
+    {
+      "id": "NPL",
+      "name": "Nepal",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 4.943264274285714,
+      "gdp": 1104.6786198704115,
+      "originLadder": 4.913,
+      "originGdp": 1021.91492204011
+    },
+    {
+      "id": "BTN",
+      "name": "Bhutan",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.072736274285714,
+      "gdp": 3498.291471815317,
+      "originLadder": 5.082,
+      "originGdp": 3300.55006461736
+    },
+    {
+      "id": "KAZ",
+      "name": "Kazakhstan",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.793400274285714,
+      "gdp": 11109.554215061402,
+      "originLadder": 5.809,
+      "originGdp": 10670.2120148279
+    },
+    {
+      "id": "KGZ",
+      "name": "Kyrgyzstan",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.2968082742857145,
+      "gdp": 1229.0454605628784,
+      "originLadder": 5.261,
+      "originGdp": 1175.0712778747
+    },
+    {
+      "id": "TJK",
+      "name": "Tajikistan",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.601376274285713,
+      "gdp": 1172.0561058430674,
+      "originLadder": 5.467,
+      "originGdp": 1094.8002018221
+    },
+    {
+      "id": "TUR",
+      "name": "Turkey",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.378568274285715,
+      "gdp": 13019.672603110428,
+      "originLadder": 5.373,
+      "originGdp": 12255.0082146169
+    },
+    {
+      "id": "IRN",
+      "name": "Iran",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 4.502088274285715,
+      "gdp": 5316.813385215752,
+      "originLadder": 4.548,
+      "originGdp": 5127.22495367018
+    },
+    {
+      "id": "IRQ",
+      "name": "Iraq",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 4.4144882742857146,
+      "gdp": 4944.610638393643,
+      "originLadder": 4.437,
+      "originGdp": 4749.00921836896
+    },
+    {
+      "id": "ARE",
+      "name": "UAE",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.898752274285714,
+      "gdp": 43836.292413489165,
+      "originLadder": 6.825,
+      "originGdp": 43377.802601486
+    },
+    {
+      "id": "ISR",
+      "name": "Israel",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 7.119944274285714,
+      "gdp": 40552.078670554125,
+      "originLadder": 7.139,
+      "originGdp": 38695.0100079706
+    },
+    {
+      "id": "JOR",
+      "name": "Jordan",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 4.817896274285714,
+      "gdp": 4393.544483475359,
+      "originLadder": 4.906,
+      "originGdp": 4320.029787425
+    },
+    {
+      "id": "LBN",
+      "name": "Lebanon",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.220064274285715,
+      "gdp": 8841.259830072866,
+      "originLadder": 5.197,
+      "originGdp": 8388.7235123835
+    },
+    {
+      "id": "YEM",
+      "name": "Yemen",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 3.2988082742857143,
+      "gdp": 1025.6844481332641,
+      "originLadder": 3.38,
+      "originGdp": 1079.32938366255
+    },
+    {
+      "id": "GEO",
+      "name": "Georgia",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 4.590808274285714,
+      "gdp": 5061.248452002003,
+      "originLadder": 4.519,
+      "originGdp": 4713.65354845303
+    },
+    {
+      "id": "ARM",
+      "name": "Armenia",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 4.6082722742857145,
+      "gdp": 4328.642534735417,
+      "originLadder": 4.559,
+      "originGdp": 4027.83393010979
+    },
+    {
+      "id": "PSE",
+      "name": "Palestine",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 4.691416274285714,
+      "gdp": 3546.079157589109,
+      "originLadder": 4.696,
+      "originGdp": 3417.79440837962
+    },
+    {
+      "id": "NGA",
+      "name": "Nigeria",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.365320274285714,
+      "gdp": 2444.6688724884707,
+      "originLadder": 5.265,
+      "originGdp": 2431.77857832597
+    },
+    {
+      "id": "ZAF",
+      "name": "South Africa",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 4.781496274285715,
+      "gdp": 6274.983034559935,
+      "originLadder": 4.722,
+      "originGdp": 6117.2701406047
+    },
+    {
+      "id": "EGY",
+      "name": "Egypt",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 4.111160274285715,
+      "gdp": 3747.609415900713,
+      "originLadder": 4.166,
+      "originGdp": 3568.63966286365
+    },
+    {
+      "id": "ETH",
+      "name": "Ethiopia",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 4.240376274285714,
+      "gdp": 764.2357163008453,
+      "originLadder": 4.286,
+      "originGdp": 705.96881207336
+    },
+    {
+      "id": "KEN",
+      "name": "Kenya",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 4.542000274285715,
+      "gdp": 1672.823334311322,
+      "originLadder": 4.509,
+      "originGdp": 1596.69045914945
+    },
+    {
+      "id": "COD",
+      "name": "DR Congo",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 4.4572642742857145,
+      "gdp": 507.80745681731554,
+      "originLadder": 4.418,
+      "originGdp": 495.312105711027
+    },
+    {
+      "id": "MAR",
+      "name": "Morocco",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.231928274285715,
+      "gdp": 3448.6719658825277,
+      "originLadder": 5.208,
+      "originGdp": 3304.7119140625
+    },
+    {
+      "id": "DZA",
+      "name": "Algeria",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 4.932600274285715,
+      "gdp": 4842.150896644147,
+      "originLadder": 5.211,
+      "originGdp": 4717.0035885361
+    },
+    {
+      "id": "AUS",
+      "name": "Australia",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 7.219024274285714,
+      "gdp": 60829.782775429376,
+      "originLadder": 7.228,
+      "originGdp": 58772.7063152213
+    },
+    {
+      "id": "USA",
+      "name": "United States",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.833375305142858,
+      "gdp": 63594.742823629735,
+      "originLadder": 6.892,
+      "originGdp": 59817.6556798612
+    },
+    {
+      "id": "CAN",
+      "name": "Canada",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 7.256170505142856,
+      "gdp": 47311.13229135367,
+      "originLadder": 7.278,
+      "originGdp": 44907.3887994469
+    },
+    {
+      "id": "MEX",
+      "name": "Mexico",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.546525705142857,
+      "gdp": 10822.464958696652,
+      "originLadder": 6.595,
+      "originGdp": 10296.8690940459
+    },
+    {
+      "id": "GTM",
+      "name": "Guatemala",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.4756585051428575,
+      "gdp": 4266.382960889989,
+      "originLadder": 6.436,
+      "originGdp": 4040.21214374742
+    },
+    {
+      "id": "HTI",
+      "name": "Haiti",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 3.482645705142857,
+      "gdp": 1505.4689315378128,
+      "originLadder": 3.597,
+      "originGdp": 1437.35251928349
+    },
+    {
+      "id": "DOM",
+      "name": "Dominican Rep.",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.524975305142857,
+      "gdp": 8649.669702133708,
+      "originLadder": 5.425,
+      "originGdp": 7818.70593240469
+    },
+    {
+      "id": "HND",
+      "name": "Honduras",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.194996105142858,
+      "gdp": 2606.6411793201005,
+      "originLadder": 5.86,
+      "originGdp": 2430.13503657762
+    },
+    {
+      "id": "NIC",
+      "name": "Nicaragua",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.158810505142858,
+      "gdp": 2211.254177588435,
+      "originLadder": 6.105,
+      "originGdp": 2107.3396261623
+    },
+    {
+      "id": "SLV",
+      "name": "El Salvador",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.337066505142857,
+      "gdp": 4330.3076712914935,
+      "originLadder": 6.253,
+      "originGdp": 4046.16291720583
+    },
+    {
+      "id": "CRI",
+      "name": "Costa Rica",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 7.203632905142857,
+      "gdp": 13718.442704365249,
+      "originLadder": 7.167,
+      "originGdp": 12708.8042828359
+    },
+    {
+      "id": "PAN",
+      "name": "Panama",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.221480905142857,
+      "gdp": 16660.88850253861,
+      "originLadder": 6.321,
+      "originGdp": 15375.6500855703
+    },
+    {
+      "id": "BRA",
+      "name": "Brazil",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.101904905142857,
+      "gdp": 8961.996962995125,
+      "originLadder": 6.3,
+      "originGdp": 8722.33630317935
+    },
+    {
+      "id": "ARG",
+      "name": "Argentina",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.914159305142857,
+      "gdp": 13313.81021783483,
+      "originLadder": 6.086,
+      "originGdp": 13058.3285449954
+    },
+    {
+      "id": "COL",
+      "name": "Colombia",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.025188105142857,
+      "gdp": 6637.956622620224,
+      "originLadder": 6.125,
+      "originGdp": 6353.5464285392
+    },
+    {
+      "id": "CHL",
+      "name": "Chile",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.364293705142857,
+      "gdp": 14423.19692840051,
+      "originLadder": 6.444,
+      "originGdp": 13763.0068844795
+    },
+    {
+      "id": "PER",
+      "name": "Peru",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.692348105142857,
+      "gdp": 7018.8044298469085,
+      "originLadder": 5.697,
+      "originGdp": 6593.14437459526
+    },
+    {
+      "id": "ECU",
+      "name": "Ecuador",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.053701705142856,
+      "gdp": 6368.387664238149,
+      "originLadder": 6.028,
+      "originGdp": 6063.0956178776
+    },
+    {
+      "id": "BOL",
+      "name": "Bolivia",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.773372105142857,
+      "gdp": 3435.623156854671,
+      "originLadder": 5.779,
+      "originGdp": 3204.53670838005
+    },
+    {
+      "id": "PRY",
+      "name": "Paraguay",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.835264905142857,
+      "gdp": 6849.314867152557,
+      "originLadder": 5.743,
+      "originGdp": 6354.2392005297
+    },
+    {
+      "id": "URY",
+      "name": "Uruguay",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.225786505142858,
+      "gdp": 18527.52779623457,
+      "originLadder": 6.293,
+      "originGdp": 17608.94412947
+    },
+    {
+      "id": "RUS",
+      "name": "Russia",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.586056905142857,
+      "gdp": 10243.84786783587,
+      "originLadder": 5.648,
+      "originGdp": 9674.787109375
+    },
+    {
+      "id": "GBR",
+      "name": "United Kingdom",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 7.173983305142857,
+      "gdp": 50520.288430912035,
+      "originLadder": 7.054,
+      "originGdp": 47516.2099770322
+    },
+    {
+      "id": "FRA",
+      "name": "France",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.643858505142857,
+      "gdp": 40214.997259978554,
+      "originLadder": 6.592,
+      "originGdp": 38062.4435961412
+    },
+    {
+      "id": "DEU",
+      "name": "Germany",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.997623305142858,
+      "gdp": 46624.32163057103,
+      "originLadder": 6.985,
+      "originGdp": 43905.8550061973
+    },
+    {
+      "id": "ITA",
+      "name": "Italy",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.312434505142857,
+      "gdp": 33858.03571444181,
+      "originLadder": 6.223,
+      "originGdp": 31963.6417148824
+    },
+    {
+      "id": "ESP",
+      "name": "Spain",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.356765705142857,
+      "gdp": 30048.365542114607,
+      "originLadder": 6.354,
+      "originGdp": 27956.7225466484
+    },
+    {
+      "id": "NLD",
+      "name": "Netherlands",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 7.5517657051428575,
+      "gdp": 51682.57483662652,
+      "originLadder": 7.488,
+      "originGdp": 48463.0055608731
+    },
+    {
+      "id": "SWE",
+      "name": "Sweden",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 7.375045705142857,
+      "gdp": 54658.56128547679,
+      "originLadder": 7.343,
+      "originGdp": 52203.0872589761
+    },
+    {
+      "id": "BEL",
+      "name": "Belgium",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.938648905142857,
+      "gdp": 44459.55887382357,
+      "originLadder": 6.923,
+      "originGdp": 42208.3625650272
+    },
+    {
+      "id": "AUT",
+      "name": "Austria",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 7.310058505142858,
+      "gdp": 48722.87505608643,
+      "originLadder": 7.246,
+      "originGdp": 45951.5819164034
+    },
+    {
+      "id": "POL",
+      "name": "Poland",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.312133705142858,
+      "gdp": 16160.366314358795,
+      "originLadder": 6.182,
+      "originGdp": 14551.0850277089
+    },
+    {
+      "id": "NOR",
+      "name": "Norway",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 7.589852105142858,
+      "gdp": 83456.50731244369,
+      "originLadder": 7.554,
+      "originGdp": 79313.2889434042
+    },
+    {
+      "id": "CHE",
+      "name": "Switzerland",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 7.484717705142858,
+      "gdp": 93487.62901775129,
+      "originLadder": 7.48,
+      "originGdp": 88581.0826935584
+    },
+    {
+      "id": "IRL",
+      "name": "Ireland",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 7.068271305142857,
+      "gdp": 82628.63948885373,
+      "originLadder": 7.021,
+      "originGdp": 74029.0550611436
+    },
+    {
+      "id": "DNK",
+      "name": "Denmark",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 7.638780105142857,
+      "gdp": 60194.43296993793,
+      "originLadder": 7.6,
+      "originGdp": 56355.0733084714
+    },
+    {
+      "id": "FIN",
+      "name": "Finland",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 7.903037705142857,
+      "gdp": 48546.64360104604,
+      "originLadder": 7.769,
+      "originGdp": 45337.2409550575
+    },
+    {
+      "id": "PRT",
+      "name": "Portugal",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.894772105142857,
+      "gdp": 22749.222551541152,
+      "originLadder": 5.693,
+      "originGdp": 20997.7745987013
+    },
+    {
+      "id": "GRC",
+      "name": "Greece",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.388048905142857,
+      "gdp": 19883.27510129409,
+      "originLadder": 5.287,
+      "originGdp": 18769.0389621976
+    },
+    {
+      "id": "CZE",
+      "name": "Czechia",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.950804105142858,
+      "gdp": 21489.185263815638,
+      "originLadder": 6.852,
+      "originGdp": 19736.6295261285
+    },
+    {
+      "id": "HUN",
+      "name": "Hungary",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.980268105142858,
+      "gdp": 16038.658670689098,
+      "originLadder": 5.758,
+      "originGdp": 14533.7783144312
+    },
+    {
+      "id": "ROU",
+      "name": "Romania",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.254301705142858,
+      "gdp": 12145.316917830589,
+      "originLadder": 6.07,
+      "originGdp": 10714.1701157127
+    },
+    {
+      "id": "UKR",
+      "name": "Ukraine",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 4.348917705142857,
+      "gdp": 2508.165313927981,
+      "originLadder": 4.332,
+      "originGdp": 2308.6669921875
+    },
+    {
+      "id": "BLR",
+      "name": "Belarus",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.188247305142858,
+      "gdp": 6512.341553476349,
+      "originLadder": 5.323,
+      "originGdp": 6165.91320019277
+    },
+    {
+      "id": "SRB",
+      "name": "Serbia",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.741917705142857,
+      "gdp": 7139.921792871841,
+      "originLadder": 5.603,
+      "originGdp": 6524.08029755191
+    },
+    {
+      "id": "ISL",
+      "name": "Iceland",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 7.504964105142856,
+      "gdp": 61988.65285536719,
+      "originLadder": 7.494,
+      "originGdp": 57731.6523639512
+    },
+    {
+      "id": "EST",
+      "name": "Estonia",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.029477705142857,
+      "gdp": 21896.03135978573,
+      "originLadder": 5.893,
+      "originGdp": 19914.3454922878
+    },
+    {
+      "id": "LVA",
+      "name": "Latvia",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.073256905142858,
+      "gdp": 16669.361038280316,
+      "originLadder": 5.94,
+      "originGdp": 15120.0698171804
+    },
+    {
+      "id": "LTU",
+      "name": "Lithuania",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.2661529051428575,
+      "gdp": 18544.635876864137,
+      "originLadder": 6.149,
+      "originGdp": 16604.9021440809
+    },
+    {
+      "id": "SVK",
+      "name": "Slovakia",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.254348105142857,
+      "gdp": 19290.886731115494,
+      "originLadder": 6.198,
+      "originGdp": 17869.0149173679
+    },
+    {
+      "id": "SVN",
+      "name": "Slovenia",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.252916105142858,
+      "gdp": 25615.263751939354,
+      "originLadder": 6.118,
+      "originGdp": 23293.966665323
+    },
+    {
+      "id": "HRV",
+      "name": "Croatia",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.432228105142857,
+      "gdp": 15572.656685627646,
+      "originLadder": 5.432,
+      "originGdp": 14061.0597402919
+    },
+    {
+      "id": "BIH",
+      "name": "Bosnia & Herz.",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.460013705142857,
+      "gdp": 5944.671302722022,
+      "originLadder": 5.386,
+      "originGdp": 5360.25201017633
+    },
+    {
+      "id": "MNE",
+      "name": "Montenegro",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.653621705142857,
+      "gdp": 7819.639853004945,
+      "originLadder": 5.523,
+      "originGdp": 7159.46778433252
+    },
+    {
+      "id": "MKD",
+      "name": "North Macedonia",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.333666505142857,
+      "gdp": 6131.4270496331865,
+      "originLadder": 5.274,
+      "originGdp": 5698.39334484489
+    },
+    {
+      "id": "ALB",
+      "name": "Albania",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 4.745970505142857,
+      "gdp": 5461.457509152657,
+      "originLadder": 4.719,
+      "originGdp": 4893.82375538717
+    },
+    {
+      "id": "BGR",
+      "name": "Bulgaria",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.278749705142857,
+      "gdp": 9005.689738309322,
+      "originLadder": 5.011,
+      "originGdp": 8194.79296320014
+    },
+    {
+      "id": "MDA",
+      "name": "Moldova",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.415816905142857,
+      "gdp": 3683.840121831728,
+      "originLadder": 5.529,
+      "originGdp": 3267.9961042872
+    },
+    {
+      "id": "LUX",
+      "name": "Luxembourg",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 7.172602505142857,
+      "gdp": 111204.37485510622,
+      "originLadder": 7.09,
+      "originGdp": 106788.661202756
+    },
+    {
+      "id": "CYP",
+      "name": "Cyprus",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.220053705142857,
+      "gdp": 30115.752811878494,
+      "originLadder": 6.046,
+      "originGdp": 26962.392578125
+    },
+    {
+      "id": "MLT",
+      "name": "Malta",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.819338505142857,
+      "gdp": 33082.98878901581,
+      "originLadder": 6.726,
+      "originGdp": 29536.7913868949
+    },
+    {
+      "id": "CHN",
+      "name": "China",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.186445705142857,
+      "gdp": 11089.338843356669,
+      "originLadder": 5.191,
+      "originGdp": 9798.57890566402
+    },
+    {
+      "id": "JPN",
+      "name": "Japan",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.889156105142857,
+      "gdp": 38942.11013451201,
+      "originLadder": 5.886,
+      "originGdp": 36899.3847079435
+    },
+    {
+      "id": "KOR",
+      "name": "South Korea",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.930071305142857,
+      "gdp": 35517.57543676057,
+      "originLadder": 5.895,
+      "originGdp": 32852.8887488942
+    },
+    {
+      "id": "MNG",
+      "name": "Mongolia",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.426162505142857,
+      "gdp": 4528.007243822164,
+      "originLadder": 5.285,
+      "originGdp": 4183.85566447661
+    },
+    {
+      "id": "VNM",
+      "name": "Vietnam",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.2251017051428565,
+      "gdp": 3427.001413368701,
+      "originLadder": 5.175,
+      "originGdp": 3048.28327602145
+    },
+    {
+      "id": "IDN",
+      "name": "Indonesia",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.153676105142857,
+      "gdp": 4064.238885870697,
+      "originLadder": 5.192,
+      "originGdp": 3701.32155461912
+    },
+    {
+      "id": "PHL",
+      "name": "Philippines",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.7571321051428574,
+      "gdp": 3819.780588575764,
+      "originLadder": 5.631,
+      "originGdp": 3410.93647976109
+    },
+    {
+      "id": "THA",
+      "name": "Thailand",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.851092105142857,
+      "gdp": 6888.817255830962,
+      "originLadder": 6.008,
+      "originGdp": 6314.19948412043
+    },
+    {
+      "id": "MYS",
+      "name": "Malaysia",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.181116105142857,
+      "gdp": 11532.918265998283,
+      "originLadder": 5.339,
+      "originGdp": 10610.1950240479
+    },
+    {
+      "id": "MMR",
+      "name": "Myanmar",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 4.340512905142858,
+      "gdp": 1521.333129909675,
+      "originLadder": 4.36,
+      "originGdp": 1361.5683126412
+    },
+    {
+      "id": "LAO",
+      "name": "Laos",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 4.769945819428572,
+      "gdp": 2741.584178176108,
+      "originLadder": 4.796,
+      "originGdp": 2459.97874636195
+    },
+    {
+      "id": "IND",
+      "name": "India",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 3.902792905142857,
+      "gdp": 2122.103866629384,
+      "originLadder": 4.015,
+      "originGdp": 1883.35772705055
+    },
+    {
+      "id": "PAK",
+      "name": "Pakistan",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.839253705142856,
+      "gdp": 1716.0387518716059,
+      "originLadder": 5.653,
+      "originGdp": 1561.68169819559
+    },
+    {
+      "id": "BGD",
+      "name": "Bangladesh",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 4.404597705142858,
+      "gdp": 1651.0578866987782,
+      "originLadder": 4.456,
+      "originGdp": 1462.25050255713
+    },
+    {
+      "id": "LKA",
+      "name": "Sri Lanka",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 4.3685705051428565,
+      "gdp": 4907.090616902609,
+      "originLadder": 4.366,
+      "originGdp": 4493.03574617534
+    },
+    {
+      "id": "NPL",
+      "name": "Nepal",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 4.954024905142857,
+      "gdp": 1147.2047662044895,
+      "originLadder": 4.913,
+      "originGdp": 1021.91492204011
+    },
+    {
+      "id": "BTN",
+      "name": "Bhutan",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.069442505142857,
+      "gdp": 3598.4299757497274,
+      "originLadder": 5.082,
+      "originGdp": 3300.55006461736
+    },
+    {
+      "id": "KAZ",
+      "name": "Kazakhstan",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.787853705142857,
+      "gdp": 11329.127275876808,
+      "originLadder": 5.809,
+      "originGdp": 10670.2120148279
+    },
+    {
+      "id": "KGZ",
+      "name": "Kyrgyzstan",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.309540105142857,
+      "gdp": 1256.1116516656384,
+      "originLadder": 5.261,
+      "originGdp": 1175.0712778747
+    },
+    {
+      "id": "TJK",
+      "name": "Tajikistan",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.649154505142857,
+      "gdp": 1211.4694329385811,
+      "originLadder": 5.467,
+      "originGdp": 1094.8002018221
+    },
+    {
+      "id": "TUR",
+      "name": "Turkey",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.380548105142857,
+      "gdp": 13407.577703379951,
+      "originLadder": 5.373,
+      "originGdp": 12255.0082146169
+    },
+    {
+      "id": "IRN",
+      "name": "Iran",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 4.485764105142858,
+      "gdp": 5411.282417192447,
+      "originLadder": 4.548,
+      "originGdp": 5127.22495367018
+    },
+    {
+      "id": "IRQ",
+      "name": "Iraq",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 4.406484105142858,
+      "gdp": 5042.368616403493,
+      "originLadder": 4.437,
+      "originGdp": 4749.00921836896
+    },
+    {
+      "id": "ARE",
+      "name": "UAE",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.9249753051428575,
+      "gdp": 44060.42535445678,
+      "originLadder": 6.825,
+      "originGdp": 43377.802601486
+    },
+    {
+      "id": "ISR",
+      "name": "Israel",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 7.1131689051428575,
+      "gdp": 41484.69058907837,
+      "originLadder": 7.139,
+      "originGdp": 38695.0100079706
+    },
+    {
+      "id": "JOR",
+      "name": "Jordan",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 4.786570505142857,
+      "gdp": 4429.652083642974,
+      "originLadder": 4.906,
+      "originGdp": 4320.029787425
+    },
+    {
+      "id": "LBN",
+      "name": "Lebanon",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.228264905142858,
+      "gdp": 9069.475438529389,
+      "originLadder": 5.197,
+      "originGdp": 8388.7235123835
+    },
+    {
+      "id": "YEM",
+      "name": "Yemen",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 3.269940105142857,
+      "gdp": 1000.6325841269636,
+      "originLadder": 3.38,
+      "originGdp": 1079.32938366255
+    },
+    {
+      "id": "GEO",
+      "name": "Georgia",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 4.616340105142857,
+      "gdp": 5238.967648370308,
+      "originLadder": 4.519,
+      "originGdp": 4713.65354845303
+    },
+    {
+      "id": "ARM",
+      "name": "Armenia",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 4.625791305142857,
+      "gdp": 4482.540098969104,
+      "originLadder": 4.559,
+      "originGdp": 4027.83393010979
+    },
+    {
+      "id": "PSE",
+      "name": "Palestine",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 4.689786505142857,
+      "gdp": 3610.0269352586656,
+      "originLadder": 4.696,
+      "originGdp": 3417.79440837962
+    },
+    {
+      "id": "NGA",
+      "name": "Nigeria",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.400989705142857,
+      "gdp": 2450.9459031671877,
+      "originLadder": 5.265,
+      "originGdp": 2431.77857832597
+    },
+    {
+      "id": "ZAF",
+      "name": "South Africa",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 4.802650505142858,
+      "gdp": 6352.9397864024,
+      "originLadder": 4.722,
+      "originGdp": 6117.2701406047
+    },
+    {
+      "id": "EGY",
+      "name": "Egypt",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 4.091661705142857,
+      "gdp": 3837.6240938872133,
+      "originLadder": 4.166,
+      "originGdp": 3568.63966286365
+    },
+    {
+      "id": "ETH",
+      "name": "Ethiopia",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 4.224154505142857,
+      "gdp": 794.2063410243989,
+      "originLadder": 4.286,
+      "originGdp": 705.96881207336
+    },
+    {
+      "id": "KEN",
+      "name": "Kenya",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 4.553733705142857,
+      "gdp": 1711.0485522441788,
+      "originLadder": 4.509,
+      "originGdp": 1596.69045914945
+    },
+    {
+      "id": "COD",
+      "name": "DR Congo",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 4.471224905142857,
+      "gdp": 513.9813776485184,
+      "originLadder": 4.418,
+      "originGdp": 495.312105711027
+    },
+    {
+      "id": "MAR",
+      "name": "Morocco",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.240436105142857,
+      "gdp": 3520.7418936485406,
+      "originLadder": 5.208,
+      "originGdp": 3304.7119140625
+    },
+    {
+      "id": "DZA",
+      "name": "Algeria",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 4.833613705142858,
+      "gdp": 4904.044115018785,
+      "originLadder": 5.211,
+      "originGdp": 4717.0035885361
+    },
+    {
+      "id": "AUS",
+      "name": "Australia",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 7.215832905142857,
+      "gdp": 61853.34623525952,
+      "originLadder": 7.228,
+      "originGdp": 58772.7063152213
+    },
+    {
+      "id": "USA",
+      "name": "United States",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.821073729828572,
+      "gdp": 64853.43556591429,
+      "originLadder": 6.892,
+      "originGdp": 59817.6556798612
+    },
+    {
+      "id": "CAN",
+      "name": "Canada",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 7.251589889828571,
+      "gdp": 48107.406865036624,
+      "originLadder": 7.278,
+      "originGdp": 44907.3887994469
+    },
+    {
+      "id": "MEX",
+      "name": "Mexico",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.536354049828571,
+      "gdp": 10996.306805803288,
+      "originLadder": 6.595,
+      "originGdp": 10296.8690940459
+    },
+    {
+      "id": "GTM",
+      "name": "Guatemala",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.483980289828572,
+      "gdp": 4341.419707557362,
+      "originLadder": 6.436,
+      "originGdp": 4040.21214374742
+    },
+    {
+      "id": "HTI",
+      "name": "Haiti",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 3.4586500498285715,
+      "gdp": 1527.9471182511631,
+      "originLadder": 3.597,
+      "originGdp": 1437.35251928349
+    },
+    {
+      "id": "DOM",
+      "name": "Dominican Rep.",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.545953729828571,
+      "gdp": 8933.880690389713,
+      "originLadder": 5.425,
+      "originGdp": 7818.70593240469
+    },
+    {
+      "id": "HND",
+      "name": "Honduras",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.265290369828572,
+      "gdp": 2665.804251627376,
+      "originLadder": 5.86,
+      "originGdp": 2430.13503657762
+    },
+    {
+      "id": "NIC",
+      "name": "Nicaragua",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.170101889828572,
+      "gdp": 2245.58689808694,
+      "originLadder": 6.105,
+      "originGdp": 2107.3396261623
+    },
+    {
+      "id": "SLV",
+      "name": "El Salvador",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.354706689828571,
+      "gdp": 4425.410125668422,
+      "originLadder": 6.253,
+      "originGdp": 4046.16291720583
+    },
+    {
+      "id": "CRI",
+      "name": "Costa Rica",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 7.211319809828571,
+      "gdp": 14058.268500060352,
+      "originLadder": 7.167,
+      "originGdp": 12708.8042828359
+    },
+    {
+      "id": "PAN",
+      "name": "Panama",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.200598209828571,
+      "gdp": 17094.56221102044,
+      "originLadder": 6.321,
+      "originGdp": 15375.6500855703
+    },
+    {
+      "id": "BRA",
+      "name": "Brazil",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.060337409828571,
+      "gdp": 9040.092579159189,
+      "originLadder": 6.3,
+      "originGdp": 8722.33630317935
+    },
+    {
+      "id": "ARG",
+      "name": "Argentina",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.878100929828571,
+      "gdp": 13396.638679082,
+      "originLadder": 6.086,
+      "originGdp": 13058.3285449954
+    },
+    {
+      "id": "COL",
+      "name": "Colombia",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.004243969828571,
+      "gdp": 6731.65642905951,
+      "originLadder": 6.125,
+      "originGdp": 6353.5464285392
+    },
+    {
+      "id": "CHL",
+      "name": "Chile",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.347568449828572,
+      "gdp": 14641.136382910907,
+      "originLadder": 6.444,
+      "originGdp": 13763.0068844795
+    },
+    {
+      "id": "PER",
+      "name": "Peru",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.691371969828571,
+      "gdp": 7160.777158110347,
+      "originLadder": 5.697,
+      "originGdp": 6593.14437459526
+    },
+    {
+      "id": "ECU",
+      "name": "Ecuador",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.059094849828571,
+      "gdp": 6469.319974640039,
+      "originLadder": 6.028,
+      "originGdp": 6063.0956178776
+    },
+    {
+      "id": "BOL",
+      "name": "Bolivia",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.772191169828571,
+      "gdp": 3513.0564062277094,
+      "originLadder": 5.779,
+      "originGdp": 3204.53670838005
+    },
+    {
+      "id": "PRY",
+      "name": "Paraguay",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.8546254098285715,
+      "gdp": 7015.793536368859,
+      "originLadder": 5.743,
+      "originGdp": 6354.2392005297
+    },
+    {
+      "id": "URY",
+      "name": "Uruguay",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.211682689828572,
+      "gdp": 18831.563839094615,
+      "originLadder": 6.293,
+      "originGdp": 17608.94412947
+    },
+    {
+      "id": "RUS",
+      "name": "Russia",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.573059009828571,
+      "gdp": 10432.978048133184,
+      "originLadder": 5.648,
+      "originGdp": 9674.787109375
+    },
+    {
+      "id": "GBR",
+      "name": "United Kingdom",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 7.199160129828572,
+      "gdp": 51521.42909227235,
+      "originLadder": 7.054,
+      "originGdp": 47516.2099770322
+    },
+    {
+      "id": "FRA",
+      "name": "France",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.654740289828571,
+      "gdp": 40929.40480243101,
+      "originLadder": 6.592,
+      "originGdp": 38062.4435961412
+    },
+    {
+      "id": "DEU",
+      "name": "Germany",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 7.000272129828572,
+      "gdp": 47529.54932831893,
+      "originLadder": 6.985,
+      "originGdp": 43905.8550061973
+    },
+    {
+      "id": "ITA",
+      "name": "Italy",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.331201089828571,
+      "gdp": 34487.82176441615,
+      "originLadder": 6.223,
+      "originGdp": 31963.6417148824
+    },
+    {
+      "id": "ESP",
+      "name": "Spain",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.357346049828572,
+      "gdp": 30750.397802631047,
+      "originLadder": 6.354,
+      "originGdp": 27956.7225466484
+    },
+    {
+      "id": "NLD",
+      "name": "Netherlands",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 7.565146049828572,
+      "gdp": 52757.6527951909,
+      "originLadder": 7.488,
+      "originGdp": 48463.0055608731
+    },
+    {
+      "id": "SWE",
+      "name": "Sweden",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 7.381770049828571,
+      "gdp": 55468.680002450004,
+      "originLadder": 7.343,
+      "originGdp": 52203.0872589761
+    },
+    {
+      "id": "BEL",
+      "name": "Belgium",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.941932609828571,
+      "gdp": 45205.21111642663,
+      "originLadder": 6.923,
+      "originGdp": 42208.3625650272
+    },
+    {
+      "id": "AUT",
+      "name": "Austria",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 7.323500289828572,
+      "gdp": 49644.77786111726,
+      "originLadder": 7.246,
+      "originGdp": 45951.5819164034
+    },
+    {
+      "id": "POL",
+      "name": "Poland",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.339440449828572,
+      "gdp": 16712.181910306863,
+      "originLadder": 6.182,
+      "originGdp": 14551.0850277089
+    },
+    {
+      "id": "NOR",
+      "name": "Norway",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 7.597375169828572,
+      "gdp": 84827.90660380112,
+      "originLadder": 7.554,
+      "originGdp": 79313.2889434042
+    },
+    {
+      "id": "CHE",
+      "name": "Switzerland",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 7.485707649828572,
+      "gdp": 95114.87890922806,
+      "originLadder": 7.48,
+      "originGdp": 88581.0826935584
+    },
+    {
+      "id": "IRL",
+      "name": "Ireland",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 7.078190529828571,
+      "gdp": 85587.03355132317,
+      "originLadder": 7.021,
+      "originGdp": 74029.0550611436
+    },
+    {
+      "id": "DNK",
+      "name": "Denmark",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 7.646917569828571,
+      "gdp": 61477.805478106355,
+      "originLadder": 7.6,
+      "originGdp": 56355.0733084714
+    },
+    {
+      "id": "FIN",
+      "name": "Finland",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 7.931163649828571,
+      "gdp": 49621.19228780415,
+      "originLadder": 7.769,
+      "originGdp": 45337.2409550575
+    },
+    {
+      "id": "PRT",
+      "name": "Portugal",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.937111169828571,
+      "gdp": 23340.144259785076,
+      "originLadder": 5.693,
+      "originGdp": 20997.7745987013
+    },
+    {
+      "id": "GRC",
+      "name": "Greece",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.409252609828571,
+      "gdp": 20253.722412115796,
+      "originLadder": 5.287,
+      "originGdp": 18769.0389621976
+    },
+    {
+      "id": "CZE",
+      "name": "Czechia",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.971536769828572,
+      "gdp": 22082.401138255336,
+      "originLadder": 6.852,
+      "originGdp": 19736.6295261285
+    },
+    {
+      "id": "HUN",
+      "name": "Hungary",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.026907969828572,
+      "gdp": 16552.5356179089,
+      "originLadder": 5.758,
+      "originGdp": 14533.7783144312
+    },
+    {
+      "id": "ROU",
+      "name": "Romania",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.292974849828572,
+      "gdp": 12642.642019885103,
+      "originLadder": 6.07,
+      "originGdp": 10714.1701157127
+    },
+    {
+      "id": "UKR",
+      "name": "Ukraine",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 4.352467649828571,
+      "gdp": 2575.5960226666434,
+      "originLadder": 4.332,
+      "originGdp": 2308.6669921875
+    },
+    {
+      "id": "BLR",
+      "name": "Belarus",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.159971329828572,
+      "gdp": 6627.290771986055,
+      "originLadder": 5.323,
+      "originGdp": 6165.91320019277
+    },
+    {
+      "id": "SRB",
+      "name": "Serbia",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.771067649828571,
+      "gdp": 7349.075384115875,
+      "originLadder": 5.603,
+      "originGdp": 6524.08029755191
+    },
+    {
+      "id": "ISL",
+      "name": "Iceland",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 7.507264769828571,
+      "gdp": 63416.51905412715,
+      "originLadder": 7.494,
+      "originGdp": 57731.6523639512
+    },
+    {
+      "id": "EST",
+      "name": "Estonia",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.058115649828571,
+      "gdp": 22571.10928393482,
+      "originLadder": 5.893,
+      "originGdp": 19914.3454922878
+    },
+    {
+      "id": "LVA",
+      "name": "Latvia",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.101219009828572,
+      "gdp": 17198.06582055803,
+      "originLadder": 5.94,
+      "originGdp": 15120.0698171804
+    },
+    {
+      "id": "LTU",
+      "name": "Lithuania",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.290735809828572,
+      "gdp": 19212.189211479483,
+      "originLadder": 6.149,
+      "originGdp": 16604.9021440809
+    },
+    {
+      "id": "SVK",
+      "name": "Slovakia",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.266171969828572,
+      "gdp": 19769.499838623593,
+      "originLadder": 6.198,
+      "originGdp": 17869.0149173679
+    },
+    {
+      "id": "SVN",
+      "name": "Slovenia",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.281226369828572,
+      "gdp": 26406.099685115754,
+      "originLadder": 6.118,
+      "originGdp": 23293.966665323
+    },
+    {
+      "id": "HRV",
+      "name": "Croatia",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.432275969828572,
+      "gdp": 16090.034694650209,
+      "originLadder": 5.432,
+      "originGdp": 14061.0597402919
+    },
+    {
+      "id": "BIH",
+      "name": "Bosnia & Herz.",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.475544449828571,
+      "gdp": 6144.881688312371,
+      "originLadder": 5.386,
+      "originGdp": 5360.25201017633
+    },
+    {
+      "id": "MNE",
+      "name": "Montenegro",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.681030849828571,
+      "gdp": 8043.556457670528,
+      "originLadder": 5.523,
+      "originGdp": 7159.46778433252
+    },
+    {
+      "id": "MKD",
+      "name": "North Macedonia",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.3461866898285715,
+      "gdp": 6276.873072432532,
+      "originLadder": 5.274,
+      "originGdp": 5698.39334484489
+    },
+    {
+      "id": "ALB",
+      "name": "Albania",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 4.751629889828572,
+      "gdp": 5656.712588313378,
+      "originLadder": 4.719,
+      "originGdp": 4893.82375538717
+    },
+    {
+      "id": "BGR",
+      "name": "Bulgaria",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.3349332498285715,
+      "gdp": 9281.837018213782,
+      "originLadder": 5.011,
+      "originGdp": 8194.79296320014
+    },
+    {
+      "id": "MDA",
+      "name": "Moldova",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.392067009828571,
+      "gdp": 3827.820835082826,
+      "originLadder": 5.529,
+      "originGdp": 3267.9961042872
+    },
+    {
+      "id": "LUX",
+      "name": "Luxembourg",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 7.189935489828571,
+      "gdp": 112656.02073160931,
+      "originLadder": 7.09,
+      "originGdp": 106788.661202756
+    },
+    {
+      "id": "CYP",
+      "name": "Cyprus",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.256576449828572,
+      "gdp": 31201.05875597732,
+      "originLadder": 6.046,
+      "originGdp": 26962.392578125
+    },
+    {
+      "id": "MLT",
+      "name": "Malta",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.838924289828571,
+      "gdp": 34305.71014832368,
+      "originLadder": 6.726,
+      "originGdp": 29536.7913868949
+    },
+    {
+      "id": "CHN",
+      "name": "China",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.185490049828571,
+      "gdp": 11537.403941134171,
+      "originLadder": 5.191,
+      "originGdp": 9798.57890566402
+    },
+    {
+      "id": "JPN",
+      "name": "Japan",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.889818369828571,
+      "gdp": 39619.56433851966,
+      "originLadder": 5.886,
+      "originGdp": 36899.3847079435
+    },
+    {
+      "id": "KOR",
+      "name": "South Korea",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.937430529828571,
+      "gdp": 36415.365391960484,
+      "originLadder": 5.895,
+      "originGdp": 32852.8887488942
+    },
+    {
+      "id": "MNG",
+      "name": "Mongolia",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.455783489828572,
+      "gdp": 4644.039761285241,
+      "originLadder": 5.285,
+      "originGdp": 4183.85566447661
+    },
+    {
+      "id": "VNM",
+      "name": "Vietnam",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.235614849828571,
+      "gdp": 3557.8998333624627,
+      "originLadder": 5.175,
+      "originGdp": 3048.28327602145
+    },
+    {
+      "id": "IDN",
+      "name": "Indonesia",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.145634369828572,
+      "gdp": 4187.762516649021,
+      "originLadder": 5.192,
+      "originGdp": 3701.32155461912
+    },
+    {
+      "id": "PHL",
+      "name": "Philippines",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.783599169828572,
+      "gdp": 3960.7329646946964,
+      "originLadder": 5.631,
+      "originGdp": 3410.93647976109
+    },
+    {
+      "id": "THA",
+      "name": "Thailand",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.8181671698285715,
+      "gdp": 7083.575012709679,
+      "originLadder": 6.008,
+      "originGdp": 6314.19948412043
+    },
+    {
+      "id": "MYS",
+      "name": "Malaysia",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.147986369828572,
+      "gdp": 11844.903775328854,
+      "originLadder": 5.339,
+      "originGdp": 10610.1950240479
+    },
+    {
+      "id": "MMR",
+      "name": "Myanmar",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 4.336423809828572,
+      "gdp": 1576.332439761467,
+      "originLadder": 4.36,
+      "originGdp": 1361.5683126412
+    },
+    {
+      "id": "LAO",
+      "name": "Laos",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 4.764478712685714,
+      "gdp": 2838.365274547314,
+      "originLadder": 4.796,
+      "originGdp": 2459.97874636195
+    },
+    {
+      "id": "IND",
+      "name": "India",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 3.879247809828571,
+      "gdp": 2204.7437108019717,
+      "originLadder": 4.015,
+      "originGdp": 1883.35772705055
+    },
+    {
+      "id": "PAK",
+      "name": "Pakistan",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.878336449828571,
+      "gdp": 1768.6008469884894,
+      "originLadder": 5.653,
+      "originGdp": 1561.68169819559
+    },
+    {
+      "id": "BGD",
+      "name": "Bangladesh",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 4.393811649828572,
+      "gdp": 1716.5007674527028,
+      "originLadder": 4.456,
+      "originGdp": 1462.25050255713
+    },
+    {
+      "id": "LKA",
+      "name": "Sri Lanka",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 4.369109889828571,
+      "gdp": 5047.524790123771,
+      "originLadder": 4.366,
+      "originGdp": 4493.03574617534
+    },
+    {
+      "id": "NPL",
+      "name": "Nepal",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 4.962633409828571,
+      "gdp": 1190.4683036388174,
+      "originLadder": 4.913,
+      "originGdp": 1021.91492204011
+    },
+    {
+      "id": "BTN",
+      "name": "Bhutan",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.066807489828571,
+      "gdp": 3699.3462242639175,
+      "originLadder": 5.082,
+      "originGdp": 3300.55006461736
+    },
+    {
+      "id": "KAZ",
+      "name": "Kazakhstan",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.783416449828572,
+      "gdp": 11548.518717588451,
+      "originLadder": 5.809,
+      "originGdp": 10670.2120148279
+    },
+    {
+      "id": "KGZ",
+      "name": "Kyrgyzstan",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.319725569828572,
+      "gdp": 1283.2147270853466,
+      "originLadder": 5.261,
+      "originGdp": 1175.0712778747
+    },
+    {
+      "id": "TJK",
+      "name": "Tajikistan",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.687377089828571,
+      "gdp": 1251.3800835797813,
+      "originLadder": 5.467,
+      "originGdp": 1094.8002018221
+    },
+    {
+      "id": "TUR",
+      "name": "Turkey",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.3821319698285714,
+      "gdp": 13798.935242451309,
+      "originLadder": 5.373,
+      "originGdp": 12255.0082146169
+    },
+    {
+      "id": "IRN",
+      "name": "Iran",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 4.472704769828572,
+      "gdp": 5505.4903803223115,
+      "originLadder": 4.548,
+      "originGdp": 5127.22495367018
+    },
+    {
+      "id": "IRQ",
+      "name": "Iraq",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 4.4000807698285715,
+      "gdp": 5140.046328478898,
+      "originLadder": 4.437,
+      "originGdp": 4749.00921836896
+    },
+    {
+      "id": "ARE",
+      "name": "UAE",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.945953729828572,
+      "gdp": 44281.187429898826,
+      "originLadder": 6.825,
+      "originGdp": 43377.802601486
+    },
+    {
+      "id": "ISR",
+      "name": "Israel",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 7.107748609828572,
+      "gdp": 42419.456042831676,
+      "originLadder": 7.139,
+      "originGdp": 38695.0100079706
+    },
+    {
+      "id": "JOR",
+      "name": "Jordan",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 4.761509889828571,
+      "gdp": 4465.325417277521,
+      "originLadder": 4.906,
+      "originGdp": 4320.029787425
+    },
+    {
+      "id": "LBN",
+      "name": "Lebanon",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.234825409828572,
+      "gdp": 9298.84104156357,
+      "originLadder": 5.197,
+      "originGdp": 8388.7235123835
+    },
+    {
+      "id": "YEM",
+      "name": "Yemen",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 3.2468455698285714,
+      "gdp": 976.675500733563,
+      "originLadder": 3.38,
+      "originGdp": 1079.32938366255
+    },
+    {
+      "id": "GEO",
+      "name": "Georgia",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 4.6367655698285715,
+      "gdp": 5419.1854725496905,
+      "originLadder": 4.519,
+      "originGdp": 4713.65354845303
+    },
+    {
+      "id": "ARM",
+      "name": "Armenia",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 4.639806529828571,
+      "gdp": 4638.666979821991,
+      "originLadder": 4.559,
+      "originGdp": 4027.83393010979
+    },
+    {
+      "id": "PSE",
+      "name": "Palestine",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 4.688482689828572,
+      "gdp": 3673.8144525895095,
+      "originLadder": 4.696,
+      "originGdp": 3417.79440837962
+    },
+    {
+      "id": "NGA",
+      "name": "Nigeria",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.429525249828571,
+      "gdp": 2457.113029831401,
+      "originLadder": 5.265,
+      "originGdp": 2431.77857832597
+    },
+    {
+      "id": "ZAF",
+      "name": "South Africa",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 4.819573889828572,
+      "gdp": 6430.276954139887,
+      "originLadder": 4.722,
+      "originGdp": 6117.2701406047
+    },
+    {
+      "id": "EGY",
+      "name": "Egypt",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 4.076062849828572,
+      "gdp": 3927.9357972927546,
+      "originLadder": 4.166,
+      "originGdp": 3568.63966286365
+    },
+    {
+      "id": "ETH",
+      "name": "Ethiopia",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 4.2111770898285705,
+      "gdp": 824.7175748829477,
+      "originLadder": 4.286,
+      "originGdp": 705.96881207336
+    },
+    {
+      "id": "KEN",
+      "name": "Kenya",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 4.563120449828572,
+      "gdp": 1749.3565817066963,
+      "originLadder": 4.509,
+      "originGdp": 1596.69045914945
+    },
+    {
+      "id": "COD",
+      "name": "DR Congo",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 4.482393409828571,
+      "gdp": 520.1046398183477,
+      "originLadder": 4.418,
+      "originGdp": 495.312105711027
+    },
+    {
+      "id": "MAR",
+      "name": "Morocco",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.247242369828571,
+      "gdp": 3592.831446916728,
+      "originLadder": 5.208,
+      "originGdp": 3304.7119140625
+    },
+    {
+      "id": "DZA",
+      "name": "Algeria",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 4.754424449828572,
+      "gdp": 4965.466958085528,
+      "originLadder": 5.211,
+      "originGdp": 4717.0035885361
+    },
+    {
+      "id": "AUS",
+      "name": "Australia",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 7.213279809828571,
+      "gdp": 62873.146486371916,
+      "originLadder": 7.228,
+      "originGdp": 58772.7063152213
+    },
+    {
+      "id": "USA",
+      "name": "United States",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.811232469577143,
+      "gdp": 66111.12143928598,
+      "originLadder": 6.892,
+      "originGdp": 59817.6556798612
+    },
+    {
+      "id": "CAN",
+      "name": "Canada",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 7.247925397577142,
+      "gdp": 48900.75689760706,
+      "originLadder": 7.278,
+      "originGdp": 44907.3887994469
+    },
+    {
+      "id": "MEX",
+      "name": "Mexico",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.528216725577143,
+      "gdp": 11169.380743686608,
+      "originLadder": 6.595,
+      "originGdp": 10296.8690940459
+    },
+    {
+      "id": "GTM",
+      "name": "Guatemala",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.490637717577143,
+      "gdp": 4416.23598091719,
+      "originLadder": 6.436,
+      "originGdp": 4040.21214374742
+    },
+    {
+      "id": "HTI",
+      "name": "Haiti",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 3.439453525577143,
+      "gdp": 1550.3013296525712,
+      "originLadder": 3.597,
+      "originGdp": 1437.35251928349
+    },
+    {
+      "id": "DOM",
+      "name": "Dominican Rep.",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.562736469577143,
+      "gdp": 9221.465809333002,
+      "originLadder": 5.425,
+      "originGdp": 7818.70593240469
+    },
+    {
+      "id": "HND",
+      "name": "Honduras",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.321525781577143,
+      "gdp": 2725.086677602382,
+      "originLadder": 5.86,
+      "originGdp": 2430.13503657762
+    },
+    {
+      "id": "NIC",
+      "name": "Nicaragua",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.179134997577144,
+      "gdp": 2279.7500876597355,
+      "originLadder": 6.105,
+      "originGdp": 2107.3396261623
+    },
+    {
+      "id": "SLV",
+      "name": "El Salvador",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.368818837577143,
+      "gdp": 4520.636639595788,
+      "originLadder": 6.253,
+      "originGdp": 4046.16291720583
+    },
+    {
+      "id": "CRI",
+      "name": "Costa Rica",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 7.217469333577143,
+      "gdp": 14399.46356338304,
+      "originLadder": 7.167,
+      "originGdp": 12708.8042828359
+    },
+    {
+      "id": "PAN",
+      "name": "Panama",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.183892053577143,
+      "gdp": 17530.512453055177,
+      "originLadder": 6.321,
+      "originGdp": 15375.6500855703
+    },
+    {
+      "id": "BRA",
+      "name": "Brazil",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.0270834135771425,
+      "gdp": 9117.2864968256,
+      "originLadder": 6.3,
+      "originGdp": 8722.33630317935
+    },
+    {
+      "id": "ARG",
+      "name": "Argentina",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.849254229577143,
+      "gdp": 13478.310490642602,
+      "originLadder": 6.086,
+      "originGdp": 13058.3285449954
+    },
+    {
+      "id": "COL",
+      "name": "Colombia",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.987488661577143,
+      "gdp": 6824.765348285924,
+      "originLadder": 6.125,
+      "originGdp": 6353.5464285392
+    },
+    {
+      "id": "CHL",
+      "name": "Chile",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.334188245577143,
+      "gdp": 14857.911732080416,
+      "originLadder": 6.444,
+      "originGdp": 13763.0068844795
+    },
+    {
+      "id": "PER",
+      "name": "Peru",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.690591061577143,
+      "gdp": 7302.696230411677,
+      "originLadder": 5.697,
+      "originGdp": 6593.14437459526
+    },
+    {
+      "id": "ECU",
+      "name": "Ecuador",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.063409365577142,
+      "gdp": 6569.785477260117,
+      "originLadder": 6.028,
+      "originGdp": 6063.0956178776
+    },
+    {
+      "id": "BOL",
+      "name": "Bolivia",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.771246421577143,
+      "gdp": 3590.633947229347,
+      "originLadder": 5.779,
+      "originGdp": 3204.53670838005
+    },
+    {
+      "id": "PRY",
+      "name": "Paraguay",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.870113813577143,
+      "gdp": 7182.867828525997,
+      "originLadder": 5.743,
+      "originGdp": 6354.2392005297
+    },
+    {
+      "id": "URY",
+      "name": "Uruguay",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.200399637577143,
+      "gdp": 19134.359175152495,
+      "originLadder": 6.293,
+      "originGdp": 17608.94412947
+    },
+    {
+      "id": "RUS",
+      "name": "Russia",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.5626606935771425,
+      "gdp": 10621.713025849314,
+      "originLadder": 5.648,
+      "originGdp": 9674.787109375
+    },
+    {
+      "id": "GBR",
+      "name": "United Kingdom",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 7.219301589577143,
+      "gdp": 52521.79241206607,
+      "originLadder": 7.054,
+      "originGdp": 47516.2099770322
+    },
+    {
+      "id": "FRA",
+      "name": "France",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.663445717577142,
+      "gdp": 41641.835782302755,
+      "originLadder": 6.592,
+      "originGdp": 38062.4435961412
+    },
+    {
+      "id": "DEU",
+      "name": "Germany",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 7.002391189577144,
+      "gdp": 48433.721847430934,
+      "originLadder": 6.985,
+      "originGdp": 43905.8550061973
+    },
+    {
+      "id": "ITA",
+      "name": "Italy",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.346214357577143,
+      "gdp": 35116.376113150065,
+      "originLadder": 6.223,
+      "originGdp": 31963.6417148824
+    },
+    {
+      "id": "ESP",
+      "name": "Spain",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.357810325577143,
+      "gdp": 31454.300045356442,
+      "originLadder": 6.354,
+      "originGdp": 27956.7225466484
+    },
+    {
+      "id": "NLD",
+      "name": "Netherlands",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 7.575850325577143,
+      "gdp": 53832.923069416196,
+      "originLadder": 7.488,
+      "originGdp": 48463.0055608731
+    },
+    {
+      "id": "SWE",
+      "name": "Sweden",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 7.387149525577143,
+      "gdp": 56274.24451382203,
+      "originLadder": 7.343,
+      "originGdp": 52203.0872589761
+    },
+    {
+      "id": "BEL",
+      "name": "Belgium",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.944559573577143,
+      "gdp": 45948.08197955655,
+      "originLadder": 6.923,
+      "originGdp": 42208.3625650272
+    },
+    {
+      "id": "AUT",
+      "name": "Austria",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 7.334253717577144,
+      "gdp": 50565.16431473673,
+      "originLadder": 7.246,
+      "originGdp": 45951.5819164034
+    },
+    {
+      "id": "POL",
+      "name": "Poland",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.361285845577144,
+      "gdp": 17271.237987017936,
+      "originLadder": 6.182,
+      "originGdp": 14551.0850277089
+    },
+    {
+      "id": "NOR",
+      "name": "Norway",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 7.603393621577143,
+      "gdp": 86193.73948824327,
+      "originLadder": 7.554,
+      "originGdp": 79313.2889434042
+    },
+    {
+      "id": "CHE",
+      "name": "Switzerland",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 7.486499605577143,
+      "gdp": 96737.06055847392,
+      "originLadder": 7.48,
+      "originGdp": 88581.0826935584
+    },
+    {
+      "id": "IRL",
+      "name": "Ireland",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 7.0861259095771425,
+      "gdp": 88588.99982962021,
+      "originLadder": 7.021,
+      "originGdp": 74029.0550611436
+    },
+    {
+      "id": "DNK",
+      "name": "Denmark",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 7.653427541577142,
+      "gdp": 62762.053474897104,
+      "originLadder": 7.6,
+      "originGdp": 56355.0733084714
+    },
+    {
+      "id": "FIN",
+      "name": "Finland",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 7.953664405577143,
+      "gdp": 50697.32228142776,
+      "originLadder": 7.769,
+      "originGdp": 45337.2409550575
+    },
+    {
+      "id": "PRT",
+      "name": "Portugal",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.970982421577142,
+      "gdp": 23934.137025840853,
+      "originLadder": 5.693,
+      "originGdp": 20997.7745987013
+    },
+    {
+      "id": "GRC",
+      "name": "Greece",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.426215573577142,
+      "gdp": 20623.456115399356,
+      "originLadder": 5.287,
+      "originGdp": 18769.0389621976
+    },
+    {
+      "id": "CZE",
+      "name": "Czechia",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.988122901577143,
+      "gdp": 22679.637704463697,
+      "originLadder": 6.852,
+      "originGdp": 19736.6295261285
+    },
+    {
+      "id": "HUN",
+      "name": "Hungary",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.064219861577143,
+      "gdp": 17072.105561361648,
+      "originLadder": 5.758,
+      "originGdp": 14533.7783144312
+    },
+    {
+      "id": "ROU",
+      "name": "Romania",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.323913365577144,
+      "gdp": 13149.772835852993,
+      "originLadder": 6.07,
+      "originGdp": 10714.1701157127
+    },
+    {
+      "id": "UKR",
+      "name": "Ukraine",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 4.355307605577143,
+      "gdp": 2643.436620758765,
+      "originLadder": 4.332,
+      "originGdp": 2308.6669921875
+    },
+    {
+      "id": "BLR",
+      "name": "Belarus",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.137350549577143,
+      "gdp": 6741.909278817142,
+      "originLadder": 5.323,
+      "originGdp": 6165.91320019277
+    },
+    {
+      "id": "SRB",
+      "name": "Serbia",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.794387605577143,
+      "gdp": 7559.989020423505,
+      "originLadder": 5.603,
+      "originGdp": 6524.08029755191
+    },
+    {
+      "id": "ISL",
+      "name": "Iceland",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 7.509105301577143,
+      "gdp": 64847.7328584321,
+      "originLadder": 7.494,
+      "originGdp": 57731.6523639512
+    },
+    {
+      "id": "EST",
+      "name": "Estonia",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.081026005577143,
+      "gdp": 23252.87466296518,
+      "originLadder": 5.893,
+      "originGdp": 19914.3454922878
+    },
+    {
+      "id": "LVA",
+      "name": "Latvia",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.123588693577144,
+      "gdp": 17732.46239183339,
+      "originLadder": 5.94,
+      "originGdp": 15120.0698171804
+    },
+    {
+      "id": "LTU",
+      "name": "Lithuania",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.310402133577143,
+      "gdp": 19889.699833523566,
+      "originLadder": 6.149,
+      "originGdp": 16604.9021440809
+    },
+    {
+      "id": "SVK",
+      "name": "Slovakia",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.275631061577143,
+      "gdp": 20250.05947413724,
+      "originLadder": 6.198,
+      "originGdp": 17869.0149173679
+    },
+    {
+      "id": "SVN",
+      "name": "Slovenia",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.303874581577143,
+      "gdp": 27204.802434553792,
+      "originLadder": 6.118,
+      "originGdp": 23293.966665323
+    },
+    {
+      "id": "HRV",
+      "name": "Croatia",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.432314261577143,
+      "gdp": 16613.738348623145,
+      "originLadder": 5.432,
+      "originGdp": 14061.0597402919
+    },
+    {
+      "id": "BIH",
+      "name": "Bosnia & Herz.",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.487969045577143,
+      "gdp": 6347.6283508746765,
+      "originLadder": 5.386,
+      "originGdp": 5360.25201017633
+    },
+    {
+      "id": "MNE",
+      "name": "Montenegro",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.702958165577143,
+      "gdp": 8269.21436386527,
+      "originLadder": 5.523,
+      "originGdp": 7159.46778433252
+    },
+    {
+      "id": "MKD",
+      "name": "North Macedonia",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.356202837577142,
+      "gdp": 6422.757016160471,
+      "originLadder": 5.274,
+      "originGdp": 5698.39334484489
+    },
+    {
+      "id": "ALB",
+      "name": "Albania",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 4.756157397577144,
+      "gdp": 5854.833596829321,
+      "originLadder": 4.719,
+      "originGdp": 4893.82375538717
+    },
+    {
+      "id": "BGR",
+      "name": "Bulgaria",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.379880085577144,
+      "gdp": 9560.675031507728,
+      "originLadder": 5.011,
+      "originGdp": 8194.79296320014
+    },
+    {
+      "id": "MDA",
+      "name": "Moldova",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.373067093577142,
+      "gdp": 3974.3802299358017,
+      "originLadder": 5.529,
+      "originGdp": 3267.9961042872
+    },
+    {
+      "id": "LUX",
+      "name": "Luxembourg",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 7.203801877577143,
+      "gdp": 114097.01697454005,
+      "originLadder": 7.09,
+      "originGdp": 106788.661202756
+    },
+    {
+      "id": "CYP",
+      "name": "Cyprus",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.285794645577143,
+      "gdp": 32302.59606319124,
+      "originLadder": 6.046,
+      "originGdp": 26962.392578125
+    },
+    {
+      "id": "MLT",
+      "name": "Malta",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.8545929175771425,
+      "gdp": 35547.81051520797,
+      "originLadder": 6.726,
+      "originGdp": 29536.7913868949
+    },
+    {
+      "id": "CHN",
+      "name": "China",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.184725525577143,
+      "gdp": 11994.06763677211,
+      "originLadder": 5.191,
+      "originGdp": 9798.57890566402
+    },
+    {
+      "id": "JPN",
+      "name": "Japan",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.890348181577143,
+      "gdp": 40294.90222998593,
+      "originLadder": 5.886,
+      "originGdp": 36899.3847079435
+    },
+    {
+      "id": "KOR",
+      "name": "South Korea",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.943317909577142,
+      "gdp": 37317.213332942265,
+      "originLadder": 5.895,
+      "originGdp": 32852.8887488942
+    },
+    {
+      "id": "MNG",
+      "name": "Mongolia",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.479480277577143,
+      "gdp": 4760.63592466179,
+      "originLadder": 5.285,
+      "originGdp": 4183.85566447661
+    },
+    {
+      "id": "VNM",
+      "name": "Vietnam",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.2440253655771425,
+      "gdp": 3691.029888689471,
+      "originLadder": 5.175,
+      "originGdp": 3048.28327602145
+    },
+    {
+      "id": "IDN",
+      "name": "Indonesia",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.139200981577143,
+      "gdp": 4312.457296353423,
+      "originLadder": 5.192,
+      "originGdp": 3701.32155461912
+    },
+    {
+      "id": "PHL",
+      "name": "Philippines",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.804772821577143,
+      "gdp": 4103.911300546674,
+      "originLadder": 5.631,
+      "originGdp": 3410.93647976109
+    },
+    {
+      "id": "THA",
+      "name": "Thailand",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.791827221577143,
+      "gdp": 7279.778642457572,
+      "originLadder": 6.008,
+      "originGdp": 6314.19948412043
+    },
+    {
+      "id": "MYS",
+      "name": "Malaysia",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.121482581577143,
+      "gdp": 12158.836354224324,
+      "originLadder": 5.339,
+      "originGdp": 10610.1950240479
+    },
+    {
+      "id": "MMR",
+      "name": "Myanmar",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 4.3331525335771435,
+      "gdp": 1632.160387984697,
+      "originLadder": 4.36,
+      "originGdp": 1361.5683126412
+    },
+    {
+      "id": "LAO",
+      "name": "Laos",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 4.760105027291429,
+      "gdp": 2936.5246493685345,
+      "originLadder": 4.796,
+      "originGdp": 2459.97874636195
+    },
+    {
+      "id": "IND",
+      "name": "India",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 3.8604117335771426,
+      "gdp": 2288.852248112799,
+      "originLadder": 4.015,
+      "originGdp": 1883.35772705055
+    },
+    {
+      "id": "PAK",
+      "name": "Pakistan",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.909602645577142,
+      "gdp": 1821.6733782583374,
+      "originLadder": 5.653,
+      "originGdp": 1561.68169819559
+    },
+    {
+      "id": "BGD",
+      "name": "Bangladesh",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 4.385182805577143,
+      "gdp": 1783.1507877906513,
+      "originLadder": 4.456,
+      "originGdp": 1462.25050255713
+    },
+    {
+      "id": "LKA",
+      "name": "Sri Lanka",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 4.369541397577143,
+      "gdp": 5189.048806702156,
+      "originLadder": 4.366,
+      "originGdp": 4493.03574617534
+    },
+    {
+      "id": "NPL",
+      "name": "Nepal",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 4.969520213577143,
+      "gdp": 1234.449115855243,
+      "originLadder": 4.913,
+      "originGdp": 1021.91492204011
+    },
+    {
+      "id": "BTN",
+      "name": "Bhutan",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.064699477577142,
+      "gdp": 3800.989447611733,
+      "originLadder": 5.082,
+      "originGdp": 3300.55006461736
+    },
+    {
+      "id": "KAZ",
+      "name": "Kazakhstan",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.779866645577143,
+      "gdp": 11767.643764770208,
+      "originLadder": 5.809,
+      "originGdp": 10670.2120148279
+    },
+    {
+      "id": "KGZ",
+      "name": "Kyrgyzstan",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.327873941577144,
+      "gdp": 1310.343034797739,
+      "originLadder": 5.261,
+      "originGdp": 1175.0712778747
+    },
+    {
+      "id": "TJK",
+      "name": "Tajikistan",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.717955157577142,
+      "gdp": 1291.7678783637184,
+      "originLadder": 5.467,
+      "originGdp": 1094.8002018221
+    },
+    {
+      "id": "TUR",
+      "name": "Turkey",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.383399061577143,
+      "gdp": 14193.546516019365,
+      "originLadder": 5.373,
+      "originGdp": 12255.0082146169
+    },
+    {
+      "id": "IRN",
+      "name": "Iran",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 4.462257301577143,
+      "gdp": 5599.4052425548725,
+      "originLadder": 4.548,
+      "originGdp": 5127.22495367018
+    },
+    {
+      "id": "IRQ",
+      "name": "Iraq",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 4.394958101577143,
+      "gdp": 5237.606017726705,
+      "originLadder": 4.437,
+      "originGdp": 4749.00921836896
+    },
+    {
+      "id": "ARE",
+      "name": "UAE",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.962736469577143,
+      "gdp": 44498.607380728616,
+      "originLadder": 6.825,
+      "originGdp": 43377.802601486
+    },
+    {
+      "id": "ISR",
+      "name": "Israel",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 7.103412373577143,
+      "gdp": 43355.95832724402,
+      "originLadder": 7.139,
+      "originGdp": 38695.0100079706
+    },
+    {
+      "id": "JOR",
+      "name": "Jordan",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 4.741461397577142,
+      "gdp": 4500.563996308159,
+      "originLadder": 4.906,
+      "originGdp": 4320.029787425
+    },
+    {
+      "id": "LBN",
+      "name": "Lebanon",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.240073813577143,
+      "gdp": 9529.246151202018,
+      "originLadder": 5.197,
+      "originGdp": 8388.7235123835
+    },
+    {
+      "id": "YEM",
+      "name": "Yemen",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 3.2283699415771427,
+      "gdp": 953.7541347313422,
+      "originLadder": 3.38,
+      "originGdp": 1079.32938366255
+    },
+    {
+      "id": "GEO",
+      "name": "Georgia",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 4.653105941577143,
+      "gdp": 5601.812232220465,
+      "originLadder": 4.519,
+      "originGdp": 4713.65354845303
+    },
+    {
+      "id": "ARM",
+      "name": "Armenia",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 4.6510187095771425,
+      "gdp": 4796.945958908596,
+      "originLadder": 4.559,
+      "originGdp": 4027.83393010979
+    },
+    {
+      "id": "PSE",
+      "name": "Palestine",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 4.6874396375771425,
+      "gdp": 3737.4195999978156,
+      "originLadder": 4.696,
+      "originGdp": 3417.79440837962
+    },
+    {
+      "id": "NGA",
+      "name": "Nigeria",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.452353685577142,
+      "gdp": 2463.1718691440024,
+      "originLadder": 5.265,
+      "originGdp": 2431.77857832597
+    },
+    {
+      "id": "ZAF",
+      "name": "South Africa",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 4.833112597577144,
+      "gdp": 6506.980708935231,
+      "originLadder": 4.722,
+      "originGdp": 6117.2701406047
+    },
+    {
+      "id": "EGY",
+      "name": "Egypt",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 4.063583765577143,
+      "gdp": 4018.502936717273,
+      "originLadder": 4.166,
+      "originGdp": 3568.63966286365
+    },
+    {
+      "id": "ETH",
+      "name": "Ethiopia",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 4.200795157577142,
+      "gdp": 855.7555233965695,
+      "originLadder": 4.286,
+      "originGdp": 705.96881207336
+    },
+    {
+      "id": "KEN",
+      "name": "Kenya",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 4.570629845577144,
+      "gdp": 1787.7304329105075,
+      "originLadder": 4.509,
+      "originGdp": 1596.69045914945
+    },
+    {
+      "id": "COD",
+      "name": "DR Congo",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 4.491328213577143,
+      "gdp": 526.1762060944873,
+      "originLadder": 4.418,
+      "originGdp": 495.312105711027
+    },
+    {
+      "id": "MAR",
+      "name": "Morocco",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.252687381577143,
+      "gdp": 3664.9111093884267,
+      "originLadder": 5.208,
+      "originGdp": 3304.7119140625
+    },
+    {
+      "id": "DZA",
+      "name": "Algeria",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 4.691073045577143,
+      "gdp": 5026.40767374532,
+      "originLadder": 5.211,
+      "originGdp": 4717.0035885361
+    },
+    {
+      "id": "AUS",
+      "name": "Australia",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 7.2112373335771425,
+      "gdp": 63888.861738954896,
+      "originLadder": 7.228,
+      "originGdp": 58772.7063152213
+    },
+    {
+      "id": "USA",
+      "name": "United States",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.803359461376,
+      "gdp": 67367.31370591302,
+      "originLadder": 6.892,
+      "originGdp": 59817.6556798612
+    },
+    {
+      "id": "CAN",
+      "name": "Canada",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 7.2449938037759996,
+      "gdp": 49690.93197034685,
+      "originLadder": 7.278,
+      "originGdp": 44907.3887994469
+    },
+    {
+      "id": "MEX",
+      "name": "Mexico",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.521706866176,
+      "gdp": 11341.635808598081,
+      "originLadder": 6.595,
+      "originGdp": 10296.8690940459
+    },
+    {
+      "id": "GTM",
+      "name": "Guatemala",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.495963659776,
+      "gdp": 4490.806682983282,
+      "originLadder": 6.436,
+      "originGdp": 4040.21214374742
+    },
+    {
+      "id": "HTI",
+      "name": "Haiti",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 3.424096306176,
+      "gdp": 1572.525727148541,
+      "originLadder": 3.597,
+      "originGdp": 1437.35251928349
+    },
+    {
+      "id": "DOM",
+      "name": "Dominican Rep.",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.576162661375999,
+      "gdp": 9512.278918837208,
+      "originLadder": 5.425,
+      "originGdp": 7818.70593240469
+    },
+    {
+      "id": "HND",
+      "name": "Honduras",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.366514110976,
+      "gdp": 2784.4623089236716,
+      "originLadder": 5.86,
+      "originGdp": 2430.13503657762
+    },
+    {
+      "id": "NIC",
+      "name": "Nicaragua",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.186361483776,
+      "gdp": 2313.7342151884004,
+      "originLadder": 6.105,
+      "originGdp": 2107.3396261623
+    },
+    {
+      "id": "SLV",
+      "name": "El Salvador",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.380108555776,
+      "gdp": 4615.946372273586,
+      "originLadder": 6.253,
+      "originGdp": 4046.16291720583
+    },
+    {
+      "id": "CRI",
+      "name": "Costa Rica",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 7.222388952576,
+      "gdp": 14741.867490596514,
+      "originLadder": 7.167,
+      "originGdp": 12708.8042828359
+    },
+    {
+      "id": "PAN",
+      "name": "Panama",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.1705271285759995,
+      "gdp": 17968.528283398,
+      "originLadder": 6.321,
+      "originGdp": 15375.6500855703
+    },
+    {
+      "id": "BRA",
+      "name": "Brazil",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.000480216575999,
+      "gdp": 9193.576020438964,
+      "originLadder": 6.3,
+      "originGdp": 8722.33630317935
+    },
+    {
+      "id": "ARG",
+      "name": "Argentina",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.826176869376,
+      "gdp": 13558.831916075713,
+      "originLadder": 6.086,
+      "originGdp": 13058.3285449954
+    },
+    {
+      "id": "COL",
+      "name": "Colombia",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.974084414976,
+      "gdp": 6917.261433001149,
+      "originLadder": 6.125,
+      "originGdp": 6353.5464285392
+    },
+    {
+      "id": "CHL",
+      "name": "Chile",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.323484082176,
+      "gdp": 15073.465179612878,
+      "originLadder": 6.444,
+      "originGdp": 13763.0068844795
+    },
+    {
+      "id": "PER",
+      "name": "Peru",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.689966334976,
+      "gdp": 7444.505431211033,
+      "originLadder": 5.697,
+      "originGdp": 6593.14437459526
+    },
+    {
+      "id": "ECU",
+      "name": "Ecuador",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.066860978175999,
+      "gdp": 6669.755202404404,
+      "originLadder": 6.028,
+      "originGdp": 6063.0956178776
+    },
+    {
+      "id": "BOL",
+      "name": "Bolivia",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.770490622975999,
+      "gdp": 3668.321759712199,
+      "originLadder": 5.779,
+      "originGdp": 3204.53670838005
+    },
+    {
+      "id": "PRY",
+      "name": "Paraguay",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.8825045365760005,
+      "gdp": 7350.4601716792995,
+      "originLadder": 5.743,
+      "originGdp": 6354.2392005297
+    },
+    {
+      "id": "URY",
+      "name": "Uruguay",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.191373195776,
+      "gdp": 19435.82170164937,
+      "originLadder": 6.293,
+      "originGdp": 17608.94412947
+    },
+    {
+      "id": "RUS",
+      "name": "Russia",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.554342040576,
+      "gdp": 10809.985420671386,
+      "originLadder": 5.648,
+      "originGdp": 9674.787109375
+    },
+    {
+      "id": "GBR",
+      "name": "United Kingdom",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 7.235414757376001,
+      "gdp": 53520.990723363895,
+      "originLadder": 7.054,
+      "originGdp": 47516.2099770322
+    },
+    {
+      "id": "FRA",
+      "name": "France",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.670410059776,
+      "gdp": 42352.04802150836,
+      "originLadder": 6.592,
+      "originGdp": 38062.4435961412
+    },
+    {
+      "id": "DEU",
+      "name": "Germany",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 7.004086437376,
+      "gdp": 49336.496651998306,
+      "originLadder": 6.985,
+      "originGdp": 43905.8550061973
+    },
+    {
+      "id": "ITA",
+      "name": "Italy",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.358224971776,
+      "gdp": 35743.47230668536,
+      "originLadder": 6.223,
+      "originGdp": 31963.6417148824
+    },
+    {
+      "id": "ESP",
+      "name": "Spain",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.358181746176,
+      "gdp": 32159.754615876744,
+      "originLadder": 6.354,
+      "originGdp": 27956.7225466484
+    },
+    {
+      "id": "NLD",
+      "name": "Netherlands",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 7.584413746176001,
+      "gdp": 54907.94740530226,
+      "originLadder": 7.488,
+      "originGdp": 48463.0055608731
+    },
+    {
+      "id": "SWE",
+      "name": "Sweden",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 7.391453106176,
+      "gdp": 57075.04711647007,
+      "originLadder": 7.343,
+      "originGdp": 52203.0872589761
+    },
+    {
+      "id": "BEL",
+      "name": "Belgium",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.946661144576,
+      "gdp": 46687.93816104831,
+      "originLadder": 6.923,
+      "originGdp": 42208.3625650272
+    },
+    {
+      "id": "AUT",
+      "name": "Austria",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 7.342856459776001,
+      "gdp": 51483.69596271018,
+      "originLadder": 7.246,
+      "originGdp": 45951.5819164034
+    },
+    {
+      "id": "POL",
+      "name": "Poland",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.378762162176001,
+      "gdp": 17837.25317314863,
+      "originLadder": 6.182,
+      "originGdp": 14551.0850277089
+    },
+    {
+      "id": "NOR",
+      "name": "Norway",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 7.6082083829760006,
+      "gdp": 87553.58966240719,
+      "originLadder": 7.554,
+      "originGdp": 79313.2889434042
+    },
+    {
+      "id": "CHE",
+      "name": "Switzerland",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 7.487133170176,
+      "gdp": 98353.63734486068,
+      "originLadder": 7.48,
+      "originGdp": 88581.0826935584
+    },
+    {
+      "id": "IRL",
+      "name": "Ireland",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 7.092474213376,
+      "gdp": 91633.05934910689,
+      "originLadder": 7.021,
+      "originGdp": 74029.0550611436
+    },
+    {
+      "id": "DNK",
+      "name": "Denmark",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 7.658635518975999,
+      "gdp": 64046.640900722174,
+      "originLadder": 7.6,
+      "originGdp": 56355.0733084714
+    },
+    {
+      "id": "FIN",
+      "name": "Finland",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 7.971665010176,
+      "gdp": 51774.56887626751,
+      "originLadder": 7.769,
+      "originGdp": 45337.2409550575
+    },
+    {
+      "id": "PRT",
+      "name": "Portugal",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.998079422976,
+      "gdp": 24530.913746743885,
+      "originLadder": 5.693,
+      "originGdp": 20997.7745987013
+    },
+    {
+      "id": "GRC",
+      "name": "Greece",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.439785944575999,
+      "gdp": 20992.34274077894,
+      "originLadder": 5.287,
+      "originGdp": 18769.0389621976
+    },
+    {
+      "id": "CZE",
+      "name": "Czechia",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 7.001391806976001,
+      "gdp": 23280.598131521463,
+      "originLadder": 6.852,
+      "originGdp": 19736.6295261285
+    },
+    {
+      "id": "HUN",
+      "name": "Hungary",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.094069374976001,
+      "gdp": 17597.103673473084,
+      "originLadder": 5.758,
+      "originGdp": 14533.7783144312
+    },
+    {
+      "id": "ROU",
+      "name": "Romania",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.3486641781760005,
+      "gdp": 13666.492006024473,
+      "originLadder": 6.07,
+      "originGdp": 10714.1701157127
+    },
+    {
+      "id": "UKR",
+      "name": "Ukraine",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 4.357579570176,
+      "gdp": 2711.6537602202916,
+      "originLadder": 4.332,
+      "originGdp": 2308.6669921875
+    },
+    {
+      "id": "BLR",
+      "name": "Belarus",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.119253925376,
+      "gdp": 6856.1584402895005,
+      "originLadder": 5.323,
+      "originGdp": 6165.91320019277
+    },
+    {
+      "id": "SRB",
+      "name": "Serbia",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.813043570176,
+      "gdp": 7772.555969472195,
+      "originLadder": 5.603,
+      "originGdp": 6524.08029755191
+    },
+    {
+      "id": "ISL",
+      "name": "Iceland",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 7.510577726976,
+      "gdp": 66281.65545518963,
+      "originLadder": 7.494,
+      "originGdp": 57731.6523639512
+    },
+    {
+      "id": "EST",
+      "name": "Estonia",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.099354290176,
+      "gdp": 23940.979949177014,
+      "originLadder": 5.893,
+      "originGdp": 19914.3454922878
+    },
+    {
+      "id": "LVA",
+      "name": "Latvia",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.141484440576001,
+      "gdp": 18272.278219349162,
+      "originLadder": 5.94,
+      "originGdp": 15120.0698171804
+    },
+    {
+      "id": "LTU",
+      "name": "Lithuania",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.326135192576,
+      "gdp": 20576.835012669995,
+      "originLadder": 6.149,
+      "originGdp": 16604.9021440809
+    },
+    {
+      "id": "SVK",
+      "name": "Slovakia",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.283198334976,
+      "gdp": 20732.339490296024,
+      "originLadder": 6.198,
+      "originGdp": 17869.0149173679
+    },
+    {
+      "id": "SVN",
+      "name": "Slovenia",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.321993150976001,
+      "gdp": 28010.96480687201,
+      "originLadder": 6.118,
+      "originGdp": 23293.966665323
+    },
+    {
+      "id": "HRV",
+      "name": "Croatia",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.4323448949760005,
+      "gdp": 17143.502085207863,
+      "originLadder": 5.432,
+      "originGdp": 14061.0597402919
+    },
+    {
+      "id": "BIH",
+      "name": "Bosnia & Herz.",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.497908722176,
+      "gdp": 6552.808820998744,
+      "originLadder": 5.386,
+      "originGdp": 5360.25201017633
+    },
+    {
+      "id": "MNE",
+      "name": "Montenegro",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.720500018176,
+      "gdp": 8496.500034275274,
+      "originLadder": 5.523,
+      "originGdp": 7159.46778433252
+    },
+    {
+      "id": "MKD",
+      "name": "North Macedonia",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.364215755776,
+      "gdp": 6569.012297216778,
+      "originLadder": 5.274,
+      "originGdp": 5698.39334484489
+    },
+    {
+      "id": "ALB",
+      "name": "Albania",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 4.759779403776,
+      "gdp": 6055.722845808404,
+      "originLadder": 4.719,
+      "originGdp": 4893.82375538717
+    },
+    {
+      "id": "BGR",
+      "name": "Bulgaria",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.415837554176,
+      "gdp": 9842.061688523785,
+      "originLadder": 5.011,
+      "originGdp": 8194.79296320014
+    },
+    {
+      "id": "MDA",
+      "name": "Moldova",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.357867160575999,
+      "gdp": 4123.45129724197,
+      "originLadder": 5.529,
+      "originGdp": 3267.9961042872
+    },
+    {
+      "id": "LUX",
+      "name": "Luxembourg",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 7.214894987776,
+      "gdp": 115527.07445078665,
+      "originLadder": 7.09,
+      "originGdp": 106788.661202756
+    },
+    {
+      "id": "CYP",
+      "name": "Cyprus",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.309169202176,
+      "gdp": 33419.82413159618,
+      "originLadder": 6.046,
+      "originGdp": 26962.392578125
+    },
+    {
+      "id": "MLT",
+      "name": "Malta",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.867127819776,
+      "gdp": 36808.69075172869,
+      "originLadder": 6.726,
+      "originGdp": 29536.7913868949
+    },
+    {
+      "id": "CHN",
+      "name": "China",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.184113906176,
+      "gdp": 12459.130107286703,
+      "originLadder": 5.191,
+      "originGdp": 9798.57890566402
+    },
+    {
+      "id": "JPN",
+      "name": "Japan",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.890772030976,
+      "gdp": 40967.90057323363,
+      "originLadder": 5.886,
+      "originGdp": 36899.3847079435
+    },
+    {
+      "id": "KOR",
+      "name": "South Korea",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.948027813375999,
+      "gdp": 38222.68997758532,
+      "originLadder": 5.895,
+      "originGdp": 32852.8887488942
+    },
+    {
+      "id": "MNG",
+      "name": "Mongolia",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.4984377077760005,
+      "gdp": 4877.739793913718,
+      "originLadder": 5.285,
+      "originGdp": 4183.85566447661
+    },
+    {
+      "id": "VNM",
+      "name": "Vietnam",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.250753778176,
+      "gdp": 3826.32918181812,
+      "originLadder": 5.175,
+      "originGdp": 3048.28327602145
+    },
+    {
+      "id": "IDN",
+      "name": "Indonesia",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.134054270976001,
+      "gdp": 4438.259736676647,
+      "originLadder": 5.192,
+      "originGdp": 3701.32155461912
+    },
+    {
+      "id": "PHL",
+      "name": "Philippines",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.821711742976,
+      "gdp": 4249.246449825252,
+      "originLadder": 5.631,
+      "originGdp": 3410.93647976109
+    },
+    {
+      "id": "THA",
+      "name": "Thailand",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.7707552629759995,
+      "gdp": 7477.329808793627,
+      "originLadder": 6.008,
+      "originGdp": 6314.19948412043
+    },
+    {
+      "id": "MYS",
+      "name": "Malaysia",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.100279550976,
+      "gdp": 12474.561261695078,
+      "originLadder": 5.339,
+      "originGdp": 10610.1950240479
+    },
+    {
+      "id": "MMR",
+      "name": "Myanmar",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 4.330535512576001,
+      "gdp": 1688.7896295164187,
+      "originLadder": 4.36,
+      "originGdp": 1361.5683126412
+    },
+    {
+      "id": "LAO",
+      "name": "Laos",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 4.7566060789760005,
+      "gdp": 3036.0135755152082,
+      "originLadder": 4.796,
+      "originGdp": 2459.97874636195
+    },
+    {
+      "id": "IND",
+      "name": "India",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 3.8453428725759995,
+      "gdp": 2374.390860630157,
+      "originLadder": 4.015,
+      "originGdp": 1883.35772705055
+    },
+    {
+      "id": "PAK",
+      "name": "Pakistan",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.934615602176,
+      "gdp": 1875.229303543279,
+      "originLadder": 5.653,
+      "originGdp": 1561.68169819559
+    },
+    {
+      "id": "BGD",
+      "name": "Bangladesh",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 4.378279730176001,
+      "gdp": 1850.977997178661,
+      "originLadder": 4.456,
+      "originGdp": 1462.25050255713
+    },
+    {
+      "id": "LKA",
+      "name": "Sri Lanka",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 4.369886603775999,
+      "gdp": 5331.591472145043,
+      "originLadder": 4.366,
+      "originGdp": 4493.03574617534
+    },
+    {
+      "id": "NPL",
+      "name": "Nepal",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 4.975029656576,
+      "gdp": 1279.1263398680685,
+      "originLadder": 4.913,
+      "originGdp": 1021.91492204011
+    },
+    {
+      "id": "BTN",
+      "name": "Bhutan",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.063013067776,
+      "gdp": 3903.3088385374863,
+      "originLadder": 5.082,
+      "originGdp": 3300.55006461736
+    },
+    {
+      "id": "KAZ",
+      "name": "Kazakhstan",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.7770268021760005,
+      "gdp": 11986.41964658416,
+      "originLadder": 5.809,
+      "originGdp": 10670.2120148279
+    },
+    {
+      "id": "KGZ",
+      "name": "Kyrgyzstan",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.334392638976,
+      "gdp": 1337.4851242579148,
+      "originLadder": 5.261,
+      "originGdp": 1175.0712778747
+    },
+    {
+      "id": "TJK",
+      "name": "Tajikistan",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.742417611775999,
+      "gdp": 1332.612303076441,
+      "originLadder": 5.467,
+      "originGdp": 1094.8002018221
+    },
+    {
+      "id": "TUR",
+      "name": "Turkey",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.384412734976,
+      "gdp": 14591.211993056591,
+      "originLadder": 5.373,
+      "originGdp": 12255.0082146169
+    },
+    {
+      "id": "IRN",
+      "name": "Iran",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 4.453899326976,
+      "gdp": 5692.995928207315,
+      "originLadder": 4.548,
+      "originGdp": 5127.22495367018
+    },
+    {
+      "id": "IRQ",
+      "name": "Iraq",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 4.3908599669760005,
+      "gdp": 5335.010819354335,
+      "originLadder": 4.437,
+      "originGdp": 4749.00921836896
+    },
+    {
+      "id": "ARE",
+      "name": "UAE",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.976162661376001,
+      "gdp": 44712.7146149513,
+      "originLadder": 6.825,
+      "originGdp": 43377.802601486
+    },
+    {
+      "id": "ISR",
+      "name": "Israel",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 7.099943384576,
+      "gdp": 44293.78684159476,
+      "originLadder": 7.139,
+      "originGdp": 38695.0100079706
+    },
+    {
+      "id": "JOR",
+      "name": "Jordan",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 4.725422603776,
+      "gdp": 4535.36759144703,
+      "originLadder": 4.906,
+      "originGdp": 4320.029787425
+    },
+    {
+      "id": "LBN",
+      "name": "Lebanon",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.244272536576,
+      "gdp": 9760.58106187702,
+      "originLadder": 5.197,
+      "originGdp": 8388.7235123835
+    },
+    {
+      "id": "YEM",
+      "name": "Yemen",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 3.213589438976,
+      "gdp": 931.8131838127931,
+      "originLadder": 3.38,
+      "originGdp": 1079.32938366255
+    },
+    {
+      "id": "GEO",
+      "name": "Georgia",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 4.666178238976,
+      "gdp": 5786.756250450453,
+      "originLadder": 4.519,
+      "originGdp": 4713.65354845303
+    },
+    {
+      "id": "ARM",
+      "name": "Armenia",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 4.659988453376,
+      "gdp": 4957.297974846467,
+      "originLadder": 4.559,
+      "originGdp": 4027.83393010979
+    },
+    {
+      "id": "PSE",
+      "name": "Palestine",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 4.686605195776,
+      "gdp": 3800.820908645104,
+      "originLadder": 4.696,
+      "originGdp": 3417.79440837962
+    },
+    {
+      "id": "NGA",
+      "name": "Nigeria",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.470616434176,
+      "gdp": 2469.124026324919,
+      "originLadder": 5.265,
+      "originGdp": 2431.77857832597
+    },
+    {
+      "id": "ZAF",
+      "name": "South Africa",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 4.843943563776001,
+      "gdp": 6583.038015434642,
+      "originLadder": 4.722,
+      "originGdp": 6117.2701406047
+    },
+    {
+      "id": "EGY",
+      "name": "Egypt",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 4.053600498176,
+      "gdp": 4109.284417911941,
+      "originLadder": 4.166,
+      "originGdp": 3568.63966286365
+    },
+    {
+      "id": "ETH",
+      "name": "Ethiopia",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 4.192489611776,
+      "gdp": 887.3057238471393,
+      "originLadder": 4.286,
+      "originGdp": 705.96881207336
+    },
+    {
+      "id": "KEN",
+      "name": "Kenya",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 4.576637362176001,
+      "gdp": 1826.1533716705121,
+      "originLadder": 4.509,
+      "originGdp": 1596.69045914945
+    },
+    {
+      "id": "COD",
+      "name": "DR Congo",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 4.498476056576,
+      "gdp": 532.1951014336669,
+      "originLadder": 4.418,
+      "originGdp": 495.312105711027
+    },
+    {
+      "id": "MAR",
+      "name": "Morocco",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.257043390976,
+      "gdp": 3736.9519668650137,
+      "originLadder": 5.208,
+      "originGdp": 3304.7119140625
+    },
+    {
+      "id": "DZA",
+      "name": "Algeria",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 4.640391922176001,
+      "gdp": 5086.855147651259,
+      "originLadder": 5.211,
+      "originGdp": 4717.0035885361
+    },
+    {
+      "id": "AUS",
+      "name": "Australia",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 7.209603352576,
+      "gdp": 64900.180867494244,
+      "originLadder": 7.228,
+      "originGdp": 58772.7063152213
+    },
+    {
+      "id": "USA",
+      "name": "United States",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.797061054815086,
+      "gdp": 68621.53709727949,
+      "originLadder": 6.892,
+      "originGdp": 59817.6556798612
+    },
+    {
+      "id": "CAN",
+      "name": "Canada",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 7.242648528735085,
+      "gdp": 50477.68995997213,
+      "originLadder": 7.278,
+      "originGdp": 44907.3887994469
+    },
+    {
+      "id": "MEX",
+      "name": "Mexico",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.516498978655085,
+      "gdp": 11513.022874737671,
+      "originLadder": 6.595,
+      "originGdp": 10296.8690940459
+    },
+    {
+      "id": "GTM",
+      "name": "Guatemala",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.5002244135350855,
+      "gdp": 4565.1074803137735,
+      "originLadder": 6.436,
+      "originGdp": 4040.21214374742
+    },
+    {
+      "id": "HTI",
+      "name": "Haiti",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 3.4118105306550857,
+      "gdp": 1594.6147116292973,
+      "originLadder": 3.597,
+      "originGdp": 1437.35251928349
+    },
+    {
+      "id": "DOM",
+      "name": "Dominican Rep.",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.5869036148150855,
+      "gdp": 9806.171846118265,
+      "originLadder": 5.425,
+      "originGdp": 7818.70593240469
+    },
+    {
+      "id": "HND",
+      "name": "Honduras",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.402504774495086,
+      "gdp": 2843.9054015050806,
+      "originLadder": 5.86,
+      "originGdp": 2430.13503657762
+    },
+    {
+      "id": "NIC",
+      "name": "Nicaragua",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.192142672735087,
+      "gdp": 2347.530114625389,
+      "originLadder": 6.105,
+      "originGdp": 2107.3396261623
+    },
+    {
+      "id": "SLV",
+      "name": "El Salvador",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.389140330335086,
+      "gdp": 4711.299195794165,
+      "originLadder": 6.253,
+      "originGdp": 4046.16291720583
+    },
+    {
+      "id": "CRI",
+      "name": "Costa Rica",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 7.226324647775086,
+      "gdp": 15085.321464077471,
+      "originLadder": 7.167,
+      "originGdp": 12708.8042828359
+    },
+    {
+      "id": "PAN",
+      "name": "Panama",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.1598351885750855,
+      "gdp": 18408.400126423905,
+      "originLadder": 6.321,
+      "originGdp": 15375.6500855703
+    },
+    {
+      "id": "BRA",
+      "name": "Brazil",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.979197658975085,
+      "gdp": 9268.959053891525,
+      "originLadder": 6.3,
+      "originGdp": 8722.33630317935
+    },
+    {
+      "id": "ARG",
+      "name": "Argentina",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.807714981215086,
+      "gdp": 13638.209606176932,
+      "originLadder": 6.086,
+      "originGdp": 13058.3285449954
+    },
+    {
+      "id": "COL",
+      "name": "Colombia",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.963361017695085,
+      "gdp": 7009.123729206418,
+      "originLadder": 6.125,
+      "originGdp": 6353.5464285392
+    },
+    {
+      "id": "CHL",
+      "name": "Chile",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.314920751455086,
+      "gdp": 15287.741250928957,
+      "originLadder": 6.444,
+      "originGdp": 13763.0068844795
+    },
+    {
+      "id": "PER",
+      "name": "Peru",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.689466553695086,
+      "gdp": 7586.149798671839,
+      "originLadder": 5.697,
+      "originGdp": 6593.14437459526
+    },
+    {
+      "id": "ECU",
+      "name": "Ecuador",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.0696222682550856,
+      "gdp": 6769.201250414353,
+      "originLadder": 6.028,
+      "originGdp": 6063.0956178776
+    },
+    {
+      "id": "BOL",
+      "name": "Bolivia",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.769885984095086,
+      "gdp": 3746.0863640587427,
+      "originLadder": 5.779,
+      "originGdp": 3204.53670838005
+    },
+    {
+      "id": "PRY",
+      "name": "Paraguay",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.892417114975086,
+      "gdp": 7518.493857825346,
+      "originLadder": 5.743,
+      "originGdp": 6354.2392005297
+    },
+    {
+      "id": "URY",
+      "name": "Uruguay",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.184152042335086,
+      "gdp": 19735.862511966887,
+      "originLadder": 6.293,
+      "originGdp": 17608.94412947
+    },
+    {
+      "id": "RUS",
+      "name": "Russia",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.5476871181750855,
+      "gdp": 10997.729712028839,
+      "originLadder": 5.648,
+      "originGdp": 9674.787109375
+    },
+    {
+      "id": "GBR",
+      "name": "United Kingdom",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 7.248305291615086,
+      "gdp": 54518.645466617636,
+      "originLadder": 7.054,
+      "originGdp": 47516.2099770322
+    },
+    {
+      "id": "FRA",
+      "name": "France",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.675981533535086,
+      "gdp": 43059.80657522132,
+      "originLadder": 6.592,
+      "originGdp": 38062.4435961412
+    },
+    {
+      "id": "DEU",
+      "name": "Germany",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 7.005442635615086,
+      "gdp": 50237.53965922927,
+      "originLadder": 6.985,
+      "originGdp": 43905.8550061973
+    },
+    {
+      "id": "ITA",
+      "name": "Italy",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.367833463135085,
+      "gdp": 36368.89004299244,
+      "originLadder": 6.223,
+      "originGdp": 31963.6417148824
+    },
+    {
+      "id": "ESP",
+      "name": "Spain",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.358478882655086,
+      "gdp": 32866.448200489256,
+      "originLadder": 6.354,
+      "originGdp": 27956.7225466484
+    },
+    {
+      "id": "NLD",
+      "name": "Netherlands",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 7.591264482655086,
+      "gdp": 55982.296607380165,
+      "originLadder": 7.488,
+      "originGdp": 48463.0055608731
+    },
+    {
+      "id": "SWE",
+      "name": "Sweden",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 7.394895970655085,
+      "gdp": 57870.88873700626,
+      "originLadder": 7.343,
+      "originGdp": 52203.0872589761
+    },
+    {
+      "id": "BEL",
+      "name": "Belgium",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.948342401375085,
+      "gdp": 47424.554137767045,
+      "originLadder": 6.923,
+      "originGdp": 42208.3625650272
+    },
+    {
+      "id": "AUT",
+      "name": "Austria",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 7.349738653535087,
+      "gdp": 52400.04320898899,
+      "originLadder": 7.246,
+      "originGdp": 45951.5819164034
+    },
+    {
+      "id": "POL",
+      "name": "Poland",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.392743215455086,
+      "gdp": 18409.940901272512,
+      "originLadder": 6.182,
+      "originGdp": 14551.0850277089
+    },
+    {
+      "id": "NOR",
+      "name": "Norway",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 7.612060192095086,
+      "gdp": 88907.05523346303,
+      "originLadder": 7.554,
+      "originGdp": 79313.2889434042
+    },
+    {
+      "id": "CHE",
+      "name": "Switzerland",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 7.4876400218550865,
+      "gdp": 99964.08932818456,
+      "originLadder": 7.48,
+      "originGdp": 88581.0826935584
+    },
+    {
+      "id": "IRL",
+      "name": "Ireland",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 7.097552856415086,
+      "gdp": 94717.69633606283,
+      "originLadder": 7.021,
+      "originGdp": 74029.0550611436
+    },
+    {
+      "id": "DNK",
+      "name": "Denmark",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 7.662801900895086,
+      "gdp": 65331.04199935138,
+      "originLadder": 7.6,
+      "originGdp": 56355.0733084714
+    },
+    {
+      "id": "FIN",
+      "name": "Finland",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 7.986065493855086,
+      "gdp": 52852.475259867526,
+      "originLadder": 7.769,
+      "originGdp": 45337.2409550575
+    },
+    {
+      "id": "PRT",
+      "name": "Portugal",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.019757024095085,
+      "gdp": 25130.189225727714,
+      "originLadder": 5.693,
+      "originGdp": 20997.7745987013
+    },
+    {
+      "id": "GRC",
+      "name": "Greece",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.4506422413750855,
+      "gdp": 21360.25243112837,
+      "originLadder": 5.287,
+      "originGdp": 18769.0389621976
+    },
+    {
+      "id": "CZE",
+      "name": "Czechia",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 7.012006931295086,
+      "gdp": 23884.986227260724,
+      "originLadder": 6.852,
+      "originGdp": 19736.6295261285
+    },
+    {
+      "id": "HUN",
+      "name": "Hungary",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.117948985695086,
+      "gdp": 18127.262167832923,
+      "originLadder": 5.758,
+      "originGdp": 14533.7783144312
+    },
+    {
+      "id": "ROU",
+      "name": "Romania",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.368464828255086,
+      "gdp": 14192.571045454064,
+      "originLadder": 6.07,
+      "originGdp": 10714.1701157127
+    },
+    {
+      "id": "UKR",
+      "name": "Ukraine",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 4.359397141855085,
+      "gdp": 2780.21423157683,
+      "originLadder": 4.332,
+      "originGdp": 2308.6669921875
+    },
+    {
+      "id": "BLR",
+      "name": "Belarus",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.104776626015086,
+      "gdp": 6970.000791356921,
+      "originLadder": 5.323,
+      "originGdp": 6165.91320019277
+    },
+    {
+      "id": "SRB",
+      "name": "Serbia",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.827968341855086,
+      "gdp": 7986.669212875586,
+      "originLadder": 5.603,
+      "originGdp": 6524.08029755191
+    },
+    {
+      "id": "ISL",
+      "name": "Iceland",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 7.511755667295085,
+      "gdp": 67717.65732590876,
+      "originLadder": 7.494,
+      "originGdp": 57731.6523639512
+    },
+    {
+      "id": "EST",
+      "name": "Estonia",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.114016917855086,
+      "gdp": 24635.07505158936,
+      "originLadder": 5.893,
+      "originGdp": 19914.3454922878
+    },
+    {
+      "id": "LVA",
+      "name": "Latvia",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.1558010381750865,
+      "gdp": 18817.23801152316,
+      "originLadder": 5.94,
+      "originGdp": 15120.0698171804
+    },
+    {
+      "id": "LTU",
+      "name": "Lithuania",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.338721639775086,
+      "gdp": 21273.253474518213,
+      "originLadder": 6.149,
+      "originGdp": 16604.9021440809
+    },
+    {
+      "id": "SVK",
+      "name": "Slovakia",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.289252153695086,
+      "gdp": 21216.115952337674,
+      "originLadder": 6.198,
+      "originGdp": 17869.0149173679
+    },
+    {
+      "id": "SVN",
+      "name": "Slovenia",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.336488006495086,
+      "gdp": 28824.176575059544,
+      "originLadder": 6.118,
+      "originGdp": 23293.966665323
+    },
+    {
+      "id": "HRV",
+      "name": "Croatia",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.432369401695086,
+      "gdp": 17679.0563137216,
+      "originLadder": 5.432,
+      "originGdp": 14061.0597402919
+    },
+    {
+      "id": "BIH",
+      "name": "Bosnia & Herz.",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.505860463455086,
+      "gdp": 6760.318910325546,
+      "originLadder": 5.386,
+      "originGdp": 5360.25201017633
+    },
+    {
+      "id": "MNE",
+      "name": "Montenegro",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.734533500255085,
+      "gdp": 8725.299844380163,
+      "originLadder": 5.523,
+      "originGdp": 7159.46778433252
+    },
+    {
+      "id": "MKD",
+      "name": "North Macedonia",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.370626090335086,
+      "gdp": 6715.573177891156,
+      "originLadder": 5.274,
+      "originGdp": 5698.39334484489
+    },
+    {
+      "id": "ALB",
+      "name": "Albania",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 4.7626770087350865,
+      "gdp": 6259.280236462142,
+      "originLadder": 4.719,
+      "originGdp": 4893.82375538717
+    },
+    {
+      "id": "BGR",
+      "name": "Bulgaria",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.444603529055086,
+      "gdp": 10125.853933449202,
+      "originLadder": 5.011,
+      "originGdp": 8194.79296320014
+    },
+    {
+      "id": "MDA",
+      "name": "Moldova",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.345707214175086,
+      "gdp": 4274.964335142431,
+      "originLadder": 5.529,
+      "originGdp": 3267.9961042872
+    },
+    {
+      "id": "LUX",
+      "name": "Luxembourg",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 7.223769475935085,
+      "gdp": 116945.91910419124,
+      "originLadder": 7.09,
+      "originGdp": 106788.661202756
+    },
+    {
+      "id": "CYP",
+      "name": "Cyprus",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.327868847455086,
+      "gdp": 34552.18838596534,
+      "originLadder": 6.046,
+      "originGdp": 26962.392578125
+    },
+    {
+      "id": "MLT",
+      "name": "Malta",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.877155741535086,
+      "gdp": 38087.733857862375,
+      "originLadder": 6.726,
+      "originGdp": 29536.7913868949
+    },
+    {
+      "id": "CHN",
+      "name": "China",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.183624610655086,
+      "gdp": 12932.381987713094,
+      "originLadder": 5.191,
+      "originGdp": 9798.57890566402
+    },
+    {
+      "id": "JPN",
+      "name": "Japan",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.8911111104950855,
+      "gdp": 41638.34307908301,
+      "originLadder": 5.886,
+      "originGdp": 36899.3847079435
+    },
+    {
+      "id": "KOR",
+      "name": "South Korea",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.951795736415085,
+      "gdp": 39131.36970450322,
+      "originLadder": 5.895,
+      "originGdp": 32852.8887488942
+    },
+    {
+      "id": "MNG",
+      "name": "Mongolia",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.513603651935086,
+      "gdp": 4995.2958534611635,
+      "originLadder": 5.285,
+      "originGdp": 4183.85566447661
+    },
+    {
+      "id": "VNM",
+      "name": "Vietnam",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.256136508255086,
+      "gdp": 3963.733092970133,
+      "originLadder": 5.175,
+      "originGdp": 3048.28327602145
+    },
+    {
+      "id": "IDN",
+      "name": "Indonesia",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.129936902495086,
+      "gdp": 4565.105970382555,
+      "originLadder": 5.192,
+      "originGdp": 3701.32155461912
+    },
+    {
+      "id": "PHL",
+      "name": "Philippines",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.835262880095086,
+      "gdp": 4396.6672227752,
+      "originLadder": 5.631,
+      "originGdp": 3410.93647976109
+    },
+    {
+      "id": "THA",
+      "name": "Thailand",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.753897696095086,
+      "gdp": 7676.130202176086,
+      "originLadder": 6.008,
+      "originGdp": 6314.19948412043
+    },
+    {
+      "id": "MYS",
+      "name": "Malaysia",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.0833171264950865,
+      "gdp": 12791.924328007975,
+      "originLadder": 5.339,
+      "originGdp": 10610.1950240479
+    },
+    {
+      "id": "MMR",
+      "name": "Myanmar",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 4.328441895775087,
+      "gdp": 1746.1920994450138,
+      "originLadder": 4.36,
+      "originGdp": 1361.5683126412
+    },
+    {
+      "id": "LAO",
+      "name": "Laos",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 4.753806920323657,
+      "gdp": 3136.782211827164,
+      "originLadder": 4.796,
+      "originGdp": 2459.97874636195
+    },
+    {
+      "id": "IND",
+      "name": "India",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 3.833287783775085,
+      "gdp": 2461.319407790128,
+      "originLadder": 4.015,
+      "originGdp": 1883.35772705055
+    },
+    {
+      "id": "PAK",
+      "name": "Pakistan",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.954625967455085,
+      "gdp": 1929.241399644533,
+      "originLadder": 5.653,
+      "originGdp": 1561.68169819559
+    },
+    {
+      "id": "BGD",
+      "name": "Bangladesh",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 4.372757269855087,
+      "gdp": 1919.951150396355,
+      "originLadder": 4.456,
+      "originGdp": 1462.25050255713
+    },
+    {
+      "id": "LKA",
+      "name": "Sri Lanka",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 4.370162768735085,
+      "gdp": 5475.081540659884,
+      "originLadder": 4.366,
+      "originGdp": 4493.03574617534
+    },
+    {
+      "id": "NPL",
+      "name": "Nepal",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 4.979437210975086,
+      "gdp": 1324.4784185310568,
+      "originLadder": 4.913,
+      "originGdp": 1021.91492204011
+    },
+    {
+      "id": "BTN",
+      "name": "Bhutan",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.061663939935086,
+      "gdp": 4006.2536363345707,
+      "originLadder": 5.082,
+      "originGdp": 3300.55006461736
+    },
+    {
+      "id": "KAZ",
+      "name": "Kazakhstan",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.774754927455086,
+      "gdp": 12204.765647204698,
+      "originLadder": 5.809,
+      "originGdp": 10670.2120148279
+    },
+    {
+      "id": "KGZ",
+      "name": "Kyrgyzstan",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.339607596895086,
+      "gdp": 1364.6297568905509,
+      "originLadder": 5.261,
+      "originGdp": 1175.0712778747
+    },
+    {
+      "id": "TJK",
+      "name": "Tajikistan",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.761987575135085,
+      "gdp": 1373.8925521357896,
+      "originLadder": 5.467,
+      "originGdp": 1094.8002018221
+    },
+    {
+      "id": "TUR",
+      "name": "Turkey",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.385223673695086,
+      "gdp": 14991.731668697073,
+      "originLadder": 5.373,
+      "originGdp": 12255.0082146169
+    },
+    {
+      "id": "IRN",
+      "name": "Iran",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 4.447212947295085,
+      "gdp": 5786.232327184695,
+      "originLadder": 4.548,
+      "originGdp": 5127.22495367018
+    },
+    {
+      "id": "IRQ",
+      "name": "Iraq",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 4.387581459295086,
+      "gdp": 5432.224783161479,
+      "originLadder": 4.437,
+      "originGdp": 4749.00921836896
+    },
+    {
+      "id": "ARE",
+      "name": "UAE",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.986903614815086,
+      "gdp": 44923.5391603515,
+      "originLadder": 6.825,
+      "originGdp": 43377.802601486
+    },
+    {
+      "id": "ISR",
+      "name": "Israel",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 7.097168193375086,
+      "gdp": 45232.53751518288,
+      "originLadder": 7.139,
+      "originGdp": 38695.0100079706
+    },
+    {
+      "id": "JOR",
+      "name": "Jordan",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 4.7125915687350854,
+      "gdp": 4569.736222695188,
+      "originLadder": 4.906,
+      "originGdp": 4320.029787425
+    },
+    {
+      "id": "LBN",
+      "name": "Lebanon",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.247631514975086,
+      "gdp": 9992.736999847626,
+      "originLadder": 5.197,
+      "originGdp": 8388.7235123835
+    },
+    {
+      "id": "YEM",
+      "name": "Yemen",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 3.2017650368950856,
+      "gdp": 910.8008338033785,
+      "originLadder": 3.38,
+      "originGdp": 1079.32938366255
+    },
+    {
+      "id": "GEO",
+      "name": "Georgia",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 4.676636076895086,
+      "gdp": 5973.924071426858,
+      "originLadder": 4.519,
+      "originGdp": 4713.65354845303
+    },
+    {
+      "id": "ARM",
+      "name": "Armenia",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 4.6671642484150855,
+      "gdp": 5119.642303567568,
+      "originLadder": 4.559,
+      "originGdp": 4027.83393010979
+    },
+    {
+      "id": "PSE",
+      "name": "Palestine",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 4.685937642335086,
+      "gdp": 3863.9975577634086,
+      "originLadder": 4.696,
+      "originGdp": 3417.79440837962
+    },
+    {
+      "id": "NGA",
+      "name": "Nigeria",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.485226633055086,
+      "gdp": 2474.9710946715063,
+      "originLadder": 5.265,
+      "originGdp": 2431.77857832597
+    },
+    {
+      "id": "ZAF",
+      "name": "South Africa",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 4.852608336735087,
+      "gdp": 6658.436617789504,
+      "originLadder": 4.722,
+      "originGdp": 6117.2701406047
+    },
+    {
+      "id": "EGY",
+      "name": "Egypt",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 4.045613884255086,
+      "gdp": 4200.239689440075,
+      "originLadder": 4.166,
+      "originGdp": 3568.63966286365
+    },
+    {
+      "id": "ETH",
+      "name": "Ethiopia",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 4.185845175135085,
+      "gdp": 919.3531824841145,
+      "originLadder": 4.286,
+      "originGdp": 705.96881207336
+    },
+    {
+      "id": "KEN",
+      "name": "Kenya",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 4.581443375455087,
+      "gdp": 1864.6089364721338,
+      "originLadder": 4.509,
+      "originGdp": 1596.69045914945
+    },
+    {
+      "id": "COD",
+      "name": "DR Congo",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 4.504194330975086,
+      "gdp": 538.1604118158972,
+      "originLadder": 4.418,
+      "originGdp": 495.312105711027
+    },
+    {
+      "id": "MAR",
+      "name": "Morocco",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.260528198495086,
+      "gdp": 3808.925729460619,
+      "originLadder": 5.208,
+      "originGdp": 3304.7119140625
+    },
+    {
+      "id": "DZA",
+      "name": "Algeria",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 4.5998470234550854,
+      "gdp": 5146.798892954632,
+      "originLadder": 5.211,
+      "originGdp": 4717.0035885361
+    },
+    {
+      "id": "AUS",
+      "name": "Australia",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 7.208296167775085,
+      "gdp": 65906.80345105073,
+      "originLadder": 7.228,
+      "originGdp": 58772.7063152213
+    }
+  ]
+}

@@ -1,0 +1,6191 @@
+{
+  "schema": "damped-internal-validation/1",
+  "entryId": "research-damped-2018-v1",
+  "status": "training-only-selection-not-external-validation",
+  "folds": [
+    {
+      "id": "origin-2016",
+      "trainingYears": [
+        2015,
+        2016
+      ],
+      "originYear": 2016,
+      "targetYears": [
+        2017,
+        2018
+      ]
+    },
+    {
+      "id": "origin-2017",
+      "trainingYears": [
+        2015,
+        2016,
+        2017
+      ],
+      "originYear": 2017,
+      "targetYears": [
+        2018
+      ]
+    }
+  ],
+  "outcomes": {
+    "ladder": {
+      "selectedCandidate": {
+        "id": "pooled-w0.5-p0.8",
+        "target": "pooled",
+        "countryWeight": 0.5,
+        "damping": 0.8
+      },
+      "selectedPooledMetrics": {
+        "count": 298,
+        "mae": 0.12562730458951937,
+        "rmse": 0.18052305847768996,
+        "bias": -0.012065100671140916,
+        "persistenceMae": 0.13529865771812077,
+        "deltaMae": -0.009671353128601401
+      },
+      "lossUnit": "ladder points",
+      "candidates": [
+        {
+          "candidate": {
+            "id": "zero-w0-p0.8",
+            "target": "zero",
+            "countryWeight": 0,
+            "damping": 0.8
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 0.13529865771812077,
+            "rmse": 0.1889370745004945,
+            "bias": -0.02374161073825504,
+            "persistenceMae": 0.13529865771812077,
+            "deltaMae": 0
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 0.14680808080808078,
+              "rmse": 0.20092817451301184,
+              "bias": -0.019474747474747447,
+              "persistenceMae": 0.14680808080808078,
+              "deltaMae": 0
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 0.11251,
+              "rmse": 0.16260654968358437,
+              "bias": -0.03219000000000009,
+              "persistenceMae": 0.11251,
+              "deltaMae": 0
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 0.1083015075376884,
+              "rmse": 0.15210829916006177,
+              "bias": -0.018211055276381925,
+              "persistenceMae": 0.1083015075376884,
+              "deltaMae": 0
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 0.18956565656565655,
+              "rmse": 0.24686971577262484,
+              "bias": -0.03485858585858588,
+              "persistenceMae": 0.18956565656565655,
+              "deltaMae": 0
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.013080808080808103,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.00723499999999998,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "zero-w0-p0.9",
+            "target": "zero",
+            "countryWeight": 0,
+            "damping": 0.9
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 0.13529865771812077,
+            "rmse": 0.1889370745004945,
+            "bias": -0.02374161073825504,
+            "persistenceMae": 0.13529865771812077,
+            "deltaMae": 0
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 0.14680808080808078,
+              "rmse": 0.20092817451301184,
+              "bias": -0.019474747474747447,
+              "persistenceMae": 0.14680808080808078,
+              "deltaMae": 0
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 0.11251,
+              "rmse": 0.16260654968358437,
+              "bias": -0.03219000000000009,
+              "persistenceMae": 0.11251,
+              "deltaMae": 0
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 0.1083015075376884,
+              "rmse": 0.15210829916006177,
+              "bias": -0.018211055276381925,
+              "persistenceMae": 0.1083015075376884,
+              "deltaMae": 0
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 0.18956565656565655,
+              "rmse": 0.24686971577262484,
+              "bias": -0.03485858585858588,
+              "persistenceMae": 0.18956565656565655,
+              "deltaMae": 0
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.013080808080808103,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.00723499999999998,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "zero-w0-p0.98",
+            "target": "zero",
+            "countryWeight": 0,
+            "damping": 0.98
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 0.13529865771812077,
+            "rmse": 0.1889370745004945,
+            "bias": -0.02374161073825504,
+            "persistenceMae": 0.13529865771812077,
+            "deltaMae": 0
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 0.14680808080808078,
+              "rmse": 0.20092817451301184,
+              "bias": -0.019474747474747447,
+              "persistenceMae": 0.14680808080808078,
+              "deltaMae": 0
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 0.11251,
+              "rmse": 0.16260654968358437,
+              "bias": -0.03219000000000009,
+              "persistenceMae": 0.11251,
+              "deltaMae": 0
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 0.1083015075376884,
+              "rmse": 0.15210829916006177,
+              "bias": -0.018211055276381925,
+              "persistenceMae": 0.1083015075376884,
+              "deltaMae": 0
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 0.18956565656565655,
+              "rmse": 0.24686971577262484,
+              "bias": -0.03485858585858588,
+              "persistenceMae": 0.18956565656565655,
+              "deltaMae": 0
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.013080808080808103,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.00723499999999998,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "zero-w0.25-p0.8",
+            "target": "zero",
+            "countryWeight": 0.25,
+            "damping": 0.8
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 0.12850557046979866,
+            "rmse": 0.18103974699110695,
+            "bias": -0.020822483221476538,
+            "persistenceMae": 0.13529865771812077,
+            "deltaMae": -0.006793087248322116
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 0.14017656565656553,
+              "rmse": 0.19167549053733304,
+              "bias": -0.015812121212121187,
+              "persistenceMae": 0.14680808080808078,
+              "deltaMae": -0.006631515151515249
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 0.105397,
+              "rmse": 0.15788117272176566,
+              "bias": -0.030743000000000135,
+              "persistenceMae": 0.11251,
+              "deltaMae": -0.007112999999999994
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 0.10245477386934672,
+              "rmse": 0.1460095981907323,
+              "bias": -0.016182412060301563,
+              "persistenceMae": 0.1083015075376884,
+              "deltaMae": -0.00584673366834168
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 0.18087030303030296,
+              "rmse": 0.236229311363926,
+              "bias": -0.030149494949494923,
+              "persistenceMae": 0.18956565656565655,
+              "deltaMae": -0.008695353535353584
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.013080808080808103,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.00723499999999998,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "zero-w0.25-p0.9",
+            "target": "zero",
+            "countryWeight": 0.25,
+            "damping": 0.9
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 0.1278252181208052,
+            "rmse": 0.18051801580809584,
+            "bias": -0.02035981543624162,
+            "persistenceMae": 0.13529865771812077,
+            "deltaMae": -0.007473439597315584
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 0.13946099747474736,
+              "rmse": 0.19107713713019134,
+              "bias": -0.015207133838383792,
+              "persistenceMae": 0.14680808080808078,
+              "deltaMae": -0.007347083333333421
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 0.10478637500000004,
+              "rmse": 0.15753663634909656,
+              "bias": -0.030562125000000117,
+              "persistenceMae": 0.11251,
+              "deltaMae": -0.007723624999999956
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 0.10193423366834173,
+              "rmse": 0.14558384885334472,
+              "bias": -0.015928831658291464,
+              "persistenceMae": 0.1083015075376884,
+              "deltaMae": -0.006367273869346671
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 0.179868712121212,
+              "rmse": 0.23555470635646245,
+              "bias": -0.02926654040404042,
+              "persistenceMae": 0.18956565656565655,
+              "deltaMae": -0.00969694444444455
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.013080808080808103,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.00723499999999998,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "zero-w0.25-p0.98",
+            "target": "zero",
+            "countryWeight": 0.25,
+            "damping": 0.98
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 0.12738151610738263,
+            "rmse": 0.18026307962574806,
+            "bias": -0.019974036912751698,
+            "persistenceMae": 0.13529865771812077,
+            "deltaMae": -0.007917141610738143
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 0.1389882035353536,
+              "rmse": 0.1908125683611502,
+              "bias": -0.01469959848484847,
+              "persistenceMae": 0.14680808080808078,
+              "deltaMae": -0.007819877272727177
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 0.1044002750000001,
+              "rmse": 0.1573014758566731,
+              "bias": -0.030417425000000088,
+              "persistenceMae": 0.11251,
+              "deltaMae": -0.008109724999999901
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 0.10158513819095487,
+              "rmse": 0.14529913900967725,
+              "bias": -0.015725967336683425,
+              "persistenceMae": 0.1083015075376884,
+              "deltaMae": -0.006716369346733531
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 0.1792348414141413,
+              "rmse": 0.23532027793432192,
+              "bias": -0.0285130858585859,
+              "persistenceMae": 0.18956565656565655,
+              "deltaMae": -0.010330815151515238
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.013080808080808103,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.00723499999999998,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "zero-w0.5-p0.8",
+            "target": "zero",
+            "countryWeight": 0.5,
+            "damping": 0.8
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 0.12613691275167777,
+            "rmse": 0.18099539417922753,
+            "bias": -0.017903355704697994,
+            "persistenceMae": 0.13529865771812077,
+            "deltaMae": -0.009161744966443008
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 0.13827070707070696,
+              "rmse": 0.1920963966346063,
+              "bias": -0.012149494949494908,
+              "persistenceMae": 0.14680808080808078,
+              "deltaMae": -0.008537373737373816
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 0.10211199999999994,
+              "rmse": 0.15671241431360813,
+              "bias": -0.02929600000000011,
+              "persistenceMae": 0.11251,
+              "deltaMae": -0.01039800000000006
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 0.09975577889447228,
+              "rmse": 0.144800819703946,
+              "bias": -0.01415376884422112,
+              "persistenceMae": 0.1083015075376884,
+              "deltaMae": -0.008545728643216122
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 0.1791656565656564,
+              "rmse": 0.237618507356611,
+              "bias": -0.025440404040404034,
+              "persistenceMae": 0.18956565656565655,
+              "deltaMae": -0.010400000000000159
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.013080808080808103,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.00723499999999998,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "zero-w0.5-p0.9",
+            "target": "zero",
+            "countryWeight": 0.5,
+            "damping": 0.9
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 0.12655251677852344,
+            "rmse": 0.18284509869957238,
+            "bias": -0.01697802013422821,
+            "persistenceMae": 0.13529865771812077,
+            "deltaMae": -0.00874614093959733
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 0.1391248737373736,
+              "rmse": 0.19460177621280014,
+              "bias": -0.010939520202020195,
+              "persistenceMae": 0.14680808080808078,
+              "deltaMae": -0.0076832070707071876
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 0.10165924999999994,
+              "rmse": 0.15699056713302872,
+              "bias": -0.028934250000000078,
+              "persistenceMae": 0.11251,
+              "deltaMae": -0.010850750000000062
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 0.0997496231155778,
+              "rmse": 0.14528782919929048,
+              "bias": -0.01364660804020102,
+              "persistenceMae": 0.1083015075376884,
+              "deltaMae": -0.008551884422110592
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 0.18042904040404037,
+              "rmse": 0.2412558109610517,
+              "bias": -0.023674494949494966,
+              "persistenceMae": 0.18956565656565655,
+              "deltaMae": -0.009136616161616179
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.013080808080808103,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.00723499999999998,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "zero-w0.5-p0.98",
+            "target": "zero",
+            "countryWeight": 0.5,
+            "damping": 0.98
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 0.12745607785234903,
+            "rmse": 0.18509423693780475,
+            "bias": -0.016206463087248307,
+            "persistenceMae": 0.13529865771812077,
+            "deltaMae": -0.007842579865771748
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 0.14055619292929306,
+              "rmse": 0.1976209317588186,
+              "bias": -0.009924449494949437,
+              "persistenceMae": 0.14680808080808078,
+              "deltaMae": -0.006251887878787721
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 0.10151784999999998,
+              "rmse": 0.15737676901865152,
+              "bias": -0.028644850000000065,
+              "persistenceMae": 0.11251,
+              "deltaMae": -0.01099215000000002
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 0.10013736180904519,
+              "rmse": 0.14590260912203756,
+              "bias": -0.013240879396984923,
+              "persistenceMae": 0.1083015075376884,
+              "deltaMae": -0.008164145728643213
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 0.1823694565656566,
+              "rmse": 0.2456328974941601,
+              "bias": -0.02216758585858582,
+              "persistenceMae": 0.18956565656565655,
+              "deltaMae": -0.007196199999999958
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.013080808080808103,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.00723499999999998,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "zero-w0.75-p0.8",
+            "target": "zero",
+            "countryWeight": 0.75,
+            "damping": 0.8
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 0.1293710738255034,
+            "rmse": 0.18880955031797306,
+            "bias": -0.014984228187919443,
+            "persistenceMae": 0.13529865771812077,
+            "deltaMae": -0.005927583892617383
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 0.14345898989898992,
+              "rmse": 0.2021304704762483,
+              "bias": -0.008486868686868645,
+              "persistenceMae": 0.14680808080808078,
+              "deltaMae": -0.003349090909090857
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 0.101477,
+              "rmse": 0.1591786364434625,
+              "bias": -0.027849000000000027,
+              "persistenceMae": 0.11251,
+              "deltaMae": -0.011033000000000001
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 0.10147788944723618,
+              "rmse": 0.1486013409855832,
+              "bias": -0.012125125628140686,
+              "persistenceMae": 0.1083015075376884,
+              "deltaMae": -0.006823618090452219
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 0.18543919191919192,
+              "rmse": 0.25083751521330255,
+              "bias": -0.020731313131313107,
+              "persistenceMae": 0.18956565656565655,
+              "deltaMae": -0.004126464646464628
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.013080808080808103,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.00723499999999998,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "zero-w0.75-p0.9",
+            "target": "zero",
+            "countryWeight": 0.75,
+            "damping": 0.9
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 0.13290439597315432,
+            "rmse": 0.19553502597309408,
+            "bias": -0.013596224832214778,
+            "persistenceMae": 0.13529865771812077,
+            "deltaMae": -0.0023942617449664583
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 0.14836135101010098,
+              "rmse": 0.2108323225386746,
+              "bias": -0.006671906565656522,
+              "persistenceMae": 0.14680808080808078,
+              "deltaMae": 0.0015532702020202016
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 0.10229962500000003,
+              "rmse": 0.1610143755373647,
+              "bias": -0.027306375000000122,
+              "persistenceMae": 0.11251,
+              "deltaMae": -0.010210374999999966
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 0.10296174623115574,
+              "rmse": 0.15125681297988833,
+              "bias": -0.011364384422110579,
+              "persistenceMae": 0.1083015075376884,
+              "deltaMae": -0.005339761306532659
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 0.1930921464646464,
+              "rmse": 0.2628682112257829,
+              "bias": -0.018082449494949478,
+              "persistenceMae": 0.18956565656565655,
+              "deltaMae": 0.0035264898989898485
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.013080808080808103,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.00723499999999998,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "zero-w0.75-p0.98",
+            "target": "zero",
+            "countryWeight": 0.75,
+            "damping": 0.98
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 0.13668110201342273,
+            "rmse": 0.20246608144351871,
+            "bias": -0.012438889261744957,
+            "persistenceMae": 0.13529865771812077,
+            "deltaMae": 0.00138244429530196
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 0.15363472676767664,
+              "rmse": 0.21978607914757997,
+              "bias": -0.005149300505050434,
+              "persistenceMae": 0.14680808080808078,
+              "deltaMae": 0.006826645959595867
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 0.10311292500000004,
+              "rmse": 0.1628249654082184,
+              "bias": -0.026872275000000112,
+              "persistenceMae": 0.11251,
+              "deltaMae": -0.009397074999999963
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 0.10454144472361815,
+              "rmse": 0.15383149654202996,
+              "bias": -0.010755791457286437,
+              "persistenceMae": 0.1083015075376884,
+              "deltaMae": -0.0037600628140702502
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 0.20128505959595952,
+              "rmse": 0.27536215778230405,
+              "bias": -0.015822085858585848,
+              "persistenceMae": 0.18956565656565655,
+              "deltaMae": 0.011719403030302972
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.013080808080808103,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.00723499999999998,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "zero-w1-p0.8",
+            "target": "zero",
+            "countryWeight": 1,
+            "damping": 0.8
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 0.13760442953020122,
+            "rmse": 0.20357929836343291,
+            "bias": -0.01206510067114093,
+            "persistenceMae": 0.13529865771812077,
+            "deltaMae": 0.0023057718120804427
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 0.15454101010100998,
+              "rmse": 0.22046904126787448,
+              "bias": -0.004824242424242386,
+              "persistenceMae": 0.14680808080808078,
+              "deltaMae": 0.007732929292929208
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 0.10407,
+              "rmse": 0.1651170409134079,
+              "bias": -0.02640200000000005,
+              "persistenceMae": 0.11251,
+              "deltaMae": -0.008440000000000003
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 0.10633567839195977,
+              "rmse": 0.1570479106233374,
+              "bias": -0.010096482412060268,
+              "persistenceMae": 0.1083015075376884,
+              "deltaMae": -0.001965829145728626
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 0.2004577777777778,
+              "rmse": 0.2741805965918717,
+              "bias": -0.016022222222222257,
+              "persistenceMae": 0.18956565656565655,
+              "deltaMae": 0.010892121212121242
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.013080808080808103,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.00723499999999998,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "zero-w1-p0.9",
+            "target": "zero",
+            "countryWeight": 1,
+            "damping": 0.9
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 0.14495557046979876,
+            "rmse": 0.21677546637666067,
+            "bias": -0.010214429530201357,
+            "persistenceMae": 0.13529865771812077,
+            "deltaMae": 0.009656912751677987
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 0.1644288383838384,
+              "rmse": 0.23717445709750212,
+              "bias": -0.002404292929292897,
+              "persistenceMae": 0.14680808080808078,
+              "deltaMae": 0.017620757575757623
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 0.10639850000000005,
+              "rmse": 0.1692824996123344,
+              "bias": -0.02567850000000011,
+              "persistenceMae": 0.11251,
+              "deltaMae": -0.00611149999999995
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 0.10969924623115579,
+              "rmse": 0.16280315575911183,
+              "bias": -0.009082160804020125,
+              "persistenceMae": 0.1083015075376884,
+              "deltaMae": 0.0013977386934673902
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 0.21582434343434345,
+              "rmse": 0.29693772097593746,
+              "bias": -0.01249040404040403,
+              "persistenceMae": 0.18956565656565655,
+              "deltaMae": 0.026258686868686903
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.013080808080808103,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.00723499999999998,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "zero-w1-p0.98",
+            "target": "zero",
+            "countryWeight": 1,
+            "damping": 0.98
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 0.15172927785234885,
+            "rmse": 0.22954888507390941,
+            "bias": -0.008671315436241616,
+            "persistenceMae": 0.13529865771812077,
+            "deltaMae": 0.01643062013422808
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 0.17346361010101002,
+              "rmse": 0.25330831016393174,
+              "bias": -0.00037415151515147354,
+              "persistenceMae": 0.14680808080808078,
+              "deltaMae": 0.026655529292929248
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 0.10869530000000001,
+              "rmse": 0.1731395971665638,
+              "bias": -0.0250997000000001,
+              "persistenceMae": 0.11251,
+              "deltaMae": -0.0038146999999999903
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 0.11271834170854271,
+              "rmse": 0.16805211613121956,
+              "bias": -0.008270703517587954,
+              "persistenceMae": 0.1083015075376884,
+              "deltaMae": 0.004416834170854311
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 0.23014519999999988,
+              "rmse": 0.3191269747742056,
+              "bias": -0.009476585858585847,
+              "persistenceMae": 0.18956565656565655,
+              "deltaMae": 0.040579543434343335
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.013080808080808103,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.00723499999999998,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "pooled-w0-p0.8",
+            "target": "pooled",
+            "countryWeight": 0,
+            "damping": 0.8
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 0.1340238996678193,
+            "rmse": 0.1878109540514554,
+            "bias": -0.012065100671141003,
+            "persistenceMae": 0.13529865771812077,
+            "deltaMae": -0.0012747580503014722
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 0.14564954596469745,
+              "rmse": 0.19976203620065028,
+              "bias": -0.004824242424242429,
+              "persistenceMae": 0.14680808080808078,
+              "deltaMae": -0.0011585348433833242
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 0.11100511999999994,
+              "rmse": 0.16156038965043382,
+              "bias": -0.02640200000000018,
+              "persistenceMae": 0.11251,
+              "deltaMae": -0.0015048800000000556
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 0.10739686757017408,
+              "rmse": 0.15158628503780563,
+              "bias": -0.010096482412060554,
+              "persistenceMae": 0.1083015075376884,
+              "deltaMae": -0.0009046399675143174
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 0.1875469237832874,
+              "rmse": 0.24492089980753873,
+              "bias": -0.01602222222222191,
+              "persistenceMae": 0.18956565656565655,
+              "deltaMae": -0.002018732782369137
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.013080808080808103,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.00723499999999998,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "pooled-w0-p0.9",
+            "target": "pooled",
+            "countryWeight": 0,
+            "damping": 0.9
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 0.13390152959121415,
+            "rmse": 0.1877044581901519,
+            "bias": -0.010214429530201293,
+            "persistenceMae": 0.13529865771812077,
+            "deltaMae": -0.0013971281269066216
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 0.14555521120293852,
+              "rmse": 0.1996589925406356,
+              "bias": -0.002404292929292924,
+              "persistenceMae": 0.14680808080808078,
+              "deltaMae": -0.0012528696051422594
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 0.11082724000000001,
+              "rmse": 0.161443734044558,
+              "bias": -0.025678499999999868,
+              "persistenceMae": 0.11251,
+              "deltaMae": -0.0016827599999999915
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 0.10731405390589319,
+              "rmse": 0.1515539960623427,
+              "bias": -0.009082160804020111,
+              "persistenceMae": 0.1083015075376884,
+              "deltaMae": -0.0009874536317952126
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 0.18734504132231408,
+              "rmse": 0.24471523399798525,
+              "bias": -0.012490404040403873,
+              "persistenceMae": 0.18956565656565655,
+              "deltaMae": -0.0022206152433424664
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.013080808080808103,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.00723499999999998,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "pooled-w0-p0.98",
+            "target": "pooled",
+            "countryWeight": 0,
+            "damping": 0.98
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 0.13381396300589785,
+            "rmse": 0.18763478339024195,
+            "bias": -0.008671315436241524,
+            "persistenceMae": 0.13529865771812077,
+            "deltaMae": -0.0014846947122229281
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 0.1454926645240281,
+              "rmse": 0.19959758851458823,
+              "bias": -0.00037415151515122683,
+              "persistenceMae": 0.14680808080808078,
+              "deltaMae": -0.001315416284052684
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 0.11069013400000008,
+              "rmse": 0.16135268463862015,
+              "bias": -0.02509970000000031,
+              "persistenceMae": 0.11251,
+              "deltaMae": -0.00181986599999992
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 0.1072586481193849,
+              "rmse": 0.1515334544388345,
+              "bias": -0.008270703517588022,
+              "persistenceMae": 0.1083015075376884,
+              "deltaMae": -0.0010428594183034962
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 0.1871928282828283,
+              "rmse": 0.24457992811580284,
+              "bias": -0.009476585858585426,
+              "persistenceMae": 0.18956565656565655,
+              "deltaMae": -0.0023728282828282543
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.013080808080808103,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.00723499999999998,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "pooled-w0.25-p0.8",
+            "target": "pooled",
+            "countryWeight": 0.25,
+            "damping": 0.8
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 0.12765278584502737,
+            "rmse": 0.18024489608441172,
+            "bias": -0.012065100671140961,
+            "persistenceMae": 0.13529865771812077,
+            "deltaMae": -0.007645871873093402
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 0.13950696051423314,
+              "rmse": 0.19087319947111264,
+              "bias": -0.0048242424242424175,
+              "persistenceMae": 0.14680808080808078,
+              "deltaMae": -0.007301120293847635
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 0.10418151999999999,
+              "rmse": 0.15709359711649612,
+              "bias": -0.02640200000000008,
+              "persistenceMae": 0.11251,
+              "deltaMae": -0.008328480000000013
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 0.10170355047967107,
+              "rmse": 0.1456477753885577,
+              "bias": -0.010096482412060319,
+              "persistenceMae": 0.1083015075376884,
+              "deltaMae": -0.006597957058017329
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 0.17981337006427914,
+              "rmse": 0.23484464462001978,
+              "bias": -0.016022222222222254,
+              "persistenceMae": 0.18956565656565655,
+              "deltaMae": -0.00975228650137741
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.013080808080808103,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.00723499999999998,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "pooled-w0.25-p0.9",
+            "target": "pooled",
+            "countryWeight": 0.25,
+            "damping": 0.9
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 0.12700007954545459,
+            "rmse": 0.17966922443305217,
+            "bias": -0.010214429530201335,
+            "persistenceMae": 0.13529865771812077,
+            "deltaMae": -0.008298578172666188
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 0.13886040633608812,
+              "rmse": 0.19023422079938332,
+              "bias": -0.002404292929292877,
+              "persistenceMae": 0.14680808080808078,
+              "deltaMae": -0.007947674471992655
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 0.10351663250000001,
+              "rmse": 0.15666248328786914,
+              "bias": -0.025678500000000076,
+              "persistenceMae": 0.11251,
+              "deltaMae": -0.008993367499999988
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 0.10116205835998178,
+              "rmse": 0.14520791803121574,
+              "bias": -0.009082160804020103,
+              "persistenceMae": 0.1083015075376884,
+              "deltaMae": -0.007139449177706619
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 0.17893711202938473,
+              "rmse": 0.2340630246163423,
+              "bias": -0.012490404040403998,
+              "persistenceMae": 0.18956565656565655,
+              "deltaMae": -0.010628544536271822
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.013080808080808103,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.00723499999999998,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "pooled-w0.25-p0.98",
+            "target": "pooled",
+            "countryWeight": 0.25,
+            "damping": 0.98
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 0.12650020492678454,
+            "rmse": 0.1793892495792919,
+            "bias": -0.008671315436241623,
+            "persistenceMae": 0.13529865771812077,
+            "deltaMae": -0.008798452791336231
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 0.1383600728191,
+              "rmse": 0.18996194333568833,
+              "bias": -0.0003741515151514713,
+              "persistenceMae": 0.14680808080808078,
+              "deltaMae": -0.008448007988980766
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 0.1030176665,
+              "rmse": 0.15636025550998206,
+              "bias": -0.025099700000000124,
+              "persistenceMae": 0.11251,
+              "deltaMae": -0.009492333500000005
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 0.10074541943809959,
+              "rmse": 0.14491720065922628,
+              "bias": -0.008270703517587987,
+              "persistenceMae": 0.1083015075376884,
+              "deltaMae": -0.007556088099588812
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 0.17826992525252522,
+              "rmse": 0.23377861925642945,
+              "bias": -0.009476585858585799,
+              "persistenceMae": 0.18956565656565655,
+              "deltaMae": -0.01129573131313133
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.013080808080808103,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.00723499999999998,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "pooled-w0.5-p0.8",
+            "target": "pooled",
+            "countryWeight": 0.5,
+            "damping": 0.8
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 0.12562730458951937,
+            "rmse": 0.18052305847768996,
+            "bias": -0.012065100671140916,
+            "persistenceMae": 0.13529865771812077,
+            "deltaMae": -0.009671353128601401
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 0.13795836751351903,
+              "rmse": 0.1916388143736367,
+              "bias": -0.004824242424242364,
+              "persistenceMae": 0.14680808080808078,
+              "deltaMae": -0.008849713294561745
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 0.10121179999999995,
+              "rmse": 0.15619728162807442,
+              "bias": -0.02640200000000005,
+              "persistenceMae": 0.11251,
+              "deltaMae": -0.01129820000000005
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 0.09925099335059129,
+              "rmse": 0.1445885176408978,
+              "bias": -0.01009648241206028,
+              "persistenceMae": 0.1083015075376884,
+              "deltaMae": -0.009050514187097111
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 0.1786463544536272,
+              "rmse": 0.23679538104782163,
+              "bias": -0.016022222222222198,
+              "persistenceMae": 0.18956565656565655,
+              "deltaMae": -0.01091930211202935
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.013080808080808103,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.00723499999999998,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "pooled-w0.5-p0.9",
+            "target": "pooled",
+            "countryWeight": 0.5,
+            "damping": 0.9
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 0.12602282413056734,
+            "rmse": 0.1823645404203894,
+            "bias": -0.010214429530201343,
+            "persistenceMae": 0.13529865771812077,
+            "deltaMae": -0.009275833587553434
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 0.13883383379247,
+              "rmse": 0.19415331283020396,
+              "bias": -0.0024042929292928746,
+              "persistenceMae": 0.14680808080808078,
+              "deltaMae": -0.00797424701561078
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 0.10065702500000004,
+              "rmse": 0.1564232486171333,
+              "bias": -0.02567850000000011,
+              "persistenceMae": 0.11251,
+              "deltaMae": -0.01185297499999996
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 0.09925195408862496,
+              "rmse": 0.1450756940528025,
+              "bias": -0.009082160804020111,
+              "persistenceMae": 0.1083015075376884,
+              "deltaMae": -0.009049553449063441
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 0.17983497704315873,
+              "rmse": 0.24041608682543186,
+              "bias": -0.01249040404040402,
+              "persistenceMae": 0.18956565656565655,
+              "deltaMae": -0.009730679522497815
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.013080808080808103,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.00723499999999998,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "pooled-w0.5-p0.98",
+            "target": "pooled",
+            "countryWeight": 0.5,
+            "damping": 0.98
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 0.12688195971798513,
+            "rmse": 0.1846240674731303,
+            "bias": -0.008671315436241606,
+            "persistenceMae": 0.13529865771812077,
+            "deltaMae": -0.008416698000135642
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 0.1402333494745434,
+              "rmse": 0.1972020230214691,
+              "bias": -0.00037415151515146237,
+              "persistenceMae": 0.14680808080808078,
+              "deltaMae": -0.006574731333537365
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 0.10044620799999994,
+              "rmse": 0.15677026164205216,
+              "bias": -0.02509970000000009,
+              "persistenceMae": 0.11251,
+              "deltaMae": -0.01206379200000006
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 0.09950633364803821,
+              "rmse": 0.145695064357567,
+              "bias": -0.008270703517587946,
+              "persistenceMae": 0.1083015075376884,
+              "deltaMae": -0.00879517388965019
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 0.18190973333333324,
+              "rmse": 0.24481406035625045,
+              "bias": -0.009476585858585835,
+              "persistenceMae": 0.18956565656565655,
+              "deltaMae": -0.007655923232323308
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.013080808080808103,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.00723499999999998,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "pooled-w0.75-p0.8",
+            "target": "pooled",
+            "countryWeight": 0.75,
+            "damping": 0.8
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 0.12903486367025976,
+            "rmse": 0.18861073854554328,
+            "bias": -0.012065100671140971,
+            "persistenceMae": 0.13529865771812077,
+            "deltaMae": -0.00626379404786101
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 0.1431364513825121,
+              "rmse": 0.2019491069591843,
+              "bias": -0.0048242424242424045,
+              "persistenceMae": 0.14680808080808078,
+              "deltaMae": -0.0036716294255686732
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 0.10111371999999999,
+              "rmse": 0.15893186308289478,
+              "bias": -0.026402000000000134,
+              "persistenceMae": 0.11251,
+              "deltaMae": -0.011396280000000009
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 0.10120950347698093,
+              "rmse": 0.1485129512380392,
+              "bias": -0.010096482412060332,
+              "persistenceMae": 0.1083015075376884,
+              "deltaMae": -0.007092004060707466
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 0.1849666483011938,
+              "rmse": 0.2504922819153786,
+              "bias": -0.016022222222222264,
+              "persistenceMae": 0.18956565656565655,
+              "deltaMae": -0.004599008264462745
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.013080808080808103,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.00723499999999998,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "pooled-w0.75-p0.9",
+            "target": "pooled",
+            "countryWeight": 0.75,
+            "damping": 0.9
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 0.13249202669310559,
+            "rmse": 0.19534674250561399,
+            "bias": -0.010214429530201356,
+            "persistenceMae": 0.13529865771812077,
+            "deltaMae": -0.0028066310250151882
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 0.14795267906336082,
+              "rmse": 0.2106728830716597,
+              "bias": -0.002404292929292897,
+              "persistenceMae": 0.14680808080808078,
+              "deltaMae": 0.0011445982552800438
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 0.10187993500000005,
+              "rmse": 0.16074631061488434,
+              "bias": -0.0256785000000001,
+              "persistenceMae": 0.11251,
+              "deltaMae": -0.010630064999999952
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 0.10270597464595703,
+              "rmse": 0.15117362984426486,
+              "bias": -0.009082160804020105,
+              "persistenceMae": 0.1083015075376884,
+              "deltaMae": -0.00559553289173137
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 0.19236499999999987,
+              "rmse": 0.26254281876752605,
+              "bias": -0.01249040404040407,
+              "persistenceMae": 0.18956565656565655,
+              "deltaMae": 0.002799343434343321
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.013080808080808103,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.00723499999999998,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "pooled-w0.75-p0.98",
+            "target": "pooled",
+            "countryWeight": 0.75,
+            "damping": 0.98
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 0.13612851563792283,
+            "rmse": 0.20229543300580813,
+            "bias": -0.008671315436241622,
+            "persistenceMae": 0.13529865771812077,
+            "deltaMae": 0.0008298579198020573
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 0.15303351924293443,
+              "rmse": 0.21965539202237938,
+              "bias": -0.00037415151515147804,
+              "persistenceMae": 0.14680808080808078,
+              "deltaMae": 0.006225438434853653
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 0.10265660850000004,
+              "rmse": 0.16254182580678075,
+              "bias": -0.025099700000000107,
+              "persistenceMae": 0.11251,
+              "deltaMae": -0.009853391499999961
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 0.10423161738744227,
+              "rmse": 0.15375486336345187,
+              "bias": -0.008270703517587952,
+              "persistenceMae": 0.1083015075376884,
+              "deltaMae": -0.004069890150246128
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 0.20024450303030306,
+              "rmse": 0.2750705095373643,
+              "bias": -0.00947658585858587,
+              "persistenceMae": 0.18956565656565655,
+              "deltaMae": 0.010678846464646508
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.013080808080808103,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.00723499999999998,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "pooled-w1-p0.8",
+            "target": "pooled",
+            "countryWeight": 1,
+            "damping": 0.8
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 0.13760442953020122,
+            "rmse": 0.20357929836343291,
+            "bias": -0.01206510067114093,
+            "persistenceMae": 0.13529865771812077,
+            "deltaMae": 0.0023057718120804427
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 0.15454101010100998,
+              "rmse": 0.22046904126787448,
+              "bias": -0.004824242424242386,
+              "persistenceMae": 0.14680808080808078,
+              "deltaMae": 0.007732929292929208
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 0.10407,
+              "rmse": 0.1651170409134079,
+              "bias": -0.02640200000000005,
+              "persistenceMae": 0.11251,
+              "deltaMae": -0.008440000000000003
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 0.10633567839195977,
+              "rmse": 0.1570479106233374,
+              "bias": -0.010096482412060268,
+              "persistenceMae": 0.1083015075376884,
+              "deltaMae": -0.001965829145728626
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 0.2004577777777778,
+              "rmse": 0.2741805965918717,
+              "bias": -0.016022222222222257,
+              "persistenceMae": 0.18956565656565655,
+              "deltaMae": 0.010892121212121242
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.013080808080808103,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.00723499999999998,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "pooled-w1-p0.9",
+            "target": "pooled",
+            "countryWeight": 1,
+            "damping": 0.9
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 0.14495557046979876,
+            "rmse": 0.21677546637666067,
+            "bias": -0.010214429530201357,
+            "persistenceMae": 0.13529865771812077,
+            "deltaMae": 0.009656912751677987
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 0.1644288383838384,
+              "rmse": 0.23717445709750212,
+              "bias": -0.002404292929292897,
+              "persistenceMae": 0.14680808080808078,
+              "deltaMae": 0.017620757575757623
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 0.10639850000000005,
+              "rmse": 0.1692824996123344,
+              "bias": -0.02567850000000011,
+              "persistenceMae": 0.11251,
+              "deltaMae": -0.00611149999999995
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 0.10969924623115579,
+              "rmse": 0.16280315575911183,
+              "bias": -0.009082160804020125,
+              "persistenceMae": 0.1083015075376884,
+              "deltaMae": 0.0013977386934673902
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 0.21582434343434345,
+              "rmse": 0.29693772097593746,
+              "bias": -0.01249040404040403,
+              "persistenceMae": 0.18956565656565655,
+              "deltaMae": 0.026258686868686903
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.013080808080808103,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.00723499999999998,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "pooled-w1-p0.98",
+            "target": "pooled",
+            "countryWeight": 1,
+            "damping": 0.98
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 0.15172927785234885,
+            "rmse": 0.22954888507390941,
+            "bias": -0.008671315436241616,
+            "persistenceMae": 0.13529865771812077,
+            "deltaMae": 0.01643062013422808
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 0.17346361010101002,
+              "rmse": 0.25330831016393174,
+              "bias": -0.00037415151515147354,
+              "persistenceMae": 0.14680808080808078,
+              "deltaMae": 0.026655529292929248
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 0.10869530000000001,
+              "rmse": 0.1731395971665638,
+              "bias": -0.0250997000000001,
+              "persistenceMae": 0.11251,
+              "deltaMae": -0.0038146999999999903
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 0.11271834170854271,
+              "rmse": 0.16805211613121956,
+              "bias": -0.008270703517587954,
+              "persistenceMae": 0.1083015075376884,
+              "deltaMae": 0.004416834170854311
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 0.23014519999999988,
+              "rmse": 0.3191269747742056,
+              "bias": -0.009476585858585847,
+              "persistenceMae": 0.18956565656565655,
+              "deltaMae": 0.040579543434343335
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.013080808080808103,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.00723499999999998,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        }
+      ]
+    },
+    "gdp": {
+      "selectedCandidate": {
+        "id": "pooled-w0.5-p0.98",
+        "target": "pooled",
+        "countryWeight": 0.5,
+        "damping": 0.98
+      },
+      "selectedPooledMetrics": {
+        "count": 298,
+        "mae": 2.11697737527658,
+        "rmse": 3.2709978537839617,
+        "bias": -0.6940456071777605,
+        "persistenceMae": 4.150188004660577,
+        "deltaMae": -2.033210629383997
+      },
+      "lossUnit": "cumulative growth percentage points relative to fold origin GDP",
+      "candidates": [
+        {
+          "candidate": {
+            "id": "zero-w0-p0.8",
+            "target": "zero",
+            "countryWeight": 0,
+            "damping": 0.8
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 4.150188004660586,
+            "rmse": 5.218976740835397,
+            "bias": -3.6808132741436212,
+            "persistenceMae": 4.150188004660577,
+            "deltaMae": 8.881784197001252e-15
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 4.7416787099923985,
+              "rmse": 5.886077681251601,
+              "bias": -4.226966343090517,
+              "persistenceMae": 4.741678709992388,
+              "deltaMae": 1.0658141036401503e-14
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 2.9790364081035863,
+              "rmse": 3.5453487232785834,
+              "bias": -2.5994301976287604,
+              "persistenceMae": 2.9790364081035907,
+              "deltaMae": -4.440892098500626e-15
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 3.1323929479767525,
+              "rmse": 3.7445204765199875,
+              "bias": -2.7384811713620687,
+              "persistenceMae": 3.132392947976746,
+              "deltaMae": 6.661338147750939e-15
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 6.196058876176565,
+              "rmse": 7.335106358496465,
+              "bias": -5.5749959857954225,
+              "persistenceMae": 6.19605887617656,
+              "deltaMae": 5.329070518200751e-15
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.021593641107617568,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.025084245395464156,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "zero-w0-p0.9",
+            "target": "zero",
+            "countryWeight": 0,
+            "damping": 0.9
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 4.150188004660586,
+            "rmse": 5.218976740835397,
+            "bias": -3.6808132741436212,
+            "persistenceMae": 4.150188004660577,
+            "deltaMae": 8.881784197001252e-15
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 4.7416787099923985,
+              "rmse": 5.886077681251601,
+              "bias": -4.226966343090517,
+              "persistenceMae": 4.741678709992388,
+              "deltaMae": 1.0658141036401503e-14
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 2.9790364081035863,
+              "rmse": 3.5453487232785834,
+              "bias": -2.5994301976287604,
+              "persistenceMae": 2.9790364081035907,
+              "deltaMae": -4.440892098500626e-15
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 3.1323929479767525,
+              "rmse": 3.7445204765199875,
+              "bias": -2.7384811713620687,
+              "persistenceMae": 3.132392947976746,
+              "deltaMae": 6.661338147750939e-15
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 6.196058876176565,
+              "rmse": 7.335106358496465,
+              "bias": -5.5749959857954225,
+              "persistenceMae": 6.19605887617656,
+              "deltaMae": 5.329070518200751e-15
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.021593641107617568,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.025084245395464156,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "zero-w0-p0.98",
+            "target": "zero",
+            "countryWeight": 0,
+            "damping": 0.98
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 4.150188004660586,
+            "rmse": 5.218976740835397,
+            "bias": -3.6808132741436212,
+            "persistenceMae": 4.150188004660577,
+            "deltaMae": 8.881784197001252e-15
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 4.7416787099923985,
+              "rmse": 5.886077681251601,
+              "bias": -4.226966343090517,
+              "persistenceMae": 4.741678709992388,
+              "deltaMae": 1.0658141036401503e-14
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 2.9790364081035863,
+              "rmse": 3.5453487232785834,
+              "bias": -2.5994301976287604,
+              "persistenceMae": 2.9790364081035907,
+              "deltaMae": -4.440892098500626e-15
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 3.1323929479767525,
+              "rmse": 3.7445204765199875,
+              "bias": -2.7384811713620687,
+              "persistenceMae": 3.132392947976746,
+              "deltaMae": 6.661338147750939e-15
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 6.196058876176565,
+              "rmse": 7.335106358496465,
+              "bias": -5.5749959857954225,
+              "persistenceMae": 6.19605887617656,
+              "deltaMae": 5.329070518200751e-15
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.021593641107617568,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.025084245395464156,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "zero-w0.25-p0.8",
+            "target": "zero",
+            "countryWeight": 0.25,
+            "damping": 0.8
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 3.618539339717404,
+            "rmse": 4.614237533039763,
+            "bias": -3.1062027149051215,
+            "persistenceMae": 4.150188004660577,
+            "deltaMae": -0.5316486649431726
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 4.19216854836178,
+              "rmse": 5.241000780273301,
+              "bias": -3.616711093055179,
+              "persistenceMae": 4.741678709992388,
+              "deltaMae": -0.5495101616306082
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 2.4827535066015547,
+              "rmse": 3.0101368240726445,
+              "bias": -2.0953961261680103,
+              "persistenceMae": 2.9790364081035907,
+              "deltaMae": -0.496282901502036
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 2.682860596454682,
+              "rmse": 3.265991708207773,
+              "bias": -2.2690259150200145,
+              "persistenceMae": 3.132392947976746,
+              "deltaMae": -0.44953235152206394
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 5.4993481266798625,
+              "rmse": 6.530503686541232,
+              "bias": -4.78901264598731,
+              "persistenceMae": 6.19605887617656,
+              "deltaMae": -0.6967107494966971
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.021593641107617568,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.025084245395464156,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "zero-w0.25-p0.9",
+            "target": "zero",
+            "countryWeight": 0.25,
+            "damping": 0.9
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 3.5402861184076744,
+            "rmse": 4.526256657257715,
+            "bias": -3.017181858654555,
+            "persistenceMae": 4.150188004660577,
+            "deltaMae": -0.6099018862529024
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 4.1034252675655996,
+              "rmse": 5.14263310599284,
+              "bias": -3.514717748906172,
+              "persistenceMae": 4.741678709992388,
+              "deltaMae": -0.6382534424267883
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 2.4252706030749835,
+              "rmse": 2.9473447329947486,
+              "bias": -2.032060795956355,
+              "persistenceMae": 2.9790364081035907,
+              "deltaMae": -0.5537658050286072
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 2.6307614941442545,
+              "rmse": 3.211956598739821,
+              "bias": -2.2099915769449447,
+              "persistenceMae": 3.132392947976746,
+              "deltaMae": -0.5016314538324913
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 5.368522484351313,
+              "rmse": 6.397686944948378,
+              "bias": -4.639715859262756,
+              "persistenceMae": 6.19605887617656,
+              "deltaMae": -0.8275363918252463
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.021593641107617568,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.025084245395464156,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "zero-w0.25-p0.98",
+            "target": "zero",
+            "countryWeight": 0.25,
+            "damping": 0.98
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 3.476986540642043,
+            "rmse": 4.4555812276477225,
+            "bias": -2.9431217807936787,
+            "persistenceMae": 4.150188004660577,
+            "deltaMae": -0.673201464018534
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 4.030580377914842,
+              "rmse": 5.063316245267291,
+              "bias": -3.4288704407167017,
+              "persistenceMae": 4.741678709992388,
+              "deltaMae": -0.7110983320775457
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 2.380870742841896,
+              "rmse": 2.8979249085843253,
+              "bias": -1.9813394341460953,
+              "persistenceMae": 2.9790364081035907,
+              "deltaMae": -0.5981656652616949
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 2.5916015447297895,
+              "rmse": 3.1698268311816533,
+              "bias": -2.1627075891922507,
+              "persistenceMae": 3.132392947976746,
+              "deltaMae": -0.5407914032469563
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 5.2566998152535405,
+              "rmse": 6.2896774410248515,
+              "bias": -4.511833135628873,
+              "persistenceMae": 6.19605887617656,
+              "deltaMae": -0.9393590609230191
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.021593641107617568,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.025084245395464156,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "zero-w0.5-p0.8",
+            "target": "zero",
+            "countryWeight": 0.5,
+            "damping": 0.8
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 3.153709416253983,
+            "rmse": 4.139336083288296,
+            "bias": -2.522479901572328,
+            "persistenceMae": 4.150188004660577,
+            "deltaMae": -0.9964785884065939
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 3.7072809706156153,
+              "rmse": 4.745292661436985,
+              "bias": -2.9951235692794484,
+              "persistenceMae": 4.741678709992388,
+              "deltaMae": -1.0343977393767725
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 2.057637738617958,
+              "rmse": 2.5444800511121377,
+              "bias": -1.5866454395122327,
+              "persistenceMae": 2.9790364081035907,
+              "deltaMae": -0.9213986694856326
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 2.3012474979234243,
+              "rmse": 2.8814270245731595,
+              "bias": -1.7945501135134638,
+              "persistenceMae": 3.132392947976746,
+              "deltaMae": -0.8311454500533215
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 4.8672439793628905,
+              "rmse": 5.906460286780974,
+              "bias": -3.98569230383207,
+              "persistenceMae": 6.19605887617656,
+              "deltaMae": -1.328814896813669
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.021593641107617568,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.025084245395464156,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "zero-w0.5-p0.9",
+            "target": "zero",
+            "countryWeight": 0.5,
+            "damping": 0.9
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 3.0294087777206906,
+            "rmse": 4.021896311945682,
+            "bias": -2.341166991085636,
+            "persistenceMae": 4.150188004660577,
+            "deltaMae": -1.1207792269398862
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 3.569711672180874,
+              "rmse": 4.618236403191683,
+              "bias": -2.7868485290148195,
+              "persistenceMae": 4.741678709992388,
+              "deltaMae": -1.171967037811514
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 1.959609046689528,
+              "rmse": 2.444132572351904,
+              "bias": -1.458717545985854,
+              "persistenceMae": 2.9790364081035907,
+              "deltaMae": -1.0194273614140628
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 2.2138897287552557,
+              "rmse": 2.8050721423378615,
+              "bias": -1.6751433850476865,
+              "persistenceMae": 3.132392947976746,
+              "deltaMae": -0.9185032192214901
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 4.668684441802724,
+              "rmse": 5.733585414035771,
+              "bias": -3.6799417143336335,
+              "persistenceMae": 6.19605887617656,
+              "deltaMae": -1.5273744343738356
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.021593641107617568,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.025084245395464156,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "zero-w0.5-p0.98",
+            "target": "zero",
+            "countryWeight": 0.5,
+            "damping": 0.98
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 2.9330313837958477,
+            "rmse": 3.9414355999723116,
+            "bias": -2.1898980066222835,
+            "persistenceMae": 4.150188004660577,
+            "deltaMae": -1.217156620864729
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 3.4635707567871346,
+              "rmse": 4.5326147279950115,
+              "bias": -2.6109770823647924,
+              "persistenceMae": 4.741678709992388,
+              "deltaMae": -1.2781079532052533
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 1.882563425273101,
+              "rmse": 2.369756285989522,
+              "bias": -1.3561614366521124,
+              "persistenceMae": 2.9790364081035907,
+              "deltaMae": -1.0964729828304898
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 2.145216374720749,
+              "rmse": 2.7507518642137354,
+              "bias": -1.579390495798275,
+              "persistenceMae": 3.132392947976746,
+              "deltaMae": -0.9871765732559967
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 4.51661912931044,
+              "rmse": 5.617113119172747,
+              "bias": -3.417079770803874,
+              "persistenceMae": 6.19605887617656,
+              "deltaMae": -1.6794397468661195
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.021593641107617568,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.025084245395464156,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "zero-w0.75-p0.8",
+            "target": "zero",
+            "countryWeight": 0.75,
+            "damping": 0.8
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 2.769260631659294,
+            "rmse": 3.849189415393515,
+            "bias": -1.9295670448361433,
+            "persistenceMae": 4.150188004660577,
+            "deltaMae": -1.380927373001283
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 3.316599211779891,
+              "rmse": 4.456614510220889,
+              "bias": -2.3621007565791943,
+              "persistenceMae": 4.741678709992388,
+              "deltaMae": -1.4250794982124968
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 1.6855302430205124,
+              "rmse": 2.1970104132780883,
+              "bias": -1.0731502955849026,
+              "persistenceMae": 2.9790364081035907,
+              "deltaMae": -1.2935061650830784
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 1.972424681518786,
+              "rmse": 2.635678043919291,
+              "bias": -1.3150253050998324,
+              "persistenceMae": 3.132392947976746,
+              "deltaMae": -1.1599682664579598
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 4.370981379921523,
+              "rmse": 5.534859480002189,
+              "bias": -3.164858016629333,
+              "persistenceMae": 6.19605887617656,
+              "deltaMae": -1.8250774962550365
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.021593641107617568,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.025084245395464156,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "zero-w0.75-p0.9",
+            "target": "zero",
+            "countryWeight": 0.75,
+            "damping": 0.9
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 2.6250069955504385,
+            "rmse": 3.792980852760543,
+            "bias": -1.6526413206436064,
+            "persistenceMae": 4.150188004660577,
+            "deltaMae": -1.5251810091101383
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 3.1496113751313968,
+              "rmse": 4.404867218165689,
+              "bias": -2.0431871090816673,
+              "persistenceMae": 4.741678709992388,
+              "deltaMae": -1.592067334860991
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 1.5862903239801478,
+              "rmse": 2.1106216757363376,
+              "bias": -0.8793606595362465,
+              "persistenceMae": 2.9790364081035907,
+              "deltaMae": -1.392746084123443
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 1.8818915342584486,
+              "rmse": 2.588839702070786,
+              "bias": -1.1338958590198127,
+              "persistenceMae": 3.132392947976746,
+              "deltaMae": -1.2505014137182973
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 4.118744134915149,
+              "rmse": 5.4620098492370035,
+              "bias": -2.695372097038906,
+              "persistenceMae": 6.19605887617656,
+              "deltaMae": -2.077314741261411
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.021593641107617568,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.025084245395464156,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "zero-w0.75-p0.98",
+            "target": "zero",
+            "countryWeight": 0.75,
+            "damping": 0.98
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 2.5193729044977533,
+            "rmse": 3.7957196564601228,
+            "bias": -1.4209582234973621,
+            "persistenceMae": 4.150188004660577,
+            "deltaMae": -1.6308151001628235
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 3.020305292242904,
+              "rmse": 4.41986900263243,
+              "bias": -1.773035768146766,
+              "persistenceMae": 4.741678709992388,
+              "deltaMae": -1.7213734177494837
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 1.5275267767623555,
+              "rmse": 2.0626522286248745,
+              "bias": -0.7238446850915418,
+              "persistenceMae": 2.9790364081035907,
+              "deltaMae": -1.4515096313412352
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 1.823546476742813,
+              "rmse": 2.5711840284662335,
+              "bias": -0.9884770782735486,
+              "persistenceMae": 3.132392947976746,
+              "deltaMae": -1.308846471233933
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 3.9180543097829386,
+              "rmse": 5.484454489203889,
+              "bias": -2.2902890103613935,
+              "persistenceMae": 6.19605887617656,
+              "deltaMae": -2.278004566393621
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.021593641107617568,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.025084245395464156,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "zero-w1-p0.8",
+            "target": "zero",
+            "countryWeight": 1,
+            "damping": 0.8
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 2.4840574325329863,
+            "rmse": 3.7938484337400604,
+            "bias": -1.3273821918421682,
+            "persistenceMae": 4.150188004660577,
+            "deltaMae": -1.6661305721275905
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 2.9969748582904727,
+              "rmse": 4.42421520865455,
+              "bias": -1.7175336492964912,
+              "persistenceMae": 4.741678709992388,
+              "deltaMae": -1.744703851701915
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 1.4684809295331598,
+              "rmse": 2.033741693303558,
+              "bias": -0.5548823060826069,
+              "persistenceMae": 2.9790364081035907,
+              "deltaMae": -1.510555478570431
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 1.7625391040878966,
+              "rmse": 2.572537425033377,
+              "bias": -0.830422234110664,
+              "persistenceMae": 3.132392947976746,
+              "deltaMae": -1.3698538438888492
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 3.9343821533468537,
+              "rmse": 5.479279055415988,
+              "bias": -2.3263219048580157,
+              "persistenceMae": 6.19605887617656,
+              "deltaMae": -2.261676722829706
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.021593641107617568,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.025084245395464156,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "zero-w1-p0.9",
+            "target": "zero",
+            "countryWeight": 1,
+            "damping": 0.9
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 2.377420039280111,
+            "rmse": 3.9005796903398844,
+            "bias": -0.9514694267623233,
+            "persistenceMae": 4.150188004660577,
+            "deltaMae": -1.7727679653804658
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 2.867106545500662,
+              "rmse": 4.560701602878451,
+              "bias": -1.2835502111752246,
+              "persistenceMae": 4.741678709992388,
+              "deltaMae": -1.8745721644917257
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 1.4078407569634237,
+              "rmse": 2.0384496768073346,
+              "bias": -0.29394947362478013,
+              "persistenceMae": 2.9790364081035907,
+              "deltaMae": -1.571195651140167
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 1.7006773087015439,
+              "rmse": 2.6162550908843785,
+              "bias": -0.5862069909154203,
+              "persistenceMae": 3.132392947976746,
+              "deltaMae": -1.431715639275202
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 3.7377412855946077,
+              "rmse": 5.660258571877808,
+              "bias": -1.68568381801014,
+              "persistenceMae": 6.19605887617656,
+              "deltaMae": -2.458317590581952
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.021593641107617568,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.025084245395464156,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "zero-w1-p0.98",
+            "target": "zero",
+            "countryWeight": 1,
+            "damping": 0.98
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 2.383091951211256,
+            "rmse": 4.075545421573806,
+            "bias": -0.6361055423046427,
+            "persistenceMae": 4.150188004660577,
+            "deltaMae": -1.767096053449321
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 2.8756193710659383,
+              "rmse": 4.775265098810747,
+              "bias": -0.9147768112786786,
+              "persistenceMae": 4.741678709992388,
+              "deltaMae": -1.8660593389264495
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 1.4078876598989851,
+              "rmse": 2.0851282089372383,
+              "bias": -0.08433642973605146,
+              "persistenceMae": 2.9790364081035907,
+              "deltaMae": -1.5711487482046056
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 1.6967625941215871,
+              "rmse": 2.686337331450311,
+              "bias": -0.3899127369232919,
+              "persistenceMae": 3.132392947976746,
+              "deltaMae": -1.4356303538551587
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 3.7626832851591754,
+              "rmse": 5.957539795105561,
+              "bias": -1.1309779490812975,
+              "persistenceMae": 6.19605887617656,
+              "deltaMae": -2.433375591017384
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.021593641107617568,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.025084245395464156,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "pooled-w0-p0.8",
+            "target": "pooled",
+            "countryWeight": 0,
+            "damping": 0.8
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 2.7329848293218086,
+            "rmse": 3.790853067795201,
+            "bias": -1.372479652203777,
+            "persistenceMae": 4.150188004660577,
+            "deltaMae": -1.4172031753387682
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 3.1384209075297167,
+              "rmse": 4.3043415082627785,
+              "bias": -1.7765500916908543,
+              "persistenceMae": 4.741678709992388,
+              "deltaMae": -1.6032578024626711
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 1.9302213944701494,
+              "rmse": 2.477927578056283,
+              "bias": -0.5724201820193642,
+              "persistenceMae": 2.9790364081035907,
+              "deltaMae": -1.0488150136334413
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 2.042422404775653,
+              "rmse": 2.703660556281869,
+              "bias": -0.8530119549688149,
+              "persistenceMae": 3.132392947976746,
+              "deltaMae": -1.0899705432010927
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 4.12108505643984,
+              "rmse": 5.344479508258376,
+              "bias": -2.416662195130619,
+              "persistenceMae": 6.19605887617656,
+              "deltaMae": -2.0749738197367193
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.021593641107617568,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.025084245395464156,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "pooled-w0-p0.9",
+            "target": "pooled",
+            "countryWeight": 0,
+            "damping": 0.9
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 2.6368794278791894,
+            "rmse": 3.6464332565611586,
+            "bias": -1.0130325299169722,
+            "persistenceMae": 4.150188004660577,
+            "deltaMae": -1.5133085767813874
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 3.0034432011596373,
+              "rmse": 4.126232421004973,
+              "bias": -1.3649823576591678,
+              "persistenceMae": 4.741678709992388,
+              "deltaMae": -1.7382355088327506
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 1.9110831567839022,
+              "rmse": 2.4315478340580667,
+              "bias": -0.31617187098742483,
+              "persistenceMae": 2.9790364081035907,
+              "deltaMae": -1.0679532513196885
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 2.000676985843932,
+              "rmse": 2.6402148604419966,
+              "bias": -0.6148283255550953,
+              "persistenceMae": 3.132392947976746,
+              "deltaMae": -1.1317159621328137
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 3.9157105992429884,
+              "rmse": 5.100181745649519,
+              "bias": -1.8134632033312497,
+              "persistenceMae": 6.19605887617656,
+              "deltaMae": -2.2803482769335712
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.021593641107617568,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.025084245395464156,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "pooled-w0-p0.98",
+            "target": "pooled",
+            "countryWeight": 0,
+            "damping": 0.98
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 2.5866447716770655,
+            "rmse": 3.554634100605452,
+            "bias": -0.7135917975037502,
+            "persistenceMae": 4.150188004660577,
+            "deltaMae": -1.5635432329835113
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 2.9268261001489306,
+              "rmse": 4.009385793451131,
+              "bias": -1.0180775954967658,
+              "persistenceMae": 4.741678709992388,
+              "deltaMae": -1.8148526098434572
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 1.9130857413027729,
+              "rmse": 2.4134450279914605,
+              "bias": -0.11070991747757875,
+              "persistenceMae": 2.9790364081035907,
+              "deltaMae": -1.0659506668008178
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 1.9807342234937897,
+              "rmse": 2.604104825880633,
+              "bias": -0.4238783332266847,
+              "persistenceMae": 3.132392947976746,
+              "deltaMae": -1.1516587244829561
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 3.804586176611124,
+              "rmse": 4.939906761773949,
+              "bias": -1.2959451246869427,
+              "persistenceMae": 6.19605887617656,
+              "deltaMae": -2.3914726995654356
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.021593641107617568,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.025084245395464156,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "pooled-w0.25-p0.8",
+            "target": "pooled",
+            "countryWeight": 0.25,
+            "damping": 0.8
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 2.541203138217204,
+            "rmse": 3.5581186975568535,
+            "bias": -1.3696313215596478,
+            "persistenceMae": 4.150188004660577,
+            "deltaMae": -1.608984866443373
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 2.961216799204432,
+              "rmse": 4.066663763924014,
+              "bias": -1.7728213546198854,
+              "persistenceMae": 4.741678709992388,
+              "deltaMae": -1.780461910787956
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 1.7095760894624967,
+              "rmse": 2.2321891878028564,
+              "bias": -0.5713150561003757,
+              "persistenceMae": 2.9790364081035907,
+              "deltaMae": -1.269460318641094
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 1.8699249564663034,
+              "rmse": 2.506354732199563,
+              "bias": -0.8515895650388533,
+              "persistenceMae": 3.132392947976746,
+              "deltaMae": -1.2624679915104424
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 3.8905400894134656,
+              "rmse": 5.047913047882331,
+              "bias": -2.4109475796165967,
+              "persistenceMae": 6.19605887617656,
+              "deltaMae": -2.305518786763094
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.021593641107617568,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.025084245395464156,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "pooled-w0.25-p0.9",
+            "target": "pooled",
+            "countryWeight": 0.25,
+            "damping": 0.9
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 2.381611344479443,
+            "rmse": 3.3797043061402188,
+            "bias": -1.0091373126965466,
+            "persistenceMae": 4.150188004660577,
+            "deltaMae": -1.7685766601811337
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 2.7489215061043057,
+              "rmse": 3.853291232041626,
+              "bias": -1.3598277891914268,
+              "persistenceMae": 4.741678709992388,
+              "deltaMae": -1.992757203888082
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 1.6543372244622185,
+              "rmse": 2.154067314503001,
+              "bias": -0.3147701692366816,
+              "persistenceMae": 2.9790364081035907,
+              "deltaMae": -1.3246991836413722
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 1.7857538413930922,
+              "rmse": 2.4195491857706255,
+              "bias": -0.6130245474641285,
+              "persistenceMae": 3.132392947976746,
+              "deltaMae": -1.3466391065836536
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 3.579345113309582,
+              "rmse": 4.755524296874959,
+              "bias": -1.8053639822041352,
+              "persistenceMae": 6.19605887617656,
+              "deltaMae": -2.6167137628669774
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.021593641107617568,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.025084245395464156,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "pooled-w0.25-p0.98",
+            "target": "pooled",
+            "countryWeight": 0.25,
+            "damping": 0.98
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 2.2842450693843275,
+            "rmse": 3.2639869381256386,
+            "bias": -0.708681797654395,
+            "persistenceMae": 4.150188004660577,
+            "deltaMae": -1.8659429352762493
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 2.615682032128349,
+              "rmse": 3.712002953913777,
+              "bias": -1.0115286288289969,
+              "persistenceMae": 4.741678709992388,
+              "deltaMae": -2.125996677864039
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 1.627999883151158,
+              "rmse": 2.1131510691352244,
+              "bias": -0.10904507192868286,
+              "persistenceMae": 2.9790364081035907,
+              "deltaMae": -1.3510365249524328
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 1.7343482442942382,
+              "rmse": 2.366597101835995,
+              "bias": -0.421736242024626,
+              "persistenceMae": 3.132392947976746,
+              "deltaMae": -1.3980447036825077
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 3.3895932329492475,
+              "rmse": 4.561831560632443,
+              "bias": -1.2854713488697889,
+              "persistenceMae": 6.19605887617656,
+              "deltaMae": -2.806465643227312
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.021593641107617568,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.025084245395464156,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "pooled-w0.5-p0.8",
+            "target": "pooled",
+            "countryWeight": 0.5,
+            "damping": 0.8
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 2.419869990093598,
+            "rmse": 3.480630812635067,
+            "bias": -1.3611273605771554,
+            "persistenceMae": 4.150188004660577,
+            "deltaMae": -1.7303180145669788
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 2.865052918950939,
+              "rmse": 4.009605425249117,
+              "bias": -1.7616907436403095,
+              "persistenceMae": 4.741678709992388,
+              "deltaMae": -1.876625791041449
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 1.5384077909560605,
+              "rmse": 2.0663359178667178,
+              "bias": -0.5680118621121107,
+              "persistenceMae": 2.9790364081035907,
+              "deltaMae": -1.4406286171475302
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 1.755816358331876,
+              "rmse": 2.4149097711340977,
+              "bias": -0.8473366986294045,
+              "persistenceMae": 3.132392947976746,
+              "deltaMae": -1.3765765896448698
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 3.754684866059077,
+              "rmse": 4.974360141696515,
+              "bias": -2.393898489138796,
+              "persistenceMae": 6.19605887617656,
+              "deltaMae": -2.4413740101174826
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.021593641107617568,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.025084245395464156,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "pooled-w0.5-p0.9",
+            "target": "pooled",
+            "countryWeight": 0.5,
+            "damping": 0.9
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 2.238762273809851,
+            "rmse": 3.3391007190154105,
+            "bias": -0.9975176885226676,
+            "persistenceMae": 4.150188004660577,
+            "deltaMae": -1.9114257308507256
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 2.6259506831251094,
+              "rmse": 3.84635770444845,
+              "bias": -1.3444546985742605,
+              "persistenceMae": 4.741678709992388,
+              "deltaMae": -2.1157280268672785
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 1.4721292233656407,
+              "rmse": 1.9831145034073567,
+              "bias": -0.310582408620515,
+              "persistenceMae": 2.9790364081035907,
+              "deltaMae": -1.50690718473795
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 1.665179461003938,
+              "rmse": 2.339272785113178,
+              "bias": -0.607633555554442,
+              "persistenceMae": 3.132392947976746,
+              "deltaMae": -1.4672134869728077
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 3.3917216652076023,
+              "rmse": 4.7499193622333955,
+              "bias": -1.7812241780244555,
+              "persistenceMae": 6.19605887617656,
+              "deltaMae": -2.8043372109689573
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.021593641107617568,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.025084245395464156,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "pooled-w0.5-p0.98",
+            "target": "pooled",
+            "countryWeight": 0.5,
+            "damping": 0.98
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 2.11697737527658,
+            "rmse": 3.2709978537839617,
+            "bias": -0.6940456071777605,
+            "persistenceMae": 4.150188004660577,
+            "deltaMae": -2.033210629383997
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 2.4620478896460845,
+              "rmse": 3.7675962997489076,
+              "bias": -0.9920116080672844,
+              "persistenceMae": 4.741678709992388,
+              "deltaMae": -2.2796308203463034
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 1.4337377568249647,
+              "rmse": 1.9438683651376638,
+              "bias": -0.10407292541650501,
+              "persistenceMae": 2.9790364081035907,
+              "deltaMae": -1.545298651278626
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 1.6035692735076963,
+              "rmse": 2.300866197410619,
+              "bias": -0.41533620791019144,
+              "persistenceMae": 3.132392947976746,
+              "deltaMae": -1.5288236744690495
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 3.148979519236261,
+              "rmse": 4.643803482365204,
+              "bias": -1.2542796521701476,
+              "persistenceMae": 6.19605887617656,
+              "deltaMae": -3.0470793569402987
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.021593641107617568,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.025084245395464156,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "pooled-w0.75-p0.8",
+            "target": "pooled",
+            "countryWeight": 0.75,
+            "damping": 0.8
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 2.4131983766968212,
+            "rmse": 3.5639272798914337,
+            "bias": -1.347026191357052,
+            "persistenceMae": 4.150188004660577,
+            "deltaMae": -1.7369896279637556
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 2.885716155252468,
+              "rmse": 4.135328801470952,
+              "bias": -1.7432371534288804,
+              "persistenceMae": 4.741678709992388,
+              "deltaMae": -1.8559625547399197
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 1.4776131751566413,
+              "rmse": 1.9977066124211342,
+              "bias": -0.5625284864548293,
+              "persistenceMae": 2.9790364081035907,
+              "deltaMae": -1.5014232329469495
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 1.7293203958154397,
+              "rmse": 2.438757602883389,
+              "bias": -0.8402742227149538,
+              "persistenceMae": 3.132392947976746,
+              "deltaMae": -1.403072552161306
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 3.7878621968523256,
+              "rmse": 5.126195303935469,
+              "bias": -2.365648835395205,
+              "persistenceMae": 6.19605887617656,
+              "deltaMae": -2.408196679324234
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.021593641107617568,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.025084245395464156,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "pooled-w0.75-p0.9",
+            "target": "pooled",
+            "countryWeight": 0.75,
+            "damping": 0.9
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 2.2441048625497486,
+            "rmse": 3.525214369824751,
+            "bias": -0.9782666543675097,
+            "persistenceMae": 4.150188004660577,
+            "deltaMae": -1.9060831421108282
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 2.6659648283258854,
+              "rmse": 4.0983556780393675,
+              "bias": -1.3189902256699484,
+              "persistenceMae": 4.741678709992388,
+              "deltaMae": -2.0757138816665024
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 1.4088221303129964,
+              "rmse": 1.9431310276025335,
+              "bias": -0.3036339831886804,
+              "persistenceMae": 2.9790364081035907,
+              "deltaMae": -1.5702142777905943
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 1.635315042531119,
+              "rmse": 2.409883751138339,
+              "bias": -0.5986849223807963,
+              "persistenceMae": 3.132392947976746,
+              "deltaMae": -1.497077905445627
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 3.4678338947084097,
+              "rmse": 5.072789595910217,
+              "bias": -1.7412642772498925,
+              "persistenceMae": 6.19605887617656,
+              "deltaMae": -2.72822498146815
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.021593641107617568,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.025084245395464156,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "pooled-w0.75-p0.98",
+            "target": "pooled",
+            "countryWeight": 0.75,
+            "damping": 0.98
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 2.1523284821466278,
+            "rmse": 3.5640865979992045,
+            "bias": -0.6698140998015575,
+            "persistenceMae": 4.150188004660577,
+            "deltaMae": -1.997859522513949
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 2.551480426003984,
+              "rmse": 4.150503403330904,
+              "bias": -0.959706984490392,
+              "persistenceMae": 4.741678709992388,
+              "deltaMae": -2.190198283988404
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 1.3620076333090585,
+              "rmse": 1.9352679753590338,
+              "bias": -0.09582618811766491,
+              "persistenceMae": 2.9790364081035907,
+              "deltaMae": -1.6170287747945322
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 1.5776672704084194,
+              "rmse": 2.4164131647583016,
+              "bias": -0.4047162683909995,
+              "persistenceMae": 3.132392947976746,
+              "deltaMae": -1.5547256775683265
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 3.307455564327468,
+              "rmse": 5.147753352142125,
+              "bias": -1.2026875184955057,
+              "persistenceMae": 6.19605887617656,
+              "deltaMae": -2.8886033118490917
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.021593641107617568,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.025084245395464156,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "pooled-w1-p0.8",
+            "target": "pooled",
+            "countryWeight": 1,
+            "damping": 0.8
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 2.4840574325329863,
+            "rmse": 3.7938484337400604,
+            "bias": -1.3273821918421682,
+            "persistenceMae": 4.150188004660577,
+            "deltaMae": -1.6661305721275905
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 2.9969748582904727,
+              "rmse": 4.42421520865455,
+              "bias": -1.7175336492964912,
+              "persistenceMae": 4.741678709992388,
+              "deltaMae": -1.744703851701915
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 1.4684809295331598,
+              "rmse": 2.033741693303558,
+              "bias": -0.5548823060826069,
+              "persistenceMae": 2.9790364081035907,
+              "deltaMae": -1.510555478570431
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 1.7625391040878966,
+              "rmse": 2.572537425033377,
+              "bias": -0.830422234110664,
+              "persistenceMae": 3.132392947976746,
+              "deltaMae": -1.3698538438888492
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 3.9343821533468537,
+              "rmse": 5.479279055415988,
+              "bias": -2.3263219048580157,
+              "persistenceMae": 6.19605887617656,
+              "deltaMae": -2.261676722829706
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.021593641107617568,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.025084245395464156,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "pooled-w1-p0.9",
+            "target": "pooled",
+            "countryWeight": 1,
+            "damping": 0.9
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 2.377420039280111,
+            "rmse": 3.9005796903398844,
+            "bias": -0.9514694267623233,
+            "persistenceMae": 4.150188004660577,
+            "deltaMae": -1.7727679653804658
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 2.867106545500662,
+              "rmse": 4.560701602878451,
+              "bias": -1.2835502111752246,
+              "persistenceMae": 4.741678709992388,
+              "deltaMae": -1.8745721644917257
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 1.4078407569634237,
+              "rmse": 2.0384496768073346,
+              "bias": -0.29394947362478013,
+              "persistenceMae": 2.9790364081035907,
+              "deltaMae": -1.571195651140167
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 1.7006773087015439,
+              "rmse": 2.6162550908843785,
+              "bias": -0.5862069909154203,
+              "persistenceMae": 3.132392947976746,
+              "deltaMae": -1.431715639275202
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 3.7377412855946077,
+              "rmse": 5.660258571877808,
+              "bias": -1.68568381801014,
+              "persistenceMae": 6.19605887617656,
+              "deltaMae": -2.458317590581952
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.021593641107617568,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.025084245395464156,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        },
+        {
+          "candidate": {
+            "id": "pooled-w1-p0.98",
+            "target": "pooled",
+            "countryWeight": 1,
+            "damping": 0.98
+          },
+          "pooled": {
+            "count": 298,
+            "mae": 2.383091951211256,
+            "rmse": 4.075545421573806,
+            "bias": -0.6361055423046427,
+            "persistenceMae": 4.150188004660577,
+            "deltaMae": -1.767096053449321
+          },
+          "byFold": [
+            {
+              "foldId": "origin-2016",
+              "count": 198,
+              "mae": 2.8756193710659383,
+              "rmse": 4.775265098810747,
+              "bias": -0.9147768112786786,
+              "persistenceMae": 4.741678709992388,
+              "deltaMae": -1.8660593389264495
+            },
+            {
+              "foldId": "origin-2017",
+              "count": 100,
+              "mae": 1.4078876598989851,
+              "rmse": 2.0851282089372383,
+              "bias": -0.08433642973605146,
+              "persistenceMae": 2.9790364081035907,
+              "deltaMae": -1.5711487482046056
+            }
+          ],
+          "byHorizon": [
+            {
+              "horizon": 1,
+              "count": 199,
+              "mae": 1.6967625941215871,
+              "rmse": 2.686337331450311,
+              "bias": -0.3899127369232919,
+              "persistenceMae": 3.132392947976746,
+              "deltaMae": -1.4356303538551587
+            },
+            {
+              "horizon": 2,
+              "count": 99,
+              "mae": 3.7626832851591754,
+              "rmse": 5.957539795105561,
+              "bias": -1.1309779490812975,
+              "persistenceMae": 6.19605887617656,
+              "deltaMae": -2.433375591017384
+            }
+          ],
+          "clampCount": 0,
+          "clamps": [],
+          "skipped": [
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "LAO",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2017,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2016",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            },
+            {
+              "id": "TLS",
+              "foldId": "origin-2017",
+              "year": 2018,
+              "reason": "Missing internal origin outcome"
+            }
+          ],
+          "foldFits": [
+            {
+              "foldId": "origin-2016",
+              "pooledSlope": 0.021593641107617568,
+              "pooledSlopeCountryCount": 99
+            },
+            {
+              "foldId": "origin-2017",
+              "pooledSlope": 0.025084245395464156,
+              "pooledSlopeCountryCount": 100
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

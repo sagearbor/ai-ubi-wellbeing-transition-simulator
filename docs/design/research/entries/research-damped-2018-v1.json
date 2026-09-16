@@ -3,9 +3,24 @@
   "id": "research-damped-2018-v1",
   "familyId": "five-approaches-20260916",
   "branch": "codex/research-damped-20260916",
-  "status": "registered-before-fit",
+  "status": "predictions-frozen-awaiting-controller-score",
+  "protocolCommit": "7d40306fdf677d756042e75ca2fa56afc839c5fe",
   "protocol": "data/evaluation/research-damped-2018-v1/protocol.json",
+  "predictions": "data/evaluation/research-damped-2018-v1/predictions.json",
+  "calibration": "data/evaluation/research-damped-2018-v1/calibration.json",
+  "internalValidation": "data/evaluation/research-damped-2018-v1/internal-validation.json",
+  "provenance": "data/evaluation/research-damped-2018-v1/provenance.json",
+  "numericalProvenance": "data/evaluation/research-damped-2018-v1/numerical-provenance.json",
   "note": "docs/design/research/2026-09-16-research-damped-2018-v1.md",
   "externalScoreStatus": "pending-controller-family-freeze",
-  "authorship": "Automated research agent; no independent human review"
+  "authorship": "Automated research agent; no independent human review",
+  "counts": {
+    "trainingBackgroundCountries": 101,
+    "pairedTrainingRows": 399,
+    "originCountries": 100,
+    "excludedCountries": 28,
+    "predictionRows": 700
+  },
+  "primaryComparison": "2025 ladder MAE versus persistence, common observed mask",
+  "amendments": []
 }
