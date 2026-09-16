@@ -80,6 +80,18 @@ A 7-year test is short. Going further is limited by the outcome data, not by the
 - **GDP.** World Bank GDP per person reaches back to 1960, so a long-run **GDP-only** reconstruction
   (e.g. origin 1980) is feasible now and would test the macro path much harder than 2018–2025. Report
   it as its own entry; it says nothing about wellbeing skill.
+- **Objective proxies reach much further back.** GDP per person, life expectancy, infant mortality,
+  child survival and years of schooling exist from 1960 in the World Bank panel and from the 19th
+  century in Maddison/Gapminder/Human Mortality Database reconstructions. They support genuinely long
+  tests — origin 1960 or 1900 — of the macro and demographic parts of the model, and a composite
+  objective index (HDI-style) can be scored as **its own declared target** with its own persistence
+  baseline.
+  **Caveat that must stay visible:** these are not the ladder. They correlate with it across countries
+  at a point in time, but they move differently over decades — the Easterlin pattern is exactly that
+  income can rise for generations while reported life satisfaction stays flat. So a proxy test can
+  validate the income/health machinery, and it can never be reported as evidence that the model
+  predicts wellbeing. Score it separately, label it separately, and never map a proxy result onto the
+  ladder scale.
 - **Vintages.** Older WHR/World Bank values have been revised repeatedly. Record the vintage actually
   used and do not present a revised series as what was knowable at the origin.
 
