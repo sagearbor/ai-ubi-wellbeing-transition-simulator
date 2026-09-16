@@ -1,0 +1,123 @@
+{
+  "schema": "registered-research-result/1",
+  "id": "research-changes-2018-v1-scored",
+  "entry": "research-changes-2018-v1",
+  "family": "five-approaches-20260916",
+  "status": "completed-one-scored-run",
+  "result": "lower observed MAE than persistence; exploratory, not qualified",
+  "protocolCommit": "dcf05639d28fbe497d18956f138dd96981a60aa8",
+  "freezeCommit": "e437ec74361856f63da5d7d1846c3f1725dd2f63",
+  "scoreReceipt": "data/evaluation/research-changes-2018-v1/score-receipt.json",
+  "scores": "data/evaluation/research-changes-2018-v1/scores.json",
+  "scoresSha256": "a32ef870a925c79fea96efc574d200f622d06a3d71c5c6a8ce66924c4dd3ac89",
+  "report": "docs/design/research/2026-09-16-research-changes-2018-v1-results.md",
+  "metrics": {
+    "ladder": {
+      "primaryEndpoint": {
+        "expected": 100,
+        "observed": 97,
+        "unscored": 3,
+        "model": {
+          "n": 97,
+          "mae": 0.3889452338436902,
+          "rmse": 0.4934439525779727,
+          "bias": -0.19630197982199318,
+          "reason": null
+        },
+        "persistence": {
+          "n": 97,
+          "mae": 0.3889999999999999,
+          "rmse": 0.4939188651598809,
+          "bias": -0.19753608247422674,
+          "reason": null
+        },
+        "modelMinusPersistenceMae": -5.476615630972681e-05,
+        "skill": {
+          "value": 0.00014078703421527283,
+          "reason": null
+        }
+      },
+      "pooled": {
+        "expected": 700,
+        "observed": 681,
+        "unscored": 19,
+        "model": {
+          "n": 681,
+          "mae": 0.2895846686916092,
+          "rmse": 0.41291375837422667,
+          "bias": -0.08550665060247328,
+          "reason": null
+        },
+        "persistence": {
+          "n": 681,
+          "mae": 0.2897439060205584,
+          "rmse": 0.413165639541218,
+          "bias": -0.08621057268722461,
+          "reason": null
+        },
+        "modelMinusPersistenceMae": -0.00015923732894917997,
+        "skill": {
+          "value": 0.0005495795619524513,
+          "reason": null
+        }
+      }
+    },
+    "gdp": {
+      "primaryEndpoint": {
+        "expected": 100,
+        "observed": 97,
+        "unscored": 3,
+        "model": {
+          "n": 97,
+          "mae": 9.83955316931597,
+          "rmse": 13.410190273891445,
+          "bias": 6.968020751188227,
+          "reason": null
+        },
+        "persistence": {
+          "n": 97,
+          "mae": 15.629918353270511,
+          "rmse": 19.53321311150404,
+          "bias": -13.244278728725808,
+          "reason": null
+        },
+        "modelMinusPersistenceMae": -5.790365183954542,
+        "skill": {
+          "value": 0.3704667582440011,
+          "reason": null
+        }
+      },
+      "pooled": {
+        "expected": 700,
+        "observed": 691,
+        "unscored": 9,
+        "model": {
+          "n": 691,
+          "mae": 7.027676895270094,
+          "rmse": 10.12341959115305,
+          "bias": 5.735212909884737,
+          "reason": null
+        },
+        "persistence": {
+          "n": 691,
+          "mae": 8.6499816020173,
+          "rmse": 12.2093393665981,
+          "bias": -5.359578932512586,
+          "reason": null
+        },
+        "modelMinusPersistenceMae": -1.6223047067472063,
+        "skill": {
+          "value": 0.18755007598731321,
+          "reason": null
+        }
+      }
+    }
+  },
+  "qualifiesDefault": false,
+  "validatesPolicyEffects": false,
+  "targetDefinitionCorrection": "Trailing three-year survey average, not an individual-year survey score; identified after scoring, protocol unchanged.",
+  "supersedesPendingStatusOnly": "docs/design/research/entries/research-changes-2018-v1.json",
+  "limitations": [
+    "The endpoint improvement is 0.00005477 ladder points: effectively a tie for practical purposes, not a meaningful predictive breakthrough. The internal procedure chose strong shrinkage (lambda100); that near-persistence result is retained."
+  ]
+}
