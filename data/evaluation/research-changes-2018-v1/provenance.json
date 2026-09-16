@@ -1,0 +1,602 @@
+{
+  "schema": "changes-provenance/1",
+  "entryId": "research-changes-2018-v1",
+  "familyId": "five-approaches-20260916",
+  "protocolCommit": "dcf05639d28fbe497d18956f138dd96981a60aa8",
+  "protocolSha256": "623e9526a7061a075929b79e9bc1a54c948c7ce21d751905227f887445966c35",
+  "authorship": "Automated research agent; not independent human/domain-expert review",
+  "inputs": [
+    {
+      "name": "train",
+      "path": "data/evaluation/level-holdout-2018/train.json",
+      "sha256": "979ac8d45dda418403fc59e04111b9c9dbcd2fa484e4c26aa900cd37e777bd02"
+    },
+    {
+      "name": "origin",
+      "path": "data/evaluation/level-holdout-2018/origin.json",
+      "sha256": "564bab92fe88415df70a1b239223213a53c12274891ec2d39f0e08c3e28e3f77"
+    }
+  ],
+  "code": [
+    {
+      "path": "scripts/evaluation/attempts/research-changes-2018-v1/model.mjs",
+      "sha256": "8b9a820743fe27d22431eada3b42e7cba808e0fe12c6190bf86ac0c9717122fe"
+    },
+    {
+      "path": "scripts/evaluation/attempts/research-changes-2018-v1/run.mjs",
+      "sha256": "033e627f787bbd791dff26e8f591f41b5acbeb822473d333fcc630d8fe0f135b"
+    },
+    {
+      "path": "scripts/evaluation/attempts/research-changes-2018-v1/model.test.ts",
+      "sha256": "284128379d3194656d104e7439bc2e373905fc8b7dd5b9846080b0fa9722b0c1"
+    }
+  ],
+  "outputs": [
+    {
+      "path": "data/evaluation/research-changes-2018-v1/predictions.json",
+      "sha256": "2a01e1b4dd126e49a453915387f93be7ef6b057bf56cb9bfffcc20a6771b4d0d"
+    },
+    {
+      "path": "data/evaluation/research-changes-2018-v1/calibration.json",
+      "sha256": "34140e804f77e03b9fed123927cc8f44d9bf3359b738def1b6318c0dcd4e9156"
+    },
+    {
+      "path": "data/evaluation/research-changes-2018-v1/internal-validation.json",
+      "sha256": "c8c247f99c7cb94ad22497debf7dc16a589b602371c5cf2e8db4030bf3797998"
+    }
+  ],
+  "observedYearRange": [
+    2015,
+    2018
+  ],
+  "numericExternalDataFetched": false,
+  "externalOutcomeReads": 0,
+  "externalScoreInvocations": 0,
+  "trainingBackgroundCountries": 101,
+  "pairedTrainingRows": 399,
+  "originCountries": 100,
+  "originExclusions": [
+    {
+      "id": "CUB",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "JAM",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "BLZ",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "BHS",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "TTO",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "VEN",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "GUY",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "SUR",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "TWN",
+      "reason": "Missing historical population, gini, ge, rl, cc"
+    },
+    {
+      "id": "PRK",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "SGP",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "KHM",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "BRN",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "MDV",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "UZB",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "TKM",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "SAU",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "AFG",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "SYR",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "OMN",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "QAT",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "KWT",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "BHR",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "AZE",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "AGO",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "NZL",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "PNG",
+      "reason": "Missing historical gini"
+    },
+    {
+      "id": "TLS",
+      "reason": "Missing/invalid 2018 origin outcomes"
+    }
+  ],
+  "predictionRows": 700,
+  "incomeQuartiles": [
+    {
+      "id": "COD",
+      "quartile": 1
+    },
+    {
+      "id": "ETH",
+      "quartile": 1
+    },
+    {
+      "id": "NPL",
+      "quartile": 1
+    },
+    {
+      "id": "YEM",
+      "quartile": 1
+    },
+    {
+      "id": "TJK",
+      "quartile": 1
+    },
+    {
+      "id": "KGZ",
+      "quartile": 1
+    },
+    {
+      "id": "MMR",
+      "quartile": 1
+    },
+    {
+      "id": "HTI",
+      "quartile": 1
+    },
+    {
+      "id": "BGD",
+      "quartile": 1
+    },
+    {
+      "id": "PAK",
+      "quartile": 1
+    },
+    {
+      "id": "KEN",
+      "quartile": 1
+    },
+    {
+      "id": "IND",
+      "quartile": 1
+    },
+    {
+      "id": "NIC",
+      "quartile": 1
+    },
+    {
+      "id": "UKR",
+      "quartile": 1
+    },
+    {
+      "id": "HND",
+      "quartile": 1
+    },
+    {
+      "id": "NGA",
+      "quartile": 1
+    },
+    {
+      "id": "LAO",
+      "quartile": 1
+    },
+    {
+      "id": "VNM",
+      "quartile": 1
+    },
+    {
+      "id": "BOL",
+      "quartile": 1
+    },
+    {
+      "id": "MDA",
+      "quartile": 1
+    },
+    {
+      "id": "BTN",
+      "quartile": 1
+    },
+    {
+      "id": "MAR",
+      "quartile": 1
+    },
+    {
+      "id": "PHL",
+      "quartile": 1
+    },
+    {
+      "id": "PSE",
+      "quartile": 1
+    },
+    {
+      "id": "EGY",
+      "quartile": 1
+    },
+    {
+      "id": "IDN",
+      "quartile": 2
+    },
+    {
+      "id": "ARM",
+      "quartile": 2
+    },
+    {
+      "id": "GTM",
+      "quartile": 2
+    },
+    {
+      "id": "SLV",
+      "quartile": 2
+    },
+    {
+      "id": "MNG",
+      "quartile": 2
+    },
+    {
+      "id": "JOR",
+      "quartile": 2
+    },
+    {
+      "id": "LKA",
+      "quartile": 2
+    },
+    {
+      "id": "GEO",
+      "quartile": 2
+    },
+    {
+      "id": "DZA",
+      "quartile": 2
+    },
+    {
+      "id": "IRQ",
+      "quartile": 2
+    },
+    {
+      "id": "ALB",
+      "quartile": 2
+    },
+    {
+      "id": "IRN",
+      "quartile": 2
+    },
+    {
+      "id": "BIH",
+      "quartile": 2
+    },
+    {
+      "id": "MKD",
+      "quartile": 2
+    },
+    {
+      "id": "ECU",
+      "quartile": 2
+    },
+    {
+      "id": "ZAF",
+      "quartile": 2
+    },
+    {
+      "id": "BLR",
+      "quartile": 2
+    },
+    {
+      "id": "THA",
+      "quartile": 2
+    },
+    {
+      "id": "COL",
+      "quartile": 2
+    },
+    {
+      "id": "PRY",
+      "quartile": 2
+    },
+    {
+      "id": "SRB",
+      "quartile": 2
+    },
+    {
+      "id": "PER",
+      "quartile": 2
+    },
+    {
+      "id": "MNE",
+      "quartile": 2
+    },
+    {
+      "id": "DOM",
+      "quartile": 2
+    },
+    {
+      "id": "BGR",
+      "quartile": 2
+    },
+    {
+      "id": "LBN",
+      "quartile": 3
+    },
+    {
+      "id": "BRA",
+      "quartile": 3
+    },
+    {
+      "id": "RUS",
+      "quartile": 3
+    },
+    {
+      "id": "CHN",
+      "quartile": 3
+    },
+    {
+      "id": "MEX",
+      "quartile": 3
+    },
+    {
+      "id": "MYS",
+      "quartile": 3
+    },
+    {
+      "id": "KAZ",
+      "quartile": 3
+    },
+    {
+      "id": "ROU",
+      "quartile": 3
+    },
+    {
+      "id": "TUR",
+      "quartile": 3
+    },
+    {
+      "id": "CRI",
+      "quartile": 3
+    },
+    {
+      "id": "ARG",
+      "quartile": 3
+    },
+    {
+      "id": "CHL",
+      "quartile": 3
+    },
+    {
+      "id": "HRV",
+      "quartile": 3
+    },
+    {
+      "id": "HUN",
+      "quartile": 3
+    },
+    {
+      "id": "POL",
+      "quartile": 3
+    },
+    {
+      "id": "LVA",
+      "quartile": 3
+    },
+    {
+      "id": "PAN",
+      "quartile": 3
+    },
+    {
+      "id": "LTU",
+      "quartile": 3
+    },
+    {
+      "id": "URY",
+      "quartile": 3
+    },
+    {
+      "id": "SVK",
+      "quartile": 3
+    },
+    {
+      "id": "GRC",
+      "quartile": 3
+    },
+    {
+      "id": "CZE",
+      "quartile": 3
+    },
+    {
+      "id": "EST",
+      "quartile": 3
+    },
+    {
+      "id": "PRT",
+      "quartile": 3
+    },
+    {
+      "id": "SVN",
+      "quartile": 3
+    },
+    {
+      "id": "CYP",
+      "quartile": 4
+    },
+    {
+      "id": "ESP",
+      "quartile": 4
+    },
+    {
+      "id": "MLT",
+      "quartile": 4
+    },
+    {
+      "id": "ITA",
+      "quartile": 4
+    },
+    {
+      "id": "KOR",
+      "quartile": 4
+    },
+    {
+      "id": "JPN",
+      "quartile": 4
+    },
+    {
+      "id": "FRA",
+      "quartile": 4
+    },
+    {
+      "id": "ISR",
+      "quartile": 4
+    },
+    {
+      "id": "BEL",
+      "quartile": 4
+    },
+    {
+      "id": "ARE",
+      "quartile": 4
+    },
+    {
+      "id": "DEU",
+      "quartile": 4
+    },
+    {
+      "id": "CAN",
+      "quartile": 4
+    },
+    {
+      "id": "FIN",
+      "quartile": 4
+    },
+    {
+      "id": "AUT",
+      "quartile": 4
+    },
+    {
+      "id": "GBR",
+      "quartile": 4
+    },
+    {
+      "id": "NLD",
+      "quartile": 4
+    },
+    {
+      "id": "SWE",
+      "quartile": 4
+    },
+    {
+      "id": "DNK",
+      "quartile": 4
+    },
+    {
+      "id": "ISL",
+      "quartile": 4
+    },
+    {
+      "id": "AUS",
+      "quartile": 4
+    },
+    {
+      "id": "USA",
+      "quartile": 4
+    },
+    {
+      "id": "IRL",
+      "quartile": 4
+    },
+    {
+      "id": "NOR",
+      "quartile": 4
+    },
+    {
+      "id": "CHE",
+      "quartile": 4
+    },
+    {
+      "id": "LUX",
+      "quartile": 4
+    }
+  ],
+  "references": [
+    {
+      "title": "Hoerl and Kennard (1970), Ridge Regression: Biased Estimation for Nonorthogonal Problems",
+      "url": "https://homepages.math.uic.edu/~lreyzin/papers/ridge.pdf",
+      "doi": "10.1080/00401706.1970.10488634",
+      "readOn": "2026-09-16",
+      "use": "Quadratic coefficient penalty trades bias for lower coefficient variance; no performance guarantee or coefficient borrowed."
+    },
+    {
+      "title": "Hyndman and Athanasopoulos, Forecasting: Principles and Practice, 5.10",
+      "url": "https://otexts.com/fpp3/tscv.html",
+      "readOn": "2026-09-16",
+      "use": "Training precedes validation origin, including multistep forecasts."
+    },
+    {
+      "title": "Stevenson and Wolfers (2008), Economic Growth and Subjective Well-Being",
+      "url": "https://www.brookings.edu/articles/economic-growth-and-subjective-well-being-reassessing-the-easterlin-paradox/",
+      "readOn": "2026-09-16",
+      "use": "Motivation for testing within-country changes and log income; association is not evidence of held-out forecast skill. No numerical coefficients borrowed."
+    }
+  ],
+  "amendments": [],
+  "pending": "Controller must freeze all five methods and the long-run proxy before the single external score invocation per entry. No external results available here.",
+  "limitations": [
+    "Observation years are historical but sources were retrieved later. Revisions and publication delays remain; this is not an archived 2018 information set. All proposed design choices were made after test years existed.",
+    "Tuning evidence from two rolling origins, not an unbiased selected-model accuracy estimate; no seven-year internal horizon exists."
+  ]
+}
