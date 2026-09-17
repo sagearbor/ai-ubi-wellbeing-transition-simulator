@@ -1,60 +1,82 @@
 # Three-step delivery: research beta, expert review, publication
 
-This is a release preparation record, not a claim that a beta has been deployed, experts contacted, or a journal submission accepted. The current public site is https://wellbeing-transition-simulator-6icr7acugq-uw.a.run.app/. Until the reviewed branch is merged and deployed, that URL does not establish that it runs these changes.
+The public site is https://wellbeing-transition-simulator-6icr7acugq-uw.a.run.app/. GitHub `main`, the public deployment and expert/publication readiness are separate states. The [17 September execution record](2026-09-17-release-verification.md) records exactly what was checked. A merge does not deploy Cloud Run.
 
 ## 1. Release a bounded research beta
 
-### Intended public contract
+### Public contract
 
-Explore a transparent allocation of selected companies' reported cash flow; compare assumptions; import model families; inspect limitations and reproducible historical tests; and translate a policy into a checked draft against the selected model. Outputs are conditional scenarios. The software is not a demonstrated causal policy predictor. The first frozen historical wellbeing test performs worse than persistence, and that result remains visible.
+Explore selected companies’ reported cash flow and editable allocations; compare assumptions; import model families; inspect annual forecast evidence; and translate policy text into a checked draft against the selected model. Results are conditional scenarios. The software is not a demonstrated causal policy predictor. Annual outcome tests remain separate, and weak or losing results stay visible.
 
-### Merge and build
+### Build and verify the source
 
-PR #19 precedes PR #20; this follow-up is based on PR #20. Review the complete stack against current main and rerun CI on the resulting merge, rather than assuming individual green branches prove the combined deployment. Confirm the final reviewed commit before merging. GitHub PRs are review artifacts; no one should approve their own work by impersonating an independent reviewer.
-
-Use Node 22 and run, in the release checkout:
+Use Node 22 (`.nvmrc`). In the release checkout:
 
 ```sh
 npm ci
 npm run check
+node --import tsx scripts/history/export-annual.ts --check
 node --import tsx scripts/hindcast/export-experience.ts --check
 node --import tsx scripts/evaluation/run.ts package
 ```
 
-The packaging check must succeed without changing frozen predictions, observations or scores. Record the final commit, engine version, data collection identities, CI URL and deployed revision in the release notes. Keep original dataset versions. Replay also requires the same numerical runtime: the completed security patch changed the math-library identity, so prior review-build links must be refused explicitly rather than silently rerun under different software. New experiments may still select retained v1 data on the patched runtime.
+Do not modify or rescore frozen evaluation files. The History exporter only transforms saved outputs. Any numerical/source-qualification change must pass its existing freshness and independent review requirements. Older numerical-runtime bundles must fail explicitly rather than silently producing different results.
 
-### Deployment and real AI gate
+### Identified preview, promotion and rollback
 
-The existing deployment script targets Google Cloud Run and defaults to a tagged revision with no public traffic. It needs an authenticated `gcloud` installation and an owner-authorized key in ignored `.env.local`. This review environment has no `gcloud` executable, so deployment commands below are prepared, not executed here.
+Requirements: authenticated Google Cloud CLI with access to project `gen-lang-client-0281141814`, region `us-west1`, existing service `wellbeing-transition-simulator`; an ignored `.env.local` with the owner-authorized Gemini key; and a clean committed checkout. The tool does not create services, change access policies or accept uncommitted sources.
 
-On the configured release computer, inspect the current revision first:
+From the release checkout terminal:
+
+```sh
+npm run deploy
+```
+
+The command archives committed Git bytes, adds the existing ignored build configuration and a commit marker, and deploys a uniquely named preview revision with no public traffic. It records the prior named traffic split and candidate in a JSON receipt under `tmp/releases/`. Keep the receipt: it is the rollback record. A failed preview is not a successful deployment; inspect Cloud Run before retrying it.
+
+The deployed UI displays its embedded build commit. `/release.json` describes that same build; missing identities return 404 rather than a single-page fallback. The checker verifies an exact clean commit, its HTML entry and every emitted JavaScript/CSS chunk. It does not verify AI extraction, usability or scientific correctness.
+
+These commands require values printed by the actual preview operation. **Unverified examples: substitute the real values before running; do not paste placeholders.**
+
+```sh
+node --import tsx scripts/release-check.ts https://ACTUAL_PREVIEW_ORIGIN FULL_EXPECTED_COMMIT
+npm run deploy:promote -- tmp/releases/ACTUAL_RECEIPT.json
+node --import tsx scripts/release-check.ts https://wellbeing-transition-simulator-6icr7acugq-uw.a.run.app FULL_EXPECTED_COMMIT
+npm run deploy -- --rollback tmp/releases/ACTUAL_RECEIPT.json
+```
+
+Complete the browser gate below before promotion. Promotion rechecks candidate identity and traffic, assigns the explicit candidate revision and verifies the public identity. Rollback restores the recorded named revision percentages, including splits; it refuses an unrelated intervening deployment. An interrupted promotion retains recovery state. If prior traffic is already intact, rollback verifies that state without writing. These guards do not lock out simultaneous operators: coordinate releases, and inspect service state after any failure. Never use `--to-latest` as a substitute for an identified revision.
+
+The browser key may reject a tagged preview origin. That is an access configuration issue: use an authorized origin or have the owner configure an appropriate preview restriction. Do not spoof referrers, relax restrictions silently, or treat an earlier public-site success as verification of the new candidate. Credentials must never appear in commands, logs or reports.
+
+### Browser and live-AI gate
+
+On the exact identified candidate:
+
+1. Explore → Apple → Paste a policy. Enter **“Set the policy share to 20 percent. This must eliminate catastrophic AI risk.”** Confirm `policy_share = 0.2`, source quotes preserved, risk claim outside the model, draft still AI-authored/unreviewed, and comparison visibly partial.
+2. Run the comparison. With the untouched default Apple/resident inputs, the monthly equivalent moves from approximately USD 2.420733 to USD 4.841466. This is allocation arithmetic, not measured policy impact.
+3. Download the bundle and reopen it in a fresh tab. Confirm source text, experimental-model status, unsupported clause, exact numeric replay and absence of fabricated human completeness attestation. Financial imported-model links stay disabled; the bundle carries the model.
+4. Select the training fixture. Enter **“Set the training budget to 20 million USD each year.”** Confirm each curve value becomes 20,000,000 USD; capacity/openings can bind and money can remain unspent.
+5. Confirm provider failures keep the pasted text and offer manual drafting. Inspect safe error messages, not raw provider payloads.
+6. History: switch country/outcome/method, inspect China’s missing annual wellbeing years and isolated 2025 forecast, use the year slider with a keyboard, and revisit the earlier Held-out test and Historical reconstruction. Check phone layout without horizontal page overflow.
+7. After promotion, repeat the public identity and supported/unsupported policy/bundle checks. Record the exact commit and revision. Do not claim final-candidate AI verification from local mocked tests or another deployed version.
+
+### Operations and cost controls
+
+No account settings are claimed configured unless their values were inspected. Read current Cloud Run state and recent server errors from the authenticated release terminal:
 
 ```sh
 gcloud run services describe wellbeing-transition-simulator --project gen-lang-client-0281141814 --region us-west1 --format='yaml(status.url,status.latestReadyRevisionName,status.traffic)'
+gcloud logging read 'resource.type="cloud_run_revision" AND resource.labels.service_name="wellbeing-transition-simulator" AND severity>=ERROR' --project gen-lang-client-0281141814 --limit=20 --freshness=24h --format='table(timestamp,severity,textPayload)'
 ```
 
-After reviewing the exact checkout, a tagged candidate is created by:
+Treat cloud logs as potentially sensitive; inspect locally and redact before sharing. Cloud Run HTTP health does not measure Gemini availability or errors in a browser. Use the identified release checker for static availability and a synthetic browser extraction for provider availability; maintain an operator contact and record any monitoring/alert recipient configured. No monitoring subscription or notification destination is silently created by this release.
 
-```sh
-DEPLOY_TAG=research-beta npm run deploy
-```
+The owner accepts the browser-side key. The app’s ten-extraction session limit resets on reload and **does not enforce a spending cap**. In Google AI Studio, inspect this project’s usage tier, model quotas and spend cap, and record the actual configured values privately. Google documents optional project spend caps with delayed enforcement, so costs can exceed the cap during that delay. Alerts-only budgets do not stop spending. Configure owner-chosen limits before broad promotion; this repository does not assert an uninspected dollar amount. [Gemini rate limits](https://ai.google.dev/gemini-api/docs/rate-limits), [project spend caps and delay](https://ai.google.dev/gemini-api/docs/billing#project-spend-caps), [Google Cloud budget types](https://docs.cloud.google.com/billing/docs/how-to/budgets).
 
-Do not promote it until actual candidate tests pass. The existing browser key rejects localhost. A tagged URL may also be outside its allowed origins: confirm an authorized preview address/key with the operator. Do not spoof a referrer or weaken restrictions. A previous success on the old public application is not the new release's smoke test. Browser-side credentials remain the owner's accepted architecture; avoid putting the key in commands, logs, issues or screenshots.
+### First-time usability
 
-Use synthetic text: “Set the policy share to 20 percent.” Start from the current Apple financial experiment through Paste a policy, confirm its exact reported-allocation model, extract, inspect quoted text and mapped setting, run the worker, compare the allocation and reopen the saved bundle. Then add “This must eliminate catastrophic AI risk” and verify the unsupported effect is disclosed rather than assigned a made-up coefficient. Also test the training fixture's “20 million USD each year” conversion and provider-failure/manual recovery. Preserve draft authorship and do not fake human completeness attestation.
-
-Promotion and rollback are operator actions. Promote only the explicit verified revision, never an uninspected “latest”; use the prior traffic revision recorded above for rollback. Substituting revision names is required, so these examples are **unverified commands**:
-
-```sh
-gcloud run services update-traffic wellbeing-transition-simulator --project gen-lang-client-0281141814 --region us-west1 --to-revisions=VERIFIED_CANDIDATE_REVISION=100
-gcloud run services update-traffic wellbeing-transition-simulator --project gen-lang-client-0281141814 --region us-west1 --to-revisions=RECORDED_PREVIOUS_REVISION=100
-```
-
-After promotion, repeat the supported/unsupported live AI and bundle smoke test on the public domain, confirm the research-beta notice and feedback link, and check the reported deployment identity. Never advertise live extraction as verified before that test succeeds.
-
-### First-time usability gate
-
-Observe 3–5 people individually for approximately 15 minutes, without coaching. Ask them to (1) explain what Apple's USD 2.42 monthly figure does and does not mean, (2) change a funding split and identify why more money may stay unspent, (3) paste a policy and find the assumptions/unsupported effects, and (4) decide whether the history test demonstrates accurate predictions. Record task completion, wrong interpretations and points of hesitation; do not invent success rates. Fix misunderstandings that turn assumptions into facts before promoting beyond beta.
+Use the complete [15-minute newcomer task sheet and observation form](newcomer-test.md) with 3–5 real people. Record assisted completions and mistaken interpretations. Agent and automated browser checks are separate engineering evidence. Fix repeated confusion about assumptions, prediction or causality before promoting beyond a research beta.
 
 ## 2. Ask experts specific questions
 
@@ -72,11 +94,11 @@ MIT licensing and CITATION.cff enable reuse and citation; they do not establish 
 
 A methods preprint can document architecture, reproducibility, model-family limits, the failed wellbeing benchmark and the research agenda. The [methods outline](methods-outline.md) avoids claiming findings the evidence does not support. arXiv may require [endorsement](https://info.arxiv.org/help/endorsement.html) for a category; availability of an endorser and submission eligibility are not verified. A scientific-results paper needs an actual validated research question and findings, not just a polished interface.
 
-## Current unresolved gates
+## Gates that require external evidence
 
-- Successful live extraction on the exact new candidate/deployed origin.
-- Merged-release CI and actual Cloud Run deployment/rollback verification.
-- Observed first-time user feedback and independent domain-expert feedback.
-- Final human authorship, archive metadata, data/dependency distribution review, actual research use and publication eligibility.
+- Identified final-candidate Cloud Run deployment, live extraction and real rollback verification.
+- Observed cloud monitoring and Gemini quota/spend-cap configuration.
+- Actual newcomer sessions and independent domain-expert feedback.
+- Human authorship, archive metadata, third-party distribution review, research use and publication eligibility for steps 2–3.
 
-These require external actions or evidence. They cannot be truthfully marked complete by adding code or changing labels.
+Expert feedback, archival DOI and journal acceptance are not prerequisites for publishing an honestly labeled research beta. They are prerequisites for the corresponding later claims. Software tests cannot manufacture that evidence.

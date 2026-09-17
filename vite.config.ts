@@ -3,6 +3,7 @@ import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import { qualificationSourcePlugin } from './build/qualificationSourcePlugin';
+import { releaseIdentityPlugin } from './build/releaseIdentityPlugin';
 
 export default defineConfig(({ mode }) => {
     const env = loadEnv(mode, '.', '');
@@ -11,7 +12,7 @@ export default defineConfig(({ mode }) => {
         port: 3000,
         host: '0.0.0.0',
       },
-      plugins: [qualificationSourcePlugin(), react(), tailwindcss()],
+      plugins: [qualificationSourcePlugin(), releaseIdentityPlugin(), react(), tailwindcss()],
       test: {
         // Agent worktrees are checked out under .claude/worktrees/; never collect their copies of the suite.
         exclude: ['**/node_modules/**', '**/dist/**', '**/.claude/**'],

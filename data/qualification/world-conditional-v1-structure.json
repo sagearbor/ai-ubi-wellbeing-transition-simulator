@@ -1,8 +1,10 @@
 {
-  "hash": "6d3da294a002ee6ee0000c31d2b1af1723901287e6c5806c35c04d4d4f204206",
+  "hash": "c347dced7c5634b9aabbb517fb7aec2f86f69ceab8a7cd942ca893458a1fc894",
   "sources": {
     "build/qualificationSourcePlugin.ts": "18ece29b0103406e16ad371ea5e0de63265985844ff5ce6f1bedfb2be5815049",
     "build/qualificationSources.ts": "f916d6df9660a7a579a4e742d5004424a556dcd74f02e3fb3c5273c05d2f11ae",
+    "build/releaseIdentity.ts": "dee169f88893051802bb3e0abddd0e540390be7444c19c75fb9276f81a42bef7",
+    "build/releaseIdentityPlugin.ts": "3cecfa706e58b55714f97de8adfcf3439dba39e816ae22ccbb68a558b13e1ae5",
     "constants.ts": "37b110e014eb552cd32679ab189527516b2ed7dc782bf48892a66f85b1433bd0",
     "data/core/korinek-2026-faithful.json": "f4e937a2f08ea8fb0b51dec6526ca239cc1cb37906865768681e61ab24b332f4",
     "data/core/overlays/korinek-faithful-extreme.json": "0eb891deb9856e42380b2cbdc56e554ec8ed7bb44cf4b7aa2cc9a489fae6b395",
@@ -33,6 +35,6 @@
     "types.ts": "c420d4479eec93ee6c8f1c2ee074a3e971f40c21b702c1a00637ea93df605dd0",
     "validation/conditionalProfile.ts": "a512c07989739bac6bbf79a0e025025262f2408ce011e0798bedc0e5da2d634f",
     "validation/responseProfile.ts": "a70085177b9986dcb662dda963bc110bee680d714fe0752444fb1e41e8e959d7",
-    "vite.config.ts": "3a970a514eb7abfa8374ecb1672365a6376c5d56bfcc17d08920d0350f836e6f"
+    "vite.config.ts": "edbedebc2cded217c43742604bfb2753c6225c8d3c4aecaf4c59c10ab8331648"
   }
 }

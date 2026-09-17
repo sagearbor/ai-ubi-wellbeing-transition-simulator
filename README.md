@@ -4,11 +4,13 @@
 
 **What happens to human well-being when AI automates the economy faster than our institutions can adapt — and who, if anyone, keeps the lights on for everyone else?**
 
-This comparison branch opens with **reported company cash flow → an editable allocation → visible limits**. Select Apple, Microsoft, Alphabet, Amazon, Meta or NVIDIA, compare two policies, and reopen the exact experiment in Model Lab. Reported observations, derived amounts and scenario assumptions are labeled separately.
+The app opens with **reported company cash flow → an editable allocation → visible limits**. Select Apple, Microsoft, Alphabet, Amazon, Meta or NVIDIA, compare two policies, and reopen the exact experiment in Model Lab. Reported observations, derived amounts and scenario assumptions are labeled separately.
 
-**Check against history** separates a frozen temporal holdout from the older same-span reconstruction. The held-out level model fits only 2015–2018 and scores 2019–2025: wellbeing error is **0.318 ladder points versus 0.290 for predicting no change**. It performs worse on that measure. This retrospective test uses revised data and does not establish causal policy effects or validate the financial calculator. See the [policy-evidence follow-up](docs/design/policy-evidence-handoff.md) and the [published-experience comparison](docs/design/published-experience-handoff.md).
+**History** opens with interactive annual forecasts for eight countries: GDP per person, life expectancy, unemployment and annual wellbeing. Levels and changes have separate charts, all candidates remain selectable, and missing years stay visible. The default method within each outcome was selected after comparing saved results; it is not an independently confirmed winner. These retrospective tests use revised data and do not establish causal policy effects or validate the financial calculator.
 
-This branch has not been deployed or merged into main. The public app may show a different version.
+The earlier **Held-out test** and **Historical reconstruction** remain accessible. The held-out level model fits only 2015–2018 and scores 2019–2025: wellbeing error is **0.318 ladder points versus 0.290 for predicting no change**. It performs worse on that measure. Its target, horizon and cohort differ from the annual tests; their scores are not interchangeable. See the [policy-evidence follow-up](docs/design/policy-evidence-handoff.md) and the [published-experience comparison](docs/design/published-experience-handoff.md).
+
+GitHub `main` is the source of record. Merging does not deploy the public site. See the [release guide](docs/release/three-step-delivery.md) for version checks, preview verification, promotion and rollback. The [newcomer task sheet](docs/release/newcomer-test.md) is ready for real users; an automated walkthrough is not evidence of user understanding.
 
 > **Live demo:** https://wellbeing-transition-simulator-6icr7acugq-uw.a.run.app/
 

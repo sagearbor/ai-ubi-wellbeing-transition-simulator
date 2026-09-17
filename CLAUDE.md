@@ -2,6 +2,14 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Current release guidance (17 September 2026)
+
+The architecture discussion below describes the **legacy corporation/world simulation**, not the current front door or evidence status. Start with `README.md`, `docs/release/three-step-delivery.md`, and the README's review entry points. Explore/Compare use `components/published/` and `src/financials/` for reported cash-flow allocations. History uses `components/history/`; Model Lab uses `src/core/`, `src/policy/`, and workers. These model families are separate: never imply that financial allocations automatically produce world-model or causal wellbeing effects.
+
+Use Node 22 (`.nvmrc`) and `npm run check`. Frozen `data/evaluation/**` outputs and score receipts must not be modified or rescored during release work. Annual evidence is retrospective and latest-vintage, not a real-time forecast archive; comparing historical error does not validate policy effects. A passing software suite is not a scientific accuracy verdict. Keep supported controls, assumptions, unsupported mechanisms and source identities visible.
+
+Deployments target the existing Google Cloud Run service via `scripts/deploy.sh`; a merge is not a deployment. Preserve ignored credentials and never print them. Read the current release instructions before publishing. The owner has accepted the browser-side Gemini key for this research beta. Do not describe browser session limits as enforceable provider quotas.
+
 ## Project Overview
 
 This is an AI-powered economic transition simulator that models the transition from labor-based economies to automated abundance. It visualizes global AI adoption rates, UBI distribution mechanics, and their effects on human wellbeing across 100+ countries.

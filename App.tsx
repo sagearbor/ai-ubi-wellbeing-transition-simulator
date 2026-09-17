@@ -3,6 +3,7 @@ import { assertRunSupported, resolveRunCapabilities } from './simulation/capabil
 import { conditionalWorld } from './simulation/conditionalWorld';
 import { evaluateConditionalSnapshot, noCorporateUbiInputs } from './simulation/run';
 
+import ReleaseBadge from './components/release/ReleaseBadge';
 import React, { lazy, Suspense, useState, useEffect, useCallback, useMemo } from 'react';
 import { AreaChart, Area, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ScatterChart, Scatter, ZAxis, ReferenceLine } from 'recharts';
 import { Globe, TrendingUp, TrendingDown, Sparkles, Share2, ChevronDown, BrainCircuit, FlaskConical, Database, MousePointer2, PlayCircle, Menu, X, BookOpen, Lightbulb, ArrowRight, ArrowLeft, Info, FileText, Sun, Moon, Copy, Settings, Download, Upload, Trophy } from 'lucide-react';
@@ -1347,6 +1348,7 @@ const App: React.FC = () => {
 
       <aside className="guided-beta" aria-label="Research beta notice">
         <span><strong>Research beta</strong> · Illustrative scenarios; methods and data are still being reviewed.</span>
+        <ReleaseBadge />
         <a href="https://github.com/sagearbor/ai-ubi-wellbeing-transition-simulator/issues" target="_blank" rel="noopener noreferrer">Feedback on GitHub ↗</a>
       </aside>
 

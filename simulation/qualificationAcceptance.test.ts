@@ -11,8 +11,8 @@ describe('independently accepted exact default accounting points', () => {
   it('binds the automated review to exactly the 61 independently checked baseline identities', () => {
     expect(executingSourceHash()).toBe(structure.hash);
     expect(record.independentReview).toBe('accepted');
-    expect(record.reviewer).toBe('Independent automated Astra security/numerical review');
-    expect(record.reviewReport).toBe('docs/design/reviews/2026-09-15-beta-security-qualification-review.md');
+    expect(record.reviewer).toBe('Independent automated Astra release/accounting review');
+    expect(record.reviewReport).toBe('docs/design/reviews/2026-09-17-release-qualification-review.md');
     expect(record.evidenceHash).toBe(evidence.payloadHash);
     expect(record.structureHash).toBe(evidence.structureHash);
     expect(record.reviewedRunIdentities).toEqual(evidence.baselineRunIdentities);
