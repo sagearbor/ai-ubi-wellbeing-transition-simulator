@@ -1,0 +1,87 @@
+{
+  "schema": "research-entry/1",
+  "id": "research-ensemble-2018-v1",
+  "family": "five-approaches-20260916",
+  "status": "frozen-pending-external",
+  "date": "2026-09-16",
+  "authorship": "independent automated research worker; no human domain review",
+  "baseCommit": "0ca2eda3ea5db518499abebda1de1367d4e1ab7e",
+  "registrationCommit": "2fee937281751947567ab856047c41ad3cbdba4a",
+  "freezeCommit": "Controller registry records the immutable freeze commit; no self-referential commit hash",
+  "protocol": "data/evaluation/research-ensemble-2018-v1/protocol.json",
+  "predictions": "data/evaluation/research-ensemble-2018-v1/predictions.json",
+  "protocolSha256": "9371efc2ee88410b5d99c5402fd005aa03f87b9bd61484f7b34486e0080bd8e5",
+  "predictionsSha256": "cb82a477fecaf764e8bf55476bc541fb271f0c78ebb1baafbe922e6e7ddf98e5",
+  "model": "Conservative convex combination in ladder/log-GDP space; selected 75% persistence + 25% own-country damped OLS trend",
+  "selected": {
+    "ladder": {
+      "index": 4,
+      "weights": [
+        0.75,
+        0,
+        0.25,
+        0
+      ]
+    },
+    "gdp": {
+      "index": 4,
+      "weights": [
+        0.75,
+        0,
+        0.25,
+        0
+      ]
+    }
+  },
+  "cohort": {
+    "countries": 100,
+    "excluded": 28,
+    "predictions": 700
+  },
+  "internalValidation": {
+    "cells": 3,
+    "origins": [
+      2016,
+      2017
+    ],
+    "horizons": [
+      1,
+      2
+    ],
+    "cellCounts": [
+      99,
+      99,
+      100
+    ],
+    "observationsPerOutcome": 298,
+    "notIndependentSamples": true,
+    "ladder": {
+      "selectedMae": 0.12858337710437703,
+      "persistenceMae": 0.13537538720538722
+    },
+    "gdp": {
+      "selectedMae": 3.6223635344417,
+      "persistenceMae": 4.154131276029456
+    },
+    "selectionMetric": "equal mean of three cell MAEs; not pooled"
+  },
+  "externalResult": null,
+  "externalScoring": {
+    "owner": "controller",
+    "runsByWorker": 0,
+    "allSixFreezeGate": true,
+    "noPostScoreRefit": true
+  },
+  "verification": {
+    "syntheticTests": 8,
+    "targetedTypecheck": "passed",
+    "deterministicReproduction": "passed",
+    "fullRepositoryCheck": "controller-pending"
+  },
+  "limits": [
+    "The original aggregate miss and the brief's structural hypothesis were known before this recipe. Revised 2026-vintage 2015–2018 data are not a 2018 information archive. No blinded independent confirmation or deployable historical forecast is claimed.",
+    "Only two origins and horizons 1–2 can be checked. Countries and targets repeat across cells; this is temporal validation for the same countries, not independent-country evidence. No observed seven-year validation is available inside four years. Candidate selection itself is optimistic.",
+    "No guaranteed improvement, significance claim, causal claim or AI/UBI validation. Best-of-five selection is exploratory. Persistence winning internal selection is a legitimate entry."
+  ],
+  "researchNote": "docs/design/research/2026-09-16-research-ensemble-2018-v1.md"
+}

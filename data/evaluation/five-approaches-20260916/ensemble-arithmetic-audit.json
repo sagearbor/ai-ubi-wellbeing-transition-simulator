@@ -1,0 +1,10 @@
+{
+  "method": "Independent Python country histories, slopes, medians, combination arithmetic; no submitted implementation import",
+  "rows": 700,
+  "maxAbsoluteDifference": {
+    "ladder": 0,
+    "gdp": 2.9103830456733704e-11
+  },
+  "relativeTolerance": 1e-09,
+  "scope": "All forecasts independently reproduced from allowed inputs and selected weights; temporal candidate selection code-reviewed."
+}

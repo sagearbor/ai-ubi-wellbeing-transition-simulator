@@ -1,0 +1,123 @@
+{
+  "schema": "registered-research-result/1",
+  "id": "research-ensemble-2018-v1-scored",
+  "entry": "research-ensemble-2018-v1",
+  "family": "five-approaches-20260916",
+  "status": "completed-one-scored-run",
+  "result": "lower observed MAE than persistence; exploratory, not qualified",
+  "protocolCommit": "2fee937281751947567ab856047c41ad3cbdba4a",
+  "freezeCommit": "0c1fef8003f179d6c9a9dda1aee65ed1a8cbb005",
+  "scoreReceipt": "data/evaluation/research-ensemble-2018-v1/score-receipt.json",
+  "scores": "data/evaluation/research-ensemble-2018-v1/scores.json",
+  "scoresSha256": "2ac83dc29423f68bfe56e792d253c0614e50d86ba1b453d68eab2cbc8730bf83",
+  "report": "docs/design/research/2026-09-16-research-ensemble-2018-v1-results.md",
+  "metrics": {
+    "ladder": {
+      "primaryEndpoint": {
+        "expected": 100,
+        "observed": 97,
+        "unscored": 3,
+        "model": {
+          "n": 97,
+          "mae": 0.3831888172111931,
+          "rmse": 0.490992281992008,
+          "bias": -0.18340732659181147,
+          "reason": null
+        },
+        "persistence": {
+          "n": 97,
+          "mae": 0.3889999999999999,
+          "rmse": 0.4939188651598809,
+          "bias": -0.19753608247422674,
+          "reason": null
+        },
+        "modelMinusPersistenceMae": -0.0058111827888068235,
+        "skill": {
+          "value": 0.01493877323600723,
+          "reason": null
+        }
+      },
+      "pooled": {
+        "expected": 700,
+        "observed": 681,
+        "unscored": 19,
+        "model": {
+          "n": 681,
+          "mae": 0.28513567260918793,
+          "rmse": 0.4102408290850715,
+          "bias": -0.07671739395356404,
+          "reason": null
+        },
+        "persistence": {
+          "n": 681,
+          "mae": 0.2897439060205584,
+          "rmse": 0.413165639541218,
+          "bias": -0.08621057268722461,
+          "reason": null
+        },
+        "modelMinusPersistenceMae": -0.004608233411370455,
+        "skill": {
+          "value": 0.015904505032259375,
+          "reason": null
+        }
+      }
+    },
+    "gdp": {
+      "primaryEndpoint": {
+        "expected": 100,
+        "observed": 97,
+        "unscored": 3,
+        "model": {
+          "n": 97,
+          "mae": 13.846356522812373,
+          "rmse": 17.46910474178353,
+          "bias": -11.081327005192884,
+          "reason": null
+        },
+        "persistence": {
+          "n": 97,
+          "mae": 15.629918353270511,
+          "rmse": 19.53321311150404,
+          "bias": -13.244278728725808,
+          "reason": null
+        },
+        "modelMinusPersistenceMae": -1.7835618304581384,
+        "skill": {
+          "value": 0.11411203757727462,
+          "reason": null
+        }
+      },
+      "pooled": {
+        "expected": 700,
+        "observed": 691,
+        "unscored": 9,
+        "model": {
+          "n": 691,
+          "mae": 7.678619656444636,
+          "rmse": 10.957318286161312,
+          "bias": -3.883387575780597,
+          "reason": null
+        },
+        "persistence": {
+          "n": 691,
+          "mae": 8.6499816020173,
+          "rmse": 12.2093393665981,
+          "bias": -5.359578932512586,
+          "reason": null
+        },
+        "modelMinusPersistenceMae": -0.9713619455726645,
+        "skill": {
+          "value": 0.11229641752603603,
+          "reason": null
+        }
+      }
+    }
+  },
+  "qualifiesDefault": false,
+  "validatesPolicyEffects": false,
+  "targetDefinitionCorrection": "Trailing three-year survey average, not an individual-year survey score; identified after scoring, protocol unchanged.",
+  "supersedesPendingStatusOnly": "docs/design/research/entries/research-ensemble-2018-v1.json",
+  "limitations": [
+    "The small aggregate gain does not establish a practically reliable advantage or statistical significance. Training-window model selection remains optimistic."
+  ]
+}
