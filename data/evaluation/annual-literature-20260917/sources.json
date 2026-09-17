@@ -7,7 +7,7 @@
   "notes": [
     "Public page access is not a claim that complete underlying data are openly licensed.",
     "No model was fitted or scored for this literature review.",
-    "Source notes identify evidence type; adjusted R² is not reported as forecasting skill."
+    "Source notes identify evidence type; adjusted R\u00b2 is not reported as forecasting skill."
   ],
   "sources": [
     {
@@ -28,7 +28,7 @@
       "kind": "data_metadata",
       "access": "public_page",
       "reviewed": "2026-09-17",
-      "note": "2025 label means 2023–2025 average; third-party licensing retained."
+      "note": "2025 label means 2023\u20132025 average; third-party licensing retained."
     },
     {
       "id": "whr26-appendix",
@@ -38,7 +38,7 @@
       "kind": "original_report_appendix",
       "access": "public_pdf",
       "reviewed": "2026-09-17",
-      "note": "Annual variable definitions and provenance; GWP 2005/06–2025; HALE to 2021."
+      "note": "Annual variable definitions and provenance; GWP 2005/06\u20132025; HALE to 2021."
     },
     {
       "id": "whr26-ch2",
@@ -48,7 +48,7 @@
       "kind": "original_report",
       "access": "public_page",
       "reviewed": "2026-09-17",
-      "note": "DOI 10.18724/whr-db0f-2b39; Table 2.1: 2365 observations,155 countries,adjusted R² .762; footnote 20 restricts annual regression data."
+      "note": "DOI 10.18724/whr-db0f-2b39; Table 2.1: 2365 observations,155 countries,adjusted R\u00b2 .762; footnote 20 restricts annual regression data."
     },
     {
       "id": "whr23-annual",
@@ -68,9 +68,17 @@
       "kind": "official_data_interface",
       "access": "public_annual_chart_verified_by_root_agent",
       "reviewed": "2026-09-17",
-      "note": "Finland Annual score 2025 visible tooltip 7.811; three-year score 7.764. Eight-country visible UI extraction; full annual predictor panel and bulk download not verified.",
+      "note": "Public annual mode confirmed. Completed 159 country-year chart transcriptions in eight predetermined countries, 2005/06\u20132025; stored SVG conversion independently reproduced and eight latest-year recorded annual tooltip checks match. Annual social predictors and bulk download not verified.",
       "relatedUrls": [
-        "https://data.worldhappiness.report/country/FIN"
+        "https://data.worldhappiness.report/country/FIN",
+        "https://data.worldhappiness.report/country/USA",
+        "https://data.worldhappiness.report/country/IND",
+        "https://data.worldhappiness.report/country/DEU",
+        "https://data.worldhappiness.report/country/GBR",
+        "https://data.worldhappiness.report/country/BRA",
+        "https://data.worldhappiness.report/country/JPN",
+        "https://data.worldhappiness.report/country/ZAF",
+        "https://data.worldhappiness.report/country/CHN"
       ]
     },
     {
@@ -111,7 +119,7 @@
       "kind": "original_report",
       "access": "public_page",
       "reviewed": "2026-09-17",
-      "note": "Table 2.1: 2234 observations, 155 countries, adjusted R² .761; in-sample."
+      "note": "Table 2.1: 2234 observations, 155 countries, adjusted R\u00b2 .761; in-sample."
     },
     {
       "id": "whr24-ch2",
@@ -121,7 +129,7 @@
       "kind": "original_report",
       "access": "public_page",
       "reviewed": "2026-09-17",
-      "note": "Table 2.1: 2103 observations, 155 countries, adjusted R² .757; in-sample."
+      "note": "Table 2.1: 2103 observations, 155 countries, adjusted R\u00b2 .757; in-sample."
     },
     {
       "id": "stevenson-wolfers-2008",
@@ -141,7 +149,7 @@
       "kind": "original_working_paper",
       "access": "public_pdf",
       "reviewed": "2026-09-17",
-      "note": "Gallup 2009–2019; heterogeneous income association; observational."
+      "note": "Gallup 2009\u20132019; heterogeneous income association; observational."
     },
     {
       "id": "deneve-2018",
@@ -161,7 +169,7 @@
       "kind": "original_paper_abstract",
       "access": "public_abstract",
       "reviewed": "2026-09-17",
-      "note": "Psychological Science 15:8–13; DOI 10.1111/j.0963-7214.2004.01501002.x; individual longitudinal study."
+      "note": "Psychological Science 15:8\u201313; DOI 10.1111/j.0963-7214.2004.01501002.x; individual longitudinal study."
     },
     {
       "id": "ball-2013",
@@ -171,7 +179,7 @@
       "kind": "original_working_paper",
       "access": "public_pdf",
       "reviewed": "2026-09-17",
-      "note": "IMF WP/13/10; cross-country output–unemployment fit."
+      "note": "IMF WP/13/10; cross-country output\u2013unemployment fit."
     },
     {
       "id": "stock-watson-2002",
@@ -181,27 +189,27 @@
       "kind": "original_paper",
       "access": "public_pdf",
       "reviewed": "2026-09-17",
-      "note": "JBES 20(2):147–162; DOI 10.1198/073500102317351921; temporal forecast evidence, revised vintage."
+      "note": "JBES 20(2):147\u2013162; DOI 10.1198/073500102317351921; temporal forecast evidence, revised vintage."
     },
     {
       "id": "raftery-2013",
-      "author": "Adrian E. Raftery; Jennifer L. Chunn; Patrick Gerland; Hana Ševčíková",
+      "author": "Adrian E. Raftery; Jennifer L. Chunn; Patrick Gerland; Hana \u0160ev\u010d\u00edkov\u00e1",
       "title": "Bayesian Probabilistic Projections of Life Expectancy for All Countries",
       "url": "https://link.springer.com/article/10.1007/s13524-012-0193-x",
       "kind": "original_paper",
       "access": "public_fulltext",
       "reviewed": "2026-09-17",
-      "note": "Demography 50:777–801; temporal validation, male period total LE, five-year intervals."
+      "note": "Demography 50:777\u2013801; temporal validation, male period total LE, five-year intervals."
     },
     {
       "id": "an-jalles-loungani-2018",
-      "author": "Zidong An; João Tovar Jalles; Prakash Loungani",
+      "author": "Zidong An; Jo\u00e3o Tovar Jalles; Prakash Loungani",
       "title": "How Well Do Economists Forecast Recessions?",
       "url": "https://www.imf.org/-/media/files/publications/wp/2018/wp1839.pdf",
       "kind": "original_working_paper",
       "access": "public_pdf",
       "reviewed": "2026-09-17",
-      "note": "IMF WP/18/39; forecast histories, 63 countries, 1992–2014."
+      "note": "IMF WP/18/39; forecast histories, 63 countries, 1992\u20132014."
     },
     {
       "id": "wdi-gdp",
@@ -211,7 +219,7 @@
       "kind": "official_metadata",
       "access": "public_page",
       "reviewed": "2026-09-17",
-      "note": "Annual, reference period 1960–2025; real output, not PPP income."
+      "note": "Annual, reference period 1960\u20132025; real output, not PPP income."
     },
     {
       "id": "wdi-ppp",
@@ -221,7 +229,7 @@
       "kind": "official_data",
       "access": "public_page",
       "reviewed": "2026-09-17",
-      "note": "Displayed 1990–2025; freeze vintage."
+      "note": "Displayed 1990\u20132025; freeze vintage."
     },
     {
       "id": "maddison-2023",
@@ -244,7 +252,7 @@
       "kind": "official_metadata",
       "access": "public_page",
       "reviewed": "2026-09-17",
-      "note": "Annual 1991–2025; labour-force denominator."
+      "note": "Annual 1991\u20132025; labour-force denominator."
     },
     {
       "id": "ilo-models",
@@ -264,7 +272,7 @@
       "kind": "official_data",
       "access": "public_page",
       "reviewed": "2026-09-17",
-      "note": "Displayed 1960–2024; total LE, not HALE."
+      "note": "Displayed 1960\u20132024; total LE, not HALE."
     },
     {
       "id": "un-wpp-2024",
@@ -284,7 +292,7 @@
       "kind": "official_methods",
       "access": "public_pdf_indexed_text",
       "reviewed": "2026-09-17",
-      "note": "Estimation period 1950–2023; projected values follow. Indexed text reviewed; direct clean-URL fetch exceeded browser content-size limit."
+      "note": "Estimation period 1950\u20132023; projected values follow. Indexed text reviewed; direct clean-URL fetch exceeded browser content-size limit."
     },
     {
       "id": "harvey-1989",
@@ -304,12 +312,12 @@
       "kind": "original_methods_paper",
       "access": "public_abstract",
       "reviewed": "2026-09-17",
-      "note": "Review of Economic Studies 58:277–297; dynamic-panel assumptions and tests."
+      "note": "Review of Economic Studies 58:277\u2013297; dynamic-panel assumptions and tests."
     },
     {
       "id": "fpp-regression",
       "author": "Rob J. Hyndman; George Athanasopoulos",
-      "title": "Forecasting: Principles and Practice, 3rd edition, §7.6",
+      "title": "Forecasting: Principles and Practice, 3rd edition, \u00a77.6",
       "url": "https://otexts.com/fpp3/forecasting-regression.html",
       "kind": "author_methods_reference",
       "access": "public_fulltext",
@@ -319,7 +327,7 @@
     {
       "id": "fpp-rolling",
       "author": "Rob J. Hyndman; George Athanasopoulos",
-      "title": "Forecasting: Principles and Practice, 3rd edition, §5.10",
+      "title": "Forecasting: Principles and Practice, 3rd edition, \u00a75.10",
       "url": "https://otexts.com/fpp3/tscv.html",
       "kind": "author_methods_reference",
       "access": "public_fulltext",
@@ -331,10 +339,31 @@
   "annualTargetScope": {
     "countriesPlanned": 8,
     "confirmation": "Root agent selected Annual score and read Finland 2025 visible tooltip as 7.811 versus three-year score 7.764.",
-    "method": "Visible public chart tooltip extraction; no hidden application state or undocumented APIs.",
+    "method": "Rendered public annual-chart SVG marks and visible axis ticks, with half-pixel axis correction; rounded to three decimals; eight latest-year visible tooltip checks. No hidden app state or undocumented API.",
     "fullSocialPredictorPanelAvailable": false,
     "bulkDownloadVerified": false,
-    "extractionStatus": "Limited predetermined-country extraction in progress when access update was recorded."
+    "extractionStatus": "Completed: 159 country-year rows; raw SVG attributes and eight tooltip labels preserved in companion study target provenance.",
+    "countriesCollected": 8,
+    "countryIds": [
+      "USA",
+      "IND",
+      "DEU",
+      "GBR",
+      "BRA",
+      "JPN",
+      "ZAF",
+      "CHN"
+    ],
+    "rowsCollected": 159,
+    "years": [
+      2005,
+      2025
+    ],
+    "targetSHA256": "0ad3698a5b63cb8761c0cacd831415e839dac9d8a6ccaace4c4a7008c156c3be",
+    "storedCoordinateConversionsIndependentlyChecked": 159,
+    "storedTooltipChecksMatched": 8,
+    "precisionDecimalPlaces": 3,
+    "notOriginalBulkAnnualRelease": true
   },
   "localAudit": {
     "reviewed": "2026-09-17",
@@ -348,5 +377,25 @@
     "pooledMetricRowsVerified": 24,
     "p1OrP2ImplementationDefectsFound": 0,
     "interpretationConcern": "Direction accuracy is below unconditional upward frequencies for GDP and life expectancy; avoid turning-point skill claims."
+  },
+  "wellbeingAudit": {
+    "reviewed": "2026-09-17",
+    "experiment": "annual-wellbeing-20260917",
+    "freezeCommit": "9a49e76562acc0b1229e32a7f88f18c7ce62f79b",
+    "hashComparisonsPassed": 15,
+    "targetRowsChecked": 159,
+    "joinedFeatureValuesChecked": 477,
+    "matchedSixMethodSets": 130,
+    "savedIndividualPredictions": 780,
+    "pooledMetricRowsChecked": 12,
+    "countryMetricRowsChecked": 96,
+    "numericMetricValuesChecked": 2592,
+    "macroCountryMeansChecked": 12,
+    "rowCounts": {
+      "conditional": 61,
+      "rolling": 69
+    },
+    "p1OrP2ImplementationDefectsFound": 0,
+    "details": "data/evaluation/annual-literature-20260917/wellbeing-audit.json"
   }
 }
