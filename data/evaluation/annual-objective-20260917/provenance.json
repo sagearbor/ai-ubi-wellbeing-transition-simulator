@@ -1,0 +1,121 @@
+{
+  "schema": "annual-objective-source-provenance/1",
+  "protocolSha256": "5fcc942f15f946e8bb15fe8cb4976dd0247dc07ff6b20bf3b9dade3a853ebdcc",
+  "registrationCommit": "5e843c7",
+  "sources": [
+    {
+      "file": "countries.json",
+      "url": "https://api.worldbank.org/v2/country?format=json&per_page=400",
+      "retrievedAt": "2026-09-17T04:44:40.545128+00:00",
+      "sha256": "d29d57f8adf954c5e2a1520a02fb2c7b45575d8db3bd327a9dff47d66914231c",
+      "bytes": 113590,
+      "rows": 295,
+      "apiMetadata": {
+        "page": 1,
+        "pages": 1,
+        "per_page": "400",
+        "total": 295
+      }
+    },
+    {
+      "file": "NY.GDP.PCAP.KD-metadata.json",
+      "url": "https://api.worldbank.org/v2/indicator/NY.GDP.PCAP.KD?format=json&source=2",
+      "retrievedAt": "2026-09-17T04:44:40.692187+00:00",
+      "sha256": "46689488cd435920647264ede1bfb2d4b51b09800fb36f3d3b1422a0b11ea49d",
+      "bytes": 1100,
+      "rows": 1,
+      "apiMetadata": {
+        "page": 1,
+        "pages": 1,
+        "per_page": "50",
+        "total": 1
+      }
+    },
+    {
+      "file": "NY.GDP.PCAP.KD-1960-2025.json",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/NY.GDP.PCAP.KD?date=1960:2025&source=2&format=json&per_page=20000",
+      "retrievedAt": "2026-09-17T04:44:43.088862+00:00",
+      "sha256": "60bdf145e781d722bffa9e9ea4eb0b3b74f220dcdba36f7d391b1f2c048dc930",
+      "bytes": 3976465,
+      "rows": 17490,
+      "apiMetadata": {
+        "page": 1,
+        "pages": 1,
+        "per_page": 20000,
+        "total": 17490,
+        "sourceid": "2",
+        "lastupdated": "2026-07-13"
+      }
+    },
+    {
+      "file": "SL.UEM.TOTL.ZS-metadata.json",
+      "url": "https://api.worldbank.org/v2/indicator/SL.UEM.TOTL.ZS?format=json&source=2",
+      "retrievedAt": "2026-09-17T04:44:43.274206+00:00",
+      "sha256": "3ae370ed4bebba092338e94334c35add71490324ee57f1dfe81885dade51f52f",
+      "bytes": 670,
+      "rows": 1,
+      "apiMetadata": {
+        "page": 1,
+        "pages": 1,
+        "per_page": "50",
+        "total": 1
+      }
+    },
+    {
+      "file": "SL.UEM.TOTL.ZS-1960-2025.json",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/SL.UEM.TOTL.ZS?date=1960:2025&source=2&format=json&per_page=20000",
+      "retrievedAt": "2026-09-17T04:44:45.840420+00:00",
+      "sha256": "58e82de86f5fd81f0630fabfdc40d10fd067cb6d14192b545b8c9cc027825a4f",
+      "bytes": 4407416,
+      "rows": 17490,
+      "apiMetadata": {
+        "page": 1,
+        "pages": 1,
+        "per_page": 20000,
+        "total": 17490,
+        "sourceid": "2",
+        "lastupdated": "2026-07-13"
+      }
+    },
+    {
+      "file": "SP.DYN.LE00.IN-metadata.json",
+      "url": "https://api.worldbank.org/v2/indicator/SP.DYN.LE00.IN?format=json&source=2",
+      "retrievedAt": "2026-09-17T04:44:46.025212+00:00",
+      "sha256": "a39cb6fddfbbb953053690366243dffe77a266c4deae79c46ce5a06da9f5fc31",
+      "bytes": 969,
+      "rows": 1,
+      "apiMetadata": {
+        "page": 1,
+        "pages": 1,
+        "per_page": "50",
+        "total": 1
+      }
+    },
+    {
+      "file": "SP.DYN.LE00.IN-1960-2025.json",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/SP.DYN.LE00.IN?date=1960:2025&source=2&format=json&per_page=20000",
+      "retrievedAt": "2026-09-17T04:44:47.791788+00:00",
+      "sha256": "92f0ed5499d007fc24bcaee40b48dc3ec3b788e3fb33bc352a4cf9dfe8638fe9",
+      "bytes": 3989201,
+      "rows": 17490,
+      "apiMetadata": {
+        "page": 1,
+        "pages": 1,
+        "per_page": 20000,
+        "total": 17490,
+        "sourceid": "2",
+        "lastupdated": "2026-07-13"
+      }
+    }
+  ],
+  "attribution": "World Bank, World Development Indicators; underlying national accounts/ILO/UN/national statistical sources documented in raw indicator metadata.",
+  "license": "CC BY 4.0, as stated in World Bank indicator metadata glossaries",
+  "licenseUrl": "https://datacatalog.worldbank.org/int/public-licenses#cc-by",
+  "metadataGlossaries": [
+    "https://databank.worldbank.org/metadataglossary/world-development-indicators/series/NY.GDP.PCAP.KD",
+    "https://databank.worldbank.org/metadataglossary/world-development-indicators/series/SL.UEM.TOTL.ZS",
+    "https://databank.worldbank.org/metadataglossary/world-development-indicators/series/SP.DYN.LE00.IN"
+  ],
+  "revisions": "Latest retrieved vintage; historical observations can incorporate later revisions or source modeling. API lastupdated retained per response. No historical release-vintage reconstruction.",
+  "exposure": "Full series were loaded by acquisition/cleaning before evaluation; outcomes were not blinded or withheld from agent context."
+}
