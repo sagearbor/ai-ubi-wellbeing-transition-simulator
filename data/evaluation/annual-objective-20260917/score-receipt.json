@@ -1,0 +1,18 @@
+{
+  "schema": "annual-objective-score-receipt/1",
+  "startedAt": "2026-09-17T04:48:15.050175+00:00",
+  "protocolSha256": "5fcc942f15f946e8bb15fe8cb4976dd0247dc07ff6b20bf3b9dade3a853ebdcc",
+  "codeCommit": "93eb346ebe6a8c6b1a5c6d63b7fd46bb6770b4ed",
+  "registrationCommit": "5e843c7",
+  "status": "complete",
+  "comparisonNumber": 1,
+  "completedAt": "2026-09-17T04:48:16.515054+00:00",
+  "observationRows": 42966,
+  "predictionRows": 151272,
+  "outputs": {
+    "paths.json": "8759ce3dc08b35b3bbefb98ae8992aa74db597b09bc642d0392747044571fd52",
+    "example-paths.json": "626403116e49fbdda661305189cb30394bf2a64d1035dbcc2438b19f406da265",
+    "metrics.json": "31256a0e483d1a949ac74b6f5e58b7e6a179b4f9ebfa1993b64ab57946e7fb63",
+    "coverage.json": "2901cfdd35f665105d06cd2ff96715224e76d85fc9a2c82975c391e7280eb0e7"
+  }
+}
