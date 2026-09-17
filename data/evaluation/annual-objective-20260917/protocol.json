@@ -1,0 +1,36 @@
+{
+  "schema": "annual-objective-protocol/1",
+  "id": "annual-objective-20260917",
+  "registeredDate": "2026-09-17",
+  "question": "Do fixed simple annual forecasts improve on last-observed persistence in GDP per capita, unemployment and life expectancy?",
+  "design": "Latest-vintage retrospective rolling-origin benchmark, not a real-time or blinded forecasting trial",
+  "dateRange": [1960, 2025],
+  "targets": {
+    "gdp": {"indicator": "NY.GDP.PCAP.KD", "unit": "constant 2015 USD per person", "scoringUnit": "percentage points of origin GDP", "transform": "natural logarithm"},
+    "unemployment": {"indicator": "SL.UEM.TOTL.ZS", "unit": "percent of labor force", "scoringUnit": "percentage points", "transform": "identity"},
+    "life_expectancy": {"indicator": "SP.DYN.LE00.IN", "unit": "years", "scoringUnit": "years", "transform": "identity"}
+  },
+  "cohort": "All official World Bank country metadata rows with nonempty ISO3 and region.value other than Aggregates; no selection by eventual coverage, scores, population, income or illustrated examples",
+  "illustratedCountries": ["USA", "IND", "DEU", "GBR", "BRA", "JPN", "ZAF", "CHN"],
+  "trainingYears": 20,
+  "eligibility": "At every annual origin from 1979 onward require all 20 immediately preceding annual levels, including origin, observed and finite; GDP strictly positive; unemployment in 0..100 and life in 0..120. Missing or invalid history skips that country-target-origin for ALL methods. Do not interpolate, backfill, extrapolate historical observations or borrow outcomes.",
+  "horizons": [1, 5],
+  "forecastLimit": "Every origin with target year <=2025. Keep predictions with missing target values but exclude them from scoring and count them. Five-year endpoints are cumulative origin-to-target changes, not one-year changes.",
+  "methods": {
+    "persistence": "Prediction equals last observed origin value for every horizon.",
+    "damped_trend": "OLS time slope over the final 10 training levels in transformed units; add slope times sum(0.9^k,k=1..h) to transformed origin. This is an OLS damped trend, not a fitted Holt model.",
+    "target_shrinkage": "GDP: annual log growth is (5*mean(final5 log differences)+10*mean(all19 log differences))/15, then damp by sum(0.95^k,k=1..h). Life: final10 OLS slope times0.75 and sum(0.95^k,k=1..h). Unemployment: mean m of20 levels; x=levels[0:19]-m,y=levels[1:20]-m; lambda=10*mean(x^2); phi=(sum(x*y)+0.8*lambda)/(sum(x^2)+lambda), default0.8 when denominator zero, clip phi to[0,0.98]; prediction m+phi^h*(origin-m).",
+    "ridge_changes": "AR(1) on19 transformed annual differences d. x=d[0:18],y=d[1:19],n=18, v=population variance of d. phi=sum((x-mean(x))*(y-mean(y)))/(sum((x-mean(x))^2)+10*v), default0 when denominator zero; clip phi to[-0.8,0.8]. Intercept a=(n/(n+10))*mean(y)-phi*mean(x). Recursively forecast d_next=a+phi*d_last, add to transformed origin. Fixed ridge and mean shrinkage, no score-selected hyperparameters."
+  },
+  "bounds": "Exponentiate GDP log forecasts. Clip life forecasts to[0,120] years and unemployment to[0,100] percent; keep rawPrediction and count clips. No source observation is changed.",
+  "metrics": {
+    "primary": "Within each target and horizon, mean absolute prediction error across matched observed country-target-years. GDP error=100*(prediction-actual)/originGDP; other errors in native units. Never aggregate different targets or horizons.",
+    "changeMAE": "MAE of predicted minus actual origin-to-target change in same scoring units; algebraically equal to level error with common origin, explicitly not an independent success metric.",
+    "baseline": "Persistence on exactly identical scored rows; skill=1-modelMAE/persistenceMAE, null if baselineMAE zero. Positive is improvement, negative is worse.",
+    "secondary": "Per-country MAE/changeMAE/skill; country-equal average MAE; raw-unit MAE; sign accuracy restricted to actual nonzero changes (absolute normalized change>1e-12), forecast zero/tie is wrong; publish tie, excluded-zero and missing counts. Country win count and target-year annual pooled metrics.",
+    "dependence": "Annual rolling origins and overlapping5-year intervals are dependent. Descriptive error comparisons only, no independence-based p-values or confidence claims."
+  },
+  "stopRule": "Exactly one fixed scored comparison. Publish all four methods for all three targets and both horizons, including negative results. No tuning, deletion of difficult countries/years, score-dependent cohort edits or claim of independent winner confirmation.",
+  "exposure": "Existing repository already contains1960-1980 and1981-2025 GDP/life raw files and older scored artifacts. Before this protocol the agent read their paths, fetch script and prior methodological note, plus official series metadata, but did not inspect country numeric trajectories or old score tables. Broad historical events and series definitions are known. Full source responses will be loaded during cleaning before scoring: they are NOT withheld or unseen future data. This is a new latest-vintage retrospective experiment; no old artifacts are modified or rescored.",
+  "provenance": "Download current full1960:2025 official World Bank API JSON, official country and indicator metadata; preserve bytes, URLs, UTC retrieval timestamps, response lastupdated fields, SHA256 and CC BY4.0 attribution/licensing URLs. Exclude official aggregates. Disclose modeled/interpolated source values and current-country border/revision limitations."
+}
