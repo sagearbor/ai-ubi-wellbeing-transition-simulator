@@ -1,0 +1,80 @@
+<div id="wellbeing-forecast-paths">
+  <h2>Model paths and the historical best blend</h2>
+  <div class="viz-controls">
+    <label class="form-label">Country<select class="form-select" data-country></select></label>
+    <label class="form-label">View<select class="form-select" data-view><option value="future">2025 → 2032 projections</option><option value="historical">2018 → 2025 test</option></select></label>
+  </div>
+  <div class="text-small" data-status aria-live="polite"></div>
+  <div class="path-legend" aria-label="Visible model lines"></div>
+  <div class="path-figure" data-target="ladder"><h3>Wellbeing</h3><svg class="path-svg" role="img" aria-label="Country wellbeing: observed, individual model paths and ensemble"></svg><div class="text-small path-summary" aria-live="polite"></div></div>
+  <div class="path-figure" data-target="gdp"><h3>Income per person</h3><svg class="path-svg" role="img" aria-label="Country real income per person: observed, individual model paths and ensemble"></svg><div class="text-small path-summary" aria-live="polite"></div></div>
+  <div class="text-small">Shading: model disagreement, not a probability interval. Bold: 75% country offsets + 25% decay, chosen using known 2025 wellbeing outcomes.</div>
+  <div class="tooltip" role="tooltip" data-path-tooltip hidden></div>
+  <script type="application/json" data-paths>__INLINE_DATA__</script>
+</div>
+<style>
+#wellbeing-forecast-paths{position:relative;color:var(--foreground)}
+#wellbeing-forecast-paths .path-legend{display:flex;flex-wrap:wrap;gap:8px 16px;margin:14px 0}
+#wellbeing-forecast-paths .path-legend button{appearance:none;border:0;background:transparent;color:var(--foreground);display:inline-flex;align-items:center;gap:7px;padding:3px 0;font:inherit;font-weight:400;cursor:pointer}
+#wellbeing-forecast-paths .path-legend button[aria-pressed="false"]{opacity:.45}
+#wellbeing-forecast-paths .path-swatch{display:inline-block;width:20px;height:0;border-top:2px solid var(--series)}
+#wellbeing-forecast-paths .path-figure{min-width:0;margin:18px 0}
+#wellbeing-forecast-paths .path-svg{display:block;width:100%;touch-action:pan-y;overflow:visible}
+#wellbeing-forecast-paths .path-svg text{font:12px sans-serif;fill:var(--foreground)}
+#wellbeing-forecast-paths .path-svg .domain,#wellbeing-forecast-paths .path-svg .tick line{stroke:var(--border)}
+#wellbeing-forecast-paths .path-svg .grid .domain{display:none}
+#wellbeing-forecast-paths .path-svg .grid .tick line{stroke:var(--border);opacity:.5}
+#wellbeing-forecast-paths [data-path-tooltip]{position:absolute;pointer-events:none;z-index:5;max-width:calc(100% - 12px);background:var(--popover);color:var(--popover-foreground);padding:8px 10px;border:1px solid var(--border)}
+#wellbeing-forecast-paths [data-path-tooltip] td{padding:1px 5px}
+#wellbeing-forecast-paths [data-path-tooltip] td:last-child{text-align:right;font-variant-numeric:tabular-nums}
+#wellbeing-forecast-paths .path-summary{margin-top:6px}
+@media(pointer:coarse){#wellbeing-forecast-paths .path-legend button{min-height:44px}}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+<script>
+(()=>{
+const root=document.getElementById('wellbeing-forecast-paths'),d=JSON.parse(root.querySelector('[data-paths]').textContent),country=root.querySelector('[data-country]'),view=root.querySelector('[data-view]'),legend=root.querySelector('.path-legend'),tip=root.querySelector('[data-path-tooltip]');
+const info=[{id:'observed',name:'Observed',color:'var(--foreground)',width:3},{id:'endpoint_blend',name:'Historical best blend',color:'var(--viz-series-1)',width:4},{id:'persistence',name:'Persistence',color:'var(--muted-foreground)',width:1.8,dash:'5 5'},...d.models.map((m,i)=>({...m,color:`var(--viz-series-${i%5+2})`,width:1.5}))];
+const visible=new Set(info.map(m=>m.id));let pinned=false;
+const fmt=(v,t)=>v===null?'missing':v.toLocaleString('en-US',{minimumFractionDigits:t==='gdp'?0:3,maximumFractionDigits:t==='gdp'?0:3});
+country.innerHTML=d.countries.slice().sort((a,b)=>a.name.localeCompare(b.name)).map(c=>`<option value="${c.id}">${c.name}</option>`).join('');country.value='USA';
+legend.innerHTML=info.map(m=>`<button type="button" data-model="${m.id}" aria-pressed="true"><span class="path-swatch" style="--series:${m.color};border-top-width:${m.width}px;${m.dash?'border-top-style:dashed':''}"></span>${m.name}</button>`).join('');
+function val(values,year){if(year<values[0][0]||year>values.at(-1)[0])return null;const i=d3.bisector(p=>p[0]).left(values,year),b=values[Math.min(i,values.length-1)],a=values[Math.max(0,i-1)];if(b[0]===year)return b[1];if(a[1]===null||b[1]===null)return null;return a[1]+(b[1]-a[1])*(year-a[0])/(b[0]-a[0]||1)}
+function render(){pinned=false;tip.hidden=true;const c=d.countries.find(c=>c.id===country.value),future=view.value==='future',origin=future?2025:2018,x0=future?2021:2015,x1=future?2032:2025;
+root.querySelector('[data-status]').textContent=future?'Unscored projections • observed 2025 origin • unchanged 2018 fits':'Known-period comparison • forecasts from 2018 • observed outcomes through 2025';
+for(const container of root.querySelectorAll('.path-figure')){
+ const target=container.dataset.target,svg=d3.select(container.querySelector('svg')),w=container.clientWidth,h=w<500?270:300,margin={left:target==='gdp'?78:64,right:12,top:30,bottom:52},frame={x:margin.left,y:margin.top,width:w-margin.left-margin.right,height:h-margin.top-margin.bottom};
+ const all=info.map(m=>({...m,values:m.id==='observed'?c.observed[target].filter(p=>p[0]>=x0):c[view.value][m.id]?.[target]})).filter(s=>s.values),rows=all.filter(s=>visible.has(s.id));
+ const [lo,hi]=d3.extent(all.flatMap(s=>s.values.filter(p=>p[1]!==null).map(p=>p[1]))),pad=Math.max((hi-lo)*.1,target==='ladder'?.08:Math.max(1,hi*.01));
+ const x=d3.scaleLinear().domain([x0,x1]).range([frame.x+4,frame.x+frame.width-4]),y=d3.scaleLinear().domain([Math.max(0,lo-pad),hi+pad]).nice(4).range([h-margin.bottom-4,margin.top+4]);
+ svg.selectAll('*').remove();svg.attr('viewBox',`0 0 ${w} ${h}`).attr('height',h);const clip='forecast-inline-'+target;
+ svg.append('defs').append('clipPath').attr('id',clip).append('rect').attr('x',frame.x).attr('y',frame.y).attr('width',frame.width).attr('height',frame.height);
+ svg.append('rect').attr('data-chart-frame','').attr('x',frame.x).attr('y',frame.y).attr('width',frame.width).attr('height',frame.height).attr('fill','none').attr('stroke','var(--border)');
+ const ticks=w<500?(future?[2021,2025,2029,2032]:[2015,2018,2022,2025]):d3.range(x0,x1+1),xa=svg.append('g').attr('transform',`translate(0,${h-margin.bottom})`).call(d3.axisBottom(x).tickValues(ticks).tickFormat(d3.format('d')).tickSizeOuter(0));
+ xa.select('.tick:first-of-type text').attr('text-anchor','start');xa.select('.tick:last-of-type text').attr('text-anchor','end');
+ svg.append('g').attr('transform',`translate(${frame.x},0)`).call(d3.axisLeft(y).ticks(4).tickFormat(target==='gdp'?d3.format(',.0f'):d3.format('.1f')).tickSizeOuter(0));
+ svg.append('g').attr('class','grid').attr('transform',`translate(${frame.x},0)`).call(d3.axisLeft(y).ticks(4).tickSize(-frame.width).tickFormat(''));
+ svg.append('text').attr('class','axis-title').attr('data-axis','x').attr('x',frame.x+frame.width/2).attr('y',h-8).attr('text-anchor','middle').text('Calendar year');
+ svg.append('text').attr('class','axis-title').attr('data-axis','y').attr('x',frame.x).attr('y',14).text(target==='ladder'?'Ladder points (0–10)':'Real USD/person (2015 prices)');
+ const plot=svg.append('g').attr('clip-path',`url(#${clip})`),members=rows.filter(s=>d.models.some(m=>m.id===s.id));
+ if(members.length>=2){const band=d3.range(origin,x1+1).map(year=>{const v=members.map(s=>val(s.values,year)).filter(v=>v!==null);return {year,low:d3.min(v),high:d3.max(v)}});plot.append('path').datum(band).attr('d',d3.area().defined(v=>v.low!==undefined).x(v=>x(v.year)).y0(v=>y(v.low)).y1(v=>y(v.high))).attr('fill','var(--foreground)').attr('opacity',.07)}
+ plot.append('line').attr('x1',x(origin)).attr('x2',x(origin)).attr('y1',frame.y).attr('y2',frame.y+frame.height).attr('stroke','var(--border)').attr('stroke-dasharray','3 4');
+ plot.append('text').attr('class','origin-label').attr('x',x(origin)+5).attr('y',frame.y+16).text(origin+' origin');
+ const line=d3.line().defined(p=>p[1]!==null).x(p=>x(p[0])).y(p=>y(p[1]));
+ // Draw the ensemble last so its weight is visible even where models overlap.
+ for(const s of rows.slice().sort((a,b)=>(a.id==='endpoint_blend')-(b.id==='endpoint_blend'))){plot.append('path').datum(s.values).attr('data-series',s.id).attr('d',line).attr('stroke',s.color).attr('stroke-width',s.width).attr('stroke-dasharray',s.dash||null).attr('fill','none');if(s.id==='observed')plot.selectAll('.obs').data(s.values.filter(p=>p[1]!==null)).join('circle').attr('cx',p=>x(p[0])).attr('cy',p=>y(p[1])).attr('r',2.5).attr('fill',s.color)}
+ const hover=plot.append('g').style('display','none');hover.append('line').attr('data-chart-hover-guide','').attr('y1',frame.y).attr('y2',frame.y+frame.height).attr('stroke','var(--foreground)').attr('opacity',.5);
+ function show(event){for(const g of root.querySelectorAll('[data-hover-group]'))g.style.display='none';hover.attr('data-hover-group','').style('display',null);const px=Math.max(x.range()[0],Math.min(x.range()[1],d3.pointer(event,svg.node())[0])),year=x.invert(px),points=rows.map(s=>({...s,value:val(s.values,year)})).filter(s=>s.value!==null);hover.select('line').attr('x1',px).attr('x2',px);hover.selectAll('circle').data(points,s=>s.id).join('circle').attr('data-chart-hover-marker','').attr('cx',px).attr('cy',s=>y(s.value)).attr('r',3).attr('fill',s=>s.color);tip.innerHTML=`<span>${year.toFixed(2)}${pinned?' · pinned':''}</span><table>${points.map(s=>`<tr><td>${s.name}</td><td>${fmt(s.value,target)}</td></tr>`).join('')}</table>`;tip.hidden=false;tip.style.left=Math.max(6,Math.min(w-tip.offsetWidth-6,px+10))+'px';tip.style.top=(container.offsetTop+40)+'px'}
+ svg.append('rect').attr('data-chart-hit','').attr('data-chart-hover-overlay','cross-series').attr('x',frame.x).attr('y',frame.y).attr('width',frame.width).attr('height',frame.height).attr('fill','transparent').on('pointermove',e=>{if(!pinned)show(e)}).on('pointerleave',()=>{if(!pinned){hover.style('display','none');tip.hidden=true}}).on('click',e=>{pinned=!pinned;if(pinned)show(e);else{tip.hidden=true;hover.style('display','none')}});
+ const actual=c.observed[target].at(-1)[1],path=c[view.value].endpoint_blend?.[target],summary=container.querySelector('.path-summary');
+ summary.textContent=future?(path?`2032 blend: ${fmt(path.at(-1)[1],target)} • 2025 observed: ${fmt(actual,target)} • not scored`:'No forward path: missing 2025 wellbeing or income'):`2025 observed: ${fmt(actual,target)} • blend: ${fmt(path.at(-1)[1],target)} • persistence: ${fmt(c.historical.persistence[target].at(-1)[1],target)}`;
+ // Measure all axis/annotation labels; move edge labels inward and remove optional collisions.
+ const labels=[...svg.node().querySelectorAll('.tick text,.axis-title')].filter(n=>n.textContent),bounds=labels.map(n=>({n,r:n.getBoundingClientRect()}));
+ for(let i=0;i<bounds.length;i++)for(let j=i+1;j<bounds.length;j++){const a=bounds[i],b=bounds[j];if(a.r.left<b.r.right+4&&a.r.right+4>b.r.left&&a.r.top<b.r.bottom+4&&a.r.bottom+4>b.r.top){if(b.n.closest('.tick')&&b.n.parentNode.parentNode===xa.node())b.n.style.visibility='hidden'}}
+ const originLabel=plot.select('.origin-label').node(),or=originLabel.getBoundingClientRect(),sr=svg.node().getBoundingClientRect();if(or.right>sr.right-4)originLabel.remove();
+ }
+}
+legend.addEventListener('click',e=>{const b=e.target.closest('[data-model]');if(!b)return;visible.has(b.dataset.model)?visible.delete(b.dataset.model):visible.add(b.dataset.model);b.setAttribute('aria-pressed',String(visible.has(b.dataset.model)));render()});
+country.addEventListener('change',render);view.addEventListener('change',render);new ResizeObserver(render).observe(root);render();
+})();
+</script>

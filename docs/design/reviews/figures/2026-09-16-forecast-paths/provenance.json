@@ -1,0 +1,13 @@
+{
+  "source": "data/evaluation/diagnostic-health-income-2018-v1/paths.json",
+  "sourceSha256": "8593644d7e0fd3e5d2044dbd70781ebc971341bc987c417577aa78a552d52df9",
+  "matplotlib": "3.10.8",
+  "operation": "Presentation of existing saved results; no training or scoring invocation. Country error annotations are arithmetic on the displayed saved paths.",
+  "files": [
+    "01-wellbeing-good-bad.png",
+    "02-rich-country-limit.png",
+    "03-history-versus-forecasts.png",
+    "04-future-paths.png",
+    "05-income-good-bad.png"
+  ]
+}

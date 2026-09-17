@@ -1,0 +1,7 @@
+{
+  "createdAt": "2026-09-17T02:39:38.818103+00:00",
+  "preScoreCommit": "fa55c5590752cf0c144c65b8c28c04f1a5fca988",
+  "predictionSha256": "5d2df6385bc8c3ac56bc36e91358e151108c3e80d3b17affa7a561d7f95e2158",
+  "protocolSha256": "d2608d17e29ff699661c68979789a7d8f767f2405827aa6520b9b8579c301858",
+  "status": "started; errors do not authorize rerunning this scorer"
+}
