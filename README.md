@@ -1,5 +1,7 @@
 # Wellbeing Transition Simulator
 
+**New research graphs, 17 September 2026:** [Open the annual country gallery](docs/design/reviews/2026-09-17-annual-history-graphs.md). Year-by-year forecasts and observed changes for eight countries, with GDP and lifespan histories from 1960. GDP and lifespan improve over persistence; annual wellbeing remains weak. These research results do not change the app's models.
+
 **What happens to human well-being when AI automates the economy faster than our institutions can adapt — and who, if anyone, keeps the lights on for everyone else?**
 
 This comparison branch opens with **reported company cash flow → an editable allocation → visible limits**. Select Apple, Microsoft, Alphabet, Amazon, Meta or NVIDIA, compare two policies, and reopen the exact experiment in Model Lab. Reported observations, derived amounts and scenario assumptions are labeled separately.

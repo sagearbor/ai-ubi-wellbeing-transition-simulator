@@ -1,0 +1,167 @@
+{
+  "reviewed": "2026-09-17",
+  "experiment": "annual-wellbeing-20260917",
+  "freezeCommit": "9a49e76562acc0b1229e32a7f88f18c7ce62f79b",
+  "scoreReceiptStatus": "completed",
+  "auditMethod": "Read-only source/code review and independent arithmetic from saved predictions; no scorer invocation, model refit, candidate addition or tuning.",
+  "hashComparisonsPassed": 15,
+  "targetRowsChecked": 159,
+  "joinedFeatureValuesChecked": 477,
+  "matchedSixMethodSets": 130,
+  "savedIndividualPredictions": 780,
+  "pooledMetricRowsChecked": 12,
+  "countryMetricRowsChecked": 96,
+  "numericMetricValuesChecked": 2592,
+  "macroCountryMeansChecked": 12,
+  "outputPathsConsistent": true,
+  "boundsChecked": [
+    0,
+    10
+  ],
+  "boundaryPredictions": 0,
+  "cohortInitialCompleteRows": {
+    "BRA": 11,
+    "CHN": 11,
+    "DEU": 11,
+    "GBR": 11,
+    "IND": 11,
+    "JPN": 11,
+    "USA": 11,
+    "ZAF": 11
+  },
+  "eligibleCountries": [
+    "BRA",
+    "CHN",
+    "DEU",
+    "GBR",
+    "IND",
+    "JPN",
+    "USA",
+    "ZAF"
+  ],
+  "rowCounts": {
+    "conditional": 61,
+    "rolling": 69
+  },
+  "expectedExcludedRows": [
+    {
+      "id": "BRA",
+      "year": 2025,
+      "mode": "conditional",
+      "reason": "missing realized target driver"
+    },
+    {
+      "id": "CHN",
+      "year": 2022,
+      "mode": "conditional",
+      "reason": "missing target"
+    },
+    {
+      "id": "CHN",
+      "year": 2022,
+      "mode": "rolling",
+      "reason": "missing target"
+    },
+    {
+      "id": "CHN",
+      "year": 2023,
+      "mode": "conditional",
+      "reason": "missing required lag row/feature"
+    },
+    {
+      "id": "CHN",
+      "year": 2023,
+      "mode": "rolling",
+      "reason": "missing required lag row/feature"
+    },
+    {
+      "id": "CHN",
+      "year": 2024,
+      "mode": "conditional",
+      "reason": "missing required lag row/feature"
+    },
+    {
+      "id": "CHN",
+      "year": 2024,
+      "mode": "rolling",
+      "reason": "missing required lag row/feature"
+    },
+    {
+      "id": "CHN",
+      "year": 2025,
+      "mode": "conditional",
+      "reason": "missing realized target driver"
+    },
+    {
+      "id": "DEU",
+      "year": 2025,
+      "mode": "conditional",
+      "reason": "missing realized target driver"
+    },
+    {
+      "id": "GBR",
+      "year": 2025,
+      "mode": "conditional",
+      "reason": "missing realized target driver"
+    },
+    {
+      "id": "IND",
+      "year": 2025,
+      "mode": "conditional",
+      "reason": "missing realized target driver"
+    },
+    {
+      "id": "JPN",
+      "year": 2025,
+      "mode": "conditional",
+      "reason": "missing realized target driver"
+    },
+    {
+      "id": "USA",
+      "year": 2025,
+      "mode": "conditional",
+      "reason": "missing realized target driver"
+    },
+    {
+      "id": "ZAF",
+      "year": 2025,
+      "mode": "conditional",
+      "reason": "missing realized target driver"
+    }
+  ],
+  "directionClassCounts": {
+    "conditional": {
+      "down": 30,
+      "up": 31
+    },
+    "rolling": {
+      "down": 34,
+      "up": 35
+    }
+  },
+  "percentMAEReductionVsPersistence": {
+    "conditional": {
+      "change_ridge": -7.50973451729422,
+      "country_offset": -66.96450555723186,
+      "residual_carry": -11.270032293162192,
+      "shrinkage_change": -2.1990655687976757,
+      "persistence": 0.0,
+      "damped_trend": -17.008430980280043
+    },
+    "rolling": {
+      "change_ridge": -0.9119322129840235,
+      "country_offset": -36.3080734771349,
+      "residual_carry": -2.7822363368009695,
+      "shrinkage_change": 1.2060405203155322,
+      "persistence": 0.0,
+      "damped_trend": -20.732647814909978
+    }
+  },
+  "p1OrP2ImplementationDefectsFound": 0,
+  "interpretationCautions": [
+    "Conditional curves are sequential one-year reconstructions using observed t-1 outcomes; coefficients alone are frozen at 2016.",
+    "Conditional 61 rows and rolling 69 rows use different year masks; direct pooled comparison does not identify value of observed target-year inputs.",
+    "Rolling shrinkage improves pooled MAE by 0.00272 ladder points (1.206%); 39 wins and 30 losses, naive paired sign p = 0.336 ignores dependence. No reliable winner established.",
+    "Three-decimal public chart transcription is not original Gallup microdata or a full licensed annual panel."
+  ]
+}

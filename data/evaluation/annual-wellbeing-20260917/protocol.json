@@ -1,0 +1,179 @@
+{
+  "schemaVersion": 1,
+  "studyId": "annual-wellbeing-20260917",
+  "status": "registered_before_scoring",
+  "target": {
+    "name": "Annual national Cantril ladder mean",
+    "unit": "Cantril ladder points (0\u201310)",
+    "annual": true,
+    "sourceRequired": "Official intentionally public annual World Happiness Report map data; three-year averages forbidden"
+  },
+  "task": "Bounded descriptive annual wellbeing demonstration in eight countries predetermined before source collection; no retuning after scores",
+  "interpretation": [
+    "Limited preselected eight-country demonstration (USA, IND, DEU, GBR, BRA, JPN, ZAF, CHN); pooled results do not represent the full world panel.",
+    "Latest-vintage retrospective reconstruction; not real-time forecasts. Annual survey year is not release date.",
+    "Previously studied outcome periods are not untouched holdouts.",
+    "Conditional replay uses realized target-year drivers; these are conditional one-year reconstructions, not deployable forecasts.",
+    "Rolling forecasts use data dated at or before t-1, but source revisions can contain later information.",
+    "World Bank drivers differ from the WHR six-factor model and do not include same-survey social variables.",
+    "Results do not identify causal effects or validate post-AI scenarios.",
+    "Annual targets are public-chart transcriptions rounded to three decimals, not a bulk original Gallup annual data release; chart extraction and limited validation add measurement risk."
+  ],
+  "data": {
+    "firstYear": 2005,
+    "lastYear": "latest official annual target year intersecting available source drivers",
+    "features": [
+      {
+        "id": "log_gdp",
+        "indicator": "NY.GDP.PCAP.KD",
+        "transform": "natural logarithm",
+        "unit": "log constant 2015 US dollars per capita"
+      },
+      {
+        "id": "life_expectancy",
+        "indicator": "SP.DYN.LE00.IN",
+        "transform": "identity",
+        "unit": "years"
+      },
+      {
+        "id": "unemployment",
+        "indicator": "SL.UEM.TOTL.ZS",
+        "transform": "identity",
+        "unit": "percent of labor force (modeled ILO estimate)"
+      }
+    ],
+    "sourceFallbackRule": "Do not score if official annual target cannot be acquired. No substitute rolling averages or unverified mirror.",
+    "missing": "No interpolation, extrapolation, nearest future observation, zero fill, or cross-country fill. For forecasts ONLY, project observed drivers one year by half their immediately preceding annual change.",
+    "targetAcquisition": "Read intentionally public annual rendered chart marks/axis ticks for original eight countries; parent verified annual selector and annual tooltips. Preserve SVG evidence and spot-check labels; no hidden application state or restricted data endpoints."
+  },
+  "partition": {
+    "initialTrain": [
+      2005,
+      2016
+    ],
+    "evaluationStart": 2017,
+    "cohort": "Only the eight predetermined examples USA, IND, DEU, GBR, BRA, JPN, ZAF, CHN, subject to at least five complete annual target+three-feature rows in 2005\u20132016. These countries were chosen before source collection and outcome comparison. No selection based on errors or post2016 target levels.",
+    "conditionalFitCutoff": 2016,
+    "rollingFitCutoff": "targetYear - 1",
+    "rollingHistory": "expanding from 2005; no rolling-window tuning",
+    "historicalTargets": "Annual t-1 and t-2 targets permitted as explicitly observed lagged information. Each target-year target is withheld from its prediction."
+  },
+  "modes": [
+    {
+      "id": "conditional",
+      "label": "Conditional historical replay \u2014 actual annual drivers, frozen 2016 coefficients",
+      "fit": "2005\u20132016 only",
+      "origin": "t-1 (sequential observed outcome anchor)",
+      "features": "realized x_t permitted; no target y_t used",
+      "horizon": 1
+    },
+    {
+      "id": "rolling",
+      "label": "Rolling one-year-ahead \u2014 projected drivers using data through t-1",
+      "fit": "expanding 2005 through t-1",
+      "origin": "t-1",
+      "features": "xhat_t = x_(t-1) + 0.5 * (x_(t-1)-x_(t-2)); no realized target-year features",
+      "horizon": 1
+    }
+  ],
+  "masks": {
+    "both": "Target y_t observed; full y and three x available at t-1 and t-2; country eligible from initialTrain. All methods within mode evaluated on exactly identical rows.",
+    "conditionalAdditional": "All three realized x_t observed.",
+    "rollingAdditional": "None: target-year x is not required or consulted.",
+    "countryWeighting": "Pooled metrics give each eligible country-year equal weight; macro country MAE also reported.",
+    "methodAvailability": "All four candidates and both baselines predict every included row. Prediction count equality asserted; no error-based exclusions."
+  },
+  "estimation": {
+    "ridgeLambda": 10,
+    "ridgeObjective": "sum squared residuals + 10 * sum squared coefficients on standardized columns; intercept unpenalized",
+    "featureScaling": "Only training observations at or before per-row fitCutoff; each design column standardized by population SD, minimum1e-12.",
+    "countryOffsets": "Mean(y)-mean(x) beta from complete country rows through fitCutoff, never from target-year ladder.",
+    "forecastClipping": "Every final level prediction clipped to [0,10]; no feature clipping.",
+    "driverDamping": 0.5,
+    "residualDamping": 0.5,
+    "shrinkageWeight": 0.5
+  },
+  "candidates": [
+    {
+      "id": "change_ridge",
+      "label": "Change ridge",
+      "formula": "yhat_t = y_(t-1) + intercept + beta \u00b7 [x_t-x_(t-1), y_(t-1)-y_(t-2)]",
+      "training": "Consecutive complete triples through fitCutoff; target is annual y change. In rolling prediction x_t replaced by projected xhat_t."
+    },
+    {
+      "id": "country_offset",
+      "label": "Country offset + annual drivers",
+      "formula": "yhat_t = countryOffset + beta \u00b7 x_t",
+      "training": "Within-country demean complete levels through fitCutoff; ridge pooled slopes. Rolling x_t is projected."
+    },
+    {
+      "id": "residual_carry",
+      "label": "Country offset + half residual",
+      "formula": "yhat_t = countryOffset + beta \u00b7 x_t + 0.5 * [y_(t-1) - countryOffset - beta \u00b7 x_(t-1)]",
+      "training": "Same fitted country_offset coefficients; fixed half-residual carry."
+    },
+    {
+      "id": "shrinkage_change",
+      "label": "Half change ridge / half persistence",
+      "formula": "yhat_t = y_(t-1) + 0.5 * [unclipped_change_ridge_prediction-y_(t-1)]",
+      "training": "Same fitted change_ridge coefficients; fixed half-change shrinkage."
+    }
+  ],
+  "baselines": [
+    {
+      "id": "persistence",
+      "label": "Persistence",
+      "formula": "yhat_t = y_(t-1)"
+    },
+    {
+      "id": "damped_trend",
+      "label": "Half last annual change",
+      "formula": "yhat_t = y_(t-1) + 0.5 * [y_(t-1)-y_(t-2)]"
+    }
+  ],
+  "metrics": {
+    "primary": "Level MAE on common mask in native ladder points; percent MAE reduction relative to persistence",
+    "secondary": [
+      "change MAE using the same observed t-1 anchor (algebraically equal to level MAE at horizon1)",
+      "RMSE",
+      "mean signed error",
+      "Pearson correlation of predicted and observed changes, null if constant",
+      "three-way direction accuracy using sign with 1e-9 numerical equality tolerance; not a substantively tuned deadband",
+      "nonzero observed-change direction accuracy and prediction direction coverage; persistence abstains on every move",
+      "matched-origin absolute-error wins/losses/ties against persistence and exact two-sided binomial sign-test p (descriptive; ignores dependence)",
+      "matched-origin three-way direction wins/losses/ties versus persistence and exact paired binomial p; persistence abstention makes this descriptive, not magnitude skill"
+    ],
+    "aggregation": [
+      "pooled country-year",
+      "per-country",
+      "unweighted average of per-country MAE"
+    ],
+    "uncertainty": "No inferential generalization: repeated-country and serial dependence make naive p-values descriptive only."
+  },
+  "predeterminedExamples": [
+    "USA",
+    "IND",
+    "DEU",
+    "GBR",
+    "BRA",
+    "JPN",
+    "ZAF",
+    "CHN"
+  ],
+  "execution": {
+    "scoreRunsAllowed": 1,
+    "allCandidateResultsPublished": true,
+    "retuningAfterScores": false,
+    "priorNamespaceMutation": false,
+    "freeze": "Commit protocol and model/tests before reading evaluation losses; scoring script verifies clean committed protocol/model and refuses overwrite of scoring receipt.",
+    "preScoreValidation": "Coverage/year/schema summaries allowed; no post2016 outcome statistics, fits, candidate losses or rankings before freeze."
+  },
+  "registrationAmendments": [
+    {
+      "date": "2026-09-17",
+      "beforeScoring": true,
+      "reason": "Official bulk annual target/predictor download unavailable; parent verified intentionally public country chart annual tooltip access. Restrict collection to original eight predetermined examples, chosen before outcomes. Candidate formulas, cutoffs, masks, hyperparameters unchanged.",
+      "priorProtocolCommit": "2076670"
+    }
+  ]
+}

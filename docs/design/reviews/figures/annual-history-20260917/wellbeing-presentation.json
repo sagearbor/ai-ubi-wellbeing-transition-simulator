@@ -1,0 +1,28 @@
+{
+  "operation": "Plot saved study outputs only; no fitting or scored study rerun",
+  "sources": {
+    "data/evaluation/annual-wellbeing-20260917/paths.json": "56ac8876086f76ec5421aa250c3282a0f95d401232f1466ec45a5705ebec509a",
+    "data/evaluation/annual-objective-20260917/metrics.json": "31256a0e483d1a949ac74b6f5e58b7e6a179b4f9ebfa1993b64ab57946e7fb63"
+  },
+  "matplotlib": "3.10.8",
+  "files": [
+    "wellbeing-bra-conditional.png",
+    "wellbeing-bra-rolling.png",
+    "wellbeing-chn-conditional.png",
+    "wellbeing-chn-rolling.png",
+    "wellbeing-deu-conditional.png",
+    "wellbeing-deu-rolling.png",
+    "wellbeing-gbr-conditional.png",
+    "wellbeing-gbr-rolling.png",
+    "wellbeing-ind-conditional.png",
+    "wellbeing-ind-rolling.png",
+    "wellbeing-jpn-conditional.png",
+    "wellbeing-jpn-rolling.png",
+    "wellbeing-overview.png",
+    "wellbeing-usa-conditional.png",
+    "wellbeing-usa-rolling.png",
+    "wellbeing-zaf-conditional.png",
+    "wellbeing-zaf-rolling.png",
+    "00-annual-results.png"
+  ]
+}
