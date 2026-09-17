@@ -9,6 +9,7 @@ import datetime as dt
 import hashlib
 import json
 import math
+import re
 from pathlib import Path
 from model import PRESELECTED
 
@@ -21,6 +22,31 @@ def sha(p): return hashlib.sha256(p.read_bytes()).hexdigest()
 def dump(p,v): p.write_text(json.dumps(v,indent=2,allow_nan=False)+'\n')
 
 
+def validate_svg(target):
+    """Independently reconstruct saved rendered marks; no hidden or network data."""
+    idx={(r['id'],r['year']):r['y'] for r in target['rows']}
+    reconstructed={}
+    def position(tick,axis):
+        nums=re.findall(r'-?\d+(?:\.\d+)?',tick['transform'])
+        return float(nums[axis])-.5
+    for country in target['provenance']['svgEvidence']:
+        xt=sorted(country['x'],key=lambda t:float(t['label']))
+        yt=sorted(country['y'],key=lambda t:float(t['label']))
+        xa,xb=position(xt[0],0),position(xt[-1],0)
+        ya,yb=position(yt[0],1),position(yt[-1],1)
+        for p in country['points']:
+            rawyear=float(xt[0]['label'])+(p['cx']-xa)/(xb-xa)*(float(xt[-1]['label'])-float(xt[0]['label']))
+            assert abs(rawyear-round(rawyear))<.02,'Ambiguous rendered year'
+            y=float(yt[0]['label'])+(p['cy']-ya)/(yb-ya)*(float(yt[-1]['label'])-float(yt[0]['label']))
+            key=(country['id'],round(rawyear))
+            assert key not in reconstructed,'Duplicate rendered year'
+            reconstructed[key]=round(y,3)
+    assert reconstructed==idx,'Target rows differ from independently reconstructed rendered marks'
+    for check in target['provenance']['verifiedTooltips']:
+        value,year=check['label'].split(' in ')
+        assert idx[(check['id'],int(year))]==float(value),'Visible tooltip check disagrees'
+
+
 def main():
     ap=argparse.ArgumentParser()
     ap.add_argument('--target',type=Path,required=True)
@@ -31,6 +57,8 @@ def main():
     if target.get('annual') is not True: raise SystemExit('Target metadata must explicitly attest annual:true.')
     if target.get('officialPublic') is not True: raise SystemExit('Target metadata must explicitly attest officialPublic:true.')
     if any(r['id'] not in PRESELECTED for r in target['rows']): raise SystemExit('Target contains country outside preselected eight-country demonstration.')
+    if target['provenance'].get('extractionMethod') == 'public-rendered-svg-with-tooltip-checks':
+        validate_svg(target)
     wbprov=json.loads((args.worldbank/'provenance.json').read_text())
     rawdir=args.worldbank/'raw'
     cc=json.loads((rawdir/'countries.json').read_text())[1]
@@ -66,7 +94,8 @@ def main():
     dump(DATA/'input.json',{'schemaVersion':1,'rows':rows})
     source={'retrievedAt':dt.datetime.now(dt.timezone.utc).isoformat(),
        'sources':target['provenance'].get('sources',[])+used,
-       'targetPrecision':target['provenance'].get('targetPrecision','unknown; see target source'),
+       'targetPrecision':'Public-chart transcription reconstructed from rendered annual SVG marks and axis ticks, rounded to three decimals; spot-checked against visible annual tooltips.',
+       'targetLicense':'WHR / Gallup dashboard attribution retained. Redistribution license not independently verified; these target transcriptions are not claimed to inherit the repository code license or the World Bank CC BY license.',
        'targetSHA256':sha(targetcopy),'targetCollection':target['provenance'],
        'worldBankAttribution':wbprov['attribution'],'worldBankLicense':wbprov['license'],
        'worldBankLicenseURL':wbprov['licenseUrl'],

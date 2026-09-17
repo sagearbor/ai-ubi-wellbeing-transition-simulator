@@ -26,7 +26,7 @@ def main():
     receipt=DATA/'score-receipt.json'
     if receipt.exists():
         raise SystemExit('Refusing a second scoring run: score-receipt.json already exists. Preserve this study and register a new study for further comparisons.')
-    frozen=[DATA/'protocol.json',DATA/'input.json',DATA/'sources/provenance.json']+list(CODE.glob('*.py'))
+    frozen=[DATA/'protocol.json',DATA/'input.json',DATA/'sources/provenance.json',DATA/'sources/official-annual-target.json']+list(CODE.glob('*.py'))
     for p in frozen:
         if not p.exists(): raise SystemExit(f'Missing frozen input: {p}')
         rel=str(p.relative_to(ROOT))
@@ -38,6 +38,8 @@ def main():
     protocol=json.loads((DATA/'protocol.json').read_text())
     source=json.loads((DATA/'sources/provenance.json').read_text())
     panel=json.loads((DATA/'input.json').read_text())['rows']
+    if source['targetSHA256'] != sha(DATA/'sources/official-annual-target.json'):
+        raise RuntimeError('Annual target source hash does not match recorded provenance.')
     if any(r['id'] not in PRESELECTED for r in panel):
         raise RuntimeError('Production target contains a country outside the eight preselected examples.')
     record={'status':'started','startedAt':now,'freezeCommit':commit,'hashes':hashes,'scoreRun':1,'maximumScoreRuns':1}
@@ -73,7 +75,7 @@ def main():
     dump(DATA/'metrics.json',summary)
     dump(DATA/'predictions.json',{'studyId':protocol['studyId'],'rows':rows})
     lines=['# Annual wellbeing study — 17 September 2026','',
-      'This is a limited demonstration in eight countries chosen before data collection: USA, India, Germany, United Kingdom, Brazil, Japan, South Africa, and China. Pooled results describe this preselected cohort, not the global panel. It is a latest-vintage retrospective annual comparison, not a real-time forecasting claim or an untouched holdout. The outcome period has appeared in earlier project work. Annual target values come from the official public World Happiness Report display; three-year averages are not used.','',
+      'This is a limited demonstration in eight countries chosen before data collection: USA, India, Germany, United Kingdom, Brazil, Japan, South Africa, and China. Pooled results describe this preselected cohort, not the global panel. It is a latest-vintage retrospective annual comparison, not a real-time forecasting claim or an untouched holdout. The outcome period has appeared in earlier project work. Annual target values were transcribed from rendered World Happiness Report / Gallup chart marks using visible linear-axis ticks, rounded to three decimals, and spot-checked against visible annual tooltips for all eight countries. These are public-chart transcriptions, not the original downloadable Gallup annual microdata or full machine-readable panel. Three-year averages are not used.','',
       'Four parsimonious candidates were frozen before one scoring run. All six methods, including persistence and a damped annual trend, use identical rows within each mode. Coefficients are trained through 2016 for conditional replay and expand through t−1 for each rolling forecast. The conditional replay is a sequence of one-year reconstructions with observed previous-year outcomes and realized target-year drivers; it is not a free-running 2016-origin path.','',
       'Drivers are World Bank log constant-dollar GDP per capita, total life expectancy, and modeled unemployment. Total life expectancy is not WHR healthy life expectancy. No same-survey support/freedom/corruption variables or fitted Figure 2.1 factor contributions are used. Even date-restricted features are revised retrospective vintages, with original release availability unknown.','',
       f'Frozen commit: `{commit}`. Initial training: 2005–2016. Eligible initial cohort: {len(eligible)} countries. All country paths and row-level cutoffs are in `data/evaluation/annual-wellbeing-20260917/paths.json`.','',
@@ -86,7 +88,7 @@ def main():
             s=summary[mode]['pooled'][m]
             corr='undefined (constant)' if s['changeCorrelation'] is None else f"{s['changeCorrelation']:.3f}"
             lines.append(f"| {mode} | {m} | {s['n']} | {s['levelMAE']:.4f} | {s['percentMAEReductionVsPersistence']:.2f}% | {100*s['directionAccuracy']:.1f}% | {corr} |")
-    lines+=['','Direction uses three classes (up/down/flat), with only a 1e−9 numerical equality tolerance. Every scored country-year is in that denominator. Persistence always predicts flat and thus abstains on nonzero moves; its zero directional accuracy on changing outcomes is not evidence of useful candidate forecasts. `metrics.json` separately reports observed ties, direction-call coverage, accuracy when called, and matched-origin absolute-error wins/losses/ties. Nominal paired sign-test probabilities ignore serial and country dependence and are descriptive only.','',
+    lines+=['','Direction uses three classes (up/down/flat), with only a 1e−9 numerical equality tolerance. Every scored country-year is in that denominator. Persistence always predicts flat and thus abstains on nonzero moves; its zero directional accuracy on changing outcomes is not evidence of useful candidate forecasts. `metrics.json` separately reports observed ties, direction-call coverage, accuracy when called, matched-origin direction wins/losses/ties, and absolute-error wins/losses/ties. Nominal paired sign-test probabilities ignore serial and country dependence and are descriptive only.','',
       '## Predetermined examples','',
       'Countries below were named before scoring. Every eligible country is available in the paths artifact. Missing examples are stated rather than silently replaced.','',
       '| Country | Rolling rows | Persistence MAE | Change ridge MAE | Country offset MAE | Residual carry MAE | Shrinkage MAE | Damped trend MAE |',
@@ -106,7 +108,7 @@ def main():
       '`python -m unittest discover -s scripts/evaluation/annual-wellbeing -p "test_*.py" -v`',
       '', '`python scripts/evaluation/annual-wellbeing/run.py` requires committed protocol, code, and input and refuses to overwrite an existing scoring receipt. Preserve the original receipt: a further model comparison needs a new registered study.','',
       'Six synthetic tests establish own-target and future-target invariance, target-year driver exclusion from rolling forecasts, historical-only offsets, frozen cohort selection, exact prediction/missingness counts, and the same-origin change-error identity.','',
-      '## Sources','']
+      '## Sources','', 'WHR / Gallup attribution applies to the target chart transcriptions. Their redistribution license has not been independently verified and is not asserted to be the repository code license or World Bank CC BY. World Bank drivers have their own CC BY attribution in source provenance.','']
     for item in source.get('sources',[]):
         lines.append(f"- [{item.get('label',item['url'])}]({item['url']}) — {item.get('description','')}")
     DOC.write_text('\n'.join(lines)+'\n')

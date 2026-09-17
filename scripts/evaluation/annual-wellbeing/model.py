@@ -140,12 +140,18 @@ def metrics(rows, method):
     psigns = [sign(v) for v in predchange]
     nonzero = [i for i,s in enumerate(signs) if s]
     called = [i for i in nonzero if psigns[i]]
+    direction_wins = sum(a == b and a != 0 for a,b in zip(signs,psigns))
+    direction_losses = sum(a != b and a == 0 for a,b in zip(signs,psigns))
     wins = int(np.sum(err < base-TOLERANCE))
     losses = int(np.sum(err > base+TOLERANCE))
     return {'n': len(rows), 'levelMAE': float(err.mean()), 'changeMAE': float(np.abs(predchange-change).mean()),
       'rmse': float(np.sqrt(np.mean((pred-actual)**2))), 'meanSignedError': float((pred-actual).mean()),
       'persistenceMAE': float(base.mean()), 'percentMAEReductionVsPersistence': float(100*(1-err.mean()/base.mean())) if base.mean() else None,
       'directionAccuracy': sum(a==b for a,b in zip(signs,psigns))/len(rows), 'directionDenominator': len(rows),
+      'directionWinsVsPersistence': direction_wins, 'directionLossesVsPersistence': direction_losses,
+      'directionTiesVsPersistence': len(rows)-direction_wins-direction_losses,
+      'pairedDirectionTestNominalP': binomial_two_sided(direction_wins,direction_losses),
+      'directionComparisonCaution': 'Persistence predicts no change; it abstains on every observed move. Higher direction accuracy alone is not evidence of better magnitudes.',
       'observedMoves': len(nonzero), 'observedTies': len(rows)-len(nonzero),
       'moveDirectionAccuracy': sum(signs[i]==psigns[i] for i in nonzero)/len(nonzero) if nonzero else None,
       'directionCallsOnMoves': len(called), 'directionCoverageOnMoves': len(called)/len(nonzero) if nonzero else None,
