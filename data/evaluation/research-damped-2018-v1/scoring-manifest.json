@@ -1,0 +1,32 @@
+{
+  "schema": "forecast-scoring-bindings/1",
+  "entry": "research-damped-2018-v1",
+  "family": "five-approaches-20260916",
+  "bindings": {
+    "data/evaluation/five-approaches-20260916/protocol.json": "c40ef60470416fa2fb7ef08d31e3f61e1540bc4fb3f191c74fcb14465caad1aa",
+    "data/evaluation/five-approaches-20260916/registry.json": "9efaaae977a155310acbf3614915926f3ce381259f13d6d02d76901bccc2a4a3",
+    "data/evaluation/level-holdout-2018/origin.json": "564bab92fe88415df70a1b239223213a53c12274891ec2d39f0e08c3e28e3f77",
+    "data/evaluation/level-holdout-2018/protocol.json": "694cc25212c42a84c873a55b7f6db7023e604fd5bbedde2ff9639d2faaaa1c3b",
+    "data/evaluation/level-holdout-2018/train.json": "979ac8d45dda418403fc59e04111b9c9dbcd2fa484e4c26aa900cd37e777bd02",
+    "data/evaluation/research-damped-2018-v1/calibration.json": "b90d69fad0cc497773ac076a67fe053d9fed70c954a90f248a60f3d7a2a826df",
+    "data/evaluation/research-damped-2018-v1/internal-validation.json": "cea809c47ca49394eb99920df36f55e94deca46aec1c6313741b40aee0f9ea77",
+    "data/evaluation/research-damped-2018-v1/numerical-provenance.json": "3cc9b41ea4e29abdd369d369c78a1bb7716a1fe6951d79cbc9ed333efaea0eef",
+    "data/evaluation/research-damped-2018-v1/predictions.json": "bbb52ca54a515df315ad1c2c09be6f3f9d0f4ad9b261bd1fd04fc59f8c516ac3",
+    "data/evaluation/research-damped-2018-v1/protocol.json": "306ae9bf2b6f8cbd521209bd4333f89e79c26e97424135e01a3027ea44f6c52e",
+    "data/evaluation/research-damped-2018-v1/provenance.json": "58820b9e117626cd5755ab11930c871bbc6dc1df5db873883f5bbf29e8123ca3",
+    "package-lock.json": "063cbb3cd22a110053f124ae276ccab323e8d19150d2966d87fcb4149198acb8",
+    "package.json": "1140ff24493d0300954fccf775b6603ed21d39e885d5e732975074fda8880e86",
+    "scripts/evaluation/attempts/family-20260916.test.ts": "2a2bdaf64417d7f12901a1f06291dfb16385280a3f9d29b9cdb3304e2fb57465",
+    "scripts/evaluation/attempts/family-20260916.ts": "10808d02c02a841edef24afadb832ae5c4f57228636517b5a6e786fa06990a77",
+    "scripts/evaluation/attempts/research-damped-2018-v1/model.mjs": "c2ea836879c9bdacad6383dd7e73ad9648dda8873d7dd39da69c5a3d20c45396",
+    "scripts/evaluation/attempts/research-damped-2018-v1/model.node-test.mjs": "081b75adfe46c689f5dd3b2e0c28a05507175ab7d29dff866f51c1c6fe4fa2c8",
+    "scripts/evaluation/attempts/research-damped-2018-v1/registered.test.ts": "ff4e2195f82916da590494ad1dc78c36f796b89bfa6dcad76dc1e2c5e79a0b0c",
+    "scripts/evaluation/attempts/research-damped-2018-v1/run.mjs": "1176e1134de511478c8bd39aa34b821482c5497bcb4cfcfde1ea53f61ff86caf",
+    "scripts/evaluation/partition.ts": "15008a2ae773a96d178f27c6649b782abd47fa237e457a60454cf1f7e6dcc5d4",
+    "scripts/evaluation/predict.ts": "8429c77e681b19e801aa91efdfdf8fd78e05d81faedc66117af3a05624964cea",
+    "scripts/evaluation/score.ts": "94be818155101ebdac4b1e1ca31d9af0affba858575b77fc920ae816ad664363"
+  },
+  "testOutcomesSha256": "bbcd0b78bc4d02024b2c5064fc15b9249e8849c271f7abd29d9cedeece2ce969",
+  "runtime": "Node v22.23.2, tsx from locked dependency tree",
+  "scoringInvocation": "node --import tsx scripts/evaluation/attempts/family-20260916.ts research-damped-2018-v1"
+}

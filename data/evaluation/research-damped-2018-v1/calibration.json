@@ -1,0 +1,5055 @@
+{
+  "schema": "damped-calibration/1",
+  "entryId": "research-damped-2018-v1",
+  "originYear": 2018,
+  "outcomes": {
+    "ladder": {
+      "outcome": "ladder",
+      "originYear": 2018,
+      "trainingYears": [
+        2015,
+        2016,
+        2017,
+        2018
+      ],
+      "pooledSlope": 0.014233714285714303,
+      "pooledSlopeCountryCount": 100,
+      "countries": [
+        {
+          "id": "USA",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 7.104
+            },
+            {
+              "year": 2016,
+              "value": 6.993
+            },
+            {
+              "year": 2017,
+              "value": 6.886
+            },
+            {
+              "year": 2018,
+              "value": 6.892
+            }
+          ],
+          "n": 4,
+          "slope": -0.07429999999999995,
+          "rawOrigin": 6.892,
+          "transformedOrigin": 6.892
+        },
+        {
+          "id": "CAN",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 7.404
+            },
+            {
+              "year": 2016,
+              "value": 7.316
+            },
+            {
+              "year": 2017,
+              "value": 7.328
+            },
+            {
+              "year": 2018,
+              "value": 7.278
+            }
+          ],
+          "n": 4,
+          "slope": -0.036600000000000056,
+          "rawOrigin": 7.278,
+          "transformedOrigin": 7.278
+        },
+        {
+          "id": "MEX",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 6.778
+            },
+            {
+              "year": 2016,
+              "value": 6.578
+            },
+            {
+              "year": 2017,
+              "value": 6.488
+            },
+            {
+              "year": 2018,
+              "value": 6.595
+            }
+          ],
+          "n": 4,
+          "slope": -0.06389999999999993,
+          "rawOrigin": 6.595,
+          "transformedOrigin": 6.595
+        },
+        {
+          "id": "GTM",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 6.324
+            },
+            {
+              "year": 2016,
+              "value": 6.454
+            },
+            {
+              "year": 2017,
+              "value": 6.382
+            },
+            {
+              "year": 2018,
+              "value": 6.436
+            }
+          ],
+          "n": 4,
+          "slope": 0.026400000000000024,
+          "rawOrigin": 6.436,
+          "transformedOrigin": 6.436
+        },
+        {
+          "id": "HTI",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 4.028
+            },
+            {
+              "year": 2016,
+              "value": 3.603
+            },
+            {
+              "year": 2017,
+              "value": 3.582
+            },
+            {
+              "year": 2018,
+              "value": 3.597
+            }
+          ],
+          "n": 4,
+          "slope": -0.1313999999999999,
+          "rawOrigin": 3.597,
+          "transformedOrigin": 3.597
+        },
+        {
+          "id": "DOM",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 5.155
+            },
+            {
+              "year": 2016,
+              "value": 5.23
+            },
+            {
+              "year": 2017,
+              "value": 5.302
+            },
+            {
+              "year": 2018,
+              "value": 5.425
+            }
+          ],
+          "n": 4,
+          "slope": 0.08819999999999979,
+          "rawOrigin": 5.425,
+          "transformedOrigin": 5.425
+        },
+        {
+          "id": "HND",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 4.871
+            },
+            {
+              "year": 2016,
+              "value": 5.181
+            },
+            {
+              "year": 2017,
+              "value": 5.504
+            },
+            {
+              "year": 2018,
+              "value": 5.86
+            }
+          ],
+          "n": 4,
+          "slope": 0.3289999999999999,
+          "rawOrigin": 5.86,
+          "transformedOrigin": 5.86
+        },
+        {
+          "id": "NIC",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 5.992
+            },
+            {
+              "year": 2016,
+              "value": 6.071
+            },
+            {
+              "year": 2017,
+              "value": 6.141
+            },
+            {
+              "year": 2018,
+              "value": 6.105
+            }
+          ],
+          "n": 4,
+          "slope": 0.04090000000000016,
+          "rawOrigin": 6.105,
+          "transformedOrigin": 6.105
+        },
+        {
+          "id": "SLV",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 6.068
+            },
+            {
+              "year": 2016,
+              "value": 6.003
+            },
+            {
+              "year": 2017,
+              "value": 6.167
+            },
+            {
+              "year": 2018,
+              "value": 6.253
+            }
+          ],
+          "n": 4,
+          "slope": 0.07190000000000012,
+          "rawOrigin": 6.253,
+          "transformedOrigin": 6.253
+        },
+        {
+          "id": "CRI",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 7.087
+            },
+            {
+              "year": 2016,
+              "value": 7.079
+            },
+            {
+              "year": 2017,
+              "value": 7.072
+            },
+            {
+              "year": 2018,
+              "value": 7.167
+            }
+          ],
+          "n": 4,
+          "slope": 0.023300000000000053,
+          "rawOrigin": 7.167,
+          "transformedOrigin": 7.167
+        },
+        {
+          "id": "PAN",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 6.701
+            },
+            {
+              "year": 2016,
+              "value": 6.452
+            },
+            {
+              "year": 2017,
+              "value": 6.43
+            },
+            {
+              "year": 2018,
+              "value": 6.321
+            }
+          ],
+          "n": 4,
+          "slope": -0.1162,
+          "rawOrigin": 6.321,
+          "transformedOrigin": 6.321
+        },
+        {
+          "id": "BRA",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 6.952
+            },
+            {
+              "year": 2016,
+              "value": 6.635
+            },
+            {
+              "year": 2017,
+              "value": 6.419
+            },
+            {
+              "year": 2018,
+              "value": 6.3
+            }
+          ],
+          "n": 4,
+          "slope": -0.21720000000000006,
+          "rawOrigin": 6.3,
+          "transformedOrigin": 6.3
+        },
+        {
+          "id": "ARG",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 6.65
+            },
+            {
+              "year": 2016,
+              "value": 6.599
+            },
+            {
+              "year": 2017,
+              "value": 6.388
+            },
+            {
+              "year": 2018,
+              "value": 6.086
+            }
+          ],
+          "n": 4,
+          "slope": -0.19030000000000005,
+          "rawOrigin": 6.086,
+          "transformedOrigin": 6.086
+        },
+        {
+          "id": "COL",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 6.481
+            },
+            {
+              "year": 2016,
+              "value": 6.357
+            },
+            {
+              "year": 2017,
+              "value": 6.26
+            },
+            {
+              "year": 2018,
+              "value": 6.125
+            }
+          ],
+          "n": 4,
+          "slope": -0.1165,
+          "rawOrigin": 6.125,
+          "transformedOrigin": 6.125
+        },
+        {
+          "id": "CHL",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 6.705
+            },
+            {
+              "year": 2016,
+              "value": 6.652
+            },
+            {
+              "year": 2017,
+              "value": 6.476
+            },
+            {
+              "year": 2018,
+              "value": 6.444
+            }
+          ],
+          "n": 4,
+          "slope": -0.09590000000000005,
+          "rawOrigin": 6.444,
+          "transformedOrigin": 6.444
+        },
+        {
+          "id": "PER",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 5.743
+            },
+            {
+              "year": 2016,
+              "value": 5.715
+            },
+            {
+              "year": 2017,
+              "value": 5.663
+            },
+            {
+              "year": 2018,
+              "value": 5.697
+            }
+          ],
+          "n": 4,
+          "slope": -0.019000000000000038,
+          "rawOrigin": 5.697,
+          "transformedOrigin": 5.697
+        },
+        {
+          "id": "ECU",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 5.976
+            },
+            {
+              "year": 2016,
+              "value": 6.008
+            },
+            {
+              "year": 2017,
+              "value": 5.973
+            },
+            {
+              "year": 2018,
+              "value": 6.028
+            }
+          ],
+          "n": 4,
+          "slope": 0.012099999999999866,
+          "rawOrigin": 6.028,
+          "transformedOrigin": 6.028
+        },
+        {
+          "id": "BOL",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 5.822
+            },
+            {
+              "year": 2016,
+              "value": 5.823
+            },
+            {
+              "year": 2017,
+              "value": 5.752
+            },
+            {
+              "year": 2018,
+              "value": 5.779
+            }
+          ],
+          "n": 4,
+          "slope": -0.020000000000000108,
+          "rawOrigin": 5.779,
+          "transformedOrigin": 5.779
+        },
+        {
+          "id": "PRY",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 5.538
+            },
+            {
+              "year": 2016,
+              "value": 5.493
+            },
+            {
+              "year": 2017,
+              "value": 5.681
+            },
+            {
+              "year": 2018,
+              "value": 5.743
+            }
+          ],
+          "n": 4,
+          "slope": 0.0803,
+          "rawOrigin": 5.743,
+          "transformedOrigin": 5.743
+        },
+        {
+          "id": "URY",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 6.545
+            },
+            {
+              "year": 2016,
+              "value": 6.454
+            },
+            {
+              "year": 2017,
+              "value": 6.379
+            },
+            {
+              "year": 2018,
+              "value": 6.293
+            }
+          ],
+          "n": 4,
+          "slope": -0.08309999999999995,
+          "rawOrigin": 6.293,
+          "transformedOrigin": 6.293
+        },
+        {
+          "id": "RUS",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 5.856
+            },
+            {
+              "year": 2016,
+              "value": 5.963
+            },
+            {
+              "year": 2017,
+              "value": 5.81
+            },
+            {
+              "year": 2018,
+              "value": 5.648
+            }
+          ],
+          "n": 4,
+          "slope": -0.0777000000000001,
+          "rawOrigin": 5.648,
+          "transformedOrigin": 5.648
+        },
+        {
+          "id": "GBR",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 6.725
+            },
+            {
+              "year": 2016,
+              "value": 6.714
+            },
+            {
+              "year": 2017,
+              "value": 6.814
+            },
+            {
+              "year": 2018,
+              "value": 7.054
+            }
+          ],
+          "n": 4,
+          "slope": 0.10870000000000016,
+          "rawOrigin": 7.054,
+          "transformedOrigin": 7.054
+        },
+        {
+          "id": "FRA",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 6.478
+            },
+            {
+              "year": 2016,
+              "value": 6.442
+            },
+            {
+              "year": 2017,
+              "value": 6.489
+            },
+            {
+              "year": 2018,
+              "value": 6.592
+            }
+          ],
+          "n": 4,
+          "slope": 0.038899999999999935,
+          "rawOrigin": 6.592,
+          "transformedOrigin": 6.592
+        },
+        {
+          "id": "DEU",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 6.994
+            },
+            {
+              "year": 2016,
+              "value": 6.951
+            },
+            {
+              "year": 2017,
+              "value": 6.965
+            },
+            {
+              "year": 2018,
+              "value": 6.985
+            }
+          ],
+          "n": 4,
+          "slope": -0.0012999999999998124,
+          "rawOrigin": 6.985,
+          "transformedOrigin": 6.985
+        },
+        {
+          "id": "ITA",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 5.977
+            },
+            {
+              "year": 2016,
+              "value": 5.964
+            },
+            {
+              "year": 2017,
+              "value": 6
+            },
+            {
+              "year": 2018,
+              "value": 6.223
+            }
+          ],
+          "n": 4,
+          "slope": 0.07739999999999983,
+          "rawOrigin": 6.223,
+          "transformedOrigin": 6.223
+        },
+        {
+          "id": "ESP",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 6.361
+            },
+            {
+              "year": 2016,
+              "value": 6.403
+            },
+            {
+              "year": 2017,
+              "value": 6.31
+            },
+            {
+              "year": 2018,
+              "value": 6.354
+            }
+          ],
+          "n": 4,
+          "slope": -0.0113999999999999,
+          "rawOrigin": 6.354,
+          "transformedOrigin": 6.354
+        },
+        {
+          "id": "NLD",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 7.339
+            },
+            {
+              "year": 2016,
+              "value": 7.377
+            },
+            {
+              "year": 2017,
+              "value": 7.441
+            },
+            {
+              "year": 2018,
+              "value": 7.488
+            }
+          ],
+          "n": 4,
+          "slope": 0.05110000000000001,
+          "rawOrigin": 7.488,
+          "transformedOrigin": 7.488
+        },
+        {
+          "id": "SWE",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 7.291
+            },
+            {
+              "year": 2016,
+              "value": 7.284
+            },
+            {
+              "year": 2017,
+              "value": 7.314
+            },
+            {
+              "year": 2018,
+              "value": 7.343
+            }
+          ],
+          "n": 4,
+          "slope": 0.018599999999999905,
+          "rawOrigin": 7.343,
+          "transformedOrigin": 7.343
+        },
+        {
+          "id": "BEL",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 6.929
+            },
+            {
+              "year": 2016,
+              "value": 6.891
+            },
+            {
+              "year": 2017,
+              "value": 6.927
+            },
+            {
+              "year": 2018,
+              "value": 6.923
+            }
+          ],
+          "n": 4,
+          "slope": 0.0017999999999998907,
+          "rawOrigin": 6.923,
+          "transformedOrigin": 6.923
+        },
+        {
+          "id": "AUT",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 7.119
+            },
+            {
+              "year": 2016,
+              "value": 7.006
+            },
+            {
+              "year": 2017,
+              "value": 7.139
+            },
+            {
+              "year": 2018,
+              "value": 7.246
+            }
+          ],
+          "n": 4,
+          "slope": 0.0514000000000002,
+          "rawOrigin": 7.246,
+          "transformedOrigin": 7.246
+        },
+        {
+          "id": "POL",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 5.835
+            },
+            {
+              "year": 2016,
+              "value": 5.973
+            },
+            {
+              "year": 2017,
+              "value": 6.123
+            },
+            {
+              "year": 2018,
+              "value": 6.182
+            }
+          ],
+          "n": 4,
+          "slope": 0.11910000000000016,
+          "rawOrigin": 6.182,
+          "transformedOrigin": 6.182
+        },
+        {
+          "id": "NOR",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 7.498
+            },
+            {
+              "year": 2016,
+              "value": 7.537
+            },
+            {
+              "year": 2017,
+              "value": 7.594
+            },
+            {
+              "year": 2018,
+              "value": 7.554
+            }
+          ],
+          "n": 4,
+          "slope": 0.022500000000000055,
+          "rawOrigin": 7.554,
+          "transformedOrigin": 7.554
+        },
+        {
+          "id": "CHE",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 7.509
+            },
+            {
+              "year": 2016,
+              "value": 7.494
+            },
+            {
+              "year": 2017,
+              "value": 7.487
+            },
+            {
+              "year": 2018,
+              "value": 7.48
+            }
+          ],
+          "n": 4,
+          "slope": -0.009399999999999941,
+          "rawOrigin": 7.48,
+          "transformedOrigin": 7.48
+        },
+        {
+          "id": "IRL",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 6.907
+            },
+            {
+              "year": 2016,
+              "value": 6.977
+            },
+            {
+              "year": 2017,
+              "value": 6.977
+            },
+            {
+              "year": 2018,
+              "value": 7.021
+            }
+          ],
+          "n": 4,
+          "slope": 0.03419999999999997,
+          "rawOrigin": 7.021,
+          "transformedOrigin": 7.021
+        },
+        {
+          "id": "DNK",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 7.526
+            },
+            {
+              "year": 2016,
+              "value": 7.522
+            },
+            {
+              "year": 2017,
+              "value": 7.555
+            },
+            {
+              "year": 2018,
+              "value": 7.6
+            }
+          ],
+          "n": 4,
+          "slope": 0.0254999999999999,
+          "rawOrigin": 7.6,
+          "transformedOrigin": 7.6
+        },
+        {
+          "id": "FIN",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 7.413
+            },
+            {
+              "year": 2016,
+              "value": 7.469
+            },
+            {
+              "year": 2017,
+              "value": 7.632
+            },
+            {
+              "year": 2018,
+              "value": 7.769
+            }
+          ],
+          "n": 4,
+          "slope": 0.1230999999999999,
+          "rawOrigin": 7.769,
+          "transformedOrigin": 7.769
+        },
+        {
+          "id": "PRT",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 5.123
+            },
+            {
+              "year": 2016,
+              "value": 5.195
+            },
+            {
+              "year": 2017,
+              "value": 5.41
+            },
+            {
+              "year": 2018,
+              "value": 5.693
+            }
+          ],
+          "n": 4,
+          "slope": 0.1924999999999998,
+          "rawOrigin": 5.693,
+          "transformedOrigin": 5.693
+        },
+        {
+          "id": "GRC",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 5.033
+            },
+            {
+              "year": 2016,
+              "value": 5.227
+            },
+            {
+              "year": 2017,
+              "value": 5.358
+            },
+            {
+              "year": 2018,
+              "value": 5.287
+            }
+          ],
+          "n": 4,
+          "slope": 0.0892999999999998,
+          "rawOrigin": 5.287,
+          "transformedOrigin": 5.287
+        },
+        {
+          "id": "CZE",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 6.596
+            },
+            {
+              "year": 2016,
+              "value": 6.609
+            },
+            {
+              "year": 2017,
+              "value": 6.711
+            },
+            {
+              "year": 2018,
+              "value": 6.852
+            }
+          ],
+          "n": 4,
+          "slope": 0.0870000000000001,
+          "rawOrigin": 6.852,
+          "transformedOrigin": 6.852
+        },
+        {
+          "id": "HUN",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 5.145
+            },
+            {
+              "year": 2016,
+              "value": 5.324
+            },
+            {
+              "year": 2017,
+              "value": 5.62
+            },
+            {
+              "year": 2018,
+              "value": 5.758
+            }
+          ],
+          "n": 4,
+          "slope": 0.21350000000000016,
+          "rawOrigin": 5.758,
+          "transformedOrigin": 5.758
+        },
+        {
+          "id": "ROU",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 5.528
+            },
+            {
+              "year": 2016,
+              "value": 5.825
+            },
+            {
+              "year": 2017,
+              "value": 5.945
+            },
+            {
+              "year": 2018,
+              "value": 6.07
+            }
+          ],
+          "n": 4,
+          "slope": 0.17460000000000023,
+          "rawOrigin": 6.07,
+          "transformedOrigin": 6.07
+        },
+        {
+          "id": "UKR",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 4.324
+            },
+            {
+              "year": 2016,
+              "value": 4.096
+            },
+            {
+              "year": 2017,
+              "value": 4.103
+            },
+            {
+              "year": 2018,
+              "value": 4.332
+            }
+          ],
+          "n": 4,
+          "slope": 0.0030999999999999695,
+          "rawOrigin": 4.332,
+          "transformedOrigin": 4.332
+        },
+        {
+          "id": "BLR",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 5.802
+            },
+            {
+              "year": 2016,
+              "value": 5.569
+            },
+            {
+              "year": 2017,
+              "value": 5.483
+            },
+            {
+              "year": 2018,
+              "value": 5.323
+            }
+          ],
+          "n": 4,
+          "slope": -0.1522999999999998,
+          "rawOrigin": 5.323,
+          "transformedOrigin": 5.323
+        },
+        {
+          "id": "SRB",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 5.177
+            },
+            {
+              "year": 2016,
+              "value": 5.395
+            },
+            {
+              "year": 2017,
+              "value": 5.398
+            },
+            {
+              "year": 2018,
+              "value": 5.603
+            }
+          ],
+          "n": 4,
+          "slope": 0.12810000000000005,
+          "rawOrigin": 5.603,
+          "transformedOrigin": 5.603
+        },
+        {
+          "id": "ISL",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 7.501
+            },
+            {
+              "year": 2016,
+              "value": 7.504
+            },
+            {
+              "year": 2017,
+              "value": 7.495
+            },
+            {
+              "year": 2018,
+              "value": 7.494
+            }
+          ],
+          "n": 4,
+          "slope": -0.0030000000000001137,
+          "rawOrigin": 7.494,
+          "transformedOrigin": 7.494
+        },
+        {
+          "id": "EST",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 5.517
+            },
+            {
+              "year": 2016,
+              "value": 5.611
+            },
+            {
+              "year": 2017,
+              "value": 5.739
+            },
+            {
+              "year": 2018,
+              "value": 5.893
+            }
+          ],
+          "n": 4,
+          "slope": 0.12559999999999985,
+          "rawOrigin": 5.893,
+          "transformedOrigin": 5.893
+        },
+        {
+          "id": "LVA",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 5.56
+            },
+            {
+              "year": 2016,
+              "value": 5.85
+            },
+            {
+              "year": 2017,
+              "value": 5.933
+            },
+            {
+              "year": 2018,
+              "value": 5.94
+            }
+          ],
+          "n": 4,
+          "slope": 0.12230000000000026,
+          "rawOrigin": 5.94,
+          "transformedOrigin": 5.94
+        },
+        {
+          "id": "LTU",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 5.813
+            },
+            {
+              "year": 2016,
+              "value": 5.902
+            },
+            {
+              "year": 2017,
+              "value": 5.952
+            },
+            {
+              "year": 2018,
+              "value": 6.149
+            }
+          ],
+          "n": 4,
+          "slope": 0.10580000000000007,
+          "rawOrigin": 6.149,
+          "transformedOrigin": 6.149
+        },
+        {
+          "id": "SVK",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 6.078
+            },
+            {
+              "year": 2016,
+              "value": 6.098
+            },
+            {
+              "year": 2017,
+              "value": 6.173
+            },
+            {
+              "year": 2018,
+              "value": 6.198
+            }
+          ],
+          "n": 4,
+          "slope": 0.04350000000000005,
+          "rawOrigin": 6.198,
+          "transformedOrigin": 6.198
+        },
+        {
+          "id": "SVN",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 5.768
+            },
+            {
+              "year": 2016,
+              "value": 5.758
+            },
+            {
+              "year": 2017,
+              "value": 5.948
+            },
+            {
+              "year": 2018,
+              "value": 6.118
+            }
+          ],
+          "n": 4,
+          "slope": 0.1240000000000002,
+          "rawOrigin": 6.118,
+          "transformedOrigin": 6.118
+        },
+        {
+          "id": "HRV",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 5.488
+            },
+            {
+              "year": 2016,
+              "value": 5.293
+            },
+            {
+              "year": 2017,
+              "value": 5.321
+            },
+            {
+              "year": 2018,
+              "value": 5.432
+            }
+          ],
+          "n": 4,
+          "slope": -0.014000000000000058,
+          "rawOrigin": 5.432,
+          "transformedOrigin": 5.432
+        },
+        {
+          "id": "BIH",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 5.163
+            },
+            {
+              "year": 2016,
+              "value": 5.182
+            },
+            {
+              "year": 2017,
+              "value": 5.129
+            },
+            {
+              "year": 2018,
+              "value": 5.386
+            }
+          ],
+          "n": 4,
+          "slope": 0.06159999999999988,
+          "rawOrigin": 5.386,
+          "transformedOrigin": 5.386
+        },
+        {
+          "id": "MNE",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 5.161
+            },
+            {
+              "year": 2016,
+              "value": 5.237
+            },
+            {
+              "year": 2017,
+              "value": 5.347
+            },
+            {
+              "year": 2018,
+              "value": 5.523
+            }
+          ],
+          "n": 4,
+          "slope": 0.11960000000000007,
+          "rawOrigin": 5.523,
+          "transformedOrigin": 5.523
+        },
+        {
+          "id": "MKD",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 5.121
+            },
+            {
+              "year": 2016,
+              "value": 5.175
+            },
+            {
+              "year": 2017,
+              "value": 5.185
+            },
+            {
+              "year": 2018,
+              "value": 5.274
+            }
+          ],
+          "n": 4,
+          "slope": 0.04689999999999985,
+          "rawOrigin": 5.274,
+          "transformedOrigin": 5.274
+        },
+        {
+          "id": "ALB",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 4.655
+            },
+            {
+              "year": 2016,
+              "value": 4.644
+            },
+            {
+              "year": 2017,
+              "value": 4.586
+            },
+            {
+              "year": 2018,
+              "value": 4.719
+            }
+          ],
+          "n": 4,
+          "slope": 0.013400000000000033,
+          "rawOrigin": 4.719,
+          "transformedOrigin": 4.719
+        },
+        {
+          "id": "BGR",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 4.217
+            },
+            {
+              "year": 2016,
+              "value": 4.714
+            },
+            {
+              "year": 2017,
+              "value": 4.933
+            },
+            {
+              "year": 2018,
+              "value": 5.011
+            }
+          ],
+          "n": 4,
+          "slope": 0.2601000000000001,
+          "rawOrigin": 5.011,
+          "transformedOrigin": 5.011
+        },
+        {
+          "id": "MDA",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 5.897
+            },
+            {
+              "year": 2016,
+              "value": 5.838
+            },
+            {
+              "year": 2017,
+              "value": 5.64
+            },
+            {
+              "year": 2018,
+              "value": 5.529
+            }
+          ],
+          "n": 4,
+          "slope": -0.13020000000000015,
+          "rawOrigin": 5.529,
+          "transformedOrigin": 5.529
+        },
+        {
+          "id": "LUX",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 6.871
+            },
+            {
+              "year": 2016,
+              "value": 6.863
+            },
+            {
+              "year": 2017,
+              "value": 6.91
+            },
+            {
+              "year": 2018,
+              "value": 7.09
+            }
+          ],
+          "n": 4,
+          "slope": 0.0703999999999998,
+          "rawOrigin": 7.09,
+          "transformedOrigin": 7.09
+        },
+        {
+          "id": "CYP",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 5.546
+            },
+            {
+              "year": 2016,
+              "value": 5.621
+            },
+            {
+              "year": 2017,
+              "value": 5.762
+            },
+            {
+              "year": 2018,
+              "value": 6.046
+            }
+          ],
+          "n": 4,
+          "slope": 0.1640999999999999,
+          "rawOrigin": 6.046,
+          "transformedOrigin": 6.046
+        },
+        {
+          "id": "MLT",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 6.488
+            },
+            {
+              "year": 2016,
+              "value": 6.527
+            },
+            {
+              "year": 2017,
+              "value": 6.627
+            },
+            {
+              "year": 2018,
+              "value": 6.726
+            }
+          ],
+          "n": 4,
+          "slope": 0.08139999999999983,
+          "rawOrigin": 6.726,
+          "transformedOrigin": 6.726
+        },
+        {
+          "id": "CHN",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 5.245
+            },
+            {
+              "year": 2016,
+              "value": 5.273
+            },
+            {
+              "year": 2017,
+              "value": 5.246
+            },
+            {
+              "year": 2018,
+              "value": 5.191
+            }
+          ],
+          "n": 4,
+          "slope": -0.018900000000000007,
+          "rawOrigin": 5.191,
+          "transformedOrigin": 5.191
+        },
+        {
+          "id": "JPN",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 5.921
+            },
+            {
+              "year": 2016,
+              "value": 5.92
+            },
+            {
+              "year": 2017,
+              "value": 5.915
+            },
+            {
+              "year": 2018,
+              "value": 5.886
+            }
+          ],
+          "n": 4,
+          "slope": -0.011000000000000032,
+          "rawOrigin": 5.886,
+          "transformedOrigin": 5.886
+        },
+        {
+          "id": "KOR",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 5.835
+            },
+            {
+              "year": 2016,
+              "value": 5.838
+            },
+            {
+              "year": 2017,
+              "value": 5.875
+            },
+            {
+              "year": 2018,
+              "value": 5.895
+            }
+          ],
+          "n": 4,
+          "slope": 0.021699999999999876,
+          "rawOrigin": 5.895,
+          "transformedOrigin": 5.895
+        },
+        {
+          "id": "MNG",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 4.907
+            },
+            {
+              "year": 2016,
+              "value": 4.955
+            },
+            {
+              "year": 2017,
+              "value": 5.125
+            },
+            {
+              "year": 2018,
+              "value": 5.285
+            }
+          ],
+          "n": 4,
+          "slope": 0.13040000000000002,
+          "rawOrigin": 5.285,
+          "transformedOrigin": 5.285
+        },
+        {
+          "id": "VNM",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 5.061
+            },
+            {
+              "year": 2016,
+              "value": 5.074
+            },
+            {
+              "year": 2017,
+              "value": 5.103
+            },
+            {
+              "year": 2018,
+              "value": 5.175
+            }
+          ],
+          "n": 4,
+          "slope": 0.03709999999999995,
+          "rawOrigin": 5.175,
+          "transformedOrigin": 5.175
+        },
+        {
+          "id": "IDN",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 5.314
+            },
+            {
+              "year": 2016,
+              "value": 5.262
+            },
+            {
+              "year": 2017,
+              "value": 5.093
+            },
+            {
+              "year": 2018,
+              "value": 5.192
+            }
+          ],
+          "n": 4,
+          "slope": -0.05349999999999992,
+          "rawOrigin": 5.192,
+          "transformedOrigin": 5.192
+        },
+        {
+          "id": "PHL",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 5.279
+            },
+            {
+              "year": 2016,
+              "value": 5.43
+            },
+            {
+              "year": 2017,
+              "value": 5.524
+            },
+            {
+              "year": 2018,
+              "value": 5.631
+            }
+          ],
+          "n": 4,
+          "slope": 0.11500000000000013,
+          "rawOrigin": 5.631,
+          "transformedOrigin": 5.631
+        },
+        {
+          "id": "THA",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 6.474
+            },
+            {
+              "year": 2016,
+              "value": 6.424
+            },
+            {
+              "year": 2017,
+              "value": 6.072
+            },
+            {
+              "year": 2018,
+              "value": 6.008
+            }
+          ],
+          "n": 4,
+          "slope": -0.1750000000000001,
+          "rawOrigin": 6.008,
+          "transformedOrigin": 6.008
+        },
+        {
+          "id": "MYS",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 6.005
+            },
+            {
+              "year": 2016,
+              "value": 6.084
+            },
+            {
+              "year": 2017,
+              "value": 6.322
+            },
+            {
+              "year": 2018,
+              "value": 5.339
+            }
+          ],
+          "n": 4,
+          "slope": -0.1759999999999998,
+          "rawOrigin": 5.339,
+          "transformedOrigin": 5.339
+        },
+        {
+          "id": "MMR",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 4.395
+            },
+            {
+              "year": 2016,
+              "value": 4.545
+            },
+            {
+              "year": 2017,
+              "value": 4.308
+            },
+            {
+              "year": 2018,
+              "value": 4.36
+            }
+          ],
+          "n": 4,
+          "slope": -0.034199999999999786,
+          "rawOrigin": 4.36,
+          "transformedOrigin": 4.36
+        },
+        {
+          "id": "LAO",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 4.876
+            },
+            {
+              "year": 2017,
+              "value": 4.623
+            },
+            {
+              "year": 2018,
+              "value": 4.796
+            }
+          ],
+          "n": 3,
+          "slope": -0.04092857142857146,
+          "rawOrigin": 4.796,
+          "transformedOrigin": 4.796
+        },
+        {
+          "id": "TLS",
+          "observations": [],
+          "n": 0,
+          "slope": null,
+          "rawOrigin": null,
+          "transformedOrigin": null
+        },
+        {
+          "id": "IND",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 4.404
+            },
+            {
+              "year": 2016,
+              "value": 4.315
+            },
+            {
+              "year": 2017,
+              "value": 4.19
+            },
+            {
+              "year": 2018,
+              "value": 4.015
+            }
+          ],
+          "n": 4,
+          "slope": -0.12920000000000006,
+          "rawOrigin": 4.015,
+          "transformedOrigin": 4.015
+        },
+        {
+          "id": "PAK",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 5.132
+            },
+            {
+              "year": 2016,
+              "value": 5.269
+            },
+            {
+              "year": 2017,
+              "value": 5.472
+            },
+            {
+              "year": 2018,
+              "value": 5.653
+            }
+          ],
+          "n": 4,
+          "slope": 0.1766,
+          "rawOrigin": 5.653,
+          "transformedOrigin": 5.653
+        },
+        {
+          "id": "BGD",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 4.643
+            },
+            {
+              "year": 2016,
+              "value": 4.608
+            },
+            {
+              "year": 2017,
+              "value": 4.5
+            },
+            {
+              "year": 2018,
+              "value": 4.456
+            }
+          ],
+          "n": 4,
+          "slope": -0.06689999999999978,
+          "rawOrigin": 4.456,
+          "transformedOrigin": 4.456
+        },
+        {
+          "id": "LKA",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 4.415
+            },
+            {
+              "year": 2016,
+              "value": 4.44
+            },
+            {
+              "year": 2017,
+              "value": 4.471
+            },
+            {
+              "year": 2018,
+              "value": 4.366
+            }
+          ],
+          "n": 4,
+          "slope": -0.011600000000000143,
+          "rawOrigin": 4.366,
+          "transformedOrigin": 4.366
+        },
+        {
+          "id": "NPL",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 4.793
+            },
+            {
+              "year": 2016,
+              "value": 4.962
+            },
+            {
+              "year": 2017,
+              "value": 4.88
+            },
+            {
+              "year": 2018,
+              "value": 4.913
+            }
+          ],
+          "n": 4,
+          "slope": 0.027800000000000047,
+          "rawOrigin": 4.913,
+          "transformedOrigin": 4.913
+        },
+        {
+          "id": "BTN",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 5.196
+            },
+            {
+              "year": 2016,
+              "value": 5.011
+            },
+            {
+              "year": 2017,
+              "value": 5.082
+            },
+            {
+              "year": 2018,
+              "value": 5.082
+            }
+          ],
+          "n": 4,
+          "slope": -0.027099999999999992,
+          "rawOrigin": 5.082,
+          "transformedOrigin": 5.082
+        },
+        {
+          "id": "KAZ",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 5.919
+            },
+            {
+              "year": 2016,
+              "value": 5.819
+            },
+            {
+              "year": 2017,
+              "value": 5.79
+            },
+            {
+              "year": 2018,
+              "value": 5.809
+            }
+          ],
+          "n": 4,
+          "slope": -0.03589999999999982,
+          "rawOrigin": 5.809,
+          "transformedOrigin": 5.809
+        },
+        {
+          "id": "KGZ",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 5.185
+            },
+            {
+              "year": 2016,
+              "value": 5.004
+            },
+            {
+              "year": 2017,
+              "value": 5.131
+            },
+            {
+              "year": 2018,
+              "value": 5.261
+            }
+          ],
+          "n": 4,
+          "slope": 0.03550000000000022,
+          "rawOrigin": 5.261,
+          "transformedOrigin": 5.261
+        },
+        {
+          "id": "TJK",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 4.996
+            },
+            {
+              "year": 2016,
+              "value": 5.041
+            },
+            {
+              "year": 2017,
+              "value": 5.352
+            },
+            {
+              "year": 2018,
+              "value": 5.467
+            }
+          ],
+          "n": 4,
+          "slope": 0.17239999999999975,
+          "rawOrigin": 5.467,
+          "transformedOrigin": 5.467
+        },
+        {
+          "id": "TUR",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 5.389
+            },
+            {
+              "year": 2016,
+              "value": 5.5
+            },
+            {
+              "year": 2017,
+              "value": 5.483
+            },
+            {
+              "year": 2018,
+              "value": 5.373
+            }
+          ],
+          "n": 4,
+          "slope": -0.006500000000000039,
+          "rawOrigin": 5.373,
+          "transformedOrigin": 5.373
+        },
+        {
+          "id": "IRN",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 4.813
+            },
+            {
+              "year": 2016,
+              "value": 4.692
+            },
+            {
+              "year": 2017,
+              "value": 4.707
+            },
+            {
+              "year": 2018,
+              "value": 4.548
+            }
+          ],
+          "n": 4,
+          "slope": -0.07799999999999993,
+          "rawOrigin": 4.548,
+          "transformedOrigin": 4.548
+        },
+        {
+          "id": "IRQ",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 4.575
+            },
+            {
+              "year": 2016,
+              "value": 4.497
+            },
+            {
+              "year": 2017,
+              "value": 4.456
+            },
+            {
+              "year": 2018,
+              "value": 4.437
+            }
+          ],
+          "n": 4,
+          "slope": -0.045499999999999916,
+          "rawOrigin": 4.437,
+          "transformedOrigin": 4.437
+        },
+        {
+          "id": "ARE",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 6.573
+            },
+            {
+              "year": 2016,
+              "value": 6.648
+            },
+            {
+              "year": 2017,
+              "value": 6.774
+            },
+            {
+              "year": 2018,
+              "value": 6.825
+            }
+          ],
+          "n": 4,
+          "slope": 0.08819999999999997,
+          "rawOrigin": 6.825,
+          "transformedOrigin": 6.825
+        },
+        {
+          "id": "ISR",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 7.267
+            },
+            {
+              "year": 2016,
+              "value": 7.213
+            },
+            {
+              "year": 2017,
+              "value": 7.19
+            },
+            {
+              "year": 2018,
+              "value": 7.139
+            }
+          ],
+          "n": 4,
+          "slope": -0.0407,
+          "rawOrigin": 7.139,
+          "transformedOrigin": 7.139
+        },
+        {
+          "id": "JOR",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 5.303
+            },
+            {
+              "year": 2016,
+              "value": 5.336
+            },
+            {
+              "year": 2017,
+              "value": 5.161
+            },
+            {
+              "year": 2018,
+              "value": 4.906
+            }
+          ],
+          "n": 4,
+          "slope": -0.13660000000000014,
+          "rawOrigin": 4.906,
+          "transformedOrigin": 4.906
+        },
+        {
+          "id": "LBN",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 5.129
+            },
+            {
+              "year": 2016,
+              "value": 5.225
+            },
+            {
+              "year": 2017,
+              "value": 5.199
+            },
+            {
+              "year": 2018,
+              "value": 5.197
+            }
+          ],
+          "n": 4,
+          "slope": 0.01780000000000017,
+          "rawOrigin": 5.197,
+          "transformedOrigin": 5.197
+        },
+        {
+          "id": "YEM",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 3.724
+            },
+            {
+              "year": 2016,
+              "value": 3.593
+            },
+            {
+              "year": 2017,
+              "value": 3.355
+            },
+            {
+              "year": 2018,
+              "value": 3.38
+            }
+          ],
+          "n": 4,
+          "slope": -0.12700000000000009,
+          "rawOrigin": 3.38,
+          "transformedOrigin": 3.38
+        },
+        {
+          "id": "GEO",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 4.252
+            },
+            {
+              "year": 2016,
+              "value": 4.286
+            },
+            {
+              "year": 2017,
+              "value": 4.34
+            },
+            {
+              "year": 2018,
+              "value": 4.519
+            }
+          ],
+          "n": 4,
+          "slope": 0.08550000000000013,
+          "rawOrigin": 4.519,
+          "transformedOrigin": 4.519
+        },
+        {
+          "id": "ARM",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 4.36
+            },
+            {
+              "year": 2016,
+              "value": 4.376
+            },
+            {
+              "year": 2017,
+              "value": 4.321
+            },
+            {
+              "year": 2018,
+              "value": 4.559
+            }
+          ],
+          "n": 4,
+          "slope": 0.054199999999999894,
+          "rawOrigin": 4.559,
+          "transformedOrigin": 4.559
+        },
+        {
+          "id": "PSE",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 4.754
+            },
+            {
+              "year": 2016,
+              "value": 4.775
+            },
+            {
+              "year": 2017,
+              "value": 4.743
+            },
+            {
+              "year": 2018,
+              "value": 4.696
+            }
+          ],
+          "n": 4,
+          "slope": -0.02059999999999995,
+          "rawOrigin": 4.696,
+          "transformedOrigin": 4.696
+        },
+        {
+          "id": "NGA",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 4.875
+            },
+            {
+              "year": 2016,
+              "value": 5.074
+            },
+            {
+              "year": 2017,
+              "value": 5.155
+            },
+            {
+              "year": 2018,
+              "value": 5.265
+            }
+          ],
+          "n": 4,
+          "slope": 0.12509999999999993,
+          "rawOrigin": 5.265,
+          "transformedOrigin": 5.265
+        },
+        {
+          "id": "ZAF",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 4.459
+            },
+            {
+              "year": 2016,
+              "value": 4.829
+            },
+            {
+              "year": 2017,
+              "value": 4.724
+            },
+            {
+              "year": 2018,
+              "value": 4.722
+            }
+          ],
+          "n": 4,
+          "slope": 0.06840000000000028,
+          "rawOrigin": 4.722,
+          "transformedOrigin": 4.722
+        },
+        {
+          "id": "EGY",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 4.362
+            },
+            {
+              "year": 2016,
+              "value": 4.735
+            },
+            {
+              "year": 2017,
+              "value": 4.419
+            },
+            {
+              "year": 2018,
+              "value": 4.166
+            }
+          ],
+          "n": 4,
+          "slope": -0.0904,
+          "rawOrigin": 4.166,
+          "transformedOrigin": 4.166
+        },
+        {
+          "id": "ETH",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 4.508
+            },
+            {
+              "year": 2016,
+              "value": 4.46
+            },
+            {
+              "year": 2017,
+              "value": 4.35
+            },
+            {
+              "year": 2018,
+              "value": 4.286
+            }
+          ],
+          "n": 4,
+          "slope": -0.07760000000000015,
+          "rawOrigin": 4.286,
+          "transformedOrigin": 4.286
+        },
+        {
+          "id": "KEN",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 4.356
+            },
+            {
+              "year": 2016,
+              "value": 4.553
+            },
+            {
+              "year": 2017,
+              "value": 4.41
+            },
+            {
+              "year": 2018,
+              "value": 4.509
+            }
+          ],
+          "n": 4,
+          "slope": 0.03160000000000016,
+          "rawOrigin": 4.509,
+          "transformedOrigin": 4.509
+        },
+        {
+          "id": "COD",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 4.272
+            },
+            {
+              "year": 2016,
+              "value": 4.28
+            },
+            {
+              "year": 2017,
+              "value": 4.245
+            },
+            {
+              "year": 2018,
+              "value": 4.418
+            }
+          ],
+          "n": 4,
+          "slope": 0.04029999999999996,
+          "rawOrigin": 4.418,
+          "transformedOrigin": 4.418
+        },
+        {
+          "id": "MAR",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 5.151
+            },
+            {
+              "year": 2016,
+              "value": 5.235
+            },
+            {
+              "year": 2017,
+              "value": 5.254
+            },
+            {
+              "year": 2018,
+              "value": 5.208
+            }
+          ],
+          "n": 4,
+          "slope": 0.019000000000000038,
+          "rawOrigin": 5.208,
+          "transformedOrigin": 5.208
+        },
+        {
+          "id": "DZA",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 6.355
+            },
+            {
+              "year": 2016,
+              "value": 5.872
+            },
+            {
+              "year": 2017,
+              "value": 5.295
+            },
+            {
+              "year": 2018,
+              "value": 5.211
+            }
+          ],
+          "n": 4,
+          "slope": -0.40090000000000003,
+          "rawOrigin": 5.211,
+          "transformedOrigin": 5.211
+        },
+        {
+          "id": "AUS",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 7.313
+            },
+            {
+              "year": 2016,
+              "value": 7.284
+            },
+            {
+              "year": 2017,
+              "value": 7.272
+            },
+            {
+              "year": 2018,
+              "value": 7.228
+            }
+          ],
+          "n": 4,
+          "slope": -0.026699999999999946,
+          "rawOrigin": 7.228,
+          "transformedOrigin": 7.228
+        }
+      ],
+      "selectedCandidate": {
+        "id": "pooled-w0.5-p0.8",
+        "target": "pooled",
+        "countryWeight": 0.5,
+        "damping": 0.8
+      }
+    },
+    "gdp": {
+      "outcome": "gdp",
+      "originYear": 2018,
+      "trainingYears": [
+        2015,
+        2016,
+        2017,
+        2018
+      ],
+      "pooledSlope": 0.02549410981829489,
+      "pooledSlopeCountryCount": 100,
+      "countries": [
+        {
+          "id": "USA",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 10.948162172702753
+            },
+            {
+              "year": 2016,
+              "value": 10.958336893154724
+            },
+            {
+              "year": 2017,
+              "value": 10.975686916765625
+            },
+            {
+              "year": 2018,
+              "value": 10.999056141844981
+            }
+          ],
+          "n": 4,
+          "slope": 0.017003193103758463,
+          "rawOrigin": 59817.6556798612,
+          "transformedOrigin": 10.999056141844981
+        },
+        {
+          "id": "CAN",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 10.682680262531703
+            },
+            {
+              "year": 2016,
+              "value": 10.681696815432375
+            },
+            {
+              "year": 2017,
+              "value": 10.699629700539841
+            },
+            {
+              "year": 2018,
+              "value": 10.712357621426529
+            }
+          ],
+          "n": 4,
+          "slope": 0.010696496179194525,
+          "rawOrigin": 44907.3887994469,
+          "transformedOrigin": 10.712357621426529
+        },
+        {
+          "id": "MEX",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 9.21246198090763
+            },
+            {
+              "year": 2016,
+              "value": 9.2203404164037
+            },
+            {
+              "year": 2017,
+              "value": 9.229532295068868
+            },
+            {
+              "year": 2018,
+              "value": 9.239595156557186
+            }
+          ],
+          "n": 4,
+          "slope": 0.009059140561383749,
+          "rawOrigin": 10296.8690940459,
+          "transformedOrigin": 9.239595156557186
+        },
+        {
+          "id": "GTM",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 8.267065144732472
+            },
+            {
+              "year": 2016,
+              "value": 8.275065313803355
+            },
+            {
+              "year": 2017,
+              "value": 8.287211461114792
+            },
+            {
+              "year": 2018,
+              "value": 8.30405248040512
+            }
+          ],
+          "n": 4,
+          "slope": 0.012310815432938327,
+          "rawOrigin": 4040.21214374742,
+          "transformedOrigin": 8.30405248040512
+        },
+        {
+          "id": "HTI",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 7.252143846797231
+            },
+            {
+              "year": 2016,
+              "value": 7.256119961308057
+            },
+            {
+              "year": 2017,
+              "value": 7.267296710882687
+            },
+            {
+              "year": 2018,
+              "value": 7.270558172127199
+            }
+          ],
+          "n": 4,
+          "slope": 0.006641972556453446,
+          "rawOrigin": 1437.35251928349,
+          "transformedOrigin": 7.270558172127199
+        },
+        {
+          "id": "DOM",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 8.824818042218277
+            },
+            {
+              "year": 2016,
+              "value": 8.87874176696129
+            },
+            {
+              "year": 2017,
+              "value": 8.906447583754677
+            },
+            {
+              "year": 2018,
+              "value": 8.964274338056054
+            }
+          ],
+          "n": 4,
+          "slope": 0.04460747043067155,
+          "rawOrigin": 7818.70593240469,
+          "transformedOrigin": 8.964274338056054
+        },
+        {
+          "id": "HND",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 7.728064776258591
+            },
+            {
+              "year": 2016,
+              "value": 7.747480178426329
+            },
+            {
+              "year": 2017,
+              "value": 7.776272403264893
+            },
+            {
+              "year": 2018,
+              "value": 7.7957021053986795
+            }
+          ],
+          "n": 4,
+          "slope": 0.023170421225883066,
+          "rawOrigin": 2430.13503657762,
+          "transformedOrigin": 7.7957021053986795
+        },
+        {
+          "id": "NIC",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 7.637454329088445
+            },
+            {
+              "year": 2016,
+              "value": 7.668628423234317
+            },
+            {
+              "year": 2017,
+              "value": 7.700581597096402
+            },
+            {
+              "year": 2018,
+              "value": 7.653181590260366
+            }
+          ],
+          "n": 4,
+          "slope": 0.007913495737784704,
+          "rawOrigin": 2107.3396261623,
+          "transformedOrigin": 7.653181590260366
+        },
+        {
+          "id": "SLV",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 8.240211238908092
+            },
+            {
+              "year": 2016,
+              "value": 8.262519476250159
+            },
+            {
+              "year": 2017,
+              "value": 8.282695460364838
+            },
+            {
+              "year": 2018,
+              "value": 8.305524283156728
+            }
+          ],
+          "n": 4,
+          "slope": 0.021611511686058904,
+          "rawOrigin": 4046.16291720583,
+          "transformedOrigin": 8.305524283156728
+        },
+        {
+          "id": "CRI",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 9.368600648303643
+            },
+            {
+              "year": 2016,
+              "value": 9.399673551623106
+            },
+            {
+              "year": 2017,
+              "value": 9.430965994761966
+            },
+            {
+              "year": 2018,
+              "value": 9.450050282876473
+            }
+          ],
+          "n": 4,
+          "slope": 0.0275641346857352,
+          "rawOrigin": 12708.8042828359,
+          "transformedOrigin": 9.450050282876473
+        },
+        {
+          "id": "PAN",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 9.552699166644704
+            },
+            {
+              "year": 2016,
+              "value": 9.580117807598286
+            },
+            {
+              "year": 2017,
+              "value": 9.618837255783216
+            },
+            {
+              "year": 2018,
+              "value": 9.640540373769173
+            }
+          ],
+          "n": 4,
+          "slope": 0.030224306955833845,
+          "rawOrigin": 15375.6500855703,
+          "transformedOrigin": 9.640540373769173
+        },
+        {
+          "id": "BRA",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 9.097865343318206
+            },
+            {
+              "year": 2016,
+              "value": 9.05693785163387
+            },
+            {
+              "year": 2017,
+              "value": 9.062797340537387
+            },
+            {
+              "year": 2018,
+              "value": 9.07364240569415
+            }
+          ],
+          "n": 4,
+          "slope": -0.00668093239686538,
+          "rawOrigin": 8722.33630317935,
+          "transformedOrigin": 9.07364240569415
+        },
+        {
+          "id": "ARG",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 9.52366288803301
+            },
+            {
+              "year": 2016,
+              "value": 9.492951061469718
+            },
+            {
+              "year": 2017,
+              "value": 9.511933706412325
+            },
+            {
+              "year": 2018,
+              "value": 9.477181411867754
+            }
+          ],
+          "n": 4,
+          "slope": -0.01204617835531625,
+          "rawOrigin": 13058.3285449954,
+          "transformedOrigin": 9.477181411867754
+        },
+        {
+          "id": "COL",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 8.740099099350715
+            },
+            {
+              "year": 2016,
+              "value": 8.750852565595604
+            },
+            {
+              "year": 2017,
+              "value": 8.749839837418161
+            },
+            {
+              "year": 2018,
+              "value": 8.75676842867108
+            }
+          ],
+          "n": 4,
+          "slope": 0.004899525978365205,
+          "rawOrigin": 6353.5464285392,
+          "transformedOrigin": 8.75676842867108
+        },
+        {
+          "id": "CHL",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 9.505538153004625
+            },
+            {
+              "year": 2016,
+              "value": 9.510822501382549
+            },
+            {
+              "year": 2017,
+              "value": 9.508468631529055
+            },
+            {
+              "year": 2018,
+              "value": 9.529739611195893
+            }
+          ],
+          "n": 4,
+          "slope": 0.0070250504720309696,
+          "rawOrigin": 13763.0068844795,
+          "transformedOrigin": 9.529739611195893
+        },
+        {
+          "id": "PER",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 8.737406293698061
+            },
+            {
+              "year": 2016,
+              "value": 8.762842341065296
+            },
+            {
+              "year": 2017,
+              "value": 8.772985043676032
+            },
+            {
+              "year": 2018,
+              "value": 8.793785657037539
+            }
+          ],
+          "n": 4,
+          "slope": 0.017928079262916796,
+          "rawOrigin": 6593.14437459526,
+          "transformedOrigin": 8.793785657037539
+        },
+        {
+          "id": "ECU",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 8.695533446764424
+            },
+            {
+              "year": 2016,
+              "value": 8.674049216381379
+            },
+            {
+              "year": 2017,
+              "value": 8.716744220594295
+            },
+            {
+              "year": 2018,
+              "value": 8.709975776667743
+            }
+          ],
+          "n": 4,
+          "slope": 0.008602199392287523,
+          "rawOrigin": 6063.0956178776,
+          "transformedOrigin": 8.709975776667743
+        },
+        {
+          "id": "BOL",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 8.005037649739139
+            },
+            {
+              "year": 2016,
+              "value": 8.031895790639762
+            },
+            {
+              "year": 2017,
+              "value": 8.058379271204153
+            },
+            {
+              "year": 2018,
+              "value": 8.072322806138477
+            }
+          ],
+          "n": 4,
+          "slope": 0.022833894976240464,
+          "rawOrigin": 3204.53670838005,
+          "transformedOrigin": 8.072322806138477
+        },
+        {
+          "id": "PRY",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 8.679199436438523
+            },
+            {
+              "year": 2016,
+              "value": 8.70648354194201
+            },
+            {
+              "year": 2017,
+              "value": 8.739237519828748
+            },
+            {
+              "year": 2018,
+              "value": 8.756877459781835
+            }
+          ],
+          "n": 4,
+          "slope": 0.02657880479166739,
+          "rawOrigin": 6354.2392005297,
+          "transformedOrigin": 8.756877459781835
+        },
+        {
+          "id": "URY",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 9.748347314592769
+            },
+            {
+              "year": 2016,
+              "value": 9.761764701294066
+            },
+            {
+              "year": 2017,
+              "value": 9.776313263788442
+            },
+            {
+              "year": 2018,
+              "value": 9.776162241116287
+            }
+          ],
+          "n": 4,
+          "slope": 0.009799334206493171,
+          "rawOrigin": 17608.94412947,
+          "transformedOrigin": 9.776162241116287
+        },
+        {
+          "id": "RUS",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 9.135370444912384
+            },
+            {
+              "year": 2016,
+              "value": 9.134465018611492
+            },
+            {
+              "year": 2017,
+              "value": 9.150483790102484
+            },
+            {
+              "year": 2018,
+              "value": 9.17727851345692
+            }
+          ],
+          "n": 4,
+          "slope": 0.014174297712460237,
+          "rawOrigin": 9674.787109375,
+          "transformedOrigin": 9.17727851345692
+        },
+        {
+          "id": "GBR",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 10.720091425900469
+            },
+            {
+              "year": 2016,
+              "value": 10.733974395454329
+            },
+            {
+              "year": 2017,
+              "value": 10.758316647036539
+            },
+            {
+              "year": 2018,
+              "value": 10.768826194480233
+            }
+          ],
+          "n": 4,
+          "slope": 0.017054655732150436,
+          "rawOrigin": 47516.2099770322,
+          "transformedOrigin": 10.768826194480233
+        },
+        {
+          "id": "FRA",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 10.510598309049092
+            },
+            {
+              "year": 2016,
+              "value": 10.516523159928422
+            },
+            {
+              "year": 2017,
+              "value": 10.534243183775834
+            },
+            {
+              "year": 2018,
+              "value": 10.546983342576375
+            }
+          ],
+          "n": 4,
+          "slope": 0.012687512442926163,
+          "rawOrigin": 38062.4435961412,
+          "transformedOrigin": 10.546983342576375
+        },
+        {
+          "id": "DEU",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 10.643750994955075
+            },
+            {
+              "year": 2016,
+              "value": 10.657657715704788
+            },
+            {
+              "year": 2017,
+              "value": 10.681515274290929
+            },
+            {
+              "year": 2018,
+              "value": 10.689802961609658
+            }
+          ],
+          "n": 4,
+          "slope": 0.01620134585498878,
+          "rawOrigin": 43905.8550061973,
+          "transformedOrigin": 10.689802961609658
+        },
+        {
+          "id": "ITA",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 10.330057804498121
+            },
+            {
+              "year": 2016,
+              "value": 10.344245132051489
+            },
+            {
+              "year": 2017,
+              "value": 10.362035906529954
+            },
+            {
+              "year": 2018,
+              "value": 10.372354339411459
+            }
+          ],
+          "n": 4,
+          "slope": 0.014468037921847633,
+          "rawOrigin": 31963.6417148824,
+          "transformedOrigin": 10.372354339411459
+        },
+        {
+          "id": "ESP",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 10.165176266554539
+            },
+            {
+              "year": 2016,
+              "value": 10.193139342327708
+            },
+            {
+              "year": 2017,
+              "value": 10.219256993809829
+            },
+            {
+              "year": 2018,
+              "value": 10.238412970115375
+            }
+          ],
+          "n": 4,
+          "slope": 0.024582776216462855,
+          "rawOrigin": 27956.7225466484,
+          "transformedOrigin": 10.238412970115375
+        },
+        {
+          "id": "NLD",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 10.73190428550867
+            },
+            {
+              "year": 2016,
+              "value": 10.750536110988945
+            },
+            {
+              "year": 2017,
+              "value": 10.772059348285007
+            },
+            {
+              "year": 2018,
+              "value": 10.78855601392628
+            }
+          ],
+          "n": 4,
+          "slope": 0.019147842254889545,
+          "rawOrigin": 48463.0055608731,
+          "transformedOrigin": 10.78855601392628
+        },
+        {
+          "id": "SWE",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 10.843263636106574
+            },
+            {
+              "year": 2016,
+              "value": 10.851786967343648
+            },
+            {
+              "year": 2017,
+              "value": 10.856965678266043
+            },
+            {
+              "year": 2018,
+              "value": 10.86289691501412
+            }
+          ],
+          "n": 4,
+          "slope": 0.00640785476450354,
+          "rawOrigin": 52203.0872589761,
+          "transformedOrigin": 10.86289691501412
+        },
+        {
+          "id": "BEL",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 10.618733852262814
+            },
+            {
+              "year": 2016,
+              "value": 10.625535218770558
+            },
+            {
+              "year": 2017,
+              "value": 10.636319968850893
+            },
+            {
+              "year": 2018,
+              "value": 10.650373645440041
+            }
+          ],
+          "n": 4,
+          "slope": 0.010570412961201647,
+          "rawOrigin": 42208.3625650272,
+          "transformedOrigin": 10.650373645440041
+        },
+        {
+          "id": "AUT",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 10.690016418660566
+            },
+            {
+              "year": 2016,
+              "value": 10.700153635335925
+            },
+            {
+              "year": 2017,
+              "value": 10.715675612695888
+            },
+            {
+              "year": 2018,
+              "value": 10.735343554098822
+            }
+          ],
+          "n": 4,
+          "slope": 0.015150338367473282,
+          "rawOrigin": 45951.5819164034,
+          "transformedOrigin": 10.735343554098822
+        },
+        {
+          "id": "POL",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 9.444425606744861
+            },
+            {
+              "year": 2016,
+              "value": 9.474716910374987
+            },
+            {
+              "year": 2017,
+              "value": 9.524833198869176
+            },
+            {
+              "year": 2018,
+              "value": 9.585420842170386
+            }
+          ],
+          "n": 4,
+          "slope": 0.047310199477076334,
+          "rawOrigin": 14551.0850277089,
+          "transformedOrigin": 9.585420842170386
+        },
+        {
+          "id": "NOR",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 11.25442610373778
+            },
+            {
+              "year": 2016,
+              "value": 11.258449580291675
+            },
+            {
+              "year": 2017,
+              "value": 11.276719163603925
+            },
+            {
+              "year": 2018,
+              "value": 11.281160971684233
+            }
+          ],
+          "n": 4,
+          "slope": 0.009847418715161104,
+          "rawOrigin": 79313.2889434042,
+          "transformedOrigin": 11.281160971684233
+        },
+        {
+          "id": "CHE",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 11.353520060500577
+            },
+            {
+              "year": 2016,
+              "value": 11.36153524473918
+            },
+            {
+              "year": 2017,
+              "value": 11.36630722298666
+            },
+            {
+              "year": 2018,
+              "value": 11.391673600179173
+            }
+          ],
+          "n": 4,
+          "slope": 0.01192325972832684,
+          "rawOrigin": 88581.0826935584,
+          "transformedOrigin": 11.391673600179173
+        },
+        {
+          "id": "IRL",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 11.070539158679278
+            },
+            {
+              "year": 2016,
+              "value": 11.06985162828991
+            },
+            {
+              "year": 2017,
+              "value": 11.15265294469854
+            },
+            {
+              "year": 2018,
+              "value": 11.212212931086379
+            }
+          ],
+          "n": 4,
+          "slope": 0.050782263362993164,
+          "rawOrigin": 74029.0550611436,
+          "transformedOrigin": 11.212212931086379
+        },
+        {
+          "id": "DNK",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 10.879819458138824
+            },
+            {
+              "year": 2016,
+              "value": 10.9022832621249
+            },
+            {
+              "year": 2017,
+              "value": 10.925956727766048
+            },
+            {
+              "year": 2018,
+              "value": 10.939427547508824
+            }
+          ],
+          "n": 4,
+          "slope": 0.0202497733751148,
+          "rawOrigin": 56355.0733084714,
+          "transformedOrigin": 10.939427547508824
+        },
+        {
+          "id": "FIN",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 10.658678246085698
+            },
+            {
+              "year": 2016,
+              "value": 10.68119819509062
+            },
+            {
+              "year": 2017,
+              "value": 10.711351303153466
+            },
+            {
+              "year": 2018,
+              "value": 10.721884069873319
+            }
+          ],
+          "n": 4,
+          "slope": 0.021977057942570967,
+          "rawOrigin": 45337.2409550575,
+          "transformedOrigin": 10.721884069873319
+        },
+        {
+          "id": "PRT",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 9.863487163188946
+            },
+            {
+              "year": 2016,
+              "value": 9.886484980778611
+            },
+            {
+              "year": 2017,
+              "value": 9.921533553239117
+            },
+            {
+              "year": 2018,
+              "value": 9.952171739599772
+            }
+          ],
+          "n": 4,
+          "slope": 0.030110230169298192,
+          "rawOrigin": 20997.7745987013,
+          "transformedOrigin": 9.952171739599772
+        },
+        {
+          "id": "GRC",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 9.797055898070218
+            },
+            {
+              "year": 2016,
+              "value": 9.800897030118499
+            },
+            {
+              "year": 2017,
+              "value": 9.81749865878462
+            },
+            {
+              "year": 2018,
+              "value": 9.83996392753441
+            }
+          ],
+          "n": 4,
+          "slope": 0.014532571705869657,
+          "rawOrigin": 18769.0389621976,
+          "transformedOrigin": 9.83996392753441
+        },
+        {
+          "id": "CZE",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 9.794319729778335
+            },
+            {
+              "year": 2016,
+              "value": 9.817880524099502
+            },
+            {
+              "year": 2017,
+              "value": 9.86566589978201
+            },
+            {
+              "year": 2018,
+              "value": 9.890231555051948
+            }
+          ],
+          "n": 4,
+          "slope": 0.0335520851503345,
+          "rawOrigin": 19736.6295261285,
+          "transformedOrigin": 9.890231555051948
+        },
+        {
+          "id": "HUN",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 9.455866846819694
+            },
+            {
+              "year": 2016,
+              "value": 9.48384663995505
+            },
+            {
+              "year": 2017,
+              "value": 9.527647575569224
+            },
+            {
+              "year": 2018,
+              "value": 9.584230758165745
+            }
+          ],
+          "n": 4,
+          "slope": 0.042889266965232764,
+          "rawOrigin": 14533.7783144312,
+          "transformedOrigin": 9.584230758165745
+        },
+        {
+          "id": "ROU",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 9.102422977129411
+            },
+            {
+              "year": 2016,
+              "value": 9.136357583933709
+            },
+            {
+              "year": 2017,
+              "value": 9.220907043122477
+            },
+            {
+              "year": 2018,
+              "value": 9.279322454204783
+            }
+          ],
+          "n": 4,
+          "slope": 0.06152478904148832,
+          "rawOrigin": 10714.1701157127,
+          "transformedOrigin": 9.279322454204783
+        },
+        {
+          "id": "UKR",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 7.647057668097867
+            },
+            {
+              "year": 2016,
+              "value": 7.676048432128427
+            },
+            {
+              "year": 2017,
+              "value": 7.704249768417747
+            },
+            {
+              "year": 2018,
+              "value": 7.744425577293742
+            }
+          ],
+          "n": 4,
+          "slope": 0.03203050638769458,
+          "rawOrigin": 2308.6669921875,
+          "transformedOrigin": 7.744425577293742
+        },
+        {
+          "id": "BLR",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 8.694008944147766
+            },
+            {
+              "year": 2016,
+              "value": 8.667542642890593
+            },
+            {
+              "year": 2017,
+              "value": 8.69364701474173
+            },
+            {
+              "year": 2018,
+              "value": 8.72679153118074
+            }
+          ],
+          "n": 4,
+          "slope": 0.012445213295005964,
+          "rawOrigin": 6165.91320019277,
+          "transformedOrigin": 8.72679153118074
+        },
+        {
+          "id": "SRB",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 8.669110789661225
+            },
+            {
+              "year": 2016,
+              "value": 8.703665712116246
+            },
+            {
+              "year": 2017,
+              "value": 8.732346696907411
+            },
+            {
+              "year": 2018,
+              "value": 8.783255271689672
+            }
+          ],
+          "n": 4,
+          "slope": 0.037111443087650645,
+          "rawOrigin": 6524.08029755191,
+          "transformedOrigin": 8.783255271689672
+        },
+        {
+          "id": "ISL",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 10.8875434021307
+            },
+            {
+              "year": 2016,
+              "value": 10.933986812313744
+            },
+            {
+              "year": 2017,
+              "value": 10.944788122065628
+            },
+            {
+              "year": 2018,
+              "value": 10.963560869920638
+            }
+          ],
+          "n": 4,
+          "slope": 0.023885371312169924,
+          "rawOrigin": 57731.6523639512,
+          "transformedOrigin": 10.963560869920638
+        },
+        {
+          "id": "EST",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 9.782570874036644
+            },
+            {
+              "year": 2016,
+              "value": 9.81274124557614
+            },
+            {
+              "year": 2017,
+              "value": 9.866347008624501
+            },
+            {
+              "year": 2018,
+              "value": 9.899195630013553
+            }
+          ],
+          "n": 4,
+          "slope": 0.04034800309790896,
+          "rawOrigin": 19914.3454922878,
+          "transformedOrigin": 9.899195630013553
+        },
+        {
+          "id": "LVA",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 9.49717022995096
+            },
+            {
+              "year": 2016,
+              "value": 9.531505822621467
+            },
+            {
+              "year": 2017,
+              "value": 9.573792587331301
+            },
+            {
+              "year": 2018,
+              "value": 9.62377826726125
+            }
+          ],
+          "n": 4,
+          "slope": 0.042211087664070134,
+          "rawOrigin": 15120.0698171804,
+          "transformedOrigin": 9.62377826726125
+        },
+        {
+          "id": "LTU",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 9.565900974414994
+            },
+            {
+              "year": 2016,
+              "value": 9.603942536356517
+            },
+            {
+              "year": 2017,
+              "value": 9.66116113904556
+            },
+            {
+              "year": 2018,
+              "value": 9.717453240633645
+            }
+          ],
+          "n": 4,
+          "slope": 0.0511875401344998,
+          "rawOrigin": 16604.9021440809,
+          "transformedOrigin": 9.717453240633645
+        },
+        {
+          "id": "SVK",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 9.70759894324071
+            },
+            {
+              "year": 2016,
+              "value": 9.725600632169233
+            },
+            {
+              "year": 2017,
+              "value": 9.752390722504042
+            },
+            {
+              "year": 2018,
+              "value": 9.790823481696595
+            }
+          ],
+          "n": 4,
+          "slope": 0.02764637057024668,
+          "rawOrigin": 17869.0149173679,
+          "transformedOrigin": 9.790823481696595
+        },
+        {
+          "id": "SVN",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 9.937757320976354
+            },
+            {
+              "year": 2016,
+              "value": 9.966918220256982
+            },
+            {
+              "year": 2017,
+              "value": 10.01671638905634
+            },
+            {
+              "year": 2018,
+              "value": 10.055949664620233
+            }
+          ],
+          "n": 4,
+          "slope": 0.04043751997309926,
+          "rawOrigin": 23293.966665323,
+          "transformedOrigin": 10.055949664620233
+        },
+        {
+          "id": "HRV",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 9.416042708105977
+            },
+            {
+              "year": 2016,
+              "value": 9.460980308816126
+            },
+            {
+              "year": 2017,
+              "value": 9.509360757335081
+            },
+            {
+              "year": 2018,
+              "value": 9.551164535233514
+            }
+          ],
+          "n": 4,
+          "slope": 0.04537459299015687,
+          "rawOrigin": 14061.0597402919,
+          "transformedOrigin": 9.551164535233514
+        },
+        {
+          "id": "BIH",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 8.44725530758742
+            },
+            {
+              "year": 2016,
+              "value": 8.492190147213005
+            },
+            {
+              "year": 2017,
+              "value": 8.53695974523128
+            },
+            {
+              "year": 2018,
+              "value": 8.586766269783533
+            }
+          ],
+          "n": 4,
+          "slope": 0.04633024846066132,
+          "rawOrigin": 5360.25201017633,
+          "transformedOrigin": 8.586766269783533
+        },
+        {
+          "id": "MNE",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 8.767329156720102
+            },
+            {
+              "year": 2016,
+              "value": 8.80002079578283
+            },
+            {
+              "year": 2017,
+              "value": 8.830675800193273
+            },
+            {
+              "year": 2018,
+              "value": 8.876190925394813
+            }
+          ],
+          "n": 4,
+          "slope": 0.03572403104345749,
+          "rawOrigin": 7159.46778433252,
+          "transformedOrigin": 8.876190925394813
+        },
+        {
+          "id": "MKD",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 8.568396958460816
+            },
+            {
+              "year": 2016,
+              "value": 8.599684612434945
+            },
+            {
+              "year": 2017,
+              "value": 8.614468462655624
+            },
+            {
+              "year": 2018,
+              "value": 8.647939544764558
+            }
+          ],
+          "n": 4,
+          "slope": 0.025341160913190386,
+          "rawOrigin": 5698.39334484489,
+          "transformedOrigin": 8.647939544764558
+        },
+        {
+          "id": "ALB",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 8.342730067120554
+            },
+            {
+              "year": 2016,
+              "value": 8.396506123719536
+            },
+            {
+              "year": 2017,
+              "value": 8.444241950183459
+            },
+            {
+              "year": 2018,
+              "value": 8.495729230969024
+            }
+          ],
+          "n": 4,
+          "slope": 0.05067333180093332,
+          "rawOrigin": 4893.82375538717,
+          "transformedOrigin": 8.495729230969024
+        },
+        {
+          "id": "BGR",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 8.891377567758276
+            },
+            {
+              "year": 2016,
+              "value": 8.934177266972299
+            },
+            {
+              "year": 2017,
+              "value": 8.974505445521666
+            },
+            {
+              "year": 2018,
+              "value": 9.011254227063816
+            }
+          ],
+          "n": 4,
+          "slope": 0.03999581564659867,
+          "rawOrigin": 8194.79296320014,
+          "transformedOrigin": 9.011254227063816
+        },
+        {
+          "id": "MDA",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 7.9191930393679435
+            },
+            {
+              "year": 2016,
+              "value": 7.976236439923536
+            },
+            {
+              "year": 2017,
+              "value": 8.03441489110945
+            },
+            {
+              "year": 2018,
+              "value": 8.091932263900603
+            }
+          ],
+          "n": 4,
+          "slope": 0.05763961247838907,
+          "rawOrigin": 3267.9961042872,
+          "transformedOrigin": 8.091932263900603
+        },
+        {
+          "id": "LUX",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 11.566106096767557
+            },
+            {
+              "year": 2016,
+              "value": 11.593135409684555
+            },
+            {
+              "year": 2017,
+              "value": 11.581910853760451
+            },
+            {
+              "year": 2018,
+              "value": 11.578607031358436
+            }
+          ],
+          "n": 4,
+          "slope": 0.0026278247848532388,
+          "rawOrigin": 106788.661202756,
+          "transformedOrigin": 11.578607031358436
+        },
+        {
+          "id": "CYP",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 10.047086891698926
+            },
+            {
+              "year": 2016,
+              "value": 10.105528996658267
+            },
+            {
+              "year": 2017,
+              "value": 10.152922057315555
+            },
+            {
+              "year": 2018,
+              "value": 10.202198306568011
+            }
+          ],
+          "n": 4,
+          "slope": 0.051272730526454244,
+          "rawOrigin": 26962.392578125,
+          "transformedOrigin": 10.202198306568011
+        },
+        {
+          "id": "MLT",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 10.147596557588672
+            },
+            {
+              "year": 2016,
+              "value": 10.164678050753091
+            },
+            {
+              "year": 2017,
+              "value": 10.259294747390365
+            },
+            {
+              "year": 2018,
+              "value": 10.293391930920295
+            }
+          ],
+          "n": 4,
+          "slope": 0.053200281663214354,
+          "rawOrigin": 29536.7913868949,
+          "transformedOrigin": 10.293391930920295
+        },
+        {
+          "id": "CHN",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 9.008876710627593
+            },
+            {
+              "year": 2016,
+              "value": 9.068687551142396
+            },
+            {
+              "year": 2017,
+              "value": 9.129276776150117
+            },
+            {
+              "year": 2018,
+              "value": 9.18999264451763
+            }
+          ],
+          "n": 4,
+          "slope": 0.06039370266778334,
+          "rawOrigin": 9798.57890566402,
+          "transformedOrigin": 9.18999264451763
+        },
+        {
+          "id": "JPN",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 10.481915130021003
+            },
+            {
+              "year": 2016,
+              "value": 10.489451635006422
+            },
+            {
+              "year": 2017,
+              "value": 10.506374513703035
+            },
+            {
+              "year": 2018,
+              "value": 10.515950155308118
+            }
+          ],
+          "n": 4,
+          "slope": 0.011902795455796067,
+          "rawOrigin": 36899.3847079435,
+          "transformedOrigin": 10.515950155308118
+        },
+        {
+          "id": "KOR",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 10.31466268254703
+            },
+            {
+              "year": 2016,
+              "value": 10.341916896889888
+            },
+            {
+              "year": 2017,
+              "value": 10.372862944802542
+            },
+            {
+              "year": 2018,
+              "value": 10.399794957607943
+            }
+          ],
+          "n": 4,
+          "slope": 0.028634287309539097,
+          "rawOrigin": 32852.8887488942,
+          "transformedOrigin": 10.399794957607943
+        },
+        {
+          "id": "MNG",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 8.252946686819639
+            },
+            {
+              "year": 2016,
+              "value": 8.247460953034002
+            },
+            {
+              "year": 2017,
+              "value": 8.283040497192792
+            },
+            {
+              "year": 2018,
+              "value": 8.338988508131704
+            }
+          ],
+          "n": 4,
+          "slope": 0.029370500809498525,
+          "rawOrigin": 4183.85566447661,
+          "transformedOrigin": 8.338988508131704
+        },
+        {
+          "id": "VNM",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 7.854601928784033
+            },
+            {
+              "year": 2016,
+              "value": 7.906760423016145
+            },
+            {
+              "year": 2017,
+              "value": 7.961417899373379
+            },
+            {
+              "year": 2018,
+              "value": 8.022333850815286
+            }
+          ],
+          "n": 4,
+          "slope": 0.05578532424509932,
+          "rawOrigin": 3048.28327602145,
+          "transformedOrigin": 8.022333850815286
+        },
+        {
+          "id": "IDN",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 8.09810248419129
+            },
+            {
+              "year": 2016,
+              "value": 8.136462661371946
+            },
+            {
+              "year": 2017,
+              "value": 8.175693938429035
+            },
+            {
+              "year": 2018,
+              "value": 8.21644521178391
+            }
+          ],
+          "n": 4,
+          "slope": 0.03942594598349469,
+          "rawOrigin": 3701.32155461912,
+          "transformedOrigin": 8.21644521178391
+        },
+        {
+          "id": "PHL",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 7.975859623618142
+            },
+            {
+              "year": 2016,
+              "value": 8.031495018587451
+            },
+            {
+              "year": 2017,
+              "value": 8.085625471395327
+            },
+            {
+              "year": 2018,
+              "value": 8.134742160070255
+            }
+          ],
+          "n": 4,
+          "slope": 0.05307780621642148,
+          "rawOrigin": 3410.93647976109,
+          "transformedOrigin": 8.134742160070255
+        },
+        {
+          "id": "THA",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 8.646263987300964
+            },
+            {
+              "year": 2016,
+              "value": 8.675526061571343
+            },
+            {
+              "year": 2017,
+              "value": 8.712224153308563
+            },
+            {
+              "year": 2018,
+              "value": 8.75055626255621
+            }
+          ],
+          "n": 4,
+          "slope": 0.03495749175029559,
+          "rawOrigin": 6314.19948412043,
+          "transformedOrigin": 8.75055626255621
+        },
+        {
+          "id": "MYS",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 9.17457637603625
+            },
+            {
+              "year": 2016,
+              "value": 9.200439479682519
+            },
+            {
+              "year": 2017,
+              "value": 9.239293449107793
+            },
+            {
+              "year": 2018,
+              "value": 9.269570612593471
+            }
+          ],
+          "n": 4,
+          "slope": 0.03238366790969387,
+          "rawOrigin": 10610.1950240479,
+          "transformedOrigin": 9.269570612593471
+        },
+        {
+          "id": "MMR",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 7.0619628618732735
+            },
+            {
+              "year": 2016,
+              "value": 7.111005576897016
+            },
+            {
+              "year": 2017,
+              "value": 7.162834681045915
+            },
+            {
+              "year": 2018,
+              "value": 7.216392485398779
+            }
+          ],
+          "n": 4,
+          "slope": 0.05151179747254151,
+          "rawOrigin": 1361.5683126412,
+          "transformedOrigin": 7.216392485398779
+        },
+        {
+          "id": "LAO",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 7.6596492680636725
+            },
+            {
+              "year": 2017,
+              "value": 7.762840347695303
+            },
+            {
+              "year": 2018,
+              "value": 7.807907989198822
+            }
+          ],
+          "n": 3,
+          "slope": 0.049730426012301966,
+          "rawOrigin": 2459.97874636195,
+          "transformedOrigin": 7.807907989198822
+        },
+        {
+          "id": "TLS",
+          "observations": [],
+          "n": 0,
+          "slope": null,
+          "rawOrigin": null,
+          "transformedOrigin": null
+        },
+        {
+          "id": "IND",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 7.3677074101766316
+            },
+            {
+              "year": 2016,
+              "value": 7.43512254217345
+            },
+            {
+              "year": 2017,
+              "value": 7.489243093928834
+            },
+            {
+              "year": 2018,
+              "value": 7.540811487804716
+            }
+          ],
+          "n": 4,
+          "slope": 0.05734327846396381,
+          "rawOrigin": 1883.35772705055,
+          "transformedOrigin": 7.540811487804716
+        },
+        {
+          "id": "PAK",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 7.230179450828166
+            },
+            {
+              "year": 2016,
+              "value": 7.280825687605688
+            },
+            {
+              "year": 2017,
+              "value": 7.310056637896352
+            },
+            {
+              "year": 2018,
+              "value": 7.3535185312701
+            }
+          ],
+          "n": 4,
+          "slope": 0.039924819161646766,
+          "rawOrigin": 1561.68169819559,
+          "transformedOrigin": 7.3535185312701
+        },
+        {
+          "id": "BGD",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 7.110195162156987
+            },
+            {
+              "year": 2016,
+              "value": 7.169989468534807
+            },
+            {
+              "year": 2017,
+              "value": 7.225302153504579
+            },
+            {
+              "year": 2018,
+              "value": 7.2877319680106325
+            }
+          ],
+          "n": 4,
+          "slope": 0.058792310253070745,
+          "rawOrigin": 1462.25050255713,
+          "transformedOrigin": 7.2877319680106325
+        },
+        {
+          "id": "LKA",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 8.308375490128181
+            },
+            {
+              "year": 2016,
+              "value": 8.346343462186052
+            },
+            {
+              "year": 2017,
+              "value": 8.397510127393447
+            },
+            {
+              "year": 2018,
+              "value": 8.410283865008985
+            }
+          ],
+          "n": 4,
+          "slope": 0.035689178984980606,
+          "rawOrigin": 4493.03574617534,
+          "transformedOrigin": 8.410283865008985
+        },
+        {
+          "id": "NPL",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 6.77484499111767
+            },
+            {
+              "year": 2016,
+              "value": 6.774439798739264
+            },
+            {
+              "year": 2017,
+              "value": 6.858415127089003
+            },
+            {
+              "year": 2018,
+              "value": 6.929433520762369
+            }
+          ],
+          "n": 4,
+          "slope": 0.054774091728383656,
+          "rawOrigin": 1021.91492204011,
+          "transformedOrigin": 6.929433520762369
+        },
+        {
+          "id": "BTN",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 7.990929281246013
+            },
+            {
+              "year": 2016,
+              "value": 8.062548679029446
+            },
+            {
+              "year": 2017,
+              "value": 8.074589618989066
+            },
+            {
+              "year": 2018,
+              "value": 8.101844419811647
+            }
+          ],
+          "n": 4,
+          "slope": 0.034478635565652206,
+          "rawOrigin": 3300.55006461736,
+          "transformedOrigin": 8.101844419811647
+        },
+        {
+          "id": "KAZ",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 9.22976279225756
+            },
+            {
+              "year": 2016,
+              "value": 9.225369202550446
+            },
+            {
+              "year": 2017,
+              "value": 9.249971757006811
+            },
+            {
+              "year": 2018,
+              "value": 9.275211214279073
+            }
+          ],
+          "n": 4,
+          "slope": 0.016094782052090473,
+          "rawOrigin": 10670.2120148279,
+          "transformedOrigin": 9.275211214279073
+        },
+        {
+          "id": "KGZ",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 7.008190429517273
+            },
+            {
+              "year": 2016,
+              "value": 7.028481677609842
+            },
+            {
+              "year": 2017,
+              "value": 7.05374367287057
+            },
+            {
+              "year": 2018,
+              "value": 7.069084086759415
+            }
+          ],
+          "n": 4,
+          "slope": 0.020794296698715263,
+          "rawOrigin": 1175.0712778747,
+          "transformedOrigin": 7.069084086759415
+        },
+        {
+          "id": "TJK",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 6.863715938235779
+            },
+            {
+              "year": 2016,
+              "value": 6.90510438301683
+            },
+            {
+              "year": 2017,
+              "value": 6.949150470067212
+            },
+            {
+              "year": 2018,
+              "value": 6.998327161512598
+            }
+          ],
+          "n": 4,
+          "slope": 0.044787975688083834,
+          "rawOrigin": 1094.8002018221,
+          "transformedOrigin": 6.998327161512598
+        },
+        {
+          "id": "TUR",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 9.31151057104938
+            },
+            {
+              "year": 2016,
+              "value": 9.330752566421996
+            },
+            {
+              "year": 2017,
+              "value": 9.393132316660672
+            },
+            {
+              "year": 2018,
+              "value": 9.413689966269365
+            }
+          ],
+          "n": 4,
+          "slope": 0.03689179358986294,
+          "rawOrigin": 12255.0082146169,
+          "transformedOrigin": 9.413689966269365
+        },
+        {
+          "id": "IRN",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 8.507694936536325
+            },
+            {
+              "year": 2016,
+              "value": 8.57783988349113
+            },
+            {
+              "year": 2017,
+              "value": 8.593272332655868
+            },
+            {
+              "year": 2018,
+              "value": 8.542319847097776
+            }
+          ],
+          "n": 4,
+          "slope": 0.011930718084909132,
+          "rawOrigin": 5127.22495367018,
+          "transformedOrigin": 8.542319847097776
+        },
+        {
+          "id": "IRQ",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 8.398441612691233
+            },
+            {
+              "year": 2016,
+              "value": 8.503687861847576
+            },
+            {
+              "year": 2017,
+              "value": 8.463017242611702
+            },
+            {
+              "year": 2018,
+              "value": 8.465691289665148
+            }
+          ],
+          "n": 4,
+          "slope": 0.016107841168587277,
+          "rawOrigin": 4749.00921836896,
+          "transformedOrigin": 8.465691289665148
+        },
+        {
+          "id": "ARE",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 10.712423467812927
+            },
+            {
+              "year": 2016,
+              "value": 10.718155122745136
+            },
+            {
+              "year": 2017,
+              "value": 10.67574670552552
+            },
+            {
+              "year": 2018,
+              "value": 10.677703128452555
+            }
+          ],
+          "n": 4,
+          "slope": -0.014656943530073362,
+          "rawOrigin": 43377.802601486,
+          "transformedOrigin": 10.677703128452555
+        },
+        {
+          "id": "ISR",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 10.49510397493118
+            },
+            {
+              "year": 2016,
+              "value": 10.51986199451407
+            },
+            {
+              "year": 2017,
+              "value": 10.542997159561487
+            },
+            {
+              "year": 2018,
+              "value": 10.563465930341833
+            }
+          ],
+          "n": 4,
+          "slope": 0.022822103127937688,
+          "rawOrigin": 38695.0100079706,
+          "transformedOrigin": 10.563465930341833
+        },
+        {
+          "id": "JOR",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 8.398774219626274
+            },
+            {
+              "year": 2016,
+              "value": 8.372438507639053
+            },
+            {
+              "year": 2017,
+              "value": 8.374690275187968
+            },
+            {
+              "year": 2018,
+              "value": 8.371017576451653
+            }
+          ],
+          "n": 4,
+          "slope": -0.008101816197494926,
+          "rawOrigin": 4320.029787425,
+          "transformedOrigin": 8.371017576451653
+        },
+        {
+          "id": "LBN",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 8.950806398438399
+            },
+            {
+              "year": 2016,
+              "value": 8.9895866741038
+            },
+            {
+              "year": 2017,
+              "value": 9.02468214118266
+            },
+            {
+              "year": 2018,
+              "value": 9.034643643950968
+            }
+          ],
+          "n": 4,
+          "slope": 0.0286607203616569,
+          "rawOrigin": 8388.7235123835,
+          "transformedOrigin": 9.034643643950968
+        },
+        {
+          "id": "YEM",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 7.216837093883101
+            },
+            {
+              "year": 2016,
+              "value": 7.088374270326833
+            },
+            {
+              "year": 2017,
+              "value": 7.006202667595322
+            },
+            {
+              "year": 2018,
+              "value": 6.984095186201333
+            }
+          ],
+          "n": 4,
+          "slope": -0.07803973257768142,
+          "rawOrigin": 1079.32938366255,
+          "transformedOrigin": 6.984095186201333
+        },
+        {
+          "id": "GEO",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 8.315474075721646
+            },
+            {
+              "year": 2016,
+              "value": 8.34879620797026
+            },
+            {
+              "year": 2017,
+              "value": 8.398974235046817
+            },
+            {
+              "year": 2018,
+              "value": 8.45821858661897
+            }
+          ],
+          "n": 4,
+          "slope": 0.04784115597685314,
+          "rawOrigin": 4713.65354845303,
+          "transformedOrigin": 8.45821858661897
+        },
+        {
+          "id": "ARM",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 8.164052993685441
+            },
+            {
+              "year": 2016,
+              "value": 8.170153121527093
+            },
+            {
+              "year": 2017,
+              "value": 8.246794167624104
+            },
+            {
+              "year": 2018,
+              "value": 8.30098402411806
+            }
+          ],
+          "n": 4,
+          "slope": 0.04874341373948674,
+          "rawOrigin": 4027.83393010979,
+          "transformedOrigin": 8.30098402411806
+        },
+        {
+          "id": "PSE",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 8.093203861526998
+            },
+            {
+              "year": 2016,
+              "value": 8.15567770387785
+            },
+            {
+              "year": 2017,
+              "value": 8.149884728928209
+            },
+            {
+              "year": 2018,
+              "value": 8.136750712182334
+            }
+          ],
+          "n": 4,
+          "slope": 0.012484757701636618,
+          "rawOrigin": 3417.79440837962,
+          "transformedOrigin": 8.136750712182334
+        },
+        {
+          "id": "NGA",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 7.857764540382057
+            },
+            {
+              "year": 2016,
+              "value": 7.816745387441366
+            },
+            {
+              "year": 2017,
+              "value": 7.800454860692004
+            },
+            {
+              "year": 2018,
+              "value": 7.796378193844972
+            }
+          ],
+          "n": 4,
+          "slope": -0.020044956636061696,
+          "rawOrigin": 2431.77857832597,
+          "transformedOrigin": 7.796378193844972
+        },
+        {
+          "id": "ZAF",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 8.718054131030598
+            },
+            {
+              "year": 2016,
+              "value": 8.715272450986127
+            },
+            {
+              "year": 2017,
+              "value": 8.72024701690778
+            },
+            {
+              "year": 2018,
+              "value": 8.718871220537295
+            }
+          ],
+          "n": 4,
+          "slope": 0.0007425834441743718,
+          "rawOrigin": 6117.2701406047,
+          "transformedOrigin": 8.718871220537295
+        },
+        {
+          "id": "EGY",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 8.103791147239486
+            },
+            {
+              "year": 2016,
+              "value": 8.125992598554863
+            },
+            {
+              "year": 2017,
+              "value": 8.146972520522551
+            },
+            {
+              "year": 2018,
+              "value": 8.179939755339994
+            }
+          ],
+          "n": 4,
+          "slope": 0.0249425746269214,
+          "rawOrigin": 3568.63966286365,
+          "transformedOrigin": 8.179939755339994
+        },
+        {
+          "id": "ETH",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 6.39344377528803
+            },
+            {
+              "year": 2016,
+              "value": 6.456511664605292
+            },
+            {
+              "year": 2017,
+              "value": 6.5205996533333845
+            },
+            {
+              "year": 2018,
+              "value": 6.55957106098399
+            }
+          ],
+          "n": 4,
+          "slope": 0.05624698458159747,
+          "rawOrigin": 705.96881207336,
+          "transformedOrigin": 6.55957106098399
+        },
+        {
+          "id": "KEN",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 7.305940350326721
+            },
+            {
+              "year": 2016,
+              "value": 7.325134439126475
+            },
+            {
+              "year": 2017,
+              "value": 7.341054557205018
+            },
+            {
+              "year": 2018,
+              "value": 7.375688302972038
+            }
+          ],
+          "n": 4,
+          "slope": 0.022516397601449346,
+          "rawOrigin": 1596.69045914945,
+          "transformedOrigin": 7.375688302972038
+        },
+        {
+          "id": "COD",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 6.206226335413076
+            },
+            {
+              "year": 2016,
+              "value": 6.174746846158917
+            },
+            {
+              "year": 2017,
+              "value": 6.1797157432252705
+            },
+            {
+              "year": 2018,
+              "value": 6.205188080464555
+            }
+          ],
+          "n": 4,
+          "slope": 0.00018541322207896727,
+          "rawOrigin": 495.312105711027,
+          "transformedOrigin": 6.205188080464555
+        },
+        {
+          "id": "MAR",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 8.05396584807324
+            },
+            {
+              "year": 2016,
+              "value": 8.047005560868302
+            },
+            {
+              "year": 2017,
+              "value": 8.084144413923577
+            },
+            {
+              "year": 2018,
+              "value": 8.103104581788365
+            }
+          ],
+          "n": 4,
+          "slope": 0.018455505420065067,
+          "rawOrigin": 3304.7119140625,
+          "transformedOrigin": 8.103104581788365
+        },
+        {
+          "id": "DZA",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 8.452133793801268
+            },
+            {
+              "year": 2016,
+              "value": 8.46983559480189
+            },
+            {
+              "year": 2017,
+              "value": 8.4644042012069
+            },
+            {
+              "year": 2018,
+              "value": 8.458929044050583
+            }
+          ],
+          "n": 4,
+          "slope": 0.0014954357152955565,
+          "rawOrigin": 4717.0035885361,
+          "transformedOrigin": 8.458929044050583
+        },
+        {
+          "id": "AUS",
+          "observations": [
+            {
+              "year": 2015,
+              "value": 10.950286434437995
+            },
+            {
+              "year": 2016,
+              "value": 10.96185059222698
+            },
+            {
+              "year": 2017,
+              "value": 10.96805640614174
+            },
+            {
+              "year": 2018,
+              "value": 10.981432847810053
+            }
+          ],
+          "n": 4,
+          "slope": 0.009964505403093326,
+          "rawOrigin": 58772.7063152213,
+          "transformedOrigin": 10.981432847810053
+        }
+      ],
+      "selectedCandidate": {
+        "id": "pooled-w0.5-p0.98",
+        "target": "pooled",
+        "countryWeight": 0.5,
+        "damping": 0.98
+      }
+    }
+  }
+}

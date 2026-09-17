@@ -1,0 +1,13 @@
+{
+  "schema": "one-shot-score-receipt/1",
+  "entry": "research-damped-2018-v1",
+  "family": "five-approaches-20260916",
+  "startedAt": "2026-09-16T21:24:43.956Z",
+  "preScoreCommit": "3eb6382360d8db8dfecb5f5fa81cd1d90f635c73",
+  "registrySha256": "9efaaae977a155310acbf3614915926f3ce381259f13d6d02d76901bccc2a4a3",
+  "protocolSha256": "306ae9bf2b6f8cbd521209bd4333f89e79c26e97424135e01a3027ea44f6c52e",
+  "predictionsSha256": "bbb52ca54a515df315ad1c2c09be6f3f9d0f4ad9b261bd1fd04fc59f8c516ac3",
+  "status": "completed",
+  "completedAt": "2026-09-16T21:24:43.980Z",
+  "scoresSha256": "77d79f10eda9b4e1371df1d46fc6ea0af2c4436222b8ded22536865909a73444"
+}

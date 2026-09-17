@@ -1,0 +1,92 @@
+{
+  "schema": "forecast-provenance/1",
+  "entryId": "research-damped-2018-v1",
+  "registeredProtocolCommit": "7d40306fdf677d756042e75ca2fa56afc839c5fe",
+  "baseCommit": "0ca2eda3ea5db518499abebda1de1367d4e1ab7e",
+  "protocolSha256": "306ae9bf2b6f8cbd521209bd4333f89e79c26e97424135e01a3027ea44f6c52e",
+  "runtime": {
+    "node": "v22.23.2",
+    "numericalPrecision": "JavaScript IEEE-754 binary64; JSON decimal serialization",
+    "packagesAdded": []
+  },
+  "inputs": [
+    {
+      "path": "data/evaluation/level-holdout-2018/train.json",
+      "sha256": "979ac8d45dda418403fc59e04111b9c9dbcd2fa484e4c26aa900cd37e777bd02"
+    },
+    {
+      "path": "data/evaluation/level-holdout-2018/origin.json",
+      "sha256": "564bab92fe88415df70a1b239223213a53c12274891ec2d39f0e08c3e28e3f77"
+    }
+  ],
+  "code": [
+    {
+      "path": "scripts/evaluation/attempts/research-damped-2018-v1/model.mjs",
+      "sha256": "c2ea836879c9bdacad6383dd7e73ad9648dda8873d7dd39da69c5a3d20c45396"
+    },
+    {
+      "path": "scripts/evaluation/attempts/research-damped-2018-v1/run.mjs",
+      "sha256": "1176e1134de511478c8bd39aa34b821482c5497bcb4cfcfde1ea53f61ff86caf"
+    },
+    {
+      "path": "scripts/evaluation/attempts/research-damped-2018-v1/model.node-test.mjs",
+      "sha256": "081b75adfe46c689f5dd3b2e0c28a05507175ab7d29dff866f51c1c6fe4fa2c8"
+    },
+    {
+      "path": "scripts/evaluation/attempts/research-damped-2018-v1/registered.test.ts",
+      "sha256": "ff4e2195f82916da590494ad1dc78c36f796b89bfa6dcad76dc1e2c5e79a0b0c"
+    }
+  ],
+  "outputHashes": [
+    {
+      "path": "data/evaluation/research-damped-2018-v1/predictions.json",
+      "sha256": "bbb52ca54a515df315ad1c2c09be6f3f9d0f4ad9b261bd1fd04fc59f8c516ac3"
+    },
+    {
+      "path": "data/evaluation/research-damped-2018-v1/calibration.json",
+      "sha256": "b90d69fad0cc497773ac076a67fe053d9fed70c954a90f248a60f3d7a2a826df"
+    },
+    {
+      "path": "data/evaluation/research-damped-2018-v1/internal-validation.json",
+      "sha256": "cea809c47ca49394eb99920df36f55e94deca46aec1c6313741b40aee0f9ea77"
+    },
+    {
+      "path": "data/evaluation/research-damped-2018-v1/numerical-provenance.json",
+      "sha256": "3cc9b41ea4e29abdd369d369c78a1bb7716a1fe6951d79cbc9ed333efaea0eef"
+    },
+    {
+      "path": "docs/design/research/2026-09-16-research-damped-2018-v1.md",
+      "sha256": "09e7d18b293f78cc4cb1e222e50dcf39ff1f1cb3008460d54205442d48e17705"
+    },
+    {
+      "path": "docs/design/research/entries/research-damped-2018-v1.json",
+      "sha256": "b6cbc5c500134661c8eef793494e9cf1c73ca296f432022945db6ee951b50252"
+    }
+  ],
+  "sourceReferences": [
+    {
+      "url": "https://otexts.com/fpp3/holt.html",
+      "title": "Hyndman and Athanasopoulos, Forecasting: Principles and Practice, 3rd ed., Methods with trend",
+      "accessedAt": "2026-09-16",
+      "use": "Damped forecast sum phi^k; the 0.8–0.98 damping range. Our OLS slope/shrinkage simplification is separately declared."
+    },
+    {
+      "url": "https://otexts.com/fpp3/tscv.html",
+      "title": "Hyndman and Athanasopoulos, Forecasting: Principles and Practice, 3rd ed., Time series cross-validation",
+      "accessedAt": "2026-09-16",
+      "use": "Rolling-origin training on only observations preceding each validation target; explicitly distinct from in-sample residual accuracy."
+    }
+  ],
+  "boundary": {
+    "numericalInputYears": [
+      2015,
+      2016,
+      2017,
+      2018
+    ],
+    "heldoutRead": false,
+    "heldoutScored": false,
+    "gate": "All five approaches plus long-run protocol/predictions must freeze before controller scores any entry"
+  },
+  "reproduction": "No random numbers, date-dependent output, environment-dependent settings, or network reads; --verify compares exact bytes."
+}

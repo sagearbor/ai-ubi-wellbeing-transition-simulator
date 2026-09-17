@@ -1,0 +1,10 @@
+{
+  "entry": "research-damped-2018-v1",
+  "probe": "Independent Python derivation from permitted train panel; no external outcomes read",
+  "rows": 700,
+  "outcomesPerRow": 2,
+  "maximumAbsoluteDifference": {
+    "ladder": 8.881784197001252e-16,
+    "gdp": 1.7462298274040222e-10
+  }
+}

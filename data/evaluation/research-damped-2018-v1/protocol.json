@@ -1,0 +1,572 @@
+{
+  "schema": "forecast-protocol/1",
+  "id": "research-damped-2018-v1",
+  "registeredAt": "2026-09-16",
+  "familyId": "five-approaches-20260916",
+  "familyEntryIds": [
+    "research-offset-2018-v1",
+    "research-damped-2018-v1",
+    "research-changes-2018-v1",
+    "research-health-2018-v1",
+    "research-ensemble-2018-v1"
+  ],
+  "title": "Latest-level forecast with separately shrunken and damped country trends",
+  "scope": "Retrospective, pre-scoring registered alternative. Existing aggregate holdout failure is prior information. This is automated-agent research, not blind validation or independent human/domain-expert review.",
+  "modelFormChosenAfterTestPeriod": true,
+  "trainingYears": [
+    2015,
+    2016,
+    2017,
+    2018
+  ],
+  "originYear": 2018,
+  "testYears": [
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "inputFiles": [
+    {
+      "path": "data/evaluation/level-holdout-2018/train.json",
+      "sha256": "979ac8d45dda418403fc59e04111b9c9dbcd2fa484e4c26aa900cd37e777bd02"
+    },
+    {
+      "path": "data/evaluation/level-holdout-2018/origin.json",
+      "sha256": "564bab92fe88415df70a1b239223213a53c12274891ec2d39f0e08c3e28e3f77"
+    }
+  ],
+  "allowedInputs": "Only frozen train.json and origin.json numerical contents. Background variables are not predictors. No other country panel, future feature, extra data or heldout outcome is read by this entry.",
+  "outcomes": {
+    "wellbeing": "Cantril ladder points, bounded 0–10, from frozen paired annual training panel",
+    "gdp": "GDP per person in constant-2015 USD, natural logarithm for trend fitting; exponentiation without bias correction for forecasts"
+  },
+  "equations": {
+    "transform": "z_it = ladder_it for wellbeing; z_it = ln(gdp_it) for GDP. Outcomes have separate fits and separately selected hyperparameters.",
+    "countrySlope": "b_i(T) = sum[(t - mean_i(t))*(z_it - mean_i(z))] / sum[(t - mean_i(t))^2], using valid observed years 2015 <= t <= T; defined only with at least two distinct observed years.",
+    "pooledSlope": "m(T) = arithmetic mean of defined b_i(T) over training-background countries, equally weighted countries; if none defined, m(T) = 0.",
+    "shrinkTarget": "a(T) = 0 when target=zero; a(T) = m(T) when target=pooled.",
+    "shrunkSlope": "d_i(T) = w*b_i(T) + (1-w)*a(T). If b_i(T) is undefined, d_i(T)=a(T). No slope clipping or variance estimation.",
+    "level": "ell_i(T)=z_iT, the exact observed origin-year outcome. No smoothing or regression intercept replaces the observed origin.",
+    "dampedForecast": "D_h(phi)=sum_{k=1}^h phi^k. zHat_i,T+h = ell_i(T) + D_h(phi)*d_i(T). The h=0 prediction equals ell_i(T).",
+    "ladderOutput": "ladderHat = min(10,max(0,zHat)); record every applied clamp and raw value.",
+    "gdpOutput": "gdpHat = exp(zHat); no numerical caps or growth caps. Nonfinite or nonpositive output fails generation rather than being repaired."
+  },
+  "fit": "Ordinary least-squares country slopes and their pooled mean are fitted independently for each outcome. The last observed level is fixed. Two selected triples (target,w,phi) are the only globally tuned settings. This is a reduced damped trend forecaster inspired by damped Holt, not a fitted Holt state-space/ETS model; alpha and beta are not estimated.",
+  "candidateGrid": {
+    "nominalCandidateCount": 30,
+    "countryWeight": [
+      0,
+      0.25,
+      0.5,
+      0.75,
+      1
+    ],
+    "target": [
+      "zero",
+      "pooled"
+    ],
+    "damping": [
+      0.8,
+      0.9,
+      0.98
+    ],
+    "candidates": [
+      {
+        "id": "zero-w0-p0.8",
+        "target": "zero",
+        "countryWeight": 0,
+        "damping": 0.8
+      },
+      {
+        "id": "zero-w0-p0.9",
+        "target": "zero",
+        "countryWeight": 0,
+        "damping": 0.9
+      },
+      {
+        "id": "zero-w0-p0.98",
+        "target": "zero",
+        "countryWeight": 0,
+        "damping": 0.98
+      },
+      {
+        "id": "zero-w0.25-p0.8",
+        "target": "zero",
+        "countryWeight": 0.25,
+        "damping": 0.8
+      },
+      {
+        "id": "zero-w0.25-p0.9",
+        "target": "zero",
+        "countryWeight": 0.25,
+        "damping": 0.9
+      },
+      {
+        "id": "zero-w0.25-p0.98",
+        "target": "zero",
+        "countryWeight": 0.25,
+        "damping": 0.98
+      },
+      {
+        "id": "zero-w0.5-p0.8",
+        "target": "zero",
+        "countryWeight": 0.5,
+        "damping": 0.8
+      },
+      {
+        "id": "zero-w0.5-p0.9",
+        "target": "zero",
+        "countryWeight": 0.5,
+        "damping": 0.9
+      },
+      {
+        "id": "zero-w0.5-p0.98",
+        "target": "zero",
+        "countryWeight": 0.5,
+        "damping": 0.98
+      },
+      {
+        "id": "zero-w0.75-p0.8",
+        "target": "zero",
+        "countryWeight": 0.75,
+        "damping": 0.8
+      },
+      {
+        "id": "zero-w0.75-p0.9",
+        "target": "zero",
+        "countryWeight": 0.75,
+        "damping": 0.9
+      },
+      {
+        "id": "zero-w0.75-p0.98",
+        "target": "zero",
+        "countryWeight": 0.75,
+        "damping": 0.98
+      },
+      {
+        "id": "zero-w1-p0.8",
+        "target": "zero",
+        "countryWeight": 1,
+        "damping": 0.8
+      },
+      {
+        "id": "zero-w1-p0.9",
+        "target": "zero",
+        "countryWeight": 1,
+        "damping": 0.9
+      },
+      {
+        "id": "zero-w1-p0.98",
+        "target": "zero",
+        "countryWeight": 1,
+        "damping": 0.98
+      },
+      {
+        "id": "pooled-w0-p0.8",
+        "target": "pooled",
+        "countryWeight": 0,
+        "damping": 0.8
+      },
+      {
+        "id": "pooled-w0-p0.9",
+        "target": "pooled",
+        "countryWeight": 0,
+        "damping": 0.9
+      },
+      {
+        "id": "pooled-w0-p0.98",
+        "target": "pooled",
+        "countryWeight": 0,
+        "damping": 0.98
+      },
+      {
+        "id": "pooled-w0.25-p0.8",
+        "target": "pooled",
+        "countryWeight": 0.25,
+        "damping": 0.8
+      },
+      {
+        "id": "pooled-w0.25-p0.9",
+        "target": "pooled",
+        "countryWeight": 0.25,
+        "damping": 0.9
+      },
+      {
+        "id": "pooled-w0.25-p0.98",
+        "target": "pooled",
+        "countryWeight": 0.25,
+        "damping": 0.98
+      },
+      {
+        "id": "pooled-w0.5-p0.8",
+        "target": "pooled",
+        "countryWeight": 0.5,
+        "damping": 0.8
+      },
+      {
+        "id": "pooled-w0.5-p0.9",
+        "target": "pooled",
+        "countryWeight": 0.5,
+        "damping": 0.9
+      },
+      {
+        "id": "pooled-w0.5-p0.98",
+        "target": "pooled",
+        "countryWeight": 0.5,
+        "damping": 0.98
+      },
+      {
+        "id": "pooled-w0.75-p0.8",
+        "target": "pooled",
+        "countryWeight": 0.75,
+        "damping": 0.8
+      },
+      {
+        "id": "pooled-w0.75-p0.9",
+        "target": "pooled",
+        "countryWeight": 0.75,
+        "damping": 0.9
+      },
+      {
+        "id": "pooled-w0.75-p0.98",
+        "target": "pooled",
+        "countryWeight": 0.75,
+        "damping": 0.98
+      },
+      {
+        "id": "pooled-w1-p0.8",
+        "target": "pooled",
+        "countryWeight": 1,
+        "damping": 0.8
+      },
+      {
+        "id": "pooled-w1-p0.9",
+        "target": "pooled",
+        "countryWeight": 1,
+        "damping": 0.9
+      },
+      {
+        "id": "pooled-w1-p0.98",
+        "target": "pooled",
+        "countryWeight": 1,
+        "damping": 0.98
+      }
+    ],
+    "duplicates": "30 nominal triples; 25 generic forecast forms because zero-target w=0 duplicates damping settings and w=1 duplicates target settings. Duplicates remain visible and are not extra adaptive trials."
+  },
+  "validation": {
+    "folds": [
+      {
+        "id": "origin-2016",
+        "trainingYears": [
+          2015,
+          2016
+        ],
+        "originYear": 2016,
+        "targetYears": [
+          2017,
+          2018
+        ]
+      },
+      {
+        "id": "origin-2017",
+        "trainingYears": [
+          2015,
+          2016,
+          2017
+        ],
+        "originYear": 2017,
+        "targetYears": [
+          2018
+        ]
+      }
+    ],
+    "fittedWithinFold": "Every country slope and pooled slope uses only the listed training years. No normalization, outcome imputation, tuning or statistic uses later values before producing each validation forecast.",
+    "countries": "Use all 101 frozen training-background countries. Score each outcome where that fold origin and target outcomes are valid, independently of membership in the final 100-country origin cohort. Missing internal targets are excluded only from that score and logged; no country is removed from final forecasts.",
+    "ladderLoss": "Mean absolute ladder error after declared 0–10 clamp, equally weighted valid country-origin-horizon records pooled across both folds.",
+    "gdpLoss": "Mean absolute cumulative growth error, 100*abs((gdpHat-gdpObserved)/gdpAtFoldOrigin), equally weighted valid country-origin-horizon records pooled across both folds.",
+    "selection": "Select each outcome separately. Find the global minimum pooled loss, retain candidates within 1e-12 of that minimum, then prefer lower countryWeight, target zero before pooled, and lower damping in that order. If no valid internal validation rows exist for an outcome, choose zero-w0-p0.8 (persistence).",
+    "baseline": "Exact persistence of that fold origin value, scored with identical valid masks. Report pooled, per-fold and per-horizon counts, MAE, RMSE, bias and model-minus-persistence MAE.",
+    "limitations": "Countries recur across folds and some 2018 target values appear at both horizons. These observations are dependent. Two origins and one/two-year horizons cannot validate seven-year behavior. Candidate selection makes the reported minimum internal error optimistic."
+  },
+  "cohort": {
+    "trainingBackgroundCountries": 101,
+    "expectedPairedTrainingRows": 399,
+    "originalRosterCountries": 128,
+    "originCountries": 100,
+    "excludedCountries": 28,
+    "rosterIds": [
+      "USA",
+      "CAN",
+      "MEX",
+      "GTM",
+      "HTI",
+      "DOM",
+      "HND",
+      "NIC",
+      "SLV",
+      "CRI",
+      "PAN",
+      "BRA",
+      "ARG",
+      "COL",
+      "CHL",
+      "PER",
+      "ECU",
+      "BOL",
+      "PRY",
+      "URY",
+      "RUS",
+      "GBR",
+      "FRA",
+      "DEU",
+      "ITA",
+      "ESP",
+      "NLD",
+      "SWE",
+      "BEL",
+      "AUT",
+      "POL",
+      "NOR",
+      "CHE",
+      "IRL",
+      "DNK",
+      "FIN",
+      "PRT",
+      "GRC",
+      "CZE",
+      "HUN",
+      "ROU",
+      "UKR",
+      "BLR",
+      "SRB",
+      "ISL",
+      "EST",
+      "LVA",
+      "LTU",
+      "SVK",
+      "SVN",
+      "HRV",
+      "BIH",
+      "MNE",
+      "MKD",
+      "ALB",
+      "BGR",
+      "MDA",
+      "LUX",
+      "CYP",
+      "MLT",
+      "CHN",
+      "JPN",
+      "KOR",
+      "MNG",
+      "VNM",
+      "IDN",
+      "PHL",
+      "THA",
+      "MYS",
+      "MMR",
+      "LAO",
+      "IND",
+      "PAK",
+      "BGD",
+      "LKA",
+      "NPL",
+      "BTN",
+      "KAZ",
+      "KGZ",
+      "TJK",
+      "TUR",
+      "IRN",
+      "IRQ",
+      "ARE",
+      "ISR",
+      "JOR",
+      "LBN",
+      "YEM",
+      "GEO",
+      "ARM",
+      "PSE",
+      "NGA",
+      "ZAF",
+      "EGY",
+      "ETH",
+      "KEN",
+      "COD",
+      "MAR",
+      "DZA",
+      "AUS"
+    ],
+    "excluded": [
+      {
+        "id": "CUB",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "JAM",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "BLZ",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "BHS",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "TTO",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "VEN",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "GUY",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "SUR",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "TWN",
+        "reason": "Missing historical population, gini, ge, rl, cc"
+      },
+      {
+        "id": "PRK",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "SGP",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "KHM",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "BRN",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "MDV",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "UZB",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "TKM",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "SAU",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "AFG",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "SYR",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "OMN",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "QAT",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "KWT",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "BHR",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "AZE",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "AGO",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "NZL",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "PNG",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "TLS",
+        "reason": "Missing/invalid 2018 origin outcomes"
+      }
+    ],
+    "rule": "Keep exactly the frozen origin roster and exclusions; require finite ladder 0–10 and positive finite GDP for origin. Do not consult future availability."
+  },
+  "missingness": "No fill-forward, future-to-past filling, cross-country level imputation or extra features. Missing training years are omitted from OLS using actual calendar years. Country slope with fewer than two observations falls back to the declared shrink target; exact origin values remain required. Invalid input values fail validation rather than silently disappearing. Missing internal origins/targets are logged. Final origin cohort never changes.",
+  "clampPolicy": {
+    "ladder": [
+      0,
+      10
+    ],
+    "when": "After transformed trend forecast, before internal score and final output",
+    "report": "Counts and individual raw-to-clamped values for every candidate/internal fold and final selected forecasts",
+    "gdp": "No clamp. exp(log forecast), assert positive finite."
+  },
+  "forecastCovariates": "Only observed training-year ladder/GDP, exact observed origin values, fixed country identity and calendar horizon. Forecast GDP never enters ladder; ladder never enters GDP. No causal effect interpretation.",
+  "baseline": "Persistence of each country’s 2018 ladder and GDP, with identical outcome-specific masks/horizons.",
+  "primaryMetric": "2025 ladder MAE over observed members of the fixed 100-country cohort, plus model minus persistence MAE. Not pooled country-year MAE.",
+  "secondaryMetrics": [
+    "Pooled 2019–2025 and every year separately: ladder MAE, RMSE, signed bias and model-minus-persistence MAE, each with denominators",
+    "GDP cumulative growth error in percentage points relative to 2018 GDP: MAE, RMSE, bias, model-minus-persistence MAE, pooled and per horizon",
+    "Origin-income quartile groups: sort origin GDP ascending then country id, group=floor(index*4/N), never reclassify with future GDP",
+    "Coverage, each frozen exclusion and each missing score by outcome/year"
+  ],
+  "emptyOrUndefinedMetrics": "null with a reason; never zero success",
+  "accuracyPassThreshold": null,
+  "integrityGates": [
+    "Register and commit before any fitting or internal validation execution",
+    "No heldout data reads; only controller may score once after all five plus long-run predictions freeze",
+    "Exactly 700 unique country/year rows in original Prediction shape; finite outputs and positive GDP",
+    "Full source and protocol hashes, runtime version, complete grid scores, selected calibration and per-country slopes preserved",
+    "Tests use synthetic inputs or permitted training/origin fixtures only",
+    "Publish this candidate and failures regardless of result; no post-score changes"
+  ],
+  "freezePolicy": "Fit full 2015–2018, write calibration.json, internal-validation.json, predictions.json {rows}, provenance.json, tests and pending-result note. Commit all and stop. No external test execution until controller gate. A later sealed result may update only documentation.",
+  "sources": [
+    {
+      "url": "https://otexts.com/fpp3/holt.html",
+      "title": "Hyndman and Athanasopoulos, Forecasting: Principles and Practice, 3rd ed., Methods with trend",
+      "accessedAt": "2026-09-16",
+      "use": "Damped forecast sum phi^k; the 0.8–0.98 damping range. Our OLS slope/shrinkage simplification is separately declared."
+    },
+    {
+      "url": "https://otexts.com/fpp3/tscv.html",
+      "title": "Hyndman and Athanasopoulos, Forecasting: Principles and Practice, 3rd ed., Time series cross-validation",
+      "accessedAt": "2026-09-16",
+      "use": "Rolling-origin training on only observations preceding each validation target; explicitly distinct from in-sample residual accuracy."
+    }
+  ],
+  "vintageLimit": "Frozen historical observations are later-vintage values, not an archive of data actually published by 2018. Revision/publication lags, annual-label semantics and country exclusion selection limit interpretation.",
+  "prohibited": [
+    "Read heldout outcomes or published country results before family freeze",
+    "Modify production models, scoring code, old artifacts, lockfiles or defaults",
+    "Use future numeric features, causal claims or post-score tuning",
+    "Present five-agent selection as independent confirmatory validation"
+  ],
+  "amendments": []
+}
