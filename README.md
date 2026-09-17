@@ -91,6 +91,11 @@ npm run preview
 
 ### Checks
 
+Use **Node 22** (`.nvmrc`). The registered research-attempt tests shell out to `node --test` and match
+its TAP summary, whose format changed after Node 22; on a newer Node those three tests report a format
+mismatch even though every underlying check passes. Their sources are hash-sealed, so the fix is the
+Node version, not an edit.
+
 ```bash
 npm run typecheck   # tsc --noEmit
 npm test            # vitest: parser sandbox, model storage, pure engine
