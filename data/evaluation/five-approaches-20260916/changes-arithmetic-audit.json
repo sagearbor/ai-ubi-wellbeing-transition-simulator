@@ -1,0 +1,10 @@
+{
+  "method": "Independent Python normal equations with forward elimination/back substitution; no submitted model import",
+  "rows": 700,
+  "maxAbsoluteDifference": {
+    "ladder": 0,
+    "gdp": 2.9103830456733704e-11
+  },
+  "relativeTolerance": 1e-09,
+  "scope": "Selected ridge coefficients and all forecasts independently recomputed from train/origin. CV selection code-reviewed."
+}

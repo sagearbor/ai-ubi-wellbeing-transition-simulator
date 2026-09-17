@@ -1,0 +1,108 @@
+{
+  "schema": "forecast-research-entry/1",
+  "id": "research-changes-2018-v1",
+  "familyId": "five-approaches-20260916",
+  "title": "Train-only first-difference ridge regression",
+  "authorship": "Automated agent; no independent human/domain-expert review",
+  "status": "frozen-pending-collective-external-scoring",
+  "registrationCommit": "dcf05639d28fbe497d18956f138dd96981a60aa8",
+  "freezeCommit": "Use the commit adding this ledger and the predictions; controller records the immutable commit before scoring.",
+  "protocol": "data/evaluation/research-changes-2018-v1/protocol.json",
+  "predictionPath": "data/evaluation/research-changes-2018-v1/predictions.json",
+  "predictionsSha256": "2a01e1b4dd126e49a453915387f93be7ef6b057bf56cb9bfffcc20a6771b4d0d",
+  "calibration": "data/evaluation/research-changes-2018-v1/calibration.json",
+  "internalValidation": "data/evaluation/research-changes-2018-v1/internal-validation.json",
+  "provenance": "data/evaluation/research-changes-2018-v1/provenance.json",
+  "note": "docs/design/research/2026-09-16-research-changes-2018-v1.md",
+  "sourceStartCommit": "0ca2eda3ea5db518499abebda1de1367d4e1ab7e",
+  "method": "Predict adjacent annual ladder changes with four standardized income/governance/inequality features; ridge penalizes all five coefficients including intercept. Forecast GDP independently from pooled-shrunk historical growth.",
+  "selected": {
+    "lambda": 100,
+    "registeredLambdas": [
+      0.1,
+      1,
+      10,
+      100
+    ],
+    "gdpPseudoObservations": 2,
+    "gdpLogGrowthClamp": [
+      -0.1,
+      0.1
+    ],
+    "ladderBounds": [
+      0,
+      10
+    ]
+  },
+  "cohort": {
+    "background": 101,
+    "pairedRows": 399,
+    "transitions": 298,
+    "origin": 100,
+    "excluded": 28,
+    "forecasts": 700
+  },
+  "internalFinding": {
+    "verdict": "No pooled internal ladder improvement; selected estimate is near persistence. No post-trial grid expansion.",
+    "selectedMetrics": {
+      "ladder": {
+        "model": {
+          "n": 298,
+          "mae": 0.13530688410838382,
+          "rmse": 0.1889209725075223,
+          "bias": -0.023584495405185327
+        },
+        "persistence": {
+          "n": 298,
+          "mae": 0.1352986577181208,
+          "rmse": 0.18893707450049443,
+          "bias": -0.023741610738255047
+        },
+        "deltaMae": 8.226390263016414e-06
+      },
+      "gdp": {
+        "model": {
+          "n": 298,
+          "mae": 2.162598135543488,
+          "rmse": 3.1932800624576885,
+          "bias": -0.6358075533972257
+        },
+        "persistence": {
+          "n": 298,
+          "mae": 4.150188004660577,
+          "rmse": 5.2189767408353935,
+          "bias": -3.680813274143613
+        },
+        "deltaMae": -1.9875898691170888
+      }
+    },
+    "scoredRows": 298,
+    "forecastOrigins": [
+      2016,
+      2017
+    ],
+    "horizons": [
+      1,
+      2
+    ],
+    "notIndependentConfirmation": true
+  },
+  "primaryExternalMetric": "2025 endpoint ladder MAE against persistence, matching score masks",
+  "externalScore": null,
+  "externalScoreInvocationCount": 0,
+  "validation": {
+    "command": "/private/tmp/history-node22/package/bin/node node_modules/vitest/vitest.mjs run scripts/evaluation/attempts/research-changes-2018-v1/model.test.ts",
+    "testsPassed": 12,
+    "testsFailed": 0,
+    "wholeRepositoryChecks": "Pending controller after collective gate",
+    "artifactReproduction": "Two runner executions compared byte-for-byte SHA-256; passed."
+  },
+  "amendments": [],
+  "limitations": [
+    "Two temporal origins and at most two internal forecast years; seven-year stability untested.",
+    "Repeated countries, historical revisions, and later methodology choices prevent archived-as-of or blinded validation claims.",
+    "Strongest registered penalty selected at boundary; no evidence to expand the grid.",
+    "All five method results must be published; winner selection is exploratory."
+  ],
+  "nextAction": "Stop. Controller freezes all five methods and long-run proxy, scores once per entry, then publishes successes and failures without altering forecasts."
+}
