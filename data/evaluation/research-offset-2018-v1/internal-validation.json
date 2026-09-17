@@ -1,0 +1,5524 @@
+{
+  "schema": "research-internal-validation/1",
+  "entryId": "research-offset-2018-v1",
+  "protocolHash": "361159323cd9fa2f2b2b7e1078bec77e955c315c2402fb051ff4a5fe61eabeaa",
+  "selectedSetting": {
+    "gdpMode": "half-local",
+    "offsetWeight": 1,
+    "annualAdjustment": 1
+  },
+  "gdpCandidates": [
+    {
+      "gdpMode": "persistence",
+      "selectionLoss": 4.6642259120766525,
+      "byHorizon": [
+        {
+          "horizon": 1,
+          "n": 199,
+          "mae": 3.132392947976746,
+          "rmse": 3.744520476519988,
+          "bias": -2.7384811713620656,
+          "persistenceMae": 3.132392947976746
+        },
+        {
+          "horizon": 2,
+          "n": 99,
+          "mae": 6.19605887617656,
+          "rmse": 7.335106358496461,
+          "bias": -5.574995985795418,
+          "persistenceMae": 6.19605887617656
+        }
+      ],
+      "pooled": {
+        "n": 298,
+        "mae": 4.150188004660577,
+        "rmse": 5.2189767408353935,
+        "bias": -3.680813274143613,
+        "persistenceMae": 4.150188004660577
+      },
+      "diagnostics": [
+        {
+          "rateCaps": 0,
+          "ladderLowCaps": 0,
+          "ladderHighCaps": 0,
+          "rawLadderRange": {
+            "min": 3.593,
+            "max": 7.537
+          },
+          "ladderRange": {
+            "min": 3.593,
+            "max": 7.537
+          },
+          "gdpRange": {
+            "min": 480.461377880475,
+            "max": 108351.452194449
+          }
+        },
+        {
+          "rateCaps": 0,
+          "ladderLowCaps": 0,
+          "ladderHighCaps": 0,
+          "rawLadderRange": {
+            "min": 3.355,
+            "max": 7.632
+          },
+          "ladderRange": {
+            "min": 3.355,
+            "max": 7.632
+          },
+          "gdpRange": {
+            "min": 482.854682128541,
+            "max": 107142.05542835
+          }
+        }
+      ]
+    },
+    {
+      "gdpMode": "pooled",
+      "selectionLoss": 2.8965795907005694,
+      "byHorizon": [
+        {
+          "horizon": 1,
+          "n": 199,
+          "mae": 1.9766324900349797,
+          "rmse": 2.597586833345999,
+          "bias": -0.38988156538931695,
+          "persistenceMae": 3.132392947976746
+        },
+        {
+          "horizon": 2,
+          "n": 99,
+          "mae": 3.8165266913661586,
+          "rmse": 4.964537454043097,
+          "bias": -1.3868767370521902,
+          "persistenceMae": 6.19605887617656
+        }
+      ],
+      "pooled": {
+        "n": 298,
+        "mae": 2.5878725099403033,
+        "rmse": 3.562839808413901,
+        "bias": -0.7210980821498012,
+        "persistenceMae": 4.150188004660577
+      },
+      "diagnostics": [
+        {
+          "rateCaps": 0,
+          "ladderLowCaps": 0,
+          "ladderHighCaps": 0,
+          "rawLadderRange": {
+            "min": 3.593,
+            "max": 7.537
+          },
+          "ladderRange": {
+            "min": 3.593,
+            "max": 7.537
+          },
+          "gdpRange": {
+            "min": 490.9491151376714,
+            "max": 112889.34022009753
+          }
+        },
+        {
+          "rateCaps": 0,
+          "ladderLowCaps": 0,
+          "ladderHighCaps": 0,
+          "rawLadderRange": {
+            "min": 3.355,
+            "max": 7.632
+          },
+          "ladderRange": {
+            "min": 3.355,
+            "max": 7.632
+          },
+          "gdpRange": {
+            "min": 494.98734558541474,
+            "max": 109834.20805460087
+          }
+        }
+      ]
+    },
+    {
+      "gdpMode": "half-local",
+      "selectionLoss": 2.3901903391425265,
+      "byHorizon": [
+        {
+          "horizon": 1,
+          "n": 199,
+          "mae": 1.5979073954830554,
+          "rmse": 2.2989388017747525,
+          "bias": -0.381030629316051,
+          "persistenceMae": 3.132392947976746
+        },
+        {
+          "horizon": 2,
+          "n": 99,
+          "mae": 3.1824732828019977,
+          "rmse": 4.656312139563311,
+          "bias": -1.3469540974311844,
+          "persistenceMae": 6.19605887617656
+        }
+      ],
+      "pooled": {
+        "n": 298,
+        "mae": 2.124323579525255,
+        "rmse": 3.2759966128518583,
+        "bias": -0.7019246673811452,
+        "persistenceMae": 4.150188004660577
+      },
+      "diagnostics": [
+        {
+          "rateCaps": 0,
+          "ladderLowCaps": 0,
+          "ladderHighCaps": 0,
+          "rawLadderRange": {
+            "min": 3.593,
+            "max": 7.537
+          },
+          "ladderRange": {
+            "min": 3.593,
+            "max": 7.537
+          },
+          "gdpRange": {
+            "min": 475.97022055719,
+            "max": 113473.795887223
+          }
+        },
+        {
+          "rateCaps": 0,
+          "ladderLowCaps": 0,
+          "ladderHighCaps": 0,
+          "rawLadderRange": {
+            "min": 3.355,
+            "max": 7.632
+          },
+          "ladderRange": {
+            "min": 3.355,
+            "max": 7.632
+          },
+          "gdpRange": {
+            "min": 485.6539447573646,
+            "max": 108909.25268504875
+          }
+        }
+      ]
+    },
+    {
+      "gdpMode": "local",
+      "selectionLoss": 2.6912706435962455,
+      "byHorizon": [
+        {
+          "horizon": 1,
+          "n": 199,
+          "mae": 1.691106703545843,
+          "rmse": 2.6755882161346656,
+          "bias": -0.34244274405428987,
+          "persistenceMae": 3.132392947976746
+        },
+        {
+          "horizon": 2,
+          "n": 99,
+          "mae": 3.691434583646648,
+          "rmse": 5.771364428059012,
+          "bias": -1.1970441442617987,
+          "persistenceMae": 6.19605887617656
+        }
+      ],
+      "pooled": {
+        "n": 298,
+        "mae": 2.3556451603578554,
+        "rmse": 3.980721907205381,
+        "bias": -0.6263539474789321,
+        "persistenceMae": 4.150188004660577
+      },
+      "diagnostics": [
+        {
+          "rateCaps": 2,
+          "ladderLowCaps": 0,
+          "ladderHighCaps": 0,
+          "rawLadderRange": {
+            "min": 3.593,
+            "max": 7.537
+          },
+          "ladderRange": {
+            "min": 3.593,
+            "max": 7.537
+          },
+          "gdpRange": {
+            "min": 452.5669991394094,
+            "max": 114061.27742398476
+          }
+        },
+        {
+          "rateCaps": 1,
+          "ladderLowCaps": 0,
+          "ladderHighCaps": 0,
+          "rawLadderRange": {
+            "min": 3.355,
+            "max": 7.632
+          },
+          "ladderRange": {
+            "min": 3.355,
+            "max": 7.632
+          },
+          "gdpRange": {
+            "min": 476.49653301629627,
+            "max": 107992.08671418049
+          }
+        }
+      ]
+    }
+  ],
+  "ladderCandidates": [
+    {
+      "offsetWeight": 1,
+      "annualAdjustment": 0,
+      "selectionLoss": 0.14893358205167248,
+      "byHorizon": [
+        {
+          "horizon": 1,
+          "n": 199,
+          "mae": 0.1083015075376884,
+          "rmse": 0.15210829916006177,
+          "bias": -0.018211055276381925,
+          "persistenceMae": 0.1083015075376884
+        },
+        {
+          "horizon": 2,
+          "n": 99,
+          "mae": 0.18956565656565655,
+          "rmse": 0.24686971577262484,
+          "bias": -0.03485858585858588,
+          "persistenceMae": 0.18956565656565655
+        }
+      ],
+      "pooled": {
+        "n": 298,
+        "mae": 0.1352986577181208,
+        "rmse": 0.18893707450049443,
+        "bias": -0.023741610738255047,
+        "persistenceMae": 0.1352986577181208
+      },
+      "diagnostics": [
+        {
+          "rateCaps": 0,
+          "ladderLowCaps": 0,
+          "ladderHighCaps": 0,
+          "rawLadderRange": {
+            "min": 3.593,
+            "max": 7.537
+          },
+          "ladderRange": {
+            "min": 3.593,
+            "max": 7.537
+          },
+          "gdpRange": {
+            "min": 475.97022055719,
+            "max": 113473.795887223
+          }
+        },
+        {
+          "rateCaps": 0,
+          "ladderLowCaps": 0,
+          "ladderHighCaps": 0,
+          "rawLadderRange": {
+            "min": 3.355,
+            "max": 7.632
+          },
+          "ladderRange": {
+            "min": 3.355,
+            "max": 7.632
+          },
+          "gdpRange": {
+            "min": 485.6539447573646,
+            "max": 108909.25268504875
+          }
+        }
+      ]
+    },
+    {
+      "offsetWeight": 1,
+      "annualAdjustment": 0.1,
+      "selectionLoss": 0.14848744169193903,
+      "byHorizon": [
+        {
+          "horizon": 1,
+          "n": 199,
+          "mae": 0.10796717570876557,
+          "rmse": 0.1517991762188194,
+          "bias": -0.016768509670455796,
+          "persistenceMae": 0.1083015075376884
+        },
+        {
+          "horizon": 2,
+          "n": 99,
+          "mae": 0.1890077076751125,
+          "rmse": 0.2460487062422669,
+          "bias": -0.03151537126248382,
+          "persistenceMae": 0.18956565656565655
+        }
+      ],
+      "pooled": {
+        "n": 298,
+        "mae": 0.13489003699959892,
+        "rmse": 0.18841454019137896,
+        "bias": -0.0216676348302235,
+        "persistenceMae": 0.1352986577181208
+      },
+      "diagnostics": [
+        {
+          "rateCaps": 0,
+          "ladderLowCaps": 0,
+          "ladderHighCaps": 0,
+          "rawLadderRange": {
+            "min": 3.5847270411030925,
+            "max": 7.538983072730745
+          },
+          "ladderRange": {
+            "min": 3.5847270411030925,
+            "max": 7.538983072730745
+          },
+          "gdpRange": {
+            "min": 475.97022055719,
+            "max": 113473.795887223
+          }
+        },
+        {
+          "rateCaps": 0,
+          "ladderLowCaps": 0,
+          "ladderHighCaps": 0,
+          "rawLadderRange": {
+            "min": 3.352261219795921,
+            "max": 7.633740316238807
+          },
+          "ladderRange": {
+            "min": 3.352261219795921,
+            "max": 7.633740316238807
+          },
+          "gdpRange": {
+            "min": 485.6539447573646,
+            "max": 108909.25268504875
+          }
+        }
+      ]
+    },
+    {
+      "offsetWeight": 1,
+      "annualAdjustment": 0.25,
+      "selectionLoss": 0.14786002027972045,
+      "byHorizon": [
+        {
+          "horizon": 1,
+          "n": 199,
+          "mae": 0.10747453092230362,
+          "rmse": 0.15136875175146838,
+          "bias": -0.014604691261566985,
+          "persistenceMae": 0.1083015075376884
+        },
+        {
+          "horizon": 2,
+          "n": 99,
+          "mae": 0.1882455096371373,
+          "rmse": 0.24503037825002777,
+          "bias": -0.02694830132316639,
+          "persistenceMae": 0.18956565656565655
+        }
+      ],
+      "pooled": {
+        "n": 298,
+        "mae": 0.13430784264300344,
+        "rmse": 0.18774121881914974,
+        "bias": -0.01870542077867551,
+        "persistenceMae": 0.1352986577181208
+      },
+      "diagnostics": [
+        {
+          "rateCaps": 0,
+          "ladderLowCaps": 0,
+          "ladderHighCaps": 0,
+          "rawLadderRange": {
+            "min": 3.5734255883242807,
+            "max": 7.541692091728995
+          },
+          "ladderRange": {
+            "min": 3.5734255883242807,
+            "max": 7.541692091728995
+          },
+          "gdpRange": {
+            "min": 475.97022055719,
+            "max": 113473.795887223
+          }
+        },
+        {
+          "rateCaps": 0,
+          "ladderLowCaps": 0,
+          "ladderHighCaps": 0,
+          "rawLadderRange": {
+            "min": 3.3481530494898024,
+            "max": 7.636350790597016
+          },
+          "ladderRange": {
+            "min": 3.3481530494898024,
+            "max": 7.636350790597016
+          },
+          "gdpRange": {
+            "min": 485.6539447573646,
+            "max": 108909.25268504875
+          }
+        }
+      ]
+    },
+    {
+      "offsetWeight": 1,
+      "annualAdjustment": 1,
+      "selectionLoss": 0.1456507627251511,
+      "byHorizon": [
+        {
+          "horizon": 1,
+          "n": 199,
+          "mae": 0.1055219506419084,
+          "rmse": 0.14982562300367372,
+          "bias": -0.003785599217122293,
+          "persistenceMae": 0.1083015075376884
+        },
+        {
+          "horizon": 2,
+          "n": 99,
+          "mae": 0.18577957480839377,
+          "rmse": 0.24256824254816775,
+          "bias": -0.012172486813609374,
+          "persistenceMae": 0.18956565656565655
+        }
+      ],
+      "pooled": {
+        "n": 298,
+        "mae": 0.1321847184019153,
+        "rmse": 0.18584282546397446,
+        "bias": -0.006571847109914983,
+        "persistenceMae": 0.1352986577181208
+      },
+      "diagnostics": [
+        {
+          "rateCaps": 0,
+          "ladderLowCaps": 0,
+          "ladderHighCaps": 0,
+          "rawLadderRange": {
+            "min": 3.5368620646281257,
+            "max": 7.550456564958628
+          },
+          "ladderRange": {
+            "min": 3.5368620646281257,
+            "max": 7.550456564958628
+          },
+          "gdpRange": {
+            "min": 475.97022055719,
+            "max": 113473.795887223
+          }
+        },
+        {
+          "rateCaps": 0,
+          "ladderLowCaps": 0,
+          "ladderHighCaps": 0,
+          "rawLadderRange": {
+            "min": 3.3276121979592106,
+            "max": 7.649403162388063
+          },
+          "ladderRange": {
+            "min": 3.3276121979592106,
+            "max": 7.649403162388063
+          },
+          "gdpRange": {
+            "min": 485.6539447573646,
+            "max": 108909.25268504875
+          }
+        }
+      ]
+    },
+    {
+      "offsetWeight": 0.5,
+      "annualAdjustment": 0,
+      "selectionLoss": 0.14893358205167248,
+      "byHorizon": [
+        {
+          "horizon": 1,
+          "n": 199,
+          "mae": 0.1083015075376884,
+          "rmse": 0.15210829916006177,
+          "bias": -0.018211055276381925,
+          "persistenceMae": 0.1083015075376884
+        },
+        {
+          "horizon": 2,
+          "n": 99,
+          "mae": 0.18956565656565655,
+          "rmse": 0.24686971577262484,
+          "bias": -0.03485858585858588,
+          "persistenceMae": 0.18956565656565655
+        }
+      ],
+      "pooled": {
+        "n": 298,
+        "mae": 0.1352986577181208,
+        "rmse": 0.18893707450049443,
+        "bias": -0.023741610738255047,
+        "persistenceMae": 0.1352986577181208
+      },
+      "diagnostics": [
+        {
+          "rateCaps": 0,
+          "ladderLowCaps": 0,
+          "ladderHighCaps": 0,
+          "rawLadderRange": {
+            "min": 3.593,
+            "max": 7.537
+          },
+          "ladderRange": {
+            "min": 3.593,
+            "max": 7.537
+          },
+          "gdpRange": {
+            "min": 475.97022055719,
+            "max": 113473.795887223
+          }
+        },
+        {
+          "rateCaps": 0,
+          "ladderLowCaps": 0,
+          "ladderHighCaps": 0,
+          "rawLadderRange": {
+            "min": 3.355,
+            "max": 7.632
+          },
+          "ladderRange": {
+            "min": 3.355,
+            "max": 7.632
+          },
+          "gdpRange": {
+            "min": 485.6539447573646,
+            "max": 108909.25268504875
+          }
+        }
+      ]
+    },
+    {
+      "offsetWeight": 0.5,
+      "annualAdjustment": 0.1,
+      "selectionLoss": 0.14714552307688816,
+      "byHorizon": [
+        {
+          "horizon": 1,
+          "n": 199,
+          "mae": 0.10783248514316529,
+          "rmse": 0.14998106491016913,
+          "bias": -0.016571243087531832,
+          "persistenceMae": 0.1083015075376884
+        },
+        {
+          "horizon": 2,
+          "n": 99,
+          "mae": 0.18645856101061103,
+          "rmse": 0.2391519785239048,
+          "bias": -0.03158915693848107,
+          "persistenceMae": 0.18956565656565655
+        }
+      ],
+      "pooled": {
+        "n": 298,
+        "mae": 0.13395322846825636,
+        "rmse": 0.18445041585443092,
+        "bias": -0.02156041580982705,
+        "persistenceMae": 0.1352986577181208
+      },
+      "diagnostics": [
+        {
+          "rateCaps": 0,
+          "ladderLowCaps": 0,
+          "ladderHighCaps": 0,
+          "rawLadderRange": {
+            "min": 3.6339098794113256,
+            "max": 7.5191650647521
+          },
+          "ladderRange": {
+            "min": 3.6339098794113256,
+            "max": 7.5191650647521
+          },
+          "gdpRange": {
+            "min": 475.97022055719,
+            "max": 113473.795887223
+          }
+        },
+        {
+          "rateCaps": 0,
+          "ladderLowCaps": 0,
+          "ladderHighCaps": 0,
+          "rawLadderRange": {
+            "min": 3.4045247972274693,
+            "max": 7.59708263539423
+          },
+          "ladderRange": {
+            "min": 3.4045247972274693,
+            "max": 7.59708263539423
+          },
+          "gdpRange": {
+            "min": 485.6539447573646,
+            "max": 108909.25268504875
+          }
+        }
+      ]
+    },
+    {
+      "offsetWeight": 0.5,
+      "annualAdjustment": 0.25,
+      "selectionLoss": 0.15480181779934463,
+      "byHorizon": [
+        {
+          "horizon": 1,
+          "n": 199,
+          "mae": 0.11542279413825066,
+          "rmse": 0.15623463488233655,
+          "bias": -0.0141115248042571,
+          "persistenceMae": 0.1083015075376884
+        },
+        {
+          "horizon": 2,
+          "n": 99,
+          "mae": 0.1941808414604386,
+          "rmse": 0.2466777761529783,
+          "bias": -0.027118202550791705,
+          "persistenceMae": 0.18956565656565655
+        }
+      ],
+      "pooled": {
+        "n": 298,
+        "mae": 0.14158738032917878,
+        "rmse": 0.19108999922694186,
+        "bias": -0.018432535196562218,
+        "persistenceMae": 0.1352986577181208
+      },
+      "diagnostics": [
+        {
+          "rateCaps": 0,
+          "ladderLowCaps": 0,
+          "ladderHighCaps": 0,
+          "rawLadderRange": {
+            "min": 3.695274698528313,
+            "max": 7.49241266188025
+          },
+          "ladderRange": {
+            "min": 3.695274698528313,
+            "max": 7.49241266188025
+          },
+          "gdpRange": {
+            "min": 475.97022055719,
+            "max": 113473.795887223
+          }
+        },
+        {
+          "rateCaps": 0,
+          "ladderLowCaps": 0,
+          "ladderHighCaps": 0,
+          "rawLadderRange": {
+            "min": 3.478811993068673,
+            "max": 7.5471938371888
+          },
+          "ladderRange": {
+            "min": 3.478811993068673,
+            "max": 7.5471938371888
+          },
+          "gdpRange": {
+            "min": 485.6539447573646,
+            "max": 108909.25268504875
+          }
+        }
+      ]
+    },
+    {
+      "offsetWeight": 0.5,
+      "annualAdjustment": 1,
+      "selectionLoss": 0.24430821393451213,
+      "byHorizon": [
+        {
+          "horizon": 1,
+          "n": 199,
+          "mae": 0.23461370327090905,
+          "rmse": 0.29292236494521035,
+          "bias": -0.0018129333878826245,
+          "persistenceMae": 0.1083015075376884
+        },
+        {
+          "horizon": 2,
+          "n": 99,
+          "mae": 0.25400272459811524,
+          "rmse": 0.3243089970086274,
+          "bias": -0.012560832476752746,
+          "persistenceMae": 0.18956565656565655
+        }
+      ],
+      "pooled": {
+        "n": 298,
+        "mae": 0.24105502243665866,
+        "rmse": 0.3037094773349109,
+        "bias": -0.005383544159017328,
+        "persistenceMae": 0.1352986577181208
+      },
+      "diagnostics": [
+        {
+          "rateCaps": 0,
+          "ladderLowCaps": 0,
+          "ladderHighCaps": 0,
+          "rawLadderRange": {
+            "min": 3.9755071405160485,
+            "max": 7.375629393363523
+          },
+          "ladderRange": {
+            "min": 3.9755071405160485,
+            "max": 7.375629393363523
+          },
+          "gdpRange": {
+            "min": 475.97022055719,
+            "max": 113473.795887223
+          }
+        },
+        {
+          "rateCaps": 0,
+          "ladderLowCaps": 0,
+          "ladderHighCaps": 0,
+          "rawLadderRange": {
+            "min": 3.8502479722746923,
+            "max": 7.4067753487552
+          },
+          "ladderRange": {
+            "min": 3.8502479722746923,
+            "max": 7.4067753487552
+          },
+          "gdpRange": {
+            "min": 485.6539447573646,
+            "max": 108909.25268504875
+          }
+        }
+      ]
+    },
+    {
+      "offsetWeight": 0,
+      "annualAdjustment": 0,
+      "selectionLoss": 0.14893358205167248,
+      "byHorizon": [
+        {
+          "horizon": 1,
+          "n": 199,
+          "mae": 0.1083015075376884,
+          "rmse": 0.15210829916006177,
+          "bias": -0.018211055276381925,
+          "persistenceMae": 0.1083015075376884
+        },
+        {
+          "horizon": 2,
+          "n": 99,
+          "mae": 0.18956565656565655,
+          "rmse": 0.24686971577262484,
+          "bias": -0.03485858585858588,
+          "persistenceMae": 0.18956565656565655
+        }
+      ],
+      "pooled": {
+        "n": 298,
+        "mae": 0.1352986577181208,
+        "rmse": 0.18893707450049443,
+        "bias": -0.023741610738255047,
+        "persistenceMae": 0.1352986577181208
+      },
+      "diagnostics": [
+        {
+          "rateCaps": 0,
+          "ladderLowCaps": 0,
+          "ladderHighCaps": 0,
+          "rawLadderRange": {
+            "min": 3.593,
+            "max": 7.537
+          },
+          "ladderRange": {
+            "min": 3.593,
+            "max": 7.537
+          },
+          "gdpRange": {
+            "min": 475.97022055719,
+            "max": 113473.795887223
+          }
+        },
+        {
+          "rateCaps": 0,
+          "ladderLowCaps": 0,
+          "ladderHighCaps": 0,
+          "rawLadderRange": {
+            "min": 3.355,
+            "max": 7.632
+          },
+          "ladderRange": {
+            "min": 3.355,
+            "max": 7.632
+          },
+          "gdpRange": {
+            "min": 485.6539447573646,
+            "max": 108909.25268504875
+          }
+        }
+      ]
+    },
+    {
+      "offsetWeight": 0,
+      "annualAdjustment": 0.1,
+      "selectionLoss": 0.15234625555515968,
+      "byHorizon": [
+        {
+          "horizon": 1,
+          "n": 199,
+          "mae": 0.11245339233895031,
+          "rmse": 0.15317911037589468,
+          "bias": -0.01637397650460789,
+          "persistenceMae": 0.1083015075376884
+        },
+        {
+          "horizon": 2,
+          "n": 99,
+          "mae": 0.19223911877136907,
+          "rmse": 0.24382263940870133,
+          "bias": -0.03166294261447832,
+          "persistenceMae": 0.18956565656565655
+        }
+      ],
+      "pooled": {
+        "n": 298,
+        "mae": 0.13895938870408275,
+        "rmse": 0.18819883281550145,
+        "bias": -0.021453196789430612,
+        "persistenceMae": 0.1352986577181208
+      },
+      "diagnostics": [
+        {
+          "rateCaps": 0,
+          "ladderLowCaps": 0,
+          "ladderHighCaps": 0,
+          "rawLadderRange": {
+            "min": 3.6777743870001176,
+            "max": 7.500621889243219
+          },
+          "ladderRange": {
+            "min": 3.6777743870001176,
+            "max": 7.500621889243219
+          },
+          "gdpRange": {
+            "min": 475.97022055719,
+            "max": 113473.795887223
+          }
+        },
+        {
+          "rateCaps": 0,
+          "ladderLowCaps": 0,
+          "ladderHighCaps": 0,
+          "rawLadderRange": {
+            "min": 3.456788374659017,
+            "max": 7.560424954549654
+          },
+          "ladderRange": {
+            "min": 3.456788374659017,
+            "max": 7.560424954549654
+          },
+          "gdpRange": {
+            "min": 485.6539447573646,
+            "max": 108909.25268504875
+          }
+        }
+      ]
+    },
+    {
+      "offsetWeight": 0,
+      "annualAdjustment": 0.25,
+      "selectionLoss": 0.189657324277694,
+      "byHorizon": [
+        {
+          "horizon": 1,
+          "n": 199,
+          "mae": 0.14344637777277588,
+          "rmse": 0.1881348222648425,
+          "bias": -0.013618358346947185,
+          "persistenceMae": 0.1083015075376884
+        },
+        {
+          "horizon": 2,
+          "n": 99,
+          "mae": 0.23586827078261208,
+          "rmse": 0.30226307676729885,
+          "bias": -0.027288103778416884,
+          "persistenceMae": 0.18956565656565655
+        }
+      ],
+      "pooled": {
+        "n": 298,
+        "mae": 0.1741502952491979,
+        "rmse": 0.23235359356931173,
+        "bias": -0.018159649614448863,
+        "persistenceMae": 0.1352986577181208
+      },
+      "diagnostics": [
+        {
+          "rateCaps": 0,
+          "ladderLowCaps": 0,
+          "ladderHighCaps": 0,
+          "rawLadderRange": {
+            "min": 3.8049359675002936,
+            "max": 7.446054723108049
+          },
+          "ladderRange": {
+            "min": 3.8049359675002936,
+            "max": 7.446054723108049
+          },
+          "gdpRange": {
+            "min": 475.97022055719,
+            "max": 113473.795887223
+          }
+        },
+        {
+          "rateCaps": 0,
+          "ladderLowCaps": 0,
+          "ladderHighCaps": 0,
+          "rawLadderRange": {
+            "min": 3.6094709366475435,
+            "max": 7.497328861278399
+          },
+          "ladderRange": {
+            "min": 3.6094709366475435,
+            "max": 7.497328861278399
+          },
+          "gdpRange": {
+            "min": 485.6539447573646,
+            "max": 108909.25268504875
+          }
+        }
+      ]
+    },
+    {
+      "offsetWeight": 0,
+      "annualAdjustment": 1,
+      "selectionLoss": 0.44715427363570115,
+      "byHorizon": [
+        {
+          "horizon": 1,
+          "n": 199,
+          "mae": 0.44740183331183503,
+          "rmse": 0.5486149066242656,
+          "bias": 0.00015973244135707298,
+          "persistenceMae": 0.1083015075376884
+        },
+        {
+          "horizon": 2,
+          "n": 99,
+          "mae": 0.4469067139595673,
+          "rmse": 0.5538017124216608,
+          "bias": -0.012949178139895963,
+          "persistenceMae": 0.18956565656565655
+        }
+      ],
+      "pooled": {
+        "n": 298,
+        "mae": 0.4472373473525249,
+        "rmse": 0.5503434625250653,
+        "bias": -0.004195241208119614,
+        "persistenceMae": 0.1352986577181208
+      },
+      "diagnostics": [
+        {
+          "rateCaps": 0,
+          "ladderLowCaps": 0,
+          "ladderHighCaps": 0,
+          "rawLadderRange": {
+            "min": 3.9804419275109617,
+            "max": 7.365028987063304
+          },
+          "ladderRange": {
+            "min": 3.9804419275109617,
+            "max": 7.365028987063304
+          },
+          "gdpRange": {
+            "min": 475.97022055719,
+            "max": 113473.795887223
+          }
+        },
+        {
+          "rateCaps": 0,
+          "ladderLowCaps": 0,
+          "ladderHighCaps": 0,
+          "rawLadderRange": {
+            "min": 3.971720562628118,
+            "max": 7.361111942011984
+          },
+          "ladderRange": {
+            "min": 3.971720562628118,
+            "max": 7.361111942011984
+          },
+          "gdpRange": {
+            "min": 485.6539447573646,
+            "max": 108909.25268504875
+          }
+        }
+      ]
+    }
+  ],
+  "folds": [
+    {
+      "originYear": 2016,
+      "trainingYears": [
+        2015,
+        2016
+      ],
+      "trainingRows": 199,
+      "originCountries": [
+        "USA",
+        "CAN",
+        "MEX",
+        "GTM",
+        "HTI",
+        "DOM",
+        "HND",
+        "NIC",
+        "SLV",
+        "CRI",
+        "PAN",
+        "BRA",
+        "ARG",
+        "COL",
+        "CHL",
+        "PER",
+        "ECU",
+        "BOL",
+        "PRY",
+        "URY",
+        "RUS",
+        "GBR",
+        "FRA",
+        "DEU",
+        "ITA",
+        "ESP",
+        "NLD",
+        "SWE",
+        "BEL",
+        "AUT",
+        "POL",
+        "NOR",
+        "CHE",
+        "IRL",
+        "DNK",
+        "FIN",
+        "PRT",
+        "GRC",
+        "CZE",
+        "HUN",
+        "ROU",
+        "UKR",
+        "BLR",
+        "SRB",
+        "ISL",
+        "EST",
+        "LVA",
+        "LTU",
+        "SVK",
+        "SVN",
+        "HRV",
+        "BIH",
+        "MNE",
+        "MKD",
+        "ALB",
+        "BGR",
+        "MDA",
+        "LUX",
+        "CYP",
+        "MLT",
+        "CHN",
+        "JPN",
+        "KOR",
+        "MNG",
+        "VNM",
+        "IDN",
+        "PHL",
+        "THA",
+        "MYS",
+        "MMR",
+        "IND",
+        "PAK",
+        "BGD",
+        "LKA",
+        "NPL",
+        "BTN",
+        "KAZ",
+        "KGZ",
+        "TJK",
+        "TUR",
+        "IRN",
+        "IRQ",
+        "ARE",
+        "ISR",
+        "JOR",
+        "LBN",
+        "YEM",
+        "GEO",
+        "ARM",
+        "PSE",
+        "NGA",
+        "ZAF",
+        "EGY",
+        "ETH",
+        "KEN",
+        "COD",
+        "MAR",
+        "DZA",
+        "AUS"
+      ],
+      "coefficients": {
+        "intercept": 0.5405670567843587,
+        "lnGdp": 0.5365712113824471,
+        "governance": 0.6456151463276589,
+        "withinLnGdp": 0.5529429737869888
+      },
+      "pooledRate": 0.021593641107617568,
+      "pooledAnchorFallback": false,
+      "withinSlopeFallback": false,
+      "diagnostics": {
+        "rateCaps": 0,
+        "ladderLowCaps": 0,
+        "ladderHighCaps": 0,
+        "rawLadderRange": {
+          "min": 3.5368620646281257,
+          "max": 7.550456564958628
+        },
+        "ladderRange": {
+          "min": 3.5368620646281257,
+          "max": 7.550456564958628
+        },
+        "gdpRange": {
+          "min": 475.97022055719,
+          "max": 113473.795887223
+        }
+      },
+      "matchedLadder": [
+        {
+          "id": "USA",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.1157830461565501,
+          "persistenceError": 0.1070000000000002
+        },
+        {
+          "id": "CAN",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.006301869017365291,
+          "persistenceError": -0.012000000000000455
+        },
+        {
+          "id": "MEX",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.09814818884045984,
+          "persistenceError": 0.08999999999999986
+        },
+        {
+          "id": "GTM",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.08018184470289391,
+          "persistenceError": 0.07200000000000006
+        },
+        {
+          "id": "HTI",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.028069308355334943,
+          "persistenceError": 0.02100000000000035
+        },
+        {
+          "id": "DOM",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.05112160157699552,
+          "persistenceError": -0.07199999999999918
+        },
+        {
+          "id": "HND",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.3116621688295824,
+          "persistenceError": -0.3229999999999995
+        },
+        {
+          "id": "NIC",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.05541122577446611,
+          "persistenceError": -0.07000000000000028
+        },
+        {
+          "id": "SLV",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.15186238238759842,
+          "persistenceError": -0.1639999999999997
+        },
+        {
+          "id": "CRI",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.021560797847296698,
+          "persistenceError": 0.006999999999999673
+        },
+        {
+          "id": "PAN",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.03555049849750347,
+          "persistenceError": 0.02200000000000024
+        },
+        {
+          "id": "BRA",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.21065474158367792,
+          "persistenceError": 0.2160000000000002
+        },
+        {
+          "id": "ARG",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.2084790817092994,
+          "persistenceError": 0.2110000000000003
+        },
+        {
+          "id": "COL",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.10594305286645156,
+          "persistenceError": 0.09700000000000042
+        },
+        {
+          "id": "CHL",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.1834309977177755,
+          "persistenceError": 0.17600000000000016
+        },
+        {
+          "id": "PER",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.06500236790077984,
+          "persistenceError": 0.0519999999999996
+        },
+        {
+          "id": "ECU",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.035030248945704834,
+          "persistenceError": 0.03500000000000014
+        },
+        {
+          "id": "BOL",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.08439553621445839,
+          "persistenceError": 0.07100000000000062
+        },
+        {
+          "id": "PRY",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.1744866967184242,
+          "persistenceError": -0.18799999999999972
+        },
+        {
+          "id": "URY",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.08467955091600032,
+          "persistenceError": 0.07500000000000018
+        },
+        {
+          "id": "RUS",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.15871970150878756,
+          "persistenceError": 0.15300000000000047
+        },
+        {
+          "id": "GBR",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.09019172870047942,
+          "persistenceError": -0.09999999999999964
+        },
+        {
+          "id": "FRA",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.039391921603301405,
+          "persistenceError": -0.04699999999999971
+        },
+        {
+          "id": "DEU",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.004185162172047008,
+          "persistenceError": -0.014000000000000234
+        },
+        {
+          "id": "ITA",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.026107582391807327,
+          "persistenceError": -0.03599999999999959
+        },
+        {
+          "id": "ESP",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.1067010192015907,
+          "persistenceError": 0.09299999999999997
+        },
+        {
+          "id": "NLD",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.05287880544146084,
+          "persistenceError": -0.06400000000000006
+        },
+        {
+          "id": "SWE",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.021673515875133553,
+          "persistenceError": -0.03000000000000025
+        },
+        {
+          "id": "BEL",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.028149590024228566,
+          "persistenceError": -0.03599999999999959
+        },
+        {
+          "id": "AUT",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.12422732256833413,
+          "persistenceError": -0.133
+        },
+        {
+          "id": "POL",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.13565529218096994,
+          "persistenceError": -0.15000000000000036
+        },
+        {
+          "id": "NOR",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.04991759739019663,
+          "persistenceError": -0.057000000000000384
+        },
+        {
+          "id": "CHE",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.015185995968638899,
+          "persistenceError": 0.006999999999999673
+        },
+        {
+          "id": "IRL",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.005779943515435093,
+          "persistenceError": 0
+        },
+        {
+          "id": "DNK",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.02081937264621736,
+          "persistenceError": -0.032999999999999474
+        },
+        {
+          "id": "FIN",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.15080385014937558,
+          "persistenceError": -0.16299999999999937
+        },
+        {
+          "id": "PRT",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.20267173311121223,
+          "persistenceError": -0.21499999999999986
+        },
+        {
+          "id": "GRC",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.12396801044678885,
+          "persistenceError": -0.13099999999999934
+        },
+        {
+          "id": "CZE",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.08951608609716821,
+          "persistenceError": -0.10200000000000031
+        },
+        {
+          "id": "HUN",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.2822943589244282,
+          "persistenceError": -0.29600000000000026
+        },
+        {
+          "id": "ROU",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.10464802273520224,
+          "persistenceError": -0.1200000000000001
+        },
+        {
+          "id": "UKR",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.006985145702175011,
+          "persistenceError": -0.006999999999999673
+        },
+        {
+          "id": "BLR",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.08465284840332643,
+          "persistenceError": 0.0860000000000003
+        },
+        {
+          "id": "SRB",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.012523476855096582,
+          "persistenceError": -0.0030000000000001137
+        },
+        {
+          "id": "ISL",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.027810304734178004,
+          "persistenceError": 0.008999999999999453
+        },
+        {
+          "id": "EST",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.11368872645587924,
+          "persistenceError": -0.1280000000000001
+        },
+        {
+          "id": "LVA",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.06753716157654832,
+          "persistenceError": -0.08300000000000018
+        },
+        {
+          "id": "LTU",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.033512566741809025,
+          "persistenceError": -0.04999999999999982
+        },
+        {
+          "id": "SVK",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.06405302023086978,
+          "persistenceError": -0.07500000000000018
+        },
+        {
+          "id": "SVN",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.1759678167522667,
+          "persistenceError": -0.1900000000000004
+        },
+        {
+          "id": "HRV",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.009606008649771347,
+          "persistenceError": -0.02799999999999958
+        },
+        {
+          "id": "BIH",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.07139322798907433,
+          "persistenceError": 0.053000000000000824
+        },
+        {
+          "id": "MNE",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.09499166787487479,
+          "persistenceError": -0.11000000000000032
+        },
+        {
+          "id": "MKD",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.0046201702801038635,
+          "persistenceError": -0.009999999999999787
+        },
+        {
+          "id": "ALB",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.07883757239165678,
+          "persistenceError": 0.05799999999999983
+        },
+        {
+          "id": "BGR",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.20119707745523652,
+          "persistenceError": -0.21899999999999942
+        },
+        {
+          "id": "MDA",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.21974089983353373,
+          "persistenceError": 0.1980000000000004
+        },
+        {
+          "id": "LUX",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.033557139603660247,
+          "persistenceError": -0.04699999999999971
+        },
+        {
+          "id": "CYP",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.11887239828023688,
+          "persistenceError": -0.14099999999999913
+        },
+        {
+          "id": "MLT",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.08930742812200432,
+          "persistenceError": -0.09999999999999964
+        },
+        {
+          "id": "CHN",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.04950601807394417,
+          "persistenceError": 0.026999999999999247
+        },
+        {
+          "id": "JPN",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.01305365480376608,
+          "persistenceError": 0.004999999999999893
+        },
+        {
+          "id": "KOR",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.023494960772048934,
+          "persistenceError": -0.03699999999999992
+        },
+        {
+          "id": "MNG",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.16554662291194955,
+          "persistenceError": -0.16999999999999993
+        },
+        {
+          "id": "VNM",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.008609637481054477,
+          "persistenceError": -0.028999999999999915
+        },
+        {
+          "id": "IDN",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.18557552128710064,
+          "persistenceError": 0.1689999999999996
+        },
+        {
+          "id": "PHL",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.07264837356446119,
+          "persistenceError": -0.0940000000000003
+        },
+        {
+          "id": "THA",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.3660601552475873,
+          "persistenceError": 0.3520000000000003
+        },
+        {
+          "id": "MYS",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.22487956321476865,
+          "persistenceError": -0.23800000000000043
+        },
+        {
+          "id": "MMR",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.2565289384083753,
+          "persistenceError": 0.2370000000000001
+        },
+        {
+          "id": "IND",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.14960838784674912,
+          "persistenceError": 0.125
+        },
+        {
+          "id": "PAK",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.18302773354809077,
+          "persistenceError": -0.2030000000000003
+        },
+        {
+          "id": "BGD",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.130501446856508,
+          "persistenceError": 0.10799999999999965
+        },
+        {
+          "id": "LKA",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.014532912246361995,
+          "persistenceError": -0.030999999999999694
+        },
+        {
+          "id": "NPL",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.08785800192513182,
+          "persistenceError": 0.08199999999999985
+        },
+        {
+          "id": "BTN",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.045229252539930265,
+          "persistenceError": -0.07099999999999973
+        },
+        {
+          "id": "KAZ",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.03375532378534185,
+          "persistenceError": 0.028999999999999915
+        },
+        {
+          "id": "KGZ",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.11542002240445548,
+          "persistenceError": -0.12700000000000067
+        },
+        {
+          "id": "TJK",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.2935872490667055,
+          "persistenceError": -0.31099999999999994
+        },
+        {
+          "id": "TUR",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.02828988913593289,
+          "persistenceError": 0.017000000000000348
+        },
+        {
+          "id": "IRN",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.01036310384712813,
+          "persistenceError": -0.01499999999999968
+        },
+        {
+          "id": "IRQ",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.07606761305868392,
+          "persistenceError": 0.04099999999999948
+        },
+        {
+          "id": "ARE",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.11844533477406483,
+          "persistenceError": -0.12600000000000033
+        },
+        {
+          "id": "ISR",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.035814912551087374,
+          "persistenceError": 0.022999999999999687
+        },
+        {
+          "id": "JOR",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.17368895261296213,
+          "persistenceError": 0.1750000000000007
+        },
+        {
+          "id": "LBN",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.04269166653982026,
+          "persistenceError": 0.0259999999999998
+        },
+        {
+          "id": "YEM",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.20845371822532943,
+          "persistenceError": 0.238
+        },
+        {
+          "id": "GEO",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.038817354486297084,
+          "persistenceError": -0.05400000000000027
+        },
+        {
+          "id": "ARM",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.06265653747909017,
+          "persistenceError": 0.055000000000000604
+        },
+        {
+          "id": "PSE",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.05524226215115746,
+          "persistenceError": 0.03200000000000003
+        },
+        {
+          "id": "NGA",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.08637060014015763,
+          "persistenceError": -0.0810000000000004
+        },
+        {
+          "id": "ZAF",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.11020097084651059,
+          "persistenceError": 0.10499999999999954
+        },
+        {
+          "id": "EGY",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.32810809432082433,
+          "persistenceError": 0.3160000000000007
+        },
+        {
+          "id": "ETH",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.1334064991992454,
+          "persistenceError": 0.11000000000000032
+        },
+        {
+          "id": "KEN",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.15427664433450072,
+          "persistenceError": 0.1429999999999998
+        },
+        {
+          "id": "COD",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.03226684486372289,
+          "persistenceError": 0.03500000000000014
+        },
+        {
+          "id": "MAR",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.01495429488828659,
+          "persistenceError": -0.01899999999999924
+        },
+        {
+          "id": "DZA",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.5878640693078019,
+          "persistenceError": 0.577
+        },
+        {
+          "id": "AUS",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.021167185963058444,
+          "persistenceError": 0.011999999999999567
+        },
+        {
+          "id": "USA",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.11768778769744426,
+          "persistenceError": 0.10099999999999998
+        },
+        {
+          "id": "CAN",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.0488264488670076,
+          "persistenceError": 0.038000000000000256
+        },
+        {
+          "id": "MEX",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.0015184412031246097,
+          "persistenceError": -0.01699999999999946
+        },
+        {
+          "id": "GTM",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.033545504935498016,
+          "persistenceError": 0.017999999999999794
+        },
+        {
+          "id": "HTI",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.019431685875135774,
+          "persistenceError": 0.006000000000000227
+        },
+        {
+          "id": "DOM",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.1553310429962922,
+          "persistenceError": -0.1949999999999994
+        },
+        {
+          "id": "HND",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.6574581207762069,
+          "persistenceError": -0.6790000000000003
+        },
+        {
+          "id": "NIC",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.006281328971485145,
+          "persistenceError": -0.034000000000000696
+        },
+        {
+          "id": "SLV",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.2269385265364372,
+          "persistenceError": -0.25
+        },
+        {
+          "id": "CRI",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.0603344840901352,
+          "persistenceError": -0.08800000000000008
+        },
+        {
+          "id": "PAN",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.15674594714525636,
+          "persistenceError": 0.13100000000000023
+        },
+        {
+          "id": "BRA",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.3248440090089879,
+          "persistenceError": 0.33499999999999996
+        },
+        {
+          "id": "ARG",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.5082102552476675,
+          "persistenceError": 0.5129999999999999
+        },
+        {
+          "id": "COL",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.24899180044625702,
+          "persistenceError": 0.2320000000000002
+        },
+        {
+          "id": "CHL",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.2221188956637734,
+          "persistenceError": 0.20800000000000018
+        },
+        {
+          "id": "PER",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.04270449901148243,
+          "persistenceError": 0.017999999999999794
+        },
+        {
+          "id": "ECU",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.01994252700316057,
+          "persistenceError": -0.019999999999999574
+        },
+        {
+          "id": "BOL",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.06945151880747069,
+          "persistenceError": 0.04400000000000048
+        },
+        {
+          "id": "PRY",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.22432472376500634,
+          "persistenceError": -0.25
+        },
+        {
+          "id": "URY",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.17939114674040013,
+          "persistenceError": 0.1609999999999996
+        },
+        {
+          "id": "RUS",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.32586743286669595,
+          "persistenceError": 0.3150000000000004
+        },
+        {
+          "id": "GBR",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.3213642845309117,
+          "persistenceError": -0.33999999999999986
+        },
+        {
+          "id": "FRA",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.13554465104627322,
+          "persistenceError": -0.14999999999999947
+        },
+        {
+          "id": "DEU",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.015351808126889743,
+          "persistenceError": -0.034000000000000696
+        },
+        {
+          "id": "ITA",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.24020440654443487,
+          "persistenceError": -0.25899999999999945
+        },
+        {
+          "id": "ESP",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.07503193648302187,
+          "persistenceError": 0.04899999999999949
+        },
+        {
+          "id": "NLD",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.08986973033877632,
+          "persistenceError": -0.11100000000000065
+        },
+        {
+          "id": "SWE",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.04317968016275309,
+          "persistenceError": -0.05900000000000016
+        },
+        {
+          "id": "BEL",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.017084221046034465,
+          "persistenceError": -0.03200000000000003
+        },
+        {
+          "id": "AUT",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.22333191287983567,
+          "persistenceError": -0.2400000000000002
+        },
+        {
+          "id": "POL",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.18174505514384265,
+          "persistenceError": -0.20900000000000052
+        },
+        {
+          "id": "NOR",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.0035434350413723337,
+          "persistenceError": -0.017000000000000348
+        },
+        {
+          "id": "CHE",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.02955339234041432,
+          "persistenceError": 0.013999999999999346
+        },
+        {
+          "id": "IRL",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.03301810732067345,
+          "persistenceError": -0.043999999999999595
+        },
+        {
+          "id": "DNK",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.054856808027813564,
+          "persistenceError": -0.0779999999999994
+        },
+        {
+          "id": "FIN",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.2768273152838141,
+          "persistenceError": -0.2999999999999998
+        },
+        {
+          "id": "PRT",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.4745762929113031,
+          "persistenceError": -0.49799999999999933
+        },
+        {
+          "id": "GRC",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.04663921984890074,
+          "persistenceError": -0.05999999999999961
+        },
+        {
+          "id": "CZE",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.21928056358461934,
+          "persistenceError": -0.24300000000000033
+        },
+        {
+          "id": "HUN",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.40795928195641373,
+          "persistenceError": -0.43400000000000016
+        },
+        {
+          "id": "ROU",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.21583124319688451,
+          "persistenceError": -0.2450000000000001
+        },
+        {
+          "id": "UKR",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.20942822316586795,
+          "persistenceError": -0.23599999999999977
+        },
+        {
+          "id": "BLR",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.2434404119663185,
+          "persistenceError": 0.24599999999999955
+        },
+        {
+          "id": "SRB",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.17850539397531673,
+          "persistenceError": -0.20800000000000018
+        },
+        {
+          "id": "ISL",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.04573957899493841,
+          "persistenceError": 0.009999999999999787
+        },
+        {
+          "id": "EST",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.2548085802661699,
+          "persistenceError": -0.28200000000000003
+        },
+        {
+          "id": "LVA",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.06062060699544247,
+          "persistenceError": -0.09000000000000075
+        },
+        {
+          "id": "LTU",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.2156738768094364,
+          "persistenceError": -0.2469999999999999
+        },
+        {
+          "id": "SVK",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.07920073843865261,
+          "persistenceError": -0.10000000000000053
+        },
+        {
+          "id": "SVN",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.3333388518293052,
+          "persistenceError": -0.3600000000000003
+        },
+        {
+          "id": "HRV",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.10405141643456606,
+          "persistenceError": -0.13900000000000023
+        },
+        {
+          "id": "BIH",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.16905286682075982,
+          "persistenceError": -0.20399999999999974
+        },
+        {
+          "id": "MNE",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.2574841689622618,
+          "persistenceError": -0.2859999999999996
+        },
+        {
+          "id": "MKD",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.0712216764678022,
+          "persistenceError": -0.0990000000000002
+        },
+        {
+          "id": "ALB",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.035408612455851696,
+          "persistenceError": -0.07500000000000018
+        },
+        {
+          "id": "BGR",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.26317444716495064,
+          "persistenceError": -0.2969999999999997
+        },
+        {
+          "id": "MDA",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.3503077096837135,
+          "persistenceError": 0.30900000000000016
+        },
+        {
+          "id": "LUX",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.2014585652469547,
+          "persistenceError": -0.22699999999999942
+        },
+        {
+          "id": "CYP",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.38295755673245235,
+          "persistenceError": -0.4249999999999998
+        },
+        {
+          "id": "MLT",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.17868411343180846,
+          "persistenceError": -0.19899999999999984
+        },
+        {
+          "id": "CHN",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.12476143434049458,
+          "persistenceError": 0.08199999999999985
+        },
+        {
+          "id": "JPN",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.04930194412715583,
+          "persistenceError": 0.03399999999999981
+        },
+        {
+          "id": "KOR",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.031340425466892086,
+          "persistenceError": -0.056999999999999496
+        },
+        {
+          "id": "MNG",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.32153858353270426,
+          "persistenceError": -0.33000000000000007
+        },
+        {
+          "id": "VNM",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.062258311214003825,
+          "persistenceError": -0.10099999999999998
+        },
+        {
+          "id": "IDN",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.10149349044549183,
+          "persistenceError": 0.0699999999999994
+        },
+        {
+          "id": "PHL",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.160431909772476,
+          "persistenceError": -0.2010000000000005
+        },
+        {
+          "id": "THA",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.4427142949704157,
+          "persistenceError": 0.41600000000000037
+        },
+        {
+          "id": "MYS",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.7699288298919402,
+          "persistenceError": 0.7449999999999992
+        },
+        {
+          "id": "MMR",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.22210498297591297,
+          "persistenceError": 0.1849999999999996
+        },
+        {
+          "id": "IND",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.3467559369088242,
+          "persistenceError": 0.3000000000000007
+        },
+        {
+          "id": "PAK",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.34605269374137215,
+          "persistenceError": -0.38399999999999945
+        },
+        {
+          "id": "BGD",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.19475274902736484,
+          "persistenceError": 0.15199999999999925
+        },
+        {
+          "id": "LKA",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.10528746673191236,
+          "persistenceError": 0.07400000000000073
+        },
+        {
+          "id": "NPL",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.060130203657750236,
+          "persistenceError": 0.04899999999999949
+        },
+        {
+          "id": "BTN",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.022035579825867124,
+          "persistenceError": -0.07099999999999973
+        },
+        {
+          "id": "KAZ",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.019035115192148844,
+          "persistenceError": 0.009999999999999787
+        },
+        {
+          "id": "KGZ",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.23499804256846524,
+          "persistenceError": -0.25700000000000056
+        },
+        {
+          "id": "TJK",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.39291577322674076,
+          "persistenceError": -0.42599999999999927
+        },
+        {
+          "id": "TUR",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.14845078935827072,
+          "persistenceError": 0.12699999999999978
+        },
+        {
+          "id": "IRN",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.19218989730954306,
+          "persistenceError": 0.14400000000000013
+        },
+        {
+          "id": "IRQ",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.12662846481150059,
+          "persistenceError": 0.05999999999999961
+        },
+        {
+          "id": "ARE",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.1626461360707223,
+          "persistenceError": -0.1770000000000005
+        },
+        {
+          "id": "ISR",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.0983483338470661,
+          "persistenceError": 0.07399999999999984
+        },
+        {
+          "id": "JOR",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.42750900996462793,
+          "persistenceError": 0.4300000000000006
+        },
+        {
+          "id": "LBN",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.05971416642565863,
+          "persistenceError": 0.02799999999999958
+        },
+        {
+          "id": "YEM",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.1568620646281258,
+          "persistenceError": 0.21300000000000008
+        },
+        {
+          "id": "GEO",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.20415297352396422,
+          "persistenceError": -0.23300000000000054
+        },
+        {
+          "id": "ARM",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.1684525787897302,
+          "persistenceError": -0.18299999999999983
+        },
+        {
+          "id": "PSE",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.12316029808719886,
+          "persistenceError": 0.07900000000000063
+        },
+        {
+          "id": "NGA",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.20120414026629785,
+          "persistenceError": -0.19099999999999984
+        },
+        {
+          "id": "ZAF",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.11688184460836926,
+          "persistenceError": 0.10699999999999932
+        },
+        {
+          "id": "EGY",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.5920053792095645,
+          "persistenceError": 0.569
+        },
+        {
+          "id": "ETH",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.21847234847856623,
+          "persistenceError": 0.17400000000000038
+        },
+        {
+          "id": "KEN",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.06542562423555154,
+          "persistenceError": 0.043999999999999595
+        },
+        {
+          "id": "COD",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.14319299475892766,
+          "persistenceError": -0.1379999999999999
+        },
+        {
+          "id": "MAR",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.03468683971225417,
+          "persistenceError": 0.027000000000000135
+        },
+        {
+          "id": "DZA",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.6816417316848238,
+          "persistenceError": 0.6609999999999996
+        },
+        {
+          "id": "AUS",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.07341765332981254,
+          "persistenceError": 0.05600000000000005
+        }
+      ],
+      "matchedGdp": [
+        {
+          "id": "USA",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.14904045305184319,
+          "persistenceError": -1.7501409519599516
+        },
+        {
+          "id": "CAN",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.7736267405301637,
+          "persistenceError": -1.8094644784111
+        },
+        {
+          "id": "MEX",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.5610895290846707,
+          "persistenceError": -0.9234253717800333
+        },
+        {
+          "id": "GTM",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.2686709933456759,
+          "persistenceError": -1.222021131904563
+        },
+        {
+          "id": "HTI",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.16275109723209732,
+          "persistenceError": -1.1239442791243224
+        },
+        {
+          "id": "DOM",
+          "year": 2017,
+          "horizon": 1,
+          "error": 1.0387407360700813,
+          "persistenceError": -2.8093192177563657
+        },
+        {
+          "id": "HND",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.849454429117159,
+          "persistenceError": -2.921072783268494
+        },
+        {
+          "id": "NIC",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.5734154464847366,
+          "persistenceError": -3.2469157629991625
+        },
+        {
+          "id": "SLV",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.18127385728738188,
+          "persistenceError": -2.03808950553276
+        },
+        {
+          "id": "CRI",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.5104142459576276,
+          "persistenceError": -3.178719885712959
+        },
+        {
+          "id": "PAN",
+          "year": 2017,
+          "horizon": 1,
+          "error": -1.4669930599107694,
+          "persistenceError": -3.947881506970125
+        },
+        {
+          "id": "BRA",
+          "year": 2017,
+          "horizon": 1,
+          "error": -1.5497040051759234,
+          "persistenceError": -0.5876689287363336
+        },
+        {
+          "id": "ARG",
+          "year": 2017,
+          "horizon": 1,
+          "error": -2.3712676655196545,
+          "persistenceError": -1.9163960814889245
+        },
+        {
+          "id": "COL",
+          "year": 2017,
+          "horizon": 1,
+          "error": 1.7317269120554246,
+          "persistenceError": 0.10122155413310227
+        },
+        {
+          "id": "CHL",
+          "year": 2017,
+          "horizon": 1,
+          "error": 1.588080559812644,
+          "persistenceError": 0.2351101674253309
+        },
+        {
+          "id": "PER",
+          "year": 2017,
+          "horizon": 1,
+          "error": 1.3599183902770229,
+          "persistenceError": -1.0194314164823137
+        },
+        {
+          "id": "ECU",
+          "year": 2017,
+          "horizon": 1,
+          "error": -4.356483988193823,
+          "persistenceError": -4.361954674059006
+        },
+        {
+          "id": "BOL",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.23155623550645685,
+          "persistenceError": -2.6837284349173958
+        },
+        {
+          "id": "PRY",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.85563440028314,
+          "persistenceError": -3.3296294229708487
+        },
+        {
+          "id": "URY",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.3004725485042599,
+          "persistenceError": -1.4654907928237966
+        },
+        {
+          "id": "RUS",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.5749967204327185,
+          "persistenceError": -1.6147759835588282
+        },
+        {
+          "id": "GBR",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.6744379442736776,
+          "persistenceError": -2.464094287011673
+        },
+        {
+          "id": "FRA",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.40236148794536103,
+          "persistenceError": -1.787795493842258
+        },
+        {
+          "id": "DEU",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.6235775290767521,
+          "persistenceError": -2.4144426920242434
+        },
+        {
+          "id": "ITA",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.010150470160433809,
+          "persistenceError": -1.7949972993700805
+        },
+        {
+          "id": "ESP",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.13738128462504146,
+          "persistenceError": -2.6461706110710246
+        },
+        {
+          "id": "NLD",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.14401757532679463,
+          "persistenceError": -2.1756532920582363
+        },
+        {
+          "id": "SWE",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.9980292805745968,
+          "persistenceError": -0.5192143623818475
+        },
+        {
+          "id": "BEL",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.3455651899394592,
+          "persistenceError": -1.0843115126255476
+        },
+        {
+          "id": "AUT",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.034888407647577224,
+          "persistenceError": -1.5643068966352527
+        },
+        {
+          "id": "POL",
+          "year": 2017,
+          "horizon": 1,
+          "error": -2.5111447009045587,
+          "persistenceError": -5.139335421726038
+        },
+        {
+          "id": "NOR",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.5546553366571432,
+          "persistenceError": -1.8437493138284604
+        },
+        {
+          "id": "CHE",
+          "year": 2017,
+          "horizon": 1,
+          "error": 1.0131158511553036,
+          "persistenceError": -0.4783382268373229
+        },
+        {
+          "id": "IRL",
+          "year": 2017,
+          "horizon": 1,
+          "error": -7.581807256180143,
+          "persistenceError": -8.632595196383248
+        },
+        {
+          "id": "DNK",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.16827601726664065,
+          "persistenceError": -2.395590650976482
+        },
+        {
+          "id": "FIN",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.8310472417233059,
+          "persistenceError": -3.061231692967762
+        },
+        {
+          "id": "PRT",
+          "year": 2017,
+          "horizon": 1,
+          "error": -1.3123875954729247,
+          "persistenceError": -3.5670012618706974
+        },
+        {
+          "id": "GRC",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.3941605053535184,
+          "persistenceError": -1.674020148606063
+        },
+        {
+          "id": "CZE",
+          "year": 2017,
+          "horizon": 1,
+          "error": -2.61114899314251,
+          "persistenceError": -4.894550195119795
+        },
+        {
+          "id": "HUN",
+          "year": 2017,
+          "horizon": 1,
+          "error": -1.9677895137896184,
+          "persistenceError": -4.477435682095931
+        },
+        {
+          "id": "ROU",
+          "year": 2017,
+          "horizon": 1,
+          "error": -6.007352658697973,
+          "persistenceError": -8.822666570909082
+        },
+        {
+          "id": "UKR",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.29879946246191985,
+          "persistenceError": -2.860275863755753
+        },
+        {
+          "id": "BLR",
+          "year": 2017,
+          "horizon": 1,
+          "error": -2.8881439799956263,
+          "persistenceError": -2.6448075168540024
+        },
+        {
+          "id": "SRB",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.06241664281412499,
+          "persistenceError": -2.9096244750208395
+        },
+        {
+          "id": "ISL",
+          "year": 2017,
+          "horizon": 1,
+          "error": 2.374391875831532,
+          "persistenceError": -1.0859854494827441
+        },
+        {
+          "id": "EST",
+          "year": 2017,
+          "horizon": 1,
+          "error": -2.8848719259434286,
+          "persistenceError": -5.50685731354206
+        },
+        {
+          "id": "LVA",
+          "year": 2017,
+          "horizon": 1,
+          "error": -1.4834289741555258,
+          "persistenceError": -4.3193586968140405
+        },
+        {
+          "id": "LTU",
+          "year": 2017,
+          "horizon": 1,
+          "error": -2.8620662941650634,
+          "persistenceError": -5.88872606993332
+        },
+        {
+          "id": "SVK",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.7157232475488834,
+          "persistenceError": -2.715217096437541
+        },
+        {
+          "id": "SVN",
+          "year": 2017,
+          "horizon": 1,
+          "error": -2.5356924143055033,
+          "persistenceError": -5.10589384792039
+        },
+        {
+          "id": "HRV",
+          "year": 2017,
+          "horizon": 1,
+          "error": -1.574477834614632,
+          "persistenceError": -4.9569886685094335
+        },
+        {
+          "id": "BIH",
+          "year": 2017,
+          "horizon": 1,
+          "error": -1.1963199678296252,
+          "persistenceError": -4.578688077895474
+        },
+        {
+          "id": "MNE",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.3615350268253625,
+          "persistenceError": -3.112970731464209
+        },
+        {
+          "id": "MKD",
+          "year": 2017,
+          "horizon": 1,
+          "error": 1.189963088304574,
+          "persistenceError": -1.4893671862518039
+        },
+        {
+          "id": "ALB",
+          "year": 2017,
+          "horizon": 1,
+          "error": -1.0489601691418018,
+          "persistenceError": -4.889352880886301
+        },
+        {
+          "id": "BGR",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.843181135812835,
+          "persistenceError": -4.115240201682437
+        },
+        {
+          "id": "MDA",
+          "year": 2017,
+          "horizon": 1,
+          "error": -1.9802395022108445,
+          "persistenceError": -5.990411998222498
+        },
+        {
+          "id": "LUX",
+          "year": 2017,
+          "horizon": 1,
+          "error": 3.577120610552589,
+          "persistenceError": 1.116179563453014
+        },
+        {
+          "id": "CYP",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.7704688777314905,
+          "persistenceError": -4.853406558175745
+        },
+        {
+          "id": "MLT",
+          "year": 2017,
+          "horizon": 1,
+          "error": -7.971168403768419,
+          "persistenceError": -9.9237432960508
+        },
+        {
+          "id": "CHN",
+          "year": 2017,
+          "horizon": 1,
+          "error": -2.092046086766154,
+          "persistenceError": -6.24623915563537
+        },
+        {
+          "id": "JPN",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.23952211977060497,
+          "persistenceError": -1.706688177700662
+        },
+        {
+          "id": "KOR",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.6705219583634489,
+          "persistenceError": -3.1429854591731456
+        },
+        {
+          "id": "MNG",
+          "year": 2017,
+          "horizon": 1,
+          "error": -2.8133596110828005,
+          "persistenceError": -3.622007010372584
+        },
+        {
+          "id": "VNM",
+          "year": 2017,
+          "horizon": 1,
+          "error": -1.8614361413444638,
+          "persistenceError": -5.617878650631373
+        },
+        {
+          "id": "IDN",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.9580246366879972,
+          "persistenceError": -4.001098651798986
+        },
+        {
+          "id": "PHL",
+          "year": 2017,
+          "horizon": 1,
+          "error": -1.6252553938883032,
+          "persistenceError": -5.562230206657549
+        },
+        {
+          "id": "THA",
+          "year": 2017,
+          "horizon": 1,
+          "error": -1.1625876684309377,
+          "persistenceError": -3.7379780028308964
+        },
+        {
+          "id": "MYS",
+          "year": 2017,
+          "horizon": 1,
+          "error": -1.5606526325119539,
+          "persistenceError": -3.9618656454823284
+        },
+        {
+          "id": "MMR",
+          "year": 2017,
+          "horizon": 1,
+          "error": -1.7246467647996757,
+          "persistenceError": -5.319574035056823
+        },
+        {
+          "id": "IND",
+          "year": 2017,
+          "horizon": 1,
+          "error": -1.0102287463804103,
+          "persistenceError": -5.561185034649287
+        },
+        {
+          "id": "PAK",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.7117821513288406,
+          "persistenceError": -2.9662367840299066
+        },
+        {
+          "id": "BGD",
+          "year": 2017,
+          "horizon": 1,
+          "error": -1.533771047522166,
+          "persistenceError": -5.68710307010271
+        },
+        {
+          "id": "LKA",
+          "year": 2017,
+          "horizon": 1,
+          "error": -2.22696036570448,
+          "persistenceError": -5.24982935126116
+        },
+        {
+          "id": "NPL",
+          "year": 2017,
+          "horizon": 1,
+          "error": -7.695151867623787,
+          "persistenceError": -8.760206054015653
+        },
+        {
+          "id": "BTN",
+          "year": 2017,
+          "horizon": 1,
+          "error": 3.559595066560412,
+          "persistenceError": -1.211372391288576
+        },
+        {
+          "id": "KAZ",
+          "year": 2017,
+          "horizon": 1,
+          "error": -1.6270582409259124,
+          "persistenceError": -2.4907694569132772
+        },
+        {
+          "id": "KGZ",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.44205069340414777,
+          "persistenceError": -2.5583783419424515
+        },
+        {
+          "id": "TJK",
+          "year": 2017,
+          "horizon": 1,
+          "error": -1.303838420940269,
+          "persistenceError": -4.503051615267855
+        },
+        {
+          "id": "TUR",
+          "year": 2017,
+          "horizon": 1,
+          "error": -4.373877359228314,
+          "persistenceError": -6.436646140923271
+        },
+        {
+          "id": "IRN",
+          "year": 2017,
+          "horizon": 1,
+          "error": 3.13854166797905,
+          "persistenceError": -1.5552144345615018
+        },
+        {
+          "id": "IRQ",
+          "year": 2017,
+          "horizon": 1,
+          "error": 10.532885471933092,
+          "persistenceError": 3.9854668727489155
+        },
+        {
+          "id": "ARE",
+          "year": 2017,
+          "horizon": 1,
+          "error": 5.5278166910504405,
+          "persistenceError": 4.152175839619991
+        },
+        {
+          "id": "ISR",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.004161790958535158,
+          "persistenceError": -2.34048587653077
+        },
+        {
+          "id": "JOR",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.46225314369901793,
+          "persistenceError": -0.2254304681448484
+        },
+        {
+          "id": "LBN",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.5071377026839051,
+          "persistenceError": -3.571858110748178
+        },
+        {
+          "id": "YEM",
+          "year": 2017,
+          "horizon": 1,
+          "error": 2.6854064923046943,
+          "persistenceError": 7.88861205244271
+        },
+        {
+          "id": "GEO",
+          "year": 2017,
+          "horizon": 1,
+          "error": -2.3619939246858257,
+          "persistenceError": -5.145826775627273
+        },
+        {
+          "id": "ARM",
+          "year": 2017,
+          "horizon": 1,
+          "error": -6.571126403912097,
+          "persistenceError": -7.9654460646141
+        },
+        {
+          "id": "PSE",
+          "year": 2017,
+          "horizon": 1,
+          "error": 4.870589643159651,
+          "persistenceError": 0.5776228024034795
+        },
+        {
+          "id": "NGA",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.6492814281217293,
+          "persistenceError": 1.6158553726968081
+        },
+        {
+          "id": "ZAF",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.4463396170993356,
+          "persistenceError": -0.49869596172699404
+        },
+        {
+          "id": "EGY",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.09375093728777728,
+          "persistenceError": -2.1201547714018214
+        },
+        {
+          "id": "ETH",
+          "year": 2017,
+          "horizon": 1,
+          "error": -2.2946717982543787,
+          "persistenceError": -6.61862070026754
+        },
+        {
+          "id": "KEN",
+          "year": 2017,
+          "horizon": 1,
+          "error": 0.45557223862084395,
+          "persistenceError": -1.6047518336191
+        },
+        {
+          "id": "COD",
+          "year": 2017,
+          "horizon": 1,
+          "error": -0.9911990434989655,
+          "persistenceError": -0.49812625077668016
+        },
+        {
+          "id": "MAR",
+          "year": 2017,
+          "horizon": 1,
+          "error": -3.049360845517907,
+          "persistenceError": -3.783711768844965
+        },
+        {
+          "id": "DZA",
+          "year": 2017,
+          "horizon": 1,
+          "error": 2.525867811535868,
+          "persistenceError": 0.5416670244960934
+        },
+        {
+          "id": "AUS",
+          "year": 2017,
+          "horizon": 1,
+          "error": 1.0491982166196023,
+          "persistenceError": -0.6225109872988833
+        },
+        {
+          "id": "USA",
+          "year": 2018,
+          "horizon": 2,
+          "error": -1.091967104463502,
+          "persistenceError": -4.155964525851426
+        },
+        {
+          "id": "CAN",
+          "year": 2018,
+          "horizon": 2,
+          "error": -1.1363066018439958,
+          "persistenceError": -3.1135689517309197
+        },
+        {
+          "id": "MEX",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.895280565102339,
+          "persistenceError": -1.9441308178461882
+        },
+        {
+          "id": "GTM",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.08983322501965309,
+          "persistenceError": -2.941138354412726
+        },
+        {
+          "id": "HTI",
+          "year": 2018,
+          "horizon": 2,
+          "error": 1.004575893244791,
+          "persistenceError": -1.4542945237113685
+        },
+        {
+          "id": "DOM",
+          "year": 2018,
+          "horizon": 2,
+          "error": -1.4919461427192553,
+          "persistenceError": -8.929704036339274
+        },
+        {
+          "id": "HND",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.967609162839359,
+          "persistenceError": -4.94035204300531
+        },
+        {
+          "id": "NIC",
+          "year": 2018,
+          "horizon": 2,
+          "error": 6.673522806623245,
+          "persistenceError": 1.532814256565067
+        },
+        {
+          "id": "SLV",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.13541821942937332,
+          "persistenceError": -4.394291297459807
+        },
+        {
+          "id": "CRI",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.0361200420450175,
+          "persistenceError": -5.16672176647412
+        },
+        {
+          "id": "PAN",
+          "year": 2018,
+          "horizon": 2,
+          "error": -1.4622653269175745,
+          "persistenceError": -6.228533756421296
+        },
+        {
+          "id": "BRA",
+          "year": 2018,
+          "horizon": 2,
+          "error": -3.5044365034749427,
+          "persistenceError": -1.6844855257726907
+        },
+        {
+          "id": "ARG",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.7021092949884891,
+          "persistenceError": 1.5645959713277362
+        },
+        {
+          "id": "COL",
+          "year": 2018,
+          "horizon": 2,
+          "error": 2.5273388288623795,
+          "persistenceError": -0.5933396351207835
+        },
+        {
+          "id": "CHL",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.6765705389893161,
+          "persistenceError": -1.9097171961509936
+        },
+        {
+          "id": "PER",
+          "year": 2018,
+          "horizon": 2,
+          "error": 1.426426974395084,
+          "persistenceError": -3.1427036790681364
+        },
+        {
+          "id": "ECU",
+          "year": 2018,
+          "horizon": 2,
+          "error": -3.6475771987584475,
+          "persistenceError": -3.6579717577896704
+        },
+        {
+          "id": "BOL",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.5849667120294423,
+          "persistenceError": -4.125531142958811
+        },
+        {
+          "id": "PRY",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.4156499920374948,
+          "persistenceError": -5.168529238962186
+        },
+        {
+          "id": "URY",
+          "year": 2018,
+          "horizon": 2,
+          "error": 1.9318106246074611,
+          "persistenceError": -1.4501683603193813
+        },
+        {
+          "id": "RUS",
+          "year": 2018,
+          "horizon": 2,
+          "error": -2.3895001606587103,
+          "persistenceError": -4.374321320730008
+        },
+        {
+          "id": "GBR",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.11890870053103933,
+          "persistenceError": -3.5466240322356075
+        },
+        {
+          "id": "FRA",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.4441558722794645,
+          "persistenceError": -3.0928840374969333
+        },
+        {
+          "id": "DEU",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.16330054974212263,
+          "persistenceError": -3.2667485136183685
+        },
+        {
+          "id": "ITA",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.6068248622284783,
+          "persistenceError": -2.8507998931799543
+        },
+        {
+          "id": "ESP",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.18905679306572185,
+          "persistenceError": -4.631412136061967
+        },
+        {
+          "id": "NLD",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.02018390486501961,
+          "persistenceError": -3.8751906886869447
+        },
+        {
+          "id": "SWE",
+          "year": 2018,
+          "horizon": 2,
+          "error": 1.7852461175938268,
+          "persistenceError": -1.1171892327181179
+        },
+        {
+          "id": "BEL",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.21929128291736305,
+          "persistenceError": -2.5149470328263193
+        },
+        {
+          "id": "AUT",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.5213156470463577,
+          "persistenceError": -3.5816411091687623
+        },
+        {
+          "id": "POL",
+          "year": 2018,
+          "horizon": 2,
+          "error": -6.653843916902971,
+          "persistenceError": -11.706413071912106
+        },
+        {
+          "id": "NOR",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.1663546861757159,
+          "persistenceError": -2.297125862855464
+        },
+        {
+          "id": "CHE",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.20693902772679823,
+          "persistenceError": -3.059711280700642
+        },
+        {
+          "id": "IRL",
+          "year": 2018,
+          "horizon": 2,
+          "error": -13.293380977074326,
+          "persistenceError": -15.299315294083788
+        },
+        {
+          "id": "DNK",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.4900069019018171,
+          "persistenceError": -3.784275557607099
+        },
+        {
+          "id": "FIN",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.12735587298900686,
+          "persistenceError": -4.152488492324538
+        },
+        {
+          "id": "PRT",
+          "year": 2018,
+          "horizon": 2,
+          "error": -2.4620201259611663,
+          "persistenceError": -6.789215697158941
+        },
+        {
+          "id": "GRC",
+          "year": 2018,
+          "horizon": 2,
+          "error": -1.538271777313351,
+          "persistenceError": -3.984004393532979
+        },
+        {
+          "id": "CZE",
+          "year": 2018,
+          "horizon": 2,
+          "error": -3.120257167981696,
+          "persistenceError": -7.503264757152066
+        },
+        {
+          "id": "HUN",
+          "year": 2018,
+          "horizon": 2,
+          "error": -5.737417941383312,
+          "persistenceError": -10.559551589386661
+        },
+        {
+          "id": "ROU",
+          "year": 2018,
+          "horizon": 2,
+          "error": -9.952126656566447,
+          "persistenceError": -15.368927216272326
+        },
+        {
+          "id": "UKR",
+          "year": 2018,
+          "horizon": 2,
+          "error": -2.1540512433023036,
+          "persistenceError": -7.076906771312451
+        },
+        {
+          "id": "BLR",
+          "year": 2018,
+          "horizon": 2,
+          "error": -6.565761784238487,
+          "persistenceError": -6.103928813384609
+        },
+        {
+          "id": "SRB",
+          "year": 2018,
+          "horizon": 2,
+          "error": -2.805312435980515,
+          "persistenceError": -8.284253410231644
+        },
+        {
+          "id": "ISL",
+          "year": 2018,
+          "horizon": 2,
+          "error": 3.675408126662234,
+          "persistenceError": -3.0015713146163563
+        },
+        {
+          "id": "EST",
+          "year": 2018,
+          "horizon": 2,
+          "error": -3.9896623533229634,
+          "persistenceError": -9.030163186109705
+        },
+        {
+          "id": "LVA",
+          "year": 2018,
+          "horizon": 2,
+          "error": -4.209390825231464,
+          "persistenceError": -9.666356149296632
+        },
+        {
+          "id": "LTU",
+          "year": 2018,
+          "horizon": 2,
+          "error": -6.191489053062875,
+          "persistenceError": -12.020387980097297
+        },
+        {
+          "id": "SVK",
+          "year": 2018,
+          "horizon": 2,
+          "error": -2.906488330645864,
+          "persistenceError": -6.739686676894561
+        },
+        {
+          "id": "SVN",
+          "year": 2018,
+          "horizon": 2,
+          "error": -4.371687388170456,
+          "persistenceError": -9.31150280919456
+        },
+        {
+          "id": "HRV",
+          "year": 2018,
+          "horizon": 2,
+          "error": -2.913102713802616,
+          "persistenceError": -9.437587808243135
+        },
+        {
+          "id": "BIH",
+          "year": 2018,
+          "horizon": 2,
+          "error": -3.395077655382285,
+          "persistenceError": -9.919283333233313
+        },
+        {
+          "id": "MNE",
+          "year": 2018,
+          "horizon": 2,
+          "error": -2.6222195001740967,
+          "persistenceError": -7.914615325704614
+        },
+        {
+          "id": "MKD",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.20823624071020427,
+          "persistenceError": -4.943815693975058
+        },
+        {
+          "id": "ALB",
+          "year": 2018,
+          "horizon": 2,
+          "error": -3.0085781503180016,
+          "persistenceError": -10.431265223474146
+        },
+        {
+          "id": "BGR",
+          "year": 2018,
+          "horizon": 2,
+          "error": -1.7041672342365242,
+          "persistenceError": -8.012519972818941
+        },
+        {
+          "id": "MDA",
+          "year": 2018,
+          "horizon": 2,
+          "error": -4.508790941931445,
+          "persistenceError": -12.265433566133462
+        },
+        {
+          "id": "LUX",
+          "year": 2018,
+          "horizon": 2,
+          "error": 6.169861639205126,
+          "persistenceError": 1.4423350680047986
+        },
+        {
+          "id": "CYP",
+          "year": 2018,
+          "horizon": 2,
+          "error": -2.249684454103409,
+          "persistenceError": -10.149605955545336
+        },
+        {
+          "id": "MLT",
+          "year": 2018,
+          "horizon": 2,
+          "error": -9.99399701855775,
+          "persistenceError": -13.736465502144156
+        },
+        {
+          "id": "CHN",
+          "year": 2018,
+          "horizon": 2,
+          "error": -4.856615194008131,
+          "persistenceError": -12.896930088388668
+        },
+        {
+          "id": "JPN",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.12073828936154511,
+          "persistenceError": -2.6852727828319902
+        },
+        {
+          "id": "KOR",
+          "year": 2018,
+          "horizon": 2,
+          "error": -1.2086736070115849,
+          "persistenceError": -5.9585782702875445
+        },
+        {
+          "id": "MNG",
+          "year": 2018,
+          "horizon": 2,
+          "error": -8.042677753962188,
+          "persistenceError": -9.584697244690904
+        },
+        {
+          "id": "VNM",
+          "year": 2018,
+          "horizon": 2,
+          "error": -4.9939544560934035,
+          "persistenceError": -12.251693547031792
+        },
+        {
+          "id": "IDN",
+          "year": 2018,
+          "horizon": 2,
+          "error": -2.465879952306757,
+          "persistenceError": -8.326816492682545
+        },
+        {
+          "id": "PHL",
+          "year": 2018,
+          "horizon": 2,
+          "error": -3.2639365915598773,
+          "persistenceError": -10.876539714203593
+        },
+        {
+          "id": "THA",
+          "year": 2018,
+          "horizon": 2,
+          "error": -2.8417681276269717,
+          "persistenceError": -7.791670453913265
+        },
+        {
+          "id": "MYS",
+          "year": 2018,
+          "horizon": 2,
+          "error": -2.5461085719198673,
+          "persistenceError": -7.1576718909876424
+        },
+        {
+          "id": "MMR",
+          "year": 2018,
+          "horizon": 2,
+          "error": -4.1733170504686345,
+          "persistenceError": -11.114043688025642
+        },
+        {
+          "id": "IND",
+          "year": 2018,
+          "horizon": 2,
+          "error": -2.323976918904266,
+          "persistenceError": -11.147609323607668
+        },
+        {
+          "id": "PAK",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.4362585450582943,
+          "persistenceError": -7.54001702046166
+        },
+        {
+          "id": "BGD",
+          "year": 2018,
+          "horizon": 2,
+          "error": -4.456821900104449,
+          "persistenceError": -12.495439772115018
+        },
+        {
+          "id": "LKA",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.7813858096247881,
+          "persistenceError": -6.602886455729507
+        },
+        {
+          "id": "NPL",
+          "year": 2018,
+          "horizon": 2,
+          "error": -14.731764928250293,
+          "persistenceError": -16.76506305984337
+        },
+        {
+          "id": "BTN",
+          "year": 2018,
+          "horizon": 2,
+          "error": 5.2513456981809234,
+          "persistenceError": -4.0078031661306435
+        },
+        {
+          "id": "KAZ",
+          "year": 2018,
+          "horizon": 2,
+          "error": -3.46307434591388,
+          "persistenceError": -5.110502099209078
+        },
+        {
+          "id": "KGZ",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.08450592271926363,
+          "persistenceError": -4.143795701710475
+        },
+        {
+          "id": "TJK",
+          "year": 2018,
+          "horizon": 2,
+          "error": -3.604703827091188,
+          "persistenceError": -9.770625337830435
+        },
+        {
+          "id": "TUR",
+          "year": 2018,
+          "horizon": 2,
+          "error": -4.691763109626792,
+          "persistenceError": -8.64737929940974
+        },
+        {
+          "id": "IRN",
+          "year": 2018,
+          "horizon": 2,
+          "error": 12.595873934730944,
+          "persistenceError": 3.4896603155012698
+        },
+        {
+          "id": "IRQ",
+          "year": 2018,
+          "horizon": 2,
+          "error": 16.534212634611443,
+          "persistenceError": 3.7283759098807026
+        },
+        {
+          "id": "ARE",
+          "year": 2018,
+          "horizon": 2,
+          "error": 6.59436354777852,
+          "persistenceError": 3.964473406124743
+        },
+        {
+          "id": "ISR",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.044940927664214377,
+          "persistenceError": -4.456855676776826
+        },
+        {
+          "id": "JOR",
+          "year": 2018,
+          "horizon": 2,
+          "error": -0.3074913048313128,
+          "persistenceError": 0.141992214266614
+        },
+        {
+          "id": "LBN",
+          "year": 2018,
+          "horizon": 2,
+          "error": 1.2944480247621843,
+          "persistenceError": -4.608745365353717
+        },
+        {
+          "id": "YEM",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.248412425879618,
+          "persistenceError": 9.902618515877432
+        },
+        {
+          "id": "GEO",
+          "year": 2018,
+          "horizon": 2,
+          "error": -6.20786551164971,
+          "persistenceError": -11.563347059664219
+        },
+        {
+          "id": "ARM",
+          "year": 2018,
+          "horizon": 2,
+          "error": -11.311681253351734,
+          "persistenceError": -13.97750320109525
+        },
+        {
+          "id": "PSE",
+          "year": 2018,
+          "horizon": 2,
+          "error": 10.188886992361358,
+          "persistenceError": 1.8749000900549524
+        },
+        {
+          "id": "NGA",
+          "year": 2018,
+          "horizon": 2,
+          "error": 0.1876183828786449,
+          "persistenceError": 2.0161183296713467
+        },
+        {
+          "id": "ZAF",
+          "year": 2018,
+          "horizon": 2,
+          "error": 1.4426758495490775,
+          "persistenceError": -0.36052528973316794
+        },
+        {
+          "id": "EGY",
+          "year": 2018,
+          "horizon": 2,
+          "error": -1.2945859496741026,
+          "persistenceError": -5.5428828429102674
+        },
+        {
+          "id": "ETH",
+          "year": 2018,
+          "horizon": 2,
+          "error": -2.480594571384822,
+          "persistenceError": -10.855725140690371
+        },
+        {
+          "id": "KEN",
+          "year": 2018,
+          "horizon": 2,
+          "error": -1.2344667224585464,
+          "persistenceError": -5.185351870463832
+        },
+        {
+          "id": "COD",
+          "year": 2018,
+          "horizon": 2,
+          "error": -4.0256898981480145,
+          "persistenceError": -3.0909306167469768
+        },
+        {
+          "id": "MAR",
+          "year": 2018,
+          "horizon": 2,
+          "error": -4.370364924358311,
+          "persistenceError": -5.77024132174301
+        },
+        {
+          "id": "DZA",
+          "year": 2018,
+          "horizon": 2,
+          "error": 4.888350149651596,
+          "persistenceError": 1.0847289965918556
+        },
+        {
+          "id": "AUS",
+          "year": 2018,
+          "horizon": 2,
+          "error": 1.2226036015460424,
+          "persistenceError": -1.9775245618294064
+        }
+      ],
+      "unscored": []
+    },
+    {
+      "originYear": 2017,
+      "trainingYears": [
+        2015,
+        2016,
+        2017
+      ],
+      "trainingRows": 299,
+      "originCountries": [
+        "USA",
+        "CAN",
+        "MEX",
+        "GTM",
+        "HTI",
+        "DOM",
+        "HND",
+        "NIC",
+        "SLV",
+        "CRI",
+        "PAN",
+        "BRA",
+        "ARG",
+        "COL",
+        "CHL",
+        "PER",
+        "ECU",
+        "BOL",
+        "PRY",
+        "URY",
+        "RUS",
+        "GBR",
+        "FRA",
+        "DEU",
+        "ITA",
+        "ESP",
+        "NLD",
+        "SWE",
+        "BEL",
+        "AUT",
+        "POL",
+        "NOR",
+        "CHE",
+        "IRL",
+        "DNK",
+        "FIN",
+        "PRT",
+        "GRC",
+        "CZE",
+        "HUN",
+        "ROU",
+        "UKR",
+        "BLR",
+        "SRB",
+        "ISL",
+        "EST",
+        "LVA",
+        "LTU",
+        "SVK",
+        "SVN",
+        "HRV",
+        "BIH",
+        "MNE",
+        "MKD",
+        "ALB",
+        "BGR",
+        "MDA",
+        "LUX",
+        "CYP",
+        "MLT",
+        "CHN",
+        "JPN",
+        "KOR",
+        "MNG",
+        "VNM",
+        "IDN",
+        "PHL",
+        "THA",
+        "MYS",
+        "MMR",
+        "LAO",
+        "IND",
+        "PAK",
+        "BGD",
+        "LKA",
+        "NPL",
+        "BTN",
+        "KAZ",
+        "KGZ",
+        "TJK",
+        "TUR",
+        "IRN",
+        "IRQ",
+        "ARE",
+        "ISR",
+        "JOR",
+        "LBN",
+        "YEM",
+        "GEO",
+        "ARM",
+        "PSE",
+        "NGA",
+        "ZAF",
+        "EGY",
+        "ETH",
+        "KEN",
+        "COD",
+        "MAR",
+        "DZA",
+        "AUS"
+      ],
+      "coefficients": {
+        "intercept": 0.5345109517381662,
+        "lnGdp": 0.5310315621331623,
+        "governance": 0.7424292780668262,
+        "withinLnGdp": 0.6804358745607173
+      },
+      "pooledRate": 0.024816454542733336,
+      "pooledAnchorFallback": false,
+      "withinSlopeFallback": false,
+      "diagnostics": {
+        "rateCaps": 0,
+        "ladderLowCaps": 0,
+        "ladderHighCaps": 0,
+        "rawLadderRange": {
+          "min": 3.3276121979592106,
+          "max": 7.649403162388063
+        },
+        "ladderRange": {
+          "min": 3.3276121979592106,
+          "max": 7.649403162388063
+        },
+        "gdpRange": {
+          "min": 485.6539447573646,
+          "max": 108909.25268504875
+        }
+      },
+      "matchedLadder": [
+        {
+          "id": "USA",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.0071252087997599745,
+          "persistenceError": -0.006000000000000227
+        },
+        {
+          "id": "CAN",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.06132625439373651,
+          "persistenceError": 0.05000000000000071
+        },
+        {
+          "id": "MEX",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.09565318348852703,
+          "persistenceError": -0.10699999999999932
+        },
+        {
+          "id": "GTM",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.04212992792316417,
+          "persistenceError": -0.05400000000000027
+        },
+        {
+          "id": "HTI",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.003979358943337896,
+          "persistenceError": -0.015000000000000124
+        },
+        {
+          "id": "DOM",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.10067107990353197,
+          "persistenceError": -0.12300000000000022
+        },
+        {
+          "id": "HND",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.33935644731422787,
+          "persistenceError": -0.35600000000000076
+        },
+        {
+          "id": "NIC",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.055181517429045535,
+          "persistenceError": 0.03599999999999959
+        },
+        {
+          "id": "SLV",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.07033004992937197,
+          "persistenceError": -0.0860000000000003
+        },
+        {
+          "id": "CRI",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.0759480922599467,
+          "persistenceError": -0.09499999999999975
+        },
+        {
+          "id": "PAN",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.12869368510632473,
+          "persistenceError": 0.10899999999999999
+        },
+        {
+          "id": "BRA",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.12147762118982453,
+          "persistenceError": 0.11899999999999977
+        },
+        {
+          "id": "ARG",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.30844776398665186,
+          "persistenceError": 0.3019999999999996
+        },
+        {
+          "id": "COL",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.14509998988158745,
+          "persistenceError": 0.1349999999999998
+        },
+        {
+          "id": "CHL",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.040941503654553735,
+          "persistenceError": 0.03200000000000003
+        },
+        {
+          "id": "PER",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.019504732560600146,
+          "persistenceError": -0.03399999999999981
+        },
+        {
+          "id": "ECU",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.04294885416459948,
+          "persistenceError": -0.054999999999999716
+        },
+        {
+          "id": "BOL",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.009483108811851437,
+          "persistenceError": -0.027000000000000135
+        },
+        {
+          "id": "PRY",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.04334398058021538,
+          "persistenceError": -0.06200000000000028
+        },
+        {
+          "id": "URY",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.09920026174985974,
+          "persistenceError": 0.08599999999999941
+        },
+        {
+          "id": "RUS",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.17301391853813097,
+          "persistenceError": 0.16199999999999992
+        },
+        {
+          "id": "GBR",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.2250545440813596,
+          "persistenceError": -0.2400000000000002
+        },
+        {
+          "id": "FRA",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.09053479177146695,
+          "persistenceError": -0.10299999999999976
+        },
+        {
+          "id": "DEU",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.0051329544155986895,
+          "persistenceError": -0.020000000000000462
+        },
+        {
+          "id": "ITA",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.20911723506915347,
+          "persistenceError": -0.22299999999999986
+        },
+        {
+          "id": "ESP",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.026357380288152044,
+          "persistenceError": -0.04400000000000048
+        },
+        {
+          "id": "NLD",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.03172626071029594,
+          "persistenceError": -0.0470000000000006
+        },
+        {
+          "id": "SWE",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.018226156764847623,
+          "persistenceError": -0.028999999999999915
+        },
+        {
+          "id": "BEL",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.01543455913032421,
+          "persistenceError": 0.0039999999999995595
+        },
+        {
+          "id": "AUT",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.0941921379913726,
+          "persistenceError": -0.1070000000000002
+        },
+        {
+          "id": "POL",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.03687894445775264,
+          "persistenceError": -0.05900000000000016
+        },
+        {
+          "id": "NOR",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.05223525239680438,
+          "persistenceError": 0.040000000000000036
+        },
+        {
+          "id": "CHE",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.017618213997482535,
+          "persistenceError": 0.006999999999999673
+        },
+        {
+          "id": "IRL",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.021588705573981848,
+          "persistenceError": -0.043999999999999595
+        },
+        {
+          "id": "DNK",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.02870863367269827,
+          "persistenceError": -0.04499999999999993
+        },
+        {
+          "id": "FIN",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.11959683761193673,
+          "persistenceError": -0.13700000000000045
+        },
+        {
+          "id": "PRT",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.26468278548013924,
+          "persistenceError": -0.2829999999999995
+        },
+        {
+          "id": "GRC",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.08292049991642525,
+          "persistenceError": 0.07099999999999973
+        },
+        {
+          "id": "CZE",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.1204203736291074,
+          "persistenceError": -0.14100000000000001
+        },
+        {
+          "id": "HUN",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.11734645128903587,
+          "persistenceError": -0.1379999999999999
+        },
+        {
+          "id": "ROU",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.0964017947584841,
+          "persistenceError": -0.125
+        },
+        {
+          "id": "UKR",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.21082810782507888,
+          "persistenceError": -0.2290000000000001
+        },
+        {
+          "id": "BLR",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.16838143553715845,
+          "persistenceError": 0.15999999999999925
+        },
+        {
+          "id": "SRB",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.1858000020621846,
+          "persistenceError": -0.20500000000000007
+        },
+        {
+          "id": "ISL",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.019180843243367107,
+          "persistenceError": 0.001000000000000334
+        },
+        {
+          "id": "EST",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.13130592517345807,
+          "persistenceError": -0.15399999999999991
+        },
+        {
+          "id": "LVA",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.014477153163888978,
+          "persistenceError": -0.007000000000000561
+        },
+        {
+          "id": "LTU",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.17235238866706037,
+          "persistenceError": -0.19700000000000006
+        },
+        {
+          "id": "SVK",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.008937513650815632,
+          "persistenceError": -0.025000000000000355
+        },
+        {
+          "id": "SVN",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.14812535138898308,
+          "persistenceError": -0.16999999999999993
+        },
+        {
+          "id": "HRV",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.08668275991498398,
+          "persistenceError": -0.11100000000000065
+        },
+        {
+          "id": "BIH",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.23329746765481563,
+          "persistenceError": -0.25700000000000056
+        },
+        {
+          "id": "MNE",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.15678116483682025,
+          "persistenceError": -0.17599999999999927
+        },
+        {
+          "id": "MKD",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.07271982096257901,
+          "persistenceError": -0.08900000000000041
+        },
+        {
+          "id": "ALB",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.10728891529230644,
+          "persistenceError": -0.133
+        },
+        {
+          "id": "BGR",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.05541619947328247,
+          "persistenceError": -0.07800000000000029
+        },
+        {
+          "id": "MDA",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.13904327333969935,
+          "persistenceError": 0.11099999999999977
+        },
+        {
+          "id": "LUX",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.16886846611318962,
+          "persistenceError": -0.17999999999999972
+        },
+        {
+          "id": "CYP",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.2575534861559525,
+          "persistenceError": -0.2840000000000007
+        },
+        {
+          "id": "MLT",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.0715561331587189,
+          "persistenceError": -0.0990000000000002
+        },
+        {
+          "id": "CHN",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.08392413394538778,
+          "persistenceError": 0.055000000000000604
+        },
+        {
+          "id": "JPN",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.04160376350686512,
+          "persistenceError": 0.028999999999999915
+        },
+        {
+          "id": "KOR",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.0016566104379860391,
+          "persistenceError": -0.019999999999999574
+        },
+        {
+          "id": "MNG",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.14643776997982982,
+          "persistenceError": -0.16000000000000014
+        },
+        {
+          "id": "VNM",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.04538664243360646,
+          "persistenceError": -0.07200000000000006
+        },
+        {
+          "id": "IDN",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.07735799476918537,
+          "persistenceError": -0.0990000000000002
+        },
+        {
+          "id": "PHL",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.0798848418675675,
+          "persistenceError": -0.1070000000000002
+        },
+        {
+          "id": "THA",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.08366341878602856,
+          "persistenceError": 0.06400000000000006
+        },
+        {
+          "id": "MYS",
+          "year": 2018,
+          "horizon": 1,
+          "error": 1.0024519575287512,
+          "persistenceError": 0.9829999999999997
+        },
+        {
+          "id": "MMR",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.02639779590054303,
+          "persistenceError": -0.05200000000000049
+        },
+        {
+          "id": "LAO",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.15611399404971937,
+          "persistenceError": -0.17300000000000004
+        },
+        {
+          "id": "IND",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.20411731279120726,
+          "persistenceError": 0.1750000000000007
+        },
+        {
+          "id": "PAK",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.15896917111481113,
+          "persistenceError": -0.18099999999999916
+        },
+        {
+          "id": "BGD",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.07202373455655309,
+          "persistenceError": 0.043999999999999595
+        },
+        {
+          "id": "LKA",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.12860560419045175,
+          "persistenceError": 0.10500000000000043
+        },
+        {
+          "id": "NPL",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.010340967385657152,
+          "persistenceError": -0.03300000000000036
+        },
+        {
+          "id": "BTN",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.02267437674470063,
+          "persistenceError": 0
+        },
+        {
+          "id": "KAZ",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.007119270874079042,
+          "persistenceError": -0.019000000000000128
+        },
+        {
+          "id": "KGZ",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.11380798177981521,
+          "persistenceError": -0.1299999999999999
+        },
+        {
+          "id": "TJK",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.09202381692875683,
+          "persistenceError": -0.11499999999999932
+        },
+        {
+          "id": "TUR",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.13232759393968774,
+          "persistenceError": 0.10999999999999943
+        },
+        {
+          "id": "IRN",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.182000485567948,
+          "persistenceError": 0.1589999999999998
+        },
+        {
+          "id": "IRQ",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.03842789678020164,
+          "persistenceError": 0.019000000000000128
+        },
+        {
+          "id": "ARE",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.0487960432306318,
+          "persistenceError": -0.051000000000000156
+        },
+        {
+          "id": "ISR",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.06759006321749617,
+          "persistenceError": 0.051000000000000156
+        },
+        {
+          "id": "JOR",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.2593461080259525,
+          "persistenceError": 0.2549999999999999
+        },
+        {
+          "id": "LBN",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.02300992938089408,
+          "persistenceError": 0.0019999999999997797
+        },
+        {
+          "id": "YEM",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.0523878020407893,
+          "persistenceError": -0.02499999999999991
+        },
+        {
+          "id": "GEO",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.156352871040764,
+          "persistenceError": -0.17900000000000027
+        },
+        {
+          "id": "ARM",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.21548198126207652,
+          "persistenceError": -0.23800000000000043
+        },
+        {
+          "id": "PSE",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.06508492687039169,
+          "persistenceError": 0.0470000000000006
+        },
+        {
+          "id": "NGA",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.11130588753003323,
+          "persistenceError": -0.10999999999999943
+        },
+        {
+          "id": "ZAF",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.010816032530053477,
+          "persistenceError": 0.0019999999999997797
+        },
+        {
+          "id": "EGY",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.26878854184878875,
+          "persistenceError": 0.2529999999999992
+        },
+        {
+          "id": "ETH",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.0940733582459723,
+          "persistenceError": 0.06400000000000006
+        },
+        {
+          "id": "KEN",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.08458375550817454,
+          "persistenceError": -0.0990000000000002
+        },
+        {
+          "id": "COD",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.16906668651996792,
+          "persistenceError": -0.17300000000000004
+        },
+        {
+          "id": "MAR",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.059576647686980344,
+          "persistenceError": 0.045999999999999375
+        },
+        {
+          "id": "DZA",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.09453030932370687,
+          "persistenceError": 0.08399999999999963
+        },
+        {
+          "id": "AUS",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.05546583453442988,
+          "persistenceError": 0.04400000000000048
+        }
+      ],
+      "matchedGdp": [
+        {
+          "id": "USA",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.41677689586373173,
+          "persistenceError": -2.3644424974579192
+        },
+        {
+          "id": "CAN",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.39756308214321984,
+          "persistenceError": -1.2809265621825936
+        },
+        {
+          "id": "MEX",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.6701960832595889,
+          "persistenceError": -1.011366233662896
+        },
+        {
+          "id": "GTM",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.061422698463494615,
+          "persistenceError": -1.6983628693483057
+        },
+        {
+          "id": "HTI",
+          "year": 2018,
+          "horizon": 1,
+          "error": 1.3061531082311906,
+          "persistenceError": -0.3266785596052373
+        },
+        {
+          "id": "DOM",
+          "year": 2018,
+          "horizon": 1,
+          "error": -2.6171437377239664,
+          "persistenceError": -5.953142054777702
+        },
+        {
+          "id": "HND",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.5142049912097235,
+          "persistenceError": -1.9619687252862394
+        },
+        {
+          "id": "NIC",
+          "year": 2018,
+          "horizon": 1,
+          "error": 7.488531127578036,
+          "persistenceError": 4.629416757141672
+        },
+        {
+          "id": "SLV",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.02051092984221877,
+          "persistenceError": -2.3091394628662543
+        },
+        {
+          "id": "CRI",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.9127678786319043,
+          "persistenceError": -1.9267557137394153
+        },
+        {
+          "id": "PAN",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.7425317424883078,
+          "persistenceError": -2.194034372213968
+        },
+        {
+          "id": "BRA",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.7256222149515956,
+          "persistenceError": -1.0904086044716101
+        },
+        {
+          "id": "ARG",
+          "year": 2018,
+          "horizon": 1,
+          "error": 4.367633904444301,
+          "persistenceError": 3.415536838678417
+        },
+        {
+          "id": "COL",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.8001472848366048,
+          "persistenceError": -0.6952649472388236
+        },
+        {
+          "id": "CHL",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.8271252271888446,
+          "persistenceError": -2.1498819546393237
+        },
+        {
+          "id": "PER",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.05129878297321946,
+          "persistenceError": -2.1018453903507024
+        },
+        {
+          "id": "ECU",
+          "year": 2018,
+          "horizon": 1,
+          "error": 2.461427871864201,
+          "persistenceError": 0.6745589601766273
+        },
+        {
+          "id": "BOL",
+          "year": 2018,
+          "horizon": 1,
+          "error": 1.2036662457426057,
+          "persistenceError": -1.4041199419002917
+        },
+        {
+          "id": "PRY",
+          "year": 2018,
+          "horizon": 1,
+          "error": 1.0000630815990417,
+          "persistenceError": -1.7796442571800586
+        },
+        {
+          "id": "URY",
+          "year": 2018,
+          "horizon": 1,
+          "error": 1.9740123069991955,
+          "persistenceError": 0.015101126880370816
+        },
+        {
+          "id": "RUS",
+          "year": 2018,
+          "horizon": 1,
+          "error": -1.0838654106698582,
+          "persistenceError": -2.7156929791565667
+        },
+        {
+          "id": "GBR",
+          "year": 2018,
+          "horizon": 1,
+          "error": 1.1642562027494627,
+          "persistenceError": -1.0564966711086774
+        },
+        {
+          "id": "FRA",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.5666616017054036,
+          "persistenceError": -1.2821660370212338
+        },
+        {
+          "id": "DEU",
+          "year": 2018,
+          "horizon": 1,
+          "error": 1.3767615710225511,
+          "persistenceError": -0.8322125270525934
+        },
+        {
+          "id": "ITA",
+          "year": 2018,
+          "horizon": 1,
+          "error": 1.0240460222294998,
+          "persistenceError": -1.0371851484065095
+        },
+        {
+          "id": "ESP",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.6926845212182713,
+          "persistenceError": -1.93406292039191
+        },
+        {
+          "id": "NLD",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.6067335430165134,
+          "persistenceError": -1.6633486959665056
+        },
+        {
+          "id": "SWE",
+          "year": 2018,
+          "horizon": 1,
+          "error": 1.0010894309714942,
+          "persistenceError": -0.5948861360779353
+        },
+        {
+          "id": "BEL",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.2793856869292567,
+          "persistenceError": -1.4152893745752855
+        },
+        {
+          "id": "AUT",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.0861333940337229,
+          "persistenceError": -1.9862629640023095
+        },
+        {
+          "id": "POL",
+          "year": 2018,
+          "horizon": 1,
+          "error": -2.941635807646894,
+          "persistenceError": -6.246071105400048
+        },
+        {
+          "id": "NOR",
+          "year": 2018,
+          "horizon": 1,
+          "error": 1.3692445114082954,
+          "persistenceError": -0.44516875319459914
+        },
+        {
+          "id": "CHE",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.9963429413351125,
+          "persistenceError": -2.5690841423309347
+        },
+        {
+          "id": "IRL",
+          "year": 2018,
+          "horizon": 1,
+          "error": -2.7884336327187733,
+          "persistenceError": -6.136942678805208
+        },
+        {
+          "id": "DNK",
+          "year": 2018,
+          "horizon": 1,
+          "error": 1.0669508631401128,
+          "persistenceError": -1.35619600199784
+        },
+        {
+          "id": "FIN",
+          "year": 2018,
+          "horizon": 1,
+          "error": 1.5317944855606116,
+          "persistenceError": -1.0588431570542123
+        },
+        {
+          "id": "PRT",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.3826929239908303,
+          "persistenceError": -3.111236586971198
+        },
+        {
+          "id": "GRC",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.5046239468391178,
+          "persistenceError": -2.271951322029618
+        },
+        {
+          "id": "CZE",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.5836911939320176,
+          "persistenceError": -2.4869877006762175
+        },
+        {
+          "id": "HUN",
+          "year": 2018,
+          "horizon": 1,
+          "error": -2.7395865489175146,
+          "persistenceError": -5.82146361803653
+        },
+        {
+          "id": "ROU",
+          "year": 2018,
+          "horizon": 1,
+          "error": -1.7230327149241544,
+          "persistenceError": -6.015530451183796
+        },
+        {
+          "id": "UKR",
+          "year": 2018,
+          "horizon": 1,
+          "error": -1.3927713843382883,
+          "persistenceError": -4.099377405075081
+        },
+        {
+          "id": "BLR",
+          "year": 2018,
+          "horizon": 1,
+          "error": -2.130599428800339,
+          "persistenceError": -3.3699915078145857
+        },
+        {
+          "id": "SRB",
+          "year": 2018,
+          "horizon": 1,
+          "error": -2.3607608408062015,
+          "persistenceError": -5.22266888313773
+        },
+        {
+          "id": "ISL",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.8129507534710618,
+          "persistenceError": -1.8950063716704997
+        },
+        {
+          "id": "EST",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.05205891985260288,
+          "persistenceError": -3.339409363788736
+        },
+        {
+          "id": "LVA",
+          "year": 2018,
+          "horizon": 1,
+          "error": -1.91888056749701,
+          "persistenceError": -5.125604220806901
+        },
+        {
+          "id": "LTU",
+          "year": 2018,
+          "horizon": 1,
+          "error": -2.101932996972417,
+          "persistenceError": -5.7906654822859736
+        },
+        {
+          "id": "SVK",
+          "year": 2018,
+          "horizon": 1,
+          "error": -1.5293847453082603,
+          "persistenceError": -3.9180850649213106
+        },
+        {
+          "id": "SVN",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.734274167964576,
+          "persistenceError": -4.001306498909891
+        },
+        {
+          "id": "HRV",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.6305851540887211,
+          "persistenceError": -4.268985988046006
+        },
+        {
+          "id": "BIH",
+          "year": 2018,
+          "horizon": 1,
+          "error": -1.5619562091680492,
+          "persistenceError": -5.106772090466362
+        },
+        {
+          "id": "MNE",
+          "year": 2018,
+          "horizon": 1,
+          "error": -1.7919276862044553,
+          "persistenceError": -4.65668340285265
+        },
+        {
+          "id": "MKD",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.9822912075493209,
+          "persistenceError": -3.403754110894888
+        },
+        {
+          "id": "ALB",
+          "year": 2018,
+          "horizon": 1,
+          "error": -1.4326621121578738,
+          "persistenceError": -5.283579496272907
+        },
+        {
+          "id": "BGR",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.36852300885726824,
+          "persistenceError": -3.7432365939770706
+        },
+        {
+          "id": "MDA",
+          "year": 2018,
+          "horizon": 1,
+          "error": -1.712890889275867,
+          "persistenceError": -5.920367181907169
+        },
+        {
+          "id": "LUX",
+          "year": 2018,
+          "horizon": 1,
+          "error": 1.979233526755388,
+          "persistenceError": 0.3298370786159868
+        },
+        {
+          "id": "CYP",
+          "year": 2018,
+          "horizon": 1,
+          "error": -1.0878290616246509,
+          "persistenceError": -5.051051340359746
+        },
+        {
+          "id": "MLT",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.6472031145770337,
+          "persistenceError": -3.468515619800891
+        },
+        {
+          "id": "CHN",
+          "year": 2018,
+          "horizon": 1,
+          "error": -1.9172295915817619,
+          "persistenceError": -6.259695388380758
+        },
+        {
+          "id": "JPN",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.9074054710961358,
+          "persistenceError": -0.9621634748558101
+        },
+        {
+          "id": "KOR",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.0026997775724050773,
+          "persistenceError": -2.729795728308532
+        },
+        {
+          "id": "MNG",
+          "year": 2018,
+          "horizon": 1,
+          "error": -3.741105954123325,
+          "persistenceError": -5.754270165527149
+        },
+        {
+          "id": "VNM",
+          "year": 2018,
+          "horizon": 1,
+          "error": -2.29224096635737,
+          "persistenceError": -6.280958282019767
+        },
+        {
+          "id": "IDN",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.9275691286987052,
+          "persistenceError": -4.159300139093995
+        },
+        {
+          "id": "PHL",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.9688565845771495,
+          "persistenceError": -5.034290671144691
+        },
+        {
+          "id": "THA",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.9756387242328275,
+          "persistenceError": -3.907626241733522
+        },
+        {
+          "id": "MYS",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.17401380979145945,
+          "persistenceError": -3.0740177907188113
+        },
+        {
+          "id": "MMR",
+          "year": 2018,
+          "horizon": 1,
+          "error": -1.6674965555778367,
+          "persistenceError": -5.501797463632035
+        },
+        {
+          "id": "LAO",
+          "year": 2018,
+          "horizon": 1,
+          "error": -2.0971671337300815,
+          "persistenceError": -4.6098617198921135
+        },
+        {
+          "id": "IND",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.9200264152585704,
+          "persistenceError": -5.292119719122801
+        },
+        {
+          "id": "PAK",
+          "year": 2018,
+          "horizon": 1,
+          "error": -1.1512815151533633,
+          "persistenceError": -4.442019422371614
+        },
+        {
+          "id": "BGD",
+          "year": 2018,
+          "horizon": 1,
+          "error": -2.2374909393753777,
+          "persistenceError": -6.441974947024812
+        },
+        {
+          "id": "LKA",
+          "year": 2018,
+          "horizon": 1,
+          "error": 2.2444999337557,
+          "persistenceError": -1.2855670292373105
+        },
+        {
+          "id": "NPL",
+          "year": 2018,
+          "horizon": 1,
+          "error": -3.9739535193464497,
+          "persistenceError": -7.360097315236893
+        },
+        {
+          "id": "BTN",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.6255141977435356,
+          "persistenceError": -2.7629610277696037
+        },
+        {
+          "id": "KAZ",
+          "year": 2018,
+          "horizon": 1,
+          "error": -0.7946875570530173,
+          "persistenceError": -2.556066908442058
+        },
+        {
+          "id": "KGZ",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.8623253021212873,
+          "persistenceError": -1.5458682024807804
+        },
+        {
+          "id": "TJK",
+          "year": 2018,
+          "horizon": 1,
+          "error": -1.6062500061751086,
+          "persistenceError": -5.040593208660894
+        },
+        {
+          "id": "TUR",
+          "year": 2018,
+          "horizon": 1,
+          "error": 1.258755561136048,
+          "persistenceError": -2.0770413561880123
+        },
+        {
+          "id": "IRN",
+          "year": 2018,
+          "horizon": 1,
+          "error": 8.405655180329381,
+          "persistenceError": 4.967617643418502
+        },
+        {
+          "id": "IRQ",
+          "year": 2018,
+          "horizon": 1,
+          "error": 2.6286028694359502,
+          "persistenceError": -0.2677625506208336
+        },
+        {
+          "id": "ARE",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.12859500760796477,
+          "persistenceError": -0.19583379710442864
+        },
+        {
+          "id": "ISR",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.40014904871801865,
+          "persistenceError": -2.067969271515245
+        },
+        {
+          "id": "JOR",
+          "year": 2018,
+          "horizon": 1,
+          "error": 1.0073645713345254,
+          "persistenceError": 0.36659626274016577
+        },
+        {
+          "id": "LBN",
+          "year": 2018,
+          "horizon": 1,
+          "error": 2.134752334214327,
+          "persistenceError": -1.0011283697322566
+        },
+        {
+          "id": "YEM",
+          "year": 2018,
+          "horizon": 1,
+          "error": -1.7586190599447693,
+          "persistenceError": 2.186490192267407
+        },
+        {
+          "id": "GEO",
+          "year": 2018,
+          "horizon": 1,
+          "error": -2.7191122930634055,
+          "persistenceError": -6.103447450873555
+        },
+        {
+          "id": "ARM",
+          "year": 2018,
+          "horizon": 1,
+          "error": -2.2037809595944506,
+          "persistenceError": -5.5685011785003065
+        },
+        {
+          "id": "PSE",
+          "year": 2018,
+          "horizon": 1,
+          "error": 3.998294302016908,
+          "persistenceError": 1.3048141919531913
+        },
+        {
+          "id": "NGA",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.21510163425484943,
+          "persistenceError": 0.4068368521074269
+        },
+        {
+          "id": "ZAF",
+          "year": 2018,
+          "horizon": 1,
+          "error": 1.4415597595301706,
+          "persistenceError": 0.13748503965309733
+        },
+        {
+          "id": "EGY",
+          "year": 2018,
+          "horizon": 1,
+          "error": -1.0041807597378651,
+          "persistenceError": -3.3516675323987677
+        },
+        {
+          "id": "ETH",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.5447687771824323,
+          "persistenceError": -3.97407545942132
+        },
+        {
+          "id": "KEN",
+          "year": 2018,
+          "horizon": 1,
+          "error": -1.3827665872827115,
+          "persistenceError": -3.5240478149172336
+        },
+        {
+          "id": "COD",
+          "year": 2018,
+          "horizon": 1,
+          "error": -2.0002210418850788,
+          "persistenceError": -2.579952943103015
+        },
+        {
+          "id": "MAR",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.10122045343922842,
+          "persistenceError": -1.9141053244680597
+        },
+        {
+          "id": "DZA",
+          "year": 2018,
+          "horizon": 1,
+          "error": 2.1056395711663294,
+          "persistenceError": 0.546019580108502
+        },
+        {
+          "id": "AUS",
+          "year": 2018,
+          "horizon": 1,
+          "error": 0.35271878972012427,
+          "persistenceError": -1.3466306507711383
+        }
+      ],
+      "unscored": []
+    }
+  ],
+  "warning": "Selected internal performance is optimistic after selection; overlapping country/2018 targets, maximum two-year horizon. No external scoring.",
+  "externalResults": "PENDING — external scoring prohibited before joint freeze"
+}

@@ -1,0 +1,1863 @@
+{
+  "schema": "research-offset-calibration/1",
+  "entryId": "research-offset-2018-v1",
+  "registeredProtocolCommit": "e8e6e72700ba32576269901885f27c7dab7574c9",
+  "protocolHash": "361159323cd9fa2f2b2b7e1078bec77e955c315c2402fb051ff4a5fe61eabeaa",
+  "trainHash": "979ac8d45dda418403fc59e04111b9c9dbcd2fa484e4c26aa900cd37e777bd02",
+  "originHash": "564bab92fe88415df70a1b239223213a53c12274891ec2d39f0e08c3e28e3f77",
+  "selectedSetting": {
+    "gdpMode": "half-local",
+    "offsetWeight": 1,
+    "annualAdjustment": 1
+  },
+  "fit": {
+    "years": [
+      2015,
+      2016,
+      2017,
+      2018
+    ],
+    "rows": 399,
+    "coefficients": {
+      "intercept": 0.5569374801661462,
+      "lnGdp": 0.5241191645216621,
+      "governance": 0.8224203899439249,
+      "withinLnGdp": 0.918883296565691
+    },
+    "pooledAnchorFallback": false,
+    "withinSlopeFallback": false,
+    "withinLogGdpSumSquares": 0.5847534080506834,
+    "pooledRate": 0.02500684670344,
+    "localRates": {
+      "USA": 0.0169646563807427,
+      "CAN": 0.009892452964942086,
+      "MEX": 0.009044391883185435,
+      "GTM": 0.01232911189088289,
+      "HTI": 0.006138108443322743,
+      "DOM": 0.046485431945925505,
+      "HND": 0.022545776380029636,
+      "NIC": 0.005242420390640194,
+      "SLV": 0.021771014749545497,
+      "CRI": 0.02714987819094361,
+      "PAN": 0.02928040237482321,
+      "BRA": -0.008074312541352194,
+      "ARG": -0.01549382538841885,
+      "COL": 0.005556443106788341,
+      "CHL": 0.008067152730422578,
+      "PER": 0.018793121113159117,
+      "ECU": 0.004814109967773206,
+      "BOL": 0.022428385466445988,
+      "PRY": 0.02589267444777062,
+      "URY": 0.009271642174506193,
+      "RUS": 0.013969356181512183,
+      "GBR": 0.01624492285992159,
+      "FRA": 0.012128344509094427,
+      "DEU": 0.015350655551527481,
+      "ITA": 0.014098844971112356,
+      "ESP": 0.02441223452027863,
+      "NLD": 0.01888390947253704,
+      "SWE": 0.006544426302515542,
+      "BEL": 0.010546597725742402,
+      "AUT": 0.015109045146085501,
+      "POL": 0.0469984118085082,
+      "NOR": 0.008911622648817877,
+      "CHE": 0.01271784655953212,
+      "IRL": 0.04722459080236696,
+      "DNK": 0.01986936312333339,
+      "FIN": 0.02106860792920706,
+      "PRT": 0.029561525470275168,
+      "GRC": 0.0143026764880639,
+      "CZE": 0.031970608424537396,
+      "HUN": 0.042787970448683765,
+      "ROU": 0.058966492358457266,
+      "UKR": 0.03245596973195841,
+      "BLR": 0.01092752901099144,
+      "SRB": 0.03804816067614899,
+      "ISL": 0.025339155929979523,
+      "EST": 0.03887491865896978,
+      "LVA": 0.04220267910342971,
+      "LTU": 0.050517422072883754,
+      "SVK": 0.02774151281862854,
+      "SVN": 0.03939744788129277,
+      "HRV": 0.045040609042512614,
+      "BIH": 0.04650365406537086,
+      "MNE": 0.03628725622490355,
+      "MKD": 0.026514195434580518,
+      "ALB": 0.05099972128282341,
+      "BGR": 0.03995888643517986,
+      "MDA": 0.05757974151088637,
+      "LUX": 0.004166978196959548,
+      "CYP": 0.051703804956361545,
+      "MLT": 0.04859845777720769,
+      "CHN": 0.06037197796334581,
+      "JPN": 0.011345008429038591,
+      "KOR": 0.02837742502030416,
+      "MNG": 0.02868060710402176,
+      "VNM": 0.055910640677084324,
+      "IDN": 0.039447575864206406,
+      "PHL": 0.05296084548403771,
+      "THA": 0.03476409175174844,
+      "MYS": 0.03166474551907387,
+      "MMR": 0.05147654117516846,
+      "LAO": 0.045067641503518274,
+      "TLS": null,
+      "IND": 0.05770135920936159,
+      "PAK": 0.04111302681397818,
+      "BGD": 0.05917893528454835,
+      "LKA": 0.03396945829360121,
+      "NPL": 0.051529509881566384,
+      "BTN": 0.036971712855211315,
+      "KAZ": 0.015149474007171074,
+      "KGZ": 0.020297885747380562,
+      "TJK": 0.044870407758939614,
+      "TUR": 0.034059798406661436,
+      "IRN": 0.011541636853817039,
+      "IRQ": 0.022416558991305163,
+      "ARE": -0.011573446453457592,
+      "ISR": 0.022787318470217716,
+      "JOR": -0.009252214391540411,
+      "LBN": 0.027945748504189776,
+      "YEM": -0.07758063589392261,
+      "GEO": 0.047581503632441624,
+      "ARM": 0.045643676810872925,
+      "PSE": 0.014515616885111863,
+      "NGA": -0.020462115512361656,
+      "ZAF": 0.0002723631688989296,
+      "EGY": 0.025382869366836164,
+      "ETH": 0.05537576189865353,
+      "KEN": 0.023249317548438952,
+      "COD": -0.00034608498284042594,
+      "MAR": 0.016379577905041742,
+      "DZA": 0.0022650834164383107,
+      "AUS": 0.010382137790686011
+    },
+    "perCountry": {
+      "USA": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 10.97031053111702,
+        "meanLadder": 6.96875,
+        "meanAnchorResidual": 0.021313213903544126
+      },
+      "CAN": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 10.694091099982613,
+        "meanLadder": 7.331499999999999,
+        "meanAnchorResidual": 0.45873517736104663
+      },
+      "MEX": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 9.225482462234346,
+        "meanLadder": 6.60975,
+        "meanAnchorResidual": 0.8844186995847392
+      },
+      "GTM": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 8.283348600013934,
+        "meanLadder": 6.398999999999999,
+        "meanAnchorResidual": 1.2269716942018734
+      },
+      "HTI": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 7.261529672778793,
+        "meanLadder": 3.7025,
+        "meanAnchorResidual": -0.8225154373307277
+      },
+      "DOM": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 8.893570432747573,
+        "meanLadder": 5.2780000000000005,
+        "meanAnchorResidual": -0.26218482883228034
+      },
+      "HND": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 7.761879865837123,
+        "meanLadder": 5.354,
+        "meanAnchorResidual": 0.45607518462658714
+      },
+      "NIC": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 7.664961484919883,
+        "meanLadder": 6.07725,
+        "meanAnchorResidual": 1.2439580864772068
+      },
+      "SLV": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 8.272737614669953,
+        "meanLadder": 6.12275,
+        "meanAnchorResidual": 0.9062284388532957
+      },
+      "CRI": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 9.412322619391297,
+        "meanLadder": 7.10125,
+        "meanAnchorResidual": 1.109408831370516
+      },
+      "PAN": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 9.598048650948845,
+        "meanLadder": 6.475999999999999,
+        "meanAnchorResidual": 0.49231720730266404
+      },
+      "BRA": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 9.072810735295903,
+        "meanLadder": 6.5765,
+        "meanAnchorResidual": 0.890308159551884
+      },
+      "ARG": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 9.501432266945702,
+        "meanLadder": 6.43075,
+        "meanAnchorResidual": 0.5372052083250634
+      },
+      "COL": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 8.74938998275889,
+        "meanLadder": 6.30575,
+        "meanAnchorResidual": 0.7985315758194713
+      },
+      "CHL": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 9.51364222427803,
+        "meanLadder": 6.569249999999999,
+        "meanAnchorResidual": 0.43948949755130196
+      },
+      "PER": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 8.766754833869232,
+        "meanLadder": 5.7045,
+        "meanAnchorResidual": 0.21240857704230498
+      },
+      "ECU": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 8.699075665101962,
+        "meanLadder": 5.99625,
+        "meanAnchorResidual": 0.5774305356354938
+      },
+      "BOL": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 8.041908879430384,
+        "meanLadder": 5.794,
+        "meanAnchorResidual": 0.7438592008714169
+      },
+      "PRY": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 8.72044948949778,
+        "meanLadder": 5.61375,
+        "meanAnchorResidual": 0.2003893493635185
+      },
+      "URY": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 9.76564688019789,
+        "meanLadder": 6.41775,
+        "meanAnchorResidual": 0.18029724107968814
+      },
+      "RUS": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 9.14939944177082,
+        "meanLadder": 5.819249999999999,
+        "meanAnchorResidual": 0.17331667506031967
+      },
+      "GBR": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 10.745302165717892,
+        "meanLadder": 6.8267500000000005,
+        "meanAnchorResidual": -0.0446928887613085
+      },
+      "FRA": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 10.52708699883243,
+        "meanLadder": 6.500249999999999,
+        "meanAnchorResidual": -0.204554882179252
+      },
+      "DEU": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 10.668181736640113,
+        "meanLadder": 6.97375,
+        "meanAnchorResidual": 0.11672979838873543
+      },
+      "ITA": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 10.352173295622755,
+        "meanLadder": 6.041,
+        "meanAnchorResidual": -0.4022523503918556
+      },
+      "ESP": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 10.203996393201862,
+        "meanLadder": 6.356999999999999,
+        "meanAnchorResidual": -0.1025082169869691
+      },
+      "NLD": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 10.760763939677226,
+        "meanLadder": 7.41125,
+        "meanAnchorResidual": 0.49202490374631513
+      },
+      "SWE": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 10.853728299182595,
+        "meanLadder": 7.308,
+        "meanAnchorResidual": 0.32913311187887784
+      },
+      "BEL": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 10.632740671331076,
+        "meanLadder": 6.9175,
+        "meanAnchorResidual": 0.1311665304440559
+      },
+      "AUT": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 10.710297305197802,
+        "meanLadder": 7.1274999999999995,
+        "meanAnchorResidual": 0.2786469759033334
+      },
+      "POL": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 9.507349139539853,
+        "meanLadder": 6.02825,
+        "meanAnchorResidual": -0.062324738443724215
+      },
+      "NOR": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 11.267688954829403,
+        "meanLadder": 7.54575,
+        "meanAnchorResidual": 0.3384927810762701
+      },
+      "CHE": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 11.368259032101399,
+        "meanLadder": 7.492500000000001,
+        "meanAnchorResidual": 0.22654150028661046
+      },
+      "IRL": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 11.126314165688527,
+        "meanLadder": 6.9705,
+        "meanAnchorResidual": -0.08396230678372607
+      },
+      "DNK": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 10.91187174888465,
+        "meanLadder": 7.550750000000001,
+        "meanAnchorResidual": 0.5380704384052712
+      },
+      "FIN": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 10.693277953550774,
+        "meanLadder": 7.57075,
+        "meanAnchorResidual": 0.6601278638045258
+      },
+      "PRT": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 9.905919359201611,
+        "meanLadder": 5.35525,
+        "meanAnchorResidual": -0.9672522528371799
+      },
+      "GRC": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 9.813853878626936,
+        "meanLadder": 5.22625,
+        "meanAnchorResidual": -0.9153207176935834
+      },
+      "CZE": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 9.842024427177948,
+        "meanLadder": 6.692,
+        "meanAnchorResidual": 0.42450415649714457
+      },
+      "HUN": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 9.512897955127428,
+        "meanLadder": 5.461749999999999,
+        "meanAnchorResidual": -0.5530048682252771
+      },
+      "ROU": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 9.184752514597594,
+        "meanLadder": 5.8420000000000005,
+        "meanAnchorResidual": 0.04481486574174487
+      },
+      "UKR": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 7.692945361484446,
+        "meanLadder": 4.21375,
+        "meanAnchorResidual": -0.6593519014828857
+      },
+      "BLR": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 8.695497533240207,
+        "meanLadder": 5.54425,
+        "meanAnchorResidual": 0.09025211979627423
+      },
+      "SRB": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 8.72209461759364,
+        "meanLadder": 5.39325,
+        "meanAnchorResidual": -0.12407773138113365
+      },
+      "ISL": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 10.932469801607677,
+        "meanLadder": 7.4985,
+        "meanAnchorResidual": 0.5250768514615696
+      },
+      "EST": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 9.84021368956271,
+        "meanLadder": 5.69,
+        "meanAnchorResidual": -0.6382255287504544
+      },
+      "LVA": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 9.556561726791244,
+        "meanLadder": 5.82075,
+        "meanAnchorResidual": -0.2672086704726222
+      },
+      "LTU": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 9.63711447261268,
+        "meanLadder": 5.954000000000001,
+        "meanAnchorResidual": -0.19728150062417416
+      },
+      "SVK": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 9.744103444902645,
+        "meanLadder": 6.13675,
+        "meanAnchorResidual": 0.0022091386095053345
+      },
+      "SVN": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 9.994335398727479,
+        "meanLadder": 5.898,
+        "meanAnchorResidual": -0.44474243817731973
+      },
+      "HRV": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 9.484387077372674,
+        "meanLadder": 5.3835,
+        "meanAnchorResidual": -0.597405707698121
+      },
+      "BIH": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 8.51579286745381,
+        "meanLadder": 5.215,
+        "meanAnchorResidual": -0.15141861760035757
+      },
+      "MNE": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 8.818554169522754,
+        "meanLadder": 5.317,
+        "meanAnchorResidual": -0.2811535864308181
+      },
+      "MKD": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 8.607622394578986,
+        "meanLadder": 5.18875,
+        "meanAnchorResidual": -0.2548115243240394
+      },
+      "ALB": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 8.419801842998144,
+        "meanLadder": 4.651,
+        "meanAnchorResidual": -0.6955987890500894
+      },
+      "BGR": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 8.952828626829014,
+        "meanLadder": 4.71875,
+        "meanAnchorResidual": -0.9002676173539657
+      },
+      "MDA": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 8.005444158575383,
+        "meanLadder": 5.726,
+        "meanAnchorResidual": 0.6764587990986166
+      },
+      "LUX": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 11.579939847892751,
+        "meanLadder": 6.9335,
+        "meanAnchorResidual": -0.429475587476549
+      },
+      "CYP": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 10.12693406306019,
+        "meanLadder": 5.74375,
+        "meanAnchorResidual": -0.674402434666231
+      },
+      "MLT": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 10.216240321663106,
+        "meanLadder": 6.592,
+        "meanAnchorResidual": 0.10746344455277868
+      },
+      "CHN": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 9.099208420609434,
+        "meanLadder": 5.2387500000000005,
+        "meanAnchorResidual": -0.48182402792637835
+      },
+      "JPN": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 10.498422858509645,
+        "meanLadder": 5.9105,
+        "meanAnchorResidual": -0.811878566060795
+      },
+      "KOR": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 10.35730937046185,
+        "meanLadder": 5.86075,
+        "meanAnchorResidual": -0.6758873485312293
+      },
+      "MNG": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 8.280609161294535,
+        "meanLadder": 5.068,
+        "meanAnchorResidual": -0.17794255993586594
+      },
+      "VNM": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 7.936278525497211,
+        "meanLadder": 5.10325,
+        "meanAnchorResidual": 0.011208316028570975
+      },
+      "IDN": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 8.156676073944045,
+        "meanLadder": 5.21525,
+        "meanAnchorResidual": 0.025041713778194863
+      },
+      "PHL": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 8.056930568417792,
+        "meanLadder": 5.466,
+        "meanAnchorResidual": 0.3086354805289697
+      },
+      "THA": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 8.69614261618427,
+        "meanLadder": 6.2444999999999995,
+        "meanAnchorResidual": 0.7654503580212042
+      },
+      "MYS": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 9.220969979355008,
+        "meanLadder": 5.9375,
+        "meanAnchorResidual": 0.07096284203318737
+      },
+      "MMR": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 7.138048901303746,
+        "meanLadder": 4.402,
+        "meanAnchorResidual": -0.11493800929790376
+      },
+      "LAO": {
+        "pairedYears": [
+          2015,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 7.743465868319266,
+        "meanLadder": 4.765000000000001,
+        "meanAnchorResidual": -0.14512577445303906
+      },
+      "IND": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 7.458221133520908,
+        "meanLadder": 4.231000000000001,
+        "meanAnchorResidual": -0.6414527963768499
+      },
+      "PAK": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 7.293645076900076,
+        "meanLadder": 5.3815,
+        "meanAnchorResidual": 0.7280412528398992
+      },
+      "BGD": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 7.198304688051751,
+        "meanLadder": 4.55175,
+        "meanAnchorResidual": -0.0470836348352317
+      },
+      "LKA": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 8.365628236179166,
+        "meanLadder": 4.423,
+        "meanAnchorResidual": -0.9098839884183532
+      },
+      "NPL": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 6.834283359427077,
+        "meanLadder": 4.887,
+        "meanAnchorResidual": 0.47905633945113624
+      },
+      "BTN": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 8.057477999769043,
+        "meanLadder": 5.0927500000000006,
+        "meanAnchorResidual": -0.20599036513284408
+      },
+      "KAZ": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 9.245078741523473,
+        "meanLadder": 5.83425,
+        "meanAnchorResidual": 0.0938920159422183
+      },
+      "KGZ": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 7.039874966689275,
+        "meanLadder": 5.14525,
+        "meanAnchorResidual": 0.6485940281417064
+      },
+      "TJK": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 6.929074488208105,
+        "meanLadder": 5.214,
+        "meanAnchorResidual": 0.780377346694316
+      },
+      "TUR": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 9.362271355100352,
+        "meanLadder": 5.43625,
+        "meanAnchorResidual": -0.4251035850697187
+      },
+      "IRN": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 8.555281749945275,
+        "meanLadder": 4.6899999999999995,
+        "meanAnchorResidual": -0.6565616467174005
+      },
+      "IRQ": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 8.457709501703915,
+        "meanLadder": 4.49125,
+        "meanAnchorResidual": -0.6925308195716062
+      },
+      "ARE": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 10.696007106134035,
+        "meanLadder": 6.705,
+        "meanAnchorResidual": -0.01579312160677082
+      },
+      "ISR": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 10.530357264837143,
+        "meanLadder": 7.20225,
+        "meanAnchorResidual": 0.5310602381184135
+      },
+      "JOR": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 8.379230144726236,
+        "meanLadder": 5.1765,
+        "meanAnchorResidual": -0.22635266551805477
+      },
+      "LBN": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 8.999929714418958,
+        "meanLadder": 5.1875,
+        "meanAnchorResidual": -0.38276738300899926
+      },
+      "YEM": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 7.073877304501647,
+        "meanLadder": 3.513,
+        "meanAnchorResidual": -0.9123871289921429
+      },
+      "GEO": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 8.380365776339422,
+        "meanLadder": 4.34925,
+        "meanAnchorResidual": -1.0981572340401358
+      },
+      "ARM": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 8.220496076738675,
+        "meanLadder": 4.404,
+        "meanAnchorResidual": -0.8089611073810536
+      },
+      "PSE": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 8.133879251628848,
+        "meanLadder": 4.742,
+        "meanAnchorResidual": -0.4029467674042
+      },
+      "NGA": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 7.8178357455900995,
+        "meanLadder": 5.09225,
+        "meanAnchorResidual": 0.1930912201295263
+      },
+      "ZAF": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 8.718111204865451,
+        "meanLadder": 4.6835,
+        "meanAnchorResidual": -0.870423248097862
+      },
+      "EGY": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 8.139174005414224,
+        "meanLadder": 4.4205000000000005,
+        "meanAnchorResidual": -0.7080671246896826
+      },
+      "ETH": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 6.482531538552674,
+        "meanLadder": 4.401,
+        "meanAnchorResidual": 0.13692100848393185
+      },
+      "KEN": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 7.336954412407563,
+        "meanLadder": 4.457,
+        "meanAnchorResidual": -0.247965889356899
+      },
+      "COD": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 6.191469251315454,
+        "meanLadder": 4.30375,
+        "meanAnchorResidual": 0.3337532647910062
+      },
+      "MAR": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 8.07205510116337,
+        "meanLadder": 5.212,
+        "meanAnchorResidual": 0.06561529761591767
+      },
+      "DZA": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 8.46132565846516,
+        "meanLadder": 5.683249999999999,
+        "meanAnchorResidual": 0.38250115137511287
+      },
+      "AUS": {
+        "pairedYears": [
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "meanLogGdp": 10.965406570154192,
+        "meanLadder": 7.27425,
+        "meanAnchorResidual": 0.2711607651176058
+      }
+    },
+    "diagnostics": {
+      "residualLagCorrelation": 0.9651727482626214,
+      "residualLagPairs": 298,
+      "warning": "Descriptive within-training residual correlation; pooled coefficients use all training years. Not causal, independent validation, or evidence of equilibrium."
+    }
+  },
+  "countryRates": {
+    "USA": {
+      "raw": 0.020985751542091348,
+      "used": 0.020985751542091348,
+      "localFallback": false
+    },
+    "CAN": {
+      "raw": 0.017449649834191044,
+      "used": 0.017449649834191044,
+      "localFallback": false
+    },
+    "MEX": {
+      "raw": 0.017025619293312717,
+      "used": 0.017025619293312717,
+      "localFallback": false
+    },
+    "GTM": {
+      "raw": 0.018667979297161446,
+      "used": 0.018667979297161446,
+      "localFallback": false
+    },
+    "HTI": {
+      "raw": 0.015572477573381371,
+      "used": 0.015572477573381371,
+      "localFallback": false
+    },
+    "DOM": {
+      "raw": 0.03574613932468275,
+      "used": 0.03574613932468275,
+      "localFallback": false
+    },
+    "HND": {
+      "raw": 0.023776311541734818,
+      "used": 0.023776311541734818,
+      "localFallback": false
+    },
+    "NIC": {
+      "raw": 0.015124633547040097,
+      "used": 0.015124633547040097,
+      "localFallback": false
+    },
+    "SLV": {
+      "raw": 0.02338893072649275,
+      "used": 0.02338893072649275,
+      "localFallback": false
+    },
+    "CRI": {
+      "raw": 0.026078362447191805,
+      "used": 0.026078362447191805,
+      "localFallback": false
+    },
+    "PAN": {
+      "raw": 0.027143624539131606,
+      "used": 0.027143624539131606,
+      "localFallback": false
+    },
+    "BRA": {
+      "raw": 0.008466267081043904,
+      "used": 0.008466267081043904,
+      "localFallback": false
+    },
+    "ARG": {
+      "raw": 0.004756510657510575,
+      "used": 0.004756510657510575,
+      "localFallback": false
+    },
+    "COL": {
+      "raw": 0.01528164490511417,
+      "used": 0.01528164490511417,
+      "localFallback": false
+    },
+    "CHL": {
+      "raw": 0.01653699971693129,
+      "used": 0.01653699971693129,
+      "localFallback": false
+    },
+    "PER": {
+      "raw": 0.02189998390829956,
+      "used": 0.02189998390829956,
+      "localFallback": false
+    },
+    "ECU": {
+      "raw": 0.014910478335606603,
+      "used": 0.014910478335606603,
+      "localFallback": false
+    },
+    "BOL": {
+      "raw": 0.023717616084942994,
+      "used": 0.023717616084942994,
+      "localFallback": false
+    },
+    "PRY": {
+      "raw": 0.02544976057560531,
+      "used": 0.02544976057560531,
+      "localFallback": false
+    },
+    "URY": {
+      "raw": 0.017139244438973095,
+      "used": 0.017139244438973095,
+      "localFallback": false
+    },
+    "RUS": {
+      "raw": 0.01948810144247609,
+      "used": 0.01948810144247609,
+      "localFallback": false
+    },
+    "GBR": {
+      "raw": 0.020625884781680794,
+      "used": 0.020625884781680794,
+      "localFallback": false
+    },
+    "FRA": {
+      "raw": 0.018567595606267213,
+      "used": 0.018567595606267213,
+      "localFallback": false
+    },
+    "DEU": {
+      "raw": 0.02017875112748374,
+      "used": 0.02017875112748374,
+      "localFallback": false
+    },
+    "ITA": {
+      "raw": 0.019552845837276178,
+      "used": 0.019552845837276178,
+      "localFallback": false
+    },
+    "ESP": {
+      "raw": 0.024709540611859315,
+      "used": 0.024709540611859315,
+      "localFallback": false
+    },
+    "NLD": {
+      "raw": 0.02194537808798852,
+      "used": 0.02194537808798852,
+      "localFallback": false
+    },
+    "SWE": {
+      "raw": 0.01577563650297777,
+      "used": 0.01577563650297777,
+      "localFallback": false
+    },
+    "BEL": {
+      "raw": 0.0177767222145912,
+      "used": 0.0177767222145912,
+      "localFallback": false
+    },
+    "AUT": {
+      "raw": 0.02005794592476275,
+      "used": 0.02005794592476275,
+      "localFallback": false
+    },
+    "POL": {
+      "raw": 0.0360026292559741,
+      "used": 0.0360026292559741,
+      "localFallback": false
+    },
+    "NOR": {
+      "raw": 0.016959234676128938,
+      "used": 0.016959234676128938,
+      "localFallback": false
+    },
+    "CHE": {
+      "raw": 0.01886234663148606,
+      "used": 0.01886234663148606,
+      "localFallback": false
+    },
+    "IRL": {
+      "raw": 0.03611571875290348,
+      "used": 0.03611571875290348,
+      "localFallback": false
+    },
+    "DNK": {
+      "raw": 0.022438104913386693,
+      "used": 0.022438104913386693,
+      "localFallback": false
+    },
+    "FIN": {
+      "raw": 0.02303772731632353,
+      "used": 0.02303772731632353,
+      "localFallback": false
+    },
+    "PRT": {
+      "raw": 0.027284186086857586,
+      "used": 0.027284186086857586,
+      "localFallback": false
+    },
+    "GRC": {
+      "raw": 0.01965476159575195,
+      "used": 0.01965476159575195,
+      "localFallback": false
+    },
+    "CZE": {
+      "raw": 0.028488727563988698,
+      "used": 0.028488727563988698,
+      "localFallback": false
+    },
+    "HUN": {
+      "raw": 0.03389740857606188,
+      "used": 0.03389740857606188,
+      "localFallback": false
+    },
+    "ROU": {
+      "raw": 0.041986669530948637,
+      "used": 0.041986669530948637,
+      "localFallback": false
+    },
+    "UKR": {
+      "raw": 0.028731408217699206,
+      "used": 0.028731408217699206,
+      "localFallback": false
+    },
+    "BLR": {
+      "raw": 0.01796718785721572,
+      "used": 0.01796718785721572,
+      "localFallback": false
+    },
+    "SRB": {
+      "raw": 0.0315275036897945,
+      "used": 0.0315275036897945,
+      "localFallback": false
+    },
+    "ISL": {
+      "raw": 0.025173001316709763,
+      "used": 0.025173001316709763,
+      "localFallback": false
+    },
+    "EST": {
+      "raw": 0.03194088268120489,
+      "used": 0.03194088268120489,
+      "localFallback": false
+    },
+    "LVA": {
+      "raw": 0.03360476290343485,
+      "used": 0.03360476290343485,
+      "localFallback": false
+    },
+    "LTU": {
+      "raw": 0.03776213438816188,
+      "used": 0.03776213438816188,
+      "localFallback": false
+    },
+    "SVK": {
+      "raw": 0.026374179761034268,
+      "used": 0.026374179761034268,
+      "localFallback": false
+    },
+    "SVN": {
+      "raw": 0.03220214729236638,
+      "used": 0.03220214729236638,
+      "localFallback": false
+    },
+    "HRV": {
+      "raw": 0.03502372787297631,
+      "used": 0.03502372787297631,
+      "localFallback": false
+    },
+    "BIH": {
+      "raw": 0.035755250384405426,
+      "used": 0.035755250384405426,
+      "localFallback": false
+    },
+    "MNE": {
+      "raw": 0.030647051464171775,
+      "used": 0.030647051464171775,
+      "localFallback": false
+    },
+    "MKD": {
+      "raw": 0.025760521069010257,
+      "used": 0.025760521069010257,
+      "localFallback": false
+    },
+    "ALB": {
+      "raw": 0.0380032839931317,
+      "used": 0.0380032839931317,
+      "localFallback": false
+    },
+    "BGR": {
+      "raw": 0.03248286656930993,
+      "used": 0.03248286656930993,
+      "localFallback": false
+    },
+    "MDA": {
+      "raw": 0.04129329410716319,
+      "used": 0.04129329410716319,
+      "localFallback": false
+    },
+    "LUX": {
+      "raw": 0.014586912450199774,
+      "used": 0.014586912450199774,
+      "localFallback": false
+    },
+    "CYP": {
+      "raw": 0.03835532582990077,
+      "used": 0.03835532582990077,
+      "localFallback": false
+    },
+    "MLT": {
+      "raw": 0.03680265224032385,
+      "used": 0.03680265224032385,
+      "localFallback": false
+    },
+    "CHN": {
+      "raw": 0.042689412333392907,
+      "used": 0.042689412333392907,
+      "localFallback": false
+    },
+    "JPN": {
+      "raw": 0.018175927566239296,
+      "used": 0.018175927566239296,
+      "localFallback": false
+    },
+    "KOR": {
+      "raw": 0.02669213586187208,
+      "used": 0.02669213586187208,
+      "localFallback": false
+    },
+    "MNG": {
+      "raw": 0.02684372690373088,
+      "used": 0.02684372690373088,
+      "localFallback": false
+    },
+    "VNM": {
+      "raw": 0.04045874369026216,
+      "used": 0.04045874369026216,
+      "localFallback": false
+    },
+    "IDN": {
+      "raw": 0.03222721128382321,
+      "used": 0.03222721128382321,
+      "localFallback": false
+    },
+    "PHL": {
+      "raw": 0.03898384609373885,
+      "used": 0.03898384609373885,
+      "localFallback": false
+    },
+    "THA": {
+      "raw": 0.02988546922759422,
+      "used": 0.02988546922759422,
+      "localFallback": false
+    },
+    "MYS": {
+      "raw": 0.028335796111256934,
+      "used": 0.028335796111256934,
+      "localFallback": false
+    },
+    "MMR": {
+      "raw": 0.038241693939304225,
+      "used": 0.038241693939304225,
+      "localFallback": false
+    },
+    "LAO": {
+      "raw": 0.03503724410347914,
+      "used": 0.03503724410347914,
+      "localFallback": false
+    },
+    "IND": {
+      "raw": 0.041354102956400796,
+      "used": 0.041354102956400796,
+      "localFallback": false
+    },
+    "PAK": {
+      "raw": 0.033059936758709094,
+      "used": 0.033059936758709094,
+      "localFallback": false
+    },
+    "BGD": {
+      "raw": 0.04209289099399417,
+      "used": 0.04209289099399417,
+      "localFallback": false
+    },
+    "LKA": {
+      "raw": 0.029488152498520603,
+      "used": 0.029488152498520603,
+      "localFallback": false
+    },
+    "NPL": {
+      "raw": 0.03826817829250319,
+      "used": 0.03826817829250319,
+      "localFallback": false
+    },
+    "BTN": {
+      "raw": 0.030989279779325658,
+      "used": 0.030989279779325658,
+      "localFallback": false
+    },
+    "KAZ": {
+      "raw": 0.020078160355305536,
+      "used": 0.020078160355305536,
+      "localFallback": false
+    },
+    "KGZ": {
+      "raw": 0.02265236622541028,
+      "used": 0.02265236622541028,
+      "localFallback": false
+    },
+    "TJK": {
+      "raw": 0.0349386272311898,
+      "used": 0.0349386272311898,
+      "localFallback": false
+    },
+    "TUR": {
+      "raw": 0.029533322555050718,
+      "used": 0.029533322555050718,
+      "localFallback": false
+    },
+    "IRN": {
+      "raw": 0.01827424177862852,
+      "used": 0.01827424177862852,
+      "localFallback": false
+    },
+    "IRQ": {
+      "raw": 0.023711702847372583,
+      "used": 0.023711702847372583,
+      "localFallback": false
+    },
+    "ARE": {
+      "raw": 0.006716700124991204,
+      "used": 0.006716700124991204,
+      "localFallback": false
+    },
+    "ISR": {
+      "raw": 0.023897082586828856,
+      "used": 0.023897082586828856,
+      "localFallback": false
+    },
+    "JOR": {
+      "raw": 0.007877316155949794,
+      "used": 0.007877316155949794,
+      "localFallback": false
+    },
+    "LBN": {
+      "raw": 0.02647629760381489,
+      "used": 0.02647629760381489,
+      "localFallback": false
+    },
+    "YEM": {
+      "raw": -0.026286894595241306,
+      "used": -0.026286894595241306,
+      "localFallback": false
+    },
+    "GEO": {
+      "raw": 0.03629417516794081,
+      "used": 0.03629417516794081,
+      "localFallback": false
+    },
+    "ARM": {
+      "raw": 0.03532526175715646,
+      "used": 0.03532526175715646,
+      "localFallback": false
+    },
+    "PSE": {
+      "raw": 0.01976123179427593,
+      "used": 0.01976123179427593,
+      "localFallback": false
+    },
+    "NGA": {
+      "raw": 0.002272365595539172,
+      "used": 0.002272365595539172,
+      "localFallback": false
+    },
+    "ZAF": {
+      "raw": 0.012639604936169465,
+      "used": 0.012639604936169465,
+      "localFallback": false
+    },
+    "EGY": {
+      "raw": 0.02519485803513808,
+      "used": 0.02519485803513808,
+      "localFallback": false
+    },
+    "ETH": {
+      "raw": 0.04019130430104677,
+      "used": 0.04019130430104677,
+      "localFallback": false
+    },
+    "KEN": {
+      "raw": 0.024128082125939476,
+      "used": 0.024128082125939476,
+      "localFallback": false
+    },
+    "COD": {
+      "raw": 0.012330380860299786,
+      "used": 0.012330380860299786,
+      "localFallback": false
+    },
+    "MAR": {
+      "raw": 0.02069321230424087,
+      "used": 0.02069321230424087,
+      "localFallback": false
+    },
+    "DZA": {
+      "raw": 0.013635965059939156,
+      "used": 0.013635965059939156,
+      "localFallback": false
+    },
+    "AUS": {
+      "raw": 0.017694492247063005,
+      "used": 0.017694492247063005,
+      "localFallback": false
+    }
+  },
+  "originOffsets": {
+    "USA": -0.07050291157485944,
+    "CAN": 0.39566134340314374,
+    "MEX": 0.8622719660271025,
+    "GTM": 1.2531203937088886,
+    "HTI": -0.9327474468660983,
+    "DOM": -0.15224210061097931,
+    "HND": 0.9443483006853324,
+    "NIC": 1.2778821550243062,
+    "SLV": 1.0192943175585594,
+    "CRI": 1.155385039905311,
+    "PAN": 0.315046481038987,
+    "BRA": 0.6133722651575981,
+    "ARG": 0.20516554622745353,
+    "COL": 0.6139143909125062,
+    "CHL": 0.30580254856892974,
+    "PER": 0.19074120458699895,
+    "ECU": 0.6034675782684422,
+    "BOL": 0.7129186790153472,
+    "PRY": 0.3105467520130194,
+    "URY": 0.0500359389004954,
+    "RUS": -0.012545280699439054,
+    "GBR": 0.17022771693758987,
+    "FRA": -0.12323293723936413,
+    "DEU": 0.11664770002176272,
+    "ITA": -0.23082962220156578,
+    "ESP": -0.12354660452457455,
+    "NLD": 0.5542085450105763,
+    "SWE": 0.359327664609439,
+    "BEL": 0.12742475078603377,
+    "AUT": 0.3840197568549284,
+    "POL": 0.0505063860007775,
+    "NOR": 0.3396818388578948,
+    "CHE": 0.20176947642805132,
+    "IRL": -0.07848349593749049,
+    "DNK": 0.572877916252641,
+    "FIN": 0.8433848500173449,
+    "PRT": -0.6537440118086018,
+    "GRC": -0.8682554947125878,
+    "CZE": 0.559237876911836,
+    "HUN": -0.2941417573567078,
+    "ROU": 0.22324894800596162,
+    "UKR": -0.5680836691822488,
+    "BLR": -0.14739966425886042,
+    "SRB": 0.05361679769245509,
+    "ISL": 0.5042814267132947,
+    "EST": -0.4661390941014174,
+    "LVA": -0.18318814750579726,
+    "LTU": -0.044388588598022416,
+    "SVK": 0.03897227195863895,
+    "SVN": -0.2570356557396458,
+    "HRV": -0.5839050531210246,
+    "BIH": -0.017617137932671945,
+    "MNE": -0.10536211476422075,
+    "MKD": -0.19069251539519616,
+    "ALB": -0.6673937881976997,
+    "BGR": -0.6386395941357064,
+    "MDA": 0.4341287255945012,
+    "LUX": -0.2722770327881241,
+    "CYP": -0.41159986709190477,
+    "MLT": 0.20102680756739844,
+    "CHN": -0.5771557795128901,
+    "JPN": -0.8455649582151343,
+    "KOR": -0.6639048589704517,
+    "MNG": 0.008459705574516363,
+    "VNM": 0.037855070820221215,
+    "IDN": -0.029534436810615183,
+    "PHL": 0.4328529341219811,
+    "THA": 0.500431123146166,
+    "MYS": -0.553009681254979,
+    "MMR": -0.19799938313942445,
+    "LAO": -0.14790112500843566,
+    "IND": -0.9007399838616283,
+    "PAK": 0.9681604279584564,
+    "BGD": -0.1897041860927251,
+    "LKA": -0.9902888592918275,
+    "NPL": 0.4551863163879819,
+    "BTN": -0.23999365613839085,
+    "KAZ": 0.052849009496581445,
+    "KGZ": 0.749034968534132,
+    "TJK": 0.997080693421073,
+    "TUR": -0.5153030645964849,
+    "IRN": -0.7917680650263579,
+    "IRQ": -0.750964227609237,
+    "ARE": 0.11380034388306992,
+    "ISR": 0.4504573520156683,
+    "JOR": -0.49254830109540304,
+    "LBN": -0.39146161875258034,
+    "YEM": -0.9983306001595977,
+    "GEO": -0.9692113839195153,
+    "ARM": -0.6961463831156003,
+    "PSE": -0.45045175491045075,
+    "NGA": 0.3770875342228628,
+    "ZAF": -0.8323215868768123,
+    "EGY": -0.9839332354818762,
+    "ETH": -0.01845688164791781,
+    "KEN": -0.21626706371822468,
+    "COD": 0.44081296351916466,
+    "MAR": 0.045341669771914006,
+    "DZA": -0.08849273708023819,
+    "AUS": 0.21651108586222367
+  },
+  "diagnostics": {
+    "rateCaps": 0,
+    "ladderLowCaps": 0,
+    "ladderHighCaps": 0,
+    "rawLadderRange": {
+      "min": 3.253984763722423,
+      "max": 7.879439239619823
+    },
+    "ladderRange": {
+      "min": 3.253984763722423,
+      "max": 7.879439239619823
+    },
+    "gdpRange": {
+      "min": 501.4573010601658,
+      "max": 115232.53460360423
+    }
+  },
+  "uncertainty": "No prediction interval. Four-year panel and tuning losses cannot establish seven-year validity."
+}

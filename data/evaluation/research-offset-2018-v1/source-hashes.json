@@ -1,0 +1,48 @@
+{
+  "schema": "research-source-hashes/1",
+  "entryId": "research-offset-2018-v1",
+  "familyId": "five-approaches-20260916",
+  "registeredProtocolCommit": "e8e6e72700ba32576269901885f27c7dab7574c9",
+  "baseCommit": "0ca2eda3ea5db518499abebda1de1367d4e1ab7e",
+  "sourceHashes": {
+    "data/evaluation/level-holdout-2018/train.json": "979ac8d45dda418403fc59e04111b9c9dbcd2fa484e4c26aa900cd37e777bd02",
+    "data/evaluation/level-holdout-2018/origin.json": "564bab92fe88415df70a1b239223213a53c12274891ec2d39f0e08c3e28e3f77",
+    "data/evaluation/research-offset-2018-v1/protocol.json": "361159323cd9fa2f2b2b7e1078bec77e955c315c2402fb051ff4a5fe61eabeaa",
+    "scripts/evaluation/attempts/research-offset-2018-v1/model.ts": "652612c503622eacb4679a81872fd1ea630915b9c7a025657d0ef7cf8da1778d",
+    "scripts/evaluation/attempts/research-offset-2018-v1/run.ts": "240daf44e09fbeccd428ec43a30ea0b2c26fb96f815513fe6fd5f81cab272b64",
+    "scripts/evaluation/attempts/research-offset-2018-v1/model.test.ts": "4b4a71f50798cbb0ac8180e183a7228576323d501e4ea5d9e2f2e857adcd700b",
+    "package-lock.json": "063cbb3cd22a110053f124ae276ccab323e8d19150d2966d87fcb4149198acb8"
+  },
+  "outputHashes": {
+    "data/evaluation/research-offset-2018-v1/calibration.json": "7b2bc00eae9bd808b3fb605854b3fd98f43a9130a85ed97ec85d59788a38cebc",
+    "data/evaluation/research-offset-2018-v1/internal-validation.json": "0b6ed08edbdf5172b365f7bb9e0589269cc8f529f8b696a21f35ed9f8cbbef5d",
+    "data/evaluation/research-offset-2018-v1/predictions.json": "6ce7e1d1b698688db1077a0064d16bbfc543323f9e5ef004e5ea5959edd25856"
+  },
+  "allowedNumericInputs": [
+    "data/evaluation/level-holdout-2018/train.json",
+    "data/evaluation/level-holdout-2018/origin.json"
+  ],
+  "externalDataFetched": false,
+  "rawFutureObservationsRead": false,
+  "externalScoreInvocations": 0,
+  "runtime": "v22.23.2",
+  "generator": "scripts/evaluation/attempts/research-offset-2018-v1/run.ts",
+  "references": [
+    {
+      "title": "Bell & Jones (2015), Explaining Fixed Effects",
+      "url": "https://doi.org/10.1017/psrm.2014.7",
+      "use": "Separate within-entity and between-entity relationships; does not establish prediction accuracy or justify assuming fixed effects automatically superior."
+    },
+    {
+      "title": "Liu, Moon & Schorfheide (2017), Forecasting with Dynamic Panel Data Models",
+      "url": "https://arxiv.org/abs/1709.10193",
+      "use": "Short-panel forecasting may benefit from shrinkage of heterogeneous coefficients. Our small deterministic grid is not their empirical Bayes estimator."
+    },
+    {
+      "title": "Hyndman & Athanasopoulos, Forecasting: Principles and Practice, temporal cross-validation",
+      "url": "https://otexts.com/fpp3/tscv.html",
+      "use": "Forecast origins train strictly before targets; multi-horizon validation matters."
+    }
+  ],
+  "note": "Reference metadata records method sources; no external numeric series or fitted coefficients imported."
+}

@@ -1,0 +1,391 @@
+{
+  "schema": "forecast-protocol/1",
+  "id": "research-offset-2018-v1",
+  "registeredAt": "2026-09-16",
+  "familyId": "five-approaches-20260916",
+  "familyEntryIds": [
+    "research-offset-2018-v1",
+    "research-damped-2018-v1",
+    "research-changes-2018-v1",
+    "research-health-2018-v1",
+    "research-ensemble-2018-v1"
+  ],
+  "scope": "Retrospective research alternative: preserve or partially retain country-specific origin offsets from a pooled GDP/governance anchor; use a separately estimated within-country GDP slope for projected change. Frozen original model, defaults and evaluation remain untouched.",
+  "modelFormChosenAfterTestPeriod": true,
+  "knownPriorInformation": "Original model had a published aggregate miss. No held-out country outcomes, model predictions or scores may be read during this entry development. Selection among five methods after scoring is exploratory.",
+  "trainingYears": [
+    2015,
+    2016,
+    2017,
+    2018
+  ],
+  "originYear": 2018,
+  "testYears": [
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "allowedNumericInputs": [
+    "data/evaluation/level-holdout-2018/train.json",
+    "data/evaluation/level-holdout-2018/origin.json"
+  ],
+  "inputHashes": {
+    "data/evaluation/level-holdout-2018/train.json": "979ac8d45dda418403fc59e04111b9c9dbcd2fa484e4c26aa900cd37e777bd02",
+    "data/evaluation/level-holdout-2018/origin.json": "564bab92fe88415df70a1b239223213a53c12274891ec2d39f0e08c3e28e3f77"
+  },
+  "extraData": false,
+  "outcomes": {
+    "wellbeing": "WHR Cantril ladder 0–10 in pinned training panel; original frozen outcome for external scoring",
+    "gdp": "World Bank GDP per person constant-2015 USD; cumulative growth errors use origin GDP denominator"
+  },
+  "cohort": {
+    "rule": "Exactly frozen origin countries, with no outcome-based deletion; all valid training background countries enter fits. Internal fold origins use only paired valid outcomes in that fold origin year, without conditioning on later outcomes.",
+    "countryCount": 100,
+    "ids": [
+      "USA",
+      "CAN",
+      "MEX",
+      "GTM",
+      "HTI",
+      "DOM",
+      "HND",
+      "NIC",
+      "SLV",
+      "CRI",
+      "PAN",
+      "BRA",
+      "ARG",
+      "COL",
+      "CHL",
+      "PER",
+      "ECU",
+      "BOL",
+      "PRY",
+      "URY",
+      "RUS",
+      "GBR",
+      "FRA",
+      "DEU",
+      "ITA",
+      "ESP",
+      "NLD",
+      "SWE",
+      "BEL",
+      "AUT",
+      "POL",
+      "NOR",
+      "CHE",
+      "IRL",
+      "DNK",
+      "FIN",
+      "PRT",
+      "GRC",
+      "CZE",
+      "HUN",
+      "ROU",
+      "UKR",
+      "BLR",
+      "SRB",
+      "ISL",
+      "EST",
+      "LVA",
+      "LTU",
+      "SVK",
+      "SVN",
+      "HRV",
+      "BIH",
+      "MNE",
+      "MKD",
+      "ALB",
+      "BGR",
+      "MDA",
+      "LUX",
+      "CYP",
+      "MLT",
+      "CHN",
+      "JPN",
+      "KOR",
+      "MNG",
+      "VNM",
+      "IDN",
+      "PHL",
+      "THA",
+      "MYS",
+      "MMR",
+      "LAO",
+      "IND",
+      "PAK",
+      "BGD",
+      "LKA",
+      "NPL",
+      "BTN",
+      "KAZ",
+      "KGZ",
+      "TJK",
+      "TUR",
+      "IRN",
+      "IRQ",
+      "ARE",
+      "ISR",
+      "JOR",
+      "LBN",
+      "YEM",
+      "GEO",
+      "ARM",
+      "PSE",
+      "NGA",
+      "ZAF",
+      "EGY",
+      "ETH",
+      "KEN",
+      "COD",
+      "MAR",
+      "DZA",
+      "AUS"
+    ],
+    "excluded": [
+      {
+        "id": "CUB",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "JAM",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "BLZ",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "BHS",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "TTO",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "VEN",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "GUY",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "SUR",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "TWN",
+        "reason": "Missing historical population, gini, ge, rl, cc"
+      },
+      {
+        "id": "PRK",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "SGP",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "KHM",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "BRN",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "MDV",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "UZB",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "TKM",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "SAU",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "AFG",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "SYR",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "OMN",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "QAT",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "KWT",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "BHR",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "AZE",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "AGO",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "NZL",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "PNG",
+        "reason": "Missing historical gini"
+      },
+      {
+        "id": "TLS",
+        "reason": "Missing/invalid 2018 origin outcomes"
+      }
+    ],
+    "rosterCount": 128
+  },
+  "equations": {
+    "pooledAnchor": "Fit OLS y_it = a + b_between ln(g_it) + c governance_i using all valid paired rows in fold training years; ladder units 0–10. No year effects, population weighting, feature standardization or interactions.",
+    "withinSlope": "b_within = sum_i,t[(ln(g_it)-mean_i ln(g))*(y_it-mean_i y)] / sum_i,t[(ln(g_it)-mean_i ln(g))^2], with both country means computed solely from paired fold training rows; no year effects. Zero denominator <= 1e-12 means slope 0.",
+    "originOffset": "A_i0 = a+b_between ln(g_i0)+c governance_i; e_i0=y_i0-A_i0. Offset is observed origin residual, not claimed equilibrium or causal effect.",
+    "gdpRates": "For each country, r_i is mean annual log growth across consecutive-year valid paired training observations. r_pool is arithmetic mean of all such log-growth observations. No local transition means r_i=r_pool; no global transition means r_pool=0. Candidate raw rate is 0 (persistence), r_pool (pooled), 0.5*r_i+0.5*r_pool (half-local), or r_i (local). Clip raw rate to [-0.10,0.10], counting clips.",
+    "gdpForecast": "ln(g_i,h)=ln(g_i0)+r_i_selected*sum_{k=1..h}(0.9^(k-1)). Fixed damping 0.9; no future covariate inputs.",
+    "ladderTarget": "T_i,h=A_i0+w*e_i0+b_within*(ln(g_i,h)-ln(g_i0)). Governance stays fixed at frozen 2015 value. w=0 challenges offset hypothesis via common anchor; w=1 keeps full country origin offset.",
+    "ladderRecursion": "y_i,0=observed origin ladder; raw_y_i,h=(1-lambda)*y_i,h-1+lambda*T_i,h; y_i,h=clamp(raw_y_i,h,0,10) each annual step. Report every ladder cap and raw/output ranges. lambda=0 is exact ladder persistence."
+  },
+  "candidateGrid": {
+    "gdpModes": [
+      "persistence",
+      "pooled",
+      "half-local",
+      "local"
+    ],
+    "fixedGdpDamping": 0.9,
+    "gdpAnnualLogRateClamp": [
+      -0.1,
+      0.1
+    ],
+    "offsetWeights": [
+      1,
+      0.5,
+      0
+    ],
+    "annualAdjustment": [
+      0,
+      0.1,
+      0.25,
+      1
+    ],
+    "ladderCandidateCount": 12,
+    "duplicateRule": "All 12 labels are reported; three lambda=0 labels produce identical ladder persistence. No further candidates or hidden tuning."
+  },
+  "fittedQuantities": [
+    "Three pooled anchor coefficients",
+    "One within-country GDP slope",
+    "Pooled and each country annual log GDP growth",
+    "Origin country anchor residuals",
+    "GDP candidate then ladder candidate selected by declared internal loss"
+  ],
+  "internalValidation": {
+    "folds": [
+      {
+        "trainYears": [
+          2015,
+          2016
+        ],
+        "originYear": 2016,
+        "validationYears": [
+          2017,
+          2018
+        ]
+      },
+      {
+        "trainYears": [
+          2015,
+          2016,
+          2017
+        ],
+        "originYear": 2017,
+        "validationYears": [
+          2018
+        ]
+      }
+    ],
+    "temporalRule": "Each fold fit, rates, country means and fallback values see only years <= fold origin. Predictions for both outcomes are forecast covariates; validation-year GDP cannot drive ladder forecasts. Validation only reads 2017–2018 rows from train.json after prediction.",
+    "selection": "Stage 1 select GDP mode using mean of horizon-specific GDP MAEs over horizons 1 and 2, with each horizon weighted one half. Stage 2 select ladder (w,lambda) using the same equal-horizon ladder MAE with Stage-1 GDP mode fixed. Within each horizon all available country/fold rows equally weighted. GDP and ladder scoring masks fixed for all candidates. All candidates and horizon denominators published.",
+    "tieRule": "Loss ties within 1e-12 resolved by registration enumeration order: GDP persistence, pooled, half-local, local; ladder offset weights 1,0.5,0 outer loop and lambda 0,0.1,0.25,1 inner loop. Thus prefer full offset retention and slower adjustment on exact ties.",
+    "emptyRule": "If either horizon has no scoreable observations, fail; do not switch criterion.",
+    "limitations": "Only two forecast origins, three country-year validation blocks and maximum 2-year horizon. Countries and 2018 targets recur; no independent-country validation. Reusing validation for two-stage selection makes selected internal losses optimistic. Cannot validate 7-year dynamics or exogenous shocks."
+  },
+  "missingness": "Only existing paired training observations enter all model fits/rates; do not fill gaps. Missing local growth uses training pooled rate. Singular pooled OLS (pivot magnitude <1e-12) falls back to training mean ladder with zero slopes and records fallback. Invalid/out-of-range/future-dated input fails closed. No future feature imputation or cohort deletion.",
+  "transformations": "Natural log of finite positive GDP; ladder remains 0–10. GDP annual log rate clipped [-0.10,0.10] and ladder annual forecast clamped [0,10], with exact counts. No other caps, smoothing, winsorization or coefficient restrictions. Forecast nonfiniteness fails.",
+  "forecastCovariates": "Origin GDP projected with selected train-only rate/damping; frozen historical governance. No external numeric feature extension.",
+  "baseline": "Each country’s origin ladder and GDP persist over all horizons; original controller scorer uses identical per-outcome masks.",
+  "primaryMetric": "2025 endpoint ladder MAE and model minus persistence MAE, equally weighted observed countries.",
+  "secondaryMetrics": [
+    "Every horizon 2019–2025 ladder MAE/RMSE/bias and difference versus persistence",
+    "Pooled country-year ladder MAE/RMSE/bias with denominators",
+    "GDP cumulative-growth percentage-point MAE/RMSE/bias relative to origin GDP",
+    "Origin income quartiles formed by sorting (gdp,id), group floor(index*4/N); identical masks",
+    "Coverage, exclusions, forecast ranges and cap counts"
+  ],
+  "diagnostics": "Training-only pooled residual lag correlation and within-vs-between GDP slopes are descriptive. Report all offset/adjustment validation ablations to challenge anchor diagnosis; do not infer causal mechanism or global equilibrium from residual persistence.",
+  "emptyOrUndefinedMetrics": "null with reason, never zero success",
+  "accuracyPassThreshold": null,
+  "integrityGates": [
+    "Protocol commit precedes any fit or validation execution",
+    "Only train.json/origin.json numerical development",
+    "Exactly 100 countries x 7 years; 700 finite rows, GDP >0",
+    "Training reject observations after 2018; fold fits reject years after fold origin",
+    "Future observation perturbation cannot enter fold fit or forecast",
+    "Preserve existing source/default/evaluation files",
+    "Freeze all outputs before any external scoring; one controller invocation after all family and long-run freezes"
+  ],
+  "vintageLimit": "Training observations are later-vintage revised data, not an archived 2018 publication set. Country effects can be measurement error or omitted time-varying variables. Four annual observations cannot identify equilibrium or long-run convergence.",
+  "prohibited": [
+    "Read heldout outcomes/predictions/scores or other agent outputs before freeze",
+    "Read full hindcast panel or raw future outcomes/features",
+    "Alter grid/horizons/cohort after external results",
+    "Overwrite production/default models or old frozen artifacts",
+    "Suppress a losing result"
+  ],
+  "references": [
+    {
+      "title": "Bell & Jones (2015), Explaining Fixed Effects",
+      "url": "https://doi.org/10.1017/psrm.2014.7",
+      "use": "Separate within-entity and between-entity relationships; does not establish prediction accuracy or justify assuming fixed effects automatically superior."
+    },
+    {
+      "title": "Liu, Moon & Schorfheide (2017), Forecasting with Dynamic Panel Data Models",
+      "url": "https://arxiv.org/abs/1709.10193",
+      "use": "Short-panel forecasting may benefit from shrinkage of heterogeneous coefficients. Our small deterministic grid is not their empirical Bayes estimator."
+    },
+    {
+      "title": "Hyndman & Athanasopoulos, Forecasting: Principles and Practice, temporal cross-validation",
+      "url": "https://otexts.com/fpp3/tscv.html",
+      "use": "Forecast origins train strictly before targets; multi-horizon validation matters."
+    }
+  ],
+  "amendments": [],
+  "externalResults": "PENDING — forbidden before joint freeze gate",
+  "authorship": "Automated research agent; not independent human or domain-expert review"
+}
