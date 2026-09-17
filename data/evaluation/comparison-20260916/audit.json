@@ -1,0 +1,128 @@
+{
+  "individualScores": [
+    {
+      "id": "g_offset",
+      "maxMetricDifference": 1.0658141036401503e-14,
+      "status": "matched"
+    },
+    {
+      "id": "c_decay",
+      "maxMetricDifference": 7.105427357601002e-15,
+      "status": "matched"
+    },
+    {
+      "id": "g_health",
+      "maxMetricDifference": 1.0658141036401503e-14,
+      "status": "matched"
+    },
+    {
+      "id": "c_retained",
+      "maxMetricDifference": 7.105427357601002e-15,
+      "status": "matched"
+    },
+    {
+      "id": "g_ensemble",
+      "maxMetricDifference": 1.0658141036401503e-14,
+      "status": "matched"
+    },
+    {
+      "id": "g_damped",
+      "maxMetricDifference": 1.0658141036401503e-14,
+      "status": "matched"
+    },
+    {
+      "id": "g_changes",
+      "maxMetricDifference": 1.0658141036401503e-14,
+      "status": "matched"
+    },
+    {
+      "id": "legacy",
+      "maxMetricDifference": 1.0658141036401503e-14,
+      "status": "matched"
+    }
+  ],
+  "claude": {
+    "rho": 0.9333596975861359,
+    "byLag": [
+      {
+        "lag": 1,
+        "rho": 0.9378614337719757,
+        "pairs": 298
+      },
+      {
+        "lag": 2,
+        "rho": 0.9313975604647879,
+        "pairs": 199
+      },
+      {
+        "lag": 3,
+        "rho": 0.9239334566359644,
+        "pairs": 100
+      }
+    ],
+    "maxPredictionDifference": {
+      "c_decay": {
+        "ladder": 2.6645352591003757e-15,
+        "gdp": 0.0
+      },
+      "c_retained": {
+        "ladder": 8.881784197001252e-16,
+        "gdp": 0.0
+      }
+    },
+    "bounds": {
+      "c_decay": {
+        "anchorClipped": 0,
+        "ladderClipped": 0
+      },
+      "c_retained": {
+        "anchorClipped": 0,
+        "ladderClipped": 0
+      }
+    },
+    "maxLegacyGdpDifference": 5.238689482212067e-10,
+    "exactlyOneExecution": "not verified: registration precedes result, but runner overwrites output and has no exclusive score receipt",
+    "internalValidation": "not verified: described in note, no committed reproducible inner-validation output located"
+  },
+  "sourceHashes": {
+    "data/evaluation/level-holdout-2018/origin.json": "564bab92fe88415df70a1b239223213a53c12274891ec2d39f0e08c3e28e3f77",
+    "data/evaluation/level-holdout-2018/predictions.json": "309a365dcafe010b05e1c7ceccd9d4b756638b70bb1096d3d430cd8496e21c4a",
+    "data/evaluation/level-holdout-2018/scores.json": "d4b69e79226328fefb68dbbbe57433f32cd2f87d9efe9af5881c8e794e681b21",
+    "data/evaluation/level-holdout-2018/test-outcomes.json": "bbcd0b78bc4d02024b2c5064fc15b9249e8849c271f7abd29d9cedeece2ce969",
+    "data/evaluation/offset-2018/predictions-fitted.json": "8a98c767d8e67673d58f52e2029ab1da7446c46515e95b607adc6d50eb16a520",
+    "data/evaluation/offset-2018/predictions-retained.json": "c7108726c54c79452a6dd255365b4c6c1ac24408d6204f526e58fe6dcc1655ea",
+    "data/evaluation/offset-2018/protocol.json": "ba31d7a08d4c360fbfc8b500e10398def3e02f1bdf50e0d85af5b3d6cb4704f1",
+    "data/evaluation/offset-2018/scores-fitted.json": "57d562cc21a65c0d925dfebd4c0e25a673f387d4829a7258435197fbd9263da9",
+    "data/evaluation/offset-2018/scores-retained.json": "3622607be12919d137f218466a6a3dc3da3ae6b301d2668bc9ff3267da641766",
+    "data/evaluation/research-changes-2018-v1/predictions.json": "2a01e1b4dd126e49a453915387f93be7ef6b057bf56cb9bfffcc20a6771b4d0d",
+    "data/evaluation/research-changes-2018-v1/scores.json": "a32ef870a925c79fea96efc574d200f622d06a3d71c5c6a8ce66924c4dd3ac89",
+    "data/evaluation/research-damped-2018-v1/predictions.json": "bbb52ca54a515df315ad1c2c09be6f3f9d0f4ad9b261bd1fd04fc59f8c516ac3",
+    "data/evaluation/research-damped-2018-v1/scores.json": "77d79f10eda9b4e1371df1d46fc6ea0af2c4436222b8ded22536865909a73444",
+    "data/evaluation/research-ensemble-2018-v1/predictions.json": "cb82a477fecaf764e8bf55476bc541fb271f0c78ebb1baafbe922e6e7ddf98e5",
+    "data/evaluation/research-ensemble-2018-v1/scores.json": "2ac83dc29423f68bfe56e792d253c0614e50d86ba1b453d68eab2cbc8730bf83",
+    "data/evaluation/research-health-2018-v1/predictions.json": "3e827620acc03728cb99a3256ef96120c0bb36e719d594de2f93f796741859ea",
+    "data/evaluation/research-health-2018-v1/scores.json": "4699192b2a575b911a69981cad55b804e73dab9279e39bb4088013df7cd02ac3",
+    "data/evaluation/research-offset-2018-v1/predictions.json": "6ce7e1d1b698688db1077a0064d16bbfc543323f9e5ef004e5ea5959edd25856",
+    "data/evaluation/research-offset-2018-v1/scores.json": "deb455d12bb26680f34ff439b6876ce0defffc9a8c3032810a487a6bbbee065d",
+    "docs/design/reviews/2026-09-16-holdout-attempts-comparison.html": "5da42481ebea4886416e606e595a6b57df60d1dd4675a5bc923eb19e6bb0de7c"
+  },
+  "sourceIntegrity": "All declared source hashes unchanged",
+  "cohort": {
+    "countries": 100,
+    "expected": 700,
+    "excludedOriginCountries": 28,
+    "observations": {
+      "ladder": {
+        "pooled": 681,
+        "endpoint": 97
+      },
+      "gdp": {
+        "pooled": 691,
+        "endpoint": 97
+      }
+    }
+  },
+  "computedFrom": "Saved point predictions and frozen test outcomes; original scoring entry points were not run",
+  "objectiveSavedRows": "Archived primary, pooled and 2024 metrics matched saved scored rows; source observations not independently re-fetched",
+  "objectiveSourceHash": "43d3e6aee97caa9697f6d7360c29084f10676ffcb8dde68a245837f6555e915e"
+}
