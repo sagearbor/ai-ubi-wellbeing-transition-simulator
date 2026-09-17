@@ -1,0 +1,29 @@
+{
+  "status": "completed",
+  "startedAt": "2026-09-17T04:58:14.156115+00:00",
+  "freezeCommit": "9a49e76562acc0b1229e32a7f88f18c7ce62f79b",
+  "hashes": {
+    "data/evaluation/annual-wellbeing-20260917/protocol.json": "e8a79e731abd707a15b32035728f044e7b159c3aa273bcb1e9cb9b8f612ea608",
+    "data/evaluation/annual-wellbeing-20260917/input.json": "5b936764ff39787b0447d321ac55676907ff6add4d974ee361d4a88831f702f7",
+    "data/evaluation/annual-wellbeing-20260917/sources/provenance.json": "a58834b7645feef91b6763e9ca6296a2c6016682538c13924f0e57666eebd192",
+    "data/evaluation/annual-wellbeing-20260917/sources/official-annual-target.json": "0ad3698a5b63cb8761c0cacd831415e839dac9d8a6ccaace4c4a7008c156c3be",
+    "scripts/evaluation/annual-wellbeing/test_model.py": "2d816cf0ae542467e18c2ee49df51a1298c633b690ef43eb95b365a024eac41f",
+    "scripts/evaluation/annual-wellbeing/run.py": "868a5e0d31cdeda9cf35b5134404b1e16a923b552021d25dbedac42580c65af3",
+    "scripts/evaluation/annual-wellbeing/model.py": "fe3df0b86cecef75dfc09cdb7fd90f4f8a18dd365a825e846aabcd490aa55722",
+    "scripts/evaluation/annual-wellbeing/prepare.py": "7e4f661260a53c85f9e82f38b8cd70fceefa14ce083c2f6b2d47a31604aebafc"
+  },
+  "scoreRun": 1,
+  "maximumScoreRuns": 1,
+  "completedAt": "2026-09-17T04:58:14.178104+00:00",
+  "outputs": {
+    "data/evaluation/annual-wellbeing-20260917/paths.json": "56ac8876086f76ec5421aa250c3282a0f95d401232f1466ec45a5705ebec509a",
+    "data/evaluation/annual-wellbeing-20260917/metrics.json": "7e86a6a34fd6dd79c11cf23350021669dfda07fd39ded0e888f92d13429e0024",
+    "data/evaluation/annual-wellbeing-20260917/predictions.json": "42ebe71a421c178914f1a9077e472850d76ddd6971c4d35f47ff4ab168d0a217",
+    "docs/design/research/2026-09-17-annual-wellbeing.md": "3ae161d841f7987c560152d5e1015895942224a606ea688d6120d95f9840f6b2"
+  },
+  "counts": {
+    "conditional": 61,
+    "rolling": 69
+  },
+  "eligibleCountries": 8
+}
