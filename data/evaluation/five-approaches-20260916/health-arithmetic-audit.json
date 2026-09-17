@@ -1,0 +1,11 @@
+{
+  "rows": 700,
+  "trainingPairs": 298,
+  "maxAbsoluteDifference": {
+    "ladder": 1.7763568394002505e-15,
+    "gdp": 1.0913936421275139e-10
+  },
+  "scope": "Selected ridge solution and all forecasts independently computed; CV selection code-reviewed.",
+  "method": "Independent Python arithmetic; does not execute or import submitted model",
+  "relativeTolerance": 1e-09
+}

@@ -1,0 +1,13 @@
+{
+  "schema": "one-shot-score-receipt/1",
+  "entry": "research-health-2018-v1",
+  "family": "five-approaches-20260916",
+  "startedAt": "2026-09-16T21:24:44.017Z",
+  "preScoreCommit": "5e8fb0bd0f9895f64ce9a4d816309eb341f664a2",
+  "registrySha256": "9efaaae977a155310acbf3614915926f3ce381259f13d6d02d76901bccc2a4a3",
+  "protocolSha256": "3e7208880159c8f7665c20691f9e56e220cd64029c2d30aa78160e6739809d4e",
+  "predictionsSha256": "3e827620acc03728cb99a3256ef96120c0bb36e719d594de2f93f796741859ea",
+  "status": "completed",
+  "completedAt": "2026-09-16T21:24:44.038Z",
+  "scoresSha256": "4699192b2a575b911a69981cad55b804e73dab9279e39bb4088013df7cd02ac3"
+}

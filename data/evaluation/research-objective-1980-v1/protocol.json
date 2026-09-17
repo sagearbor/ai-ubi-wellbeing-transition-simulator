@@ -1,0 +1,57 @@
+{
+  "schema": "forecast-protocol/1",
+  "id": "research-objective-1980-v1",
+  "registeredAt": "2026-09-16",
+  "familyId": "five-approaches-20260916",
+  "familyEntryIds": ["research-offset-2018-v1", "research-damped-2018-v1", "research-changes-2018-v1", "research-health-2018-v1", "research-ensemble-2018-v1"],
+  "additionalEntry": true,
+  "scope": "Separate retrospective objective-proxy reconstruction, never a ladder prediction or validation of subjective wellbeing. Fixed model registered before fetching any numeric objective series for this entry or new 2015-18 health data.",
+  "modelFormChosenAfterTestPeriod": true,
+  "trainingYears": {"first": 1960, "last": 1980},
+  "originYear": 1980,
+  "testYears": {"first": 1981, "last": 2025},
+  "outcomes": {
+    "lifeExpectancy": {"indicator": "SP.DYN.LE00.IN", "unit": "years", "definition": "Period life expectancy at birth, total sexes; not healthy life expectancy or a ladder score"},
+    "gdp": {"indicator": "NY.GDP.PCAP.KD", "unit": "constant-2015 USD per person", "definition": "Real GDP per capita"}
+  },
+  "sources": {
+    "observations": "World Bank official v2 indicator API, date=1960:1980, source=2, format=json. Reject every row outside these dates before fitting. Save exact bytes, URL, retrieval time, lastupdated, SHA256 and response count.",
+    "countryMetadata": "World Bank official country API; nonaggregate identifiers determined only by region.id != NA. Current identifiers and country definitions are not an archived 1980 roster.",
+    "indicatorMetadata": "World Bank official indicator API, source=2; metadata only. No unrestricted observation downloads."
+  },
+  "cohort": {
+    "rule": "All nonaggregate official country IDs with both valid outcomes in 1980 and at least 10 nonmissing observations spanning at least 10 years within 1960-1980 for EACH target. GDP must be finite and positive; life expectancy finite and strictly between 0 and 120. Freeze using training/origin only; no future availability conditions.",
+    "order": "country ID ascending",
+    "denominator": "Save every metadata ID, aggregate exclusion, country exclusion reason, per-target training count/span, and final IDs in cohort.json. Both targets share this frozen country cohort."
+  },
+  "fit": {
+    "candidates": [{"name": "fixed-origin-damped-pretrend", "phi": 0.95}],
+    "selection": "None. One fixed method; no model/hyperparameter tuning or internal-validation-driven amendments.",
+    "equations": [
+      "For each target and country, transform GDP with natural log and leave life expectancy in years.",
+      "Fit ordinary least squares z_t = a + b*(t-1960), separately by country/target using every valid 1960-1980 observation. Equal annual weights; missing observations omitted only from fit; no imputation.",
+      "Let S(h)=sum(k=1..h,0.95^k)=0.95*(1-0.95^h)/(1-0.95). Forecast z_(1980+h)=z_1980+b*S(h). The fitted intercept is diagnostic; the observed 1980 origin anchors the forecast.",
+      "GDP forecast = exp(z_forecast). Life-expectancy forecast = clamp(z_forecast,0,120) with raw forecast and clamp counts saved. No trend clipping."
+    ],
+    "fittedQuantities": "OLS slope/intercept, training observation count, span and origin value per country/target; no pooled normalization, imputation or learned damping.",
+    "futureCovariates": "None. Only pre-1981 target histories and 1980 origins."
+  },
+  "internalValidation": {
+    "purpose": "Diagnostic only, never model selection; temporally ordered pre-1981 validation.",
+    "cutoff": 1975,
+    "trainYears": {"first": 1960, "last": 1975},
+    "validationYears": [1976,1977,1978,1979,1980],
+    "rule": "Within the frozen final cohort, require valid 1975 origin and at least 10 training observations spanning 10 years for a target. Fit its slope only through 1975; forecast each observed 1976-80 target using the same fixed equation. Report skipped origins and outcome masks. No normalization; no validation values enter fits."
+  },
+  "missingness": "Never delete a frozen country because future targets are missing. Score each target/year only where valid observed; save missingness and identical persistence masks. No backward filling, interpolation or invented observations by this model.",
+  "predictionSchema": {"schema": "objective-predictions/1", "rows": "One row per country/year/target with id,name,target,unit,year,horizon,originYear,originValue,prediction,rawPrediction; targets exactly lifeExpectancy or gdp; 45*2*N rows"},
+  "baseline": "Persistence of each target's observed 1980 value on exactly the same scoring masks",
+  "primaryMetric": "2025 endpoint MAE separately for life expectancy (years) and GDP cumulative growth error (percentage points relative to 1980 GDP); two outcomes, no combined winner",
+  "secondaryMetrics": ["Every annual horizon MAE, RMSE, signed bias and denominator", "Pooled observed country-year MAE/RMSE/bias per target", "GDP level MAE in constant-2015 USD as supplementary", "Origin-GDP quartiles: sort (GDP,id), group floor(index*4/N)"],
+  "emptyOrUndefinedMetrics": "null with reason; never zero",
+  "exposureDisclosure": "The agent has read the authorized 2015-18 original ladder/GDP train/origin schema and a few leading rows while preparing the separate short-horizon entry. No long-run model choice uses those values. This long-run protocol is registered before fetching new health series, and long-run forecasts will be frozen before developing the health extension. Current source-method pages are allowed; no post-1980 country trajectory is sought for long-run development.",
+  "vintageLimit": "Historical values retrieved in 2026 are revised/current-vintage data, not information archived as available in 1980. Publication lag, modeled/interpolated life tables, changed borders and survivorship of current country identifiers limit interpretation. Fixed damping is an assumption, not a fitted historical law.",
+  "integrityGates": ["Protocol committed before fit/validation", "Read only date-scoped 1960-80 training responses and source metadata", "Freeze full forecasts/cohort/code/provenance before the controller's single external score", "All five short entries and this long entry must be frozen before any external scoring", "Publish failure as well as success; no post-score refit", "No ladder mapping, wellbeing causality or 1980 real-time forecast claim"],
+  "references": ["https://datahelpdesk.worldbank.org/knowledgebase/articles/898581-api-basic-call-structures", "https://otexts.com/fpp3/holt.html", "https://data.worldbank.org/indicator/SP.DYN.LE00.IN"],
+  "amendments": []
+}

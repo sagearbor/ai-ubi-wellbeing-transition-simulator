@@ -1,0 +1,1635 @@
+{
+  "schema": "forecast-calibration/1",
+  "model": {
+    "cutoff": 2018,
+    "lambda": 0.1,
+    "trainingPairCount": 298,
+    "missingHealthPairCount": 0,
+    "rms": {
+      "gdp": 0.036532279362668334,
+      "health": 0.3469180293564787
+    },
+    "beta": {
+      "gdp": 0.030575024664688956,
+      "health": -0.004752775409318666
+    },
+    "originalUnitCoefficients": {
+      "logGdp": 0.8369317545494578,
+      "lifeExpectancy": -0.013699995408526056
+    },
+    "normalization": "train-fold RMS, no centering",
+    "intercept": 0
+  },
+  "covariateDampingPhi": 0.8,
+  "selectedByInternalValidation": {
+    "lambda": 0.1,
+    "mae": 0.13260466349139818
+  },
+  "trainingBackgroundCountries": 101,
+  "pairedTrainingRows": 399,
+  "countryFits": [
+    {
+      "id": "USA",
+      "originYear": 2018,
+      "originHealth": 78.6390243902439,
+      "gdpTrend": {
+        "slope": 0.017003193103758463,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": -0.015365853658526874,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "CAN",
+      "originYear": 2018,
+      "originHealth": 81.8036585365854,
+      "gdpTrend": {
+        "slope": 0.010696496179194525,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": -0.019878048780479673,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "MEX",
+      "originYear": 2018,
+      "originHealth": 74.301,
+      "gdpTrend": {
+        "slope": 0.009059140561383749,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": -0.050499999999999545,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "GTM",
+      "originYear": 2018,
+      "originHealth": 71.496,
+      "gdpTrend": {
+        "slope": 0.012310815432938327,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.21109999999999615,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "HTI",
+      "originYear": 2018,
+      "originHealth": 64.077,
+      "gdpTrend": {
+        "slope": 0.006641972556453446,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.30660000000000026,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "DOM",
+      "originYear": 2018,
+      "originHealth": 73.555,
+      "gdpTrend": {
+        "slope": 0.04460747043067155,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.22000000000000314,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "HND",
+      "originYear": 2018,
+      "originHealth": 72.001,
+      "gdpTrend": {
+        "slope": 0.023170421225883066,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.22240000000000465,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "NIC",
+      "originYear": 2018,
+      "originHealth": 73.879,
+      "gdpTrend": {
+        "slope": 0.007913495737784704,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.31490000000000007,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "SLV",
+      "originYear": 2018,
+      "originHealth": 71.384,
+      "gdpTrend": {
+        "slope": 0.021611511686058904,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.139500000000001,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "CRI",
+      "originYear": 2018,
+      "originHealth": 80.09,
+      "gdpTrend": {
+        "slope": 0.0275641346857352,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": -0.09449999999999789,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "PAN",
+      "originYear": 2018,
+      "originHealth": 78.266,
+      "gdpTrend": {
+        "slope": 0.030224306955833845,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.21780000000000116,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "BRA",
+      "originYear": 2018,
+      "originHealth": 75.633,
+      "gdpTrend": {
+        "slope": -0.00668093239686538,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.18829999999999955,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "ARG",
+      "originYear": 2018,
+      "originHealth": 76.77,
+      "gdpTrend": {
+        "slope": -0.01204617835531625,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.09480000000000074,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "COL",
+      "originYear": 2018,
+      "originHealth": 76.579,
+      "gdpTrend": {
+        "slope": 0.004899525978365205,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.17260000000000134,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "CHL",
+      "originYear": 2018,
+      "originHealth": 80.559,
+      "gdpTrend": {
+        "slope": 0.0070250504720309696,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.19680000000000036,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "PER",
+      "originYear": 2018,
+      "originHealth": 76.018,
+      "gdpTrend": {
+        "slope": 0.017928079262916796,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.08650000000000091,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "ECU",
+      "originYear": 2018,
+      "originHealth": 77.248,
+      "gdpTrend": {
+        "slope": 0.008602199392287523,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.3204000000000036,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "BOL",
+      "originYear": 2018,
+      "originHealth": 67.699,
+      "gdpTrend": {
+        "slope": 0.022833894976240464,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.16260000000000047,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "PRY",
+      "originYear": 2018,
+      "originHealth": 73.627,
+      "gdpTrend": {
+        "slope": 0.02657880479166739,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.04820000000000135,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "URY",
+      "originYear": 2018,
+      "originHealth": 77.527,
+      "gdpTrend": {
+        "slope": 0.009799334206493171,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.09930000000000092,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "RUS",
+      "originYear": 2018,
+      "originHealth": 72.6621951219512,
+      "gdpTrend": {
+        "slope": 0.014174297712460237,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.5236585365853799,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "GBR",
+      "originYear": 2018,
+      "originHealth": 81.2560975609756,
+      "gdpTrend": {
+        "slope": 0.017054655732150436,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.1,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "FRA",
+      "originYear": 2018,
+      "originHealth": 82.6756097560976,
+      "gdpTrend": {
+        "slope": 0.012687512442926163,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.10634146341465112,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "DEU",
+      "originYear": 2018,
+      "originHealth": 80.8926829268293,
+      "gdpTrend": {
+        "slope": 0.01620134585498878,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.07560975609758742,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "ITA",
+      "originYear": 2018,
+      "originHealth": 83.3463414634146,
+      "gdpTrend": {
+        "slope": 0.014468037921847633,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.21097560975609325,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "ESP",
+      "originYear": 2018,
+      "originHealth": 83.4317073170732,
+      "gdpTrend": {
+        "slope": 0.024582776216462855,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.17536585365854335,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "NLD",
+      "originYear": 2018,
+      "originHealth": 81.8121951219512,
+      "gdpTrend": {
+        "slope": 0.019147842254889545,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.11073170731706342,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "SWE",
+      "originYear": 2018,
+      "originHealth": 82.5585365853659,
+      "gdpTrend": {
+        "slope": 0.00640785476450354,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.11634146341465054,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "BEL",
+      "originYear": 2018,
+      "originHealth": 81.5951219512195,
+      "gdpTrend": {
+        "slope": 0.010570412961201647,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.18609756097559824,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "AUT",
+      "originYear": 2018,
+      "originHealth": 81.6926829268293,
+      "gdpTrend": {
+        "slope": 0.015150338367473282,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.15097560975611374,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "POL",
+      "originYear": 2018,
+      "originHealth": 77.6024390243903,
+      "gdpTrend": {
+        "slope": 0.047310199477076334,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.03560975609759396,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "NOR",
+      "originYear": 2018,
+      "originHealth": 82.7585365853659,
+      "gdpTrend": {
+        "slope": 0.009847418715161104,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.15634146341465255,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "CHE",
+      "originYear": 2018,
+      "originHealth": 83.7536585365854,
+      "gdpTrend": {
+        "slope": 0.01192325972832684,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.25170731707315924,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "IRL",
+      "originYear": 2018,
+      "originHealth": 82.2048780487805,
+      "gdpTrend": {
+        "slope": 0.050782263362993164,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.2756097560975519,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "DNK",
+      "originYear": 2018,
+      "originHealth": 80.9536585365854,
+      "gdpTrend": {
+        "slope": 0.0202497733751148,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.10024390243904832,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "FIN",
+      "originYear": 2018,
+      "originHealth": 81.7341463414634,
+      "gdpTrend": {
+        "slope": 0.021977057942570967,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.09634146341462042,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "PRT",
+      "originYear": 2018,
+      "originHealth": 81.3243902439024,
+      "gdpTrend": {
+        "slope": 0.030110230169298192,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.08999999999997073,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "GRC",
+      "originYear": 2018,
+      "originHealth": 81.7878048780488,
+      "gdpTrend": {
+        "slope": 0.014532571705869657,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.21536585365853256,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "CZE",
+      "originYear": 2018,
+      "originHealth": 79.0292682926829,
+      "gdpTrend": {
+        "slope": 0.0335520851503345,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.1304878048780381,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "HUN",
+      "originYear": 2018,
+      "originHealth": 76.0658536585366,
+      "gdpTrend": {
+        "slope": 0.042889266965232764,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.12463414634144102,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "ROU",
+      "originYear": 2018,
+      "originHealth": 75.3585365853659,
+      "gdpTrend": {
+        "slope": 0.06152478904148832,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.13390243902440915,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "UKR",
+      "originYear": 2018,
+      "originHealth": 73.569,
+      "gdpTrend": {
+        "slope": 0.03203050638769458,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.3252999999999986,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "BLR",
+      "originYear": 2018,
+      "originHealth": 74.1756097560976,
+      "gdpTrend": {
+        "slope": 0.012445213295005964,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.19560975609755077,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "SRB",
+      "originYear": 2018,
+      "originHealth": 75.890243902439,
+      "gdpTrend": {
+        "slope": 0.037111443087650645,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.1658536585365681,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "ISL",
+      "originYear": 2018,
+      "originHealth": 82.8609756097561,
+      "gdpTrend": {
+        "slope": 0.023885371312169924,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.16341463414634774,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "EST",
+      "originYear": 2018,
+      "originHealth": 78.2439024390244,
+      "gdpTrend": {
+        "slope": 0.04034800309790896,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.24121951219512852,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "LVA",
+      "originYear": 2018,
+      "originHealth": 74.7829268292683,
+      "gdpTrend": {
+        "slope": 0.042211087664070134,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.09560975609755218,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "LTU",
+      "originYear": 2018,
+      "originHealth": 75.6804878048781,
+      "gdpTrend": {
+        "slope": 0.0511875401344998,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.48853658536586836,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "SVK",
+      "originYear": 2018,
+      "originHealth": 77.2658536585366,
+      "gdpTrend": {
+        "slope": 0.02764637057024668,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.2107317073170904,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "SVN",
+      "originYear": 2018,
+      "originHealth": 81.3780487804878,
+      "gdpTrend": {
+        "slope": 0.04043751997309926,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.16609756097559228,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "HRV",
+      "originYear": 2018,
+      "originHealth": 77.919512195122,
+      "gdpTrend": {
+        "slope": 0.04537459299015687,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.17365853658537134,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "BIH",
+      "originYear": 2018,
+      "originHealth": 77.942,
+      "gdpTrend": {
+        "slope": 0.04633024846066132,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.28680000000000094,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "MNE",
+      "originYear": 2018,
+      "originHealth": 77.8853658536585,
+      "gdpTrend": {
+        "slope": 0.03572403104345749,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.3992682926828877,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "MKD",
+      "originYear": 2018,
+      "originHealth": 76.6487804878049,
+      "gdpTrend": {
+        "slope": 0.025341160913190386,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.4292682926829471,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "ALB",
+      "originYear": 2018,
+      "originHealth": 79.238,
+      "gdpTrend": {
+        "slope": 0.05067333180093332,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.2896999999999991,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "BGR",
+      "originYear": 2018,
+      "originHealth": 74.9634146341464,
+      "gdpTrend": {
+        "slope": 0.03999581564659867,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.10487804878050042,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "MDA",
+      "originYear": 2018,
+      "originHealth": 70.236,
+      "gdpTrend": {
+        "slope": 0.05763961247838907,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.05500000000000256,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "LUX",
+      "originYear": 2018,
+      "originHealth": 82.2951219512195,
+      "gdpTrend": {
+        "slope": 0.0026278247848532388,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": -0.0582926829268402,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "CYP",
+      "originYear": 2018,
+      "originHealth": 81.556,
+      "gdpTrend": {
+        "slope": 0.051272730526454244,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.028499999999999658,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "MLT",
+      "originYear": 2018,
+      "originHealth": 82.2487804878049,
+      "gdpTrend": {
+        "slope": 0.053200281663214354,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.11951219512193915,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "CHN",
+      "originYear": 2018,
+      "originHealth": 77.709,
+      "gdpTrend": {
+        "slope": 0.06039370266778334,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.22230000000000275,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "JPN",
+      "originYear": 2018,
+      "originHealth": 84.2109756097561,
+      "gdpTrend": {
+        "slope": 0.011902795455796067,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.1366097560975632,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "KOR",
+      "originYear": 2018,
+      "originHealth": 82.6268292682927,
+      "gdpTrend": {
+        "slope": 0.028634287309539097,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.21585365853659794,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "MNG",
+      "originYear": 2018,
+      "originHealth": 70.8270731707317,
+      "gdpTrend": {
+        "slope": 0.029370500809498525,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.036999999999999034,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "VNM",
+      "originYear": 2018,
+      "originHealth": 74.1,
+      "gdpTrend": {
+        "slope": 0.05578532424509932,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.047699999999998965,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "IDN",
+      "originYear": 2018,
+      "originHealth": 70.08,
+      "gdpTrend": {
+        "slope": 0.03942594598349469,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.19000000000000056,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "PHL",
+      "originYear": 2018,
+      "originHealth": 69.761,
+      "gdpTrend": {
+        "slope": 0.05307780621642148,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.14089999999999775,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "THA",
+      "originYear": 2018,
+      "originHealth": 77.19,
+      "gdpTrend": {
+        "slope": 0.03495749175029559,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.21009999999999848,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "MYS",
+      "originYear": 2018,
+      "originHealth": 75.734,
+      "gdpTrend": {
+        "slope": 0.03238366790969387,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.15090000000000003,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "MMR",
+      "originYear": 2018,
+      "originHealth": 66.232,
+      "gdpTrend": {
+        "slope": 0.05151179747254151,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.3101000000000013,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "LAO",
+      "originYear": 2018,
+      "originHealth": 67.594,
+      "gdpTrend": {
+        "slope": 0.049730426012301966,
+        "count": 3,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.30489999999999784,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "IND",
+      "originYear": 2018,
+      "originHealth": 70.415,
+      "gdpTrend": {
+        "slope": 0.05734327846396381,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.3626000000000033,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "PAK",
+      "originYear": 2018,
+      "originHealth": 66.481,
+      "gdpTrend": {
+        "slope": 0.039924819161646766,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.27999999999999686,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "BGD",
+      "originYear": 2018,
+      "originHealth": 72.122,
+      "gdpTrend": {
+        "slope": 0.058792310253070745,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.5267999999999973,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "LKA",
+      "originYear": 2018,
+      "originHealth": 76.485,
+      "gdpTrend": {
+        "slope": 0.035689178984980606,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.15880000000000222,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "NPL",
+      "originYear": 2018,
+      "originHealth": 69.036,
+      "gdpTrend": {
+        "slope": 0.054774091728383656,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.5282000000000011,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "BTN",
+      "originYear": 2018,
+      "originHealth": 71.711,
+      "gdpTrend": {
+        "slope": 0.034478635565652206,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.30360000000000015,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "KAZ",
+      "originYear": 2018,
+      "originHealth": 73.369,
+      "gdpTrend": {
+        "slope": 0.016094782052090473,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.4481999999999985,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "KGZ",
+      "originYear": 2018,
+      "originHealth": 71.4,
+      "gdpTrend": {
+        "slope": 0.020794296698715263,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.24951219512196304,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "TJK",
+      "originYear": 2018,
+      "originHealth": 70.737,
+      "gdpTrend": {
+        "slope": 0.044787975688083834,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.3757999999999967,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "TUR",
+      "originYear": 2018,
+      "originHealth": 77.454,
+      "gdpTrend": {
+        "slope": 0.03689179358986294,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.3186999999999983,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "IRN",
+      "originYear": 2018,
+      "originHealth": 76.621,
+      "gdpTrend": {
+        "slope": 0.011930718084909132,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.23829999999999957,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "IRQ",
+      "originYear": 2018,
+      "originHealth": 71.116,
+      "gdpTrend": {
+        "slope": 0.016107841168587277,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.4521999999999977,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "ARE",
+      "originYear": 2018,
+      "originHealth": 82.449,
+      "gdpTrend": {
+        "slope": -0.014656943530073362,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.1312000000000026,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "ISR",
+      "originYear": 2018,
+      "originHealth": 82.8024390243903,
+      "gdpTrend": {
+        "slope": 0.022822103127937688,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.23975609756099772,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "JOR",
+      "originYear": 2018,
+      "originHealth": 76.491,
+      "gdpTrend": {
+        "slope": -0.008101816197494926,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.4813999999999993,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "LBN",
+      "originYear": 2018,
+      "originHealth": 78.263,
+      "gdpTrend": {
+        "slope": 0.0286607203616569,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": -0.015000000000000568,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "YEM",
+      "originYear": 2018,
+      "originHealth": 65.915,
+      "gdpTrend": {
+        "slope": -0.07803973257768142,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": -0.25229999999999675,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "GEO",
+      "originYear": 2018,
+      "originHealth": 73.985,
+      "gdpTrend": {
+        "slope": 0.04784115597685314,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.2531000000000006,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "ARM",
+      "originYear": 2018,
+      "originHealth": 75.619512195122,
+      "gdpTrend": {
+        "slope": 0.04874341373948674,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.2595121951219568,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "PSE",
+      "originYear": 2018,
+      "originHealth": 75.38,
+      "gdpTrend": {
+        "slope": 0.012484757701636618,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.27079999999999843,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "NGA",
+      "originYear": 2018,
+      "originHealth": 52.669,
+      "gdpTrend": {
+        "slope": -0.020044956636061696,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.2397999999999989,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "ZAF",
+      "originYear": 2018,
+      "originHealth": 65.726,
+      "gdpTrend": {
+        "slope": 0.0007425834441743718,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.5692000000000007,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "EGY",
+      "originYear": 2018,
+      "originHealth": 70.974,
+      "gdpTrend": {
+        "slope": 0.0249425746269214,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.27890000000000015,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "ETH",
+      "originYear": 2018,
+      "originHealth": 65.257,
+      "gdpTrend": {
+        "slope": 0.05624698458159747,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.5599000000000018,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "KEN",
+      "originYear": 2018,
+      "originHealth": 62.825,
+      "gdpTrend": {
+        "slope": 0.022516397601449346,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.1836999999999996,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "COD",
+      "originYear": 2018,
+      "originHealth": 59.926,
+      "gdpTrend": {
+        "slope": 0.00018541322207896727,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.4217999999999996,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "MAR",
+      "originYear": 2018,
+      "originHealth": 73.946,
+      "gdpTrend": {
+        "slope": 0.018455505420065067,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.3535999999999987,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "DZA",
+      "originYear": 2018,
+      "originHealth": 75.555,
+      "gdpTrend": {
+        "slope": 0.0014954357152955565,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.13089999999999974,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    },
+    {
+      "id": "AUS",
+      "originYear": 2018,
+      "originHealth": 82.7487804878049,
+      "gdpTrend": {
+        "slope": 0.009964505403093326,
+        "count": 4,
+        "fallback": false
+      },
+      "healthTrend": {
+        "slope": 0.10975609756097668,
+        "count": 4,
+        "fallback": false
+      },
+      "healthFallbackReason": null
+    }
+  ],
+  "healthFallbackCountryCount": 0,
+  "ladderClampCount": 0,
+  "healthClampCount": 0
+}

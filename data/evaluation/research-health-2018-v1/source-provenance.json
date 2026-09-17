@@ -1,0 +1,41 @@
+{
+  "schema": "forecast-source-provenance/1",
+  "entryId": "research-health-2018-v1",
+  "sources": [
+    {
+      "name": "SP.DYN.LE00.IN-metadata",
+      "url": "https://api.worldbank.org/v2/indicator/SP.DYN.LE00.IN?source=2&format=json&per_page=1000",
+      "retrievedAt": "2026-09-16T21:05:46.549Z",
+      "relativePath": "raw/SP.DYN.LE00.IN-metadata.json",
+      "sha256": "321c62091af04f07cc57b65400ab96606e0822c6377f5135263b06959f08f399",
+      "bytes": 971,
+      "responseRows": 1,
+      "lastUpdated": null,
+      "requestedYears": null,
+      "actualYears": null,
+      "role": "metadata only"
+    },
+    {
+      "name": "SP.DYN.LE00.IN-2015-2018",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/SP.DYN.LE00.IN?date=2015:2018&source=2&format=json&per_page=20000",
+      "retrievedAt": "2026-09-16T21:05:46.711Z",
+      "relativePath": "raw/SP.DYN.LE00.IN-2015-2018.json",
+      "sha256": "1998f8e2d33bb5963592de255a10d0d0786d414d8acab49c0fb11edf5288eaa5",
+      "bytes": 241931,
+      "responseRows": 1060,
+      "lastUpdated": "2026-07-13",
+      "requestedYears": [
+        2015,
+        2018
+      ],
+      "actualYears": [
+        2015,
+        2016,
+        2017,
+        2018
+      ],
+      "role": "training-only observations"
+    }
+  ],
+  "vintage": "Current revised source vintage; not archived as-of 2018"
+}

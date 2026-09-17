@@ -1,0 +1,4680 @@
+{
+  "schema": "objective-cohort/1",
+  "originYear": 1980,
+  "metadataIds": 295,
+  "aggregateCount": 78,
+  "nonaggregateCount": 217,
+  "countryCount": 140,
+  "countries": [
+    {
+      "id": "AND",
+      "name": "Andorra",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 77.137,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 11,
+          "span": 10,
+          "origin": 34281.7439470011,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "ARE",
+      "name": "United Arab Emirates",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 68.157,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 11,
+          "span": 10,
+          "origin": 117073.349209195,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "ARG",
+      "name": "Argentina",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 68.576,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 10275.7987023886,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "AUS",
+      "name": "Australia",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 74.3336585365854,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 30796.9990737135,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "AUT",
+      "name": "Austria",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 72.4634146341463,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 25379.462993097,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "BDI",
+      "name": "Burundi",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 45.731,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 307.578267460065,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "BEL",
+      "name": "Belgium",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 73.2070731707317,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 24532.4569582102,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "BEN",
+      "name": "Benin",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 47.747,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 733.490637341118,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "BFA",
+      "name": "Burkina Faso",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 46.465,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 309.805283645997,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "BGD",
+      "name": "Bangladesh",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 52.278,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 405.226770259517,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "BHR",
+      "name": "Bahrain",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 70.684,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 11,
+          "span": 10,
+          "origin": 22551.9860925815,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "BHS",
+      "name": "Bahamas, The",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 69.091,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 27191.4849967295,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "BLZ",
+      "name": "Belize",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 66.884,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 3187.40426576851,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "BMU",
+      "name": "Bermuda",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 72.666,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 84785.7462251032,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "BOL",
+      "name": "Bolivia",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 51.828,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 2054.79726888192,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "BRA",
+      "name": "Brazil",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 61.819,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 6472.85214591952,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "BRB",
+      "name": "Barbados",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 72.129,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 18695.0467666137,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "BTN",
+      "name": "Bhutan",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 48.198,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 11,
+          "span": 10,
+          "origin": 432.838643488682,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "BWA",
+      "name": "Botswana",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 62.527,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 2002.99615272235,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "CAF",
+      "name": "Central African Republic",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 49.789,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 549.851069399498,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "CAN",
+      "name": "Canada",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 75.1021951219512,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 27622.4011506651,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "CHE",
+      "name": "Switzerland",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 75.4592682926829,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 59515.0839957113,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "CHL",
+      "name": "Chile",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 69.475,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 4627.19349061049,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "CHN",
+      "name": "China",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 64.243,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 436.628325064633,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "CIV",
+      "name": "Cote d'Ivoire",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 51.437,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 2576.91660095729,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "CMR",
+      "name": "Cameroon",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 50.852,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 1305.68366184321,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "COD",
+      "name": "Congo, Dem. Rep.",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 45.543,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 1046.19884187998,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "COG",
+      "name": "Congo, Rep.",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 56.803,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 1921.96861829766,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "COL",
+      "name": "Colombia",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 66.693,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 3300.51170195765,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "CRI",
+      "name": "Costa Rica",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 73.034,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 6223.6957112494,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "CUB",
+      "name": "Cuba",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 72.603,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 11,
+          "span": 10,
+          "origin": 3606.74390099913,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "DEU",
+      "name": "Germany",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 72.8003170731707,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 23989.8611451039,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "DNK",
+      "name": "Denmark",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 74.1017073170732,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 31745.9167880971,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "DOM",
+      "name": "Dominican Republic",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 63.391,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 2738.15968545396,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "DZA",
+      "name": "Algeria",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 54.512,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 3742.71024718729,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "ECU",
+      "name": "Ecuador",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 63.326,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 3889.17817173943,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "EGY",
+      "name": "Egypt, Arab Rep.",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 55.673,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 1431.40108169045,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "ESP",
+      "name": "Spain",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 75.3492682926829,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 14886.4067025715,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "ETH",
+      "name": "Ethiopia",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 42.815,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 20,
+          "span": 19,
+          "origin": 292.153506886342,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "FIN",
+      "name": "Finland",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 73.44,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 23945.0603707378,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "FJI",
+      "name": "Fiji",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 62.406,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 3588.63389797973,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "FRA",
+      "name": "France",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 74.0512195121951,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 23050.9255953042,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "FSM",
+      "name": "Micronesia, Fed. Sts.",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 62.556,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 11,
+          "span": 10,
+          "origin": 2126.82765124626,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "GAB",
+      "name": "Gabon",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 57.893,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 9182.52680219592,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "GBR",
+      "name": "United Kingdom",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 73.6756097560976,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 23381.0626649925,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "GEO",
+      "name": "Georgia",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 68.273,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 3948.86535079512,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "GHA",
+      "name": "Ghana",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 51.059,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 891.578049368905,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "GIN",
+      "name": "Guinea",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 42.842,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 11,
+          "span": 10,
+          "origin": 515.075498240815,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "GMB",
+      "name": "Gambia, The",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 44.977,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 15,
+          "span": 14,
+          "origin": 682.144429383382,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "GNB",
+      "name": "Guinea-Bissau",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 43.57,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 11,
+          "span": 10,
+          "origin": 411.228191061056,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "GRC",
+      "name": "Greece",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 74.5065609756098,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 15246.994403616,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "GRL",
+      "name": "Greenland",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 63.449756097561,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 11,
+          "span": 10,
+          "origin": 27005.3259668971,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "GTM",
+      "name": "Guatemala",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 55.297,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 3287.02569465938,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "GUY",
+      "name": "Guyana",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 60.808,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 3247.67276846022,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "HKG",
+      "name": "Hong Kong SAR, China",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 74.6534146341464,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 20,
+          "span": 19,
+          "origin": 12553.0638934721,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "HND",
+      "name": "Honduras",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 60.388,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 318.017226315051,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "HTI",
+      "name": "Haiti",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 49.971,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 2146.49092997378,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "HUN",
+      "name": "Hungary",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 69.0617073170732,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 7477.86543101327,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "IDN",
+      "name": "Indonesia",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 58.701,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 1061.791789401,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "IND",
+      "name": "India",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 53.593,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 394.182239921013,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "IRL",
+      "name": "Ireland",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 72.5954146341464,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 16921.795746439,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "IRN",
+      "name": "Iran, Islamic Rep.",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 58.369,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 3793.35429688212,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "IRQ",
+      "name": "Iraq",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 60.916,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 2924.31916822628,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "ISL",
+      "name": "Iceland",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 76.8465853658537,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 31797.028945465,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "ISR",
+      "name": "Israel",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 17,
+          "span": 19,
+          "origin": 73.8756097560976,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 18597.509172637,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "ITA",
+      "name": "Italy",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 73.9431707317073,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 21901.9268708549,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "JAM",
+      "name": "Jamaica",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 68.992,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 15,
+          "span": 14,
+          "origin": 4067.64427298738,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "JPN",
+      "name": "Japan",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 75.9890243902439,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 19614.2922299856,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "KEN",
+      "name": "Kenya",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 59.175,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 1275.28269729355,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "KIR",
+      "name": "Kiribati",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 57.303,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 11,
+          "span": 10,
+          "origin": 1734.33011069497,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "KOR",
+      "name": "Korea, Rep.",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 66.0463414634146,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 4139.9606854608,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "KWT",
+      "name": "Kuwait",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 71.4554878048781,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 11,
+          "span": 10,
+          "origin": 29547.7549827285,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "LBR",
+      "name": "Liberia",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 44.088,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 2792.03699789523,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "LBY",
+      "name": "Libya",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 64.797,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 19090.5503735732,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "LKA",
+      "name": "Sri Lanka",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 68.006,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 20,
+          "span": 19,
+          "origin": 1014.42361893248,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "LSO",
+      "name": "Lesotho",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 56.534,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 460.201617282317,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "LUX",
+      "name": "Luxembourg",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 72.2581707317073,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 42707.6494595092,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "MAR",
+      "name": "Morocco",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 55.219,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 15,
+          "span": 14,
+          "origin": 1340.24670410156,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "MCO",
+      "name": "Monaco",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 74.948,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 11,
+          "span": 10,
+          "origin": 93468.0194964091,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "MDG",
+      "name": "Madagascar",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 49.984,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 685.100689761521,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "MDV",
+      "name": "Maldives",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 54.819,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 11,
+          "span": 10,
+          "origin": 2045.0559250915,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "MEX",
+      "name": "Mexico",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 64.282,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 8290.28898920873,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "MHL",
+      "name": "Marshall Islands",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 60.989,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 11,
+          "span": 10,
+          "origin": 2454.9977903425,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "MLI",
+      "name": "Mali",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 40.266,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 14,
+          "span": 13,
+          "origin": 667.105922219684,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "MLT",
+      "name": "Malta",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 72.2183902439025,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 11,
+          "span": 10,
+          "origin": 7679.71730114961,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "MMR",
+      "name": "Myanmar",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 54.374,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 179.588600928215,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "MRT",
+      "name": "Mauritania",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 53.204,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 20,
+          "span": 19,
+          "origin": 1620.11239670427,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "MUS",
+      "name": "Mauritius",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 66.7709024390244,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 2349.54562004964,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "MWI",
+      "name": "Malawi",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 44.331,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 433.515183153301,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "MYS",
+      "name": "Malaysia",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 68.061,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 3216.28778690077,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "NER",
+      "name": "Niger",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 39.344,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 631.839702011287,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "NGA",
+      "name": "Nigeria",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 45.959,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 2177.41578655365,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "NIC",
+      "name": "Nicaragua",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 57.953,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 1850.00093520346,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "NLD",
+      "name": "Netherlands",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 75.7431707317073,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 26537.6091767537,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "NOR",
+      "name": "Norway",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 75.6717073170732,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 40140.624596794,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "NPL",
+      "name": "Nepal",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 48.333,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 334.219179007322,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "NRU",
+      "name": "Naoero",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 58.471,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 11,
+          "span": 10,
+          "origin": 34662.1759396181,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "NZL",
+      "name": "New Zealand",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 72.8292682926829,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 23386.9182653647,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "OMN",
+      "name": "Oman",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 59.601,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 12406.641239648,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "PAK",
+      "name": "Pakistan",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 57.199,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 729.775997454804,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "PAN",
+      "name": "Panama",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 69.451,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 5288.474557208,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "PER",
+      "name": "Peru",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 59.982,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 3797.43621611508,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "PHL",
+      "name": "Philippines",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 61.884,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 1867.56862352125,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "PLW",
+      "name": "Palau",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 61.909,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 11,
+          "span": 10,
+          "origin": 12072.0875292275,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "PNG",
+      "name": "Papua New Guinea",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 57.391,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 2077.58361339529,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "PRI",
+      "name": "Puerto Rico (US)",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 73.101,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 16329.153469581,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "PRT",
+      "name": "Portugal",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 71.2146341463415,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 10832.5268441458,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "PRY",
+      "name": "Paraguay",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 64.553,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 3592.56127303015,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "PYF",
+      "name": "French Polynesia",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 67.405,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 16,
+          "span": 15,
+          "origin": 26874.2991438109,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "QAT",
+      "name": "Qatar",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 69.915,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 11,
+          "span": 10,
+          "origin": 58124.478851269,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "RWA",
+      "name": "Rwanda",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 48.122,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 412.074486729936,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "SAU",
+      "name": "Saudi Arabia",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 62.444,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 58094.2921854594,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "SDN",
+      "name": "Sudan",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 54.072,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 747.91943359375,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "SEN",
+      "name": "Senegal",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 48.294,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 1012.16661480231,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "SGP",
+      "name": "Singapore",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 72.190243902439,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 13953.890170834,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "SLE",
+      "name": "Sierra Leone",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 42.839,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 1165.12783269719,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "SLV",
+      "name": "El Salvador",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 48.589,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 16,
+          "span": 15,
+          "origin": 2757.38812393103,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "SOM",
+      "name": "Somalia, Fed. Rep.",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 47.611,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 239.470243473533,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "STP",
+      "name": "Sao Tome and Principe",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 59.361,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 11,
+          "span": 10,
+          "origin": 1405.76061531863,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "SUR",
+      "name": "Suriname",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 60.654,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 7110.25141539986,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "SWE",
+      "name": "Sweden",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 75.7409756097561,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 28931.0264163728,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "SWZ",
+      "name": "Eswatini",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 58.227,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 11,
+          "span": 10,
+          "origin": 1223.7010122456,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "SYC",
+      "name": "Seychelles",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 69.5975609756098,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 6795.44213443153,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "SYR",
+      "name": "Syrian Arab Republic",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 66.545,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 1155.12764624005,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "TCD",
+      "name": "Chad",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 43.452,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 480.157386509886,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "TGO",
+      "name": "Togo",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 52.146,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 907.69294556498,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "THA",
+      "name": "Thailand",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 62.186,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 1482.08742004737,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "TTO",
+      "name": "Trinidad and Tobago",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 66.507,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 8608.64103141529,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "TUN",
+      "name": "Tunisia",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 63.669,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 20,
+          "span": 19,
+          "origin": 1877.33460917719,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "TUR",
+      "name": "Turkiye",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 62.739,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 3842.04482389031,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "TUV",
+      "name": "Tuvalu",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 60.217,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 11,
+          "span": 10,
+          "origin": 1587.53909533798,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "TZA",
+      "name": "Tanzania",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 51.272,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 536.933166503906,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "URY",
+      "name": "Uruguay",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 70.505,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 8772.55429720278,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "USA",
+      "name": "United States",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 73.609756097561,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 31081.6216322106,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 4
+    },
+    {
+      "id": "VCT",
+      "name": "St. Vincent and the Grenadines",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 67.977,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 2514.62240573852,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "VEN",
+      "name": "Venezuela, RB",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 68.179,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 4638.42050983556,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "WSM",
+      "name": "Samoa",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 64.961,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 11,
+          "span": 10,
+          "origin": 2642.83412063183,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 2
+    },
+    {
+      "id": "ZAF",
+      "name": "South Africa",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 59.961,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 5399.54067871187,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 3
+    },
+    {
+      "id": "ZMB",
+      "name": "Zambia",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 55.496,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 1062.93600223771,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 1
+    },
+    {
+      "id": "ZWE",
+      "name": "Zimbabwe",
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 59.062,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 21,
+          "span": 20,
+          "origin": 1547.24303557325,
+          "qualified": true
+        }
+      },
+      "originIncomeQuartile": 2
+    }
+  ],
+  "excluded": [
+    {
+      "id": "ABW",
+      "name": "Aruba",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 70.771,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "AFE",
+      "name": "Africa Eastern and Southern",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "AFG",
+      "name": "Afghanistan",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 39.258,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "AFR",
+      "name": "Africa",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "AFW",
+      "name": "Africa Western and Central",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "AGO",
+      "name": "Angola",
+      "reasons": [
+        "gdp: origin=true; n=1; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 42.242,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 1,
+          "span": 0,
+          "origin": 3186.73959671623,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "ALB",
+      "name": "Albania",
+      "reasons": [
+        "gdp: origin=true; n=1; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 69.903,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 1,
+          "span": 0,
+          "origin": 1823.48926046182,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "ARB",
+      "name": "Arab World",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "ARM",
+      "name": "Armenia",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 65.1385609756098,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "ASM",
+      "name": "American Samoa",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 69.413,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "ATG",
+      "name": "Antigua and Barbuda",
+      "reasons": [
+        "gdp: origin=true; n=4; span=3"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 73.094,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 4,
+          "span": 3,
+          "origin": 7323.12585537909,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "AZE",
+      "name": "Azerbaijan",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 61.433,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "BEA",
+      "name": "East Asia & Pacific (IBRD-only countries)",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "BEC",
+      "name": "Europe & Central Asia (IBRD-only countries)",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "BGR",
+      "name": "Bulgaria",
+      "reasons": [
+        "gdp: origin=true; n=1; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 71.1575609756098,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 1,
+          "span": 0,
+          "origin": 3427.23918150896,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "BHI",
+      "name": "IBRD countries classified as high income",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "BIH",
+      "name": "Bosnia and Herzegovina",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 69.603,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "BLA",
+      "name": "Latin America & the Caribbean (IBRD-only countries)",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "BLR",
+      "name": "Belarus",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 69.9277073170732,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "BMN",
+      "name": "Middle East, North Africa, Afghanistan & Pakistan (IBRD only)",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "BRN",
+      "name": "Brunei Darussalam",
+      "reasons": [
+        "gdp: origin=true; n=7; span=6"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 69.014,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 7,
+          "span": 6,
+          "origin": 84483.3896949123,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "BSS",
+      "name": "Sub-Saharan Africa (IBRD-only countries)",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "CAA",
+      "name": "Sub-Saharan Africa (IFC classification)",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "CEA",
+      "name": "East Asia and the Pacific (IFC classification)",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "CEB",
+      "name": "Central Europe and the Baltics",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "CEU",
+      "name": "Europe and Central Asia (IFC classification)",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "CHI",
+      "name": "Channel Islands",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 73.9,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "CLA",
+      "name": "Latin America and the Caribbean (IFC classification)",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "CME",
+      "name": "Middle East and North Africa (IFC classification)",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "COM",
+      "name": "Comoros",
+      "reasons": [
+        "gdp: origin=true; n=1; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 50.681,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 1,
+          "span": 0,
+          "origin": 1171.47249737158,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "CPV",
+      "name": "Cabo Verde",
+      "reasons": [
+        "gdp: origin=true; n=1; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 61.031,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 1,
+          "span": 0,
+          "origin": 581.755065828323,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "CSA",
+      "name": "South Asia (IFC classification)",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "CSS",
+      "name": "Caribbean small states",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "CUW",
+      "name": "Curacao",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 70.951,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "CYM",
+      "name": "Cayman Islands",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 69.487,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "CYP",
+      "name": "Cyprus",
+      "reasons": [
+        "gdp: origin=true; n=6; span=5"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 72.844,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 6,
+          "span": 5,
+          "origin": 10667.833984375,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "CZE",
+      "name": "Czechia",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 70.2780487804878,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "DEA",
+      "name": "East Asia & Pacific (IDA-eligible countries)",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "DEC",
+      "name": "Europe & Central Asia (IDA-eligible countries)",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "DJI",
+      "name": "Djibouti",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 52.046,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "DLA",
+      "name": "Latin America & the Caribbean (IDA-eligible countries)",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "DMA",
+      "name": "Dominica",
+      "reasons": [
+        "gdp: origin=true; n=4; span=3"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 71.013,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 4,
+          "span": 3,
+          "origin": 3266.22842715523,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "DMN",
+      "name": "Middle East, North Africa, Afghanistan & Pakistan (IDA total)",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "DNS",
+      "name": "IDA countries in Sub-Saharan Africa not classified as fragile situations ",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "DSA",
+      "name": "South Asia (IDA-eligible countries)",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "DSF",
+      "name": "IDA countries in Sub-Saharan Africa classified as fragile situations ",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "DSS",
+      "name": "Sub-Saharan Africa (IDA-eligible countries)",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "EAP",
+      "name": "East Asia & Pacific (excluding high income)",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "EAR",
+      "name": "Early-demographic dividend",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "EAS",
+      "name": "East Asia & Pacific",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "ECA",
+      "name": "Europe & Central Asia (excluding high income)",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "ECS",
+      "name": "Europe & Central Asia",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "EMU",
+      "name": "Euro area",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "ERI",
+      "name": "Eritrea",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 44.625,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "EST",
+      "name": "Estonia",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 69.1147804878049,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "EUU",
+      "name": "European Union",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "FRO",
+      "name": "Faroe Islands",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 75.8484390243903,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "FXS",
+      "name": "IDA countries classified as fragile situations, excluding Sub-Saharan Africa",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "GIB",
+      "name": "Gibraltar",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 73.755,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "GNQ",
+      "name": "Equatorial Guinea",
+      "reasons": [
+        "gdp: origin=true; n=1; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 48.78,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 1,
+          "span": 0,
+          "origin": 457.608857542671,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "GRD",
+      "name": "Grenada",
+      "reasons": [
+        "gdp: origin=true; n=4; span=3"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 68.117,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 4,
+          "span": 3,
+          "origin": 3451.94417701718,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "GUM",
+      "name": "Guam",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 70.674,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "HIC",
+      "name": "High income",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "HPC",
+      "name": "Heavily indebted poor countries (HIPC)",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "HRV",
+      "name": "Croatia",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 70.1753658536586,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "IBB",
+      "name": "IBRD, including blend",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "IBD",
+      "name": "IBRD only",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "IBT",
+      "name": "IDA & IBRD total",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "IDA",
+      "name": "IDA total",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "IDB",
+      "name": "IDA blend",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "IDX",
+      "name": "IDA only",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "IMN",
+      "name": "Isle of Man",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 68.446,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "INX",
+      "name": "Not classified",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "JOR",
+      "name": "Jordan",
+      "reasons": [
+        "gdp: origin=true; n=5; span=4"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 66.493,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 5,
+          "span": 4,
+          "origin": 4671.64972548196,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "KAZ",
+      "name": "Kazakhstan",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 62.516,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "KGZ",
+      "name": "Kyrgyz Republic",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 61.3072195121951,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "KHM",
+      "name": "Cambodia",
+      "reasons": [
+        "gdp: origin=true; n=6; span=5"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 47.498,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 6,
+          "span": 5,
+          "origin": 688.762215998489,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "KNA",
+      "name": "St. Kitts and Nevis",
+      "reasons": [
+        "gdp: origin=true; n=4; span=3"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 64.385,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 4,
+          "span": 3,
+          "origin": 5489.17511917791,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "LAC",
+      "name": "Latin America & Caribbean (excluding high income)",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "LAO",
+      "name": "Lao PDR",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 48.56,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "LBN",
+      "name": "Lebanon",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 59.909,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "LCA",
+      "name": "St. Lucia",
+      "reasons": [
+        "gdp: origin=true; n=4; span=3"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 67.801,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 4,
+          "span": 3,
+          "origin": 4533.61559072062,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "LCN",
+      "name": "Latin America & Caribbean ",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "LDC",
+      "name": "Least developed countries: UN classification",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "LIC",
+      "name": "Low income",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "LIE",
+      "name": "Liechtenstein",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 74.6580975609756,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "LMC",
+      "name": "Lower middle income",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "LMY",
+      "name": "Low & middle income",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "LTE",
+      "name": "Late-demographic dividend",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "LTU",
+      "name": "Lithuania",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 70.4821951219512,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "LVA",
+      "name": "Latvia",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 68.8085365853659,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "MAC",
+      "name": "Macao SAR, China",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 72.7648292682927,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "MAF",
+      "name": "St. Martin (French part)",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 72.347,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "MDA",
+      "name": "Moldova",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 65.189,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "MDE",
+      "name": "Middle East (developing only)",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "MEA",
+      "name": "Middle East, North Africa, Afghanistan & Pakistan",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "MIC",
+      "name": "Middle income",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "MKD",
+      "name": "North Macedonia",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 68.9679756097561,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "MNA",
+      "name": "Middle East, North Africa, Afghanistan & Pakistan (excluding high income)",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "MNE",
+      "name": "Montenegro",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 72.0325853658537,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "MNG",
+      "name": "Mongolia",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 55.1848780487805,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "MNP",
+      "name": "Northern Mariana Islands",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 68.302,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "MOZ",
+      "name": "Mozambique",
+      "reasons": [
+        "gdp: origin=true; n=1; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 43.987,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 1,
+          "span": 0,
+          "origin": 251.567549222861,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "NAC",
+      "name": "North America",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "NAF",
+      "name": "North Africa",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "NAM",
+      "name": "Namibia",
+      "reasons": [
+        "gdp: origin=true; n=1; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 56.572,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 1,
+          "span": 0,
+          "origin": 3543.52830787347,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "NCL",
+      "name": "New Caledonia",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 65.601,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "NRS",
+      "name": "Non-resource rich Sub-Saharan Africa countries",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "NXS",
+      "name": "IDA countries not classified as fragile situations, excluding Sub-Saharan Africa",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "OED",
+      "name": "OECD members",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "OSS",
+      "name": "Other small states",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "POL",
+      "name": "Poland",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 70.0975609756098,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "PRE",
+      "name": "Pre-demographic dividend",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "PRK",
+      "name": "Korea, Dem. People's Rep.",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 67.208,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "PSE",
+      "name": "West Bank and Gaza",
+      "reasons": [
+        "lifeExpectancy: origin=false; n=0; span=0",
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "PSS",
+      "name": "Pacific island small states",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "PST",
+      "name": "Post-demographic dividend",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "ROU",
+      "name": "Romania",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 69.0909756097561,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "RRS",
+      "name": "Resource rich Sub-Saharan Africa countries",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "RUS",
+      "name": "Russian Federation",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 67.0339024390244,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "SAS",
+      "name": "South Asia",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "SLB",
+      "name": "Solomon Islands",
+      "reasons": [
+        "gdp: origin=true; n=1; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 63.669,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 1,
+          "span": 0,
+          "origin": 2211.57149659597,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "SMR",
+      "name": "San Marino",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 76.371,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "SRB",
+      "name": "Serbia",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 70.9969756097561,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "SSA",
+      "name": "Sub-Saharan Africa (excluding high income)",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "SSD",
+      "name": "South Sudan",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 38.034,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "SSF",
+      "name": "Sub-Saharan Africa ",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "SST",
+      "name": "Small states",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "SVK",
+      "name": "Slovak Republic",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 70.4085365853659,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "SVN",
+      "name": "Slovenia",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 71.1048780487805,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "SXM",
+      "name": "Sint Maarten (Dutch part)",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 71.79,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "SXZ",
+      "name": "Sub-Saharan Africa excluding South Africa",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "TCA",
+      "name": "Turks and Caicos Islands",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 67.108,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "TEA",
+      "name": "East Asia & Pacific (IDA & IBRD countries)",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "TEC",
+      "name": "Europe & Central Asia (IDA & IBRD countries)",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "TJK",
+      "name": "Tajikistan",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 58.632,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "TKM",
+      "name": "Turkmenistan",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 60.181,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "TLA",
+      "name": "Latin America & the Caribbean (IDA & IBRD countries)",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "TLS",
+      "name": "Timor-Leste",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 30.196,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "TMN",
+      "name": "Middle East, North Africa, Afghanistan & Pakistan (IDA & IBRD)",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "TON",
+      "name": "Tonga",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 66.186,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "TSA",
+      "name": "South Asia (IDA & IBRD)",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "TSS",
+      "name": "Sub-Saharan Africa (IDA & IBRD countries)",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "UGA",
+      "name": "Uganda",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 43.453,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "UKR",
+      "name": "Ukraine",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 69.759,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "UMC",
+      "name": "Upper middle income",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "UZB",
+      "name": "Uzbekistan",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 62.981,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "VGB",
+      "name": "British Virgin Islands",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 69.645,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "VIR",
+      "name": "Virgin Islands (U.S.)",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 68.6948780487805,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "VNM",
+      "name": "Viet Nam",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 65.338,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "VUT",
+      "name": "Vanuatu",
+      "reasons": [
+        "gdp: origin=true; n=2; span=1"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 61.322,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 2,
+          "span": 1,
+          "origin": 2895.87344923446,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "WLD",
+      "name": "World",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "XKX",
+      "name": "Kosovo",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 60.297,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    },
+    {
+      "id": "XZN",
+      "name": "Sub-Saharan Africa excluding South Africa and Nigeria",
+      "reason": "World Bank aggregate"
+    },
+    {
+      "id": "YEM",
+      "name": "Yemen, Rep.",
+      "reasons": [
+        "gdp: origin=false; n=0; span=0"
+      ],
+      "availability": {
+        "lifeExpectancy": {
+          "count": 21,
+          "span": 20,
+          "origin": 50.608,
+          "qualified": true
+        },
+        "gdp": {
+          "count": 0,
+          "span": 0,
+          "origin": null,
+          "qualified": false
+        }
+      }
+    }
+  ]
+}

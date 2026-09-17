@@ -1,0 +1,12 @@
+{
+  "schema": "evaluation-preflight-failure/1",
+  "attempt": 1,
+  "stage": "Committed-file byte identity check, before receipt creation and before analyzeObjective",
+  "error": "spawnSync git ENOBUFS: child_process default stdout buffer smaller than pinned raw World Bank snapshots",
+  "receiptExisted": false,
+  "scoreFileExisted": false,
+  "outcomeScoreComputed": false,
+  "recovery": "Increase git-show byte buffer to64MiB; regression test on committed multi-megabyte forecast file; refresh controller-code source binding and commit before first scored invocation. No model/protocol/calibration/prediction/metric/cohort changes.",
+  "otherFamilyResultsKnownAtRecovery": true,
+  "interpretation": "One failed preflight plus one subsequent scored run; not a claim that the command succeeded on its first invocation."
+}

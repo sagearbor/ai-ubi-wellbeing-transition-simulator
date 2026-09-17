@@ -1,0 +1,40 @@
+{
+  "schema": "objective-test-source-provenance/1",
+  "entry": "research-objective-1980-v1",
+  "registrySha256": "9efaaae977a155310acbf3614915926f3ce381259f13d6d02d76901bccc2a4a3",
+  "sources": [
+    {
+      "indicator": "SP.DYN.LE00.IN",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/SP.DYN.LE00.IN?date=1981:2025&source=2&format=json&per_page=20000",
+      "path": "data/evaluation/research-objective-1980-v1/external/SP.DYN.LE00.IN-1981-2025.json",
+      "retrievedAt": "2026-09-16T21:22:14.557805+00:00",
+      "sha256": "51d0b296c36847045f31e9a1bec84561bfed3d2ddf1bd304c2574185e52647d9",
+      "responseRows": 11925,
+      "apiMetadata": {
+        "page": 1,
+        "pages": 1,
+        "per_page": 20000,
+        "total": 11925,
+        "sourceid": "2",
+        "lastupdated": "2026-07-13"
+      }
+    },
+    {
+      "indicator": "NY.GDP.PCAP.KD",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/NY.GDP.PCAP.KD?date=1981:2025&source=2&format=json&per_page=20000",
+      "path": "data/evaluation/research-objective-1980-v1/external/NY.GDP.PCAP.KD-1981-2025.json",
+      "retrievedAt": "2026-09-16T21:22:16.026630+00:00",
+      "sha256": "3f492c5f9d7e073d5fe116c81a7a01145a5a8cf2f3a8a121bc610245ee299e94",
+      "responseRows": 11925,
+      "apiMetadata": {
+        "page": 1,
+        "pages": 1,
+        "per_page": 20000,
+        "total": 11925,
+        "sourceid": "2",
+        "lastupdated": "2026-07-13"
+      }
+    }
+  ],
+  "scoring": "Not executed by fetcher; every raw response is retained, never mapped to ladder"
+}

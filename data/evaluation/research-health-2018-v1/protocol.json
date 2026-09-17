@@ -1,0 +1,147 @@
+{
+  "schema": "forecast-protocol/1",
+  "id": "research-health-2018-v1",
+  "registeredAt": "2026-09-16",
+  "familyId": "five-approaches-20260916",
+  "familyEntryIds": [
+    "research-offset-2018-v1",
+    "research-damped-2018-v1",
+    "research-changes-2018-v1",
+    "research-health-2018-v1",
+    "research-ensemble-2018-v1"
+  ],
+  "scope": "Retrospective health-and-income change model for the frozen ladder/GDP cohort. User-requested additional-data extension beyond PR23's exact-input rule: same outcomes and same 100-country cohort, but not the same inputs. No causal or blinded-validation claim.",
+  "modelFormChosenAfterTestPeriod": true,
+  "trainingYears": [
+    2015,
+    2016,
+    2017,
+    2018
+  ],
+  "originYear": 2018,
+  "testYears": [
+    2019,
+    2020,
+    2021,
+    2022,
+    2023,
+    2024,
+    2025
+  ],
+  "sources": {
+    "original": [
+      "data/evaluation/level-holdout-2018/train.json",
+      "data/evaluation/level-holdout-2018/origin.json"
+    ],
+    "additionalIndicator": "SP.DYN.LE00.IN: period life expectancy at birth, total sexes, years. This is NOT WHO healthy life expectancy and NOT a ladder score.",
+    "healthFetch": "Official World Bank v2 API, source=2, date=2015:2018, format=json only. Save raw response, URL, timestamp, lastupdated, SHA256, row counts and verified date range. Metadata-only indicator query permitted. No actual 2019\u20132025 feature request or use."
+  },
+  "outcomes": {
+    "wellbeing": "Original pinned annual WHR Cantril ladder on 0\u201310 scale",
+    "gdp": "Original pinned World Bank real GDP per person, constant-2015 USD"
+  },
+  "cohort": "Exactly original origin.json's 100 countries and order; retain all 28 original exclusions unchanged in cohort.json. Training uses original 101 background-country IDs and valid paired ladder/GDP rows, never future availability. No missing health value can remove an original training pair or forecast country.",
+  "fit": {
+    "method": "Ridge first-difference regression with no intercept and train-only RMS scaling, plus fixed damped forecasts of the two covariates",
+    "candidateGrid": {
+      "lambda": [
+        0.1,
+        1,
+        10
+      ]
+    },
+    "fixedParameters": {
+      "covariateDampingPhi": 0.8,
+      "lifeExpectancyBounds": [
+        0,
+        120
+      ],
+      "ladderBounds": [
+        0,
+        10
+      ]
+    },
+    "trainingRows": "Consecutive-year pairs with both ladder and GDP observed in both years and original training background country; target dy=ladder_t-ladder_(t-1); xg=ln(gdp_t)-ln(gdp_(t-1)); xh=LE_t-LE_(t-1) if both health values valid, otherwise xh=0 with missingness flag. Only years within the fit cutoff enter pairs.",
+    "normalization": "For each training fold, s_j=sqrt(mean(x_j^2)); replace s_j=0 with 1. Divide x by s, without centering, so zero predicted feature change implies zero ladder change. Fit these scales only from that fold's training pairs; no validation rows or future health values.",
+    "equations": [
+      "beta minimizes (1/n)*sum((dy-beta_g*xg/sg-beta_h*xh/sh)^2)+lambda*(beta_g^2+beta_h^2). Solve the 2x2 penalized normal equations; no intercept, sign restriction or additional feature.",
+      "For a forecast origin t0, fit country OLS slopes on all valid 2015..t0 observations separately for ln(GDP) and LE, using year as predictor. Require at least two distinct observed years, otherwise slope=0. For health also require observed valid LE at t0, otherwise health slope and all forecast health changes=0; no imputed health level is invented.",
+      "S(h)=sum(k=1..h,0.8^k). Forecast ln(GDP_(t0+h))=ln(GDP_t0)+b_g*S(h); GDP=exp(this). Forecast LE_(t0+h)=clamp(LE_t0+b_h*S(h),0,120) when origin health exists; save raw forecast and health bound counts. Missing origin health means health change=0.",
+      "Raw ladder_(t0+h)=ladder_t0+beta_g*(ln(GDP_hat)-ln(GDP_t0))/sg+beta_h*(LE_hat-LE_t0)/sh. Final ladder=clamp(raw,0,10); save raw values and bound counts."
+    ],
+    "fittedQuantities": [
+      "Two RMS scales per fit",
+      "Two ridge coefficients per lambda/fit",
+      "Country pre-origin log-GDP and LE slopes/origin health values",
+      "Selected lambda from registered internal folds"
+    ],
+    "futureCovariates": "Only the registered damped forecasts from histories through the applicable origin; never observed 2019\u20132025 income or health.",
+    "selection": "Pool equally weighted country-horizon ladder absolute errors over both registered folds; select smallest MAE; ties within 1e-12 select largest lambda (most shrinkage). No other selection, smoothing, recentering, winsorization or calibration."
+  },
+  "internalValidation": {
+    "folds": [
+      {
+        "fitYears": [
+          2015,
+          2016
+        ],
+        "originYear": 2016,
+        "validationYears": [
+          2017,
+          2018
+        ]
+      },
+      {
+        "fitYears": [
+          2015,
+          2016,
+          2017
+        ],
+        "originYear": 2017,
+        "validationYears": [
+          2018
+        ]
+      }
+    ],
+    "rules": "At each fold, only original background countries with valid ladder/GDP at that fold origin get predictions; missing health still uses fallback. Fit all regression/scales/covariate slopes strictly through fold origin. Score ladder and GDP on their observed target masks; actual future health is never used. Preserve skipped origin IDs/reasons and missing target rows. Country reuse is intentional for forecasting these same countries, not independent-country validation.",
+    "limits": "Only four annual training years and one/two-year internal horizons. Internal 2018 appears under two origins and is not independent. This cannot establish seven-year forecasting skill."
+  },
+  "missingness": "No health-driven country deletion. Missing paired health change becomes zero; missing origin health or inadequate trend history yields no health trend. Ladder/GDP training pairs require observed outcomes; no invented target values. Retain all origin countries irrespective of future availability; score observed outcomes independently on identical model/persistence masks.",
+  "baseline": "Persistence of each country's 2018 ladder and GDP, identical masks",
+  "primaryMetric": "2025 endpoint ladder MAE in points, plus model-minus-persistence difference",
+  "secondaryMetrics": [
+    "Pooled country-year and every horizon 2019\u20132025 ladder MAE/RMSE/bias with denominators",
+    "GDP cumulative-growth error percentage points relative to origin GDP, same original scorer",
+    "Origin-income quartiles: sort(GDP,id), floor(index*4/N); same fixed100-country denominator",
+    "Coverage and all28 origin exclusions"
+  ],
+  "predictionSchema": "predictions.json {rows:[{id,name,year,horizon,ladder,gdp,originLadder,originGdp}]} with exactly700 rows; all finite, GDP positive",
+  "emptyOrUndefinedMetrics": "null with reason; never zero success",
+  "vintageLimit": "Current-vintage historical World Bank health observations can be revised, modeled or interpolated, and could have been published after their nominal year. This is not an archive of 2018-available inputs. WHR's healthy-life-expectancy predictor differs from this life-expectancy proxy; retrospective explanation is not prospective forecast skill.",
+  "exposureDisclosure": "The model and complete candidate grid were registered at 6c6cdb2 before new health retrieval. A later web.find request for a health variable definition in WHR2025 unexpectedly returned broad excerpts containing contemporary fitted coefficients, several ladder-ranking values and2021HALE country values. These were not requested as data, but exposure occurred; this is not a blinded exercise. No equations, parameters or candidates changed in response; selection remains mechanical on pre2019 internal folds only. Earlier WHO definition search also surfaced global aggregate2000\u20132021 longevity/HALE trends. No API post-origin observations were retrieved. Distinct1960\u20131980 objective numeric artifacts froze at af07c67 before the WHR country/coefficient exposure and before this health retrieval; none enter the short model.",
+  "integrityGates": [
+    "Commit protocol before new health-data retrieval, fitting or validation",
+    "Reject all source observation years outside2015\u20132018",
+    "Fold-tail perturbation cannot affect fit or covariate forecasts",
+    "Exactly100 original countries and700 rows",
+    "Protocol/code/provenance/coefficients/predictions freeze before any external score",
+    "One external scoring invocation after all five methods and objective entry freeze",
+    "Publish every result; no post-score refitting or future-conditioned feature use",
+    "Production defaults and old holdout artifacts unchanged"
+  ],
+  "references": [
+    "https://www.who.int/data/gho/data/indicators/indicator-details/GHO/gho-ghe-hale-healthy-life-expectancy",
+    "https://databank.worldbank.org/metadataglossary/world-development-indicators/series/SP.DYN.LE00.IN",
+    "https://datahelpdesk.worldbank.org/knowledgebase/articles/898581-api-basic-call-structures",
+    "https://otexts.com/fpp3/tscv.html",
+    "https://otexts.com/fpp3/holt.html"
+  ],
+  "amendments": [
+    {
+      "date": "2026-09-16",
+      "kind": "exposure disclosure only",
+      "afterCommit": "6c6cdb2",
+      "change": "Record unsolicited WHR search-result excerpts; no model, candidate, cohort or metric change."
+    }
+  ]
+}

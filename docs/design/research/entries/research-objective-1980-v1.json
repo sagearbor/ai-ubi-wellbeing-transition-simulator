@@ -1,0 +1,18 @@
+{
+  "schema": "research-entry/1",
+  "id": "research-objective-1980-v1",
+  "familyId": "five-approaches-20260916",
+  "additionalObjectiveEntry": true,
+  "status": "frozen-awaiting-single-external-score",
+  "protocolRegistrationCommit": "41fe91c",
+  "protocolPath": "data/evaluation/research-objective-1980-v1/protocol.json",
+  "dataDirectory": "data/evaluation/research-objective-1980-v1",
+  "notePath": "docs/design/research/2026-09-16-research-objective-1980-v1.md",
+  "method": "Fixed 0.95-damped, origin-anchored 1960–1980 OLS trend; separate life-expectancy and log-GDP targets",
+  "countryCount": 140,
+  "predictionCount": 12600,
+  "tests": {"command": "node --test scripts/evaluation/attempts/research-objective-1980-v1/model.checks.mjs", "passed": 6, "failed": 0},
+  "externalResult": null,
+  "reason": "All five short-horizon entries and this long-run entry must freeze before the controller scores any entry.",
+  "authorship": "Automated research agent; not independent human expert review"
+}
