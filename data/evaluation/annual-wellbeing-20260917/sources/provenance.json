@@ -1,0 +1,1443 @@
+{
+  "retrievedAt": "2026-09-17T04:57:41.022595+00:00",
+  "sources": [
+    {
+      "url": "https://data.worldhappiness.report/country/USA",
+      "label": "United States annual score",
+      "description": "Official public World Happiness Report dashboard / Gallup Analytics; visible annual tooltips"
+    },
+    {
+      "url": "https://data.worldhappiness.report/country/IND",
+      "label": "India annual score",
+      "description": "Official public World Happiness Report dashboard / Gallup Analytics; rendered annual point coordinates with displayed axis ticks and tooltip spot-checks"
+    },
+    {
+      "url": "https://data.worldhappiness.report/country/DEU",
+      "label": "Germany annual score",
+      "description": "Official public annual-score chart coordinates; tooltip spot-check"
+    },
+    {
+      "url": "https://data.worldhappiness.report/country/GBR",
+      "label": "United Kingdom annual score",
+      "description": "Official public annual-score chart coordinates; tooltip spot-check"
+    },
+    {
+      "url": "https://data.worldhappiness.report/country/BRA",
+      "label": "Brazil annual score",
+      "description": "Official public annual-score chart coordinates; tooltip spot-check"
+    },
+    {
+      "url": "https://data.worldhappiness.report/country/JPN",
+      "label": "Japan annual score",
+      "description": "Official public annual-score chart coordinates; tooltip spot-check"
+    },
+    {
+      "url": "https://data.worldhappiness.report/country/ZAF",
+      "label": "South Africa annual score",
+      "description": "Official public annual-score chart coordinates; tooltip spot-check"
+    },
+    {
+      "url": "https://data.worldhappiness.report/country/CHN",
+      "label": "China annual score",
+      "description": "Official public annual-score chart coordinates; tooltip spot-check"
+    },
+    {
+      "file": "NY.GDP.PCAP.KD-1960-2025.json",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/NY.GDP.PCAP.KD?date=1960:2025&source=2&format=json&per_page=20000",
+      "retrievedAt": "2026-09-17T04:44:43.088862+00:00",
+      "sha256": "60bdf145e781d722bffa9e9ea4eb0b3b74f220dcdba36f7d391b1f2c048dc930",
+      "bytes": 3976465,
+      "rows": 17490,
+      "apiMetadata": {
+        "page": 1,
+        "pages": 1,
+        "per_page": 20000,
+        "total": 17490,
+        "sourceid": "2",
+        "lastupdated": "2026-07-13"
+      },
+      "label": "NY.GDP.PCAP.KD",
+      "description": "Fresh public World Bank annual series; latest-vintage retrospective values",
+      "sharedRawPath": "data/evaluation/annual-objective-20260917/raw/NY.GDP.PCAP.KD-1960-2025.json"
+    },
+    {
+      "file": "SP.DYN.LE00.IN-1960-2025.json",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/SP.DYN.LE00.IN?date=1960:2025&source=2&format=json&per_page=20000",
+      "retrievedAt": "2026-09-17T04:44:47.791788+00:00",
+      "sha256": "92f0ed5499d007fc24bcaee40b48dc3ec3b788e3fb33bc352a4cf9dfe8638fe9",
+      "bytes": 3989201,
+      "rows": 17490,
+      "apiMetadata": {
+        "page": 1,
+        "pages": 1,
+        "per_page": 20000,
+        "total": 17490,
+        "sourceid": "2",
+        "lastupdated": "2026-07-13"
+      },
+      "label": "SP.DYN.LE00.IN",
+      "description": "Fresh public World Bank annual series; latest-vintage retrospective values",
+      "sharedRawPath": "data/evaluation/annual-objective-20260917/raw/SP.DYN.LE00.IN-1960-2025.json"
+    },
+    {
+      "file": "SL.UEM.TOTL.ZS-1960-2025.json",
+      "url": "https://api.worldbank.org/v2/country/all/indicator/SL.UEM.TOTL.ZS?date=1960:2025&source=2&format=json&per_page=20000",
+      "retrievedAt": "2026-09-17T04:44:45.840420+00:00",
+      "sha256": "58e82de86f5fd81f0630fabfdc40d10fd067cb6d14192b545b8c9cc027825a4f",
+      "bytes": 4407416,
+      "rows": 17490,
+      "apiMetadata": {
+        "page": 1,
+        "pages": 1,
+        "per_page": 20000,
+        "total": 17490,
+        "sourceid": "2",
+        "lastupdated": "2026-07-13"
+      },
+      "label": "SL.UEM.TOTL.ZS",
+      "description": "Fresh public World Bank annual series; latest-vintage retrospective values",
+      "sharedRawPath": "data/evaluation/annual-objective-20260917/raw/SL.UEM.TOTL.ZS-1960-2025.json"
+    }
+  ],
+  "targetPrecision": "Public-chart transcription reconstructed from rendered annual SVG marks and axis ticks, rounded to three decimals; spot-checked against visible annual tooltips.",
+  "targetLicense": "WHR / Gallup dashboard attribution retained. Redistribution license not independently verified; these target transcriptions are not claimed to inherit the repository code license or the World Bank CC BY license.",
+  "targetSHA256": "0ad3698a5b63cb8761c0cacd831415e839dac9d8a6ccaace4c4a7008c156c3be",
+  "targetCollection": {
+    "targetPrecision": "Three decimal places displayed by official public annual-score tooltips",
+    "collectedAt": "2026-09-17T04:52:02.126Z",
+    "collection": "Read visible annual chart SVG circle coordinates and axis tick positions after selecting Annual score on each official country page. Converted linear axes to year and ladder score, correcting the SVG axis half-pixel stroke alignment, rounded to the dashboard's three decimals. Verified latest-year values against the visible annual tooltip for all eight countries, plus US 2024 and previously read US historical points. No hidden application state, API-token construction, private API or gated download used. Eight-country set predetermined; missing years not filled.",
+    "sources": [
+      {
+        "url": "https://data.worldhappiness.report/country/USA",
+        "label": "United States annual score",
+        "description": "Official public World Happiness Report dashboard / Gallup Analytics; visible annual tooltips"
+      },
+      {
+        "url": "https://data.worldhappiness.report/country/IND",
+        "label": "India annual score",
+        "description": "Official public World Happiness Report dashboard / Gallup Analytics; rendered annual point coordinates with displayed axis ticks and tooltip spot-checks"
+      },
+      {
+        "url": "https://data.worldhappiness.report/country/DEU",
+        "label": "Germany annual score",
+        "description": "Official public annual-score chart coordinates; tooltip spot-check"
+      },
+      {
+        "url": "https://data.worldhappiness.report/country/GBR",
+        "label": "United Kingdom annual score",
+        "description": "Official public annual-score chart coordinates; tooltip spot-check"
+      },
+      {
+        "url": "https://data.worldhappiness.report/country/BRA",
+        "label": "Brazil annual score",
+        "description": "Official public annual-score chart coordinates; tooltip spot-check"
+      },
+      {
+        "url": "https://data.worldhappiness.report/country/JPN",
+        "label": "Japan annual score",
+        "description": "Official public annual-score chart coordinates; tooltip spot-check"
+      },
+      {
+        "url": "https://data.worldhappiness.report/country/ZAF",
+        "label": "South Africa annual score",
+        "description": "Official public annual-score chart coordinates; tooltip spot-check"
+      },
+      {
+        "url": "https://data.worldhappiness.report/country/CHN",
+        "label": "China annual score",
+        "description": "Official public annual-score chart coordinates; tooltip spot-check"
+      }
+    ],
+    "extractionMethod": "public-rendered-svg-with-tooltip-checks",
+    "svgEvidence": [
+      {
+        "id": "USA",
+        "name": "United States",
+        "points": [
+          {
+            "cx": 659.59375,
+            "cy": 119.116
+          },
+          {
+            "cx": 627.4451458933718,
+            "cy": 119.476
+          },
+          {
+            "cx": 595.3843795028819,
+            "cy": 135.24399999999997
+          },
+          {
+            "cx": 563.323613112392,
+            "cy": 129.052
+          },
+          {
+            "cx": 531.2628467219021,
+            "cy": 119.476
+          },
+          {
+            "cx": 499.1142426152738,
+            "cy": 116.99200000000002
+          },
+          {
+            "cx": 467.0534762247839,
+            "cy": 120.016
+          },
+          {
+            "cx": 434.992709834294,
+            "cy": 122.212
+          },
+          {
+            "cx": 402.9319434438041,
+            "cy": 118.28799999999998
+          },
+          {
+            "cx": 370.7833393371758,
+            "cy": 125.056
+          },
+          {
+            "cx": 338.7225729466859,
+            "cy": 122.896
+          },
+          {
+            "cx": 306.661806556196,
+            "cy": 112.564
+          },
+          {
+            "cx": 274.6010401657061,
+            "cy": 109.036
+          },
+          {
+            "cx": 242.4524360590778,
+            "cy": 117.064
+          },
+          {
+            "cx": 210.3916696685879,
+            "cy": 113.86
+          },
+          {
+            "cx": 178.330903278098,
+            "cy": 112.09600000000005
+          },
+          {
+            "cx": 146.27013688760806,
+            "cy": 112.312
+          },
+          {
+            "cx": 114.12153278097983,
+            "cy": 107.92
+          },
+          {
+            "cx": 82.06076639048992,
+            "cy": 99.532
+          },
+          {
+            "cx": 50,
+            "cy": 111.44799999999998
+          }
+        ],
+        "x": [
+          {
+            "label": "2010",
+            "transform": "translate(178.830903278098,0)"
+          },
+          {
+            "label": "2015",
+            "transform": "translate(339.2225729466859,0)"
+          },
+          {
+            "label": "2020",
+            "transform": "translate(499.6142426152738,0)"
+          },
+          {
+            "label": "2025",
+            "transform": "translate(660.09375,0)"
+          }
+        ],
+        "y": [
+          {
+            "label": "10",
+            "transform": "translate(0,10.5)"
+          },
+          {
+            "label": "9",
+            "transform": "translate(0,46.49999999999999)"
+          },
+          {
+            "label": "8",
+            "transform": "translate(0,82.49999999999999)"
+          },
+          {
+            "label": "7",
+            "transform": "translate(0,118.50000000000001)"
+          },
+          {
+            "label": "6",
+            "transform": "translate(0,154.5)"
+          },
+          {
+            "label": "5",
+            "transform": "translate(0,190.5)"
+          },
+          {
+            "label": "4",
+            "transform": "translate(0,226.5)"
+          },
+          {
+            "label": "3",
+            "transform": "translate(0,262.5)"
+          },
+          {
+            "label": "2",
+            "transform": "translate(0,298.5)"
+          },
+          {
+            "label": "1",
+            "transform": "translate(0,334.5)"
+          },
+          {
+            "label": "0",
+            "transform": "translate(0,370.5)"
+          }
+        ]
+      },
+      {
+        "id": "IND",
+        "name": "India",
+        "points": [
+          {
+            "cx": 659.59375,
+            "cy": 212.824
+          },
+          {
+            "cx": 627.4451458933718,
+            "cy": 205.69599999999997
+          },
+          {
+            "cx": 595.3843795028819,
+            "cy": 201.664
+          },
+          {
+            "cx": 563.323613112392,
+            "cy": 228.52
+          },
+          {
+            "cx": 531.2628467219021,
+            "cy": 241.912
+          },
+          {
+            "cx": 499.1142426152738,
+            "cy": 217.936
+          },
+          {
+            "cx": 467.0534762247839,
+            "cy": 253.036
+          },
+          {
+            "cx": 434.992709834294,
+            "cy": 232.552
+          },
+          {
+            "cx": 402.9319434438041,
+            "cy": 224.34399999999997
+          },
+          {
+            "cx": 370.7833393371758,
+            "cy": 219.556
+          },
+          {
+            "cx": 338.7225729466859,
+            "cy": 213.68800000000005
+          },
+          {
+            "cx": 306.661806556196,
+            "cy": 210.736
+          },
+          {
+            "cx": 274.6010401657061,
+            "cy": 210.592
+          },
+          {
+            "cx": 242.4524360590778,
+            "cy": 200.08
+          },
+          {
+            "cx": 210.3916696685879,
+            "cy": 203.14
+          },
+          {
+            "cx": 178.330903278098,
+            "cy": 190.396
+          },
+          {
+            "cx": 146.27013688760806,
+            "cy": 207.20799999999997
+          },
+          {
+            "cx": 114.12153278097983,
+            "cy": 184.744
+          },
+          {
+            "cx": 82.06076639048992,
+            "cy": 189.02799999999996
+          },
+          {
+            "cx": 50,
+            "cy": 177.47200000000004
+          }
+        ],
+        "url": "https://data.worldhappiness.report/country/IND",
+        "x": [
+          {
+            "label": "2010",
+            "transform": "translate(178.830903278098,0)"
+          },
+          {
+            "label": "2015",
+            "transform": "translate(339.2225729466859,0)"
+          },
+          {
+            "label": "2020",
+            "transform": "translate(499.6142426152738,0)"
+          },
+          {
+            "label": "2025",
+            "transform": "translate(660.09375,0)"
+          }
+        ],
+        "y": [
+          {
+            "label": "10",
+            "transform": "translate(0,10.5)"
+          },
+          {
+            "label": "9",
+            "transform": "translate(0,46.49999999999999)"
+          },
+          {
+            "label": "8",
+            "transform": "translate(0,82.49999999999999)"
+          },
+          {
+            "label": "7",
+            "transform": "translate(0,118.50000000000001)"
+          },
+          {
+            "label": "6",
+            "transform": "translate(0,154.5)"
+          },
+          {
+            "label": "5",
+            "transform": "translate(0,190.5)"
+          },
+          {
+            "label": "4",
+            "transform": "translate(0,226.5)"
+          },
+          {
+            "label": "3",
+            "transform": "translate(0,262.5)"
+          },
+          {
+            "label": "2",
+            "transform": "translate(0,298.5)"
+          },
+          {
+            "label": "1",
+            "transform": "translate(0,334.5)"
+          },
+          {
+            "label": "0",
+            "transform": "translate(0,370.5)"
+          }
+        ]
+      },
+      {
+        "id": "DEU",
+        "name": "Germany",
+        "points": [
+          {
+            "cx": 659.59375,
+            "cy": 118.468
+          },
+          {
+            "cx": 629.0514758726899,
+            "cy": 123.11200000000002
+          },
+          {
+            "cx": 598.5926505817934,
+            "cy": 125.488
+          },
+          {
+            "cx": 568.1338252908967,
+            "cy": 132.11200000000002
+          },
+          {
+            "cx": 537.6750000000001,
+            "cy": 126.82
+          },
+          {
+            "cx": 507.13272587268995,
+            "cy": 106.76799999999996
+          },
+          {
+            "cx": 476.6739005817933,
+            "cy": 116.74
+          },
+          {
+            "cx": 446.21507529089666,
+            "cy": 113.752
+          },
+          {
+            "cx": 415.75625,
+            "cy": 115.33599999999998
+          },
+          {
+            "cx": 385.2139758726899,
+            "cy": 122.536
+          },
+          {
+            "cx": 354.75515058179326,
+            "cy": 116.668
+          },
+          {
+            "cx": 324.2963252908967,
+            "cy": 118.576
+          },
+          {
+            "cx": 293.83750000000003,
+            "cy": 119.26
+          },
+          {
+            "cx": 263.2952258726899,
+            "cy": 128.728
+          },
+          {
+            "cx": 232.83640058179327,
+            "cy": 131.644
+          },
+          {
+            "cx": 202.37757529089663,
+            "cy": 127.9
+          },
+          {
+            "cx": 171.91875000000002,
+            "cy": 130.92399999999998
+          },
+          {
+            "cx": 141.37647587268995,
+            "cy": 135.208
+          },
+          {
+            "cx": 110.91765058179328,
+            "cy": 138.98800000000003
+          },
+          {
+            "cx": 50,
+            "cy": 131.67999999999998
+          }
+        ],
+        "url": "https://data.worldhappiness.report/country/DEU",
+        "x": [
+          {
+            "label": "2005",
+            "transform": "translate(50.5,0)"
+          },
+          {
+            "label": "2010",
+            "transform": "translate(202.87757529089663,0)"
+          },
+          {
+            "label": "2015",
+            "transform": "translate(355.25515058179326,0)"
+          },
+          {
+            "label": "2020",
+            "transform": "translate(507.63272587268995,0)"
+          },
+          {
+            "label": "2025",
+            "transform": "translate(660.09375,0)"
+          }
+        ],
+        "y": [
+          {
+            "label": "10",
+            "transform": "translate(0,10.5)"
+          },
+          {
+            "label": "9",
+            "transform": "translate(0,46.49999999999999)"
+          },
+          {
+            "label": "8",
+            "transform": "translate(0,82.49999999999999)"
+          },
+          {
+            "label": "7",
+            "transform": "translate(0,118.50000000000001)"
+          },
+          {
+            "label": "6",
+            "transform": "translate(0,154.5)"
+          },
+          {
+            "label": "5",
+            "transform": "translate(0,190.5)"
+          },
+          {
+            "label": "4",
+            "transform": "translate(0,226.5)"
+          },
+          {
+            "label": "3",
+            "transform": "translate(0,262.5)"
+          },
+          {
+            "label": "2",
+            "transform": "translate(0,298.5)"
+          },
+          {
+            "label": "1",
+            "transform": "translate(0,334.5)"
+          },
+          {
+            "label": "0",
+            "transform": "translate(0,370.5)"
+          }
+        ]
+      },
+      {
+        "name": "United Kingdom",
+        "points": [
+          {
+            "cx": 659.59375,
+            "cy": 131.608
+          },
+          {
+            "cx": 629.0514758726899,
+            "cy": 125.056
+          },
+          {
+            "cx": 598.5926505817934,
+            "cy": 130.31199999999998
+          },
+          {
+            "cx": 568.1338252908967,
+            "cy": 128.00799999999998
+          },
+          {
+            "cx": 537.6750000000001,
+            "cy": 122.788
+          },
+          {
+            "cx": 507.13272587268995,
+            "cy": 125.27200000000002
+          },
+          {
+            "cx": 476.6739005817933,
+            "cy": 112.348
+          },
+          {
+            "cx": 446.21507529089666,
+            "cy": 109.61200000000002
+          },
+          {
+            "cx": 415.75625,
+            "cy": 114.29200000000002
+          },
+          {
+            "cx": 385.2139758726899,
+            "cy": 124.336
+          },
+          {
+            "cx": 354.75515058179326,
+            "cy": 135.46
+          },
+          {
+            "cx": 324.2963252908967,
+            "cy": 126.71200000000002
+          },
+          {
+            "cx": 293.83750000000003,
+            "cy": 120.952
+          },
+          {
+            "cx": 263.2952258726899,
+            "cy": 122.28399999999998
+          },
+          {
+            "cx": 232.83640058179327,
+            "cy": 122.71600000000002
+          },
+          {
+            "cx": 202.37757529089663,
+            "cy": 116.956
+          },
+          {
+            "cx": 171.91875000000002,
+            "cy": 121.348
+          },
+          {
+            "cx": 141.37647587268995,
+            "cy": 118.504
+          },
+          {
+            "cx": 110.91765058179328,
+            "cy": 125.12800000000004
+          },
+          {
+            "cx": 50,
+            "cy": 118.576
+          }
+        ],
+        "url": "https://data.worldhappiness.report/country/GBR",
+        "x": [
+          {
+            "label": "2005",
+            "transform": "translate(50.5,0)"
+          },
+          {
+            "label": "2010",
+            "transform": "translate(202.87757529089663,0)"
+          },
+          {
+            "label": "2015",
+            "transform": "translate(355.25515058179326,0)"
+          },
+          {
+            "label": "2020",
+            "transform": "translate(507.63272587268995,0)"
+          },
+          {
+            "label": "2025",
+            "transform": "translate(660.09375,0)"
+          }
+        ],
+        "y": [
+          {
+            "label": "10",
+            "transform": "translate(0,10.5)"
+          },
+          {
+            "label": "9",
+            "transform": "translate(0,46.49999999999999)"
+          },
+          {
+            "label": "8",
+            "transform": "translate(0,82.49999999999999)"
+          },
+          {
+            "label": "7",
+            "transform": "translate(0,118.50000000000001)"
+          },
+          {
+            "label": "6",
+            "transform": "translate(0,154.5)"
+          },
+          {
+            "label": "5",
+            "transform": "translate(0,190.5)"
+          },
+          {
+            "label": "4",
+            "transform": "translate(0,226.5)"
+          },
+          {
+            "label": "3",
+            "transform": "translate(0,262.5)"
+          },
+          {
+            "label": "2",
+            "transform": "translate(0,298.5)"
+          },
+          {
+            "label": "1",
+            "transform": "translate(0,334.5)"
+          },
+          {
+            "label": "0",
+            "transform": "translate(0,370.5)"
+          }
+        ],
+        "id": "GBR"
+      },
+      {
+        "name": "Brazil",
+        "points": [
+          {
+            "cx": 659.59375,
+            "cy": 129.52000000000004
+          },
+          {
+            "cx": 629.0514758726899,
+            "cy": 129.91600000000005
+          },
+          {
+            "cx": 598.5926505817934,
+            "cy": 134.092
+          },
+          {
+            "cx": 568.1338252908967,
+            "cy": 144.74800000000005
+          },
+          {
+            "cx": 537.6750000000001,
+            "cy": 153.64
+          },
+          {
+            "cx": 507.13272587268995,
+            "cy": 150.04000000000002
+          },
+          {
+            "cx": 476.6739005817933,
+            "cy": 137.76399999999998
+          },
+          {
+            "cx": 446.21507529089666,
+            "cy": 147.124
+          },
+          {
+            "cx": 415.75625,
+            "cy": 142.012
+          },
+          {
+            "cx": 385.2139758726899,
+            "cy": 140.50000000000003
+          },
+          {
+            "cx": 354.75515058179326,
+            "cy": 134.30800000000002
+          },
+          {
+            "cx": 324.2963252908967,
+            "cy": 118.684
+          },
+          {
+            "cx": 293.83750000000003,
+            "cy": 112.96
+          },
+          {
+            "cx": 263.2952258726899,
+            "cy": 130.23999999999998
+          },
+          {
+            "cx": 232.83640058179327,
+            "cy": 116.632
+          },
+          {
+            "cx": 202.37757529089663,
+            "cy": 123.868
+          },
+          {
+            "cx": 171.91875000000002,
+            "cy": 117.96399999999998
+          },
+          {
+            "cx": 141.37647587268995,
+            "cy": 129.124
+          },
+          {
+            "cx": 110.91765058179328,
+            "cy": 142.444
+          },
+          {
+            "cx": 50,
+            "cy": 131.068
+          }
+        ],
+        "url": "https://data.worldhappiness.report/country/BRA",
+        "x": [
+          {
+            "label": "2005",
+            "transform": "translate(50.5,0)"
+          },
+          {
+            "label": "2010",
+            "transform": "translate(202.87757529089663,0)"
+          },
+          {
+            "label": "2015",
+            "transform": "translate(355.25515058179326,0)"
+          },
+          {
+            "label": "2020",
+            "transform": "translate(507.63272587268995,0)"
+          },
+          {
+            "label": "2025",
+            "transform": "translate(660.09375,0)"
+          }
+        ],
+        "y": [
+          {
+            "label": "10",
+            "transform": "translate(0,10.5)"
+          },
+          {
+            "label": "9",
+            "transform": "translate(0,46.49999999999999)"
+          },
+          {
+            "label": "8",
+            "transform": "translate(0,82.49999999999999)"
+          },
+          {
+            "label": "7",
+            "transform": "translate(0,118.50000000000001)"
+          },
+          {
+            "label": "6",
+            "transform": "translate(0,154.5)"
+          },
+          {
+            "label": "5",
+            "transform": "translate(0,190.5)"
+          },
+          {
+            "label": "4",
+            "transform": "translate(0,226.5)"
+          },
+          {
+            "label": "3",
+            "transform": "translate(0,262.5)"
+          },
+          {
+            "label": "2",
+            "transform": "translate(0,298.5)"
+          },
+          {
+            "label": "1",
+            "transform": "translate(0,334.5)"
+          },
+          {
+            "label": "0",
+            "transform": "translate(0,370.5)"
+          }
+        ],
+        "id": "BRA"
+      },
+      {
+        "name": "Japan",
+        "points": [
+          {
+            "cx": 659.59375,
+            "cy": 149.428
+          },
+          {
+            "cx": 629.0514758726899,
+            "cy": 141.364
+          },
+          {
+            "cx": 598.5926505817934,
+            "cy": 157.24
+          },
+          {
+            "cx": 568.1338252908967,
+            "cy": 147.59199999999998
+          },
+          {
+            "cx": 537.6750000000001,
+            "cy": 150.72400000000002
+          },
+          {
+            "cx": 507.13272587268995,
+            "cy": 149.75199999999998
+          },
+          {
+            "cx": 476.6739005817933,
+            "cy": 157.31199999999998
+          },
+          {
+            "cx": 446.21507529089666,
+            "cy": 161.41600000000005
+          },
+          {
+            "cx": 415.75625,
+            "cy": 157.204
+          },
+          {
+            "cx": 385.2139758726899,
+            "cy": 155.62
+          },
+          {
+            "cx": 354.75515058179326,
+            "cy": 158.32000000000002
+          },
+          {
+            "cx": 324.2963252908967,
+            "cy": 156.772
+          },
+          {
+            "cx": 293.83750000000003,
+            "cy": 155.476
+          },
+          {
+            "cx": 263.2952258726899,
+            "cy": 155.152
+          },
+          {
+            "cx": 232.83640058179327,
+            "cy": 144.532
+          },
+          {
+            "cx": 202.37757529089663,
+            "cy": 151.94799999999998
+          },
+          {
+            "cx": 171.91875000000002,
+            "cy": 159.57999999999998
+          },
+          {
+            "cx": 141.37647587268995,
+            "cy": 157.204
+          },
+          {
+            "cx": 110.91765058179328,
+            "cy": 145.432
+          },
+          {
+            "cx": 50,
+            "cy": 135.424
+          }
+        ],
+        "url": "https://data.worldhappiness.report/country/JPN",
+        "x": [
+          {
+            "label": "2005",
+            "transform": "translate(50.5,0)"
+          },
+          {
+            "label": "2010",
+            "transform": "translate(202.87757529089663,0)"
+          },
+          {
+            "label": "2015",
+            "transform": "translate(355.25515058179326,0)"
+          },
+          {
+            "label": "2020",
+            "transform": "translate(507.63272587268995,0)"
+          },
+          {
+            "label": "2025",
+            "transform": "translate(660.09375,0)"
+          }
+        ],
+        "y": [
+          {
+            "label": "10",
+            "transform": "translate(0,10.5)"
+          },
+          {
+            "label": "9",
+            "transform": "translate(0,46.49999999999999)"
+          },
+          {
+            "label": "8",
+            "transform": "translate(0,82.49999999999999)"
+          },
+          {
+            "label": "7",
+            "transform": "translate(0,118.50000000000001)"
+          },
+          {
+            "label": "6",
+            "transform": "translate(0,154.5)"
+          },
+          {
+            "label": "5",
+            "transform": "translate(0,190.5)"
+          },
+          {
+            "label": "4",
+            "transform": "translate(0,226.5)"
+          },
+          {
+            "label": "3",
+            "transform": "translate(0,262.5)"
+          },
+          {
+            "label": "2",
+            "transform": "translate(0,298.5)"
+          },
+          {
+            "label": "1",
+            "transform": "translate(0,334.5)"
+          },
+          {
+            "label": "0",
+            "transform": "translate(0,370.5)"
+          }
+        ],
+        "id": "JPN"
+      },
+      {
+        "name": "South Africa",
+        "points": [
+          {
+            "cx": 659.59375,
+            "cy": 190.9
+          },
+          {
+            "cx": 627.4451458933718,
+            "cy": 190.864
+          },
+          {
+            "cx": 595.3843795028819,
+            "cy": 187.264
+          },
+          {
+            "cx": 563.323613112392,
+            "cy": 169.08399999999995
+          },
+          {
+            "cx": 531.2628467219021,
+            "cy": 168.43599999999998
+          },
+          {
+            "cx": 499.1142426152738,
+            "cy": 191.908
+          },
+          {
+            "cx": 467.0534762247839,
+            "cy": 188.74
+          },
+          {
+            "cx": 434.992709834294,
+            "cy": 194.176
+          },
+          {
+            "cx": 402.9319434438041,
+            "cy": 207.496
+          },
+          {
+            "cx": 370.7833393371758,
+            "cy": 198.28000000000003
+          },
+          {
+            "cx": 338.7225729466859,
+            "cy": 194.06800000000004
+          },
+          {
+            "cx": 306.661806556196,
+            "cy": 196.192
+          },
+          {
+            "cx": 274.6010401657061,
+            "cy": 238.204
+          },
+          {
+            "cx": 242.4524360590778,
+            "cy": 185.176
+          },
+          {
+            "cx": 210.3916696685879,
+            "cy": 192.484
+          },
+          {
+            "cx": 178.330903278098,
+            "cy": 202.52799999999996
+          },
+          {
+            "cx": 146.27013688760806,
+            "cy": 182.152
+          },
+          {
+            "cx": 114.12153278097983,
+            "cy": 177.544
+          },
+          {
+            "cx": 82.06076639048992,
+            "cy": 182.656
+          },
+          {
+            "cx": 50,
+            "cy": 186.97600000000003
+          }
+        ],
+        "url": "https://data.worldhappiness.report/country/ZAF",
+        "x": [
+          {
+            "label": "2010",
+            "transform": "translate(178.830903278098,0)"
+          },
+          {
+            "label": "2015",
+            "transform": "translate(339.2225729466859,0)"
+          },
+          {
+            "label": "2020",
+            "transform": "translate(499.6142426152738,0)"
+          },
+          {
+            "label": "2025",
+            "transform": "translate(660.09375,0)"
+          }
+        ],
+        "y": [
+          {
+            "label": "10",
+            "transform": "translate(0,10.5)"
+          },
+          {
+            "label": "9",
+            "transform": "translate(0,46.49999999999999)"
+          },
+          {
+            "label": "8",
+            "transform": "translate(0,82.49999999999999)"
+          },
+          {
+            "label": "7",
+            "transform": "translate(0,118.50000000000001)"
+          },
+          {
+            "label": "6",
+            "transform": "translate(0,154.5)"
+          },
+          {
+            "label": "5",
+            "transform": "translate(0,190.5)"
+          },
+          {
+            "label": "4",
+            "transform": "translate(0,226.5)"
+          },
+          {
+            "label": "3",
+            "transform": "translate(0,262.5)"
+          },
+          {
+            "label": "2",
+            "transform": "translate(0,298.5)"
+          },
+          {
+            "label": "1",
+            "transform": "translate(0,334.5)"
+          },
+          {
+            "label": "0",
+            "transform": "translate(0,370.5)"
+          }
+        ],
+        "id": "ZAF"
+      },
+      {
+        "name": "China",
+        "points": [
+          {
+            "cx": 659.59375,
+            "cy": 145.432
+          },
+          {
+            "cx": 627.4451458933718,
+            "cy": 174.55599999999998
+          },
+          {
+            "cx": 595.3843795028819,
+            "cy": 148.78000000000003
+          },
+          {
+            "cx": 531.2628467219021,
+            "cy": 158.932
+          },
+          {
+            "cx": 499.1142426152738,
+            "cy": 162.244
+          },
+          {
+            "cx": 467.0534762247839,
+            "cy": 184.81600000000003
+          },
+          {
+            "cx": 434.992709834294,
+            "cy": 185.284
+          },
+          {
+            "cx": 402.9319434438041,
+            "cy": 186.436
+          },
+          {
+            "cx": 370.7833393371758,
+            "cy": 178.3
+          },
+          {
+            "cx": 338.7225729466859,
+            "cy": 179.056
+          },
+          {
+            "cx": 306.661806556196,
+            "cy": 182.944
+          },
+          {
+            "cx": 274.6010401657061,
+            "cy": 181.324
+          },
+          {
+            "cx": 242.4524360590778,
+            "cy": 186.58
+          },
+          {
+            "cx": 210.3916696685879,
+            "cy": 188.668
+          },
+          {
+            "cx": 178.330903278098,
+            "cy": 202.492
+          },
+          {
+            "cx": 146.27013688760806,
+            "cy": 209.656
+          },
+          {
+            "cx": 114.12153278097983,
+            "cy": 195.544
+          },
+          {
+            "cx": 82.06076639048992,
+            "cy": 194.932
+          },
+          {
+            "cx": 50,
+            "cy": 205.84
+          }
+        ],
+        "url": "https://data.worldhappiness.report/country/CHN",
+        "x": [
+          {
+            "label": "2010",
+            "transform": "translate(178.830903278098,0)"
+          },
+          {
+            "label": "2015",
+            "transform": "translate(339.2225729466859,0)"
+          },
+          {
+            "label": "2020",
+            "transform": "translate(499.6142426152738,0)"
+          },
+          {
+            "label": "2025",
+            "transform": "translate(660.09375,0)"
+          }
+        ],
+        "y": [
+          {
+            "label": "10",
+            "transform": "translate(0,10.5)"
+          },
+          {
+            "label": "9",
+            "transform": "translate(0,46.49999999999999)"
+          },
+          {
+            "label": "8",
+            "transform": "translate(0,82.49999999999999)"
+          },
+          {
+            "label": "7",
+            "transform": "translate(0,118.50000000000001)"
+          },
+          {
+            "label": "6",
+            "transform": "translate(0,154.5)"
+          },
+          {
+            "label": "5",
+            "transform": "translate(0,190.5)"
+          },
+          {
+            "label": "4",
+            "transform": "translate(0,226.5)"
+          },
+          {
+            "label": "3",
+            "transform": "translate(0,262.5)"
+          },
+          {
+            "label": "2",
+            "transform": "translate(0,298.5)"
+          },
+          {
+            "label": "1",
+            "transform": "translate(0,334.5)"
+          },
+          {
+            "label": "0",
+            "transform": "translate(0,370.5)"
+          }
+        ],
+        "id": "CHN"
+      }
+    ],
+    "verifiedTooltips": [
+      {
+        "id": "USA",
+        "label": "6.969 in 2025"
+      },
+      {
+        "id": "IND",
+        "label": "4.366 in 2025"
+      },
+      {
+        "id": "DEU",
+        "label": "6.987 in 2025"
+      },
+      {
+        "id": "GBR",
+        "label": "6.622 in 2025"
+      },
+      {
+        "id": "BRA",
+        "label": "6.680 in 2025"
+      },
+      {
+        "id": "JPN",
+        "label": "6.127 in 2025"
+      },
+      {
+        "id": "ZAF",
+        "label": "4.975 in 2025"
+      },
+      {
+        "id": "CHN",
+        "label": "6.238 in 2025"
+      }
+    ]
+  },
+  "worldBankAttribution": "World Bank, World Development Indicators; underlying national accounts/ILO/UN/national statistical sources documented in raw indicator metadata.",
+  "worldBankLicense": "CC BY 4.0, as stated in World Bank indicator metadata glossaries",
+  "worldBankLicenseURL": "https://datacatalog.worldbank.org/int/public-licenses#cc-by",
+  "revisions": "Latest-vintage retrospective data; annual date does not assert release-time availability.",
+  "excludedUnmappedRows": [],
+  "schemaChecks": {
+    "annualTarget": true,
+    "threeYearAveragesUsed": false,
+    "uniqueCountryYear": true,
+    "targetRows": 159,
+    "countries": 8,
+    "years": [
+      2005,
+      2006,
+      2007,
+      2008,
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024,
+      2025
+    ]
+  }
+}

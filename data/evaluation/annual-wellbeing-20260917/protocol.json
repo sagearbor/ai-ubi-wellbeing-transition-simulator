@@ -16,7 +16,8 @@
     "Conditional replay uses realized target-year drivers; these are conditional one-year reconstructions, not deployable forecasts.",
     "Rolling forecasts use data dated at or before t-1, but source revisions can contain later information.",
     "World Bank drivers differ from the WHR six-factor model and do not include same-survey social variables.",
-    "Results do not identify causal effects or validate post-AI scenarios."
+    "Results do not identify causal effects or validate post-AI scenarios.",
+    "Annual targets are public-chart transcriptions rounded to three decimals, not a bulk original Gallup annual data release; chart extraction and limited validation add measurement risk."
   ],
   "data": {
     "firstYear": 2005,
@@ -42,7 +43,8 @@
       }
     ],
     "sourceFallbackRule": "Do not score if official annual target cannot be acquired. No substitute rolling averages or unverified mirror.",
-    "missing": "No interpolation, extrapolation, nearest future observation, zero fill, or cross-country fill. For forecasts ONLY, project observed drivers one year by half their immediately preceding annual change."
+    "missing": "No interpolation, extrapolation, nearest future observation, zero fill, or cross-country fill. For forecasts ONLY, project observed drivers one year by half their immediately preceding annual change.",
+    "targetAcquisition": "Read intentionally public annual rendered chart marks/axis ticks for original eight countries; parent verified annual selector and annual tooltips. Preserve SVG evidence and spot-check labels; no hidden application state or restricted data endpoints."
   },
   "partition": {
     "initialTrain": [
@@ -138,7 +140,8 @@
       "Pearson correlation of predicted and observed changes, null if constant",
       "three-way direction accuracy using sign with 1e-9 numerical equality tolerance; not a substantively tuned deadband",
       "nonzero observed-change direction accuracy and prediction direction coverage; persistence abstains on every move",
-      "matched-origin absolute-error wins/losses/ties against persistence and exact two-sided binomial sign-test p (descriptive; ignores dependence)"
+      "matched-origin absolute-error wins/losses/ties against persistence and exact two-sided binomial sign-test p (descriptive; ignores dependence)",
+      "matched-origin three-way direction wins/losses/ties versus persistence and exact paired binomial p; persistence abstention makes this descriptive, not magnitude skill"
     ],
     "aggregation": [
       "pooled country-year",
