@@ -1,0 +1,37 @@
+{
+  "schema": "forecast-protocol/1",
+  "id": "level-country-offset-2018-v1",
+  "registeredAt": "2026-09-16",
+  "registeredBy": "Claude Code (Claude Opus 5), independent attempt under docs/design/research/2026-09-16-next-holdout-attempt.md",
+  "scope": "Second retrospective temporal holdout on the SAME partition as level-holdout-2018: same origin, same test years, same cohort, same pinned outcome vintages, same persistence comparator. Only the wellbeing model form changes. Not a blind forecast, not causal evidence, and not a test of any AI or transfer mechanism.",
+  "modelFormChosenAfterTestPeriod": true,
+  "hypothesis": "The published entry loses to persistence because it keeps no country-specific offset: it relaxes every country toward a cross-sectional anchor at 0.02/month, closing about 82 percent of the distance over 84 months, while observed national ladder values move very little. Retaining the origin-year offset, decayed at a rate estimated from training transitions, should reduce error below persistence or at least far below the published entry.",
+  "trainingYears": [2015, 2016, 2017, 2018],
+  "originYear": 2018,
+  "testYears": [2019, 2020, 2021, 2022, 2023, 2024, 2025],
+  "reusedArtifacts": {
+    "partition": "data/evaluation/level-holdout-2018/{train,origin,test-outcomes,roster,partition-provenance}.json (unchanged, hash-checked)",
+    "frozenAnchorFit": "data/evaluation/level-holdout-2018/frozen-fit.json (the same three OLS coefficients fitted on 2015-2018)",
+    "scoring": "scripts/evaluation/score.ts (unchanged)"
+  },
+  "fit": "One additional scalar: the annual offset decay rho, estimated from TRAINING gap transitions only (gap = observed ladder*10 - anchor(gdp, governance) with the frozen coefficients), pooled least squares of gap(t+lag) on rho^lag * gap(t) for lags 1..3, combined as a pair-count-weighted geometric mean. No test-era observation is read at any stage.",
+  "structure": {
+    "form": "ladder(h) = clamp(anchor(gdp(h), governance) + gap0 * rho^h, 0.1, 10) after dividing by 10; gap0 = ladder(2018)*10 - anchor(gdp(2018), governance)",
+    "anchor": "simulation/pure.ts wellbeingAnchor with the frozen 2015-2018 coefficients (clamped 15-90 index points, unchanged)",
+    "gdpPath": "origin GDP per person compounded at 2%/year, the same no-AI assumption the published entry runs with; GDP predictions are therefore identical to the published entry",
+    "aiAndTransfers": "off, as in the published entry"
+  },
+  "variants": [
+    { "id": "fitted", "rho": "estimated as described in fit", "role": "primary" },
+    { "id": "retained", "rho": 1, "role": "secondary, declared before scoring; the offset is kept in full so wellbeing changes only through the anchor path" }
+  ],
+  "outcomes": {
+    "wellbeing": "WHR Cantril ladder, 0-10; the pinned 2026-vintage annual panel already used by level-holdout-2018",
+    "gdp": "World Bank GDP per person, constant-2015 USD; same pinned panel"
+  },
+  "comparator": "Persistence from the 2018 origin, computed by the unchanged scorer on the identical observation mask",
+  "primaryMetric": "Mean absolute error of the 2025 wellbeing endpoint across observed countries, against persistence on the same rows",
+  "alsoReported": ["MAE and skill score at every horizon 2019-2025", "GDP MAE against persistence", "bias", "per-country errors", "counts of unscored rows"],
+  "scoringRuns": "Exactly one scoring run for both declared variants together. No refit, reselection, re-partition or rescoring afterwards; a worse result than the published entry is published unchanged.",
+  "doesNotEstablish": "Predictive skill on future years, causal effect of any policy, validity of the AI or transfer channels, or that the ladder is predictable in general. Both entries share one partition and one outcome vintage, so their errors are not independent evidence."
+}
