@@ -48,7 +48,7 @@ def forecast(values, origin, horizon, target):
     x, y = d[:-1], d[1:]
     xc, yc = x - np.mean(x), y - np.mean(y)
     denominator = float(np.dot(xc, xc)) + 10 * float(np.var(d))
-    phi = float(np.dot(xc, yc)) / denominator if denominator > 1e-30 else 0.0
+    phi = float(np.dot(xc, yc)) / denominator if denominator > 0 else 0.0
     phi = min(0.8, max(-0.8, phi))
     intercept = len(y) / (len(y) + 10) * float(np.mean(y)) - phi * float(np.mean(x))
     level, delta = float(z[-1]), float(d[-1])
