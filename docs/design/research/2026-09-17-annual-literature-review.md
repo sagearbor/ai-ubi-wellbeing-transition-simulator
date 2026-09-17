@@ -21,7 +21,9 @@ These distinctions follow the ex-ante/ex-post treatment in [Hyndman and Athanaso
 
 The [WHR data-sharing page](https://www.worldhappiness.report/data-sharing/) offers Figure 2.1's three-year means, confidence intervals, and explanatory contributions. The regression panel is different. Current [OWID Cantril metadata](https://ourworldindata.org/grapher/happiness-cantril-ladder) explicitly defines its 2025 value as the 2023–2025 average. OWID also says original providers' licensing applies to third-party data; its own CC BY label does not automatically relicense Gallup data.
 
-The old official annual URL, [WHR 2023 Table 2.1 spreadsheet](https://happiness-report.s3.amazonaws.com/2023/DataForTable2.1WHR2023.xls), returned HTTP 403 to a direct request on 2026-09-17. No alternate-host or access-control workaround was attempted. A historically published URL is not a currently verified download. An independently authorized annual source or Gallup institutional permission is needed before claiming the full panel is available. The public [WHR dashboard](https://data.worldhappiness.report/map) is a separate candidate under acquisition review; an annual-score selector alone does not establish downloadable annual covariates or redistribution rights.
+The old official annual URL, [WHR 2023 Table 2.1 spreadsheet](https://happiness-report.s3.amazonaws.com/2023/DataForTable2.1WHR2023.xls), returned HTTP 403 to a direct request on 2026-09-17. No alternate-host or access-control workaround was attempted. A historically published URL is not a currently verified download. An independently authorized source or Gallup institutional permission is still needed before claiming the full annual regression panel is available.
+
+**Public annual target access was subsequently confirmed.** On the official [Finland country dashboard](https://data.worldhappiness.report/country/FIN), the root agent selected **Annual score** and read the visible 2025 tooltip: **7.811**, versus **7.764** for the three-year score. The study is extracting a predetermined eight-country sample from visible chart tooltips. This establishes a limited annual target route, not a public bulk download or the annual social-predictor panel. Extraction uses the visible interface, without hidden application state or undocumented APIs. Record country, year, displayed precision, acquisition date and annual mode; leave unconfirmed points missing. Public display by itself does not establish unrestricted redistribution rights.
 
 The [WHR 2026 statistical appendix, §§1–3](https://files.worldhappiness.report/WHR26_Statistical_Appendix.pdf) documents an unbalanced annual survey panel, 2005/06–2025, from the January 2026 Gallup release. Its variable definitions matter:
 
@@ -72,7 +74,7 @@ The WHR R² measures combine between-country level differences and within-countr
 
 GDP per capita is not household disposable income, unemployment is not nonemployment, and period life expectancy is not a newborn cohort's forecast lifetime. Longer historical records do not make the joint wellbeing panel longer than its observed target. Joining to early macro data cannot create measured pre-2005 Cantril values.
 
-If the public dashboard yields annual ladder values but no annual social inputs, a model using only WDI log real GDP, **total** life expectancy and modelled unemployment is an admissible reduced-information experiment. Refit every coefficient and name those features accurately. It is not a WHR six-factor replication; its failure would not falsify the value of unavailable social measurements. Conversely, matching macro-only history would not validate the causal policy layer.
+For the limited eight-country annual target extraction, the companion study uses WDI log real GDP, **total** life expectancy and modelled unemployment, because the annual Gallup social inputs remain unavailable. This is an admissible reduced-information experiment. Refit every coefficient and name those features accurately. It is not a WHR six-factor replication; its failure would not falsify the value of unavailable social measurements. Conversely, matching macro-only history would not validate the causal policy layer. Eight preselected countries support an illustrative benchmark, not a global performance claim.
 
 ## Three bounded modelling approaches
 
@@ -115,3 +117,16 @@ Use ladder-point MAE/RMSE, change-error MAE, error relative to persistence, per-
 | Six-factor coefficients can be dropped directly into a policy equation | They describe observational associations with specific constructs, samples and vintages; policy transport requires additional assumptions |
 
 The newer `docs/design/reviews/2026-09-16-forecast-paths.html` already identifies the target as a trailing three-year average. That correct caveat should remain attached to those existing results; this review does not retroactively relabel them as annual forecasts.
+
+## Independent audit of the annual objective benchmark
+
+Reviewed `scripts/evaluation/annual-objective/{model.py,run.py,fetch.py,test_model.py}`, the frozen protocol, provenance, score receipt and saved outputs in the separate objective worktree on 2026-09-17. The receipt records protocol commit `5e843c7`, scoring code commit `93eb346ebe6a8c6b1a5c6d63b7fd46bb6770b4ed`, and one completed comparison. **No P1 or P2 implementation defect was found in the audited scope.** The scorer was not rerun; models and hyperparameters were not changed.
+
+- All 12 hash comparisons passed: four saved outputs, seven source files and the protocol matched their recorded hashes.
+- Read-only arithmetic independently reproduced all 24 saved pooled metric rows from 151,272 saved forecasts, including GDP normalization by origin, persistence error, skill, direction/tie handling and missing-outcome counts.
+- All 37,818 country/target/origin/horizon sets contained the same four methods, actual value and origin value. Saved cutoffs and horizon arithmetic were consistent. Code fits only exact 20-year histories ending at the origin; missing histories skip all methods.
+- Registration precedes data retrieval. Formula definitions agree with implementation. The current result note acknowledges revised data, source modelling, overlapping horizons, exploratory method selection and unemployment failures. Country-equal scores and all losing methods remain available.
+
+**Interpretation concern for downstream charts (P2 if presented as turning-point skill):** high direction percentages should not be advertised without their class composition. Among scored nonzero actual changes, GDP rises in 72.11% of one-year and 75.02% of five-year cases; life expectancy rises in 83.12% and 87.93%, respectively. All candidate direction accuracies are below these unconditional upward frequencies. These are descriptive counts from the fixed saved outcomes, not a newly fitted or selected contestant. The existing note does not claim turning-point success. Persistence's zero direction accuracy is mechanically imposed by counting its ties as wrong.
+
+The audit verifies the saved calculation, not real-time information availability, causal validity, or independent replication. Source interpolation and revisions may already contain later information even though the prediction code excludes later rows. No uncertainty about performance was quantified in the benchmark.
