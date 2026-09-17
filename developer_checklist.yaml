@@ -4,6 +4,16 @@
 # ARCHIVED PHASES: Phases 1-7 are complete and archived.
 # See: docs/archived/phases_1-7_completed.yaml
 #
+# SCOPE NOTE (2026-09-16): this file tracks the original Phases 1-9 only. Everything after them —
+# the v3 plan (stages 1-5), the 2026-09-14 independent review and its fixes, the published-data
+# experience, the frozen holdout evaluations and the research beta — is tracked in:
+#   docs/design/model-card-default.md        the default model, its evidence and known failures
+#   docs/design/reference-ledger.md          every published/empirical target, hit or missed
+#   docs/release/three-step-delivery.md      release, expert review and publication gates
+#   docs/design/reviews/                     the independent reviews and their verification
+#   tmp/wrapups/*.yaml                       per-session handoffs (not in git)
+# The Phase 8-9 entries below were closed on 2026-09-08; the pending edit was committed on 2026-09-16.
+#
 # STATUS KEY:
 #   ✅ = Complete
 #   🚧 = In Progress
@@ -17,8 +27,8 @@ project: "wellbeing-transition-simulator"
 # COMPLETION SUMMARY
 # =============================================================================
 summary:
-  last_updated: "2026-09-07"
-  overall_status: "🚧 Phase 8-9 mostly built (PR #2, Dec 2025); P8-T9 (engine executes custom equations) still open"
+  last_updated: "2026-09-08"
+  overall_status: "🚧 Phase 8-9 built. P8-T9/T11/T12 and P9-T8 all closed (2026-09-08 overnight sessions, PR #6/#7/#8). AT-2 anchor test tuning is the remaining open item (owner decision)."
 
   archived_phases:
     phases: [1, 2, 3, 4, 5, 6, 7]
@@ -34,11 +44,11 @@ summary:
       Phase 7: Per-Entity UI & Interaction (6 tasks)
 
   phase_8:
-    status: 🚧 11/14 complete, 2 partial (P8-T11, P8-T12), 1 pending (P8-T9)
+    status: "✅ 14/14 complete (P8-T11's equation editor has no visual syntax highlighting/autocomplete, but that wasn't required by the overnight brief that closed it)"
     description: "Dynamic Model Configuration with Anchor Test Validation"
 
   phase_9:
-    status: 🚧 9/10 complete, 1 partial (P9-T8)
+    status: ✅ 10/10 complete
     description: "Model Sharing & Leaderboard with Automated Validation"
 
 # =============================================================================
@@ -360,18 +370,24 @@ phase_8:
     - id: P8-T11
       name: "Create model editor UI"
       file: "components/ModelEditor.tsx"
-      status: 🚧 Placeholder (name/description + validate/save only; no equation editor)
+      status: ✅ Complete (2026-09-08 overnight session, PR #8)
       depends_on: [P8-T4, P8-T10]
       description: |
-        Equation editor with syntax highlighting
-        Variable autocomplete (adoption, wellbeing, gdp, etc.)
-        "Test Equation" button for immediate feedback
-        Export to JSON, run anchor tests
+        Real equation editor for the five equations the engine executes
+        (aiAdoptionGrowth, surplusGeneration, wellbeingDelta,
+        displacementFriction, ubiUtility): live parse validation with error
+        messages from services/mathParser.ts, per-equation "Reset to
+        default", and a "Run Simulation" button that applies the model and
+        re-simulates it live. Pure editor-state logic lives in
+        src/services/modelEditorState.ts (unit tested, no DOM harness
+        needed). Variable/function autocomplete and syntax highlighting
+        were not built (not required by the overnight brief); allowed
+        variables/functions are listed as reference text instead.
 
     - id: P8-T12
       name: "Add default equations as fallback"
       file: "constants.ts"
-      status: 🚧 Partial (DEFAULT_EQUATIONS defined, but reference ubi/ubiBoost/aiAdoptionLevel/avgContributionRate which the sandbox does not expose, so they do not compile)
+      status: "✅ Complete (mathParser's ALLOWED_VARIABLES was extended in the P8-T9 session to include ubi/ubiBoost/aiAdoptionLevel/avgContributionRate; verified 2026-09-08 that every DEFAULT_EQUATIONS entry now compiles)"
       depends_on: [P8-T4]
       description: |
         DEFAULT_EQUATIONS constant extracted from current stepSimulation
@@ -552,13 +568,20 @@ phase_9:
     - id: P9-T8
       name: "Add share functionality"
       file: "components/ModelEditor.tsx"
-      status: 🚧 Partial (share toggle in ModelEditor; no export/link flow)
+      status: ✅ Complete (2026-09-08 overnight session, PR #8) - scenario export/import/link; "Share to Leaderboard" was already implemented separately
       depends_on: [P9-T3]
       description: |
-        "Share to Leaderboard" button
-        Requires anchor test pass (4/6 minimum)
-        Generate shareable URL with base64 model
-        Option to keep model private (local only)
+        Scenario (parameters + custom equations) export as a downloadable
+        JSON file, import one back, and a copyable link that encodes the
+        scenario in a `#scenario=` URL hash (unicode-safe base64), decoded
+        automatically the next time the editor mounts and then consumed so
+        it isn't reapplied. Pure logic in src/services/scenarioShare.ts,
+        unit tested for round-tripping (JSON and hash, incl. unicode and
+        malformed input). Kept separate from App.tsx's pre-existing
+        `#share=` hash, which only ever encoded the simple numeric
+        ModelParameters dial preset, not a model's equations.
+        "Share to Leaderboard" (requires 4/6 anchor tests, saves to
+        modelStorage) was already implemented prior to this session.
 
     - id: P9-T9
       name: "Add community rating UI"
@@ -638,8 +661,15 @@ verification:
     AT-5: "pass, but barely: poor-country wellbeing 4.14 (global) vs 4.10 (hq-local) - both floors"
     AT-6: "pass after fixing the double-counted global inflow in simulation/pure.ts"
   known_gaps:
-    - "P8-T9: stepSimulationPure never reads ModelConfig.equations; anchor tests and leaderboard runs use the built-in engine regardless of the uploaded model"
-    - "P8-T12: DEFAULT_EQUATIONS use variables the mathParser sandbox does not expose (ubi, ubiBoost, aiAdoptionLevel, avgContributionRate)"
+    - "AT-2 (Generous UBI Prevents Collapse) still fails: with 40% contributions, global
+      distribution and 80% displacement, wellbeing ends at ~36.5% of initial after 60
+      months (needs >= 80%). Coefficient/threshold decision still needs the owner - see
+      the 2026-09-07 and 2026-09-08 wrapups for the exact numbers."
+    - "demandCollapse and reputationChange (the two 'advanced' equations) are parsed and
+      validated but stepSimulationPure still uses the default hardcoded logic for them
+      regardless of a model's own equations - only the five core equations are wired in."
+    - "ModelEditor's equation editor (P8-T11) has no syntax highlighting or variable
+      autocomplete - allowed variables/functions are listed as reference text instead."
     - "Live Cloud Run demo still serves the Dec-2025 AI Studio applet (see CONFERENCE.md); deploy path added in scripts/deploy.sh"
 
 # =============================================================================
