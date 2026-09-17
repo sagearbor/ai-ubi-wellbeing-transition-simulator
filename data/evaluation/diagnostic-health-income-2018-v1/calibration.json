@@ -1,0 +1,2094 @@
+{
+  "health_control": {
+    "variant": {
+      "id": "health_control",
+      "health": true,
+      "saturation": false
+    },
+    "cutoff": 2018,
+    "k": 8291.758237791819,
+    "lambda": 0.1,
+    "phi": 0.8,
+    "n": 298,
+    "scaleGdp": 0.03653227936266831,
+    "scaleHealth": 0.3469180293564787,
+    "betaGdp": 0.030575024664688897,
+    "betaHealth": -0.004752775409318651,
+    "covariates": {
+      "USA": {
+        "gdpSlope": 0.017003193103758463,
+        "healthSlope": -0.015365853658526874,
+        "healthOrigin": 78.6390243902439
+      },
+      "CAN": {
+        "gdpSlope": 0.010696496179194525,
+        "healthSlope": -0.019878048780479673,
+        "healthOrigin": 81.8036585365854
+      },
+      "MEX": {
+        "gdpSlope": 0.009059140561383749,
+        "healthSlope": -0.050499999999999545,
+        "healthOrigin": 74.301
+      },
+      "GTM": {
+        "gdpSlope": 0.012310815432938327,
+        "healthSlope": 0.21109999999999615,
+        "healthOrigin": 71.496
+      },
+      "HTI": {
+        "gdpSlope": 0.006641972556453357,
+        "healthSlope": 0.30660000000000026,
+        "healthOrigin": 64.077
+      },
+      "DOM": {
+        "gdpSlope": 0.04460747043067155,
+        "healthSlope": 0.22000000000000314,
+        "healthOrigin": 73.555
+      },
+      "HND": {
+        "gdpSlope": 0.023170421225883066,
+        "healthSlope": 0.22240000000000465,
+        "healthOrigin": 72.001
+      },
+      "NIC": {
+        "gdpSlope": 0.007913495737784704,
+        "healthSlope": 0.31490000000000007,
+        "healthOrigin": 73.879
+      },
+      "SLV": {
+        "gdpSlope": 0.021611511686058904,
+        "healthSlope": 0.139500000000001,
+        "healthOrigin": 71.384
+      },
+      "CRI": {
+        "gdpSlope": 0.0275641346857352,
+        "healthSlope": -0.09449999999999789,
+        "healthOrigin": 80.09
+      },
+      "PAN": {
+        "gdpSlope": 0.030224306955833845,
+        "healthSlope": 0.21780000000000116,
+        "healthOrigin": 78.266
+      },
+      "BRA": {
+        "gdpSlope": -0.00668093239686538,
+        "healthSlope": 0.18829999999999955,
+        "healthOrigin": 75.633
+      },
+      "ARG": {
+        "gdpSlope": -0.01204617835531625,
+        "healthSlope": 0.09480000000000074,
+        "healthOrigin": 76.77
+      },
+      "COL": {
+        "gdpSlope": 0.004899525978365205,
+        "healthSlope": 0.17260000000000134,
+        "healthOrigin": 76.579
+      },
+      "CHL": {
+        "gdpSlope": 0.0070250504720309696,
+        "healthSlope": 0.19680000000000036,
+        "healthOrigin": 80.559
+      },
+      "PER": {
+        "gdpSlope": 0.017928079262916796,
+        "healthSlope": 0.08650000000000091,
+        "healthOrigin": 76.018
+      },
+      "ECU": {
+        "gdpSlope": 0.008602199392287523,
+        "healthSlope": 0.3204000000000036,
+        "healthOrigin": 77.248
+      },
+      "BOL": {
+        "gdpSlope": 0.022833894976240464,
+        "healthSlope": 0.16260000000000047,
+        "healthOrigin": 67.699
+      },
+      "PRY": {
+        "gdpSlope": 0.02657880479166739,
+        "healthSlope": 0.04820000000000135,
+        "healthOrigin": 73.627
+      },
+      "URY": {
+        "gdpSlope": 0.009799334206493171,
+        "healthSlope": 0.09930000000000092,
+        "healthOrigin": 77.527
+      },
+      "RUS": {
+        "gdpSlope": 0.014174297712460237,
+        "healthSlope": 0.5236585365853799,
+        "healthOrigin": 72.6621951219512
+      },
+      "GBR": {
+        "gdpSlope": 0.017054655732150436,
+        "healthSlope": 0.1,
+        "healthOrigin": 81.2560975609756
+      },
+      "FRA": {
+        "gdpSlope": 0.012687512442926163,
+        "healthSlope": 0.10634146341465112,
+        "healthOrigin": 82.6756097560976
+      },
+      "DEU": {
+        "gdpSlope": 0.016201345854988246,
+        "healthSlope": 0.07560975609758742,
+        "healthOrigin": 80.8926829268293
+      },
+      "ITA": {
+        "gdpSlope": 0.014468037921847633,
+        "healthSlope": 0.21097560975609325,
+        "healthOrigin": 83.3463414634146
+      },
+      "ESP": {
+        "gdpSlope": 0.024582776216462855,
+        "healthSlope": 0.17536585365854335,
+        "healthOrigin": 83.4317073170732
+      },
+      "NLD": {
+        "gdpSlope": 0.019147842254889545,
+        "healthSlope": 0.11073170731706342,
+        "healthOrigin": 81.8121951219512
+      },
+      "SWE": {
+        "gdpSlope": 0.00640785476450354,
+        "healthSlope": 0.11634146341465054,
+        "healthOrigin": 82.5585365853659
+      },
+      "BEL": {
+        "gdpSlope": 0.010570412961201647,
+        "healthSlope": 0.18609756097559824,
+        "healthOrigin": 81.5951219512195
+      },
+      "AUT": {
+        "gdpSlope": 0.015150338367473282,
+        "healthSlope": 0.15097560975611374,
+        "healthOrigin": 81.6926829268293
+      },
+      "POL": {
+        "gdpSlope": 0.047310199477076334,
+        "healthSlope": 0.03560975609759396,
+        "healthOrigin": 77.6024390243903
+      },
+      "NOR": {
+        "gdpSlope": 0.009847418715161104,
+        "healthSlope": 0.15634146341465255,
+        "healthOrigin": 82.7585365853659
+      },
+      "CHE": {
+        "gdpSlope": 0.01192325972832684,
+        "healthSlope": 0.25170731707315924,
+        "healthOrigin": 83.7536585365854
+      },
+      "IRL": {
+        "gdpSlope": 0.050782263362993164,
+        "healthSlope": 0.2756097560975519,
+        "healthOrigin": 82.2048780487805
+      },
+      "DNK": {
+        "gdpSlope": 0.0202497733751148,
+        "healthSlope": 0.10024390243904832,
+        "healthOrigin": 80.9536585365854
+      },
+      "FIN": {
+        "gdpSlope": 0.021977057942570967,
+        "healthSlope": 0.09634146341462042,
+        "healthOrigin": 81.7341463414634
+      },
+      "PRT": {
+        "gdpSlope": 0.030110230169298192,
+        "healthSlope": 0.08999999999997073,
+        "healthOrigin": 81.3243902439024
+      },
+      "GRC": {
+        "gdpSlope": 0.014532571705869657,
+        "healthSlope": 0.21536585365853256,
+        "healthOrigin": 81.7878048780488
+      },
+      "CZE": {
+        "gdpSlope": 0.0335520851503345,
+        "healthSlope": 0.1304878048780381,
+        "healthOrigin": 79.0292682926829
+      },
+      "HUN": {
+        "gdpSlope": 0.042889266965232764,
+        "healthSlope": 0.12463414634144102,
+        "healthOrigin": 76.0658536585366
+      },
+      "ROU": {
+        "gdpSlope": 0.06152478904148832,
+        "healthSlope": 0.13390243902440915,
+        "healthOrigin": 75.3585365853659
+      },
+      "UKR": {
+        "gdpSlope": 0.03203050638769458,
+        "healthSlope": 0.3252999999999986,
+        "healthOrigin": 73.569
+      },
+      "BLR": {
+        "gdpSlope": 0.012445213295005964,
+        "healthSlope": 0.19560975609755077,
+        "healthOrigin": 74.1756097560976
+      },
+      "SRB": {
+        "gdpSlope": 0.037111443087650645,
+        "healthSlope": 0.1658536585365681,
+        "healthOrigin": 75.890243902439
+      },
+      "ISL": {
+        "gdpSlope": 0.023885371312169924,
+        "healthSlope": 0.16341463414634774,
+        "healthOrigin": 82.8609756097561
+      },
+      "EST": {
+        "gdpSlope": 0.04034800309790896,
+        "healthSlope": 0.24121951219512852,
+        "healthOrigin": 78.2439024390244
+      },
+      "LVA": {
+        "gdpSlope": 0.042211087664070134,
+        "healthSlope": 0.09560975609755218,
+        "healthOrigin": 74.7829268292683
+      },
+      "LTU": {
+        "gdpSlope": 0.0511875401344998,
+        "healthSlope": 0.48853658536586836,
+        "healthOrigin": 75.6804878048781
+      },
+      "SVK": {
+        "gdpSlope": 0.02764637057024668,
+        "healthSlope": 0.2107317073170904,
+        "healthOrigin": 77.2658536585366
+      },
+      "SVN": {
+        "gdpSlope": 0.04043751997309926,
+        "healthSlope": 0.16609756097559228,
+        "healthOrigin": 81.3780487804878
+      },
+      "HRV": {
+        "gdpSlope": 0.04537459299015687,
+        "healthSlope": 0.17365853658537134,
+        "healthOrigin": 77.919512195122
+      },
+      "BIH": {
+        "gdpSlope": 0.04633024846066132,
+        "healthSlope": 0.28680000000000094,
+        "healthOrigin": 77.942
+      },
+      "MNE": {
+        "gdpSlope": 0.03572403104345749,
+        "healthSlope": 0.3992682926828877,
+        "healthOrigin": 77.8853658536585
+      },
+      "MKD": {
+        "gdpSlope": 0.025341160913190386,
+        "healthSlope": 0.4292682926829471,
+        "healthOrigin": 76.6487804878049
+      },
+      "ALB": {
+        "gdpSlope": 0.05067333180093332,
+        "healthSlope": 0.2896999999999991,
+        "healthOrigin": 79.238
+      },
+      "BGR": {
+        "gdpSlope": 0.03999581564659867,
+        "healthSlope": 0.10487804878050042,
+        "healthOrigin": 74.9634146341464
+      },
+      "MDA": {
+        "gdpSlope": 0.05763961247838898,
+        "healthSlope": 0.05500000000000256,
+        "healthOrigin": 70.236
+      },
+      "LUX": {
+        "gdpSlope": 0.0026278247848532388,
+        "healthSlope": -0.0582926829268402,
+        "healthOrigin": 82.2951219512195
+      },
+      "CYP": {
+        "gdpSlope": 0.051272730526454244,
+        "healthSlope": 0.028499999999999658,
+        "healthOrigin": 81.556
+      },
+      "MLT": {
+        "gdpSlope": 0.053200281663214354,
+        "healthSlope": 0.11951219512193915,
+        "healthOrigin": 82.2487804878049
+      },
+      "CHN": {
+        "gdpSlope": 0.06039370266778334,
+        "healthSlope": 0.22230000000000275,
+        "healthOrigin": 77.709
+      },
+      "JPN": {
+        "gdpSlope": 0.011902795455796067,
+        "healthSlope": 0.1366097560975632,
+        "healthOrigin": 84.2109756097561
+      },
+      "KOR": {
+        "gdpSlope": 0.028634287309539097,
+        "healthSlope": 0.21585365853659794,
+        "healthOrigin": 82.6268292682927
+      },
+      "MNG": {
+        "gdpSlope": 0.029370500809498525,
+        "healthSlope": 0.036999999999999034,
+        "healthOrigin": 70.8270731707317
+      },
+      "VNM": {
+        "gdpSlope": 0.05578532424509932,
+        "healthSlope": 0.047699999999998965,
+        "healthOrigin": 74.1
+      },
+      "IDN": {
+        "gdpSlope": 0.03942594598349469,
+        "healthSlope": 0.19000000000000056,
+        "healthOrigin": 70.08
+      },
+      "PHL": {
+        "gdpSlope": 0.05307780621642148,
+        "healthSlope": 0.14089999999999775,
+        "healthOrigin": 69.761
+      },
+      "THA": {
+        "gdpSlope": 0.03495749175029559,
+        "healthSlope": 0.21009999999999848,
+        "healthOrigin": 77.19
+      },
+      "MYS": {
+        "gdpSlope": 0.03238366790969387,
+        "healthSlope": 0.15090000000000003,
+        "healthOrigin": 75.734
+      },
+      "MMR": {
+        "gdpSlope": 0.05151179747254151,
+        "healthSlope": 0.3101000000000013,
+        "healthOrigin": 66.232
+      },
+      "LAO": {
+        "gdpSlope": 0.04973042601230196,
+        "healthSlope": 0.30489999999999784,
+        "healthOrigin": 67.594
+      },
+      "TLS": {
+        "gdpSlope": 0.0,
+        "healthSlope": 0.2921999999999997,
+        "healthOrigin": 66.204
+      },
+      "IND": {
+        "gdpSlope": 0.05734327846396381,
+        "healthSlope": 0.3626000000000033,
+        "healthOrigin": 70.415
+      },
+      "PAK": {
+        "gdpSlope": 0.039924819161646766,
+        "healthSlope": 0.27999999999999686,
+        "healthOrigin": 66.481
+      },
+      "BGD": {
+        "gdpSlope": 0.058792310253070745,
+        "healthSlope": 0.5267999999999973,
+        "healthOrigin": 72.122
+      },
+      "LKA": {
+        "gdpSlope": 0.035689178984980606,
+        "healthSlope": 0.15880000000000222,
+        "healthOrigin": 76.485
+      },
+      "NPL": {
+        "gdpSlope": 0.054774091728383656,
+        "healthSlope": 0.5282000000000011,
+        "healthOrigin": 69.036
+      },
+      "BTN": {
+        "gdpSlope": 0.034478635565652206,
+        "healthSlope": 0.30360000000000015,
+        "healthOrigin": 71.711
+      },
+      "KAZ": {
+        "gdpSlope": 0.016094782052090473,
+        "healthSlope": 0.4481999999999985,
+        "healthOrigin": 73.369
+      },
+      "KGZ": {
+        "gdpSlope": 0.020794296698715263,
+        "healthSlope": 0.24951219512196304,
+        "healthOrigin": 71.4
+      },
+      "TJK": {
+        "gdpSlope": 0.044787975688083834,
+        "healthSlope": 0.3757999999999967,
+        "healthOrigin": 70.737
+      },
+      "TUR": {
+        "gdpSlope": 0.03689179358986276,
+        "healthSlope": 0.3186999999999983,
+        "healthOrigin": 77.454
+      },
+      "IRN": {
+        "gdpSlope": 0.011930718084909132,
+        "healthSlope": 0.23829999999999957,
+        "healthOrigin": 76.621
+      },
+      "IRQ": {
+        "gdpSlope": 0.016107841168587277,
+        "healthSlope": 0.4521999999999977,
+        "healthOrigin": 71.116
+      },
+      "ARE": {
+        "gdpSlope": -0.014656943530073362,
+        "healthSlope": 0.1312000000000026,
+        "healthOrigin": 82.449
+      },
+      "ISR": {
+        "gdpSlope": 0.022822103127937688,
+        "healthSlope": 0.23975609756099772,
+        "healthOrigin": 82.8024390243903
+      },
+      "JOR": {
+        "gdpSlope": -0.008101816197494926,
+        "healthSlope": 0.4813999999999993,
+        "healthOrigin": 76.491
+      },
+      "LBN": {
+        "gdpSlope": 0.0286607203616569,
+        "healthSlope": -0.015000000000000568,
+        "healthOrigin": 78.263
+      },
+      "YEM": {
+        "gdpSlope": -0.07803973257768142,
+        "healthSlope": -0.25229999999999675,
+        "healthOrigin": 65.915
+      },
+      "GEO": {
+        "gdpSlope": 0.04784115597685314,
+        "healthSlope": 0.2531000000000006,
+        "healthOrigin": 73.985
+      },
+      "ARM": {
+        "gdpSlope": 0.04874341373948674,
+        "healthSlope": 0.2595121951219568,
+        "healthOrigin": 75.619512195122
+      },
+      "PSE": {
+        "gdpSlope": 0.012484757701636618,
+        "healthSlope": 0.27079999999999843,
+        "healthOrigin": 75.38
+      },
+      "NGA": {
+        "gdpSlope": -0.020044956636061696,
+        "healthSlope": 0.2397999999999989,
+        "healthOrigin": 52.669
+      },
+      "ZAF": {
+        "gdpSlope": 0.0007425834441743718,
+        "healthSlope": 0.5692000000000007,
+        "healthOrigin": 65.726
+      },
+      "EGY": {
+        "gdpSlope": 0.0249425746269214,
+        "healthSlope": 0.27890000000000015,
+        "healthOrigin": 70.974
+      },
+      "ETH": {
+        "gdpSlope": 0.05624698458159747,
+        "healthSlope": 0.5599000000000018,
+        "healthOrigin": 65.257
+      },
+      "KEN": {
+        "gdpSlope": 0.022516397601449432,
+        "healthSlope": 0.1836999999999996,
+        "healthOrigin": 62.825
+      },
+      "COD": {
+        "gdpSlope": 0.00018541322207896727,
+        "healthSlope": 0.4217999999999996,
+        "healthOrigin": 59.926
+      },
+      "MAR": {
+        "gdpSlope": 0.018455505420065067,
+        "healthSlope": 0.3535999999999987,
+        "healthOrigin": 73.946
+      },
+      "DZA": {
+        "gdpSlope": 0.0014954357152955565,
+        "healthSlope": 0.13089999999999974,
+        "healthOrigin": 75.555
+      },
+      "AUS": {
+        "gdpSlope": 0.009964505403092794,
+        "healthSlope": 0.10975609756097668,
+        "healthOrigin": 82.7487804878049
+      }
+    }
+  },
+  "income_only": {
+    "variant": {
+      "id": "income_only",
+      "health": false,
+      "saturation": false
+    },
+    "cutoff": 2018,
+    "k": 8291.758237791819,
+    "lambda": 0.1,
+    "phi": 0.8,
+    "n": 298,
+    "scaleGdp": 0.03653227936266831,
+    "scaleHealth": 1,
+    "betaGdp": 0.02891937908835189,
+    "betaHealth": 0.0,
+    "covariates": {
+      "USA": {
+        "gdpSlope": 0.017003193103758463,
+        "healthSlope": -0.015365853658526874,
+        "healthOrigin": 78.6390243902439
+      },
+      "CAN": {
+        "gdpSlope": 0.010696496179194525,
+        "healthSlope": -0.019878048780479673,
+        "healthOrigin": 81.8036585365854
+      },
+      "MEX": {
+        "gdpSlope": 0.009059140561383749,
+        "healthSlope": -0.050499999999999545,
+        "healthOrigin": 74.301
+      },
+      "GTM": {
+        "gdpSlope": 0.012310815432938327,
+        "healthSlope": 0.21109999999999615,
+        "healthOrigin": 71.496
+      },
+      "HTI": {
+        "gdpSlope": 0.006641972556453357,
+        "healthSlope": 0.30660000000000026,
+        "healthOrigin": 64.077
+      },
+      "DOM": {
+        "gdpSlope": 0.04460747043067155,
+        "healthSlope": 0.22000000000000314,
+        "healthOrigin": 73.555
+      },
+      "HND": {
+        "gdpSlope": 0.023170421225883066,
+        "healthSlope": 0.22240000000000465,
+        "healthOrigin": 72.001
+      },
+      "NIC": {
+        "gdpSlope": 0.007913495737784704,
+        "healthSlope": 0.31490000000000007,
+        "healthOrigin": 73.879
+      },
+      "SLV": {
+        "gdpSlope": 0.021611511686058904,
+        "healthSlope": 0.139500000000001,
+        "healthOrigin": 71.384
+      },
+      "CRI": {
+        "gdpSlope": 0.0275641346857352,
+        "healthSlope": -0.09449999999999789,
+        "healthOrigin": 80.09
+      },
+      "PAN": {
+        "gdpSlope": 0.030224306955833845,
+        "healthSlope": 0.21780000000000116,
+        "healthOrigin": 78.266
+      },
+      "BRA": {
+        "gdpSlope": -0.00668093239686538,
+        "healthSlope": 0.18829999999999955,
+        "healthOrigin": 75.633
+      },
+      "ARG": {
+        "gdpSlope": -0.01204617835531625,
+        "healthSlope": 0.09480000000000074,
+        "healthOrigin": 76.77
+      },
+      "COL": {
+        "gdpSlope": 0.004899525978365205,
+        "healthSlope": 0.17260000000000134,
+        "healthOrigin": 76.579
+      },
+      "CHL": {
+        "gdpSlope": 0.0070250504720309696,
+        "healthSlope": 0.19680000000000036,
+        "healthOrigin": 80.559
+      },
+      "PER": {
+        "gdpSlope": 0.017928079262916796,
+        "healthSlope": 0.08650000000000091,
+        "healthOrigin": 76.018
+      },
+      "ECU": {
+        "gdpSlope": 0.008602199392287523,
+        "healthSlope": 0.3204000000000036,
+        "healthOrigin": 77.248
+      },
+      "BOL": {
+        "gdpSlope": 0.022833894976240464,
+        "healthSlope": 0.16260000000000047,
+        "healthOrigin": 67.699
+      },
+      "PRY": {
+        "gdpSlope": 0.02657880479166739,
+        "healthSlope": 0.04820000000000135,
+        "healthOrigin": 73.627
+      },
+      "URY": {
+        "gdpSlope": 0.009799334206493171,
+        "healthSlope": 0.09930000000000092,
+        "healthOrigin": 77.527
+      },
+      "RUS": {
+        "gdpSlope": 0.014174297712460237,
+        "healthSlope": 0.5236585365853799,
+        "healthOrigin": 72.6621951219512
+      },
+      "GBR": {
+        "gdpSlope": 0.017054655732150436,
+        "healthSlope": 0.1,
+        "healthOrigin": 81.2560975609756
+      },
+      "FRA": {
+        "gdpSlope": 0.012687512442926163,
+        "healthSlope": 0.10634146341465112,
+        "healthOrigin": 82.6756097560976
+      },
+      "DEU": {
+        "gdpSlope": 0.016201345854988246,
+        "healthSlope": 0.07560975609758742,
+        "healthOrigin": 80.8926829268293
+      },
+      "ITA": {
+        "gdpSlope": 0.014468037921847633,
+        "healthSlope": 0.21097560975609325,
+        "healthOrigin": 83.3463414634146
+      },
+      "ESP": {
+        "gdpSlope": 0.024582776216462855,
+        "healthSlope": 0.17536585365854335,
+        "healthOrigin": 83.4317073170732
+      },
+      "NLD": {
+        "gdpSlope": 0.019147842254889545,
+        "healthSlope": 0.11073170731706342,
+        "healthOrigin": 81.8121951219512
+      },
+      "SWE": {
+        "gdpSlope": 0.00640785476450354,
+        "healthSlope": 0.11634146341465054,
+        "healthOrigin": 82.5585365853659
+      },
+      "BEL": {
+        "gdpSlope": 0.010570412961201647,
+        "healthSlope": 0.18609756097559824,
+        "healthOrigin": 81.5951219512195
+      },
+      "AUT": {
+        "gdpSlope": 0.015150338367473282,
+        "healthSlope": 0.15097560975611374,
+        "healthOrigin": 81.6926829268293
+      },
+      "POL": {
+        "gdpSlope": 0.047310199477076334,
+        "healthSlope": 0.03560975609759396,
+        "healthOrigin": 77.6024390243903
+      },
+      "NOR": {
+        "gdpSlope": 0.009847418715161104,
+        "healthSlope": 0.15634146341465255,
+        "healthOrigin": 82.7585365853659
+      },
+      "CHE": {
+        "gdpSlope": 0.01192325972832684,
+        "healthSlope": 0.25170731707315924,
+        "healthOrigin": 83.7536585365854
+      },
+      "IRL": {
+        "gdpSlope": 0.050782263362993164,
+        "healthSlope": 0.2756097560975519,
+        "healthOrigin": 82.2048780487805
+      },
+      "DNK": {
+        "gdpSlope": 0.0202497733751148,
+        "healthSlope": 0.10024390243904832,
+        "healthOrigin": 80.9536585365854
+      },
+      "FIN": {
+        "gdpSlope": 0.021977057942570967,
+        "healthSlope": 0.09634146341462042,
+        "healthOrigin": 81.7341463414634
+      },
+      "PRT": {
+        "gdpSlope": 0.030110230169298192,
+        "healthSlope": 0.08999999999997073,
+        "healthOrigin": 81.3243902439024
+      },
+      "GRC": {
+        "gdpSlope": 0.014532571705869657,
+        "healthSlope": 0.21536585365853256,
+        "healthOrigin": 81.7878048780488
+      },
+      "CZE": {
+        "gdpSlope": 0.0335520851503345,
+        "healthSlope": 0.1304878048780381,
+        "healthOrigin": 79.0292682926829
+      },
+      "HUN": {
+        "gdpSlope": 0.042889266965232764,
+        "healthSlope": 0.12463414634144102,
+        "healthOrigin": 76.0658536585366
+      },
+      "ROU": {
+        "gdpSlope": 0.06152478904148832,
+        "healthSlope": 0.13390243902440915,
+        "healthOrigin": 75.3585365853659
+      },
+      "UKR": {
+        "gdpSlope": 0.03203050638769458,
+        "healthSlope": 0.3252999999999986,
+        "healthOrigin": 73.569
+      },
+      "BLR": {
+        "gdpSlope": 0.012445213295005964,
+        "healthSlope": 0.19560975609755077,
+        "healthOrigin": 74.1756097560976
+      },
+      "SRB": {
+        "gdpSlope": 0.037111443087650645,
+        "healthSlope": 0.1658536585365681,
+        "healthOrigin": 75.890243902439
+      },
+      "ISL": {
+        "gdpSlope": 0.023885371312169924,
+        "healthSlope": 0.16341463414634774,
+        "healthOrigin": 82.8609756097561
+      },
+      "EST": {
+        "gdpSlope": 0.04034800309790896,
+        "healthSlope": 0.24121951219512852,
+        "healthOrigin": 78.2439024390244
+      },
+      "LVA": {
+        "gdpSlope": 0.042211087664070134,
+        "healthSlope": 0.09560975609755218,
+        "healthOrigin": 74.7829268292683
+      },
+      "LTU": {
+        "gdpSlope": 0.0511875401344998,
+        "healthSlope": 0.48853658536586836,
+        "healthOrigin": 75.6804878048781
+      },
+      "SVK": {
+        "gdpSlope": 0.02764637057024668,
+        "healthSlope": 0.2107317073170904,
+        "healthOrigin": 77.2658536585366
+      },
+      "SVN": {
+        "gdpSlope": 0.04043751997309926,
+        "healthSlope": 0.16609756097559228,
+        "healthOrigin": 81.3780487804878
+      },
+      "HRV": {
+        "gdpSlope": 0.04537459299015687,
+        "healthSlope": 0.17365853658537134,
+        "healthOrigin": 77.919512195122
+      },
+      "BIH": {
+        "gdpSlope": 0.04633024846066132,
+        "healthSlope": 0.28680000000000094,
+        "healthOrigin": 77.942
+      },
+      "MNE": {
+        "gdpSlope": 0.03572403104345749,
+        "healthSlope": 0.3992682926828877,
+        "healthOrigin": 77.8853658536585
+      },
+      "MKD": {
+        "gdpSlope": 0.025341160913190386,
+        "healthSlope": 0.4292682926829471,
+        "healthOrigin": 76.6487804878049
+      },
+      "ALB": {
+        "gdpSlope": 0.05067333180093332,
+        "healthSlope": 0.2896999999999991,
+        "healthOrigin": 79.238
+      },
+      "BGR": {
+        "gdpSlope": 0.03999581564659867,
+        "healthSlope": 0.10487804878050042,
+        "healthOrigin": 74.9634146341464
+      },
+      "MDA": {
+        "gdpSlope": 0.05763961247838898,
+        "healthSlope": 0.05500000000000256,
+        "healthOrigin": 70.236
+      },
+      "LUX": {
+        "gdpSlope": 0.0026278247848532388,
+        "healthSlope": -0.0582926829268402,
+        "healthOrigin": 82.2951219512195
+      },
+      "CYP": {
+        "gdpSlope": 0.051272730526454244,
+        "healthSlope": 0.028499999999999658,
+        "healthOrigin": 81.556
+      },
+      "MLT": {
+        "gdpSlope": 0.053200281663214354,
+        "healthSlope": 0.11951219512193915,
+        "healthOrigin": 82.2487804878049
+      },
+      "CHN": {
+        "gdpSlope": 0.06039370266778334,
+        "healthSlope": 0.22230000000000275,
+        "healthOrigin": 77.709
+      },
+      "JPN": {
+        "gdpSlope": 0.011902795455796067,
+        "healthSlope": 0.1366097560975632,
+        "healthOrigin": 84.2109756097561
+      },
+      "KOR": {
+        "gdpSlope": 0.028634287309539097,
+        "healthSlope": 0.21585365853659794,
+        "healthOrigin": 82.6268292682927
+      },
+      "MNG": {
+        "gdpSlope": 0.029370500809498525,
+        "healthSlope": 0.036999999999999034,
+        "healthOrigin": 70.8270731707317
+      },
+      "VNM": {
+        "gdpSlope": 0.05578532424509932,
+        "healthSlope": 0.047699999999998965,
+        "healthOrigin": 74.1
+      },
+      "IDN": {
+        "gdpSlope": 0.03942594598349469,
+        "healthSlope": 0.19000000000000056,
+        "healthOrigin": 70.08
+      },
+      "PHL": {
+        "gdpSlope": 0.05307780621642148,
+        "healthSlope": 0.14089999999999775,
+        "healthOrigin": 69.761
+      },
+      "THA": {
+        "gdpSlope": 0.03495749175029559,
+        "healthSlope": 0.21009999999999848,
+        "healthOrigin": 77.19
+      },
+      "MYS": {
+        "gdpSlope": 0.03238366790969387,
+        "healthSlope": 0.15090000000000003,
+        "healthOrigin": 75.734
+      },
+      "MMR": {
+        "gdpSlope": 0.05151179747254151,
+        "healthSlope": 0.3101000000000013,
+        "healthOrigin": 66.232
+      },
+      "LAO": {
+        "gdpSlope": 0.04973042601230196,
+        "healthSlope": 0.30489999999999784,
+        "healthOrigin": 67.594
+      },
+      "TLS": {
+        "gdpSlope": 0.0,
+        "healthSlope": 0.2921999999999997,
+        "healthOrigin": 66.204
+      },
+      "IND": {
+        "gdpSlope": 0.05734327846396381,
+        "healthSlope": 0.3626000000000033,
+        "healthOrigin": 70.415
+      },
+      "PAK": {
+        "gdpSlope": 0.039924819161646766,
+        "healthSlope": 0.27999999999999686,
+        "healthOrigin": 66.481
+      },
+      "BGD": {
+        "gdpSlope": 0.058792310253070745,
+        "healthSlope": 0.5267999999999973,
+        "healthOrigin": 72.122
+      },
+      "LKA": {
+        "gdpSlope": 0.035689178984980606,
+        "healthSlope": 0.15880000000000222,
+        "healthOrigin": 76.485
+      },
+      "NPL": {
+        "gdpSlope": 0.054774091728383656,
+        "healthSlope": 0.5282000000000011,
+        "healthOrigin": 69.036
+      },
+      "BTN": {
+        "gdpSlope": 0.034478635565652206,
+        "healthSlope": 0.30360000000000015,
+        "healthOrigin": 71.711
+      },
+      "KAZ": {
+        "gdpSlope": 0.016094782052090473,
+        "healthSlope": 0.4481999999999985,
+        "healthOrigin": 73.369
+      },
+      "KGZ": {
+        "gdpSlope": 0.020794296698715263,
+        "healthSlope": 0.24951219512196304,
+        "healthOrigin": 71.4
+      },
+      "TJK": {
+        "gdpSlope": 0.044787975688083834,
+        "healthSlope": 0.3757999999999967,
+        "healthOrigin": 70.737
+      },
+      "TUR": {
+        "gdpSlope": 0.03689179358986276,
+        "healthSlope": 0.3186999999999983,
+        "healthOrigin": 77.454
+      },
+      "IRN": {
+        "gdpSlope": 0.011930718084909132,
+        "healthSlope": 0.23829999999999957,
+        "healthOrigin": 76.621
+      },
+      "IRQ": {
+        "gdpSlope": 0.016107841168587277,
+        "healthSlope": 0.4521999999999977,
+        "healthOrigin": 71.116
+      },
+      "ARE": {
+        "gdpSlope": -0.014656943530073362,
+        "healthSlope": 0.1312000000000026,
+        "healthOrigin": 82.449
+      },
+      "ISR": {
+        "gdpSlope": 0.022822103127937688,
+        "healthSlope": 0.23975609756099772,
+        "healthOrigin": 82.8024390243903
+      },
+      "JOR": {
+        "gdpSlope": -0.008101816197494926,
+        "healthSlope": 0.4813999999999993,
+        "healthOrigin": 76.491
+      },
+      "LBN": {
+        "gdpSlope": 0.0286607203616569,
+        "healthSlope": -0.015000000000000568,
+        "healthOrigin": 78.263
+      },
+      "YEM": {
+        "gdpSlope": -0.07803973257768142,
+        "healthSlope": -0.25229999999999675,
+        "healthOrigin": 65.915
+      },
+      "GEO": {
+        "gdpSlope": 0.04784115597685314,
+        "healthSlope": 0.2531000000000006,
+        "healthOrigin": 73.985
+      },
+      "ARM": {
+        "gdpSlope": 0.04874341373948674,
+        "healthSlope": 0.2595121951219568,
+        "healthOrigin": 75.619512195122
+      },
+      "PSE": {
+        "gdpSlope": 0.012484757701636618,
+        "healthSlope": 0.27079999999999843,
+        "healthOrigin": 75.38
+      },
+      "NGA": {
+        "gdpSlope": -0.020044956636061696,
+        "healthSlope": 0.2397999999999989,
+        "healthOrigin": 52.669
+      },
+      "ZAF": {
+        "gdpSlope": 0.0007425834441743718,
+        "healthSlope": 0.5692000000000007,
+        "healthOrigin": 65.726
+      },
+      "EGY": {
+        "gdpSlope": 0.0249425746269214,
+        "healthSlope": 0.27890000000000015,
+        "healthOrigin": 70.974
+      },
+      "ETH": {
+        "gdpSlope": 0.05624698458159747,
+        "healthSlope": 0.5599000000000018,
+        "healthOrigin": 65.257
+      },
+      "KEN": {
+        "gdpSlope": 0.022516397601449432,
+        "healthSlope": 0.1836999999999996,
+        "healthOrigin": 62.825
+      },
+      "COD": {
+        "gdpSlope": 0.00018541322207896727,
+        "healthSlope": 0.4217999999999996,
+        "healthOrigin": 59.926
+      },
+      "MAR": {
+        "gdpSlope": 0.018455505420065067,
+        "healthSlope": 0.3535999999999987,
+        "healthOrigin": 73.946
+      },
+      "DZA": {
+        "gdpSlope": 0.0014954357152955565,
+        "healthSlope": 0.13089999999999974,
+        "healthOrigin": 75.555
+      },
+      "AUS": {
+        "gdpSlope": 0.009964505403092794,
+        "healthSlope": 0.10975609756097668,
+        "healthOrigin": 82.7487804878049
+      }
+    }
+  },
+  "saturated_health": {
+    "variant": {
+      "id": "saturated_health",
+      "health": true,
+      "saturation": true
+    },
+    "cutoff": 2018,
+    "k": 8291.758237791819,
+    "lambda": 0.1,
+    "phi": 0.8,
+    "n": 298,
+    "scaleGdp": 0.022970623281537296,
+    "scaleHealth": 0.3469180293564787,
+    "betaGdp": 0.022204523345090793,
+    "betaHealth": -0.0013058659407052709,
+    "covariates": {
+      "USA": {
+        "gdpSlope": 0.017003193103758463,
+        "healthSlope": -0.015365853658526874,
+        "healthOrigin": 78.6390243902439
+      },
+      "CAN": {
+        "gdpSlope": 0.010696496179194525,
+        "healthSlope": -0.019878048780479673,
+        "healthOrigin": 81.8036585365854
+      },
+      "MEX": {
+        "gdpSlope": 0.009059140561383749,
+        "healthSlope": -0.050499999999999545,
+        "healthOrigin": 74.301
+      },
+      "GTM": {
+        "gdpSlope": 0.012310815432938327,
+        "healthSlope": 0.21109999999999615,
+        "healthOrigin": 71.496
+      },
+      "HTI": {
+        "gdpSlope": 0.006641972556453357,
+        "healthSlope": 0.30660000000000026,
+        "healthOrigin": 64.077
+      },
+      "DOM": {
+        "gdpSlope": 0.04460747043067155,
+        "healthSlope": 0.22000000000000314,
+        "healthOrigin": 73.555
+      },
+      "HND": {
+        "gdpSlope": 0.023170421225883066,
+        "healthSlope": 0.22240000000000465,
+        "healthOrigin": 72.001
+      },
+      "NIC": {
+        "gdpSlope": 0.007913495737784704,
+        "healthSlope": 0.31490000000000007,
+        "healthOrigin": 73.879
+      },
+      "SLV": {
+        "gdpSlope": 0.021611511686058904,
+        "healthSlope": 0.139500000000001,
+        "healthOrigin": 71.384
+      },
+      "CRI": {
+        "gdpSlope": 0.0275641346857352,
+        "healthSlope": -0.09449999999999789,
+        "healthOrigin": 80.09
+      },
+      "PAN": {
+        "gdpSlope": 0.030224306955833845,
+        "healthSlope": 0.21780000000000116,
+        "healthOrigin": 78.266
+      },
+      "BRA": {
+        "gdpSlope": -0.00668093239686538,
+        "healthSlope": 0.18829999999999955,
+        "healthOrigin": 75.633
+      },
+      "ARG": {
+        "gdpSlope": -0.01204617835531625,
+        "healthSlope": 0.09480000000000074,
+        "healthOrigin": 76.77
+      },
+      "COL": {
+        "gdpSlope": 0.004899525978365205,
+        "healthSlope": 0.17260000000000134,
+        "healthOrigin": 76.579
+      },
+      "CHL": {
+        "gdpSlope": 0.0070250504720309696,
+        "healthSlope": 0.19680000000000036,
+        "healthOrigin": 80.559
+      },
+      "PER": {
+        "gdpSlope": 0.017928079262916796,
+        "healthSlope": 0.08650000000000091,
+        "healthOrigin": 76.018
+      },
+      "ECU": {
+        "gdpSlope": 0.008602199392287523,
+        "healthSlope": 0.3204000000000036,
+        "healthOrigin": 77.248
+      },
+      "BOL": {
+        "gdpSlope": 0.022833894976240464,
+        "healthSlope": 0.16260000000000047,
+        "healthOrigin": 67.699
+      },
+      "PRY": {
+        "gdpSlope": 0.02657880479166739,
+        "healthSlope": 0.04820000000000135,
+        "healthOrigin": 73.627
+      },
+      "URY": {
+        "gdpSlope": 0.009799334206493171,
+        "healthSlope": 0.09930000000000092,
+        "healthOrigin": 77.527
+      },
+      "RUS": {
+        "gdpSlope": 0.014174297712460237,
+        "healthSlope": 0.5236585365853799,
+        "healthOrigin": 72.6621951219512
+      },
+      "GBR": {
+        "gdpSlope": 0.017054655732150436,
+        "healthSlope": 0.1,
+        "healthOrigin": 81.2560975609756
+      },
+      "FRA": {
+        "gdpSlope": 0.012687512442926163,
+        "healthSlope": 0.10634146341465112,
+        "healthOrigin": 82.6756097560976
+      },
+      "DEU": {
+        "gdpSlope": 0.016201345854988246,
+        "healthSlope": 0.07560975609758742,
+        "healthOrigin": 80.8926829268293
+      },
+      "ITA": {
+        "gdpSlope": 0.014468037921847633,
+        "healthSlope": 0.21097560975609325,
+        "healthOrigin": 83.3463414634146
+      },
+      "ESP": {
+        "gdpSlope": 0.024582776216462855,
+        "healthSlope": 0.17536585365854335,
+        "healthOrigin": 83.4317073170732
+      },
+      "NLD": {
+        "gdpSlope": 0.019147842254889545,
+        "healthSlope": 0.11073170731706342,
+        "healthOrigin": 81.8121951219512
+      },
+      "SWE": {
+        "gdpSlope": 0.00640785476450354,
+        "healthSlope": 0.11634146341465054,
+        "healthOrigin": 82.5585365853659
+      },
+      "BEL": {
+        "gdpSlope": 0.010570412961201647,
+        "healthSlope": 0.18609756097559824,
+        "healthOrigin": 81.5951219512195
+      },
+      "AUT": {
+        "gdpSlope": 0.015150338367473282,
+        "healthSlope": 0.15097560975611374,
+        "healthOrigin": 81.6926829268293
+      },
+      "POL": {
+        "gdpSlope": 0.047310199477076334,
+        "healthSlope": 0.03560975609759396,
+        "healthOrigin": 77.6024390243903
+      },
+      "NOR": {
+        "gdpSlope": 0.009847418715161104,
+        "healthSlope": 0.15634146341465255,
+        "healthOrigin": 82.7585365853659
+      },
+      "CHE": {
+        "gdpSlope": 0.01192325972832684,
+        "healthSlope": 0.25170731707315924,
+        "healthOrigin": 83.7536585365854
+      },
+      "IRL": {
+        "gdpSlope": 0.050782263362993164,
+        "healthSlope": 0.2756097560975519,
+        "healthOrigin": 82.2048780487805
+      },
+      "DNK": {
+        "gdpSlope": 0.0202497733751148,
+        "healthSlope": 0.10024390243904832,
+        "healthOrigin": 80.9536585365854
+      },
+      "FIN": {
+        "gdpSlope": 0.021977057942570967,
+        "healthSlope": 0.09634146341462042,
+        "healthOrigin": 81.7341463414634
+      },
+      "PRT": {
+        "gdpSlope": 0.030110230169298192,
+        "healthSlope": 0.08999999999997073,
+        "healthOrigin": 81.3243902439024
+      },
+      "GRC": {
+        "gdpSlope": 0.014532571705869657,
+        "healthSlope": 0.21536585365853256,
+        "healthOrigin": 81.7878048780488
+      },
+      "CZE": {
+        "gdpSlope": 0.0335520851503345,
+        "healthSlope": 0.1304878048780381,
+        "healthOrigin": 79.0292682926829
+      },
+      "HUN": {
+        "gdpSlope": 0.042889266965232764,
+        "healthSlope": 0.12463414634144102,
+        "healthOrigin": 76.0658536585366
+      },
+      "ROU": {
+        "gdpSlope": 0.06152478904148832,
+        "healthSlope": 0.13390243902440915,
+        "healthOrigin": 75.3585365853659
+      },
+      "UKR": {
+        "gdpSlope": 0.03203050638769458,
+        "healthSlope": 0.3252999999999986,
+        "healthOrigin": 73.569
+      },
+      "BLR": {
+        "gdpSlope": 0.012445213295005964,
+        "healthSlope": 0.19560975609755077,
+        "healthOrigin": 74.1756097560976
+      },
+      "SRB": {
+        "gdpSlope": 0.037111443087650645,
+        "healthSlope": 0.1658536585365681,
+        "healthOrigin": 75.890243902439
+      },
+      "ISL": {
+        "gdpSlope": 0.023885371312169924,
+        "healthSlope": 0.16341463414634774,
+        "healthOrigin": 82.8609756097561
+      },
+      "EST": {
+        "gdpSlope": 0.04034800309790896,
+        "healthSlope": 0.24121951219512852,
+        "healthOrigin": 78.2439024390244
+      },
+      "LVA": {
+        "gdpSlope": 0.042211087664070134,
+        "healthSlope": 0.09560975609755218,
+        "healthOrigin": 74.7829268292683
+      },
+      "LTU": {
+        "gdpSlope": 0.0511875401344998,
+        "healthSlope": 0.48853658536586836,
+        "healthOrigin": 75.6804878048781
+      },
+      "SVK": {
+        "gdpSlope": 0.02764637057024668,
+        "healthSlope": 0.2107317073170904,
+        "healthOrigin": 77.2658536585366
+      },
+      "SVN": {
+        "gdpSlope": 0.04043751997309926,
+        "healthSlope": 0.16609756097559228,
+        "healthOrigin": 81.3780487804878
+      },
+      "HRV": {
+        "gdpSlope": 0.04537459299015687,
+        "healthSlope": 0.17365853658537134,
+        "healthOrigin": 77.919512195122
+      },
+      "BIH": {
+        "gdpSlope": 0.04633024846066132,
+        "healthSlope": 0.28680000000000094,
+        "healthOrigin": 77.942
+      },
+      "MNE": {
+        "gdpSlope": 0.03572403104345749,
+        "healthSlope": 0.3992682926828877,
+        "healthOrigin": 77.8853658536585
+      },
+      "MKD": {
+        "gdpSlope": 0.025341160913190386,
+        "healthSlope": 0.4292682926829471,
+        "healthOrigin": 76.6487804878049
+      },
+      "ALB": {
+        "gdpSlope": 0.05067333180093332,
+        "healthSlope": 0.2896999999999991,
+        "healthOrigin": 79.238
+      },
+      "BGR": {
+        "gdpSlope": 0.03999581564659867,
+        "healthSlope": 0.10487804878050042,
+        "healthOrigin": 74.9634146341464
+      },
+      "MDA": {
+        "gdpSlope": 0.05763961247838898,
+        "healthSlope": 0.05500000000000256,
+        "healthOrigin": 70.236
+      },
+      "LUX": {
+        "gdpSlope": 0.0026278247848532388,
+        "healthSlope": -0.0582926829268402,
+        "healthOrigin": 82.2951219512195
+      },
+      "CYP": {
+        "gdpSlope": 0.051272730526454244,
+        "healthSlope": 0.028499999999999658,
+        "healthOrigin": 81.556
+      },
+      "MLT": {
+        "gdpSlope": 0.053200281663214354,
+        "healthSlope": 0.11951219512193915,
+        "healthOrigin": 82.2487804878049
+      },
+      "CHN": {
+        "gdpSlope": 0.06039370266778334,
+        "healthSlope": 0.22230000000000275,
+        "healthOrigin": 77.709
+      },
+      "JPN": {
+        "gdpSlope": 0.011902795455796067,
+        "healthSlope": 0.1366097560975632,
+        "healthOrigin": 84.2109756097561
+      },
+      "KOR": {
+        "gdpSlope": 0.028634287309539097,
+        "healthSlope": 0.21585365853659794,
+        "healthOrigin": 82.6268292682927
+      },
+      "MNG": {
+        "gdpSlope": 0.029370500809498525,
+        "healthSlope": 0.036999999999999034,
+        "healthOrigin": 70.8270731707317
+      },
+      "VNM": {
+        "gdpSlope": 0.05578532424509932,
+        "healthSlope": 0.047699999999998965,
+        "healthOrigin": 74.1
+      },
+      "IDN": {
+        "gdpSlope": 0.03942594598349469,
+        "healthSlope": 0.19000000000000056,
+        "healthOrigin": 70.08
+      },
+      "PHL": {
+        "gdpSlope": 0.05307780621642148,
+        "healthSlope": 0.14089999999999775,
+        "healthOrigin": 69.761
+      },
+      "THA": {
+        "gdpSlope": 0.03495749175029559,
+        "healthSlope": 0.21009999999999848,
+        "healthOrigin": 77.19
+      },
+      "MYS": {
+        "gdpSlope": 0.03238366790969387,
+        "healthSlope": 0.15090000000000003,
+        "healthOrigin": 75.734
+      },
+      "MMR": {
+        "gdpSlope": 0.05151179747254151,
+        "healthSlope": 0.3101000000000013,
+        "healthOrigin": 66.232
+      },
+      "LAO": {
+        "gdpSlope": 0.04973042601230196,
+        "healthSlope": 0.30489999999999784,
+        "healthOrigin": 67.594
+      },
+      "TLS": {
+        "gdpSlope": 0.0,
+        "healthSlope": 0.2921999999999997,
+        "healthOrigin": 66.204
+      },
+      "IND": {
+        "gdpSlope": 0.05734327846396381,
+        "healthSlope": 0.3626000000000033,
+        "healthOrigin": 70.415
+      },
+      "PAK": {
+        "gdpSlope": 0.039924819161646766,
+        "healthSlope": 0.27999999999999686,
+        "healthOrigin": 66.481
+      },
+      "BGD": {
+        "gdpSlope": 0.058792310253070745,
+        "healthSlope": 0.5267999999999973,
+        "healthOrigin": 72.122
+      },
+      "LKA": {
+        "gdpSlope": 0.035689178984980606,
+        "healthSlope": 0.15880000000000222,
+        "healthOrigin": 76.485
+      },
+      "NPL": {
+        "gdpSlope": 0.054774091728383656,
+        "healthSlope": 0.5282000000000011,
+        "healthOrigin": 69.036
+      },
+      "BTN": {
+        "gdpSlope": 0.034478635565652206,
+        "healthSlope": 0.30360000000000015,
+        "healthOrigin": 71.711
+      },
+      "KAZ": {
+        "gdpSlope": 0.016094782052090473,
+        "healthSlope": 0.4481999999999985,
+        "healthOrigin": 73.369
+      },
+      "KGZ": {
+        "gdpSlope": 0.020794296698715263,
+        "healthSlope": 0.24951219512196304,
+        "healthOrigin": 71.4
+      },
+      "TJK": {
+        "gdpSlope": 0.044787975688083834,
+        "healthSlope": 0.3757999999999967,
+        "healthOrigin": 70.737
+      },
+      "TUR": {
+        "gdpSlope": 0.03689179358986276,
+        "healthSlope": 0.3186999999999983,
+        "healthOrigin": 77.454
+      },
+      "IRN": {
+        "gdpSlope": 0.011930718084909132,
+        "healthSlope": 0.23829999999999957,
+        "healthOrigin": 76.621
+      },
+      "IRQ": {
+        "gdpSlope": 0.016107841168587277,
+        "healthSlope": 0.4521999999999977,
+        "healthOrigin": 71.116
+      },
+      "ARE": {
+        "gdpSlope": -0.014656943530073362,
+        "healthSlope": 0.1312000000000026,
+        "healthOrigin": 82.449
+      },
+      "ISR": {
+        "gdpSlope": 0.022822103127937688,
+        "healthSlope": 0.23975609756099772,
+        "healthOrigin": 82.8024390243903
+      },
+      "JOR": {
+        "gdpSlope": -0.008101816197494926,
+        "healthSlope": 0.4813999999999993,
+        "healthOrigin": 76.491
+      },
+      "LBN": {
+        "gdpSlope": 0.0286607203616569,
+        "healthSlope": -0.015000000000000568,
+        "healthOrigin": 78.263
+      },
+      "YEM": {
+        "gdpSlope": -0.07803973257768142,
+        "healthSlope": -0.25229999999999675,
+        "healthOrigin": 65.915
+      },
+      "GEO": {
+        "gdpSlope": 0.04784115597685314,
+        "healthSlope": 0.2531000000000006,
+        "healthOrigin": 73.985
+      },
+      "ARM": {
+        "gdpSlope": 0.04874341373948674,
+        "healthSlope": 0.2595121951219568,
+        "healthOrigin": 75.619512195122
+      },
+      "PSE": {
+        "gdpSlope": 0.012484757701636618,
+        "healthSlope": 0.27079999999999843,
+        "healthOrigin": 75.38
+      },
+      "NGA": {
+        "gdpSlope": -0.020044956636061696,
+        "healthSlope": 0.2397999999999989,
+        "healthOrigin": 52.669
+      },
+      "ZAF": {
+        "gdpSlope": 0.0007425834441743718,
+        "healthSlope": 0.5692000000000007,
+        "healthOrigin": 65.726
+      },
+      "EGY": {
+        "gdpSlope": 0.0249425746269214,
+        "healthSlope": 0.27890000000000015,
+        "healthOrigin": 70.974
+      },
+      "ETH": {
+        "gdpSlope": 0.05624698458159747,
+        "healthSlope": 0.5599000000000018,
+        "healthOrigin": 65.257
+      },
+      "KEN": {
+        "gdpSlope": 0.022516397601449432,
+        "healthSlope": 0.1836999999999996,
+        "healthOrigin": 62.825
+      },
+      "COD": {
+        "gdpSlope": 0.00018541322207896727,
+        "healthSlope": 0.4217999999999996,
+        "healthOrigin": 59.926
+      },
+      "MAR": {
+        "gdpSlope": 0.018455505420065067,
+        "healthSlope": 0.3535999999999987,
+        "healthOrigin": 73.946
+      },
+      "DZA": {
+        "gdpSlope": 0.0014954357152955565,
+        "healthSlope": 0.13089999999999974,
+        "healthOrigin": 75.555
+      },
+      "AUS": {
+        "gdpSlope": 0.009964505403092794,
+        "healthSlope": 0.10975609756097668,
+        "healthOrigin": 82.7487804878049
+      }
+    }
+  },
+  "saturated_income": {
+    "variant": {
+      "id": "saturated_income",
+      "health": false,
+      "saturation": true
+    },
+    "cutoff": 2018,
+    "k": 8291.758237791819,
+    "lambda": 0.1,
+    "phi": 0.8,
+    "n": 298,
+    "scaleGdp": 0.022970623281537296,
+    "scaleHealth": 1,
+    "betaGdp": 0.021780849996702108,
+    "betaHealth": 0.0,
+    "covariates": {
+      "USA": {
+        "gdpSlope": 0.017003193103758463,
+        "healthSlope": -0.015365853658526874,
+        "healthOrigin": 78.6390243902439
+      },
+      "CAN": {
+        "gdpSlope": 0.010696496179194525,
+        "healthSlope": -0.019878048780479673,
+        "healthOrigin": 81.8036585365854
+      },
+      "MEX": {
+        "gdpSlope": 0.009059140561383749,
+        "healthSlope": -0.050499999999999545,
+        "healthOrigin": 74.301
+      },
+      "GTM": {
+        "gdpSlope": 0.012310815432938327,
+        "healthSlope": 0.21109999999999615,
+        "healthOrigin": 71.496
+      },
+      "HTI": {
+        "gdpSlope": 0.006641972556453357,
+        "healthSlope": 0.30660000000000026,
+        "healthOrigin": 64.077
+      },
+      "DOM": {
+        "gdpSlope": 0.04460747043067155,
+        "healthSlope": 0.22000000000000314,
+        "healthOrigin": 73.555
+      },
+      "HND": {
+        "gdpSlope": 0.023170421225883066,
+        "healthSlope": 0.22240000000000465,
+        "healthOrigin": 72.001
+      },
+      "NIC": {
+        "gdpSlope": 0.007913495737784704,
+        "healthSlope": 0.31490000000000007,
+        "healthOrigin": 73.879
+      },
+      "SLV": {
+        "gdpSlope": 0.021611511686058904,
+        "healthSlope": 0.139500000000001,
+        "healthOrigin": 71.384
+      },
+      "CRI": {
+        "gdpSlope": 0.0275641346857352,
+        "healthSlope": -0.09449999999999789,
+        "healthOrigin": 80.09
+      },
+      "PAN": {
+        "gdpSlope": 0.030224306955833845,
+        "healthSlope": 0.21780000000000116,
+        "healthOrigin": 78.266
+      },
+      "BRA": {
+        "gdpSlope": -0.00668093239686538,
+        "healthSlope": 0.18829999999999955,
+        "healthOrigin": 75.633
+      },
+      "ARG": {
+        "gdpSlope": -0.01204617835531625,
+        "healthSlope": 0.09480000000000074,
+        "healthOrigin": 76.77
+      },
+      "COL": {
+        "gdpSlope": 0.004899525978365205,
+        "healthSlope": 0.17260000000000134,
+        "healthOrigin": 76.579
+      },
+      "CHL": {
+        "gdpSlope": 0.0070250504720309696,
+        "healthSlope": 0.19680000000000036,
+        "healthOrigin": 80.559
+      },
+      "PER": {
+        "gdpSlope": 0.017928079262916796,
+        "healthSlope": 0.08650000000000091,
+        "healthOrigin": 76.018
+      },
+      "ECU": {
+        "gdpSlope": 0.008602199392287523,
+        "healthSlope": 0.3204000000000036,
+        "healthOrigin": 77.248
+      },
+      "BOL": {
+        "gdpSlope": 0.022833894976240464,
+        "healthSlope": 0.16260000000000047,
+        "healthOrigin": 67.699
+      },
+      "PRY": {
+        "gdpSlope": 0.02657880479166739,
+        "healthSlope": 0.04820000000000135,
+        "healthOrigin": 73.627
+      },
+      "URY": {
+        "gdpSlope": 0.009799334206493171,
+        "healthSlope": 0.09930000000000092,
+        "healthOrigin": 77.527
+      },
+      "RUS": {
+        "gdpSlope": 0.014174297712460237,
+        "healthSlope": 0.5236585365853799,
+        "healthOrigin": 72.6621951219512
+      },
+      "GBR": {
+        "gdpSlope": 0.017054655732150436,
+        "healthSlope": 0.1,
+        "healthOrigin": 81.2560975609756
+      },
+      "FRA": {
+        "gdpSlope": 0.012687512442926163,
+        "healthSlope": 0.10634146341465112,
+        "healthOrigin": 82.6756097560976
+      },
+      "DEU": {
+        "gdpSlope": 0.016201345854988246,
+        "healthSlope": 0.07560975609758742,
+        "healthOrigin": 80.8926829268293
+      },
+      "ITA": {
+        "gdpSlope": 0.014468037921847633,
+        "healthSlope": 0.21097560975609325,
+        "healthOrigin": 83.3463414634146
+      },
+      "ESP": {
+        "gdpSlope": 0.024582776216462855,
+        "healthSlope": 0.17536585365854335,
+        "healthOrigin": 83.4317073170732
+      },
+      "NLD": {
+        "gdpSlope": 0.019147842254889545,
+        "healthSlope": 0.11073170731706342,
+        "healthOrigin": 81.8121951219512
+      },
+      "SWE": {
+        "gdpSlope": 0.00640785476450354,
+        "healthSlope": 0.11634146341465054,
+        "healthOrigin": 82.5585365853659
+      },
+      "BEL": {
+        "gdpSlope": 0.010570412961201647,
+        "healthSlope": 0.18609756097559824,
+        "healthOrigin": 81.5951219512195
+      },
+      "AUT": {
+        "gdpSlope": 0.015150338367473282,
+        "healthSlope": 0.15097560975611374,
+        "healthOrigin": 81.6926829268293
+      },
+      "POL": {
+        "gdpSlope": 0.047310199477076334,
+        "healthSlope": 0.03560975609759396,
+        "healthOrigin": 77.6024390243903
+      },
+      "NOR": {
+        "gdpSlope": 0.009847418715161104,
+        "healthSlope": 0.15634146341465255,
+        "healthOrigin": 82.7585365853659
+      },
+      "CHE": {
+        "gdpSlope": 0.01192325972832684,
+        "healthSlope": 0.25170731707315924,
+        "healthOrigin": 83.7536585365854
+      },
+      "IRL": {
+        "gdpSlope": 0.050782263362993164,
+        "healthSlope": 0.2756097560975519,
+        "healthOrigin": 82.2048780487805
+      },
+      "DNK": {
+        "gdpSlope": 0.0202497733751148,
+        "healthSlope": 0.10024390243904832,
+        "healthOrigin": 80.9536585365854
+      },
+      "FIN": {
+        "gdpSlope": 0.021977057942570967,
+        "healthSlope": 0.09634146341462042,
+        "healthOrigin": 81.7341463414634
+      },
+      "PRT": {
+        "gdpSlope": 0.030110230169298192,
+        "healthSlope": 0.08999999999997073,
+        "healthOrigin": 81.3243902439024
+      },
+      "GRC": {
+        "gdpSlope": 0.014532571705869657,
+        "healthSlope": 0.21536585365853256,
+        "healthOrigin": 81.7878048780488
+      },
+      "CZE": {
+        "gdpSlope": 0.0335520851503345,
+        "healthSlope": 0.1304878048780381,
+        "healthOrigin": 79.0292682926829
+      },
+      "HUN": {
+        "gdpSlope": 0.042889266965232764,
+        "healthSlope": 0.12463414634144102,
+        "healthOrigin": 76.0658536585366
+      },
+      "ROU": {
+        "gdpSlope": 0.06152478904148832,
+        "healthSlope": 0.13390243902440915,
+        "healthOrigin": 75.3585365853659
+      },
+      "UKR": {
+        "gdpSlope": 0.03203050638769458,
+        "healthSlope": 0.3252999999999986,
+        "healthOrigin": 73.569
+      },
+      "BLR": {
+        "gdpSlope": 0.012445213295005964,
+        "healthSlope": 0.19560975609755077,
+        "healthOrigin": 74.1756097560976
+      },
+      "SRB": {
+        "gdpSlope": 0.037111443087650645,
+        "healthSlope": 0.1658536585365681,
+        "healthOrigin": 75.890243902439
+      },
+      "ISL": {
+        "gdpSlope": 0.023885371312169924,
+        "healthSlope": 0.16341463414634774,
+        "healthOrigin": 82.8609756097561
+      },
+      "EST": {
+        "gdpSlope": 0.04034800309790896,
+        "healthSlope": 0.24121951219512852,
+        "healthOrigin": 78.2439024390244
+      },
+      "LVA": {
+        "gdpSlope": 0.042211087664070134,
+        "healthSlope": 0.09560975609755218,
+        "healthOrigin": 74.7829268292683
+      },
+      "LTU": {
+        "gdpSlope": 0.0511875401344998,
+        "healthSlope": 0.48853658536586836,
+        "healthOrigin": 75.6804878048781
+      },
+      "SVK": {
+        "gdpSlope": 0.02764637057024668,
+        "healthSlope": 0.2107317073170904,
+        "healthOrigin": 77.2658536585366
+      },
+      "SVN": {
+        "gdpSlope": 0.04043751997309926,
+        "healthSlope": 0.16609756097559228,
+        "healthOrigin": 81.3780487804878
+      },
+      "HRV": {
+        "gdpSlope": 0.04537459299015687,
+        "healthSlope": 0.17365853658537134,
+        "healthOrigin": 77.919512195122
+      },
+      "BIH": {
+        "gdpSlope": 0.04633024846066132,
+        "healthSlope": 0.28680000000000094,
+        "healthOrigin": 77.942
+      },
+      "MNE": {
+        "gdpSlope": 0.03572403104345749,
+        "healthSlope": 0.3992682926828877,
+        "healthOrigin": 77.8853658536585
+      },
+      "MKD": {
+        "gdpSlope": 0.025341160913190386,
+        "healthSlope": 0.4292682926829471,
+        "healthOrigin": 76.6487804878049
+      },
+      "ALB": {
+        "gdpSlope": 0.05067333180093332,
+        "healthSlope": 0.2896999999999991,
+        "healthOrigin": 79.238
+      },
+      "BGR": {
+        "gdpSlope": 0.03999581564659867,
+        "healthSlope": 0.10487804878050042,
+        "healthOrigin": 74.9634146341464
+      },
+      "MDA": {
+        "gdpSlope": 0.05763961247838898,
+        "healthSlope": 0.05500000000000256,
+        "healthOrigin": 70.236
+      },
+      "LUX": {
+        "gdpSlope": 0.0026278247848532388,
+        "healthSlope": -0.0582926829268402,
+        "healthOrigin": 82.2951219512195
+      },
+      "CYP": {
+        "gdpSlope": 0.051272730526454244,
+        "healthSlope": 0.028499999999999658,
+        "healthOrigin": 81.556
+      },
+      "MLT": {
+        "gdpSlope": 0.053200281663214354,
+        "healthSlope": 0.11951219512193915,
+        "healthOrigin": 82.2487804878049
+      },
+      "CHN": {
+        "gdpSlope": 0.06039370266778334,
+        "healthSlope": 0.22230000000000275,
+        "healthOrigin": 77.709
+      },
+      "JPN": {
+        "gdpSlope": 0.011902795455796067,
+        "healthSlope": 0.1366097560975632,
+        "healthOrigin": 84.2109756097561
+      },
+      "KOR": {
+        "gdpSlope": 0.028634287309539097,
+        "healthSlope": 0.21585365853659794,
+        "healthOrigin": 82.6268292682927
+      },
+      "MNG": {
+        "gdpSlope": 0.029370500809498525,
+        "healthSlope": 0.036999999999999034,
+        "healthOrigin": 70.8270731707317
+      },
+      "VNM": {
+        "gdpSlope": 0.05578532424509932,
+        "healthSlope": 0.047699999999998965,
+        "healthOrigin": 74.1
+      },
+      "IDN": {
+        "gdpSlope": 0.03942594598349469,
+        "healthSlope": 0.19000000000000056,
+        "healthOrigin": 70.08
+      },
+      "PHL": {
+        "gdpSlope": 0.05307780621642148,
+        "healthSlope": 0.14089999999999775,
+        "healthOrigin": 69.761
+      },
+      "THA": {
+        "gdpSlope": 0.03495749175029559,
+        "healthSlope": 0.21009999999999848,
+        "healthOrigin": 77.19
+      },
+      "MYS": {
+        "gdpSlope": 0.03238366790969387,
+        "healthSlope": 0.15090000000000003,
+        "healthOrigin": 75.734
+      },
+      "MMR": {
+        "gdpSlope": 0.05151179747254151,
+        "healthSlope": 0.3101000000000013,
+        "healthOrigin": 66.232
+      },
+      "LAO": {
+        "gdpSlope": 0.04973042601230196,
+        "healthSlope": 0.30489999999999784,
+        "healthOrigin": 67.594
+      },
+      "TLS": {
+        "gdpSlope": 0.0,
+        "healthSlope": 0.2921999999999997,
+        "healthOrigin": 66.204
+      },
+      "IND": {
+        "gdpSlope": 0.05734327846396381,
+        "healthSlope": 0.3626000000000033,
+        "healthOrigin": 70.415
+      },
+      "PAK": {
+        "gdpSlope": 0.039924819161646766,
+        "healthSlope": 0.27999999999999686,
+        "healthOrigin": 66.481
+      },
+      "BGD": {
+        "gdpSlope": 0.058792310253070745,
+        "healthSlope": 0.5267999999999973,
+        "healthOrigin": 72.122
+      },
+      "LKA": {
+        "gdpSlope": 0.035689178984980606,
+        "healthSlope": 0.15880000000000222,
+        "healthOrigin": 76.485
+      },
+      "NPL": {
+        "gdpSlope": 0.054774091728383656,
+        "healthSlope": 0.5282000000000011,
+        "healthOrigin": 69.036
+      },
+      "BTN": {
+        "gdpSlope": 0.034478635565652206,
+        "healthSlope": 0.30360000000000015,
+        "healthOrigin": 71.711
+      },
+      "KAZ": {
+        "gdpSlope": 0.016094782052090473,
+        "healthSlope": 0.4481999999999985,
+        "healthOrigin": 73.369
+      },
+      "KGZ": {
+        "gdpSlope": 0.020794296698715263,
+        "healthSlope": 0.24951219512196304,
+        "healthOrigin": 71.4
+      },
+      "TJK": {
+        "gdpSlope": 0.044787975688083834,
+        "healthSlope": 0.3757999999999967,
+        "healthOrigin": 70.737
+      },
+      "TUR": {
+        "gdpSlope": 0.03689179358986276,
+        "healthSlope": 0.3186999999999983,
+        "healthOrigin": 77.454
+      },
+      "IRN": {
+        "gdpSlope": 0.011930718084909132,
+        "healthSlope": 0.23829999999999957,
+        "healthOrigin": 76.621
+      },
+      "IRQ": {
+        "gdpSlope": 0.016107841168587277,
+        "healthSlope": 0.4521999999999977,
+        "healthOrigin": 71.116
+      },
+      "ARE": {
+        "gdpSlope": -0.014656943530073362,
+        "healthSlope": 0.1312000000000026,
+        "healthOrigin": 82.449
+      },
+      "ISR": {
+        "gdpSlope": 0.022822103127937688,
+        "healthSlope": 0.23975609756099772,
+        "healthOrigin": 82.8024390243903
+      },
+      "JOR": {
+        "gdpSlope": -0.008101816197494926,
+        "healthSlope": 0.4813999999999993,
+        "healthOrigin": 76.491
+      },
+      "LBN": {
+        "gdpSlope": 0.0286607203616569,
+        "healthSlope": -0.015000000000000568,
+        "healthOrigin": 78.263
+      },
+      "YEM": {
+        "gdpSlope": -0.07803973257768142,
+        "healthSlope": -0.25229999999999675,
+        "healthOrigin": 65.915
+      },
+      "GEO": {
+        "gdpSlope": 0.04784115597685314,
+        "healthSlope": 0.2531000000000006,
+        "healthOrigin": 73.985
+      },
+      "ARM": {
+        "gdpSlope": 0.04874341373948674,
+        "healthSlope": 0.2595121951219568,
+        "healthOrigin": 75.619512195122
+      },
+      "PSE": {
+        "gdpSlope": 0.012484757701636618,
+        "healthSlope": 0.27079999999999843,
+        "healthOrigin": 75.38
+      },
+      "NGA": {
+        "gdpSlope": -0.020044956636061696,
+        "healthSlope": 0.2397999999999989,
+        "healthOrigin": 52.669
+      },
+      "ZAF": {
+        "gdpSlope": 0.0007425834441743718,
+        "healthSlope": 0.5692000000000007,
+        "healthOrigin": 65.726
+      },
+      "EGY": {
+        "gdpSlope": 0.0249425746269214,
+        "healthSlope": 0.27890000000000015,
+        "healthOrigin": 70.974
+      },
+      "ETH": {
+        "gdpSlope": 0.05624698458159747,
+        "healthSlope": 0.5599000000000018,
+        "healthOrigin": 65.257
+      },
+      "KEN": {
+        "gdpSlope": 0.022516397601449432,
+        "healthSlope": 0.1836999999999996,
+        "healthOrigin": 62.825
+      },
+      "COD": {
+        "gdpSlope": 0.00018541322207896727,
+        "healthSlope": 0.4217999999999996,
+        "healthOrigin": 59.926
+      },
+      "MAR": {
+        "gdpSlope": 0.018455505420065067,
+        "healthSlope": 0.3535999999999987,
+        "healthOrigin": 73.946
+      },
+      "DZA": {
+        "gdpSlope": 0.0014954357152955565,
+        "healthSlope": 0.13089999999999974,
+        "healthOrigin": 75.555
+      },
+      "AUS": {
+        "gdpSlope": 0.009964505403092794,
+        "healthSlope": 0.10975609756097668,
+        "healthOrigin": 82.7487804878049
+      }
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "status": "Predictions frozen before this diagnostic score; model forms designed after previous same-period outcomes were known.",
+  "sourceHashes": {
+    "data/evaluation/level-holdout-2018/train.json": "979ac8d45dda418403fc59e04111b9c9dbcd2fa484e4c26aa900cd37e777bd02",
+    "data/evaluation/level-holdout-2018/origin.json": "564bab92fe88415df70a1b239223213a53c12274891ec2d39f0e08c3e28e3f77",
+    "data/evaluation/research-health-2018-v1/raw/SP.DYN.LE00.IN-2015-2018.json": "1998f8e2d33bb5963592de255a10d0d0786d414d8acab49c0fb11edf5288eaa5",
+    "data/evaluation/research-health-2018-v1/calibration.json": "666efd775b9f38231583e19dd5cec4036200d2800ccde500ffd7424efbcd921c",
+    "scripts/evaluation/forecast-paths/model.py": "fc687e200b7ff9fb66fb6f6198f475f189f73bd09842c4f19d01965f4b30ff6d",
+    "scripts/evaluation/forecast-paths/freeze.py": "bfc5ed94ea9d265812092218212345dde021aab086f149ce39c6db2e02d8251d"
+  },
+  "predictionSha256": "5d2df6385bc8c3ac56bc36e91358e151108c3e80d3b17affa7a561d7f95e2158",
+  "protocolSha256": "d2608d17e29ff699661c68979789a7d8f767f2405827aa6520b9b8579c301858",
+  "controlMaxDifference": {
+    "ladder": 1.7763568394002505e-15,
+    "gdp": 1.0913936421275139e-10
+  },
+  "clamps": {
+    "health_control": {
+      "ladderClamped": 0,
+      "healthClamped": 0
+    },
+    "income_only": {
+      "ladderClamped": 0,
+      "healthClamped": 0
+    },
+    "saturated_health": {
+      "ladderClamped": 0,
+      "healthClamped": 0
+    },
+    "saturated_income": {
+      "ladderClamped": 0,
+      "healthClamped": 0
+    },
+    "diagnostic_mean": {
+      "ladderClamped": 0,
+      "healthClamped": 0
+    }
+  }
+}
