@@ -1,0 +1,121 @@
+{
+  "schema": "exploratory-comparison-plan/1",
+  "id": "comparison-20260916",
+  "createdAt": "2026-09-17T01:55:50.091502+00:00",
+  "baseCommit": "453d9e537e31a543f93aabac0c043725c36ec3fa",
+  "sourceReviewCommit": "03dde0e05f733075adabcf8dc60b981a0c0e7170",
+  "status": "Post-hoc descriptive search after all individual results and Claudes proposed blend are known. NOT a new registered holdout or confirmatory score.",
+  "models": [
+    {
+      "id": "g_offset",
+      "name": "Country offsets",
+      "pr": 24,
+      "predictionsPath": "data/evaluation/research-offset-2018-v1/predictions.json",
+      "scoresPath": "data/evaluation/research-offset-2018-v1/scores.json"
+    },
+    {
+      "id": "c_decay",
+      "name": "Decaying offsets",
+      "pr": 29,
+      "predictionsPath": "data/evaluation/offset-2018/predictions-fitted.json",
+      "scoresPath": "data/evaluation/offset-2018/scores-fitted.json"
+    },
+    {
+      "id": "g_health",
+      "name": "Health + income",
+      "pr": 27,
+      "predictionsPath": "data/evaluation/research-health-2018-v1/predictions.json",
+      "scoresPath": "data/evaluation/research-health-2018-v1/scores.json"
+    },
+    {
+      "id": "c_retained",
+      "name": "Retained offsets",
+      "pr": 29,
+      "predictionsPath": "data/evaluation/offset-2018/predictions-retained.json",
+      "scoresPath": "data/evaluation/offset-2018/scores-retained.json"
+    },
+    {
+      "id": "g_ensemble",
+      "name": "Conservative mix",
+      "pr": 28,
+      "predictionsPath": "data/evaluation/research-ensemble-2018-v1/predictions.json",
+      "scoresPath": "data/evaluation/research-ensemble-2018-v1/scores.json"
+    },
+    {
+      "id": "g_damped",
+      "name": "Damped trends",
+      "pr": 25,
+      "predictionsPath": "data/evaluation/research-damped-2018-v1/predictions.json",
+      "scoresPath": "data/evaluation/research-damped-2018-v1/scores.json"
+    },
+    {
+      "id": "g_changes",
+      "name": "Change regression",
+      "pr": 26,
+      "predictionsPath": "data/evaluation/research-changes-2018-v1/predictions.json",
+      "scoresPath": "data/evaluation/research-changes-2018-v1/scores.json"
+    },
+    {
+      "id": "legacy",
+      "name": "Original model",
+      "pr": null,
+      "predictionsPath": "data/evaluation/level-holdout-2018/predictions.json",
+      "scoresPath": "data/evaluation/level-holdout-2018/scores.json"
+    },
+    {
+      "id": "persistence",
+      "name": "Stay at 2018",
+      "pr": null,
+      "predictionsPath": null,
+      "scoresPath": null
+    }
+  ],
+  "catalog": {
+    "equalWeightSubsets": "All511 nonempty subsets of9 point forecasts, including singletons and the original/persistence comparators.",
+    "unequalPairs": "For every36 unordered pair, also25/75 and75/25 weights:72 further recipes;50/50 is already in subsets.",
+    "uniqueRecipes": 583,
+    "matrix": "9x9; diagonal individual forecast; offdiagonal equal50/50 average.",
+    "arithmetic": "Average ladder and GDP level predictions with identical recipe weights on both outputs; never average MAEs. No fitted parameters, country/horizon routing, negative weights or policy-equation integration.",
+    "scopeLimit": "Every combination in this finite declared catalog, not all real-valued weights or all possible model designs.",
+    "longObjective": "Report separately; do not blend life-expectancy years into ladder points or mix1980 and2018 origins."
+  },
+  "comparison": {
+    "cohort": "Exact original100 country origins;700 country-years. Match by(id,year), never row order. Preserve28 original exclusions.",
+    "metrics": "MAE, RMSE, bias, skill1-modelMAE/persistenceMAE; identical target-specific masks. GDP errors100*(predicted-actual)/originGDP.",
+    "primaryDisplay": "2025 endpoint, as registered by both leading entries. Pooled2019\u20132025 always alongside.",
+    "breakdowns": "Each horizon; fixed2018income quartiles; country improvements/losses. No hidden future-based country deletion.",
+    "selection": "Report best individual, best equal-weight subset and best full-catalog recipe separately for endpoint and pooled. No single arbitrary combined ladder/GDP score. Show Pareto tradeoffs and rich-country failure.",
+    "combinationBenefit": "Compare blend both with persistence and its strongest included constituent; preserve cases worse than a constituent.",
+    "errorCorrelation": "Pearson correlation of signed errors on common observed masks; descriptive only, including shared common shocks.",
+    "bootstrap": "2000 paired country-block resamples, Python random.Random seed20260916; retain all observed years within each country. Percentile2.5/97.5 MAE-difference ranges for c_decay vs g_offset, equalc_decay/g_offset blend vs g_offset, g_health vs g_offset, and c_retained vs c_decay. Conditional on these observed years; no correction for selection, no future-shock or causal uncertainty, no significance claim."
+  },
+  "audit": "Independently recompute saved individual metrics from frozen predictions; compare to stored outputs; independently reconstruct Claudes rho and both predictionvariants from training/origin. No rerun of original scoring scripts or mutation of old scores. Count source/forecast bounds, identify registration/enforcement limits.",
+  "knownLimitations": [
+    "All source outcomes already seen; re-ranking and blend selection consume no fresh evidence.",
+    "Ladder target is trailing three-year survey average; earlier horizons overlap origin surveys.",
+    "Health extension has no matched no-health ablation; cannot infer incremental health value.",
+    "2006-origin proposal needs pre-origin data absent fromcurrent2011\u20132025 panel and shares knownlateroutcomes;1980objective test is alreadyused."
+  ],
+  "sourceHashes": {
+    "data/evaluation/level-holdout-2018/origin.json": "564bab92fe88415df70a1b239223213a53c12274891ec2d39f0e08c3e28e3f77",
+    "data/evaluation/level-holdout-2018/predictions.json": "309a365dcafe010b05e1c7ceccd9d4b756638b70bb1096d3d430cd8496e21c4a",
+    "data/evaluation/level-holdout-2018/scores.json": "d4b69e79226328fefb68dbbbe57433f32cd2f87d9efe9af5881c8e794e681b21",
+    "data/evaluation/level-holdout-2018/test-outcomes.json": "bbcd0b78bc4d02024b2c5064fc15b9249e8849c271f7abd29d9cedeece2ce969",
+    "data/evaluation/offset-2018/predictions-fitted.json": "8a98c767d8e67673d58f52e2029ab1da7446c46515e95b607adc6d50eb16a520",
+    "data/evaluation/offset-2018/predictions-retained.json": "c7108726c54c79452a6dd255365b4c6c1ac24408d6204f526e58fe6dcc1655ea",
+    "data/evaluation/offset-2018/protocol.json": "ba31d7a08d4c360fbfc8b500e10398def3e02f1bdf50e0d85af5b3d6cb4704f1",
+    "data/evaluation/offset-2018/scores-fitted.json": "57d562cc21a65c0d925dfebd4c0e25a673f387d4829a7258435197fbd9263da9",
+    "data/evaluation/offset-2018/scores-retained.json": "3622607be12919d137f218466a6a3dc3da3ae6b301d2668bc9ff3267da641766",
+    "data/evaluation/research-changes-2018-v1/predictions.json": "2a01e1b4dd126e49a453915387f93be7ef6b057bf56cb9bfffcc20a6771b4d0d",
+    "data/evaluation/research-changes-2018-v1/scores.json": "a32ef870a925c79fea96efc574d200f622d06a3d71c5c6a8ce66924c4dd3ac89",
+    "data/evaluation/research-damped-2018-v1/predictions.json": "bbb52ca54a515df315ad1c2c09be6f3f9d0f4ad9b261bd1fd04fc59f8c516ac3",
+    "data/evaluation/research-damped-2018-v1/scores.json": "77d79f10eda9b4e1371df1d46fc6ea0af2c4436222b8ded22536865909a73444",
+    "data/evaluation/research-ensemble-2018-v1/predictions.json": "cb82a477fecaf764e8bf55476bc541fb271f0c78ebb1baafbe922e6e7ddf98e5",
+    "data/evaluation/research-ensemble-2018-v1/scores.json": "2ac83dc29423f68bfe56e792d253c0614e50d86ba1b453d68eab2cbc8730bf83",
+    "data/evaluation/research-health-2018-v1/predictions.json": "3e827620acc03728cb99a3256ef96120c0bb36e719d594de2f93f796741859ea",
+    "data/evaluation/research-health-2018-v1/scores.json": "4699192b2a575b911a69981cad55b804e73dab9279e39bb4088013df7cd02ac3",
+    "data/evaluation/research-offset-2018-v1/predictions.json": "6ce7e1d1b698688db1077a0064d16bbfc543323f9e5ef004e5ea5959edd25856",
+    "data/evaluation/research-offset-2018-v1/scores.json": "deb455d12bb26680f34ff439b6876ce0defffc9a8c3032810a487a6bbbee065d",
+    "docs/design/reviews/2026-09-16-holdout-attempts-comparison.html": "5da42481ebea4886416e606e595a6b57df60d1dd4675a5bc923eb19e6bb0de7c"
+  }
+}
