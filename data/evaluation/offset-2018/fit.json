@@ -1,0 +1,41 @@
+{
+  "protocolHash": "ba31d7a08d4c360fbfc8b500e10398def3e02f1bdf50e0d85af5b3d6cb4704f1",
+  "partitionHashes": {
+    "train.json": "979ac8d45dda418403fc59e04111b9c9dbcd2fa484e4c26aa900cd37e777bd02",
+    "origin.json": "564bab92fe88415df70a1b239223213a53c12274891ec2d39f0e08c3e28e3f77",
+    "test-outcomes.json": "bbcd0b78bc4d02024b2c5064fc15b9249e8849c271f7abd29d9cedeece2ce969",
+    "frozen-fit.json": "48f2aabaa5287642dde8ae570bf14dc01a8eea04ed41c6c4774dff4da5d8f543",
+    "protocol.json": "694cc25212c42a84c873a55b7f6db7023e604fd5bbedde2ff9639d2faaaa1c3b"
+  },
+  "coefficients": {
+    "intercept": 5.569374801665757,
+    "lnGdp": 5.2411916452159915,
+    "governance": 8.224203899441955
+  },
+  "decay": {
+    "rho": 0.9333596975861362,
+    "pairs": 597,
+    "byLag": [
+      {
+        "lag": 1,
+        "rho": 0.9378614337719762,
+        "pairs": 298
+      },
+      {
+        "lag": 2,
+        "rho": 0.9313975604647882,
+        "pairs": 199
+      },
+      {
+        "lag": 3,
+        "rho": 0.9239334566359646,
+        "pairs": 100
+      }
+    ]
+  },
+  "variants": {
+    "fitted": 0.9333596975861362,
+    "retained": 1
+  },
+  "note": "rho estimated from training gap transitions only; coefficients reused unchanged from the frozen fit."
+}

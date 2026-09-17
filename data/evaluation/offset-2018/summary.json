@@ -1,0 +1,149 @@
+{
+  "protocolHash": "ba31d7a08d4c360fbfc8b500e10398def3e02f1bdf50e0d85af5b3d6cb4704f1",
+  "partitionHashes": {
+    "train.json": "979ac8d45dda418403fc59e04111b9c9dbcd2fa484e4c26aa900cd37e777bd02",
+    "origin.json": "564bab92fe88415df70a1b239223213a53c12274891ec2d39f0e08c3e28e3f77",
+    "test-outcomes.json": "bbcd0b78bc4d02024b2c5064fc15b9249e8849c271f7abd29d9cedeece2ce969",
+    "frozen-fit.json": "48f2aabaa5287642dde8ae570bf14dc01a8eea04ed41c6c4774dff4da5d8f543",
+    "protocol.json": "694cc25212c42a84c873a55b7f6db7023e604fd5bbedde2ff9639d2faaaa1c3b"
+  },
+  "ranAt": "2026-09-17",
+  "results": {
+    "fitted": {
+      "rho": 0.9333596975861362,
+      "ladder": {
+        "n": 681,
+        "modelMae": 0.27160630350126463,
+        "persistenceMae": 0.2897439060205578,
+        "skill": 0.06259873682384276,
+        "bias": -0.04967299303912516
+      },
+      "gdp": {
+        "n": 691,
+        "modelMae": 7.5113775532520695,
+        "persistenceMae": 8.649981602017295,
+        "skill": 0.1316308058389034,
+        "bias": 2.9496200003262247
+      },
+      "ladderByYear": [
+        {
+          "year": 2019,
+          "n": 99,
+          "modelMae": 0.11922938998072288,
+          "persistenceMae": 0.12214747474747464,
+          "skill": 0.023889849321769074
+        },
+        {
+          "year": 2020,
+          "n": 98,
+          "modelMae": 0.18686851978666613,
+          "persistenceMae": 0.20213265306122433,
+          "skill": 0.07551542535749933
+        },
+        {
+          "year": 2021,
+          "n": 97,
+          "modelMae": 0.27313982236121126,
+          "persistenceMae": 0.3017731958762887,
+          "skill": 0.0948837534491156
+        },
+        {
+          "year": 2022,
+          "n": 96,
+          "modelMae": 0.28057678084669074,
+          "persistenceMae": 0.31757291666666654,
+          "skill": 0.11649650797775046
+        },
+        {
+          "year": 2023,
+          "n": 97,
+          "modelMae": 0.31577039038362736,
+          "persistenceMae": 0.3356185567010309,
+          "skill": 0.059139061059380826
+        },
+        {
+          "year": 2024,
+          "n": 97,
+          "modelMae": 0.3497404067322546,
+          "persistenceMae": 0.3646082474226802,
+          "skill": 0.04077757646877844
+        },
+        {
+          "year": 2025,
+          "n": 97,
+          "modelMae": 0.38002667099603993,
+          "persistenceMae": 0.3889999999999999,
+          "skill": 0.02306768381480717
+        }
+      ]
+    },
+    "retained": {
+      "rho": 1,
+      "ladder": {
+        "n": 681,
+        "modelMae": 0.2815924477272659,
+        "persistenceMae": 0.2897439060205578,
+        "skill": 0.02813332092207499,
+        "bias": -0.04481675262429072
+      },
+      "gdp": {
+        "n": 691,
+        "modelMae": 7.5113775532520695,
+        "persistenceMae": 8.649981602017295,
+        "skill": 0.1316308058389034,
+        "bias": 2.9496200003262247
+      },
+      "ladderByYear": [
+        {
+          "year": 2019,
+          "n": 99,
+          "modelMae": 0.11923764230459427,
+          "persistenceMae": 0.12214747474747464,
+          "skill": 0.023822288990387297
+        },
+        {
+          "year": 2020,
+          "n": 98,
+          "modelMae": 0.19698851053916516,
+          "persistenceMae": 0.20213265306122433,
+          "skill": 0.025449339550800087
+        },
+        {
+          "year": 2021,
+          "n": 97,
+          "modelMae": 0.2954090127818132,
+          "persistenceMae": 0.3017731958762887,
+          "skill": 0.02108929216193367
+        },
+        {
+          "year": 2022,
+          "n": 96,
+          "modelMae": 0.31501041666666657,
+          "persistenceMae": 0.31757291666666654,
+          "skill": 0.008069013021943627
+        },
+        {
+          "year": 2023,
+          "n": 97,
+          "modelMae": 0.3280797651898637,
+          "persistenceMae": 0.3356185567010309,
+          "skill": 0.022462379867400406
+        },
+        {
+          "year": 2024,
+          "n": 97,
+          "modelMae": 0.3520448296873377,
+          "persistenceMae": 0.3646082474226802,
+          "skill": 0.034457305406967675
+        },
+        {
+          "year": 2025,
+          "n": 97,
+          "modelMae": 0.36894119936443803,
+          "persistenceMae": 0.3889999999999999,
+          "skill": 0.05156504019424646
+        }
+      ]
+    }
+  }
+}

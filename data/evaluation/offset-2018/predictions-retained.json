@@ -1,0 +1,7007 @@
+{
+  "protocolHash": "ba31d7a08d4c360fbfc8b500e10398def3e02f1bdf50e0d85af5b3d6cb4704f1",
+  "variant": "retained",
+  "rho": 1,
+  "predictions": [
+    {
+      "id": "USA",
+      "name": "United States",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.902378936473807,
+      "gdp": 61014.00879345842,
+      "originLadder": 6.892,
+      "originGdp": 59817.6556798612
+    },
+    {
+      "id": "USA",
+      "name": "United States",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.912757872947613,
+      "gdp": 62234.288969327594,
+      "originLadder": 6.892,
+      "originGdp": 59817.6556798612
+    },
+    {
+      "id": "USA",
+      "name": "United States",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.923136809421419,
+      "gdp": 63478.97474871415,
+      "originLadder": 6.892,
+      "originGdp": 59817.6556798612
+    },
+    {
+      "id": "USA",
+      "name": "United States",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.9335157458952255,
+      "gdp": 64748.55424368843,
+      "originLadder": 6.892,
+      "originGdp": 59817.6556798612
+    },
+    {
+      "id": "USA",
+      "name": "United States",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.943894682369032,
+      "gdp": 66043.5253285622,
+      "originLadder": 6.892,
+      "originGdp": 59817.6556798612
+    },
+    {
+      "id": "USA",
+      "name": "United States",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.954273618842838,
+      "gdp": 67364.39583513344,
+      "originLadder": 6.892,
+      "originGdp": 59817.6556798612
+    },
+    {
+      "id": "USA",
+      "name": "United States",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.964652555316644,
+      "gdp": 68711.68375183611,
+      "originLadder": 6.892,
+      "originGdp": 59817.6556798612
+    },
+    {
+      "id": "CAN",
+      "name": "Canada",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 7.288378936473807,
+      "gdp": 45805.536575435835,
+      "originLadder": 7.278,
+      "originGdp": 44907.3887994469
+    },
+    {
+      "id": "CAN",
+      "name": "Canada",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 7.298757872947613,
+      "gdp": 46721.64730694455,
+      "originLadder": 7.278,
+      "originGdp": 44907.3887994469
+    },
+    {
+      "id": "CAN",
+      "name": "Canada",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 7.30913680942142,
+      "gdp": 47656.08025308345,
+      "originLadder": 7.278,
+      "originGdp": 44907.3887994469
+    },
+    {
+      "id": "CAN",
+      "name": "Canada",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 7.3195157458952265,
+      "gdp": 48609.20185814511,
+      "originLadder": 7.278,
+      "originGdp": 44907.3887994469
+    },
+    {
+      "id": "CAN",
+      "name": "Canada",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 7.329894682369033,
+      "gdp": 49581.38589530801,
+      "originLadder": 7.278,
+      "originGdp": 44907.3887994469
+    },
+    {
+      "id": "CAN",
+      "name": "Canada",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 7.340273618842839,
+      "gdp": 50573.01361321418,
+      "originLadder": 7.278,
+      "originGdp": 44907.3887994469
+    },
+    {
+      "id": "CAN",
+      "name": "Canada",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 7.350652555316645,
+      "gdp": 51584.47388547846,
+      "originLadder": 7.278,
+      "originGdp": 44907.3887994469
+    },
+    {
+      "id": "MEX",
+      "name": "Mexico",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.605378936473807,
+      "gdp": 10502.806475926818,
+      "originLadder": 6.595,
+      "originGdp": 10296.8690940459
+    },
+    {
+      "id": "MEX",
+      "name": "Mexico",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.615757872947613,
+      "gdp": 10712.862605445354,
+      "originLadder": 6.595,
+      "originGdp": 10296.8690940459
+    },
+    {
+      "id": "MEX",
+      "name": "Mexico",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.6261368094214195,
+      "gdp": 10927.119857554264,
+      "originLadder": 6.595,
+      "originGdp": 10296.8690940459
+    },
+    {
+      "id": "MEX",
+      "name": "Mexico",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.636515745895226,
+      "gdp": 11145.662254705347,
+      "originLadder": 6.595,
+      "originGdp": 10296.8690940459
+    },
+    {
+      "id": "MEX",
+      "name": "Mexico",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.646894682369033,
+      "gdp": 11368.575499799454,
+      "originLadder": 6.595,
+      "originGdp": 10296.8690940459
+    },
+    {
+      "id": "MEX",
+      "name": "Mexico",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.657273618842839,
+      "gdp": 11595.947009795444,
+      "originLadder": 6.595,
+      "originGdp": 10296.8690940459
+    },
+    {
+      "id": "MEX",
+      "name": "Mexico",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.6676525553166455,
+      "gdp": 11827.865949991352,
+      "originLadder": 6.595,
+      "originGdp": 10296.8690940459
+    },
+    {
+      "id": "GTM",
+      "name": "Guatemala",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.446378936473806,
+      "gdp": 4121.016386622368,
+      "originLadder": 6.436,
+      "originGdp": 4040.21214374742
+    },
+    {
+      "id": "GTM",
+      "name": "Guatemala",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.4567578729476125,
+      "gdp": 4203.436714354816,
+      "originLadder": 6.436,
+      "originGdp": 4040.21214374742
+    },
+    {
+      "id": "GTM",
+      "name": "Guatemala",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.467136809421419,
+      "gdp": 4287.505448641913,
+      "originLadder": 6.436,
+      "originGdp": 4040.21214374742
+    },
+    {
+      "id": "GTM",
+      "name": "Guatemala",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.477515745895223,
+      "gdp": 4373.255557614751,
+      "originLadder": 6.436,
+      "originGdp": 4040.21214374742
+    },
+    {
+      "id": "GTM",
+      "name": "Guatemala",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.487894682369031,
+      "gdp": 4460.720668767046,
+      "originLadder": 6.436,
+      "originGdp": 4040.21214374742
+    },
+    {
+      "id": "GTM",
+      "name": "Guatemala",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.498273618842836,
+      "gdp": 4549.935082142387,
+      "originLadder": 6.436,
+      "originGdp": 4040.21214374742
+    },
+    {
+      "id": "GTM",
+      "name": "Guatemala",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.508652555316644,
+      "gdp": 4640.9337837852345,
+      "originLadder": 6.436,
+      "originGdp": 4040.21214374742
+    },
+    {
+      "id": "HTI",
+      "name": "Haiti",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 3.6073789364738063,
+      "gdp": 1466.0995696691598,
+      "originLadder": 3.597,
+      "originGdp": 1437.35251928349
+    },
+    {
+      "id": "HTI",
+      "name": "Haiti",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 3.617757872947613,
+      "gdp": 1495.4215610625429,
+      "originLadder": 3.597,
+      "originGdp": 1437.35251928349
+    },
+    {
+      "id": "HTI",
+      "name": "Haiti",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 3.6281368094214193,
+      "gdp": 1525.3299922837941,
+      "originLadder": 3.597,
+      "originGdp": 1437.35251928349
+    },
+    {
+      "id": "HTI",
+      "name": "Haiti",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 3.6385157458952255,
+      "gdp": 1555.8365921294696,
+      "originLadder": 3.597,
+      "originGdp": 1437.35251928349
+    },
+    {
+      "id": "HTI",
+      "name": "Haiti",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 3.648894682369032,
+      "gdp": 1586.953323972059,
+      "originLadder": 3.597,
+      "originGdp": 1437.35251928349
+    },
+    {
+      "id": "HTI",
+      "name": "Haiti",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 3.659273618842838,
+      "gdp": 1618.6923904515004,
+      "originLadder": 3.597,
+      "originGdp": 1437.35251928349
+    },
+    {
+      "id": "HTI",
+      "name": "Haiti",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 3.6696525553166444,
+      "gdp": 1651.0662382605303,
+      "originLadder": 3.597,
+      "originGdp": 1437.35251928349
+    },
+    {
+      "id": "DOM",
+      "name": "Dominican Rep.",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.435378936473806,
+      "gdp": 7975.080051052784,
+      "originLadder": 5.425,
+      "originGdp": 7818.70593240469
+    },
+    {
+      "id": "DOM",
+      "name": "Dominican Rep.",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.445757872947612,
+      "gdp": 8134.58165207384,
+      "originLadder": 5.425,
+      "originGdp": 7818.70593240469
+    },
+    {
+      "id": "DOM",
+      "name": "Dominican Rep.",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.456136809421419,
+      "gdp": 8297.273285115318,
+      "originLadder": 5.425,
+      "originGdp": 7818.70593240469
+    },
+    {
+      "id": "DOM",
+      "name": "Dominican Rep.",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.466515745895224,
+      "gdp": 8463.218750817623,
+      "originLadder": 5.425,
+      "originGdp": 7818.70593240469
+    },
+    {
+      "id": "DOM",
+      "name": "Dominican Rep.",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.47689468236903,
+      "gdp": 8632.483125833976,
+      "originLadder": 5.425,
+      "originGdp": 7818.70593240469
+    },
+    {
+      "id": "DOM",
+      "name": "Dominican Rep.",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.487273618842837,
+      "gdp": 8805.132788350655,
+      "originLadder": 5.425,
+      "originGdp": 7818.70593240469
+    },
+    {
+      "id": "DOM",
+      "name": "Dominican Rep.",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.497652555316643,
+      "gdp": 8981.235444117669,
+      "originLadder": 5.425,
+      "originGdp": 7818.70593240469
+    },
+    {
+      "id": "HND",
+      "name": "Honduras",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.870378936473807,
+      "gdp": 2478.7377373091726,
+      "originLadder": 5.86,
+      "originGdp": 2430.13503657762
+    },
+    {
+      "id": "HND",
+      "name": "Honduras",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.880757872947613,
+      "gdp": 2528.312492055356,
+      "originLadder": 5.86,
+      "originGdp": 2430.13503657762
+    },
+    {
+      "id": "HND",
+      "name": "Honduras",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.891136809421419,
+      "gdp": 2578.8787418964635,
+      "originLadder": 5.86,
+      "originGdp": 2430.13503657762
+    },
+    {
+      "id": "HND",
+      "name": "Honduras",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.9015157458952245,
+      "gdp": 2630.456316734392,
+      "originLadder": 5.86,
+      "originGdp": 2430.13503657762
+    },
+    {
+      "id": "HND",
+      "name": "Honduras",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.911894682369031,
+      "gdp": 2683.06544306908,
+      "originLadder": 5.86,
+      "originGdp": 2430.13503657762
+    },
+    {
+      "id": "HND",
+      "name": "Honduras",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.922273618842837,
+      "gdp": 2736.726751930462,
+      "originLadder": 5.86,
+      "originGdp": 2430.13503657762
+    },
+    {
+      "id": "HND",
+      "name": "Honduras",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.932652555316644,
+      "gdp": 2791.4612869690714,
+      "originLadder": 5.86,
+      "originGdp": 2430.13503657762
+    },
+    {
+      "id": "NIC",
+      "name": "Nicaragua",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.115378936473808,
+      "gdp": 2149.486418685546,
+      "originLadder": 6.105,
+      "originGdp": 2107.3396261623
+    },
+    {
+      "id": "NIC",
+      "name": "Nicaragua",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.125757872947614,
+      "gdp": 2192.476147059257,
+      "originLadder": 6.105,
+      "originGdp": 2107.3396261623
+    },
+    {
+      "id": "NIC",
+      "name": "Nicaragua",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.13613680942142,
+      "gdp": 2236.3256700004426,
+      "originLadder": 6.105,
+      "originGdp": 2107.3396261623
+    },
+    {
+      "id": "NIC",
+      "name": "Nicaragua",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.146515745895226,
+      "gdp": 2281.052183400451,
+      "originLadder": 6.105,
+      "originGdp": 2107.3396261623
+    },
+    {
+      "id": "NIC",
+      "name": "Nicaragua",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.156894682369033,
+      "gdp": 2326.67322706846,
+      "originLadder": 6.105,
+      "originGdp": 2107.3396261623
+    },
+    {
+      "id": "NIC",
+      "name": "Nicaragua",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.167273618842839,
+      "gdp": 2373.2066916098297,
+      "originLadder": 6.105,
+      "originGdp": 2107.3396261623
+    },
+    {
+      "id": "NIC",
+      "name": "Nicaragua",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.177652555316645,
+      "gdp": 2420.670825442026,
+      "originLadder": 6.105,
+      "originGdp": 2107.3396261623
+    },
+    {
+      "id": "SLV",
+      "name": "El Salvador",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.263378936473806,
+      "gdp": 4127.086175549946,
+      "originLadder": 6.253,
+      "originGdp": 4046.16291720583
+    },
+    {
+      "id": "SLV",
+      "name": "El Salvador",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.273757872947613,
+      "gdp": 4209.627899060945,
+      "originLadder": 6.253,
+      "originGdp": 4046.16291720583
+    },
+    {
+      "id": "SLV",
+      "name": "El Salvador",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.284136809421419,
+      "gdp": 4293.820457042165,
+      "originLadder": 6.253,
+      "originGdp": 4046.16291720583
+    },
+    {
+      "id": "SLV",
+      "name": "El Salvador",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.294515745895225,
+      "gdp": 4379.696866183008,
+      "originLadder": 6.253,
+      "originGdp": 4046.16291720583
+    },
+    {
+      "id": "SLV",
+      "name": "El Salvador",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.3048946823690315,
+      "gdp": 4467.290803506668,
+      "originLadder": 6.253,
+      "originGdp": 4046.16291720583
+    },
+    {
+      "id": "SLV",
+      "name": "El Salvador",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.315273618842839,
+      "gdp": 4556.636619576801,
+      "originLadder": 6.253,
+      "originGdp": 4046.16291720583
+    },
+    {
+      "id": "SLV",
+      "name": "El Salvador",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.325652555316645,
+      "gdp": 4647.769351968338,
+      "originLadder": 6.253,
+      "originGdp": 4046.16291720583
+    },
+    {
+      "id": "CRI",
+      "name": "Costa Rica",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 7.177378936473806,
+      "gdp": 12962.980368492617,
+      "originLadder": 7.167,
+      "originGdp": 12708.8042828359
+    },
+    {
+      "id": "CRI",
+      "name": "Costa Rica",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 7.187757872947612,
+      "gdp": 13222.239975862469,
+      "originLadder": 7.167,
+      "originGdp": 12708.8042828359
+    },
+    {
+      "id": "CRI",
+      "name": "Costa Rica",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 7.198136809421419,
+      "gdp": 13486.684775379721,
+      "originLadder": 7.167,
+      "originGdp": 12708.8042828359
+    },
+    {
+      "id": "CRI",
+      "name": "Costa Rica",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 7.208515745895227,
+      "gdp": 13756.418470887313,
+      "originLadder": 7.167,
+      "originGdp": 12708.8042828359
+    },
+    {
+      "id": "CRI",
+      "name": "Costa Rica",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 7.218894682369031,
+      "gdp": 14031.54684030506,
+      "originLadder": 7.167,
+      "originGdp": 12708.8042828359
+    },
+    {
+      "id": "CRI",
+      "name": "Costa Rica",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 7.229273618842839,
+      "gdp": 14312.177777111161,
+      "originLadder": 7.167,
+      "originGdp": 12708.8042828359
+    },
+    {
+      "id": "CRI",
+      "name": "Costa Rica",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 7.239652555316644,
+      "gdp": 14598.421332653385,
+      "originLadder": 7.167,
+      "originGdp": 12708.8042828359
+    },
+    {
+      "id": "PAN",
+      "name": "Panama",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.331378936473806,
+      "gdp": 15683.163087281706,
+      "originLadder": 6.321,
+      "originGdp": 15375.6500855703
+    },
+    {
+      "id": "PAN",
+      "name": "Panama",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.341757872947612,
+      "gdp": 15996.82634902734,
+      "originLadder": 6.321,
+      "originGdp": 15375.6500855703
+    },
+    {
+      "id": "PAN",
+      "name": "Panama",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.352136809421419,
+      "gdp": 16316.76287600789,
+      "originLadder": 6.321,
+      "originGdp": 15375.6500855703
+    },
+    {
+      "id": "PAN",
+      "name": "Panama",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.362515745895224,
+      "gdp": 16643.098133528045,
+      "originLadder": 6.321,
+      "originGdp": 15375.6500855703
+    },
+    {
+      "id": "PAN",
+      "name": "Panama",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.37289468236903,
+      "gdp": 16975.960096198607,
+      "originLadder": 6.321,
+      "originGdp": 15375.6500855703
+    },
+    {
+      "id": "PAN",
+      "name": "Panama",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.3832736188428365,
+      "gdp": 17315.47929812258,
+      "originLadder": 6.321,
+      "originGdp": 15375.6500855703
+    },
+    {
+      "id": "PAN",
+      "name": "Panama",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.393652555316643,
+      "gdp": 17661.78888408503,
+      "originLadder": 6.321,
+      "originGdp": 15375.6500855703
+    },
+    {
+      "id": "BRA",
+      "name": "Brazil",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.310378936473806,
+      "gdp": 8896.783029242937,
+      "originLadder": 6.3,
+      "originGdp": 8722.33630317935
+    },
+    {
+      "id": "BRA",
+      "name": "Brazil",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.320757872947612,
+      "gdp": 9074.718689827796,
+      "originLadder": 6.3,
+      "originGdp": 8722.33630317935
+    },
+    {
+      "id": "BRA",
+      "name": "Brazil",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.331136809421419,
+      "gdp": 9256.213063624353,
+      "originLadder": 6.3,
+      "originGdp": 8722.33630317935
+    },
+    {
+      "id": "BRA",
+      "name": "Brazil",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.341515745895225,
+      "gdp": 9441.337324896838,
+      "originLadder": 6.3,
+      "originGdp": 8722.33630317935
+    },
+    {
+      "id": "BRA",
+      "name": "Brazil",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.351894682369031,
+      "gdp": 9630.164071394776,
+      "originLadder": 6.3,
+      "originGdp": 8722.33630317935
+    },
+    {
+      "id": "BRA",
+      "name": "Brazil",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.3622736188428375,
+      "gdp": 9822.767352822671,
+      "originLadder": 6.3,
+      "originGdp": 8722.33630317935
+    },
+    {
+      "id": "BRA",
+      "name": "Brazil",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.372652555316645,
+      "gdp": 10019.222699879125,
+      "originLadder": 6.3,
+      "originGdp": 8722.33630317935
+    },
+    {
+      "id": "ARG",
+      "name": "Argentina",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.096378936473807,
+      "gdp": 13319.495115895308,
+      "originLadder": 6.086,
+      "originGdp": 13058.3285449954
+    },
+    {
+      "id": "ARG",
+      "name": "Argentina",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.106757872947613,
+      "gdp": 13585.885018213214,
+      "originLadder": 6.086,
+      "originGdp": 13058.3285449954
+    },
+    {
+      "id": "ARG",
+      "name": "Argentina",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.117136809421419,
+      "gdp": 13857.60271857748,
+      "originLadder": 6.086,
+      "originGdp": 13058.3285449954
+    },
+    {
+      "id": "ARG",
+      "name": "Argentina",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.127515745895225,
+      "gdp": 14134.754772949027,
+      "originLadder": 6.086,
+      "originGdp": 13058.3285449954
+    },
+    {
+      "id": "ARG",
+      "name": "Argentina",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.137894682369032,
+      "gdp": 14417.449868408008,
+      "originLadder": 6.086,
+      "originGdp": 13058.3285449954
+    },
+    {
+      "id": "ARG",
+      "name": "Argentina",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.148273618842838,
+      "gdp": 14705.798865776169,
+      "originLadder": 6.086,
+      "originGdp": 13058.3285449954
+    },
+    {
+      "id": "ARG",
+      "name": "Argentina",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.158652555316644,
+      "gdp": 14999.914843091692,
+      "originLadder": 6.086,
+      "originGdp": 13058.3285449954
+    },
+    {
+      "id": "COL",
+      "name": "Colombia",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.135378936473806,
+      "gdp": 6480.617357109984,
+      "originLadder": 6.125,
+      "originGdp": 6353.5464285392
+    },
+    {
+      "id": "COL",
+      "name": "Colombia",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.145757872947613,
+      "gdp": 6610.229704252183,
+      "originLadder": 6.125,
+      "originGdp": 6353.5464285392
+    },
+    {
+      "id": "COL",
+      "name": "Colombia",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.15613680942142,
+      "gdp": 6742.434298337228,
+      "originLadder": 6.125,
+      "originGdp": 6353.5464285392
+    },
+    {
+      "id": "COL",
+      "name": "Colombia",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.166515745895226,
+      "gdp": 6877.282984303972,
+      "originLadder": 6.125,
+      "originGdp": 6353.5464285392
+    },
+    {
+      "id": "COL",
+      "name": "Colombia",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.176894682369032,
+      "gdp": 7014.828643990051,
+      "originLadder": 6.125,
+      "originGdp": 6353.5464285392
+    },
+    {
+      "id": "COL",
+      "name": "Colombia",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.1872736188428386,
+      "gdp": 7155.125216869853,
+      "originLadder": 6.125,
+      "originGdp": 6353.5464285392
+    },
+    {
+      "id": "COL",
+      "name": "Colombia",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.197652555316645,
+      "gdp": 7298.2277212072495,
+      "originLadder": 6.125,
+      "originGdp": 6353.5464285392
+    },
+    {
+      "id": "CHL",
+      "name": "Chile",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.454378936473806,
+      "gdp": 14038.267022169091,
+      "originLadder": 6.444,
+      "originGdp": 13763.0068844795
+    },
+    {
+      "id": "CHL",
+      "name": "Chile",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.4647578729476125,
+      "gdp": 14319.032362612472,
+      "originLadder": 6.444,
+      "originGdp": 13763.0068844795
+    },
+    {
+      "id": "CHL",
+      "name": "Chile",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.475136809421419,
+      "gdp": 14605.413009864724,
+      "originLadder": 6.444,
+      "originGdp": 13763.0068844795
+    },
+    {
+      "id": "CHL",
+      "name": "Chile",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.485515745895225,
+      "gdp": 14897.521270062016,
+      "originLadder": 6.444,
+      "originGdp": 13763.0068844795
+    },
+    {
+      "id": "CHL",
+      "name": "Chile",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.495894682369031,
+      "gdp": 15195.471695463257,
+      "originLadder": 6.444,
+      "originGdp": 13763.0068844795
+    },
+    {
+      "id": "CHL",
+      "name": "Chile",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.506273618842838,
+      "gdp": 15499.381129372523,
+      "originLadder": 6.444,
+      "originGdp": 13763.0068844795
+    },
+    {
+      "id": "CHL",
+      "name": "Chile",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.516652555316645,
+      "gdp": 15809.368751959973,
+      "originLadder": 6.444,
+      "originGdp": 13763.0068844795
+    },
+    {
+      "id": "PER",
+      "name": "Peru",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.707378936473807,
+      "gdp": 6725.007262087165,
+      "originLadder": 5.697,
+      "originGdp": 6593.14437459526
+    },
+    {
+      "id": "PER",
+      "name": "Peru",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.7177578729476135,
+      "gdp": 6859.507407328909,
+      "originLadder": 5.697,
+      "originGdp": 6593.14437459526
+    },
+    {
+      "id": "PER",
+      "name": "Peru",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.72813680942142,
+      "gdp": 6996.697555475488,
+      "originLadder": 5.697,
+      "originGdp": 6593.14437459526
+    },
+    {
+      "id": "PER",
+      "name": "Peru",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.738515745895226,
+      "gdp": 7136.631506584997,
+      "originLadder": 5.697,
+      "originGdp": 6593.14437459526
+    },
+    {
+      "id": "PER",
+      "name": "Peru",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.748894682369032,
+      "gdp": 7279.3641367166965,
+      "originLadder": 5.697,
+      "originGdp": 6593.14437459526
+    },
+    {
+      "id": "PER",
+      "name": "Peru",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.759273618842839,
+      "gdp": 7424.951419451031,
+      "originLadder": 5.697,
+      "originGdp": 6593.14437459526
+    },
+    {
+      "id": "PER",
+      "name": "Peru",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.769652555316645,
+      "gdp": 7573.450447840051,
+      "originLadder": 5.697,
+      "originGdp": 6593.14437459526
+    },
+    {
+      "id": "ECU",
+      "name": "Ecuador",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.038378936473807,
+      "gdp": 6184.357530235152,
+      "originLadder": 6.028,
+      "originGdp": 6063.0956178776
+    },
+    {
+      "id": "ECU",
+      "name": "Ecuador",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.048757872947613,
+      "gdp": 6308.044680839855,
+      "originLadder": 6.028,
+      "originGdp": 6063.0956178776
+    },
+    {
+      "id": "ECU",
+      "name": "Ecuador",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.059136809421419,
+      "gdp": 6434.205574456652,
+      "originLadder": 6.028,
+      "originGdp": 6063.0956178776
+    },
+    {
+      "id": "ECU",
+      "name": "Ecuador",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.069515745895226,
+      "gdp": 6562.889685945785,
+      "originLadder": 6.028,
+      "originGdp": 6063.0956178776
+    },
+    {
+      "id": "ECU",
+      "name": "Ecuador",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.079894682369032,
+      "gdp": 6694.147479664701,
+      "originLadder": 6.028,
+      "originGdp": 6063.0956178776
+    },
+    {
+      "id": "ECU",
+      "name": "Ecuador",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.090273618842838,
+      "gdp": 6828.030429257995,
+      "originLadder": 6.028,
+      "originGdp": 6063.0956178776
+    },
+    {
+      "id": "ECU",
+      "name": "Ecuador",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.100652555316644,
+      "gdp": 6964.5910378431545,
+      "originLadder": 6.028,
+      "originGdp": 6063.0956178776
+    },
+    {
+      "id": "BOL",
+      "name": "Bolivia",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.789378936473807,
+      "gdp": 3268.6274425476513,
+      "originLadder": 5.779,
+      "originGdp": 3204.53670838005
+    },
+    {
+      "id": "BOL",
+      "name": "Bolivia",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.799757872947613,
+      "gdp": 3333.9999913986044,
+      "originLadder": 5.779,
+      "originGdp": 3204.53670838005
+    },
+    {
+      "id": "BOL",
+      "name": "Bolivia",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.81013680942142,
+      "gdp": 3400.679991226577,
+      "originLadder": 5.779,
+      "originGdp": 3204.53670838005
+    },
+    {
+      "id": "BOL",
+      "name": "Bolivia",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.820515745895226,
+      "gdp": 3468.693591051108,
+      "originLadder": 5.779,
+      "originGdp": 3204.53670838005
+    },
+    {
+      "id": "BOL",
+      "name": "Bolivia",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.830894682369032,
+      "gdp": 3538.06746287213,
+      "originLadder": 5.779,
+      "originGdp": 3204.53670838005
+    },
+    {
+      "id": "BOL",
+      "name": "Bolivia",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.8412736188428385,
+      "gdp": 3608.8288121295727,
+      "originLadder": 5.779,
+      "originGdp": 3204.53670838005
+    },
+    {
+      "id": "BOL",
+      "name": "Bolivia",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.851652555316645,
+      "gdp": 3681.0053883721644,
+      "originLadder": 5.779,
+      "originGdp": 3204.53670838005
+    },
+    {
+      "id": "PRY",
+      "name": "Paraguay",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.753378936473807,
+      "gdp": 6481.323984540294,
+      "originLadder": 5.743,
+      "originGdp": 6354.2392005297
+    },
+    {
+      "id": "PRY",
+      "name": "Paraguay",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.763757872947613,
+      "gdp": 6610.950464231099,
+      "originLadder": 5.743,
+      "originGdp": 6354.2392005297
+    },
+    {
+      "id": "PRY",
+      "name": "Paraguay",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.77413680942142,
+      "gdp": 6743.1694735157225,
+      "originLadder": 5.743,
+      "originGdp": 6354.2392005297
+    },
+    {
+      "id": "PRY",
+      "name": "Paraguay",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.784515745895226,
+      "gdp": 6878.032862986036,
+      "originLadder": 5.743,
+      "originGdp": 6354.2392005297
+    },
+    {
+      "id": "PRY",
+      "name": "Paraguay",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.794894682369033,
+      "gdp": 7015.593520245757,
+      "originLadder": 5.743,
+      "originGdp": 6354.2392005297
+    },
+    {
+      "id": "PRY",
+      "name": "Paraguay",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.805273618842839,
+      "gdp": 7155.905390650672,
+      "originLadder": 5.743,
+      "originGdp": 6354.2392005297
+    },
+    {
+      "id": "PRY",
+      "name": "Paraguay",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.815652555316645,
+      "gdp": 7299.023498463685,
+      "originLadder": 5.743,
+      "originGdp": 6354.2392005297
+    },
+    {
+      "id": "URY",
+      "name": "Uruguay",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.303378936473806,
+      "gdp": 17961.1230120594,
+      "originLadder": 6.293,
+      "originGdp": 17608.94412947
+    },
+    {
+      "id": "URY",
+      "name": "Uruguay",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.313757872947614,
+      "gdp": 18320.34547230059,
+      "originLadder": 6.293,
+      "originGdp": 17608.94412947
+    },
+    {
+      "id": "URY",
+      "name": "Uruguay",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.32413680942142,
+      "gdp": 18686.752381746603,
+      "originLadder": 6.293,
+      "originGdp": 17608.94412947
+    },
+    {
+      "id": "URY",
+      "name": "Uruguay",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.334515745895226,
+      "gdp": 19060.487429381534,
+      "originLadder": 6.293,
+      "originGdp": 17608.94412947
+    },
+    {
+      "id": "URY",
+      "name": "Uruguay",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.344894682369032,
+      "gdp": 19441.697177969163,
+      "originLadder": 6.293,
+      "originGdp": 17608.94412947
+    },
+    {
+      "id": "URY",
+      "name": "Uruguay",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.355273618842839,
+      "gdp": 19830.531121528547,
+      "originLadder": 6.293,
+      "originGdp": 17608.94412947
+    },
+    {
+      "id": "URY",
+      "name": "Uruguay",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.365652555316645,
+      "gdp": 20227.141743959117,
+      "originLadder": 6.293,
+      "originGdp": 17608.94412947
+    },
+    {
+      "id": "RUS",
+      "name": "Russia",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.658378936473806,
+      "gdp": 9868.2828515625,
+      "originLadder": 5.648,
+      "originGdp": 9674.787109375
+    },
+    {
+      "id": "RUS",
+      "name": "Russia",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.668757872947612,
+      "gdp": 10065.64850859375,
+      "originLadder": 5.648,
+      "originGdp": 9674.787109375
+    },
+    {
+      "id": "RUS",
+      "name": "Russia",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.6791368094214185,
+      "gdp": 10266.961478765626,
+      "originLadder": 5.648,
+      "originGdp": 9674.787109375
+    },
+    {
+      "id": "RUS",
+      "name": "Russia",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.689515745895225,
+      "gdp": 10472.300708340937,
+      "originLadder": 5.648,
+      "originGdp": 9674.787109375
+    },
+    {
+      "id": "RUS",
+      "name": "Russia",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.699894682369031,
+      "gdp": 10681.746722507756,
+      "originLadder": 5.648,
+      "originGdp": 9674.787109375
+    },
+    {
+      "id": "RUS",
+      "name": "Russia",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.710273618842837,
+      "gdp": 10895.381656957912,
+      "originLadder": 5.648,
+      "originGdp": 9674.787109375
+    },
+    {
+      "id": "RUS",
+      "name": "Russia",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.720652555316642,
+      "gdp": 11113.28929009707,
+      "originLadder": 5.648,
+      "originGdp": 9674.787109375
+    },
+    {
+      "id": "GBR",
+      "name": "United Kingdom",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 7.0643789364738065,
+      "gdp": 48466.534176572844,
+      "originLadder": 7.054,
+      "originGdp": 47516.2099770322
+    },
+    {
+      "id": "GBR",
+      "name": "United Kingdom",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 7.074757872947613,
+      "gdp": 49435.8648601043,
+      "originLadder": 7.054,
+      "originGdp": 47516.2099770322
+    },
+    {
+      "id": "GBR",
+      "name": "United Kingdom",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 7.085136809421419,
+      "gdp": 50424.582157306395,
+      "originLadder": 7.054,
+      "originGdp": 47516.2099770322
+    },
+    {
+      "id": "GBR",
+      "name": "United Kingdom",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 7.0955157458952245,
+      "gdp": 51433.07380045252,
+      "originLadder": 7.054,
+      "originGdp": 47516.2099770322
+    },
+    {
+      "id": "GBR",
+      "name": "United Kingdom",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 7.105894682369031,
+      "gdp": 52461.735276461564,
+      "originLadder": 7.054,
+      "originGdp": 47516.2099770322
+    },
+    {
+      "id": "GBR",
+      "name": "United Kingdom",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 7.116273618842837,
+      "gdp": 53510.9699819908,
+      "originLadder": 7.054,
+      "originGdp": 47516.2099770322
+    },
+    {
+      "id": "GBR",
+      "name": "United Kingdom",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 7.126652555316643,
+      "gdp": 54581.18938163062,
+      "originLadder": 7.054,
+      "originGdp": 47516.2099770322
+    },
+    {
+      "id": "FRA",
+      "name": "France",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.602378936473805,
+      "gdp": 38823.69246806403,
+      "originLadder": 6.592,
+      "originGdp": 38062.4435961412
+    },
+    {
+      "id": "FRA",
+      "name": "France",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.612757872947613,
+      "gdp": 39600.166317425304,
+      "originLadder": 6.592,
+      "originGdp": 38062.4435961412
+    },
+    {
+      "id": "FRA",
+      "name": "France",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.623136809421418,
+      "gdp": 40392.16964377382,
+      "originLadder": 6.592,
+      "originGdp": 38062.4435961412
+    },
+    {
+      "id": "FRA",
+      "name": "France",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.633515745895226,
+      "gdp": 41200.01303664929,
+      "originLadder": 6.592,
+      "originGdp": 38062.4435961412
+    },
+    {
+      "id": "FRA",
+      "name": "France",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.64389468236903,
+      "gdp": 42024.01329738228,
+      "originLadder": 6.592,
+      "originGdp": 38062.4435961412
+    },
+    {
+      "id": "FRA",
+      "name": "France",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.654273618842838,
+      "gdp": 42864.493563329925,
+      "originLadder": 6.592,
+      "originGdp": 38062.4435961412
+    },
+    {
+      "id": "FRA",
+      "name": "France",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.6646525553166445,
+      "gdp": 43721.78343459652,
+      "originLadder": 6.592,
+      "originGdp": 38062.4435961412
+    },
+    {
+      "id": "DEU",
+      "name": "Germany",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.9953789364738075,
+      "gdp": 44783.97210632125,
+      "originLadder": 6.985,
+      "originGdp": 43905.8550061973
+    },
+    {
+      "id": "DEU",
+      "name": "Germany",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 7.005757872947614,
+      "gdp": 45679.65154844767,
+      "originLadder": 6.985,
+      "originGdp": 43905.8550061973
+    },
+    {
+      "id": "DEU",
+      "name": "Germany",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 7.01613680942142,
+      "gdp": 46593.244579416634,
+      "originLadder": 6.985,
+      "originGdp": 43905.8550061973
+    },
+    {
+      "id": "DEU",
+      "name": "Germany",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 7.026515745895226,
+      "gdp": 47525.10947100496,
+      "originLadder": 6.985,
+      "originGdp": 43905.8550061973
+    },
+    {
+      "id": "DEU",
+      "name": "Germany",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 7.036894682369033,
+      "gdp": 48475.61166042506,
+      "originLadder": 6.985,
+      "originGdp": 43905.8550061973
+    },
+    {
+      "id": "DEU",
+      "name": "Germany",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 7.047273618842839,
+      "gdp": 49445.12389363356,
+      "originLadder": 6.985,
+      "originGdp": 43905.8550061973
+    },
+    {
+      "id": "DEU",
+      "name": "Germany",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 7.057652555316645,
+      "gdp": 50434.02637150623,
+      "originLadder": 6.985,
+      "originGdp": 43905.8550061973
+    },
+    {
+      "id": "ITA",
+      "name": "Italy",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.233378936473807,
+      "gdp": 32602.91454918005,
+      "originLadder": 6.223,
+      "originGdp": 31963.6417148824
+    },
+    {
+      "id": "ITA",
+      "name": "Italy",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.243757872947612,
+      "gdp": 33254.972840163646,
+      "originLadder": 6.223,
+      "originGdp": 31963.6417148824
+    },
+    {
+      "id": "ITA",
+      "name": "Italy",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.25413680942142,
+      "gdp": 33920.07229696693,
+      "originLadder": 6.223,
+      "originGdp": 31963.6417148824
+    },
+    {
+      "id": "ITA",
+      "name": "Italy",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.264515745895226,
+      "gdp": 34598.47374290626,
+      "originLadder": 6.223,
+      "originGdp": 31963.6417148824
+    },
+    {
+      "id": "ITA",
+      "name": "Italy",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.274894682369032,
+      "gdp": 35290.44321776438,
+      "originLadder": 6.223,
+      "originGdp": 31963.6417148824
+    },
+    {
+      "id": "ITA",
+      "name": "Italy",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.285273618842838,
+      "gdp": 35996.252082119674,
+      "originLadder": 6.223,
+      "originGdp": 31963.6417148824
+    },
+    {
+      "id": "ITA",
+      "name": "Italy",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.295652555316645,
+      "gdp": 36716.17712376207,
+      "originLadder": 6.223,
+      "originGdp": 31963.6417148824
+    },
+    {
+      "id": "ESP",
+      "name": "Spain",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.364378936473806,
+      "gdp": 28515.85699758137,
+      "originLadder": 6.354,
+      "originGdp": 27956.7225466484
+    },
+    {
+      "id": "ESP",
+      "name": "Spain",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.374757872947613,
+      "gdp": 29086.174137533,
+      "originLadder": 6.354,
+      "originGdp": 27956.7225466484
+    },
+    {
+      "id": "ESP",
+      "name": "Spain",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.385136809421419,
+      "gdp": 29667.89762028366,
+      "originLadder": 6.354,
+      "originGdp": 27956.7225466484
+    },
+    {
+      "id": "ESP",
+      "name": "Spain",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.395515745895225,
+      "gdp": 30261.25557268933,
+      "originLadder": 6.354,
+      "originGdp": 27956.7225466484
+    },
+    {
+      "id": "ESP",
+      "name": "Spain",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.405894682369032,
+      "gdp": 30866.480684143116,
+      "originLadder": 6.354,
+      "originGdp": 27956.7225466484
+    },
+    {
+      "id": "ESP",
+      "name": "Spain",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.416273618842837,
+      "gdp": 31483.81029782598,
+      "originLadder": 6.354,
+      "originGdp": 27956.7225466484
+    },
+    {
+      "id": "ESP",
+      "name": "Spain",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.426652555316645,
+      "gdp": 32113.4865037825,
+      "originLadder": 6.354,
+      "originGdp": 27956.7225466484
+    },
+    {
+      "id": "NLD",
+      "name": "Netherlands",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 7.498378936473808,
+      "gdp": 49432.26567209056,
+      "originLadder": 7.488,
+      "originGdp": 48463.0055608731
+    },
+    {
+      "id": "NLD",
+      "name": "Netherlands",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 7.508757872947614,
+      "gdp": 50420.91098553237,
+      "originLadder": 7.488,
+      "originGdp": 48463.0055608731
+    },
+    {
+      "id": "NLD",
+      "name": "Netherlands",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 7.51913680942142,
+      "gdp": 51429.329205243026,
+      "originLadder": 7.488,
+      "originGdp": 48463.0055608731
+    },
+    {
+      "id": "NLD",
+      "name": "Netherlands",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 7.529515745895226,
+      "gdp": 52457.91578934788,
+      "originLadder": 7.488,
+      "originGdp": 48463.0055608731
+    },
+    {
+      "id": "NLD",
+      "name": "Netherlands",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 7.539894682369033,
+      "gdp": 53507.07410513484,
+      "originLadder": 7.488,
+      "originGdp": 48463.0055608731
+    },
+    {
+      "id": "NLD",
+      "name": "Netherlands",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 7.550273618842839,
+      "gdp": 54577.21558723754,
+      "originLadder": 7.488,
+      "originGdp": 48463.0055608731
+    },
+    {
+      "id": "NLD",
+      "name": "Netherlands",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 7.560652555316645,
+      "gdp": 55668.75989898229,
+      "originLadder": 7.488,
+      "originGdp": 48463.0055608731
+    },
+    {
+      "id": "SWE",
+      "name": "Sweden",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 7.353378936473807,
+      "gdp": 53247.149004155624,
+      "originLadder": 7.343,
+      "originGdp": 52203.0872589761
+    },
+    {
+      "id": "SWE",
+      "name": "Sweden",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 7.363757872947613,
+      "gdp": 54312.09198423873,
+      "originLadder": 7.343,
+      "originGdp": 52203.0872589761
+    },
+    {
+      "id": "SWE",
+      "name": "Sweden",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 7.37413680942142,
+      "gdp": 55398.333823923516,
+      "originLadder": 7.343,
+      "originGdp": 52203.0872589761
+    },
+    {
+      "id": "SWE",
+      "name": "Sweden",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 7.384515745895226,
+      "gdp": 56506.30050040198,
+      "originLadder": 7.343,
+      "originGdp": 52203.0872589761
+    },
+    {
+      "id": "SWE",
+      "name": "Sweden",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 7.394894682369032,
+      "gdp": 57636.42651041002,
+      "originLadder": 7.343,
+      "originGdp": 52203.0872589761
+    },
+    {
+      "id": "SWE",
+      "name": "Sweden",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 7.4052736188428385,
+      "gdp": 58789.15504061822,
+      "originLadder": 7.343,
+      "originGdp": 52203.0872589761
+    },
+    {
+      "id": "SWE",
+      "name": "Sweden",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 7.415652555316645,
+      "gdp": 59964.93814143058,
+      "originLadder": 7.343,
+      "originGdp": 52203.0872589761
+    },
+    {
+      "id": "BEL",
+      "name": "Belgium",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.933378936473806,
+      "gdp": 43052.52981632775,
+      "originLadder": 6.923,
+      "originGdp": 42208.3625650272
+    },
+    {
+      "id": "BEL",
+      "name": "Belgium",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.943757872947613,
+      "gdp": 43913.5804126543,
+      "originLadder": 6.923,
+      "originGdp": 42208.3625650272
+    },
+    {
+      "id": "BEL",
+      "name": "Belgium",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.954136809421419,
+      "gdp": 44791.85202090739,
+      "originLadder": 6.923,
+      "originGdp": 42208.3625650272
+    },
+    {
+      "id": "BEL",
+      "name": "Belgium",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.964515745895227,
+      "gdp": 45687.68906132553,
+      "originLadder": 6.923,
+      "originGdp": 42208.3625650272
+    },
+    {
+      "id": "BEL",
+      "name": "Belgium",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.974894682369033,
+      "gdp": 46601.442842552045,
+      "originLadder": 6.923,
+      "originGdp": 42208.3625650272
+    },
+    {
+      "id": "BEL",
+      "name": "Belgium",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.9852736188428395,
+      "gdp": 47533.47169940309,
+      "originLadder": 6.923,
+      "originGdp": 42208.3625650272
+    },
+    {
+      "id": "BEL",
+      "name": "Belgium",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.995652555316646,
+      "gdp": 48484.141133391146,
+      "originLadder": 6.923,
+      "originGdp": 42208.3625650272
+    },
+    {
+      "id": "AUT",
+      "name": "Austria",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 7.256378936473807,
+      "gdp": 46870.61355473146,
+      "originLadder": 7.246,
+      "originGdp": 45951.5819164034
+    },
+    {
+      "id": "AUT",
+      "name": "Austria",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 7.266757872947613,
+      "gdp": 47808.025825826095,
+      "originLadder": 7.246,
+      "originGdp": 45951.5819164034
+    },
+    {
+      "id": "AUT",
+      "name": "Austria",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 7.277136809421419,
+      "gdp": 48764.186342342626,
+      "originLadder": 7.246,
+      "originGdp": 45951.5819164034
+    },
+    {
+      "id": "AUT",
+      "name": "Austria",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 7.2875157458952255,
+      "gdp": 49739.47006918947,
+      "originLadder": 7.246,
+      "originGdp": 45951.5819164034
+    },
+    {
+      "id": "AUT",
+      "name": "Austria",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 7.297894682369032,
+      "gdp": 50734.259470573255,
+      "originLadder": 7.246,
+      "originGdp": 45951.5819164034
+    },
+    {
+      "id": "AUT",
+      "name": "Austria",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 7.30827361884284,
+      "gdp": 51748.94465998473,
+      "originLadder": 7.246,
+      "originGdp": 45951.5819164034
+    },
+    {
+      "id": "AUT",
+      "name": "Austria",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 7.318652555316646,
+      "gdp": 52783.92355318442,
+      "originLadder": 7.246,
+      "originGdp": 45951.5819164034
+    },
+    {
+      "id": "POL",
+      "name": "Poland",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.192378936473807,
+      "gdp": 14842.106728263077,
+      "originLadder": 6.182,
+      "originGdp": 14551.0850277089
+    },
+    {
+      "id": "POL",
+      "name": "Poland",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.202757872947613,
+      "gdp": 15138.948862828338,
+      "originLadder": 6.182,
+      "originGdp": 14551.0850277089
+    },
+    {
+      "id": "POL",
+      "name": "Poland",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.213136809421419,
+      "gdp": 15441.727840084908,
+      "originLadder": 6.182,
+      "originGdp": 14551.0850277089
+    },
+    {
+      "id": "POL",
+      "name": "Poland",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.2235157458952255,
+      "gdp": 15750.562396886604,
+      "originLadder": 6.182,
+      "originGdp": 14551.0850277089
+    },
+    {
+      "id": "POL",
+      "name": "Poland",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.233894682369032,
+      "gdp": 16065.573644824337,
+      "originLadder": 6.182,
+      "originGdp": 14551.0850277089
+    },
+    {
+      "id": "POL",
+      "name": "Poland",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.244273618842838,
+      "gdp": 16386.885117720823,
+      "originLadder": 6.182,
+      "originGdp": 14551.0850277089
+    },
+    {
+      "id": "POL",
+      "name": "Poland",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.254652555316644,
+      "gdp": 16714.62282007524,
+      "originLadder": 6.182,
+      "originGdp": 14551.0850277089
+    },
+    {
+      "id": "NOR",
+      "name": "Norway",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 7.564378936473808,
+      "gdp": 80899.55472227228,
+      "originLadder": 7.554,
+      "originGdp": 79313.2889434042
+    },
+    {
+      "id": "NOR",
+      "name": "Norway",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 7.574757872947613,
+      "gdp": 82517.54581671773,
+      "originLadder": 7.554,
+      "originGdp": 79313.2889434042
+    },
+    {
+      "id": "NOR",
+      "name": "Norway",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 7.585136809421421,
+      "gdp": 84167.8967330521,
+      "originLadder": 7.554,
+      "originGdp": 79313.2889434042
+    },
+    {
+      "id": "NOR",
+      "name": "Norway",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 7.595515745895225,
+      "gdp": 85851.25466771313,
+      "originLadder": 7.554,
+      "originGdp": 79313.2889434042
+    },
+    {
+      "id": "NOR",
+      "name": "Norway",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 7.605894682369033,
+      "gdp": 87568.27976106739,
+      "originLadder": 7.554,
+      "originGdp": 79313.2889434042
+    },
+    {
+      "id": "NOR",
+      "name": "Norway",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 7.616273618842838,
+      "gdp": 89319.64535628875,
+      "originLadder": 7.554,
+      "originGdp": 79313.2889434042
+    },
+    {
+      "id": "NOR",
+      "name": "Norway",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 7.626652555316646,
+      "gdp": 91106.03826341452,
+      "originLadder": 7.554,
+      "originGdp": 79313.2889434042
+    },
+    {
+      "id": "CHE",
+      "name": "Switzerland",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 7.490378936473808,
+      "gdp": 90352.70434742958,
+      "originLadder": 7.48,
+      "originGdp": 88581.0826935584
+    },
+    {
+      "id": "CHE",
+      "name": "Switzerland",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 7.500757872947614,
+      "gdp": 92159.75843437816,
+      "originLadder": 7.48,
+      "originGdp": 88581.0826935584
+    },
+    {
+      "id": "CHE",
+      "name": "Switzerland",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 7.51113680942142,
+      "gdp": 94002.95360306575,
+      "originLadder": 7.48,
+      "originGdp": 88581.0826935584
+    },
+    {
+      "id": "CHE",
+      "name": "Switzerland",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 7.521515745895226,
+      "gdp": 95883.01267512704,
+      "originLadder": 7.48,
+      "originGdp": 88581.0826935584
+    },
+    {
+      "id": "CHE",
+      "name": "Switzerland",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 7.531894682369033,
+      "gdp": 97800.67292862959,
+      "originLadder": 7.48,
+      "originGdp": 88581.0826935584
+    },
+    {
+      "id": "CHE",
+      "name": "Switzerland",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 7.542273618842839,
+      "gdp": 99756.68638720218,
+      "originLadder": 7.48,
+      "originGdp": 88581.0826935584
+    },
+    {
+      "id": "CHE",
+      "name": "Switzerland",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 7.552652555316645,
+      "gdp": 101751.82011494623,
+      "originLadder": 7.48,
+      "originGdp": 88581.0826935584
+    },
+    {
+      "id": "IRL",
+      "name": "Ireland",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 7.031378936473805,
+      "gdp": 75509.63616236649,
+      "originLadder": 7.021,
+      "originGdp": 74029.0550611436
+    },
+    {
+      "id": "IRL",
+      "name": "Ireland",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 7.041757872947612,
+      "gdp": 77019.82888561381,
+      "originLadder": 7.021,
+      "originGdp": 74029.0550611436
+    },
+    {
+      "id": "IRL",
+      "name": "Ireland",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 7.052136809421418,
+      "gdp": 78560.22546332609,
+      "originLadder": 7.021,
+      "originGdp": 74029.0550611436
+    },
+    {
+      "id": "IRL",
+      "name": "Ireland",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 7.062515745895224,
+      "gdp": 80131.4299725926,
+      "originLadder": 7.021,
+      "originGdp": 74029.0550611436
+    },
+    {
+      "id": "IRL",
+      "name": "Ireland",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 7.07289468236903,
+      "gdp": 81734.05857204445,
+      "originLadder": 7.021,
+      "originGdp": 74029.0550611436
+    },
+    {
+      "id": "IRL",
+      "name": "Ireland",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 7.083273618842837,
+      "gdp": 83368.73974348535,
+      "originLadder": 7.021,
+      "originGdp": 74029.0550611436
+    },
+    {
+      "id": "IRL",
+      "name": "Ireland",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 7.093652555316643,
+      "gdp": 85036.11453835506,
+      "originLadder": 7.021,
+      "originGdp": 74029.0550611436
+    },
+    {
+      "id": "DNK",
+      "name": "Denmark",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 7.610378936473806,
+      "gdp": 57482.17477464083,
+      "originLadder": 7.6,
+      "originGdp": 56355.0733084714
+    },
+    {
+      "id": "DNK",
+      "name": "Denmark",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 7.620757872947612,
+      "gdp": 58631.81827013365,
+      "originLadder": 7.6,
+      "originGdp": 56355.0733084714
+    },
+    {
+      "id": "DNK",
+      "name": "Denmark",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 7.6311368094214185,
+      "gdp": 59804.45463553633,
+      "originLadder": 7.6,
+      "originGdp": 56355.0733084714
+    },
+    {
+      "id": "DNK",
+      "name": "Denmark",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 7.641515745895225,
+      "gdp": 61000.543728247045,
+      "originLadder": 7.6,
+      "originGdp": 56355.0733084714
+    },
+    {
+      "id": "DNK",
+      "name": "Denmark",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 7.651894682369031,
+      "gdp": 62220.554602811986,
+      "originLadder": 7.6,
+      "originGdp": 56355.0733084714
+    },
+    {
+      "id": "DNK",
+      "name": "Denmark",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 7.662273618842837,
+      "gdp": 63464.96569486823,
+      "originLadder": 7.6,
+      "originGdp": 56355.0733084714
+    },
+    {
+      "id": "DNK",
+      "name": "Denmark",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 7.672652555316644,
+      "gdp": 64734.26500876559,
+      "originLadder": 7.6,
+      "originGdp": 56355.0733084714
+    },
+    {
+      "id": "FIN",
+      "name": "Finland",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 7.779378936473806,
+      "gdp": 46243.98577415865,
+      "originLadder": 7.769,
+      "originGdp": 45337.2409550575
+    },
+    {
+      "id": "FIN",
+      "name": "Finland",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 7.789757872947613,
+      "gdp": 47168.86548964182,
+      "originLadder": 7.769,
+      "originGdp": 45337.2409550575
+    },
+    {
+      "id": "FIN",
+      "name": "Finland",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 7.800136809421419,
+      "gdp": 48112.24279943467,
+      "originLadder": 7.769,
+      "originGdp": 45337.2409550575
+    },
+    {
+      "id": "FIN",
+      "name": "Finland",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 7.810515745895225,
+      "gdp": 49074.487655423356,
+      "originLadder": 7.769,
+      "originGdp": 45337.2409550575
+    },
+    {
+      "id": "FIN",
+      "name": "Finland",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 7.82089468236903,
+      "gdp": 50055.97740853182,
+      "originLadder": 7.769,
+      "originGdp": 45337.2409550575
+    },
+    {
+      "id": "FIN",
+      "name": "Finland",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 7.831273618842838,
+      "gdp": 51057.096956702466,
+      "originLadder": 7.769,
+      "originGdp": 45337.2409550575
+    },
+    {
+      "id": "FIN",
+      "name": "Finland",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 7.841652555316642,
+      "gdp": 52078.23889583651,
+      "originLadder": 7.769,
+      "originGdp": 45337.2409550575
+    },
+    {
+      "id": "PRT",
+      "name": "Portugal",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.703378936473805,
+      "gdp": 21417.730090675326,
+      "originLadder": 5.693,
+      "originGdp": 20997.7745987013
+    },
+    {
+      "id": "PRT",
+      "name": "Portugal",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.713757872947611,
+      "gdp": 21846.084692488832,
+      "originLadder": 5.693,
+      "originGdp": 20997.7745987013
+    },
+    {
+      "id": "PRT",
+      "name": "Portugal",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.7241368094214184,
+      "gdp": 22283.006386338613,
+      "originLadder": 5.693,
+      "originGdp": 20997.7745987013
+    },
+    {
+      "id": "PRT",
+      "name": "Portugal",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.734515745895225,
+      "gdp": 22728.666514065382,
+      "originLadder": 5.693,
+      "originGdp": 20997.7745987013
+    },
+    {
+      "id": "PRT",
+      "name": "Portugal",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.744894682369031,
+      "gdp": 23183.23984434669,
+      "originLadder": 5.693,
+      "originGdp": 20997.7745987013
+    },
+    {
+      "id": "PRT",
+      "name": "Portugal",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.755273618842837,
+      "gdp": 23646.904641233625,
+      "originLadder": 5.693,
+      "originGdp": 20997.7745987013
+    },
+    {
+      "id": "PRT",
+      "name": "Portugal",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.765652555316644,
+      "gdp": 24119.842734058297,
+      "originLadder": 5.693,
+      "originGdp": 20997.7745987013
+    },
+    {
+      "id": "GRC",
+      "name": "Greece",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.297378936473805,
+      "gdp": 19144.41974144155,
+      "originLadder": 5.287,
+      "originGdp": 18769.0389621976
+    },
+    {
+      "id": "GRC",
+      "name": "Greece",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.307757872947612,
+      "gdp": 19527.30813627038,
+      "originLadder": 5.287,
+      "originGdp": 18769.0389621976
+    },
+    {
+      "id": "GRC",
+      "name": "Greece",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.31813680942142,
+      "gdp": 19917.854298995793,
+      "originLadder": 5.287,
+      "originGdp": 18769.0389621976
+    },
+    {
+      "id": "GRC",
+      "name": "Greece",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.328515745895224,
+      "gdp": 20316.211384975704,
+      "originLadder": 5.287,
+      "originGdp": 18769.0389621976
+    },
+    {
+      "id": "GRC",
+      "name": "Greece",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.33889468236903,
+      "gdp": 20722.53561267522,
+      "originLadder": 5.287,
+      "originGdp": 18769.0389621976
+    },
+    {
+      "id": "GRC",
+      "name": "Greece",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.349273618842838,
+      "gdp": 21136.986324928726,
+      "originLadder": 5.287,
+      "originGdp": 18769.0389621976
+    },
+    {
+      "id": "GRC",
+      "name": "Greece",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.359652555316644,
+      "gdp": 21559.7260514273,
+      "originLadder": 5.287,
+      "originGdp": 18769.0389621976
+    },
+    {
+      "id": "CZE",
+      "name": "Czechia",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.8623789364738075,
+      "gdp": 20131.36211665107,
+      "originLadder": 6.852,
+      "originGdp": 19736.6295261285
+    },
+    {
+      "id": "CZE",
+      "name": "Czechia",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.872757872947614,
+      "gdp": 20533.989358984094,
+      "originLadder": 6.852,
+      "originGdp": 19736.6295261285
+    },
+    {
+      "id": "CZE",
+      "name": "Czechia",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.88313680942142,
+      "gdp": 20944.66914616378,
+      "originLadder": 6.852,
+      "originGdp": 19736.6295261285
+    },
+    {
+      "id": "CZE",
+      "name": "Czechia",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.893515745895226,
+      "gdp": 21363.56252908705,
+      "originLadder": 6.852,
+      "originGdp": 19736.6295261285
+    },
+    {
+      "id": "CZE",
+      "name": "Czechia",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.903894682369033,
+      "gdp": 21790.833779668792,
+      "originLadder": 6.852,
+      "originGdp": 19736.6295261285
+    },
+    {
+      "id": "CZE",
+      "name": "Czechia",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.914273618842839,
+      "gdp": 22226.65045526217,
+      "originLadder": 6.852,
+      "originGdp": 19736.6295261285
+    },
+    {
+      "id": "CZE",
+      "name": "Czechia",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.924652555316646,
+      "gdp": 22671.183464367412,
+      "originLadder": 6.852,
+      "originGdp": 19736.6295261285
+    },
+    {
+      "id": "HUN",
+      "name": "Hungary",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.768378936473806,
+      "gdp": 14824.453880719824,
+      "originLadder": 5.758,
+      "originGdp": 14533.7783144312
+    },
+    {
+      "id": "HUN",
+      "name": "Hungary",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.7787578729476134,
+      "gdp": 15120.94295833422,
+      "originLadder": 5.758,
+      "originGdp": 14533.7783144312
+    },
+    {
+      "id": "HUN",
+      "name": "Hungary",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.78913680942142,
+      "gdp": 15423.361817500907,
+      "originLadder": 5.758,
+      "originGdp": 14533.7783144312
+    },
+    {
+      "id": "HUN",
+      "name": "Hungary",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.799515745895226,
+      "gdp": 15731.829053850923,
+      "originLadder": 5.758,
+      "originGdp": 14533.7783144312
+    },
+    {
+      "id": "HUN",
+      "name": "Hungary",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.809894682369032,
+      "gdp": 16046.465634927941,
+      "originLadder": 5.758,
+      "originGdp": 14533.7783144312
+    },
+    {
+      "id": "HUN",
+      "name": "Hungary",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.820273618842839,
+      "gdp": 16367.3949476265,
+      "originLadder": 5.758,
+      "originGdp": 14533.7783144312
+    },
+    {
+      "id": "HUN",
+      "name": "Hungary",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.830652555316645,
+      "gdp": 16694.74284657903,
+      "originLadder": 5.758,
+      "originGdp": 14533.7783144312
+    },
+    {
+      "id": "ROU",
+      "name": "Romania",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.080378936473807,
+      "gdp": 10928.453518026956,
+      "originLadder": 6.07,
+      "originGdp": 10714.1701157127
+    },
+    {
+      "id": "ROU",
+      "name": "Romania",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.090757872947613,
+      "gdp": 11147.022588387494,
+      "originLadder": 6.07,
+      "originGdp": 10714.1701157127
+    },
+    {
+      "id": "ROU",
+      "name": "Romania",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.101136809421419,
+      "gdp": 11369.963040155246,
+      "originLadder": 6.07,
+      "originGdp": 10714.1701157127
+    },
+    {
+      "id": "ROU",
+      "name": "Romania",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.111515745895225,
+      "gdp": 11597.362300958348,
+      "originLadder": 6.07,
+      "originGdp": 10714.1701157127
+    },
+    {
+      "id": "ROU",
+      "name": "Romania",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.121894682369032,
+      "gdp": 11829.309546977516,
+      "originLadder": 6.07,
+      "originGdp": 10714.1701157127
+    },
+    {
+      "id": "ROU",
+      "name": "Romania",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.132273618842838,
+      "gdp": 12065.895737917066,
+      "originLadder": 6.07,
+      "originGdp": 10714.1701157127
+    },
+    {
+      "id": "ROU",
+      "name": "Romania",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.142652555316645,
+      "gdp": 12307.213652675408,
+      "originLadder": 6.07,
+      "originGdp": 10714.1701157127
+    },
+    {
+      "id": "UKR",
+      "name": "Ukraine",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 4.342378936473806,
+      "gdp": 2354.84033203125,
+      "originLadder": 4.332,
+      "originGdp": 2308.6669921875
+    },
+    {
+      "id": "UKR",
+      "name": "Ukraine",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 4.352757872947612,
+      "gdp": 2401.937138671875,
+      "originLadder": 4.332,
+      "originGdp": 2308.6669921875
+    },
+    {
+      "id": "UKR",
+      "name": "Ukraine",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 4.363136809421419,
+      "gdp": 2449.975881445313,
+      "originLadder": 4.332,
+      "originGdp": 2308.6669921875
+    },
+    {
+      "id": "UKR",
+      "name": "Ukraine",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 4.373515745895225,
+      "gdp": 2498.975399074219,
+      "originLadder": 4.332,
+      "originGdp": 2308.6669921875
+    },
+    {
+      "id": "UKR",
+      "name": "Ukraine",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 4.383894682369031,
+      "gdp": 2548.954907055703,
+      "originLadder": 4.332,
+      "originGdp": 2308.6669921875
+    },
+    {
+      "id": "UKR",
+      "name": "Ukraine",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 4.3942736188428375,
+      "gdp": 2599.9340051968175,
+      "originLadder": 4.332,
+      "originGdp": 2308.6669921875
+    },
+    {
+      "id": "UKR",
+      "name": "Ukraine",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 4.404652555316644,
+      "gdp": 2651.9326853007537,
+      "originLadder": 4.332,
+      "originGdp": 2308.6669921875
+    },
+    {
+      "id": "BLR",
+      "name": "Belarus",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.333378936473807,
+      "gdp": 6289.231464196626,
+      "originLadder": 5.323,
+      "originGdp": 6165.91320019277
+    },
+    {
+      "id": "BLR",
+      "name": "Belarus",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.343757872947613,
+      "gdp": 6415.016093480558,
+      "originLadder": 5.323,
+      "originGdp": 6165.91320019277
+    },
+    {
+      "id": "BLR",
+      "name": "Belarus",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.354136809421419,
+      "gdp": 6543.31641535017,
+      "originLadder": 5.323,
+      "originGdp": 6165.91320019277
+    },
+    {
+      "id": "BLR",
+      "name": "Belarus",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.364515745895225,
+      "gdp": 6674.182743657172,
+      "originLadder": 5.323,
+      "originGdp": 6165.91320019277
+    },
+    {
+      "id": "BLR",
+      "name": "Belarus",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.374894682369031,
+      "gdp": 6807.666398530316,
+      "originLadder": 5.323,
+      "originGdp": 6165.91320019277
+    },
+    {
+      "id": "BLR",
+      "name": "Belarus",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.385273618842837,
+      "gdp": 6943.819726500923,
+      "originLadder": 5.323,
+      "originGdp": 6165.91320019277
+    },
+    {
+      "id": "BLR",
+      "name": "Belarus",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.3956525553166435,
+      "gdp": 7082.696121030941,
+      "originLadder": 5.323,
+      "originGdp": 6165.91320019277
+    },
+    {
+      "id": "SRB",
+      "name": "Serbia",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.613378936473806,
+      "gdp": 6654.561903502949,
+      "originLadder": 5.603,
+      "originGdp": 6524.08029755191
+    },
+    {
+      "id": "SRB",
+      "name": "Serbia",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.623757872947612,
+      "gdp": 6787.653141573007,
+      "originLadder": 5.603,
+      "originGdp": 6524.08029755191
+    },
+    {
+      "id": "SRB",
+      "name": "Serbia",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.634136809421419,
+      "gdp": 6923.406204404469,
+      "originLadder": 5.603,
+      "originGdp": 6524.08029755191
+    },
+    {
+      "id": "SRB",
+      "name": "Serbia",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.644515745895225,
+      "gdp": 7061.874328492557,
+      "originLadder": 5.603,
+      "originGdp": 6524.08029755191
+    },
+    {
+      "id": "SRB",
+      "name": "Serbia",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.654894682369032,
+      "gdp": 7203.111815062408,
+      "originLadder": 5.603,
+      "originGdp": 6524.08029755191
+    },
+    {
+      "id": "SRB",
+      "name": "Serbia",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.665273618842838,
+      "gdp": 7347.174051363656,
+      "originLadder": 5.603,
+      "originGdp": 6524.08029755191
+    },
+    {
+      "id": "SRB",
+      "name": "Serbia",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.675652555316645,
+      "gdp": 7494.117532390929,
+      "originLadder": 5.603,
+      "originGdp": 6524.08029755191
+    },
+    {
+      "id": "ISL",
+      "name": "Iceland",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 7.504378936473806,
+      "gdp": 58886.28541123023,
+      "originLadder": 7.494,
+      "originGdp": 57731.6523639512
+    },
+    {
+      "id": "ISL",
+      "name": "Iceland",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 7.514757872947612,
+      "gdp": 60064.01111945483,
+      "originLadder": 7.494,
+      "originGdp": 57731.6523639512
+    },
+    {
+      "id": "ISL",
+      "name": "Iceland",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 7.525136809421419,
+      "gdp": 61265.291341843935,
+      "originLadder": 7.494,
+      "originGdp": 57731.6523639512
+    },
+    {
+      "id": "ISL",
+      "name": "Iceland",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 7.535515745895227,
+      "gdp": 62490.597168680804,
+      "originLadder": 7.494,
+      "originGdp": 57731.6523639512
+    },
+    {
+      "id": "ISL",
+      "name": "Iceland",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 7.545894682369033,
+      "gdp": 63740.409112054425,
+      "originLadder": 7.494,
+      "originGdp": 57731.6523639512
+    },
+    {
+      "id": "ISL",
+      "name": "Iceland",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 7.556273618842839,
+      "gdp": 65015.217294295515,
+      "originLadder": 7.494,
+      "originGdp": 57731.6523639512
+    },
+    {
+      "id": "ISL",
+      "name": "Iceland",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 7.5666525553166455,
+      "gdp": 66315.52164018143,
+      "originLadder": 7.494,
+      "originGdp": 57731.6523639512
+    },
+    {
+      "id": "EST",
+      "name": "Estonia",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.903378936473806,
+      "gdp": 20312.632402133557,
+      "originLadder": 5.893,
+      "originGdp": 19914.3454922878
+    },
+    {
+      "id": "EST",
+      "name": "Estonia",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.913757872947612,
+      "gdp": 20718.885050176228,
+      "originLadder": 5.893,
+      "originGdp": 19914.3454922878
+    },
+    {
+      "id": "EST",
+      "name": "Estonia",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.924136809421419,
+      "gdp": 21133.262751179755,
+      "originLadder": 5.893,
+      "originGdp": 19914.3454922878
+    },
+    {
+      "id": "EST",
+      "name": "Estonia",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.934515745895225,
+      "gdp": 21555.928006203347,
+      "originLadder": 5.893,
+      "originGdp": 19914.3454922878
+    },
+    {
+      "id": "EST",
+      "name": "Estonia",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.944894682369031,
+      "gdp": 21987.046566327415,
+      "originLadder": 5.893,
+      "originGdp": 19914.3454922878
+    },
+    {
+      "id": "EST",
+      "name": "Estonia",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.9552736188428375,
+      "gdp": 22426.787497653964,
+      "originLadder": 5.893,
+      "originGdp": 19914.3454922878
+    },
+    {
+      "id": "EST",
+      "name": "Estonia",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.965652555316644,
+      "gdp": 22875.323247607044,
+      "originLadder": 5.893,
+      "originGdp": 19914.3454922878
+    },
+    {
+      "id": "LVA",
+      "name": "Latvia",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.950378936473807,
+      "gdp": 15422.471213524008,
+      "originLadder": 5.94,
+      "originGdp": 15120.0698171804
+    },
+    {
+      "id": "LVA",
+      "name": "Latvia",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.960757872947613,
+      "gdp": 15730.920637794488,
+      "originLadder": 5.94,
+      "originGdp": 15120.0698171804
+    },
+    {
+      "id": "LVA",
+      "name": "Latvia",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.971136809421419,
+      "gdp": 16045.53905055038,
+      "originLadder": 5.94,
+      "originGdp": 15120.0698171804
+    },
+    {
+      "id": "LVA",
+      "name": "Latvia",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.9815157458952255,
+      "gdp": 16366.449831561386,
+      "originLadder": 5.94,
+      "originGdp": 15120.0698171804
+    },
+    {
+      "id": "LVA",
+      "name": "Latvia",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.991894682369032,
+      "gdp": 16693.77882819261,
+      "originLadder": 5.94,
+      "originGdp": 15120.0698171804
+    },
+    {
+      "id": "LVA",
+      "name": "Latvia",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.002273618842839,
+      "gdp": 17027.654404756468,
+      "originLadder": 5.94,
+      "originGdp": 15120.0698171804
+    },
+    {
+      "id": "LVA",
+      "name": "Latvia",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.012652555316645,
+      "gdp": 17368.207492851594,
+      "originLadder": 5.94,
+      "originGdp": 15120.0698171804
+    },
+    {
+      "id": "LTU",
+      "name": "Lithuania",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.159378936473806,
+      "gdp": 16937.00018696252,
+      "originLadder": 6.149,
+      "originGdp": 16604.9021440809
+    },
+    {
+      "id": "LTU",
+      "name": "Lithuania",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.169757872947613,
+      "gdp": 17275.74019070177,
+      "originLadder": 6.149,
+      "originGdp": 16604.9021440809
+    },
+    {
+      "id": "LTU",
+      "name": "Lithuania",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.180136809421419,
+      "gdp": 17621.254994515806,
+      "originLadder": 6.149,
+      "originGdp": 16604.9021440809
+    },
+    {
+      "id": "LTU",
+      "name": "Lithuania",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.190515745895225,
+      "gdp": 17973.68009440612,
+      "originLadder": 6.149,
+      "originGdp": 16604.9021440809
+    },
+    {
+      "id": "LTU",
+      "name": "Lithuania",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.200894682369031,
+      "gdp": 18333.153696294245,
+      "originLadder": 6.149,
+      "originGdp": 16604.9021440809
+    },
+    {
+      "id": "LTU",
+      "name": "Lithuania",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.211273618842839,
+      "gdp": 18699.816770220128,
+      "originLadder": 6.149,
+      "originGdp": 16604.9021440809
+    },
+    {
+      "id": "LTU",
+      "name": "Lithuania",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.221652555316645,
+      "gdp": 19073.813105624533,
+      "originLadder": 6.149,
+      "originGdp": 16604.9021440809
+    },
+    {
+      "id": "SVK",
+      "name": "Slovakia",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.208378936473807,
+      "gdp": 18226.395215715256,
+      "originLadder": 6.198,
+      "originGdp": 17869.0149173679
+    },
+    {
+      "id": "SVK",
+      "name": "Slovakia",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.218757872947613,
+      "gdp": 18590.92312002956,
+      "originLadder": 6.198,
+      "originGdp": 17869.0149173679
+    },
+    {
+      "id": "SVK",
+      "name": "Slovakia",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.229136809421419,
+      "gdp": 18962.741582430157,
+      "originLadder": 6.198,
+      "originGdp": 17869.0149173679
+    },
+    {
+      "id": "SVK",
+      "name": "Slovakia",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.2395157458952255,
+      "gdp": 19341.996414078756,
+      "originLadder": 6.198,
+      "originGdp": 17869.0149173679
+    },
+    {
+      "id": "SVK",
+      "name": "Slovakia",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.249894682369032,
+      "gdp": 19728.83634236033,
+      "originLadder": 6.198,
+      "originGdp": 17869.0149173679
+    },
+    {
+      "id": "SVK",
+      "name": "Slovakia",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.260273618842838,
+      "gdp": 20123.413069207538,
+      "originLadder": 6.198,
+      "originGdp": 17869.0149173679
+    },
+    {
+      "id": "SVK",
+      "name": "Slovakia",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.270652555316645,
+      "gdp": 20525.88133059169,
+      "originLadder": 6.198,
+      "originGdp": 17869.0149173679
+    },
+    {
+      "id": "SVN",
+      "name": "Slovenia",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.128378936473807,
+      "gdp": 23759.845998629462,
+      "originLadder": 6.118,
+      "originGdp": 23293.966665323
+    },
+    {
+      "id": "SVN",
+      "name": "Slovenia",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.138757872947613,
+      "gdp": 24235.042918602052,
+      "originLadder": 6.118,
+      "originGdp": 23293.966665323
+    },
+    {
+      "id": "SVN",
+      "name": "Slovenia",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.149136809421419,
+      "gdp": 24719.743776974094,
+      "originLadder": 6.118,
+      "originGdp": 23293.966665323
+    },
+    {
+      "id": "SVN",
+      "name": "Slovenia",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.159515745895227,
+      "gdp": 25214.13865251357,
+      "originLadder": 6.118,
+      "originGdp": 23293.966665323
+    },
+    {
+      "id": "SVN",
+      "name": "Slovenia",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.1698946823690335,
+      "gdp": 25718.421425563847,
+      "originLadder": 6.118,
+      "originGdp": 23293.966665323
+    },
+    {
+      "id": "SVN",
+      "name": "Slovenia",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.18027361884284,
+      "gdp": 26232.789854075123,
+      "originLadder": 6.118,
+      "originGdp": 23293.966665323
+    },
+    {
+      "id": "SVN",
+      "name": "Slovenia",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.190652555316646,
+      "gdp": 26757.445651156624,
+      "originLadder": 6.118,
+      "originGdp": 23293.966665323
+    },
+    {
+      "id": "HRV",
+      "name": "Croatia",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.4423789364738075,
+      "gdp": 14342.280935097737,
+      "originLadder": 5.432,
+      "originGdp": 14061.0597402919
+    },
+    {
+      "id": "HRV",
+      "name": "Croatia",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.452757872947614,
+      "gdp": 14629.126553799691,
+      "originLadder": 5.432,
+      "originGdp": 14061.0597402919
+    },
+    {
+      "id": "HRV",
+      "name": "Croatia",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.46313680942142,
+      "gdp": 14921.709084875689,
+      "originLadder": 5.432,
+      "originGdp": 14061.0597402919
+    },
+    {
+      "id": "HRV",
+      "name": "Croatia",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.473515745895226,
+      "gdp": 15220.143266573199,
+      "originLadder": 5.432,
+      "originGdp": 14061.0597402919
+    },
+    {
+      "id": "HRV",
+      "name": "Croatia",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.483894682369033,
+      "gdp": 15524.546131904664,
+      "originLadder": 5.432,
+      "originGdp": 14061.0597402919
+    },
+    {
+      "id": "HRV",
+      "name": "Croatia",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.494273618842839,
+      "gdp": 15835.037054542758,
+      "originLadder": 5.432,
+      "originGdp": 14061.0597402919
+    },
+    {
+      "id": "HRV",
+      "name": "Croatia",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.504652555316645,
+      "gdp": 16151.737795633613,
+      "originLadder": 5.432,
+      "originGdp": 14061.0597402919
+    },
+    {
+      "id": "BIH",
+      "name": "Bosnia & Herz.",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.396378936473806,
+      "gdp": 5467.457050379857,
+      "originLadder": 5.386,
+      "originGdp": 5360.25201017633
+    },
+    {
+      "id": "BIH",
+      "name": "Bosnia & Herz.",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.406757872947613,
+      "gdp": 5576.8061913874535,
+      "originLadder": 5.386,
+      "originGdp": 5360.25201017633
+    },
+    {
+      "id": "BIH",
+      "name": "Bosnia & Herz.",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.417136809421419,
+      "gdp": 5688.342315215204,
+      "originLadder": 5.386,
+      "originGdp": 5360.25201017633
+    },
+    {
+      "id": "BIH",
+      "name": "Bosnia & Herz.",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.427515745895225,
+      "gdp": 5802.109161519507,
+      "originLadder": 5.386,
+      "originGdp": 5360.25201017633
+    },
+    {
+      "id": "BIH",
+      "name": "Bosnia & Herz.",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.4378946823690315,
+      "gdp": 5918.151344749897,
+      "originLadder": 5.386,
+      "originGdp": 5360.25201017633
+    },
+    {
+      "id": "BIH",
+      "name": "Bosnia & Herz.",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.448273618842838,
+      "gdp": 6036.514371644896,
+      "originLadder": 5.386,
+      "originGdp": 5360.25201017633
+    },
+    {
+      "id": "BIH",
+      "name": "Bosnia & Herz.",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.458652555316645,
+      "gdp": 6157.244659077794,
+      "originLadder": 5.386,
+      "originGdp": 5360.25201017633
+    },
+    {
+      "id": "MNE",
+      "name": "Montenegro",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.533378936473806,
+      "gdp": 7302.657140019171,
+      "originLadder": 5.523,
+      "originGdp": 7159.46778433252
+    },
+    {
+      "id": "MNE",
+      "name": "Montenegro",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.543757872947612,
+      "gdp": 7448.710282819554,
+      "originLadder": 5.523,
+      "originGdp": 7159.46778433252
+    },
+    {
+      "id": "MNE",
+      "name": "Montenegro",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.5541368094214185,
+      "gdp": 7597.684488475946,
+      "originLadder": 5.523,
+      "originGdp": 7159.46778433252
+    },
+    {
+      "id": "MNE",
+      "name": "Montenegro",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.564515745895225,
+      "gdp": 7749.638178245464,
+      "originLadder": 5.523,
+      "originGdp": 7159.46778433252
+    },
+    {
+      "id": "MNE",
+      "name": "Montenegro",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.574894682369031,
+      "gdp": 7904.630941810373,
+      "originLadder": 5.523,
+      "originGdp": 7159.46778433252
+    },
+    {
+      "id": "MNE",
+      "name": "Montenegro",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.585273618842837,
+      "gdp": 8062.723560646581,
+      "originLadder": 5.523,
+      "originGdp": 7159.46778433252
+    },
+    {
+      "id": "MNE",
+      "name": "Montenegro",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.595652555316644,
+      "gdp": 8223.978031859513,
+      "originLadder": 5.523,
+      "originGdp": 7159.46778433252
+    },
+    {
+      "id": "MKD",
+      "name": "North Macedonia",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.284378936473806,
+      "gdp": 5812.361211741788,
+      "originLadder": 5.274,
+      "originGdp": 5698.39334484489
+    },
+    {
+      "id": "MKD",
+      "name": "North Macedonia",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.294757872947613,
+      "gdp": 5928.608435976623,
+      "originLadder": 5.274,
+      "originGdp": 5698.39334484489
+    },
+    {
+      "id": "MKD",
+      "name": "North Macedonia",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.305136809421419,
+      "gdp": 6047.1806046961565,
+      "originLadder": 5.274,
+      "originGdp": 5698.39334484489
+    },
+    {
+      "id": "MKD",
+      "name": "North Macedonia",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.315515745895225,
+      "gdp": 6168.124216790079,
+      "originLadder": 5.274,
+      "originGdp": 5698.39334484489
+    },
+    {
+      "id": "MKD",
+      "name": "North Macedonia",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.325894682369031,
+      "gdp": 6291.48670112588,
+      "originLadder": 5.274,
+      "originGdp": 5698.39334484489
+    },
+    {
+      "id": "MKD",
+      "name": "North Macedonia",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.336273618842838,
+      "gdp": 6417.316435148398,
+      "originLadder": 5.274,
+      "originGdp": 5698.39334484489
+    },
+    {
+      "id": "MKD",
+      "name": "North Macedonia",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.346652555316644,
+      "gdp": 6545.662763851366,
+      "originLadder": 5.274,
+      "originGdp": 5698.39334484489
+    },
+    {
+      "id": "ALB",
+      "name": "Albania",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 4.729378936473807,
+      "gdp": 4991.700230494914,
+      "originLadder": 4.719,
+      "originGdp": 4893.82375538717
+    },
+    {
+      "id": "ALB",
+      "name": "Albania",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 4.739757872947613,
+      "gdp": 5091.534235104812,
+      "originLadder": 4.719,
+      "originGdp": 4893.82375538717
+    },
+    {
+      "id": "ALB",
+      "name": "Albania",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 4.750136809421419,
+      "gdp": 5193.364919806909,
+      "originLadder": 4.719,
+      "originGdp": 4893.82375538717
+    },
+    {
+      "id": "ALB",
+      "name": "Albania",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 4.760515745895225,
+      "gdp": 5297.232218203047,
+      "originLadder": 4.719,
+      "originGdp": 4893.82375538717
+    },
+    {
+      "id": "ALB",
+      "name": "Albania",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 4.770894682369032,
+      "gdp": 5403.1768625671075,
+      "originLadder": 4.719,
+      "originGdp": 4893.82375538717
+    },
+    {
+      "id": "ALB",
+      "name": "Albania",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 4.781273618842839,
+      "gdp": 5511.24039981845,
+      "originLadder": 4.719,
+      "originGdp": 4893.82375538717
+    },
+    {
+      "id": "ALB",
+      "name": "Albania",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 4.791652555316645,
+      "gdp": 5621.465207814819,
+      "originLadder": 4.719,
+      "originGdp": 4893.82375538717
+    },
+    {
+      "id": "BGR",
+      "name": "Bulgaria",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.021378936473806,
+      "gdp": 8358.688822464143,
+      "originLadder": 5.011,
+      "originGdp": 8194.79296320014
+    },
+    {
+      "id": "BGR",
+      "name": "Bulgaria",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.031757872947613,
+      "gdp": 8525.862598913425,
+      "originLadder": 5.011,
+      "originGdp": 8194.79296320014
+    },
+    {
+      "id": "BGR",
+      "name": "Bulgaria",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.042136809421419,
+      "gdp": 8696.379850891695,
+      "originLadder": 5.011,
+      "originGdp": 8194.79296320014
+    },
+    {
+      "id": "BGR",
+      "name": "Bulgaria",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.052515745895224,
+      "gdp": 8870.307447909527,
+      "originLadder": 5.011,
+      "originGdp": 8194.79296320014
+    },
+    {
+      "id": "BGR",
+      "name": "Bulgaria",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.062894682369031,
+      "gdp": 9047.713596867718,
+      "originLadder": 5.011,
+      "originGdp": 8194.79296320014
+    },
+    {
+      "id": "BGR",
+      "name": "Bulgaria",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.073273618842837,
+      "gdp": 9228.667868805072,
+      "originLadder": 5.011,
+      "originGdp": 8194.79296320014
+    },
+    {
+      "id": "BGR",
+      "name": "Bulgaria",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.083652555316643,
+      "gdp": 9413.241226181175,
+      "originLadder": 5.011,
+      "originGdp": 8194.79296320014
+    },
+    {
+      "id": "MDA",
+      "name": "Moldova",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.539378936473806,
+      "gdp": 3333.356026372944,
+      "originLadder": 5.529,
+      "originGdp": 3267.9961042872
+    },
+    {
+      "id": "MDA",
+      "name": "Moldova",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.5497578729476125,
+      "gdp": 3400.023146900403,
+      "originLadder": 5.529,
+      "originGdp": 3267.9961042872
+    },
+    {
+      "id": "MDA",
+      "name": "Moldova",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.560136809421419,
+      "gdp": 3468.0236098384116,
+      "originLadder": 5.529,
+      "originGdp": 3267.9961042872
+    },
+    {
+      "id": "MDA",
+      "name": "Moldova",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.570515745895225,
+      "gdp": 3537.3840820351793,
+      "originLadder": 5.529,
+      "originGdp": 3267.9961042872
+    },
+    {
+      "id": "MDA",
+      "name": "Moldova",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.580894682369031,
+      "gdp": 3608.1317636758827,
+      "originLadder": 5.529,
+      "originGdp": 3267.9961042872
+    },
+    {
+      "id": "MDA",
+      "name": "Moldova",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.5912736188428385,
+      "gdp": 3680.2943989494006,
+      "originLadder": 5.529,
+      "originGdp": 3267.9961042872
+    },
+    {
+      "id": "MDA",
+      "name": "Moldova",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.601652555316645,
+      "gdp": 3753.9002869283886,
+      "originLadder": 5.529,
+      "originGdp": 3267.9961042872
+    },
+    {
+      "id": "LUX",
+      "name": "Luxembourg",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 7.100378936473807,
+      "gdp": 108924.43442681113,
+      "originLadder": 7.09,
+      "originGdp": 106788.661202756
+    },
+    {
+      "id": "LUX",
+      "name": "Luxembourg",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 7.110757872947613,
+      "gdp": 111102.92311534735,
+      "originLadder": 7.09,
+      "originGdp": 106788.661202756
+    },
+    {
+      "id": "LUX",
+      "name": "Luxembourg",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 7.12113680942142,
+      "gdp": 113324.98157765431,
+      "originLadder": 7.09,
+      "originGdp": 106788.661202756
+    },
+    {
+      "id": "LUX",
+      "name": "Luxembourg",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 7.131515745895226,
+      "gdp": 115591.48120920737,
+      "originLadder": 7.09,
+      "originGdp": 106788.661202756
+    },
+    {
+      "id": "LUX",
+      "name": "Luxembourg",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 7.141894682369032,
+      "gdp": 117903.31083339153,
+      "originLadder": 7.09,
+      "originGdp": 106788.661202756
+    },
+    {
+      "id": "LUX",
+      "name": "Luxembourg",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 7.152273618842838,
+      "gdp": 120261.37705005937,
+      "originLadder": 7.09,
+      "originGdp": 106788.661202756
+    },
+    {
+      "id": "LUX",
+      "name": "Luxembourg",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 7.162652555316645,
+      "gdp": 122666.60459106055,
+      "originLadder": 7.09,
+      "originGdp": 106788.661202756
+    },
+    {
+      "id": "CYP",
+      "name": "Cyprus",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.056378936473805,
+      "gdp": 27501.6404296875,
+      "originLadder": 6.046,
+      "originGdp": 26962.392578125
+    },
+    {
+      "id": "CYP",
+      "name": "Cyprus",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.066757872947611,
+      "gdp": 28051.67323828125,
+      "originLadder": 6.046,
+      "originGdp": 26962.392578125
+    },
+    {
+      "id": "CYP",
+      "name": "Cyprus",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.077136809421417,
+      "gdp": 28612.70670304688,
+      "originLadder": 6.046,
+      "originGdp": 26962.392578125
+    },
+    {
+      "id": "CYP",
+      "name": "Cyprus",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.087515745895225,
+      "gdp": 29184.96083710781,
+      "originLadder": 6.046,
+      "originGdp": 26962.392578125
+    },
+    {
+      "id": "CYP",
+      "name": "Cyprus",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.097894682369032,
+      "gdp": 29768.66005384997,
+      "originLadder": 6.046,
+      "originGdp": 26962.392578125
+    },
+    {
+      "id": "CYP",
+      "name": "Cyprus",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.108273618842838,
+      "gdp": 30364.03325492697,
+      "originLadder": 6.046,
+      "originGdp": 26962.392578125
+    },
+    {
+      "id": "CYP",
+      "name": "Cyprus",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.118652555316644,
+      "gdp": 30971.31392002551,
+      "originLadder": 6.046,
+      "originGdp": 26962.392578125
+    },
+    {
+      "id": "MLT",
+      "name": "Malta",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.736378936473807,
+      "gdp": 30127.5272146328,
+      "originLadder": 6.726,
+      "originGdp": 29536.7913868949
+    },
+    {
+      "id": "MLT",
+      "name": "Malta",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.746757872947613,
+      "gdp": 30730.077758925454,
+      "originLadder": 6.726,
+      "originGdp": 29536.7913868949
+    },
+    {
+      "id": "MLT",
+      "name": "Malta",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.75713680942142,
+      "gdp": 31344.679314103967,
+      "originLadder": 6.726,
+      "originGdp": 29536.7913868949
+    },
+    {
+      "id": "MLT",
+      "name": "Malta",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.767515745895226,
+      "gdp": 31971.572900386043,
+      "originLadder": 6.726,
+      "originGdp": 29536.7913868949
+    },
+    {
+      "id": "MLT",
+      "name": "Malta",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.777894682369032,
+      "gdp": 32611.004358393762,
+      "originLadder": 6.726,
+      "originGdp": 29536.7913868949
+    },
+    {
+      "id": "MLT",
+      "name": "Malta",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.7882736188428385,
+      "gdp": 33263.22444556164,
+      "originLadder": 6.726,
+      "originGdp": 29536.7913868949
+    },
+    {
+      "id": "MLT",
+      "name": "Malta",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.798652555316645,
+      "gdp": 33928.48893447287,
+      "originLadder": 6.726,
+      "originGdp": 29536.7913868949
+    },
+    {
+      "id": "CHN",
+      "name": "China",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.201378936473806,
+      "gdp": 9994.5504837773,
+      "originLadder": 5.191,
+      "originGdp": 9798.57890566402
+    },
+    {
+      "id": "CHN",
+      "name": "China",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.211757872947612,
+      "gdp": 10194.441493452847,
+      "originLadder": 5.191,
+      "originGdp": 9798.57890566402
+    },
+    {
+      "id": "CHN",
+      "name": "China",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.222136809421419,
+      "gdp": 10398.330323321905,
+      "originLadder": 5.191,
+      "originGdp": 9798.57890566402
+    },
+    {
+      "id": "CHN",
+      "name": "China",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.232515745895225,
+      "gdp": 10606.296929788341,
+      "originLadder": 5.191,
+      "originGdp": 9798.57890566402
+    },
+    {
+      "id": "CHN",
+      "name": "China",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.242894682369031,
+      "gdp": 10818.422868384108,
+      "originLadder": 5.191,
+      "originGdp": 9798.57890566402
+    },
+    {
+      "id": "CHN",
+      "name": "China",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.2532736188428375,
+      "gdp": 11034.791325751792,
+      "originLadder": 5.191,
+      "originGdp": 9798.57890566402
+    },
+    {
+      "id": "CHN",
+      "name": "China",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.263652555316644,
+      "gdp": 11255.487152266827,
+      "originLadder": 5.191,
+      "originGdp": 9798.57890566402
+    },
+    {
+      "id": "JPN",
+      "name": "Japan",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.896378936473806,
+      "gdp": 37637.37240210237,
+      "originLadder": 5.886,
+      "originGdp": 36899.3847079435
+    },
+    {
+      "id": "JPN",
+      "name": "Japan",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.906757872947613,
+      "gdp": 38390.119850144416,
+      "originLadder": 5.886,
+      "originGdp": 36899.3847079435
+    },
+    {
+      "id": "JPN",
+      "name": "Japan",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.917136809421419,
+      "gdp": 39157.92224714731,
+      "originLadder": 5.886,
+      "originGdp": 36899.3847079435
+    },
+    {
+      "id": "JPN",
+      "name": "Japan",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.927515745895225,
+      "gdp": 39941.080692090254,
+      "originLadder": 5.886,
+      "originGdp": 36899.3847079435
+    },
+    {
+      "id": "JPN",
+      "name": "Japan",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.9378946823690315,
+      "gdp": 40739.90230593206,
+      "originLadder": 5.886,
+      "originGdp": 36899.3847079435
+    },
+    {
+      "id": "JPN",
+      "name": "Japan",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.948273618842838,
+      "gdp": 41554.7003520507,
+      "originLadder": 5.886,
+      "originGdp": 36899.3847079435
+    },
+    {
+      "id": "JPN",
+      "name": "Japan",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.958652555316644,
+      "gdp": 42385.79435909171,
+      "originLadder": 5.886,
+      "originGdp": 36899.3847079435
+    },
+    {
+      "id": "KOR",
+      "name": "South Korea",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.905378936473806,
+      "gdp": 33509.94652387208,
+      "originLadder": 5.895,
+      "originGdp": 32852.8887488942
+    },
+    {
+      "id": "KOR",
+      "name": "South Korea",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.915757872947612,
+      "gdp": 34180.14545434952,
+      "originLadder": 5.895,
+      "originGdp": 32852.8887488942
+    },
+    {
+      "id": "KOR",
+      "name": "South Korea",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.92613680942142,
+      "gdp": 34863.74836343652,
+      "originLadder": 5.895,
+      "originGdp": 32852.8887488942
+    },
+    {
+      "id": "KOR",
+      "name": "South Korea",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.9365157458952265,
+      "gdp": 35561.02333070524,
+      "originLadder": 5.895,
+      "originGdp": 32852.8887488942
+    },
+    {
+      "id": "KOR",
+      "name": "South Korea",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.946894682369033,
+      "gdp": 36272.24379731935,
+      "originLadder": 5.895,
+      "originGdp": 32852.8887488942
+    },
+    {
+      "id": "KOR",
+      "name": "South Korea",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.957273618842839,
+      "gdp": 36997.68867326574,
+      "originLadder": 5.895,
+      "originGdp": 32852.8887488942
+    },
+    {
+      "id": "KOR",
+      "name": "South Korea",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.967652555316645,
+      "gdp": 37737.64244673105,
+      "originLadder": 5.895,
+      "originGdp": 32852.8887488942
+    },
+    {
+      "id": "MNG",
+      "name": "Mongolia",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.295378936473806,
+      "gdp": 4267.532777766142,
+      "originLadder": 5.285,
+      "originGdp": 4183.85566447661
+    },
+    {
+      "id": "MNG",
+      "name": "Mongolia",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.305757872947613,
+      "gdp": 4352.883433321465,
+      "originLadder": 5.285,
+      "originGdp": 4183.85566447661
+    },
+    {
+      "id": "MNG",
+      "name": "Mongolia",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.316136809421419,
+      "gdp": 4439.941101987895,
+      "originLadder": 5.285,
+      "originGdp": 4183.85566447661
+    },
+    {
+      "id": "MNG",
+      "name": "Mongolia",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.326515745895225,
+      "gdp": 4528.739924027653,
+      "originLadder": 5.285,
+      "originGdp": 4183.85566447661
+    },
+    {
+      "id": "MNG",
+      "name": "Mongolia",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.3368946823690315,
+      "gdp": 4619.314722508206,
+      "originLadder": 5.285,
+      "originGdp": 4183.85566447661
+    },
+    {
+      "id": "MNG",
+      "name": "Mongolia",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.347273618842838,
+      "gdp": 4711.70101695837,
+      "originLadder": 5.285,
+      "originGdp": 4183.85566447661
+    },
+    {
+      "id": "MNG",
+      "name": "Mongolia",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.357652555316645,
+      "gdp": 4805.935037297538,
+      "originLadder": 5.285,
+      "originGdp": 4183.85566447661
+    },
+    {
+      "id": "VNM",
+      "name": "Vietnam",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.185378936473806,
+      "gdp": 3109.248941541879,
+      "originLadder": 5.175,
+      "originGdp": 3048.28327602145
+    },
+    {
+      "id": "VNM",
+      "name": "Vietnam",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.1957578729476115,
+      "gdp": 3171.433920372717,
+      "originLadder": 5.175,
+      "originGdp": 3048.28327602145
+    },
+    {
+      "id": "VNM",
+      "name": "Vietnam",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.206136809421419,
+      "gdp": 3234.8625987801715,
+      "originLadder": 5.175,
+      "originGdp": 3048.28327602145
+    },
+    {
+      "id": "VNM",
+      "name": "Vietnam",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.216515745895224,
+      "gdp": 3299.5598507557743,
+      "originLadder": 5.175,
+      "originGdp": 3048.28327602145
+    },
+    {
+      "id": "VNM",
+      "name": "Vietnam",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.22689468236903,
+      "gdp": 3365.55104777089,
+      "originLadder": 5.175,
+      "originGdp": 3048.28327602145
+    },
+    {
+      "id": "VNM",
+      "name": "Vietnam",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.237273618842837,
+      "gdp": 3432.862068726308,
+      "originLadder": 5.175,
+      "originGdp": 3048.28327602145
+    },
+    {
+      "id": "VNM",
+      "name": "Vietnam",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.247652555316643,
+      "gdp": 3501.519310100834,
+      "originLadder": 5.175,
+      "originGdp": 3048.28327602145
+    },
+    {
+      "id": "IDN",
+      "name": "Indonesia",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.2023789364738064,
+      "gdp": 3775.3479857115026,
+      "originLadder": 5.192,
+      "originGdp": 3701.32155461912
+    },
+    {
+      "id": "IDN",
+      "name": "Indonesia",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.212757872947613,
+      "gdp": 3850.8549454257322,
+      "originLadder": 5.192,
+      "originGdp": 3701.32155461912
+    },
+    {
+      "id": "IDN",
+      "name": "Indonesia",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.223136809421419,
+      "gdp": 3927.8720443342477,
+      "originLadder": 5.192,
+      "originGdp": 3701.32155461912
+    },
+    {
+      "id": "IDN",
+      "name": "Indonesia",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.233515745895225,
+      "gdp": 4006.429485220932,
+      "originLadder": 5.192,
+      "originGdp": 3701.32155461912
+    },
+    {
+      "id": "IDN",
+      "name": "Indonesia",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.243894682369032,
+      "gdp": 4086.558074925351,
+      "originLadder": 5.192,
+      "originGdp": 3701.32155461912
+    },
+    {
+      "id": "IDN",
+      "name": "Indonesia",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.254273618842838,
+      "gdp": 4168.289236423858,
+      "originLadder": 5.192,
+      "originGdp": 3701.32155461912
+    },
+    {
+      "id": "IDN",
+      "name": "Indonesia",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.264652555316644,
+      "gdp": 4251.655021152335,
+      "originLadder": 5.192,
+      "originGdp": 3701.32155461912
+    },
+    {
+      "id": "PHL",
+      "name": "Philippines",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.6413789364738065,
+      "gdp": 3479.155209356312,
+      "originLadder": 5.631,
+      "originGdp": 3410.93647976109
+    },
+    {
+      "id": "PHL",
+      "name": "Philippines",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.651757872947613,
+      "gdp": 3548.7383135434384,
+      "originLadder": 5.631,
+      "originGdp": 3410.93647976109
+    },
+    {
+      "id": "PHL",
+      "name": "Philippines",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.662136809421419,
+      "gdp": 3619.7130798143075,
+      "originLadder": 5.631,
+      "originGdp": 3410.93647976109
+    },
+    {
+      "id": "PHL",
+      "name": "Philippines",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.672515745895225,
+      "gdp": 3692.107341410593,
+      "originLadder": 5.631,
+      "originGdp": 3410.93647976109
+    },
+    {
+      "id": "PHL",
+      "name": "Philippines",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.682894682369032,
+      "gdp": 3765.949488238805,
+      "originLadder": 5.631,
+      "originGdp": 3410.93647976109
+    },
+    {
+      "id": "PHL",
+      "name": "Philippines",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.693273618842838,
+      "gdp": 3841.268478003581,
+      "originLadder": 5.631,
+      "originGdp": 3410.93647976109
+    },
+    {
+      "id": "PHL",
+      "name": "Philippines",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.703652555316644,
+      "gdp": 3918.0938475636526,
+      "originLadder": 5.631,
+      "originGdp": 3410.93647976109
+    },
+    {
+      "id": "THA",
+      "name": "Thailand",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.018378936473806,
+      "gdp": 6440.4834738028385,
+      "originLadder": 6.008,
+      "originGdp": 6314.19948412043
+    },
+    {
+      "id": "THA",
+      "name": "Thailand",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.028757872947613,
+      "gdp": 6569.293143278895,
+      "originLadder": 6.008,
+      "originGdp": 6314.19948412043
+    },
+    {
+      "id": "THA",
+      "name": "Thailand",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.039136809421419,
+      "gdp": 6700.6790061444735,
+      "originLadder": 6.008,
+      "originGdp": 6314.19948412043
+    },
+    {
+      "id": "THA",
+      "name": "Thailand",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.049515745895225,
+      "gdp": 6834.6925862673625,
+      "originLadder": 6.008,
+      "originGdp": 6314.19948412043
+    },
+    {
+      "id": "THA",
+      "name": "Thailand",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.059894682369031,
+      "gdp": 6971.38643799271,
+      "originLadder": 6.008,
+      "originGdp": 6314.19948412043
+    },
+    {
+      "id": "THA",
+      "name": "Thailand",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.070273618842838,
+      "gdp": 7110.814166752564,
+      "originLadder": 6.008,
+      "originGdp": 6314.19948412043
+    },
+    {
+      "id": "THA",
+      "name": "Thailand",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.080652555316644,
+      "gdp": 7253.0304500876155,
+      "originLadder": 6.008,
+      "originGdp": 6314.19948412043
+    },
+    {
+      "id": "MYS",
+      "name": "Malaysia",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.349378936473807,
+      "gdp": 10822.398924528858,
+      "originLadder": 5.339,
+      "originGdp": 10610.1950240479
+    },
+    {
+      "id": "MYS",
+      "name": "Malaysia",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.359757872947613,
+      "gdp": 11038.846903019436,
+      "originLadder": 5.339,
+      "originGdp": 10610.1950240479
+    },
+    {
+      "id": "MYS",
+      "name": "Malaysia",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.370136809421419,
+      "gdp": 11259.623841079825,
+      "originLadder": 5.339,
+      "originGdp": 10610.1950240479
+    },
+    {
+      "id": "MYS",
+      "name": "Malaysia",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.3805157458952255,
+      "gdp": 11484.816317901421,
+      "originLadder": 5.339,
+      "originGdp": 10610.1950240479
+    },
+    {
+      "id": "MYS",
+      "name": "Malaysia",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.390894682369032,
+      "gdp": 11714.512644259448,
+      "originLadder": 5.339,
+      "originGdp": 10610.1950240479
+    },
+    {
+      "id": "MYS",
+      "name": "Malaysia",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.401273618842838,
+      "gdp": 11948.802897144638,
+      "originLadder": 5.339,
+      "originGdp": 10610.1950240479
+    },
+    {
+      "id": "MYS",
+      "name": "Malaysia",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.411652555316644,
+      "gdp": 12187.778955087531,
+      "originLadder": 5.339,
+      "originGdp": 10610.1950240479
+    },
+    {
+      "id": "MMR",
+      "name": "Myanmar",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 4.370378936473807,
+      "gdp": 1388.799678894024,
+      "originLadder": 4.36,
+      "originGdp": 1361.5683126412
+    },
+    {
+      "id": "MMR",
+      "name": "Myanmar",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 4.380757872947613,
+      "gdp": 1416.5756724719045,
+      "originLadder": 4.36,
+      "originGdp": 1361.5683126412
+    },
+    {
+      "id": "MMR",
+      "name": "Myanmar",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 4.391136809421419,
+      "gdp": 1444.9071859213427,
+      "originLadder": 4.36,
+      "originGdp": 1361.5683126412
+    },
+    {
+      "id": "MMR",
+      "name": "Myanmar",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 4.401515745895226,
+      "gdp": 1473.8053296397693,
+      "originLadder": 4.36,
+      "originGdp": 1361.5683126412
+    },
+    {
+      "id": "MMR",
+      "name": "Myanmar",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 4.411894682369033,
+      "gdp": 1503.2814362325648,
+      "originLadder": 4.36,
+      "originGdp": 1361.5683126412
+    },
+    {
+      "id": "MMR",
+      "name": "Myanmar",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 4.422273618842839,
+      "gdp": 1533.3470649572162,
+      "originLadder": 4.36,
+      "originGdp": 1361.5683126412
+    },
+    {
+      "id": "MMR",
+      "name": "Myanmar",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 4.432652555316645,
+      "gdp": 1564.0140062563605,
+      "originLadder": 4.36,
+      "originGdp": 1361.5683126412
+    },
+    {
+      "id": "LAO",
+      "name": "Laos",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 4.806378936473807,
+      "gdp": 2509.178321289189,
+      "originLadder": 4.796,
+      "originGdp": 2459.97874636195
+    },
+    {
+      "id": "LAO",
+      "name": "Laos",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 4.816757872947614,
+      "gdp": 2559.361887714973,
+      "originLadder": 4.796,
+      "originGdp": 2459.97874636195
+    },
+    {
+      "id": "LAO",
+      "name": "Laos",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 4.82713680942142,
+      "gdp": 2610.5491254692724,
+      "originLadder": 4.796,
+      "originGdp": 2459.97874636195
+    },
+    {
+      "id": "LAO",
+      "name": "Laos",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 4.837515745895226,
+      "gdp": 2662.7601079786577,
+      "originLadder": 4.796,
+      "originGdp": 2459.97874636195
+    },
+    {
+      "id": "LAO",
+      "name": "Laos",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 4.8478946823690325,
+      "gdp": 2716.0153101382307,
+      "originLadder": 4.796,
+      "originGdp": 2459.97874636195
+    },
+    {
+      "id": "LAO",
+      "name": "Laos",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 4.858273618842839,
+      "gdp": 2770.335616340996,
+      "originLadder": 4.796,
+      "originGdp": 2459.97874636195
+    },
+    {
+      "id": "LAO",
+      "name": "Laos",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 4.868652555316645,
+      "gdp": 2825.7423286678154,
+      "originLadder": 4.796,
+      "originGdp": 2459.97874636195
+    },
+    {
+      "id": "IND",
+      "name": "India",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 4.025378936473806,
+      "gdp": 1921.024881591561,
+      "originLadder": 4.015,
+      "originGdp": 1883.35772705055
+    },
+    {
+      "id": "IND",
+      "name": "India",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 4.035757872947612,
+      "gdp": 1959.4453792233921,
+      "originLadder": 4.015,
+      "originGdp": 1883.35772705055
+    },
+    {
+      "id": "IND",
+      "name": "India",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 4.0461368094214185,
+      "gdp": 1998.6342868078605,
+      "originLadder": 4.015,
+      "originGdp": 1883.35772705055
+    },
+    {
+      "id": "IND",
+      "name": "India",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 4.056515745895225,
+      "gdp": 2038.6069725440173,
+      "originLadder": 4.015,
+      "originGdp": 1883.35772705055
+    },
+    {
+      "id": "IND",
+      "name": "India",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 4.066894682369031,
+      "gdp": 2079.379111994898,
+      "originLadder": 4.015,
+      "originGdp": 1883.35772705055
+    },
+    {
+      "id": "IND",
+      "name": "India",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 4.077273618842837,
+      "gdp": 2120.966694234796,
+      "originLadder": 4.015,
+      "originGdp": 1883.35772705055
+    },
+    {
+      "id": "IND",
+      "name": "India",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 4.087652555316644,
+      "gdp": 2163.3860281194916,
+      "originLadder": 4.015,
+      "originGdp": 1883.35772705055
+    },
+    {
+      "id": "PAK",
+      "name": "Pakistan",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.663378936473806,
+      "gdp": 1592.9153321595018,
+      "originLadder": 5.653,
+      "originGdp": 1561.68169819559
+    },
+    {
+      "id": "PAK",
+      "name": "Pakistan",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.673757872947612,
+      "gdp": 1624.7736388026917,
+      "originLadder": 5.653,
+      "originGdp": 1561.68169819559
+    },
+    {
+      "id": "PAK",
+      "name": "Pakistan",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.684136809421418,
+      "gdp": 1657.2691115787459,
+      "originLadder": 5.653,
+      "originGdp": 1561.68169819559
+    },
+    {
+      "id": "PAK",
+      "name": "Pakistan",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.694515745895225,
+      "gdp": 1690.4144938103204,
+      "originLadder": 5.653,
+      "originGdp": 1561.68169819559
+    },
+    {
+      "id": "PAK",
+      "name": "Pakistan",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.704894682369031,
+      "gdp": 1724.222783686527,
+      "originLadder": 5.653,
+      "originGdp": 1561.68169819559
+    },
+    {
+      "id": "PAK",
+      "name": "Pakistan",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.715273618842837,
+      "gdp": 1758.7072393602575,
+      "originLadder": 5.653,
+      "originGdp": 1561.68169819559
+    },
+    {
+      "id": "PAK",
+      "name": "Pakistan",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.7256525553166435,
+      "gdp": 1793.8813841474625,
+      "originLadder": 5.653,
+      "originGdp": 1561.68169819559
+    },
+    {
+      "id": "BGD",
+      "name": "Bangladesh",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 4.466378936473807,
+      "gdp": 1491.4955126082725,
+      "originLadder": 4.456,
+      "originGdp": 1462.25050255713
+    },
+    {
+      "id": "BGD",
+      "name": "Bangladesh",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 4.476757872947614,
+      "gdp": 1521.325422860438,
+      "originLadder": 4.456,
+      "originGdp": 1462.25050255713
+    },
+    {
+      "id": "BGD",
+      "name": "Bangladesh",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 4.48713680942142,
+      "gdp": 1551.751931317647,
+      "originLadder": 4.456,
+      "originGdp": 1462.25050255713
+    },
+    {
+      "id": "BGD",
+      "name": "Bangladesh",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 4.497515745895226,
+      "gdp": 1582.7869699439996,
+      "originLadder": 4.456,
+      "originGdp": 1462.25050255713
+    },
+    {
+      "id": "BGD",
+      "name": "Bangladesh",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 4.507894682369033,
+      "gdp": 1614.4427093428797,
+      "originLadder": 4.456,
+      "originGdp": 1462.25050255713
+    },
+    {
+      "id": "BGD",
+      "name": "Bangladesh",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 4.518273618842839,
+      "gdp": 1646.7315635297373,
+      "originLadder": 4.456,
+      "originGdp": 1462.25050255713
+    },
+    {
+      "id": "BGD",
+      "name": "Bangladesh",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 4.528652555316645,
+      "gdp": 1679.666194800332,
+      "originLadder": 4.456,
+      "originGdp": 1462.25050255713
+    },
+    {
+      "id": "LKA",
+      "name": "Sri Lanka",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 4.376378936473806,
+      "gdp": 4582.896461098847,
+      "originLadder": 4.366,
+      "originGdp": 4493.03574617534
+    },
+    {
+      "id": "LKA",
+      "name": "Sri Lanka",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 4.386757872947612,
+      "gdp": 4674.554390320824,
+      "originLadder": 4.366,
+      "originGdp": 4493.03574617534
+    },
+    {
+      "id": "LKA",
+      "name": "Sri Lanka",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 4.3971368094214185,
+      "gdp": 4768.045478127241,
+      "originLadder": 4.366,
+      "originGdp": 4493.03574617534
+    },
+    {
+      "id": "LKA",
+      "name": "Sri Lanka",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 4.407515745895225,
+      "gdp": 4863.406387689785,
+      "originLadder": 4.366,
+      "originGdp": 4493.03574617534
+    },
+    {
+      "id": "LKA",
+      "name": "Sri Lanka",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 4.417894682369031,
+      "gdp": 4960.674515443581,
+      "originLadder": 4.366,
+      "originGdp": 4493.03574617534
+    },
+    {
+      "id": "LKA",
+      "name": "Sri Lanka",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 4.428273618842838,
+      "gdp": 5059.888005752453,
+      "originLadder": 4.366,
+      "originGdp": 4493.03574617534
+    },
+    {
+      "id": "LKA",
+      "name": "Sri Lanka",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 4.4386525553166445,
+      "gdp": 5161.085765867501,
+      "originLadder": 4.366,
+      "originGdp": 4493.03574617534
+    },
+    {
+      "id": "NPL",
+      "name": "Nepal",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 4.9233789364738065,
+      "gdp": 1042.3532204809123,
+      "originLadder": 4.913,
+      "originGdp": 1021.91492204011
+    },
+    {
+      "id": "NPL",
+      "name": "Nepal",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 4.933757872947614,
+      "gdp": 1063.2002848905304,
+      "originLadder": 4.913,
+      "originGdp": 1021.91492204011
+    },
+    {
+      "id": "NPL",
+      "name": "Nepal",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 4.94413680942142,
+      "gdp": 1084.4642905883413,
+      "originLadder": 4.913,
+      "originGdp": 1021.91492204011
+    },
+    {
+      "id": "NPL",
+      "name": "Nepal",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 4.954515745895226,
+      "gdp": 1106.1535764001078,
+      "originLadder": 4.913,
+      "originGdp": 1021.91492204011
+    },
+    {
+      "id": "NPL",
+      "name": "Nepal",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 4.9648946823690325,
+      "gdp": 1128.2766479281102,
+      "originLadder": 4.913,
+      "originGdp": 1021.91492204011
+    },
+    {
+      "id": "NPL",
+      "name": "Nepal",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 4.975273618842839,
+      "gdp": 1150.8421808866724,
+      "originLadder": 4.913,
+      "originGdp": 1021.91492204011
+    },
+    {
+      "id": "NPL",
+      "name": "Nepal",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 4.985652555316644,
+      "gdp": 1173.8590245044056,
+      "originLadder": 4.913,
+      "originGdp": 1021.91492204011
+    },
+    {
+      "id": "BTN",
+      "name": "Bhutan",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.092378936473807,
+      "gdp": 3366.5610659097074,
+      "originLadder": 5.082,
+      "originGdp": 3300.55006461736
+    },
+    {
+      "id": "BTN",
+      "name": "Bhutan",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.102757872947613,
+      "gdp": 3433.8922872279013,
+      "originLadder": 5.082,
+      "originGdp": 3300.55006461736
+    },
+    {
+      "id": "BTN",
+      "name": "Bhutan",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.11313680942142,
+      "gdp": 3502.5701329724598,
+      "originLadder": 5.082,
+      "originGdp": 3300.55006461736
+    },
+    {
+      "id": "BTN",
+      "name": "Bhutan",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.123515745895226,
+      "gdp": 3572.6215356319085,
+      "originLadder": 5.082,
+      "originGdp": 3300.55006461736
+    },
+    {
+      "id": "BTN",
+      "name": "Bhutan",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.133894682369032,
+      "gdp": 3644.073966344547,
+      "originLadder": 5.082,
+      "originGdp": 3300.55006461736
+    },
+    {
+      "id": "BTN",
+      "name": "Bhutan",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.144273618842838,
+      "gdp": 3716.9554456714377,
+      "originLadder": 5.082,
+      "originGdp": 3300.55006461736
+    },
+    {
+      "id": "BTN",
+      "name": "Bhutan",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.154652555316645,
+      "gdp": 3791.2945545848665,
+      "originLadder": 5.082,
+      "originGdp": 3300.55006461736
+    },
+    {
+      "id": "KAZ",
+      "name": "Kazakhstan",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.819378936473806,
+      "gdp": 10883.616255124458,
+      "originLadder": 5.809,
+      "originGdp": 10670.2120148279
+    },
+    {
+      "id": "KAZ",
+      "name": "Kazakhstan",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.829757872947613,
+      "gdp": 11101.288580226947,
+      "originLadder": 5.809,
+      "originGdp": 10670.2120148279
+    },
+    {
+      "id": "KAZ",
+      "name": "Kazakhstan",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.840136809421419,
+      "gdp": 11323.314351831486,
+      "originLadder": 5.809,
+      "originGdp": 10670.2120148279
+    },
+    {
+      "id": "KAZ",
+      "name": "Kazakhstan",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.850515745895225,
+      "gdp": 11549.780638868115,
+      "originLadder": 5.809,
+      "originGdp": 10670.2120148279
+    },
+    {
+      "id": "KAZ",
+      "name": "Kazakhstan",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.8608946823690315,
+      "gdp": 11780.776251645477,
+      "originLadder": 5.809,
+      "originGdp": 10670.2120148279
+    },
+    {
+      "id": "KAZ",
+      "name": "Kazakhstan",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.871273618842838,
+      "gdp": 12016.391776678387,
+      "originLadder": 5.809,
+      "originGdp": 10670.2120148279
+    },
+    {
+      "id": "KAZ",
+      "name": "Kazakhstan",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.881652555316644,
+      "gdp": 12256.719612211955,
+      "originLadder": 5.809,
+      "originGdp": 10670.2120148279
+    },
+    {
+      "id": "KGZ",
+      "name": "Kyrgyzstan",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.271378936473807,
+      "gdp": 1198.572703432194,
+      "originLadder": 5.261,
+      "originGdp": 1175.0712778747
+    },
+    {
+      "id": "KGZ",
+      "name": "Kyrgyzstan",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.281757872947614,
+      "gdp": 1222.5441575008379,
+      "originLadder": 5.261,
+      "originGdp": 1175.0712778747
+    },
+    {
+      "id": "KGZ",
+      "name": "Kyrgyzstan",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.29213680942142,
+      "gdp": 1246.9950406508547,
+      "originLadder": 5.261,
+      "originGdp": 1175.0712778747
+    },
+    {
+      "id": "KGZ",
+      "name": "Kyrgyzstan",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.302515745895225,
+      "gdp": 1271.9349414638716,
+      "originLadder": 5.261,
+      "originGdp": 1175.0712778747
+    },
+    {
+      "id": "KGZ",
+      "name": "Kyrgyzstan",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.3128946823690315,
+      "gdp": 1297.373640293149,
+      "originLadder": 5.261,
+      "originGdp": 1175.0712778747
+    },
+    {
+      "id": "KGZ",
+      "name": "Kyrgyzstan",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.323273618842838,
+      "gdp": 1323.321113099012,
+      "originLadder": 5.261,
+      "originGdp": 1175.0712778747
+    },
+    {
+      "id": "KGZ",
+      "name": "Kyrgyzstan",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.333652555316644,
+      "gdp": 1349.7875353609925,
+      "originLadder": 5.261,
+      "originGdp": 1175.0712778747
+    },
+    {
+      "id": "TJK",
+      "name": "Tajikistan",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.477378936473806,
+      "gdp": 1116.696205858542,
+      "originLadder": 5.467,
+      "originGdp": 1094.8002018221
+    },
+    {
+      "id": "TJK",
+      "name": "Tajikistan",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.487757872947612,
+      "gdp": 1139.0301299757127,
+      "originLadder": 5.467,
+      "originGdp": 1094.8002018221
+    },
+    {
+      "id": "TJK",
+      "name": "Tajikistan",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.4981368094214185,
+      "gdp": 1161.8107325752273,
+      "originLadder": 5.467,
+      "originGdp": 1094.8002018221
+    },
+    {
+      "id": "TJK",
+      "name": "Tajikistan",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.508515745895225,
+      "gdp": 1185.0469472267316,
+      "originLadder": 5.467,
+      "originGdp": 1094.8002018221
+    },
+    {
+      "id": "TJK",
+      "name": "Tajikistan",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.518894682369031,
+      "gdp": 1208.7478861712664,
+      "originLadder": 5.467,
+      "originGdp": 1094.8002018221
+    },
+    {
+      "id": "TJK",
+      "name": "Tajikistan",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.529273618842837,
+      "gdp": 1232.9228438946916,
+      "originLadder": 5.467,
+      "originGdp": 1094.8002018221
+    },
+    {
+      "id": "TJK",
+      "name": "Tajikistan",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.5396525553166445,
+      "gdp": 1257.5813007725856,
+      "originLadder": 5.467,
+      "originGdp": 1094.8002018221
+    },
+    {
+      "id": "TUR",
+      "name": "Turkey",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.3833789364738065,
+      "gdp": 12500.108378909239,
+      "originLadder": 5.373,
+      "originGdp": 12255.0082146169
+    },
+    {
+      "id": "TUR",
+      "name": "Turkey",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.393757872947613,
+      "gdp": 12750.110546487424,
+      "originLadder": 5.373,
+      "originGdp": 12255.0082146169
+    },
+    {
+      "id": "TUR",
+      "name": "Turkey",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.404136809421419,
+      "gdp": 13005.112757417173,
+      "originLadder": 5.373,
+      "originGdp": 12255.0082146169
+    },
+    {
+      "id": "TUR",
+      "name": "Turkey",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.414515745895225,
+      "gdp": 13265.215012565515,
+      "originLadder": 5.373,
+      "originGdp": 12255.0082146169
+    },
+    {
+      "id": "TUR",
+      "name": "Turkey",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.424894682369032,
+      "gdp": 13530.519312816827,
+      "originLadder": 5.373,
+      "originGdp": 12255.0082146169
+    },
+    {
+      "id": "TUR",
+      "name": "Turkey",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.435273618842838,
+      "gdp": 13801.129699073163,
+      "originLadder": 5.373,
+      "originGdp": 12255.0082146169
+    },
+    {
+      "id": "TUR",
+      "name": "Turkey",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.445652555316644,
+      "gdp": 14077.152293054625,
+      "originLadder": 5.373,
+      "originGdp": 12255.0082146169
+    },
+    {
+      "id": "IRN",
+      "name": "Iran",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 4.558378936473806,
+      "gdp": 5229.769452743584,
+      "originLadder": 4.548,
+      "originGdp": 5127.22495367018
+    },
+    {
+      "id": "IRN",
+      "name": "Iran",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 4.568757872947613,
+      "gdp": 5334.364841798455,
+      "originLadder": 4.548,
+      "originGdp": 5127.22495367018
+    },
+    {
+      "id": "IRN",
+      "name": "Iran",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 4.579136809421419,
+      "gdp": 5441.052138634425,
+      "originLadder": 4.548,
+      "originGdp": 5127.22495367018
+    },
+    {
+      "id": "IRN",
+      "name": "Iran",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 4.589515745895225,
+      "gdp": 5549.8731814071125,
+      "originLadder": 4.548,
+      "originGdp": 5127.22495367018
+    },
+    {
+      "id": "IRN",
+      "name": "Iran",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 4.599894682369031,
+      "gdp": 5660.870645035256,
+      "originLadder": 4.548,
+      "originGdp": 5127.22495367018
+    },
+    {
+      "id": "IRN",
+      "name": "Iran",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 4.610273618842838,
+      "gdp": 5774.088057935961,
+      "originLadder": 4.548,
+      "originGdp": 5127.22495367018
+    },
+    {
+      "id": "IRN",
+      "name": "Iran",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 4.620652555316644,
+      "gdp": 5889.56981909468,
+      "originLadder": 4.548,
+      "originGdp": 5127.22495367018
+    },
+    {
+      "id": "IRQ",
+      "name": "Iraq",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 4.4473789364738066,
+      "gdp": 4843.98940273634,
+      "originLadder": 4.437,
+      "originGdp": 4749.00921836896
+    },
+    {
+      "id": "IRQ",
+      "name": "Iraq",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 4.457757872947613,
+      "gdp": 4940.869190791066,
+      "originLadder": 4.437,
+      "originGdp": 4749.00921836896
+    },
+    {
+      "id": "IRQ",
+      "name": "Iraq",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 4.468136809421419,
+      "gdp": 5039.686574606888,
+      "originLadder": 4.437,
+      "originGdp": 4749.00921836896
+    },
+    {
+      "id": "IRQ",
+      "name": "Iraq",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 4.478515745895225,
+      "gdp": 5140.480306099025,
+      "originLadder": 4.437,
+      "originGdp": 4749.00921836896
+    },
+    {
+      "id": "IRQ",
+      "name": "Iraq",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 4.4888946823690326,
+      "gdp": 5243.289912221006,
+      "originLadder": 4.437,
+      "originGdp": 4749.00921836896
+    },
+    {
+      "id": "IRQ",
+      "name": "Iraq",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 4.499273618842839,
+      "gdp": 5348.155710465427,
+      "originLadder": 4.437,
+      "originGdp": 4749.00921836896
+    },
+    {
+      "id": "IRQ",
+      "name": "Iraq",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 4.509652555316645,
+      "gdp": 5455.118824674735,
+      "originLadder": 4.437,
+      "originGdp": 4749.00921836896
+    },
+    {
+      "id": "ARE",
+      "name": "UAE",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 6.8353789364738065,
+      "gdp": 44245.35865351572,
+      "originLadder": 6.825,
+      "originGdp": 43377.802601486
+    },
+    {
+      "id": "ARE",
+      "name": "UAE",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 6.845757872947613,
+      "gdp": 45130.26582658604,
+      "originLadder": 6.825,
+      "originGdp": 43377.802601486
+    },
+    {
+      "id": "ARE",
+      "name": "UAE",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 6.856136809421419,
+      "gdp": 46032.871143117765,
+      "originLadder": 6.825,
+      "originGdp": 43377.802601486
+    },
+    {
+      "id": "ARE",
+      "name": "UAE",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 6.866515745895225,
+      "gdp": 46953.52856598011,
+      "originLadder": 6.825,
+      "originGdp": 43377.802601486
+    },
+    {
+      "id": "ARE",
+      "name": "UAE",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 6.876894682369032,
+      "gdp": 47892.599137299716,
+      "originLadder": 6.825,
+      "originGdp": 43377.802601486
+    },
+    {
+      "id": "ARE",
+      "name": "UAE",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 6.887273618842838,
+      "gdp": 48850.45112004571,
+      "originLadder": 6.825,
+      "originGdp": 43377.802601486
+    },
+    {
+      "id": "ARE",
+      "name": "UAE",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 6.897652555316644,
+      "gdp": 49827.460142446624,
+      "originLadder": 6.825,
+      "originGdp": 43377.802601486
+    },
+    {
+      "id": "ISR",
+      "name": "Israel",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 7.149378936473807,
+      "gdp": 39468.910208130015,
+      "originLadder": 7.139,
+      "originGdp": 38695.0100079706
+    },
+    {
+      "id": "ISR",
+      "name": "Israel",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 7.159757872947613,
+      "gdp": 40258.28841229261,
+      "originLadder": 7.139,
+      "originGdp": 38695.0100079706
+    },
+    {
+      "id": "ISR",
+      "name": "Israel",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 7.17013680942142,
+      "gdp": 41063.45418053847,
+      "originLadder": 7.139,
+      "originGdp": 38695.0100079706
+    },
+    {
+      "id": "ISR",
+      "name": "Israel",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 7.180515745895225,
+      "gdp": 41884.72326414924,
+      "originLadder": 7.139,
+      "originGdp": 38695.0100079706
+    },
+    {
+      "id": "ISR",
+      "name": "Israel",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 7.1908946823690325,
+      "gdp": 42722.41772943222,
+      "originLadder": 7.139,
+      "originGdp": 38695.0100079706
+    },
+    {
+      "id": "ISR",
+      "name": "Israel",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 7.201273618842838,
+      "gdp": 43576.86608402087,
+      "originLadder": 7.139,
+      "originGdp": 38695.0100079706
+    },
+    {
+      "id": "ISR",
+      "name": "Israel",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 7.211652555316645,
+      "gdp": 44448.40340570128,
+      "originLadder": 7.139,
+      "originGdp": 38695.0100079706
+    },
+    {
+      "id": "JOR",
+      "name": "Jordan",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 4.916378936473806,
+      "gdp": 4406.4303831735,
+      "originLadder": 4.906,
+      "originGdp": 4320.029787425
+    },
+    {
+      "id": "JOR",
+      "name": "Jordan",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 4.926757872947612,
+      "gdp": 4494.55899083697,
+      "originLadder": 4.906,
+      "originGdp": 4320.029787425
+    },
+    {
+      "id": "JOR",
+      "name": "Jordan",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 4.937136809421419,
+      "gdp": 4584.45017065371,
+      "originLadder": 4.906,
+      "originGdp": 4320.029787425
+    },
+    {
+      "id": "JOR",
+      "name": "Jordan",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 4.947515745895226,
+      "gdp": 4676.139174066783,
+      "originLadder": 4.906,
+      "originGdp": 4320.029787425
+    },
+    {
+      "id": "JOR",
+      "name": "Jordan",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 4.957894682369032,
+      "gdp": 4769.661957548119,
+      "originLadder": 4.906,
+      "originGdp": 4320.029787425
+    },
+    {
+      "id": "JOR",
+      "name": "Jordan",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 4.968273618842838,
+      "gdp": 4865.0551966990815,
+      "originLadder": 4.906,
+      "originGdp": 4320.029787425
+    },
+    {
+      "id": "JOR",
+      "name": "Jordan",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 4.9786525553166445,
+      "gdp": 4962.356300633063,
+      "originLadder": 4.906,
+      "originGdp": 4320.029787425
+    },
+    {
+      "id": "LBN",
+      "name": "Lebanon",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.207378936473806,
+      "gdp": 8556.49798263117,
+      "originLadder": 5.197,
+      "originGdp": 8388.7235123835
+    },
+    {
+      "id": "LBN",
+      "name": "Lebanon",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.217757872947613,
+      "gdp": 8727.627942283792,
+      "originLadder": 5.197,
+      "originGdp": 8388.7235123835
+    },
+    {
+      "id": "LBN",
+      "name": "Lebanon",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.228136809421419,
+      "gdp": 8902.180501129471,
+      "originLadder": 5.197,
+      "originGdp": 8388.7235123835
+    },
+    {
+      "id": "LBN",
+      "name": "Lebanon",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.238515745895226,
+      "gdp": 9080.224111152058,
+      "originLadder": 5.197,
+      "originGdp": 8388.7235123835
+    },
+    {
+      "id": "LBN",
+      "name": "Lebanon",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.248894682369032,
+      "gdp": 9261.8285933751,
+      "originLadder": 5.197,
+      "originGdp": 8388.7235123835
+    },
+    {
+      "id": "LBN",
+      "name": "Lebanon",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.259273618842839,
+      "gdp": 9447.065165242602,
+      "originLadder": 5.197,
+      "originGdp": 8388.7235123835
+    },
+    {
+      "id": "LBN",
+      "name": "Lebanon",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.269652555316645,
+      "gdp": 9636.006468547454,
+      "originLadder": 5.197,
+      "originGdp": 8388.7235123835
+    },
+    {
+      "id": "YEM",
+      "name": "Yemen",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 3.3903789364738066,
+      "gdp": 1100.915971335801,
+      "originLadder": 3.38,
+      "originGdp": 1079.32938366255
+    },
+    {
+      "id": "YEM",
+      "name": "Yemen",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 3.400757872947613,
+      "gdp": 1122.934290762517,
+      "originLadder": 3.38,
+      "originGdp": 1079.32938366255
+    },
+    {
+      "id": "YEM",
+      "name": "Yemen",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 3.411136809421419,
+      "gdp": 1145.3929765777675,
+      "originLadder": 3.38,
+      "originGdp": 1079.32938366255
+    },
+    {
+      "id": "YEM",
+      "name": "Yemen",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 3.421515745895225,
+      "gdp": 1168.3008361093227,
+      "originLadder": 3.38,
+      "originGdp": 1079.32938366255
+    },
+    {
+      "id": "YEM",
+      "name": "Yemen",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 3.4318946823690313,
+      "gdp": 1191.6668528315092,
+      "originLadder": 3.38,
+      "originGdp": 1079.32938366255
+    },
+    {
+      "id": "YEM",
+      "name": "Yemen",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 3.4422736188428376,
+      "gdp": 1215.5001898881394,
+      "originLadder": 3.38,
+      "originGdp": 1079.32938366255
+    },
+    {
+      "id": "YEM",
+      "name": "Yemen",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 3.4526525553166443,
+      "gdp": 1239.8101936859023,
+      "originLadder": 3.38,
+      "originGdp": 1079.32938366255
+    },
+    {
+      "id": "GEO",
+      "name": "Georgia",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 4.529378936473806,
+      "gdp": 4807.926619422091,
+      "originLadder": 4.519,
+      "originGdp": 4713.65354845303
+    },
+    {
+      "id": "GEO",
+      "name": "Georgia",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 4.539757872947613,
+      "gdp": 4904.085151810533,
+      "originLadder": 4.519,
+      "originGdp": 4713.65354845303
+    },
+    {
+      "id": "GEO",
+      "name": "Georgia",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 4.550136809421419,
+      "gdp": 5002.166854846744,
+      "originLadder": 4.519,
+      "originGdp": 4713.65354845303
+    },
+    {
+      "id": "GEO",
+      "name": "Georgia",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 4.560515745895225,
+      "gdp": 5102.210191943678,
+      "originLadder": 4.519,
+      "originGdp": 4713.65354845303
+    },
+    {
+      "id": "GEO",
+      "name": "Georgia",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 4.5708946823690315,
+      "gdp": 5204.254395782552,
+      "originLadder": 4.519,
+      "originGdp": 4713.65354845303
+    },
+    {
+      "id": "GEO",
+      "name": "Georgia",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 4.581273618842838,
+      "gdp": 5308.339483698203,
+      "originLadder": 4.519,
+      "originGdp": 4713.65354845303
+    },
+    {
+      "id": "GEO",
+      "name": "Georgia",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 4.591652555316643,
+      "gdp": 5414.506273372167,
+      "originLadder": 4.519,
+      "originGdp": 4713.65354845303
+    },
+    {
+      "id": "ARM",
+      "name": "Armenia",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 4.569378936473806,
+      "gdp": 4108.390608711986,
+      "originLadder": 4.559,
+      "originGdp": 4027.83393010979
+    },
+    {
+      "id": "ARM",
+      "name": "Armenia",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 4.579757872947614,
+      "gdp": 4190.558420886226,
+      "originLadder": 4.559,
+      "originGdp": 4027.83393010979
+    },
+    {
+      "id": "ARM",
+      "name": "Armenia",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 4.59013680942142,
+      "gdp": 4274.36958930395,
+      "originLadder": 4.559,
+      "originGdp": 4027.83393010979
+    },
+    {
+      "id": "ARM",
+      "name": "Armenia",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 4.600515745895226,
+      "gdp": 4359.856981090029,
+      "originLadder": 4.559,
+      "originGdp": 4027.83393010979
+    },
+    {
+      "id": "ARM",
+      "name": "Armenia",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 4.610894682369032,
+      "gdp": 4447.0541207118295,
+      "originLadder": 4.559,
+      "originGdp": 4027.83393010979
+    },
+    {
+      "id": "ARM",
+      "name": "Armenia",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 4.621273618842839,
+      "gdp": 4535.995203126066,
+      "originLadder": 4.559,
+      "originGdp": 4027.83393010979
+    },
+    {
+      "id": "ARM",
+      "name": "Armenia",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 4.631652555316645,
+      "gdp": 4626.715107188587,
+      "originLadder": 4.559,
+      "originGdp": 4027.83393010979
+    },
+    {
+      "id": "PSE",
+      "name": "Palestine",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 4.706378936473806,
+      "gdp": 3486.1502965472127,
+      "originLadder": 4.696,
+      "originGdp": 3417.79440837962
+    },
+    {
+      "id": "PSE",
+      "name": "Palestine",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 4.716757872947612,
+      "gdp": 3555.873302478157,
+      "originLadder": 4.696,
+      "originGdp": 3417.79440837962
+    },
+    {
+      "id": "PSE",
+      "name": "Palestine",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 4.727136809421419,
+      "gdp": 3626.9907685277203,
+      "originLadder": 4.696,
+      "originGdp": 3417.79440837962
+    },
+    {
+      "id": "PSE",
+      "name": "Palestine",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 4.737515745895225,
+      "gdp": 3699.530583898274,
+      "originLadder": 4.696,
+      "originGdp": 3417.79440837962
+    },
+    {
+      "id": "PSE",
+      "name": "Palestine",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 4.747894682369031,
+      "gdp": 3773.5211955762397,
+      "originLadder": 4.696,
+      "originGdp": 3417.79440837962
+    },
+    {
+      "id": "PSE",
+      "name": "Palestine",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 4.758273618842837,
+      "gdp": 3848.9916194877646,
+      "originLadder": 4.696,
+      "originGdp": 3417.79440837962
+    },
+    {
+      "id": "PSE",
+      "name": "Palestine",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 4.768652555316644,
+      "gdp": 3925.97145187752,
+      "originLadder": 4.696,
+      "originGdp": 3417.79440837962
+    },
+    {
+      "id": "NGA",
+      "name": "Nigeria",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.275378936473806,
+      "gdp": 2480.4141498924896,
+      "originLadder": 5.265,
+      "originGdp": 2431.77857832597
+    },
+    {
+      "id": "NGA",
+      "name": "Nigeria",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.285757872947612,
+      "gdp": 2530.022432890339,
+      "originLadder": 5.265,
+      "originGdp": 2431.77857832597
+    },
+    {
+      "id": "NGA",
+      "name": "Nigeria",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.2961368094214185,
+      "gdp": 2580.6228815481463,
+      "originLadder": 5.265,
+      "originGdp": 2431.77857832597
+    },
+    {
+      "id": "NGA",
+      "name": "Nigeria",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.306515745895225,
+      "gdp": 2632.235339179109,
+      "originLadder": 5.265,
+      "originGdp": 2431.77857832597
+    },
+    {
+      "id": "NGA",
+      "name": "Nigeria",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.316894682369031,
+      "gdp": 2684.8800459626914,
+      "originLadder": 5.265,
+      "originGdp": 2431.77857832597
+    },
+    {
+      "id": "NGA",
+      "name": "Nigeria",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.327273618842837,
+      "gdp": 2738.5776468819454,
+      "originLadder": 5.265,
+      "originGdp": 2431.77857832597
+    },
+    {
+      "id": "NGA",
+      "name": "Nigeria",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.337652555316644,
+      "gdp": 2793.349199819584,
+      "originLadder": 5.265,
+      "originGdp": 2431.77857832597
+    },
+    {
+      "id": "ZAF",
+      "name": "South Africa",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 4.732378936473807,
+      "gdp": 6239.615543416794,
+      "originLadder": 4.722,
+      "originGdp": 6117.2701406047
+    },
+    {
+      "id": "ZAF",
+      "name": "South Africa",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 4.742757872947613,
+      "gdp": 6364.407854285129,
+      "originLadder": 4.722,
+      "originGdp": 6117.2701406047
+    },
+    {
+      "id": "ZAF",
+      "name": "South Africa",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 4.753136809421419,
+      "gdp": 6491.696011370834,
+      "originLadder": 4.722,
+      "originGdp": 6117.2701406047
+    },
+    {
+      "id": "ZAF",
+      "name": "South Africa",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 4.7635157458952255,
+      "gdp": 6621.529931598249,
+      "originLadder": 4.722,
+      "originGdp": 6117.2701406047
+    },
+    {
+      "id": "ZAF",
+      "name": "South Africa",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 4.773894682369032,
+      "gdp": 6753.960530230214,
+      "originLadder": 4.722,
+      "originGdp": 6117.2701406047
+    },
+    {
+      "id": "ZAF",
+      "name": "South Africa",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 4.784273618842838,
+      "gdp": 6889.039740834819,
+      "originLadder": 4.722,
+      "originGdp": 6117.2701406047
+    },
+    {
+      "id": "ZAF",
+      "name": "South Africa",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 4.794652555316644,
+      "gdp": 7026.820535651515,
+      "originLadder": 4.722,
+      "originGdp": 6117.2701406047
+    },
+    {
+      "id": "EGY",
+      "name": "Egypt",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 4.176378936473807,
+      "gdp": 3640.0124561209227,
+      "originLadder": 4.166,
+      "originGdp": 3568.63966286365
+    },
+    {
+      "id": "EGY",
+      "name": "Egypt",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 4.186757872947613,
+      "gdp": 3712.812705243341,
+      "originLadder": 4.166,
+      "originGdp": 3568.63966286365
+    },
+    {
+      "id": "EGY",
+      "name": "Egypt",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 4.19713680942142,
+      "gdp": 3787.068959348209,
+      "originLadder": 4.166,
+      "originGdp": 3568.63966286365
+    },
+    {
+      "id": "EGY",
+      "name": "Egypt",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 4.207515745895226,
+      "gdp": 3862.8103385351724,
+      "originLadder": 4.166,
+      "originGdp": 3568.63966286365
+    },
+    {
+      "id": "EGY",
+      "name": "Egypt",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 4.217894682369033,
+      "gdp": 3940.066545305876,
+      "originLadder": 4.166,
+      "originGdp": 3568.63966286365
+    },
+    {
+      "id": "EGY",
+      "name": "Egypt",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 4.228273618842839,
+      "gdp": 4018.8678762119935,
+      "originLadder": 4.166,
+      "originGdp": 3568.63966286365
+    },
+    {
+      "id": "EGY",
+      "name": "Egypt",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 4.238652555316645,
+      "gdp": 4099.245233736233,
+      "originLadder": 4.166,
+      "originGdp": 3568.63966286365
+    },
+    {
+      "id": "ETH",
+      "name": "Ethiopia",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 4.296378936473806,
+      "gdp": 720.0881883148272,
+      "originLadder": 4.286,
+      "originGdp": 705.96881207336
+    },
+    {
+      "id": "ETH",
+      "name": "Ethiopia",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 4.306757872947612,
+      "gdp": 734.4899520811238,
+      "originLadder": 4.286,
+      "originGdp": 705.96881207336
+    },
+    {
+      "id": "ETH",
+      "name": "Ethiopia",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 4.317136809421418,
+      "gdp": 749.1797511227463,
+      "originLadder": 4.286,
+      "originGdp": 705.96881207336
+    },
+    {
+      "id": "ETH",
+      "name": "Ethiopia",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 4.327515745895225,
+      "gdp": 764.1633461452011,
+      "originLadder": 4.286,
+      "originGdp": 705.96881207336
+    },
+    {
+      "id": "ETH",
+      "name": "Ethiopia",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 4.337894682369031,
+      "gdp": 779.4466130681052,
+      "originLadder": 4.286,
+      "originGdp": 705.96881207336
+    },
+    {
+      "id": "ETH",
+      "name": "Ethiopia",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 4.348273618842837,
+      "gdp": 795.0355453294674,
+      "originLadder": 4.286,
+      "originGdp": 705.96881207336
+    },
+    {
+      "id": "ETH",
+      "name": "Ethiopia",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 4.3586525553166435,
+      "gdp": 810.9362562360567,
+      "originLadder": 4.286,
+      "originGdp": 705.96881207336
+    },
+    {
+      "id": "KEN",
+      "name": "Kenya",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 4.519378936473807,
+      "gdp": 1628.624268332439,
+      "originLadder": 4.509,
+      "originGdp": 1596.69045914945
+    },
+    {
+      "id": "KEN",
+      "name": "Kenya",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 4.529757872947613,
+      "gdp": 1661.1967536990876,
+      "originLadder": 4.509,
+      "originGdp": 1596.69045914945
+    },
+    {
+      "id": "KEN",
+      "name": "Kenya",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 4.540136809421419,
+      "gdp": 1694.4206887730697,
+      "originLadder": 4.509,
+      "originGdp": 1596.69045914945
+    },
+    {
+      "id": "KEN",
+      "name": "Kenya",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 4.5505157458952255,
+      "gdp": 1728.3091025485307,
+      "originLadder": 4.509,
+      "originGdp": 1596.69045914945
+    },
+    {
+      "id": "KEN",
+      "name": "Kenya",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 4.560894682369032,
+      "gdp": 1762.8752845995014,
+      "originLadder": 4.509,
+      "originGdp": 1596.69045914945
+    },
+    {
+      "id": "KEN",
+      "name": "Kenya",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 4.571273618842838,
+      "gdp": 1798.1327902914916,
+      "originLadder": 4.509,
+      "originGdp": 1596.69045914945
+    },
+    {
+      "id": "KEN",
+      "name": "Kenya",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 4.581652555316644,
+      "gdp": 1834.0954460973214,
+      "originLadder": 4.509,
+      "originGdp": 1596.69045914945
+    },
+    {
+      "id": "COD",
+      "name": "DR Congo",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 4.428378936473806,
+      "gdp": 505.2183478252476,
+      "originLadder": 4.418,
+      "originGdp": 495.312105711027
+    },
+    {
+      "id": "COD",
+      "name": "DR Congo",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 4.438757872947613,
+      "gdp": 515.3227147817526,
+      "originLadder": 4.418,
+      "originGdp": 495.312105711027
+    },
+    {
+      "id": "COD",
+      "name": "DR Congo",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 4.449136809421419,
+      "gdp": 525.6291690773876,
+      "originLadder": 4.418,
+      "originGdp": 495.312105711027
+    },
+    {
+      "id": "COD",
+      "name": "DR Congo",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 4.459515745895225,
+      "gdp": 536.1417524589353,
+      "originLadder": 4.418,
+      "originGdp": 495.312105711027
+    },
+    {
+      "id": "COD",
+      "name": "DR Congo",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 4.4698946823690315,
+      "gdp": 546.864587508114,
+      "originLadder": 4.418,
+      "originGdp": 495.312105711027
+    },
+    {
+      "id": "COD",
+      "name": "DR Congo",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 4.480273618842838,
+      "gdp": 557.8018792582764,
+      "originLadder": 4.418,
+      "originGdp": 495.312105711027
+    },
+    {
+      "id": "COD",
+      "name": "DR Congo",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 4.490652555316644,
+      "gdp": 568.9579168434418,
+      "originLadder": 4.418,
+      "originGdp": 495.312105711027
+    },
+    {
+      "id": "MAR",
+      "name": "Morocco",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.2183789364738065,
+      "gdp": 3370.80615234375,
+      "originLadder": 5.208,
+      "originGdp": 3304.7119140625
+    },
+    {
+      "id": "MAR",
+      "name": "Morocco",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.228757872947613,
+      "gdp": 3438.222275390625,
+      "originLadder": 5.208,
+      "originGdp": 3304.7119140625
+    },
+    {
+      "id": "MAR",
+      "name": "Morocco",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.239136809421419,
+      "gdp": 3506.986720898438,
+      "originLadder": 5.208,
+      "originGdp": 3304.7119140625
+    },
+    {
+      "id": "MAR",
+      "name": "Morocco",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.249515745895225,
+      "gdp": 3577.126455316406,
+      "originLadder": 5.208,
+      "originGdp": 3304.7119140625
+    },
+    {
+      "id": "MAR",
+      "name": "Morocco",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.259894682369032,
+      "gdp": 3648.6689844227344,
+      "originLadder": 5.208,
+      "originGdp": 3304.7119140625
+    },
+    {
+      "id": "MAR",
+      "name": "Morocco",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.270273618842838,
+      "gdp": 3721.642364111189,
+      "originLadder": 5.208,
+      "originGdp": 3304.7119140625
+    },
+    {
+      "id": "MAR",
+      "name": "Morocco",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.280652555316644,
+      "gdp": 3796.075211393413,
+      "originLadder": 5.208,
+      "originGdp": 3304.7119140625
+    },
+    {
+      "id": "DZA",
+      "name": "Algeria",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 5.221378936473807,
+      "gdp": 4811.343660306822,
+      "originLadder": 5.211,
+      "originGdp": 4717.0035885361
+    },
+    {
+      "id": "DZA",
+      "name": "Algeria",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 5.231757872947613,
+      "gdp": 4907.570533512959,
+      "originLadder": 5.211,
+      "originGdp": 4717.0035885361
+    },
+    {
+      "id": "DZA",
+      "name": "Algeria",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 5.242136809421419,
+      "gdp": 5005.7219441832185,
+      "originLadder": 5.211,
+      "originGdp": 4717.0035885361
+    },
+    {
+      "id": "DZA",
+      "name": "Algeria",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 5.252515745895225,
+      "gdp": 5105.836383066882,
+      "originLadder": 5.211,
+      "originGdp": 4717.0035885361
+    },
+    {
+      "id": "DZA",
+      "name": "Algeria",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 5.262894682369032,
+      "gdp": 5207.95311072822,
+      "originLadder": 5.211,
+      "originGdp": 4717.0035885361
+    },
+    {
+      "id": "DZA",
+      "name": "Algeria",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 5.273273618842838,
+      "gdp": 5312.112172942785,
+      "originLadder": 5.211,
+      "originGdp": 4717.0035885361
+    },
+    {
+      "id": "DZA",
+      "name": "Algeria",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 5.283652555316643,
+      "gdp": 5418.35441640164,
+      "originLadder": 5.211,
+      "originGdp": 4717.0035885361
+    },
+    {
+      "id": "AUS",
+      "name": "Australia",
+      "year": 2019,
+      "horizon": 1,
+      "ladder": 7.238378936473806,
+      "gdp": 59948.16044152573,
+      "originLadder": 7.228,
+      "originGdp": 58772.7063152213
+    },
+    {
+      "id": "AUS",
+      "name": "Australia",
+      "year": 2020,
+      "horizon": 2,
+      "ladder": 7.248757872947612,
+      "gdp": 61147.12365035624,
+      "originLadder": 7.228,
+      "originGdp": 58772.7063152213
+    },
+    {
+      "id": "AUS",
+      "name": "Australia",
+      "year": 2021,
+      "horizon": 3,
+      "ladder": 7.259136809421419,
+      "gdp": 62370.06612336337,
+      "originLadder": 7.228,
+      "originGdp": 58772.7063152213
+    },
+    {
+      "id": "AUS",
+      "name": "Australia",
+      "year": 2022,
+      "horizon": 4,
+      "ladder": 7.269515745895225,
+      "gdp": 63617.46744583063,
+      "originLadder": 7.228,
+      "originGdp": 58772.7063152213
+    },
+    {
+      "id": "AUS",
+      "name": "Australia",
+      "year": 2023,
+      "horizon": 5,
+      "ladder": 7.279894682369031,
+      "gdp": 64889.81679474725,
+      "originLadder": 7.228,
+      "originGdp": 58772.7063152213
+    },
+    {
+      "id": "AUS",
+      "name": "Australia",
+      "year": 2024,
+      "horizon": 6,
+      "ladder": 7.290273618842837,
+      "gdp": 66187.6131306422,
+      "originLadder": 7.228,
+      "originGdp": 58772.7063152213
+    },
+    {
+      "id": "AUS",
+      "name": "Australia",
+      "year": 2025,
+      "horizon": 7,
+      "ladder": 7.3006525553166455,
+      "gdp": 67511.36539325504,
+      "originLadder": 7.228,
+      "originGdp": 58772.7063152213
+    }
+  ]
+}
