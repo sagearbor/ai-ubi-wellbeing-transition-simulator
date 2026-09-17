@@ -1,0 +1,43 @@
+{
+  "id": "diagnostic-health-income-2018-v1",
+  "status": "Post-hoc diagnostic designed after the 2019\u20132025 results, including rich-country failures, were known. NOT an untouched holdout or confirmation.",
+  "objective": "Isolate incremental health contribution and compare a diminishing-income-response hypothesis under matched conditions; no attempt to tune to a 20% headline.",
+  "variants": [
+    {
+      "id": "health_control",
+      "health": true,
+      "saturation": false
+    },
+    {
+      "id": "income_only",
+      "health": false,
+      "saturation": false
+    },
+    {
+      "id": "saturated_health",
+      "health": true,
+      "saturation": true
+    },
+    {
+      "id": "saturated_income",
+      "health": false,
+      "saturation": true
+    }
+  ],
+  "ensemble": "Fixed equal 25% average of all four variants, same weights for ladder and GDP; frozen before new scores. No selection or optimization on new test scores.",
+  "training": "Only 2015\u20132018 original training data and pre-2019 life-expectancy values already saved. Inner checks: fit <=2016, predict2017\u201318; fit<=2017,predict2018. No new feature search.",
+  "fit": "First differences, no intercept, RMS normalized ridge with fixed lambda0.1 inherited from prior health entry training selection. Health omitted means zero feature and zero coefficient. Refit GDP coefficient for fair matched feature removal.",
+  "incomeFeature": "Unmodified: log(gdp). Saturating: log(gdp/(gdp+k)); k is median of valid country GDP observations at training cutoff, fixed within that fit. Higher incomes yield smaller marginal response. This is a hypothesis, not a causal restriction or fitted test threshold.",
+  "futureCovariates": "Identical original-health per-country OLS trends from training years; GDP in logs, health in years, cumulative damping sum(phi^h), phi0.8 fixed. Health cap[0,120]; ladder cap[0,10]; publish cap counts. No future observed covariates.",
+  "scoring": "Exactly one new scored invocation after committing protocol, implementation and predictions; refuse existing receipt/results. Original scorer files never run or changed. Same100 origins, missing masks, primary2025 ladderMAE; pooled, allhorizons, GDP(origin-normalized), incomequartiles and country contributions secondary. Report all four and fixedensemble even if they lose.",
+  "uncertainty": "No independent validation or calibrated probability bands. Further use of same test data is descriptive.",
+  "forwardGraph": "2025-origin 2026\u20132032 exploratory model projections with unchanged2018 calibrations, reinitialized to observed2025 ladder/GDP when both available. #24 uses original forecast function; Claude decay uses exact published formula with2025 origin. Health-related models retain frozen2015\u20132018 covariate trends. Governance remains the old background. Compare reconstructed2018 predictions before forward generation. Missing2025 values mean no forward forecast, never substitute older origins. Only supported models get future lines.",
+  "boldLine": "Default75%#24+25%Claude decay, selected retrospectively for2025 endpoint in previous583-recipe catalog. Label selected-on-known-data everywhere; alternative simple50/50 and fixed newfour-model average. Neither qualifies as proven best future forecast.",
+  "sourceHashes": {
+    "data/evaluation/level-holdout-2018/train.json": "979ac8d45dda418403fc59e04111b9c9dbcd2fa484e4c26aa900cd37e777bd02",
+    "data/evaluation/level-holdout-2018/origin.json": "564bab92fe88415df70a1b239223213a53c12274891ec2d39f0e08c3e28e3f77",
+    "data/evaluation/level-holdout-2018/test-outcomes.json": "bbcd0b78bc4d02024b2c5064fc15b9249e8849c271f7abd29d9cedeece2ce969",
+    "data/evaluation/research-health-2018-v1/raw/SP.DYN.LE00.IN-2015-2018.json": "1998f8e2d33bb5963592de255a10d0d0786d414d8acab49c0fb11edf5288eaa5",
+    "data/evaluation/research-health-2018-v1/calibration.json": "666efd775b9f38231583e19dd5cec4036200d2800ccde500ffd7424efbcd921c"
+  }
+}
