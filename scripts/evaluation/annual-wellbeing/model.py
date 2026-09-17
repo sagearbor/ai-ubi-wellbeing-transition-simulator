@@ -7,6 +7,7 @@ CANDIDATES = ('change_ridge', 'country_offset', 'residual_carry', 'shrinkage_cha
 BASELINES = ('persistence', 'damped_trend')
 METHODS = CANDIDATES + BASELINES
 TOLERANCE = 1e-9
+PRESELECTED = ('USA', 'IND', 'DEU', 'GBR', 'BRA', 'JPN', 'ZAF', 'CHN')
 
 
 def full(row):
