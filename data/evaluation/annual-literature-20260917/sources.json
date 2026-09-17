@@ -1,0 +1,327 @@
+{
+  "schemaVersion": 1,
+  "reviewDate": "2026-09-17",
+  "scope": "Primary-source literature and public data provenance for annual wellbeing and long macroeconomic/health histories",
+  "annualFullPanelDownloadVerified": false,
+  "noRestrictedDataAcquired": true,
+  "notes": [
+    "Public page access is not a claim that complete underlying data are openly licensed.",
+    "No model was fitted or scored for this literature review.",
+    "Source notes identify evidence type; adjusted R² is not reported as forecasting skill."
+  ],
+  "sources": [
+    {
+      "id": "whr-sharing",
+      "author": "World Happiness Report",
+      "title": "Data Sharing",
+      "url": "https://www.worldhappiness.report/data-sharing/",
+      "kind": "official_data_policy",
+      "access": "public_page",
+      "reviewed": "2026-09-17",
+      "note": "Free download scope: rolling averages, intervals, factor contributions; additional GWP access by request/subscription."
+    },
+    {
+      "id": "owid-ladder",
+      "author": "Our World in Data / Wellbeing Research Centre",
+      "title": "Self-reported life satisfaction",
+      "url": "https://ourworldindata.org/grapher/happiness-cantril-ladder",
+      "kind": "data_metadata",
+      "access": "public_page",
+      "reviewed": "2026-09-17",
+      "note": "2025 label means 2023–2025 average; third-party licensing retained."
+    },
+    {
+      "id": "whr26-appendix",
+      "author": "Helliwell et al.",
+      "title": "WHR 2026 Chapter 2 Statistical Appendix",
+      "url": "https://files.worldhappiness.report/WHR26_Statistical_Appendix.pdf",
+      "kind": "original_report_appendix",
+      "access": "public_pdf",
+      "reviewed": "2026-09-17",
+      "note": "Annual variable definitions and provenance; GWP 2005/06–2025; HALE to 2021."
+    },
+    {
+      "id": "whr26-ch2",
+      "author": "Helliwell et al.",
+      "title": "International evidence on happiness and social media",
+      "url": "https://www.worldhappiness.report/ed/2026/international-evidence-on-happiness-and-social-media/",
+      "kind": "original_report",
+      "access": "public_page",
+      "reviewed": "2026-09-17",
+      "note": "DOI 10.18724/whr-db0f-2b39; Table 2.1: 2365 observations,155 countries,adjusted R² .762; footnote 20 restricts annual regression data."
+    },
+    {
+      "id": "whr23-annual",
+      "author": "World Happiness Report",
+      "title": "DataForTable2.1WHR2023.xls",
+      "url": "https://happiness-report.s3.amazonaws.com/2023/DataForTable2.1WHR2023.xls",
+      "kind": "historical_official_data",
+      "access": "http_403",
+      "reviewed": "2026-09-17",
+      "note": "HEAD returned 403 on 2026-09-17; no download acquired and no alternate-host workaround attempted."
+    },
+    {
+      "id": "whr-dashboard",
+      "author": "World Happiness Report",
+      "title": "WHR Dashboard",
+      "url": "https://data.worldhappiness.report/map",
+      "kind": "official_data_interface",
+      "access": "public_javascript_page",
+      "reviewed": "2026-09-17",
+      "note": "Annual selector under separate acquisition review; web text extraction empty, download not verified here."
+    },
+    {
+      "id": "who-hale-metadata",
+      "author": "World Health Organization",
+      "title": "Healthy life expectancy (HALE), indicator 7752",
+      "url": "https://www.who.int/data/gho/indicator-metadata-registry/imr-details/7752",
+      "kind": "official_metadata",
+      "access": "public_page",
+      "reviewed": "2026-09-17",
+      "note": "Full-health years; WHO release-comparability warning."
+    },
+    {
+      "id": "who-hale",
+      "author": "World Health Organization",
+      "title": "Healthy life expectancy at birth",
+      "url": "https://www.who.int/data/gho/data/indicators/indicator-details/GHO/gho-ghe-hale-healthy-life-expectancy-at-birth",
+      "kind": "official_data",
+      "access": "public_page",
+      "reviewed": "2026-09-17",
+      "note": "Do not substitute total life expectancy."
+    },
+    {
+      "id": "ons-annual",
+      "author": "Office for National Statistics",
+      "title": "Annual personal well-being estimates",
+      "url": "https://www.ons.gov.uk/peoplepopulationandcommunity/wellbeing/datasets/headlineestimatesofpersonalwellbeing",
+      "kind": "official_data",
+      "access": "public_page",
+      "reviewed": "2026-09-17",
+      "note": "Separate UK life-satisfaction outcome, including financial-year periods; no cross-country equivalence claimed."
+    },
+    {
+      "id": "whr25-ch2",
+      "author": "Helliwell et al.",
+      "title": "Caring and sharing: Global analysis of happiness and kindness",
+      "url": "https://www.worldhappiness.report/ed/2025/caring-and-sharing-global-analysis-of-happiness-and-kindness/",
+      "kind": "original_report",
+      "access": "public_page",
+      "reviewed": "2026-09-17",
+      "note": "Table 2.1: 2234 observations, 155 countries, adjusted R² .761; in-sample."
+    },
+    {
+      "id": "whr24-ch2",
+      "author": "Helliwell et al.",
+      "title": "Happiness of the younger, the older, and those in between",
+      "url": "https://www.worldhappiness.report/ed/2024/happiness-of-the-younger-the-older-and-those-in-between/",
+      "kind": "original_report",
+      "access": "public_page",
+      "reviewed": "2026-09-17",
+      "note": "Table 2.1: 2103 observations, 155 countries, adjusted R² .757; in-sample."
+    },
+    {
+      "id": "stevenson-wolfers-2008",
+      "author": "Betsey Stevenson; Justin Wolfers",
+      "title": "Economic Growth and Subjective Well-Being: Reassessing the Easterlin Paradox",
+      "url": "https://www.brookings.edu/wp-content/uploads/2016/07/2008a_bpea_stevenson.pdf",
+      "kind": "original_paper",
+      "access": "public_pdf",
+      "reviewed": "2026-09-17",
+      "note": "Brookings Papers on Economic Activity, Spring 2008; associations, not forecast validation."
+    },
+    {
+      "id": "oparina-layard-clark-2025",
+      "author": "Ekaterina Oparina; Richard Layard; Andrew E. Clark",
+      "title": "The Easterlin Paradox at 50",
+      "url": "https://www.brookings.edu/wp-content/uploads/2025/01/20250116_CSDP_Easterlin_WorkingPaper.pdf",
+      "kind": "original_working_paper",
+      "access": "public_pdf",
+      "reviewed": "2026-09-17",
+      "note": "Gallup 2009–2019; heterogeneous income association; observational."
+    },
+    {
+      "id": "deneve-2018",
+      "author": "Jan-Emmanuel De Neve; George Ward; Femke De Keulenaer; Bert Van Landeghem; Georgios Kavetsos; Michael I. Norton",
+      "title": "The Asymmetric Experience of Positive and Negative Economic Growth: Global Evidence Using Subjective Well-Being Data",
+      "url": "https://www.hbs.edu/ris/download.aspx?name=THE+ASYMMETRIC+EXPERIENCE+OF+POSITIVE.pdf",
+      "kind": "original_paper",
+      "access": "public_pdf",
+      "reviewed": "2026-09-17",
+      "note": "Review of Economics and Statistics 100(2); DOI 10.1162/REST_a_00697; association asymmetry."
+    },
+    {
+      "id": "lucas-2004",
+      "author": "Richard E. Lucas; Andrew E. Clark; Yannis Georgellis; Ed Diener",
+      "title": "Unemployment Alters the Set Point for Life Satisfaction",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/14717825/",
+      "kind": "original_paper_abstract",
+      "access": "public_abstract",
+      "reviewed": "2026-09-17",
+      "note": "Psychological Science 15:8–13; DOI 10.1111/j.0963-7214.2004.01501002.x; individual longitudinal study."
+    },
+    {
+      "id": "ball-2013",
+      "author": "Laurence Ball; Daniel Leigh; Prakash Loungani",
+      "title": "Okun's Law: Fit at 50?",
+      "url": "https://www.imf.org/external/pubs/ft/wp/2013/wp1310.pdf",
+      "kind": "original_working_paper",
+      "access": "public_pdf",
+      "reviewed": "2026-09-17",
+      "note": "IMF WP/13/10; cross-country output–unemployment fit."
+    },
+    {
+      "id": "stock-watson-2002",
+      "author": "James H. Stock; Mark W. Watson",
+      "title": "Macroeconomic Forecasting Using Diffusion Indexes",
+      "url": "https://www.princeton.edu/~mwatson/papers/Stock_Watson_JBES_2002.pdf",
+      "kind": "original_paper",
+      "access": "public_pdf",
+      "reviewed": "2026-09-17",
+      "note": "JBES 20(2):147–162; DOI 10.1198/073500102317351921; temporal forecast evidence, revised vintage."
+    },
+    {
+      "id": "raftery-2013",
+      "author": "Adrian E. Raftery; Jennifer L. Chunn; Patrick Gerland; Hana Ševčíková",
+      "title": "Bayesian Probabilistic Projections of Life Expectancy for All Countries",
+      "url": "https://link.springer.com/article/10.1007/s13524-012-0193-x",
+      "kind": "original_paper",
+      "access": "public_fulltext",
+      "reviewed": "2026-09-17",
+      "note": "Demography 50:777–801; temporal validation, male period total LE, five-year intervals."
+    },
+    {
+      "id": "an-jalles-loungani-2018",
+      "author": "Zidong An; João Tovar Jalles; Prakash Loungani",
+      "title": "How Well Do Economists Forecast Recessions?",
+      "url": "https://www.imf.org/-/media/files/publications/wp/2018/wp1839.pdf",
+      "kind": "original_working_paper",
+      "access": "public_pdf",
+      "reviewed": "2026-09-17",
+      "note": "IMF WP/18/39; forecast histories, 63 countries, 1992–2014."
+    },
+    {
+      "id": "wdi-gdp",
+      "author": "World Bank",
+      "title": "GDP per capita (constant 2015 US$), NY.GDP.PCAP.KD",
+      "url": "https://databank.worldbank.org/metadataglossary/world-development-indicators/series/NY.GDP.PCAP.KD",
+      "kind": "official_metadata",
+      "access": "public_page",
+      "reviewed": "2026-09-17",
+      "note": "Annual, reference period 1960–2025; real output, not PPP income."
+    },
+    {
+      "id": "wdi-ppp",
+      "author": "World Bank",
+      "title": "GDP per capita, PPP (constant 2021 international $), NY.GDP.PCAP.PP.KD",
+      "url": "https://data.worldbank.org/indicator/NY.GDP.PCAP.PP.KD",
+      "kind": "official_data",
+      "access": "public_page",
+      "reviewed": "2026-09-17",
+      "note": "Displayed 1990–2025; freeze vintage."
+    },
+    {
+      "id": "maddison-2023",
+      "author": "Jutta Bolt; Jan Luiten van Zanden / Groningen Growth and Development Centre",
+      "title": "Maddison Project Database 2023",
+      "url": "https://www.rug.nl/ggdc/historicaldevelopment/maddison/releases/maddison-project-database-2023?lang=en",
+      "kind": "original_data",
+      "access": "public_page",
+      "reviewed": "2026-09-17",
+      "note": "169 countries through 2022; DOI 10.34894/INZBF2; CC BY 4.0; country-paper attribution required for graphs.",
+      "relatedUrls": [
+        "https://doi.org/10.34894/INZBF2"
+      ]
+    },
+    {
+      "id": "wdi-unemployment",
+      "author": "World Bank / International Labour Organization",
+      "title": "Unemployment, modelled ILO estimate, SL.UEM.TOTL.ZS",
+      "url": "https://databank.worldbank.org/metadataglossary/world-development-indicators/series/SL.UEM.TOTL.ZS",
+      "kind": "official_metadata",
+      "access": "public_page",
+      "reviewed": "2026-09-17",
+      "note": "Annual 1991–2025; labour-force denominator."
+    },
+    {
+      "id": "ilo-models",
+      "author": "International Labour Organization",
+      "title": "Employment and Social Trends 2026: data methodology",
+      "url": "https://ilostat.ilo.org/dataviz/weso/",
+      "kind": "official_methods",
+      "access": "public_page",
+      "reviewed": "2026-09-17",
+      "note": "Original ILO reported/imputed status; modelling includes macroeconomic information."
+    },
+    {
+      "id": "wdi-life-expectancy",
+      "author": "World Bank / United Nations",
+      "title": "Life expectancy at birth, total, SP.DYN.LE00.IN",
+      "url": "https://data.worldbank.org/indicator/SP.DYN.LE00.IN",
+      "kind": "official_data",
+      "access": "public_page",
+      "reviewed": "2026-09-17",
+      "note": "Displayed 1960–2024; total LE, not HALE."
+    },
+    {
+      "id": "un-wpp-2024",
+      "author": "United Nations Department of Economic and Social Affairs, Population Division",
+      "title": "World Population Prospects 2024",
+      "url": "https://population.un.org/wpp",
+      "kind": "official_data",
+      "access": "public_page",
+      "reviewed": "2026-09-17",
+      "note": "Annual age/time intervals; estimation/projection separation needed."
+    },
+    {
+      "id": "un-wpp-2024-methods",
+      "author": "United Nations Department of Economic and Social Affairs, Population Division",
+      "title": "World Population Prospects 2024: Summary of Results, Annex 1",
+      "url": "https://population.un.org/wpp/assets/Files/WPP2024_Summary-of-Results.pdf",
+      "kind": "official_methods",
+      "access": "public_pdf_indexed_text",
+      "reviewed": "2026-09-17",
+      "note": "Estimation period 1950–2023; projected values follow. Indexed text reviewed; direct clean-URL fetch exceeded browser content-size limit."
+    },
+    {
+      "id": "harvey-1989",
+      "author": "Andrew C. Harvey",
+      "title": "Forecasting, Structural Time Series Models and the Kalman Filter",
+      "url": "https://www.cambridge.org/core/books/forecasting-structural-time-series-models-and-the-kalman-filter/CE5E112570A56960601760E786A5E631",
+      "kind": "original_methods_book",
+      "access": "public_description",
+      "reviewed": "2026-09-17",
+      "note": "Originally 1989; DOI 10.1017/CBO9781107049994; framework, not wellbeing forecast evidence."
+    },
+    {
+      "id": "arellano-bond-1991",
+      "author": "Manuel Arellano; Stephen Bond",
+      "title": "Some Tests of Specification for Panel Data: Monte Carlo Evidence and an Application to Employment Equations",
+      "url": "https://doi.org/10.2307/2297968",
+      "kind": "original_methods_paper",
+      "access": "public_abstract",
+      "reviewed": "2026-09-17",
+      "note": "Review of Economic Studies 58:277–297; dynamic-panel assumptions and tests."
+    },
+    {
+      "id": "fpp-regression",
+      "author": "Rob J. Hyndman; George Athanasopoulos",
+      "title": "Forecasting: Principles and Practice, 3rd edition, §7.6",
+      "url": "https://otexts.com/fpp3/forecasting-regression.html",
+      "kind": "author_methods_reference",
+      "access": "public_fulltext",
+      "reviewed": "2026-09-17",
+      "note": "Ex-ante versus ex-post forecasts."
+    },
+    {
+      "id": "fpp-rolling",
+      "author": "Rob J. Hyndman; George Athanasopoulos",
+      "title": "Forecasting: Principles and Practice, 3rd edition, §5.10",
+      "url": "https://otexts.com/fpp3/tscv.html",
+      "kind": "author_methods_reference",
+      "access": "public_fulltext",
+      "reviewed": "2026-09-17",
+      "note": "Rolling origin and separate forecast horizons."
+    }
+  ]
+}
