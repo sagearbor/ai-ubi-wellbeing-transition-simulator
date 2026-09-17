@@ -8,8 +8,9 @@
     "annual": true,
     "sourceRequired": "Official intentionally public annual World Happiness Report map data; three-year averages forbidden"
   },
-  "task": "Bounded descriptive annual wellbeing comparison; no retuning after scores",
+  "task": "Bounded descriptive annual wellbeing demonstration in eight countries predetermined before source collection; no retuning after scores",
   "interpretation": [
+    "Limited preselected eight-country demonstration (USA, IND, DEU, GBR, BRA, JPN, ZAF, CHN); pooled results do not represent the full world panel.",
     "Latest-vintage retrospective reconstruction; not real-time forecasts. Annual survey year is not release date.",
     "Previously studied outcome periods are not untouched holdouts.",
     "Conditional replay uses realized target-year drivers; these are conditional one-year reconstructions, not deployable forecasts.",
@@ -49,7 +50,7 @@
       2016
     ],
     "evaluationStart": 2017,
-    "cohort": "All country identifiers with at least five complete annual target+three-feature rows in 2005\u20132016. No selection based on errors or post2016 target levels.",
+    "cohort": "Only the eight predetermined examples USA, IND, DEU, GBR, BRA, JPN, ZAF, CHN, subject to at least five complete annual target+three-feature rows in 2005\u20132016. These countries were chosen before source collection and outcome comparison. No selection based on errors or post2016 target levels.",
     "conditionalFitCutoff": 2016,
     "rollingFitCutoff": "targetYear - 1",
     "rollingHistory": "expanding from 2005; no rolling-window tuning",
@@ -163,5 +164,13 @@
     "priorNamespaceMutation": false,
     "freeze": "Commit protocol and model/tests before reading evaluation losses; scoring script verifies clean committed protocol/model and refuses overwrite of scoring receipt.",
     "preScoreValidation": "Coverage/year/schema summaries allowed; no post2016 outcome statistics, fits, candidate losses or rankings before freeze."
-  }
+  },
+  "registrationAmendments": [
+    {
+      "date": "2026-09-17",
+      "beforeScoring": true,
+      "reason": "Official bulk annual target/predictor download unavailable; parent verified intentionally public country chart annual tooltip access. Restrict collection to original eight predetermined examples, chosen before outcomes. Candidate formulas, cutoffs, masks, hyperparameters unchanged.",
+      "priorProtocolCommit": "2076670"
+    }
+  ]
 }

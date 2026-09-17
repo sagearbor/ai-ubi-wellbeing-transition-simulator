@@ -10,6 +10,7 @@ import hashlib
 import json
 import math
 from pathlib import Path
+from model import PRESELECTED
 
 ROOT=Path(__file__).resolve().parents[3]
 DATA=ROOT/'data/evaluation/annual-wellbeing-20260917'
@@ -29,6 +30,7 @@ def main():
     target=json.loads(args.target.read_text())
     if target.get('annual') is not True: raise SystemExit('Target metadata must explicitly attest annual:true.')
     if target.get('officialPublic') is not True: raise SystemExit('Target metadata must explicitly attest officialPublic:true.')
+    if any(r['id'] not in PRESELECTED for r in target['rows']): raise SystemExit('Target contains country outside preselected eight-country demonstration.')
     wbprov=json.loads((args.worldbank/'provenance.json').read_text())
     rawdir=args.worldbank/'raw'
     cc=json.loads((rawdir/'countries.json').read_text())[1]

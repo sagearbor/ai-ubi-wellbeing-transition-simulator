@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 import subprocess
 
-from model import METHODS, FEATURES, generate, metrics
+from model import METHODS, FEATURES, PRESELECTED, generate, metrics
 
 ROOT=Path(__file__).resolve().parents[3]
 DATA=ROOT/'data/evaluation/annual-wellbeing-20260917'
@@ -35,11 +35,13 @@ def main():
     commit=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
     now=dt.datetime.now(dt.timezone.utc).isoformat()
     hashes={str(p.relative_to(ROOT)):sha(p) for p in frozen}
-    record={'status':'started','startedAt':now,'freezeCommit':commit,'hashes':hashes,'scoreRun':1,'maximumScoreRuns':1}
-    with receipt.open('x') as f: json.dump(record,f,indent=2)
     protocol=json.loads((DATA/'protocol.json').read_text())
     source=json.loads((DATA/'sources/provenance.json').read_text())
     panel=json.loads((DATA/'input.json').read_text())['rows']
+    if any(r['id'] not in PRESELECTED for r in panel):
+        raise RuntimeError('Production target contains a country outside the eight preselected examples.')
+    record={'status':'started','startedAt':now,'freezeCommit':commit,'hashes':hashes,'scoreRun':1,'maximumScoreRuns':1}
+    with receipt.open('x') as f: json.dump(record,f,indent=2)
     rows,eligible=generate(panel)
     if not rows: raise RuntimeError('No eligible evaluation rows; no numeric claims permitted.')
     bymode={mode:[r for r in rows if r['mode']==mode] for mode in ('conditional','rolling')}
@@ -64,14 +66,14 @@ def main():
     paths={'schemaVersion':1,'studyId':protocol['studyId'],'target':protocol['target'],
            'caveats':protocol['interpretation'],'methods':[{'id':m['id'],'label':m['label'],'kind':'candidate'} for m in protocol['candidates']]+[{'id':m['id'],'label':m['label'],'kind':'baseline'} for m in protocol['baselines']],
            'modes':protocol['modes'],'predeterminedExamples':protocol['predeterminedExamples'],
-           'countries':countries,'metrics':summary,
+           'countries':countries,'metrics':summary,'cohort':{'type':'eight-country preselected demonstration','requested':list(PRESELECTED),'eligible':eligible,'notPopulationRepresentative':True},
            'provenance':{'freezeCommit':commit,'hashes':hashes,'source':source,'retrospective':True,'realTime':False,'untouchedHoldout':False,
               'targetPrecision':source.get('targetPrecision','source values'),'features':protocol['data']['features']}}
     dump(DATA/'paths.json',paths)
     dump(DATA/'metrics.json',summary)
     dump(DATA/'predictions.json',{'studyId':protocol['studyId'],'rows':rows})
     lines=['# Annual wellbeing study — 17 September 2026','',
-      'This is a latest-vintage retrospective annual comparison, not a real-time forecasting claim or an untouched holdout. The outcome period has appeared in earlier project work. Annual target values come from the official public World Happiness Report display; three-year averages are not used.','',
+      'This is a limited demonstration in eight countries chosen before data collection: USA, India, Germany, United Kingdom, Brazil, Japan, South Africa, and China. Pooled results describe this preselected cohort, not the global panel. It is a latest-vintage retrospective annual comparison, not a real-time forecasting claim or an untouched holdout. The outcome period has appeared in earlier project work. Annual target values come from the official public World Happiness Report display; three-year averages are not used.','',
       'Four parsimonious candidates were frozen before one scoring run. All six methods, including persistence and a damped annual trend, use identical rows within each mode. Coefficients are trained through 2016 for conditional replay and expand through t−1 for each rolling forecast. The conditional replay is a sequence of one-year reconstructions with observed previous-year outcomes and realized target-year drivers; it is not a free-running 2016-origin path.','',
       'Drivers are World Bank log constant-dollar GDP per capita, total life expectancy, and modeled unemployment. Total life expectancy is not WHR healthy life expectancy. No same-survey support/freedom/corruption variables or fitted Figure 2.1 factor contributions are used. Even date-restricted features are revised retrospective vintages, with original release availability unknown.','',
       f'Frozen commit: `{commit}`. Initial training: 2005–2016. Eligible initial cohort: {len(eligible)} countries. All country paths and row-level cutoffs are in `data/evaluation/annual-wellbeing-20260917/paths.json`.','',
@@ -98,7 +100,7 @@ def main():
             lines.append(f"| {c} | {s['persistence']['n']} | {vals} |")
     lines+=['','## Coverage and limitations','',
       f"Conditional rows: {summary['conditional']['rowCount']} across {summary['conditional']['countryCount']} countries. Rolling rows: {summary['rolling']['rowCount']} across {summary['rolling']['countryCount']} countries. All methods within a mode share the exact mask and origin; modes can differ because conditional reconstruction requires actual target-year drivers.",
-      '', 'No missing target or driver is filled. A valid previous year and the year before that are required; gaps remove those dependent predictions. Country inclusion requires five complete 2005–2016 observations. This is an availability-selected panel, not a population-representative country sample. No population weights are used. Macroeconomic features and country offsets cannot establish causal wellbeing effects, and annual country-mean survey noise is not separately modeled.',
+      '', 'No missing target or driver is filled. A valid previous year and the year before that are required; gaps remove those dependent predictions. Country inclusion requires five complete 2005–2016 observations. This is a preselected eight-country demonstration with further missingness restrictions, not a population-representative country sample. Broader annual target access and the annual WHR social-predictor panel were unavailable through the public downloads; the source-access constraint, rather than a forecast result, determined this narrowed scope. No population weights are used. Macroeconomic features and country offsets cannot establish causal wellbeing effects, and annual country-mean survey noise is not separately modeled.',
       '', 'Exactly one descriptive scoring run was allowed. All registered candidates are published; no candidate was retuned after outcome comparison. No prior evaluation namespace was changed.','',
       '## Reproduction and checks','',
       '`python -m unittest discover -s scripts/evaluation/annual-wellbeing -p "test_*.py" -v`',
