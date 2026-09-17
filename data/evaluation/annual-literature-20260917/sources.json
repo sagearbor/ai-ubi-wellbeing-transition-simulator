@@ -66,9 +66,12 @@
       "title": "WHR Dashboard",
       "url": "https://data.worldhappiness.report/map",
       "kind": "official_data_interface",
-      "access": "public_javascript_page",
+      "access": "public_annual_chart_verified_by_root_agent",
       "reviewed": "2026-09-17",
-      "note": "Annual selector under separate acquisition review; web text extraction empty, download not verified here."
+      "note": "Finland Annual score 2025 visible tooltip 7.811; three-year score 7.764. Eight-country visible UI extraction; full annual predictor panel and bulk download not verified.",
+      "relatedUrls": [
+        "https://data.worldhappiness.report/country/FIN"
+      ]
     },
     {
       "id": "who-hale-metadata",
@@ -323,5 +326,27 @@
       "reviewed": "2026-09-17",
       "note": "Rolling origin and separate forecast horizons."
     }
-  ]
+  ],
+  "annualTargetPublicUIAccessConfirmed": true,
+  "annualTargetScope": {
+    "countriesPlanned": 8,
+    "confirmation": "Root agent selected Annual score and read Finland 2025 visible tooltip as 7.811 versus three-year score 7.764.",
+    "method": "Visible public chart tooltip extraction; no hidden application state or undocumented APIs.",
+    "fullSocialPredictorPanelAvailable": false,
+    "bulkDownloadVerified": false,
+    "extractionStatus": "Limited predetermined-country extraction in progress when access update was recorded."
+  },
+  "localAudit": {
+    "reviewed": "2026-09-17",
+    "experiment": "annual-objective-20260917",
+    "registrationCommit": "5e843c7",
+    "scoreCodeCommit": "93eb346ebe6a8c6b1a5c6d63b7fd46bb6770b4ed",
+    "method": "Read-only code/protocol review and independent arithmetic on saved outputs; no scorer rerun.",
+    "hashComparisonsPassed": 12,
+    "matchedFourMethodSets": 37818,
+    "savedPredictionRows": 151272,
+    "pooledMetricRowsVerified": 24,
+    "p1OrP2ImplementationDefectsFound": 0,
+    "interpretationConcern": "Direction accuracy is below unconditional upward frequencies for GDP and life expectancy; avoid turning-point skill claims."
+  }
 }
