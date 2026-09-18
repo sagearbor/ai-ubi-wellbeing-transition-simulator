@@ -7,6 +7,13 @@ server {
     gzip on;
     gzip_types text/plain text/css application/json application/javascript image/svg+xml;
 
+    # Missing release identity must never fall through to the HTML app shell.
+    location = /release.json {
+        default_type application/json;
+        add_header Cache-Control "no-cache" always;
+        try_files $uri =404;
+    }
+
     # Hashed Vite assets are immutable
     location /assets/ {
         add_header Cache-Control "public, max-age=31536000, immutable";

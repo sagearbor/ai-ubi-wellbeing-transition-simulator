@@ -1,0 +1,1061 @@
+{
+  "schema": "policy-bundle/2",
+  "manifest": {
+    "schema": "policy-run/2",
+    "modelId": "reported-allocation-apple-fy2025",
+    "modelName": "Apple FY2025: cash-flow allocation",
+    "modelHash": "f05fffe1a4572943",
+    "engineVersion": "core-0.3.0",
+    "numerical": {
+      "engine": "core-0.3.0",
+      "generator": "mulberry32-fnv1a-parameter-seed-draw/1",
+      "sampler": "p5-p95-uniform-box-muller-lognormal-clamped/1",
+      "correlation": "parameter-independent-entity-shared-ratio-paired-sides/1",
+      "solver": "bisection-absolute-residual-floating-midpoint/2",
+      "quantiles": "sorted-linear-interpolation/1",
+      "expression": "mathjs/15.2.0"
+    },
+    "hash": "780b25097fb8adbc",
+    "sourceHash": "55dc5db3bc27566e63f4644e2a4e947055992146a1ad20e46fd96357233e41b1",
+    "baselineOverlays": [],
+    "policyOverlayId": "policy-synthetic-allocation-policy-share-assignment",
+    "policyOverlayHash": "3e79ff3e7c8b8f6e",
+    "draftId": "synthetic-allocation-policy-share-assignment",
+    "draftHash": "a61b280931f61d6e",
+    "reviewStatus": "ai-drafted",
+    "draftedBy": {
+      "kind": "ai",
+      "name": "gemini-3.6-flash",
+      "date": "2026-09-17"
+    },
+    "coverage": {
+      "total": 2,
+      "mapped": 1,
+      "unresolved": 0,
+      "outsideModel": 1,
+      "allHaveStatus": true,
+      "statusText": "every listed provision has a status",
+      "operative": {
+        "clauses": 2,
+        "accounted": 2,
+        "unresolved": [],
+        "outsideModel": [
+          "p1.s2"
+        ],
+        "text": "2 of 2 source clauses have explicit operative dispositions; 0 unresolved, 1 outside model — partial scenario; unsupported effects are not zero effects"
+      },
+      "source": {
+        "status": "complete",
+        "inventoryVersion": "clauses/1",
+        "clauses": 2,
+        "covered": 2,
+        "excluded": 0,
+        "uncovered": 0,
+        "text": "2 of 2 source clauses covered or explicitly excluded (2 by a provision quote, 0 excluded)"
+      },
+      "completeness": "completeness not attested"
+    },
+    "exclusions": [],
+    "evidence": [
+      {
+        "provisionId": "set-policy-share",
+        "role": "control",
+        "target": "parameter:policy_share",
+        "kind": "assumed",
+        "label": "AI-drafted mapping of \"Release verification — synthetic allocation\": \"20 percent\" sets the policy_share parameter"
+      }
+    ],
+    "runs": 200,
+    "seed": 1,
+    "draws": {
+      "count": 1,
+      "seed": 1,
+      "firstIndex": 0,
+      "deterministic": true
+    },
+    "conversions": [
+      "set-policy-share: 20 percent → policy_share (share): converted to 0.2"
+    ],
+    "baselineRunHash": "f5fd8fdde034c512",
+    "policyRunHash": "24eeac16672cc6dd",
+    "createdAt": "2026-09-17T17:41:42.065Z"
+  },
+  "model": {
+    "schemaVersion": 1,
+    "id": "reported-allocation-apple-fy2025",
+    "name": "Apple FY2025: cash-flow allocation",
+    "description": "Raw source cash flow = operating cash flow minus the reported cash investment item. Allocation ceiling = max(0, raw source cash flow). Payments for acquisition of property, plant and equipment. Cash PP&E purchases; excludes separately reported financing and other investing activities.",
+    "scope": "A proposed allocation of one company’s reported annual cash flow, before dividends and buybacks. It may redirect existing uses. This is not idle cash or measured AI-generated cash. One fiscal year; monthly payment = annual resident allocation divided by 12 and resident count. Not a forecast or observed monthly cash flow. Training cost, capacity, eligibility, placement rate and openings are scenario assumptions. Gross placements do not estimate net jobs or causal wellbeing effects. Unspent training money stays unspent.",
+    "sources": [
+      {
+        "label": "Apple FY2025: reported observation",
+        "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019325000079/aapl-20250927.htm",
+        "note": "2024-09-29–2025-09-27; source USD millions converted once to nominal dollars; report 2025-10-31, retrieved 2026-09-15. Payments for acquisition of property, plant and equipment. Cash PP&E purchases; excludes separately reported financing and other investing activities."
+      },
+      {
+        "label": "World Bank WDI, Population, total, 2024 residents, United States",
+        "url": "https://api.worldbank.org/v2/country/all/indicator/SP.POP.TOTL?format=json&per_page=20000&date=2018:2024",
+        "note": "countries-wb-2026-09; retrieved 2026-09-14; Raw SP.POP.TOTL people; millions = raw / 1,000,000. Rounded legacy engine millions are not used."
+      },
+      {
+        "label": "Editable policy scenario assumption",
+        "kind": "assumed"
+      }
+    ],
+    "time": {
+      "start": 2025,
+      "end": 2025,
+      "step": "year"
+    },
+    "parameters": [
+      {
+        "id": "reported_operating_cash_flow",
+        "value": 111482000000,
+        "unit": "usd",
+        "source": {
+          "label": "Apple FY2025: reported observation",
+          "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019325000079/aapl-20250927.htm",
+          "note": "2024-09-29–2025-09-27; source USD millions converted once to nominal dollars; report 2025-10-31, retrieved 2026-09-15. Payments for acquisition of property, plant and equipment. Cash PP&E purchases; excludes separately reported financing and other investing activities."
+        }
+      },
+      {
+        "id": "reported_cash_investment",
+        "value": 12715000000,
+        "unit": "usd",
+        "source": {
+          "label": "Payments for acquisition of property, plant and equipment",
+          "url": "https://www.sec.gov/Archives/edgar/data/320193/000032019325000079/aapl-20250927.htm",
+          "note": "2024-09-29–2025-09-27; source USD millions converted once to nominal dollars; report 2025-10-31, retrieved 2026-09-15. Payments for acquisition of property, plant and equipment. Cash PP&E purchases; excludes separately reported financing and other investing activities."
+        }
+      },
+      {
+        "id": "recipient_population",
+        "value": 340003797,
+        "unit": "people",
+        "source": {
+          "label": "United States, sourced 2024 residents",
+          "url": "https://api.worldbank.org/v2/country/all/indicator/SP.POP.TOTL?format=json&per_page=20000&date=2018:2024",
+          "note": "Raw SP.POP.TOTL people; millions = raw / 1,000,000. Rounded legacy engine millions are not used."
+        }
+      },
+      {
+        "id": "policy_share",
+        "value": 0.1,
+        "unit": "share",
+        "source": {
+          "label": "Editable policy scenario assumption",
+          "kind": "assumed"
+        }
+      },
+      {
+        "id": "training_share",
+        "value": 0,
+        "unit": "share",
+        "source": {
+          "label": "Editable policy scenario assumption",
+          "kind": "assumed"
+        }
+      },
+      {
+        "id": "cost_per_completion",
+        "value": 5000,
+        "unit": "usd/person",
+        "source": {
+          "label": "Editable policy scenario assumption",
+          "kind": "assumed"
+        }
+      },
+      {
+        "id": "instructor_capacity",
+        "value": 100000,
+        "unit": "people",
+        "source": {
+          "label": "Editable policy scenario assumption",
+          "kind": "assumed"
+        }
+      },
+      {
+        "id": "eligible_trainees",
+        "value": 1000000,
+        "unit": "people",
+        "source": {
+          "label": "Editable policy scenario assumption",
+          "kind": "assumed"
+        }
+      },
+      {
+        "id": "placement_rate",
+        "value": 0.5,
+        "unit": "share",
+        "source": {
+          "label": "Editable policy scenario assumption",
+          "kind": "assumed"
+        }
+      },
+      {
+        "id": "suitable_openings",
+        "value": 50000,
+        "unit": "people",
+        "source": {
+          "label": "Editable policy scenario assumption",
+          "kind": "assumed"
+        }
+      }
+    ],
+    "variables": [
+      {
+        "id": "source_cash_flow",
+        "equation": "reported_operating_cash_flow - reported_cash_investment",
+        "unit": "usd",
+        "description": "Raw annual difference; negative values remain visible.",
+        "hook": false
+      },
+      {
+        "id": "allocatable_base",
+        "equation": "max(0, source_cash_flow)",
+        "unit": "usd",
+        "description": "Explicit nonnegative allocation ceiling, before existing shareholder distributions.",
+        "hook": false
+      },
+      {
+        "id": "policy_budget",
+        "equation": "allocatable_base * policy_share",
+        "unit": "usd",
+        "hook": false
+      },
+      {
+        "id": "training_budget",
+        "equation": "policy_budget * training_share",
+        "unit": "usd",
+        "hook": false
+      },
+      {
+        "id": "dividend_spend",
+        "equation": "policy_budget - training_budget",
+        "unit": "usd",
+        "description": "Proposed resident payments, distinct from reported shareholder dividends.",
+        "hook": false
+      },
+      {
+        "id": "completions",
+        "equation": "min(training_budget / cost_per_completion, instructor_capacity, eligible_trainees, recipient_population)",
+        "unit": "people",
+        "description": "Continuous expected completion count; budget, capacity, eligibility and residents all constrain it.",
+        "hook": false
+      },
+      {
+        "id": "actual_training_spend",
+        "equation": "completions * cost_per_completion",
+        "unit": "usd",
+        "hook": false
+      },
+      {
+        "id": "unspent_training",
+        "equation": "training_budget - actual_training_spend",
+        "unit": "usd",
+        "description": "Unused training money; never automatically diverted to residents.",
+        "hook": false
+      },
+      {
+        "id": "placements",
+        "equation": "min(completions * placement_rate, suitable_openings)",
+        "unit": "people",
+        "description": "Gross expected placements, not net jobs or causal impact.",
+        "hook": false
+      },
+      {
+        "id": "monthly_dividend_per_person",
+        "equation": "dividend_spend / 12 / recipient_population",
+        "unit": "usd/person/month",
+        "hook": false
+      }
+    ],
+    "outputs": [
+      "source_cash_flow",
+      "allocatable_base",
+      "policy_budget",
+      "training_budget",
+      "dividend_spend",
+      "completions",
+      "actual_training_spend",
+      "unspent_training",
+      "placements",
+      "monthly_dividend_per_person"
+    ],
+    "invariants": [
+      {
+        "id": "pinned-observations",
+        "expr": "reported_operating_cash_flow == 111482000000 and reported_cash_investment == 12715000000 and recipient_population == 340003797",
+        "description": "Reported observations stay pinned; changing observations requires an explicit model fork and revised provenance."
+      },
+      {
+        "id": "valid-shares",
+        "expr": "policy_share >= 0 and policy_share <= 1 and training_share >= 0 and training_share <= 1 and placement_rate >= 0 and placement_rate <= 1"
+      },
+      {
+        "id": "valid-inputs",
+        "expr": "cost_per_completion > 0 and instructor_capacity >= 0 and eligible_trainees >= 0 and suitable_openings >= 0 and recipient_population > 0 and reported_cash_investment >= 0"
+      },
+      {
+        "id": "within-source-ceiling",
+        "expr": "policy_budget >= 0 and policy_budget <= allocatable_base"
+      },
+      {
+        "id": "conserve-policy-budget",
+        "expr": "abs(policy_budget - dividend_spend - training_budget) <= max(0.000001, abs(policy_budget) * 1e-12)"
+      },
+      {
+        "id": "conserve-training-budget",
+        "expr": "abs(training_budget - actual_training_spend - unspent_training) <= max(0.000001, abs(training_budget) * 1e-12)"
+      },
+      {
+        "id": "nonnegative-spending",
+        "expr": "dividend_spend >= 0 and training_budget >= 0 and actual_training_spend >= 0 and unspent_training >= -max(0.000001, training_budget * 1e-12)"
+      },
+      {
+        "id": "training-spend-limit",
+        "expr": "actual_training_spend <= training_budget + max(0.000001, training_budget * 1e-12)"
+      },
+      {
+        "id": "completion-limits",
+        "expr": "completions >= 0 and completions <= instructor_capacity and completions <= eligible_trainees and completions <= recipient_population"
+      },
+      {
+        "id": "placement-limits",
+        "expr": "placements >= 0 and placements <= completions and placements <= suitable_openings and placements <= recipient_population"
+      },
+      {
+        "id": "resident-accounting",
+        "expr": "abs(monthly_dividend_per_person * 12 * recipient_population - dividend_spend) <= max(0.000001, abs(dividend_spend) * 1e-12)"
+      }
+    ]
+  },
+  "modelStatus": "experimental — not curated",
+  "provenance": {
+    "kind": "experimental"
+  },
+  "draft": {
+    "schemaVersion": 1,
+    "id": "synthetic-allocation-policy-share-assignment",
+    "title": "Synthetic Allocation Policy Share Assignment",
+    "source": {
+      "title": "Release verification — synthetic allocation",
+      "textSha256": "55dc5db3bc27566e63f4644e2a4e947055992146a1ad20e46fd96357233e41b1",
+      "excerptChars": 77
+    },
+    "modelId": "reported-allocation-apple-fy2025",
+    "modelHash": "f05fffe1a4572943",
+    "provisions": [
+      {
+        "id": "set-policy-share",
+        "quote": "Set the policy share to 20 percent.",
+        "summary": "Sets the policy share parameter to 20%.",
+        "status": "mapped",
+        "role": "control",
+        "mapping": {
+          "kind": "parameter",
+          "target": "policy_share",
+          "op": "set",
+          "value": 20,
+          "unit": "percent",
+          "evidence": {
+            "label": "AI-drafted mapping of \"Release verification — synthetic allocation\": \"20 percent\" sets the policy_share parameter",
+            "kind": "assumed",
+            "note": "Extracted by an AI model and not reviewed. The source supports what the policy sets, not how the world responds."
+          }
+        }
+      },
+      {
+        "id": "eliminate-catastrophic-ai-risk",
+        "quote": "This must eliminate catastrophic AI risk.",
+        "summary": "Mandates the complete elimination of catastrophic AI risk.",
+        "status": "outside-model",
+        "role": "constraint",
+        "reason": "Catastrophic AI risk and risk-mitigation effects are outside the scope of the cash-flow allocation simulation model."
+      }
+    ],
+    "clauseDispositions": [
+      {
+        "clauseId": "p1.s1",
+        "status": "linked",
+        "provisionIds": [
+          "set-policy-share"
+        ],
+        "reason": "Directly sets the policy_share parameter to 20 percent."
+      },
+      {
+        "clauseId": "p1.s2",
+        "status": "outside-model",
+        "provisionIds": [
+          "eliminate-catastrophic-ai-risk"
+        ],
+        "reason": "The model contains no variables or mechanisms to represent AI safety or catastrophic risk elimination."
+      }
+    ],
+    "reviewStatus": "ai-drafted",
+    "draftedBy": {
+      "kind": "ai",
+      "name": "gemini-3.6-flash",
+      "date": "2026-09-17"
+    },
+    "notes": "Maps policy share specification to the Apple FY2025 cash flow allocation model and marks AI risk elimination as outside-model."
+  },
+  "sourceText": "Set the policy share to 20 percent. This must eliminate catastrophic AI risk.",
+  "overlays": [],
+  "policyOverlay": {
+    "id": "policy-synthetic-allocation-policy-share-assignment",
+    "name": "Policy: Synthetic Allocation Policy Share Assignment",
+    "description": "Mapped provisions of \"Release verification — synthetic allocation\" (ai-drafted). Only what the draft maps is here; unresolved and outside-model provisions change nothing.",
+    "parameters": [
+      {
+        "id": "policy_share",
+        "value": 0.2,
+        "source": {
+          "label": "AI-drafted mapping of \"Release verification — synthetic allocation\": \"20 percent\" sets the policy_share parameter",
+          "kind": "assumed",
+          "note": "Extracted by an AI model and not reviewed. The source supports what the policy sets, not how the world responds. — policy provision set-policy-share: \"Set the policy share to 20 percent.\" — 20 percent → policy_share (share): converted to 0.2"
+        }
+      }
+    ],
+    "inputs": [],
+    "effects": []
+  },
+  "results": {
+    "years": [
+      2025
+    ],
+    "entities": [
+      "_"
+    ],
+    "outputs": [
+      "source_cash_flow",
+      "allocatable_base",
+      "policy_budget",
+      "training_budget",
+      "dividend_spend",
+      "completions",
+      "actual_training_spend",
+      "unspent_training",
+      "placements",
+      "monthly_dividend_per_person"
+    ],
+    "policyOnlyOutputs": [],
+    "baseline": {
+      "_": {
+        "source_cash_flow": {
+          "p5": [
+            98767000000
+          ],
+          "p25": [
+            98767000000
+          ],
+          "p50": [
+            98767000000
+          ],
+          "p75": [
+            98767000000
+          ],
+          "p95": [
+            98767000000
+          ],
+          "mean": [
+            98767000000
+          ]
+        },
+        "allocatable_base": {
+          "p5": [
+            98767000000
+          ],
+          "p25": [
+            98767000000
+          ],
+          "p50": [
+            98767000000
+          ],
+          "p75": [
+            98767000000
+          ],
+          "p95": [
+            98767000000
+          ],
+          "mean": [
+            98767000000
+          ]
+        },
+        "policy_budget": {
+          "p5": [
+            9876700000
+          ],
+          "p25": [
+            9876700000
+          ],
+          "p50": [
+            9876700000
+          ],
+          "p75": [
+            9876700000
+          ],
+          "p95": [
+            9876700000
+          ],
+          "mean": [
+            9876700000
+          ]
+        },
+        "training_budget": {
+          "p5": [
+            0
+          ],
+          "p25": [
+            0
+          ],
+          "p50": [
+            0
+          ],
+          "p75": [
+            0
+          ],
+          "p95": [
+            0
+          ],
+          "mean": [
+            0
+          ]
+        },
+        "dividend_spend": {
+          "p5": [
+            9876700000
+          ],
+          "p25": [
+            9876700000
+          ],
+          "p50": [
+            9876700000
+          ],
+          "p75": [
+            9876700000
+          ],
+          "p95": [
+            9876700000
+          ],
+          "mean": [
+            9876700000
+          ]
+        },
+        "completions": {
+          "p5": [
+            0
+          ],
+          "p25": [
+            0
+          ],
+          "p50": [
+            0
+          ],
+          "p75": [
+            0
+          ],
+          "p95": [
+            0
+          ],
+          "mean": [
+            0
+          ]
+        },
+        "actual_training_spend": {
+          "p5": [
+            0
+          ],
+          "p25": [
+            0
+          ],
+          "p50": [
+            0
+          ],
+          "p75": [
+            0
+          ],
+          "p95": [
+            0
+          ],
+          "mean": [
+            0
+          ]
+        },
+        "unspent_training": {
+          "p5": [
+            0
+          ],
+          "p25": [
+            0
+          ],
+          "p50": [
+            0
+          ],
+          "p75": [
+            0
+          ],
+          "p95": [
+            0
+          ],
+          "mean": [
+            0
+          ]
+        },
+        "placements": {
+          "p5": [
+            0
+          ],
+          "p25": [
+            0
+          ],
+          "p50": [
+            0
+          ],
+          "p75": [
+            0
+          ],
+          "p95": [
+            0
+          ],
+          "mean": [
+            0
+          ]
+        },
+        "monthly_dividend_per_person": {
+          "p5": [
+            2.420732770032369
+          ],
+          "p25": [
+            2.420732770032369
+          ],
+          "p50": [
+            2.420732770032369
+          ],
+          "p75": [
+            2.420732770032369
+          ],
+          "p95": [
+            2.420732770032369
+          ],
+          "mean": [
+            2.420732770032369
+          ]
+        }
+      }
+    },
+    "policy": {
+      "_": {
+        "source_cash_flow": {
+          "p5": [
+            98767000000
+          ],
+          "p25": [
+            98767000000
+          ],
+          "p50": [
+            98767000000
+          ],
+          "p75": [
+            98767000000
+          ],
+          "p95": [
+            98767000000
+          ],
+          "mean": [
+            98767000000
+          ]
+        },
+        "allocatable_base": {
+          "p5": [
+            98767000000
+          ],
+          "p25": [
+            98767000000
+          ],
+          "p50": [
+            98767000000
+          ],
+          "p75": [
+            98767000000
+          ],
+          "p95": [
+            98767000000
+          ],
+          "mean": [
+            98767000000
+          ]
+        },
+        "policy_budget": {
+          "p5": [
+            19753400000
+          ],
+          "p25": [
+            19753400000
+          ],
+          "p50": [
+            19753400000
+          ],
+          "p75": [
+            19753400000
+          ],
+          "p95": [
+            19753400000
+          ],
+          "mean": [
+            19753400000
+          ]
+        },
+        "training_budget": {
+          "p5": [
+            0
+          ],
+          "p25": [
+            0
+          ],
+          "p50": [
+            0
+          ],
+          "p75": [
+            0
+          ],
+          "p95": [
+            0
+          ],
+          "mean": [
+            0
+          ]
+        },
+        "dividend_spend": {
+          "p5": [
+            19753400000
+          ],
+          "p25": [
+            19753400000
+          ],
+          "p50": [
+            19753400000
+          ],
+          "p75": [
+            19753400000
+          ],
+          "p95": [
+            19753400000
+          ],
+          "mean": [
+            19753400000
+          ]
+        },
+        "completions": {
+          "p5": [
+            0
+          ],
+          "p25": [
+            0
+          ],
+          "p50": [
+            0
+          ],
+          "p75": [
+            0
+          ],
+          "p95": [
+            0
+          ],
+          "mean": [
+            0
+          ]
+        },
+        "actual_training_spend": {
+          "p5": [
+            0
+          ],
+          "p25": [
+            0
+          ],
+          "p50": [
+            0
+          ],
+          "p75": [
+            0
+          ],
+          "p95": [
+            0
+          ],
+          "mean": [
+            0
+          ]
+        },
+        "unspent_training": {
+          "p5": [
+            0
+          ],
+          "p25": [
+            0
+          ],
+          "p50": [
+            0
+          ],
+          "p75": [
+            0
+          ],
+          "p95": [
+            0
+          ],
+          "mean": [
+            0
+          ]
+        },
+        "placements": {
+          "p5": [
+            0
+          ],
+          "p25": [
+            0
+          ],
+          "p50": [
+            0
+          ],
+          "p75": [
+            0
+          ],
+          "p95": [
+            0
+          ],
+          "mean": [
+            0
+          ]
+        },
+        "monthly_dividend_per_person": {
+          "p5": [
+            4.841465540064738
+          ],
+          "p25": [
+            4.841465540064738
+          ],
+          "p50": [
+            4.841465540064738
+          ],
+          "p75": [
+            4.841465540064738
+          ],
+          "p95": [
+            4.841465540064738
+          ],
+          "mean": [
+            4.841465540064738
+          ]
+        }
+      }
+    },
+    "difference": {
+      "_": {
+        "source_cash_flow": {
+          "p5": [
+            0
+          ],
+          "p25": [
+            0
+          ],
+          "p50": [
+            0
+          ],
+          "p75": [
+            0
+          ],
+          "p95": [
+            0
+          ],
+          "mean": [
+            0
+          ]
+        },
+        "allocatable_base": {
+          "p5": [
+            0
+          ],
+          "p25": [
+            0
+          ],
+          "p50": [
+            0
+          ],
+          "p75": [
+            0
+          ],
+          "p95": [
+            0
+          ],
+          "mean": [
+            0
+          ]
+        },
+        "policy_budget": {
+          "p5": [
+            9876700000
+          ],
+          "p25": [
+            9876700000
+          ],
+          "p50": [
+            9876700000
+          ],
+          "p75": [
+            9876700000
+          ],
+          "p95": [
+            9876700000
+          ],
+          "mean": [
+            9876700000
+          ]
+        },
+        "training_budget": {
+          "p5": [
+            0
+          ],
+          "p25": [
+            0
+          ],
+          "p50": [
+            0
+          ],
+          "p75": [
+            0
+          ],
+          "p95": [
+            0
+          ],
+          "mean": [
+            0
+          ]
+        },
+        "dividend_spend": {
+          "p5": [
+            9876700000
+          ],
+          "p25": [
+            9876700000
+          ],
+          "p50": [
+            9876700000
+          ],
+          "p75": [
+            9876700000
+          ],
+          "p95": [
+            9876700000
+          ],
+          "mean": [
+            9876700000
+          ]
+        },
+        "completions": {
+          "p5": [
+            0
+          ],
+          "p25": [
+            0
+          ],
+          "p50": [
+            0
+          ],
+          "p75": [
+            0
+          ],
+          "p95": [
+            0
+          ],
+          "mean": [
+            0
+          ]
+        },
+        "actual_training_spend": {
+          "p5": [
+            0
+          ],
+          "p25": [
+            0
+          ],
+          "p50": [
+            0
+          ],
+          "p75": [
+            0
+          ],
+          "p95": [
+            0
+          ],
+          "mean": [
+            0
+          ]
+        },
+        "unspent_training": {
+          "p5": [
+            0
+          ],
+          "p25": [
+            0
+          ],
+          "p50": [
+            0
+          ],
+          "p75": [
+            0
+          ],
+          "p95": [
+            0
+          ],
+          "mean": [
+            0
+          ]
+        },
+        "placements": {
+          "p5": [
+            0
+          ],
+          "p25": [
+            0
+          ],
+          "p50": [
+            0
+          ],
+          "p75": [
+            0
+          ],
+          "p95": [
+            0
+          ],
+          "mean": [
+            0
+          ]
+        },
+        "monthly_dividend_per_person": {
+          "p5": [
+            2.420732770032369
+          ],
+          "p25": [
+            2.420732770032369
+          ],
+          "p50": [
+            2.420732770032369
+          ],
+          "p75": [
+            2.420732770032369
+          ],
+          "p95": [
+            2.420732770032369
+          ],
+          "mean": [
+            2.420732770032369
+          ]
+        }
+      }
+    }
+  },
+  "tolerance": {
+    "absolute": 1e-9,
+    "relative": 1e-9,
+    "note": "The engine is deterministic: same model version, overlays, draft, seed and runs give the same numbers. The tolerance only absorbs floating-point formatting through JSON."
+  }
+}

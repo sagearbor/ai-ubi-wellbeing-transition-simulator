@@ -3,6 +3,7 @@ import rawArtifact from '../../data/hindcast/experience.json';
 import { annualRows, type HistoryArtifact, type HistoryMetric } from '../../src/history/types';
 import './history.css';
 import HeldoutExperience from './HeldoutExperience';
+import AnnualExperience from './AnnualExperience';
 
 const artifact = rawArtifact as unknown as HistoryArtifact;
 const labels: Record<string, string> = {
@@ -103,9 +104,10 @@ function ReconstructionExperience(): React.ReactElement {
 }
 
 export default function HistoryExperience(): React.ReactElement {
-  const [view, setView] = useState<'holdout' | 'reconstruction'>('holdout');
-  return <><nav className="history-experience history-view-nav" aria-label="History evidence views">
+  const [view, setView] = useState<'annual' | 'holdout' | 'reconstruction'>('annual');
+  return <><nav className={`history-experience history-view-nav${view === 'annual' ? ' history-annual-nav' : ''}`} aria-label="History evidence views">
+    <button type="button" aria-pressed={view === 'annual'} onClick={() => setView('annual')}>Annual forecasts</button>
     <button type="button" aria-pressed={view === 'holdout'} onClick={() => setView('holdout')}>Held-out test</button>
     <button type="button" aria-pressed={view === 'reconstruction'} onClick={() => setView('reconstruction')}>Historical reconstruction</button>
-  </nav>{view === 'holdout' ? <HeldoutExperience/> : <ReconstructionExperience/>}</>;
+  </nav>{view === 'annual' ? <AnnualExperience/> : view === 'holdout' ? <HeldoutExperience/> : <ReconstructionExperience/>}</>;
 }
