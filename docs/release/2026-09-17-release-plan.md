@@ -20,7 +20,7 @@ History work owns `components/history/`, `src/history/`, a new `scripts/history/
 
 ## Current completion boundary
 
-The annual view, release tooling, documentation and newcomer task sheet are implemented. Actual public policy extraction, unsupported-clause handling, units and bundle replay were exercised and recorded. Final-candidate cloud checks and real newcomer sessions remain separate external work. The unchecked combined policy/delivery items above include those external steps; they do not mean their implemented or tested parts are absent.
+The annual view, release tooling, documentation and newcomer task sheet are implemented. Actual public policy extraction, unsupported-clause handling, units and bundle replay were exercised and recorded. All 1,370 tests passed; the clean committed candidate passed its 15-asset identity check and exact bundle replay. The candidate-local provider call exercised the website-restriction failure and safe manual fallback. Final-candidate cloud checks and real newcomer sessions remain separate external work. The unchecked combined policy/delivery items above include those external steps; they do not mean their implemented or tested parts are absent.
 
 ## External completion evidence
 
